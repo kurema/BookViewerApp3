@@ -8,13 +8,18 @@
     mc:Ignorable="d">
 
     <Grid>
-    <SemanticZoom HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Background="Black">
+    <SemanticZoom>  
         <SemanticZoom.ZoomedInView>
-            <GridView HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
-                        ZoomMode="Enabled" MinZoomFactor="0.5" MaxZoomFactor="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Background="Aqua">
-                        <Image Source="./Assets/Wide310x150Logo.scale-200.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" />
-                    </ScrollViewer>
+                <GridView>
+                    <FlipView Name="Fv">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <ScrollViewer HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto" MaxZoomFactor="3.0" MinZoomFactor="1.0" ZoomMode="Enabled">
+                                <Image Source="{Binding}" Stretch="Uniform"/>
+                                </ScrollViewer>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
                 </GridView>
         </SemanticZoom.ZoomedInView>
         <SemanticZoom.ZoomedOutView>
@@ -23,8 +28,5 @@
             </GridView>
         </SemanticZoom.ZoomedOutView>
     </SemanticZoom>
-        <CommandBar ClosedDisplayMode="Compact">
-            <AppBarButton Label="適当なボタン" Icon="Edit"/>
-        </CommandBar>
     </Grid>
 </Page>

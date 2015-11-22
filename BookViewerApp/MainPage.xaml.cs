@@ -25,6 +25,9 @@ namespace BookViewerApp
         public MainPage()
         {
             this.InitializeComponent();
+
+            var strs = new String[] { "Assets/LockScreenLogo.scale-200.png", "Assets/SplashScreen.scale-200.png" };
+            Fv.ItemsSource = strs;
         }
 
     }
