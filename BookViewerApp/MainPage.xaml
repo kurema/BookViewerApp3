@@ -14,10 +14,7 @@
                     <FlipView Name="FlipView" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
                         <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <ScrollViewer HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxZoomFactor="3.0" MinZoomFactor="1.0" ZoomMode="Enabled" SizeChanged="ScrollViewer_SizeChanged">
-                                    
-                                <Image Source="{Binding}" Stretch="Uniform" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                                </ScrollViewer>
+                                <Image Tag="{Binding}" ManipulationDelta="Image_ManipulationDelta" ManipulationCompleted="Image_ManipulationCompleted" />
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>
