@@ -8,14 +8,15 @@
     mc:Ignorable="d">
 
     <Grid>
-    <SemanticZoom>  
+    <SemanticZoom ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">  
         <SemanticZoom.ZoomedInView>
-                <GridView>
-                    <FlipView Name="Fv">
+                <GridView VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="Black">
+                    <FlipView Name="FlipView" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
                         <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <ScrollViewer HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto" MaxZoomFactor="3.0" MinZoomFactor="1.0" ZoomMode="Enabled">
-                                <Image Source="{Binding}" Stretch="Uniform"/>
+                                <ScrollViewer HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxZoomFactor="3.0" MinZoomFactor="1.0" ZoomMode="Enabled" SizeChanged="ScrollViewer_SizeChanged">
+                                    
+                                <Image Source="{Binding}" Stretch="Uniform" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" />
                                 </ScrollViewer>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
@@ -29,4 +30,10 @@
         </SemanticZoom.ZoomedOutView>
     </SemanticZoom>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" >
+            <AppBarButton Icon="Previous" Label="Back"/>
+            <AppBarButton Icon="Next" Label="Hi"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

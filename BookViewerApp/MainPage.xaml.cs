@@ -26,9 +26,13 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
-            var strs = new String[] { "Assets/LockScreenLogo.scale-200.png", "Assets/SplashScreen.scale-200.png" };
-            Fv.ItemsSource = strs;
+            var strs = new String[] { "Assets/LockScreenLogo.scale-200.png", "Assets/SplashScreen.scale-200.png", "Square44x44Logo.scale-200.png" };
+            FlipView.ItemsSource = strs;
         }
 
+        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            
+        }
     }
 }
