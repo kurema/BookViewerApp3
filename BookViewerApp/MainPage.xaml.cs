@@ -30,14 +30,13 @@ namespace BookViewerApp
             FlipView.ItemsSource = strs;
         }
 
-
-        private void Image_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
-
+            var snd = ((ScrollViewer)sender);
+            var chd = (Grid)snd.Content;
+            chd.Height = snd.ActualHeight;
+            chd.Width = snd.ActualWidth;
         }
 
-        private void Image_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
-        {
-        }
     }
 }

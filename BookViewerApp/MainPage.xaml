@@ -8,13 +8,18 @@
     mc:Ignorable="d">
 
     <Grid>
-    <SemanticZoom ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">  
+    <SemanticZoom ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="SemanticZoom1">  
         <SemanticZoom.ZoomedInView>
                 <GridView VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="Black">
                     <FlipView Name="FlipView" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
                         <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Image Tag="{Binding}" ManipulationDelta="Image_ManipulationDelta" ManipulationCompleted="Image_ManipulationCompleted" />
+                                <ScrollViewer HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxZoomFactor="3.0" MinZoomFactor="0.5" ZoomMode="Enabled"
+                                              SizeChanged="ScrollViewer_Loaded" Loaded="ScrollViewer_Loaded">
+                                    <Grid Background="White">
+                                <Image Source="{Binding}" Stretch="Uniform" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"  HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </ScrollViewer>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>
@@ -28,9 +33,10 @@
     </SemanticZoom>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar ClosedDisplayMode="Compact" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" >
-            <AppBarButton Icon="Previous" Label="Back"/>
-            <AppBarButton Icon="Next" Label="Hi"/>
+        <CommandBar ClosedDisplayMode="Compact" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" 
+                    >
+            <AppBarButton Icon="Previous" Label="前の本" IsEnabled="False"/>
+            <AppBarButton Icon="Next" Label="次の本"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
