@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BookViewerApp.Books
 {
-    public interface IBookFixed
+    public interface IBook
+    {
+        event EventHandler Loaded;
+    }
+
+    public interface IBookFixed:IBook
     {
         uint PageCount { get; }
         IPage GetPage(uint i);
@@ -14,6 +19,7 @@ namespace BookViewerApp.Books
 
     public interface IPage
     {
+        Task<Windows.UI.Xaml.Media.ImageSource> GetImageSourceAsync();
     }
 
     public interface IPageUrl : IPage
@@ -21,9 +27,16 @@ namespace BookViewerApp.Books
         Uri Uri { get; }
     }
 
-    public interface IPageStream : IPage
+    public interface IPageSourceStream : IPage
     {
         Task RenderToStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream);
         Task PreparePageAsync();
     }
+
+    public interface IPageFileStream : IPage
+    {
+        System.IO.Stream Open();
+        void Close();
+    }
+
 }

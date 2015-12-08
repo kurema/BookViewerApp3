@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows;
-using pdf=Windows.Data.Pdf;
+using Windows.UI.Xaml.Media;
+using pdf = Windows.Data.Pdf;
 
 namespace BookViewerApp.Books.Pdf
 {
@@ -13,6 +14,8 @@ namespace BookViewerApp.Books.Pdf
     {
         public pdf.PdfDocument Content { get; private set; }
         private bool PageLoaded = false;
+
+        public event EventHandler Loaded;
 
         public uint PageCount
         {
@@ -32,11 +35,18 @@ namespace BookViewerApp.Books.Pdf
         public async Task Load(Windows.Storage.IStorageFile file)
         {
             Content = await pdf.PdfDocument.LoadFromFileAsync(file);
+            OnLoaded(new EventArgs());
             PageLoaded = true;
         }
+
+        private void OnLoaded(EventArgs e)
+        {
+            if (Loaded != null) Loaded(this, e);
+        }
+
     }
 
-    public class PdfPage : IPageStream
+    public class PdfPage : IPageSourceStream
     {
         public pdf.PdfPage Content { get; private set; }
         public PdfPage(pdf.PdfPage page)
@@ -52,6 +62,15 @@ namespace BookViewerApp.Books.Pdf
         public async Task PreparePageAsync()
         {
             await Content.PreparePageAsync();
+        }
+
+        public async Task<ImageSource> GetImageSourceAsync()
+        {
+            var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
+            await RenderToStreamAsync(stream);
+            var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+            await result.SetSourceAsync(stream);
+            return result;
         }
     }
 }

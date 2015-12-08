@@ -95,6 +95,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookCbz.cs" />
+    <Compile Include="BookImage.cs" />
     <Compile Include="BookInterfaces.cs" />
     <Compile Include="BookPdf.cs" />
     <Compile Include="Exceptions.cs" />
