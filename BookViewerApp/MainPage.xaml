@@ -8,5 +8,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <local:ControlPageViewer x:Name="cpv"/>
+        <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="115,551,0,0" VerticalAlignment="Top" Click="button_Click"/>
     </Grid>
 </Page>

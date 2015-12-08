@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO.Compression;
+
 namespace BookViewerApp.Books.Cbz
 {
     public class CbzBook : IBookFixed
     {
-        public System.IO.Compression.ZipArchive Content { get; private set; }
-        public string[] AvailableEntries = new string[0];
+        public ZipArchive Content { get; private set; }
+        public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
 
         public uint PageCount
         {
@@ -29,18 +31,25 @@ namespace BookViewerApp.Books.Cbz
 
         public IPage GetPage(uint i)
         {
-            return new Image.ImagePageFileStream(Content.GetEntry(AvailableEntries[i]).Open());
+            return new Image.ImagePageFileStream(AvailableEntries[i].Open());
         }
 
-        public async Task LoadAsync(System.IO.Stream stream)
+        public async Task LoadAsync(Stream stream)
         {
             await Task.Run(() =>
             {
-                Content = new System.IO.Compression.ZipArchive(stream, System.IO.Compression.ZipArchiveMode.Read);
+                Content = new ZipArchive(stream, ZipArchiveMode.Read);
                 OnLoaded(new EventArgs());
             }
             );
-            throw new NotImplementedException();
+
+            var entries = new List<ZipArchiveEntry>();
+            string[] supportedFile = {".jpg",".jpeg",".gif",".png" };//fix me!
+            var files = Content.Entries;
+            foreach(var file in files)
+            {
+                if (supportedFile.Contains(Path.GetExtension(file.Name).ToLower())) { entries.Add(file); }
+            }
         }
     }
 
