@@ -56,6 +56,21 @@ namespace BookViewerApp.Books.Image
         public Uri[] Content { get { return _Content; } private set { _Content = value; OnLoaded(new EventArgs()); } }
         private Uri[] _Content = new Uri[0];
 
+        public ImageBookUriCollection(params Uri[] uri)
+        {
+            this.Content = uri;
+        }
+
+        public ImageBookUriCollection(params String[] uri)
+        {
+            var result = new Uri[uri.Count()];
+            for(int i = 0; i < uri.Count(); i++)
+            {
+                result[i] = new Uri(uri[i]);
+            }
+            Content = result;
+        }
+
         public uint PageCount
         {
             get

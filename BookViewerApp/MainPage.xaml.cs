@@ -25,18 +25,21 @@ namespace BookViewerApp
         public MainPage()
         {
             this.InitializeComponent();
+
+            var book = new Books.Image.ImageBookUriCollection("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png", "http://k.yimg.jp/images/top/sp2/cmn/logo-ns-131205.png");
+            this.cbfv.DataContext = new ControlBookFixedViewer.BookViewModel(book);
         }
 
-        private async void button_Click(object sender, RoutedEventArgs e)
-        {
-            await cpv.SetPageAsync(new Books.Image.ImagePageUrl(new Uri("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")));
-        }
+        //private async void button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    await cpv.SetPageAsync(new Books.Image.ImagePageUrl(new Uri("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")));
+        //}
 
-        private void scrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //this should be expressed in Xaml.
-            this.cpv.Width = scrollViewer.ActualWidth;
-            this.cpv.Height = scrollViewer.ActualHeight;
-        }
+        //private void scrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        //{
+        //    //this should be expressed in Xaml.
+        //    this.cpv.Width = scrollViewer.ActualWidth;
+        //    this.cpv.Height = scrollViewer.ActualHeight;
+        //}
     }
 }

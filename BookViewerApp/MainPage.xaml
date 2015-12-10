@@ -8,10 +8,11 @@
     mc:Ignorable="d" >
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ScrollViewer x:Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" MinZoomFactor="1.0" MaxZoomFactor="5.0" ZoomMode="Enabled" SizeChanged="scrollViewer_SizeChanged">
+        <!--<ScrollViewer x:Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" MinZoomFactor="1.0"  ZoomMode="Enabled" SizeChanged="scrollViewer_SizeChanged">
             <local:ControlPageViewer x:Name="cpv"/>
         </ScrollViewer>
 
-        <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Click="button_Click"/>
+        <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Click="button_Click"/>-->
+        <local:ControlBookFixedViewer x:Name="cbfv"/>
     </Grid>
 </Page>

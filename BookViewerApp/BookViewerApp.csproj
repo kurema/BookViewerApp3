@@ -99,6 +99,9 @@
     <Compile Include="BookImage.cs" />
     <Compile Include="BookInterfaces.cs" />
     <Compile Include="BookPdf.cs" />
+    <Compile Include="ControlBookFixedViewer.xaml.cs">
+      <DependentUpon>ControlBookFixedViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ControlPageViewer.xaml.cs">
       <DependentUpon>ControlPageViewer.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ControlBookFixedViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ControlPageViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

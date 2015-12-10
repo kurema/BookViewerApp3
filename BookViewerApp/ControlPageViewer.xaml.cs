@@ -13,49 +13,79 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using System.ComponentModel;
+using System.Threading.Tasks;
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace BookViewerApp
 {
     public sealed partial class ControlPageViewer : UserControl
     {
-        //protected override Size ArrangeOverride(Size finalSize)
-        //{
-        //    var aow = base.ArrangeOverride(finalSize).Width;
-        //    var aoh = base.ArrangeOverride(finalSize).Height;
-        //    var vpw = ((ScrollViewer)Parent).ActualWidth;
-        //    var vph = ((ScrollViewer)Parent).ActualHeight;
-        //    //var iaw = TargetImage.ActualWidth;
-        //    //var iah = TargetImage.ActualHeight;
-        //    //var w = Math.Min(aow, aoh / iah * iaw);
-        //    //w = double.IsNaN(w) ? 0 : w;
-        //    //var h = Math.Min(aoh, aow / iaw * iah);
-        //    //h = double.IsNaN(h) ? 0 : h;
-
-        //    var w = Math.Min(aow, vpw);
-        //    w = double.IsNaN(w) ? aow : w;
-        //    var h = Math.Min(aoh, vph);
-        //    h = double.IsNaN(h) ? aoh : h;
-
-        //    return new Size(vpw, vph);
-        //}
-
-
-        public BookViewerApp.Books.IPage Page { get; private set; }
+        private BookViewerApp.Books.IPage page { get { return ((PageViewModel)this.DataContext).Page; } set { ((PageViewModel)this.DataContext).Page = value; } }
 
         public ControlPageViewer()
         {
             this.InitializeComponent();
+
+            this.DataContextChanged += ControlPageViewer_DataContextChanged;
+        }
+
+        private async void ControlPageViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            var p = this.DataContext;
+            if(this.DataContext!=null && ((PageViewModel)this.DataContext).SelfCalculating==false)await LoadAsync();
         }
 
         public async System.Threading.Tasks.Task SetPageAsync(Books.IPage page) {
-            this.Page = page;
+            this.page = page;
             await LoadAsync();
         }
 
         private async System.Threading.Tasks.Task LoadAsync() {
             //Do not call me when Page is null;
-            this.TargetImage.Source = await Page.GetImageSourceAsync();
+            this.TargetImage.Source = await page.GetImageSourceAsync();
         }
+
+        public class PageViewModel : INotifyPropertyChanged
+        {
+            public PageViewModel(Books.IPage page) { this.Page = page; }
+            public PageViewModel() {  }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public bool SelfCalculating = false;
+
+            public Books.IPage Page { get { Prepare();return _PageCache;  } set { _PageCache = value; PageCacheLatest = true; RaisePropertyChanged(nameof(Page)); } }
+            private Books.IPage _PageCache;
+            private bool PageCacheLatest = false;
+
+            private Func<Books.IPage> PageAccessor;
+
+            public void SetPageAccessor(Func<Books.IPage> accessor)
+            {
+                this.PageAccessor = accessor;
+                PageCacheLatest = false;
+                RaisePropertyChanged(nameof(Page));
+            }
+
+            public void Prepare()
+            {
+                if (!PageCacheLatest)
+                {
+                    SelfCalculating = true;
+                    this._PageCache = PageAccessor();
+                    PageCacheLatest = true;
+                    PageAccessor = null;
+                    SelfCalculating = false;
+                }
+            }
+
+            protected void RaisePropertyChanged(string propertyName)
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
     }
 }
