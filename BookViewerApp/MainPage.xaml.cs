@@ -31,5 +31,12 @@ namespace BookViewerApp
         {
             await cpv.SetPageAsync(new Books.Image.ImagePageUrl(new Uri("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")));
         }
+
+        private void scrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //this should be expressed in Xaml.
+            this.cpv.Width = scrollViewer.ActualWidth;
+            this.cpv.Height = scrollViewer.ActualHeight;
+        }
     }
 }

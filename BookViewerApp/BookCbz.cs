@@ -31,7 +31,7 @@ namespace BookViewerApp.Books.Cbz
 
         public IPage GetPage(uint i)
         {
-            return new Image.ImagePageFileStream(AvailableEntries[i].Open());
+            return new Image.ImagePageStream(AvailableEntries[i].Open());
         }
 
         public async Task LoadAsync(Stream stream)

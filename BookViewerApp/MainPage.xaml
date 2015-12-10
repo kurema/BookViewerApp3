@@ -5,10 +5,13 @@
     xmlns:local="using:BookViewerApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" >
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <local:ControlPageViewer x:Name="cpv"/>
-        <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="115,551,0,0" VerticalAlignment="Top" Click="button_Click"/>
+        <ScrollViewer x:Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" MinZoomFactor="1.0" MaxZoomFactor="5.0" ZoomMode="Enabled" SizeChanged="scrollViewer_SizeChanged">
+            <local:ControlPageViewer x:Name="cpv"/>
+        </ScrollViewer>
+
+        <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Click="button_Click"/>
     </Grid>
 </Page>

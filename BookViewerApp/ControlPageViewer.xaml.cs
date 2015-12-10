@@ -19,6 +19,28 @@ namespace BookViewerApp
 {
     public sealed partial class ControlPageViewer : UserControl
     {
+        //protected override Size ArrangeOverride(Size finalSize)
+        //{
+        //    var aow = base.ArrangeOverride(finalSize).Width;
+        //    var aoh = base.ArrangeOverride(finalSize).Height;
+        //    var vpw = ((ScrollViewer)Parent).ActualWidth;
+        //    var vph = ((ScrollViewer)Parent).ActualHeight;
+        //    //var iaw = TargetImage.ActualWidth;
+        //    //var iah = TargetImage.ActualHeight;
+        //    //var w = Math.Min(aow, aoh / iah * iaw);
+        //    //w = double.IsNaN(w) ? 0 : w;
+        //    //var h = Math.Min(aoh, aow / iaw * iah);
+        //    //h = double.IsNaN(h) ? 0 : h;
+
+        //    var w = Math.Min(aow, vpw);
+        //    w = double.IsNaN(w) ? aow : w;
+        //    var h = Math.Min(aoh, vph);
+        //    h = double.IsNaN(h) ? aoh : h;
+
+        //    return new Size(vpw, vph);
+        //}
+
+
         public BookViewerApp.Books.IPage Page { get; private set; }
 
         public ControlPageViewer()

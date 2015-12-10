@@ -24,11 +24,11 @@ namespace BookViewerApp.Books.Image
         }
     }
 
-    public class ImagePageFileStream : IPageFileStream
+    public class ImagePageStream : IPageFileStream
     {
         private Stream stream;
 
-        public ImagePageFileStream(Stream stream)
+        public ImagePageStream(Stream stream)
         {
             this.stream = stream;
         }
@@ -39,8 +39,11 @@ namespace BookViewerApp.Books.Image
 
         public async Task<ImageSource> GetImageSourceAsync()
         {
-            throw new NotImplementedException();
+            var image = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+            await image.SetSourceAsync(WindowsRuntimeStreamExtensions.AsRandomAccessStream(stream));
+            return image;
         }
+
 
         public Stream Open()
         {
