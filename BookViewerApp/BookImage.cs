@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media;
 
 namespace BookViewerApp.Books.Image
 {
-    public class ImagePageUrl : IPageUrl
+    public class ImagePageUrl : IPage
     {
         public Uri Uri
         {
@@ -24,7 +24,7 @@ namespace BookViewerApp.Books.Image
         }
     }
 
-    public class ImagePageStream : IPageFileStream
+    public class ImagePageStream : IPage
     {
         private Stream stream;
 

@@ -46,7 +46,7 @@ namespace BookViewerApp.Books.Pdf
 
     }
 
-    public class PdfPage : IPageSourceStream
+    public class PdfPage : IPage
     {
         public pdf.PdfPage Content { get; private set; }
         public PdfPage(pdf.PdfPage page)
