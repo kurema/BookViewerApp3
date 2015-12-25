@@ -22,6 +22,10 @@ namespace BookViewerApp
         public ControlPagesViewer()
         {
             this.InitializeComponent();
+
+            double zoomf= 1.0 / (double)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale*100.0;
+            ScrollViewerMain.SetValue(ScrollViewer.MinZoomFactorProperty,zoomf);
+            ScrollViewerMain.SetValue(ScrollViewer.ZoomFactorProperty,zoomf);
         }
     }
 }

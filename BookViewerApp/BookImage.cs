@@ -16,6 +16,11 @@ namespace BookViewerApp.Books.Image
             get;private set;
         }
 
+        public IPageOptions Option
+        {
+            get; set;
+        }
+
         public ImagePageUrl(Uri uri) { this.Uri = uri; }
 
         public async Task<ImageSource> GetImageSourceAsync()
@@ -31,6 +36,11 @@ namespace BookViewerApp.Books.Image
         public ImagePageStream(Stream stream)
         {
             this.stream = stream;
+        }
+
+        public IPageOptions Option
+        {
+            get; set;
         }
 
         public void Close()

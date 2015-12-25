@@ -26,14 +26,21 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
-            var book = new Books.Image.ImageBookUriCollection("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png", "http://k.yimg.jp/images/top/sp2/cmn/logo-ns-131205.png");
-            this.cbfv.DataContext = new ControlBookFixedViewer.BookViewModel(book);
+            //var book = new Books.Image.ImageBookUriCollection("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png", "http://k.yimg.jp/images/top/sp2/cmn/logo-ns-131205.png");
+            //this.cbfv.DataContext = new ControlBookFixedViewer.BookViewModel(book);
+
         }
 
-        //private async void button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await cpv.SetPageAsync(new Books.Image.ImagePageUrl(new Uri("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")));
-        //}
+        private async void button_Click(object sender, RoutedEventArgs e)
+        {
+            //await cpv.SetPageAsync(new Books.Image.ImagePageUrl(new Uri("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")));
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.FileTypeFilter.Add(".pdf");
+            var file = await picker.PickSingleFileAsync();
+            var book = new Books.Pdf.PdfBook();
+            await book.Load(file);
+            this.cbfv.DataContext = new ControlBookFixedViewer.BookViewModel(book);
+        }
 
         //private void scrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         //{

@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-
-    </Grid>
+    <ScrollViewer Name="ScrollViewerMain" ZoomMode="Enabled" HorizontalScrollBarVisibility="Auto" MinZoomFactor="1.0" HorizontalContentAlignment="Center">
+        <local:ControlPageViewer DataContext="{Binding}"/>
+    </ScrollViewer>
 </UserControl>

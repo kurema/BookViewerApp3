@@ -21,7 +21,7 @@ namespace BookViewerApp
 {
     public sealed partial class ControlBookFixedViewer : UserControl
     {
-        private BookViewModel Model { get { return (BookViewModel)this.DataContext; } }
+        private BookViewModel Model { get { return (BookViewModel)DataContext; } }
 
         public ControlBookFixedViewer()
         {
@@ -33,6 +33,7 @@ namespace BookViewerApp
 
         private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
+            if(Model!=null)
             FlipView.ItemsSource = GetPageAccessors(Model.Book);
         }
 
@@ -42,7 +43,7 @@ namespace BookViewerApp
             {
                 var item = new ControlPageViewer.PageViewModel();
                 uint value = i;
-                item.SetPageAccessor(new Func<Books.IPage>(() => { return book.GetPage(value); }));
+                item.SetPageAccessor(new Func<Books.IPage>(() => { var page= book.GetPage(value); page.Option = new Books.PageOptionsControl(this);return page; }));
                 result[i] = item;
             }
             return result;

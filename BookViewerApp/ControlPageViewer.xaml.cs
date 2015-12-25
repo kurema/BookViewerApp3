@@ -21,7 +21,7 @@ namespace BookViewerApp
 {
     public sealed partial class ControlPageViewer : UserControl
     {
-        private BookViewerApp.Books.IPage page { get { return ((PageViewModel)this.DataContext).Page; } set { ((PageViewModel)this.DataContext).Page = value; } }
+        private BookViewerApp.Books.IPage Page { get { return ((PageViewModel)this.DataContext).Page; } set { ((PageViewModel)this.DataContext).Page = value; } }
 
         public ControlPageViewer()
         {
@@ -37,13 +37,17 @@ namespace BookViewerApp
         }
 
         public async System.Threading.Tasks.Task SetPageAsync(Books.IPage page) {
-            this.page = page;
+            this.Page = page;
             await LoadAsync();
         }
 
         private async System.Threading.Tasks.Task LoadAsync() {
             //Do not call me when Page is null;
-            this.TargetImage.Source = await page.GetImageSourceAsync();
+            if (this.Page != null)
+            {
+                //page.Option = new Books.PageOptionsControl(this);
+                this.TargetImage.Source = await Page.GetImageSourceAsync();
+            }
         }
 
         public class PageViewModel : INotifyPropertyChanged

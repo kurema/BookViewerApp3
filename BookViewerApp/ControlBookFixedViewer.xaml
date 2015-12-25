@@ -13,7 +13,7 @@
     <FlipView Name="FlipView">
         <FlipView.ItemTemplate>
             <DataTemplate>
-                <local:ControlPageViewer DataContext="{Binding}"/>
+                <local:ControlPagesViewer DataContext="{Binding}"/>
             </DataTemplate>
         </FlipView.ItemTemplate>
     </FlipView>

@@ -49,6 +49,12 @@ namespace BookViewerApp.Books.Pdf
     public class PdfPage : IPage
     {
         public pdf.PdfPage Content { get; private set; }
+
+        public IPageOptions Option
+        {
+            get; set;
+        }
+
         public PdfPage(pdf.PdfPage page)
         {
             Content = page;
@@ -56,7 +62,24 @@ namespace BookViewerApp.Books.Pdf
 
         public async Task RenderToStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream)
         {
-            await Content.RenderToStreamAsync(stream);
+            if (Option != null)
+            {
+                var pdfOption = new pdf.PdfPageRenderOptions();
+                
+                if (Option.TargetHeight/Content.Size.Height < Option.TargetWidth/Content.Size.Width)
+                {
+                    pdfOption.DestinationHeight = (uint)Option.TargetHeight;
+                }
+                else {
+                    pdfOption.DestinationWidth = (uint)Option.TargetWidth;
+                }
+                //pdfOption.DestinationHeight = (uint)Math.Max(Option.TargetHeight,Option.TargetWidth);
+                await Content.RenderToStreamAsync(stream,pdfOption);
+            }
+            else
+            {
+                await Content.RenderToStreamAsync(stream);
+            }
         }
 
         public async Task PreparePageAsync()
