@@ -73,7 +73,6 @@ namespace BookViewerApp.Books.Pdf
                 else {
                     pdfOption.DestinationWidth = (uint)Option.TargetWidth;
                 }
-                //pdfOption.DestinationHeight = (uint)Math.Max(Option.TargetHeight,Option.TargetWidth);
                 await Content.RenderToStreamAsync(stream,pdfOption);
             }
             else

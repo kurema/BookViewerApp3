@@ -41,12 +41,5 @@ namespace BookViewerApp
             await book.Load(file);
             this.cbfv.DataContext = new ControlBookFixedViewer.BookViewModel(book);
         }
-
-        //private void scrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
-        //{
-        //    //this should be expressed in Xaml.
-        //    this.cpv.Width = scrollViewer.ActualWidth;
-        //    this.cpv.Height = scrollViewer.ActualHeight;
-        //}
     }
 }

@@ -28,7 +28,6 @@ namespace BookViewerApp
             this.InitializeComponent();
 
             this.DataContextChanged += ControlBookViewer_DataContextChanged;
-            //this.DataContext = new BookViewModel(book);
         }
 
         private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)

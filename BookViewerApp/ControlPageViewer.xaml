@@ -8,5 +8,5 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-    <Image Name="TargetImage"/>
+    <Image Name="TargetImage" />
 </UserControl>
