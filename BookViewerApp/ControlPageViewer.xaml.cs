@@ -54,9 +54,9 @@ namespace BookViewerApp
         public async void UpdateSize()
         {
             //ToDo: 一定時間待機してサイズ調節が落ち着くのを待つ。
-            if (this.Page != null)
+            if (this.Page != null && (await Page.UpdateRequired()))
             {
-                var src = await Page.UpdateImageSourceIfRequiredAsync();
+                var src = await Page.GetImageSourceAsync();
                 if (src != null)
                 {
                     this.TargetImage.Source = src;

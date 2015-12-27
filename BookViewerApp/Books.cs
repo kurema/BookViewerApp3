@@ -22,7 +22,7 @@ namespace BookViewerApp.Books
     {
         IPageOptions Option { get; set; }
         Task<Windows.UI.Xaml.Media.ImageSource> GetImageSourceAsync();
-        Task<Windows.UI.Xaml.Media.ImageSource> UpdateImageSourceIfRequiredAsync();
+        Task<bool> UpdateRequired();
     }
 
     public interface IPageOptions
@@ -114,9 +114,9 @@ namespace BookViewerApp.Books
             return await body.GetImageSourceAsync();
         }
 
-        public async Task<ImageSource> UpdateImageSourceIfRequiredAsync()
+        public async Task<bool> UpdateRequired()
         {
-            return await (await GetPage()).UpdateImageSourceIfRequiredAsync();
+            return await(await GetPage()).UpdateRequired();
         }
     }
 
