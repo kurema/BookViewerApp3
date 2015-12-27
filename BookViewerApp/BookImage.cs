@@ -27,6 +27,11 @@ namespace BookViewerApp.Books.Image
         {
             return new Windows.UI.Xaml.Media.Imaging.BitmapImage(Uri);
         }
+
+        public Task<ImageSource> UpdateImageSourceIfRequiredAsync()
+        {
+            return null;
+        }
     }
 
     public class ImagePageStream : IPage
@@ -58,6 +63,11 @@ namespace BookViewerApp.Books.Image
         public Stream Open()
         {
             return stream;
+        }
+
+        public Task<ImageSource> UpdateImageSourceIfRequiredAsync()
+        {
+            return null;
         }
     }
 

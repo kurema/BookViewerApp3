@@ -54,6 +54,7 @@ namespace BookViewerApp.Books.Pdf
         {
             get; set;
         }
+        public IPageOptions LastOption;
 
         public PdfPage(pdf.PdfPage page)
         {
@@ -64,8 +65,14 @@ namespace BookViewerApp.Books.Pdf
         {
             if (Option != null)
             {
+                //Strange code. Maybe fix needed.
+                if (Option is PageOptionsControl)
+                {
+                    LastOption = (PageOptions)((PageOptionsControl)this.Option);
+                }
+                else { LastOption = Option; }
+
                 var pdfOption = new pdf.PdfPageRenderOptions();
-                
                 if (Option.TargetHeight/Content.Size.Height < Option.TargetWidth/Content.Size.Width)
                 {
                     pdfOption.DestinationHeight = (uint)Option.TargetHeight;
@@ -93,6 +100,18 @@ namespace BookViewerApp.Books.Pdf
             var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
             await result.SetSourceAsync(stream);
             return result;
+        }
+
+        public async Task<ImageSource> UpdateImageSourceIfRequiredAsync()
+        {
+            if (LastOption.TargetHeight < Option.TargetHeight || LastOption.TargetWidth < Option.TargetWidth)
+            {
+                return await GetImageSourceAsync();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

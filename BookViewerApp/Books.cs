@@ -22,31 +22,64 @@ namespace BookViewerApp.Books
     {
         IPageOptions Option { get; set; }
         Task<Windows.UI.Xaml.Media.ImageSource> GetImageSourceAsync();
+        Task<Windows.UI.Xaml.Media.ImageSource> UpdateImageSourceIfRequiredAsync();
     }
 
     public interface IPageOptions
     {
         double TargetWidth { get; }
         double TargetHeight { get; }
+        event EventHandler Updated;
     }
 
     public class PageOptions : IPageOptions
     {
-        public double TargetWidth { get; set; }
-        public double TargetHeight { get; set; }
+        public double TargetWidth { get { return _TargetWidth; } set { _TargetWidth = value; OnUpdated(new EventArgs()); } }
+        private double _TargetWidth;
+        public double TargetHeight { get { return _TargetHeight; } set { _TargetHeight = value; OnUpdated(new EventArgs()); } }
+        private double _TargetHeight;
+
+        public event EventHandler Updated;
+        protected virtual void OnUpdated(EventArgs e) { if (Updated != null) Updated(this, e); }
     }
 
     public class PageOptionsControl : IPageOptions
     {
         public double TargetWidth { get { return TargetControl.ActualWidth; } }
         public double TargetHeight { get { return TargetControl.ActualHeight; } }
-        public Windows.UI.Xaml.Controls.Control TargetControl { get; set; }
+        public Windows.UI.Xaml.Controls.Control TargetControl
+        {
+            get { return _TargetControl; }
+            set
+            {
+                _TargetControl.SizeChanged -= Control_SizeChanged;
+                _TargetControl = value;
+                _TargetControl.SizeChanged += Control_SizeChanged;
+                OnUpdated(new EventArgs());
+
+            }
+        }
+        private Windows.UI.Xaml.Controls.Control _TargetControl;
+
+        public event EventHandler Updated;
+        protected virtual void OnUpdated(EventArgs e) { if (Updated != null) Updated(this, e); }
 
         public PageOptionsControl(Windows.UI.Xaml.Controls.Control control)
         {
-            this.TargetControl = control;
+            this._TargetControl = control;
+
+            control.SizeChanged += Control_SizeChanged;
         }
 
+        private void Control_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        {
+            OnUpdated(new EventArgs());
+        }
+
+        public static explicit operator PageOptions(PageOptionsControl item)
+        {
+            return new PageOptions() { TargetWidth = item.TargetWidth, TargetHeight = item.TargetHeight };
+        }
     }
 
     public class VirtualPage : IPage
@@ -79,6 +112,11 @@ namespace BookViewerApp.Books
         {
             var body = await GetPage();
             return await body.GetImageSourceAsync();
+        }
+
+        public async Task<ImageSource> UpdateImageSourceIfRequiredAsync()
+        {
+            return await (await GetPage()).UpdateImageSourceIfRequiredAsync();
         }
     }
 

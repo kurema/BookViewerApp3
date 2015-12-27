@@ -29,8 +29,8 @@ namespace BookViewerApp
 
             this.DataContextChanged += ControlPageViewer_DataContextChanged;
 
-            double zoomf = 1.0 / (double)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale * 100.0;
-            TargetImage.RenderTransform = new ScaleTransform() { CenterX=0.5,CenterY=0.5,ScaleX=zoomf,ScaleY=zoomf};//fix me! I need LayerTransform!
+            //double zoomf = 1.0 / (double)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale * 100.0;
+            //TargetImage.RenderTransform = new ScaleTransform() { CenterX=0.5,CenterY=0.5,ScaleX=zoomf,ScaleY=zoomf};//fix me! I need LayerTransform!
         }
 
         private async void ControlPageViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -45,10 +45,22 @@ namespace BookViewerApp
         }
 
         private async System.Threading.Tasks.Task LoadAsync() {
-            //Do not call me when Page is null;
             if (this.Page != null)
             {
                 this.TargetImage.Source = await Page.GetImageSourceAsync();
+            }
+        }
+
+        public async void UpdateSize()
+        {
+            //ToDo: 一定時間待機してサイズ調節が落ち着くのを待つ。
+            if (this.Page != null)
+            {
+                var src = await Page.UpdateImageSourceIfRequiredAsync();
+                if (src != null)
+                {
+                    this.TargetImage.Source = src;
+                }
             }
         }
 

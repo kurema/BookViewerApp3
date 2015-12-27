@@ -23,5 +23,13 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
         }
+
+        private void ScrollViewerMain_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ViewBoxMain.Width = ScrollViewerMain.ActualWidth;
+            ViewBoxMain.Height = ScrollViewerMain.ActualHeight;
+
+            ControlPageViewerMain.UpdateSize();
+        }
     }
 }
