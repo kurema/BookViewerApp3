@@ -28,7 +28,7 @@ namespace BookViewerApp.Books.Image
             return new Windows.UI.Xaml.Media.Imaging.BitmapImage(Uri);
         }
 
-        public async Task<bool> UpdateRequired()
+        public async Task<bool> UpdateRequiredAsync()
         {
             return false;
         }
@@ -65,7 +65,7 @@ namespace BookViewerApp.Books.Image
             return stream;
         }
         
-        public async Task<bool> UpdateRequired()
+        public async Task<bool> UpdateRequiredAsync()
         {
             return false;
         }

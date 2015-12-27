@@ -102,7 +102,7 @@ namespace BookViewerApp.Books.Pdf
             return result;
         }
 
-        public async Task<bool> UpdateRequired()
+        public async Task<bool> UpdateRequiredAsync()
         {
             if (LastOption!=null && Option != null && LastOption.TargetHeight < Option.TargetHeight || LastOption.TargetWidth < Option.TargetWidth)
             { return true; }
