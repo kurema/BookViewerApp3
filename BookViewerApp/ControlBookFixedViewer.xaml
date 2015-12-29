@@ -11,7 +11,7 @@
     >
     <Grid>
         <local:ControlBookFixedViewerBody DataContext="{Binding}" x:Name="BodyControl"/>
-        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Minimal" x:Name="CommandBarMain" />
+        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Compact"  x:Name="CommandBarMain" />
     </Grid>
 
 </UserControl>
