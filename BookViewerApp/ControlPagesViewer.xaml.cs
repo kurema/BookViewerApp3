@@ -27,8 +27,6 @@ namespace BookViewerApp
         private void ScrollViewerMain_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //Code-behind should not be used. But it is powerful.
-            ViewBoxMain.Width = ScrollViewerMain.ActualWidth;
-            ViewBoxMain.Height = ScrollViewerMain.ActualHeight;
             ControlPageViewerMain.Width = ScrollViewerMain.ActualWidth;
             ControlPageViewerMain.Height = ScrollViewerMain.ActualHeight;
 

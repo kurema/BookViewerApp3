@@ -10,8 +10,6 @@
     d:DesignWidth="400">
 
     <ScrollViewer Name="ScrollViewerMain" ZoomMode="Enabled" HorizontalScrollBarVisibility="Auto" MinZoomFactor="1.0" SizeChanged="ScrollViewerMain_SizeChanged">
-        <Viewbox Stretch="Uniform" Name="ViewBoxMain">
-            <local:ControlPageViewer x:Name="ControlPageViewerMain" DataContext="{Binding}"/>
-        </Viewbox>
+        <local:ControlPageViewer x:Name="ControlPageViewerMain" DataContext="{Binding}"/>
     </ScrollViewer>
 </UserControl>
