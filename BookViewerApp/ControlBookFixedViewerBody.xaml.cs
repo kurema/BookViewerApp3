@@ -21,29 +21,76 @@ namespace BookViewerApp
 {
     public sealed partial class ControlBookFixedViewerBody : UserControl
     {
-        private BookViewModel Model { get { return (BookViewModel)DataContext; } }
+        private BookFixedBodyViewModel Model { get { return (BookFixedBodyViewModel)DataContext; } }
+
+        public event EventHandler PageCountChanged;
+        public event EventHandler SelectedPageChanged;
+
+
+        private void RaisePageCountChanged()
+        {
+            if (PageCountChanged != null)
+                PageCountChanged(this, new EventArgs());
+        }
+
+        private void RaiseSelectedPageChanged()
+        {
+            if (SelectedPageChanged != null)
+                SelectedPageChanged(this, new EventArgs());
+        }
+
 
         public ControlBookFixedViewerBody()
         {
             this.InitializeComponent();
 
             this.DataContextChanged += ControlBookViewer_DataContextChanged;
+            this.FlipView.SelectionChanged += (s,e) => { RaiseSelectedPageChanged(); };
+
         }
 
-        public void SelectPage(int i)
+        //public void SelectPage(int i)
+        //{
+        //    FlipView.SelectedIndex = i;
+        //}
+
+        //public void SelectPagePrevious()
+        //{
+        //    FlipView.SelectedIndex = Math.Max(FlipView.SelectedIndex - 1, 0);
+        //}
+
+        //public void SelectPageNext()
+        //{
+        //    FlipView.SelectedIndex = Math.Min(FlipView.SelectedIndex + 1, PageCount);
+        //}
+
+        public int PageCount
         {
-            FlipView.SelectedIndex = i;
+            get
+            {
+                return FlipView.Items.Count();
+            }
         }
 
-        public int GetPageCount()
+        public int SelectedPage
         {
-            return FlipView.Items.Count();
+            get { return FlipView.SelectedIndex; }
+            set { FlipView.SelectedIndex = value; }
+        }
+
+        public bool CanSelect(int i)
+        {
+            return i >= 0 && i < PageCount;
         }
 
         private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            if(Model!=null)
-            FlipView.ItemsSource = GetPageAccessors(Model.Book);
+            if (Model != null)
+            {
+                FlipView.ItemsSource = GetPageAccessors(Model.Book);
+                SelectedPage = 0;
+                RaisePageCountChanged();
+            }
         }
 
         public ControlPageViewer.PageViewModel[] GetPageAccessors(Books.IBookFixed book) {
@@ -57,10 +104,77 @@ namespace BookViewerApp
             }
             return result;
         }
+        #region Commands
 
-        public class BookViewModel : INotifyPropertyChanged
+        public class CommandAddPage : System.Windows.Input.ICommand
         {
-            public BookViewModel(Books.IBookFixed book) { this.Book = book; }
+            private ControlBookFixedViewerBody TargetControl;
+            public event EventHandler CanExecuteChanged;
+            public int ChangeValue;
+
+            public CommandAddPage(ControlBookFixedViewerBody TargetControl,int ChangeValue)
+            {
+                this.TargetControl = TargetControl;
+                this.ChangeValue = ChangeValue;
+
+                TargetControl.SelectedPageChanged += (s, e) => { RaiseCanExecuteChanged(); };
+                TargetControl.PageCountChanged += (s, e) => { RaiseCanExecuteChanged(); };
+            }
+
+            protected void RaiseCanExecuteChanged()
+            {
+                if (CanExecuteChanged != null)
+                    CanExecuteChanged(this, new EventArgs());
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return TargetControl.CanSelect(TargetControl.SelectedPage+ ChangeValue);
+            }
+
+            public void Execute(object parameter)
+            {
+                if (TargetControl.CanSelect(TargetControl.SelectedPage + ChangeValue))
+                {
+                    TargetControl.SelectedPage += ChangeValue;
+                }
+            }
+        }
+
+        public class CommandOpen : System.Windows.Input.ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+            private ControlBookFixedViewerBody TargetControl;
+
+            public CommandOpen(ControlBookFixedViewerBody TargetControl)
+            {
+                this.TargetControl = TargetControl;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public async void Execute(object parameter)
+            {
+                var picker = new Windows.Storage.Pickers.FileOpenPicker();
+                picker.FileTypeFilter.Add(".pdf");
+                var file = await picker.PickSingleFileAsync();//ToDo:Prepare for Exception.
+                var book = new Books.Pdf.PdfBook();
+                await book.Load(file);
+                TargetControl.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
+            }
+        }
+
+        #endregion Commands
+
+        #region ViewModel
+        public class BookFixedBodyViewModel : INotifyPropertyChanged
+        {
+            public BookFixedBodyViewModel(Books.IBookFixed book) { this.Book = book; }
+            public BookFixedBodyViewModel() { }
+
 
             public event PropertyChangedEventHandler PropertyChanged;
 
@@ -73,6 +187,6 @@ namespace BookViewerApp
                     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
+        #endregion
     }
 }
