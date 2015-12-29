@@ -13,7 +13,7 @@
         </ScrollViewer>
 
         <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Click="button_Click"/>-->
-        <local:ControlBookFixedViewer x:Name="cbfv"/>
+        <local:ControlBookFixedViewerBody x:Name="cbfv"/>
         <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Click="button_Click"/>
     </Grid>
 </Page>

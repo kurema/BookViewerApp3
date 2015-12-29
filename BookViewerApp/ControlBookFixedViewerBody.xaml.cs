@@ -19,15 +19,25 @@ using System.ComponentModel;
 
 namespace BookViewerApp
 {
-    public sealed partial class ControlBookFixedViewer : UserControl
+    public sealed partial class ControlBookFixedViewerBody : UserControl
     {
         private BookViewModel Model { get { return (BookViewModel)DataContext; } }
 
-        public ControlBookFixedViewer()
+        public ControlBookFixedViewerBody()
         {
             this.InitializeComponent();
 
             this.DataContextChanged += ControlBookViewer_DataContextChanged;
+        }
+
+        public void SelectPage(int i)
+        {
+            FlipView.SelectedIndex = i;
+        }
+
+        public int GetPageCount()
+        {
+            return FlipView.Items.Count();
         }
 
         private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)

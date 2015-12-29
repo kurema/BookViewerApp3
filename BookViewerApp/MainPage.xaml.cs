@@ -39,7 +39,7 @@ namespace BookViewerApp
             var file = await picker.PickSingleFileAsync();
             var book = new Books.Pdf.PdfBook();
             await book.Load(file);
-            this.cbfv.DataContext = new ControlBookFixedViewer.BookViewModel(book);
+            this.cbfv.DataContext = new ControlBookFixedViewerBody.BookViewModel(book);
         }
     }
 }

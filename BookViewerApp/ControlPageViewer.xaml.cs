@@ -28,9 +28,6 @@ namespace BookViewerApp
             this.InitializeComponent();
 
             this.DataContextChanged += ControlPageViewer_DataContextChanged;
-
-            //double zoomf = 1.0 / (double)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale * 100.0;
-            //TargetImage.RenderTransform = new ScaleTransform() { CenterX=0.5,CenterY=0.5,ScaleX=zoomf,ScaleY=zoomf};//fix me! I need LayerTransform!
         }
 
         private async void ControlPageViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)

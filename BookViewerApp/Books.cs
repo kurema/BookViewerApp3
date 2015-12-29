@@ -47,6 +47,9 @@ namespace BookViewerApp.Books
     {
         public double TargetWidth { get { return TargetControl.ActualWidth; } }
         public double TargetHeight { get { return TargetControl.ActualHeight; } }
+
+        public double Scale = 1.0;
+
         public Windows.UI.Xaml.Controls.Control TargetControl
         {
             get { return _TargetControl; }
