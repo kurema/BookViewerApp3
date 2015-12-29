@@ -25,45 +25,24 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
-            this.DataContext = new ControlBookFixedViewerViewModel(this.BodyControl);
+            InitializeCommands(this.BodyControl);
+
+            var buttons = new List<AppBarButton>();
+
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous) });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next) });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal) });
         }
 
-        public class ControlBookFixedViewerViewModel: INotifyPropertyChanged
+        public System.Windows.Input.ICommand CommandPageNext;
+        public System.Windows.Input.ICommand CommandPagePrevious;
+        public System.Windows.Input.ICommand CommandSelectFile;
+
+        public void InitializeCommands(ControlBookFixedViewerBody Target)
         {
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            //protected void RaisePropertyChanged(string propertyName)
-            //{
-            //    if (PropertyChanged != null)
-            //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            //}
-
-            //public ControlBookFixedViewerBody.BookFixedBodyViewModel BodyViewModel
-            //{
-            //    get { return _BodyViewMode; }
-            //    set { _BodyViewMode = value; RaisePropertyChanged(nameof(BodyViewModel)); }
-            //}
-            //private ControlBookFixedViewerBody.BookFixedBodyViewModel _BodyViewMode;
-
-            public System.Windows.Input.ICommand CommandPageNext;
-            public System.Windows.Input.ICommand CommandPagePrevious;
-            public System.Windows.Input.ICommand CommandSelectFile;
-
-            public ControlBookFixedViewerViewModel(ControlBookFixedViewerBody Target)
-            {
-                CommandPageNext = new ControlBookFixedViewerBody.CommandAddPage(Target, 1);
-                CommandPagePrevious = new ControlBookFixedViewerBody.CommandAddPage(Target, -1);
-                CommandSelectFile = new ControlBookFixedViewerBody.CommandOpen(Target);
-
-                //Target.DataContext = this._BodyViewMode = new ControlBookFixedViewerBody.BookFixedBodyViewModel();
-                //Target.DataContextChanged += (s, e) => { RaisePropertyChanged(nameof(BodyViewModel)); };
-
-            }
-        }
-
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            ((ControlBookFixedViewerViewModel)this.DataContext).CommandSelectFile.Execute(null);
+            CommandPageNext = new ControlBookFixedViewerBody.CommandAddPage(Target, 1);
+            CommandPagePrevious = new ControlBookFixedViewerBody.CommandAddPage(Target, -1);
+            CommandSelectFile = new ControlBookFixedViewerBody.CommandOpen(Target);
         }
     }
 }

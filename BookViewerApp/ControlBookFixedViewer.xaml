@@ -10,13 +10,8 @@
     d:DesignWidth="400"
     >
     <Grid>
-        <local:ControlBookFixedViewerBody DataContext="{Binding BodyViewModel,Mode=TwoWay}" x:Name="BodyControl"/>
-        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Compact">
-            <AppBarButton Icon="Previous" Command="{Binding CommandPagePrevious,Mode=TwoWay}"/>
-            <AppBarButton Icon="Next" Command="{Binding CommandPageNext,Mode=TwoWay}" />
-            <AppBarButton Icon="Favorite"/>
-            <AppBarButton Icon="OpenLocal" Click="AppBarButton_Click"/>
-        </CommandBar>
+        <local:ControlBookFixedViewerBody DataContext="{Binding}" x:Name="BodyControl"/>
+        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Minimal" x:Name="CommandBarMain" />
     </Grid>
 
 </UserControl>

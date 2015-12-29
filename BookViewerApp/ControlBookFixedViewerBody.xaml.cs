@@ -161,9 +161,12 @@ namespace BookViewerApp
                 var picker = new Windows.Storage.Pickers.FileOpenPicker();
                 picker.FileTypeFilter.Add(".pdf");
                 var file = await picker.PickSingleFileAsync();//ToDo:Prepare for Exception.
-                var book = new Books.Pdf.PdfBook();
-                await book.Load(file);
-                TargetControl.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
+                if (file != null)
+                {
+                    var book = new Books.Pdf.PdfBook();
+                    await book.Load(file);
+                    TargetControl.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
+                }
             }
         }
 
