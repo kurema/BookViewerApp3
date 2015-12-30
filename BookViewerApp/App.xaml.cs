@@ -101,5 +101,15 @@ namespace BookViewerApp
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();
         }
+
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            var rootFrame = new Frame();
+            rootFrame.Navigate(typeof(PageBookFixedViewer), args);
+
+            Window.Current.Content = rootFrame;
+            Window.Current.Activate();
+            //base.OnFileActivated(args);
+        }
     }
 }

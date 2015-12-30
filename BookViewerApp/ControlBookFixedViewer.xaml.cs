@@ -27,22 +27,43 @@ namespace BookViewerApp
 
             InitializeCommands(this.BodyControl);
 
+
+            var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
+
             var buttons = new List<AppBarButton>();
 
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous) });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next) });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal) });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous),Label=rl.GetString("PreviousPage") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("NextPage") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal), Label = rl.GetString("OpenLocalBook") });
+
+            //I know I should use Binding.
+            BodyControl.SelectedPageChanged += (s, e) => { this.TextBoxSelectedPage.Text = BodyControl.SelectedPage.ToString(); };
+            BodyControl.PageCountChanged += (s, e) => { this.TextBlockPageCount.Text = BodyControl.PageCount.ToString(); };
         }
 
         public System.Windows.Input.ICommand CommandPageNext;
         public System.Windows.Input.ICommand CommandPagePrevious;
         public System.Windows.Input.ICommand CommandSelectFile;
 
+        public void Open(Windows.Storage.IStorageFile file)
+        {
+            this.BodyControl.Open(file);
+        }
+
         public void InitializeCommands(ControlBookFixedViewerBody Target)
         {
             CommandPageNext = new ControlBookFixedViewerBody.CommandAddPage(Target, 1);
             CommandPagePrevious = new ControlBookFixedViewerBody.CommandAddPage(Target, -1);
-            CommandSelectFile = new ControlBookFixedViewerBody.CommandOpen(Target);
+            CommandSelectFile = new ControlBookFixedViewerBody.CommandOpenPicker(Target);
+        }
+
+        private void TextBoxPageCount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try {
+                var pageCount = int.Parse(((TextBox)sender).Text);
+                if (BodyControl.CanSelect(pageCount)) BodyControl.SelectedPage = pageCount;
+            }
+            catch { }
         }
     }
 }

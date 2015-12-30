@@ -22,6 +22,8 @@ namespace BookViewerApp
         public ControlPagesViewer()
         {
             this.InitializeComponent();
+
+            this.DataContextChanged += (s, e) => { this.ScrollViewerMain.ZoomToFactor(1.0f); };
         }
 
         private void ScrollViewerMain_SizeChanged(object sender, SizeChangedEventArgs e)

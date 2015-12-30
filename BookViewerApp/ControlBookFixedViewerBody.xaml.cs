@@ -49,21 +49,6 @@ namespace BookViewerApp
 
         }
 
-        //public void SelectPage(int i)
-        //{
-        //    FlipView.SelectedIndex = i;
-        //}
-
-        //public void SelectPagePrevious()
-        //{
-        //    FlipView.SelectedIndex = Math.Max(FlipView.SelectedIndex - 1, 0);
-        //}
-
-        //public void SelectPageNext()
-        //{
-        //    FlipView.SelectedIndex = Math.Min(FlipView.SelectedIndex + 1, PageCount);
-        //}
-
         public int PageCount
         {
             get
@@ -104,6 +89,23 @@ namespace BookViewerApp
             }
             return result;
         }
+
+        public async void Open(Windows.Storage.IStorageFile file)
+        {
+            if (file == null) { }
+            else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
+            {
+                var book = new Books.Pdf.PdfBook();
+                await book.Load(file);
+                this.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
+            }
+            else if (new String[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
+            {
+                var book = new Books.Cbz.CbzBook();
+                await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                this.DataContext = new BookFixedBodyViewModel(book);
+            }
+        }
         #region Commands
 
         public class CommandAddPage : System.Windows.Input.ICommand
@@ -141,12 +143,12 @@ namespace BookViewerApp
             }
         }
 
-        public class CommandOpen : System.Windows.Input.ICommand
+        public class CommandOpenPicker : System.Windows.Input.ICommand
         {
             public event EventHandler CanExecuteChanged;
             private ControlBookFixedViewerBody TargetControl;
 
-            public CommandOpen(ControlBookFixedViewerBody TargetControl)
+            public CommandOpenPicker(ControlBookFixedViewerBody TargetControl)
             {
                 this.TargetControl = TargetControl;
             }
@@ -162,36 +164,27 @@ namespace BookViewerApp
                 picker.FileTypeFilter.Add(".pdf");
                 picker.FileTypeFilter.Add(".zip");
                 picker.FileTypeFilter.Add(".cbz");
-                var file = await picker.PickSingleFileAsync();//ToDo:Prepare for Exception.
-                if (file == null) { }
-                else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
-                {
-                    var book = new Books.Pdf.PdfBook();
-                    await book.Load(file);
-                    TargetControl.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
-                }
-                else if (new String[]{".zip",".cbz" }.Contains( Path.GetExtension(file.Path).ToLower()))
-                {
-                    var book = new Books.Cbz.CbzBook();
-                    await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
-                    TargetControl.DataContext = new BookFixedBodyViewModel(book);
-                }
+                var file = await picker.PickSingleFileAsync();
+                TargetControl.Open(file);
             }
         }
-
         #endregion Commands
 
+
         #region ViewModel
+
         public class BookFixedBodyViewModel : INotifyPropertyChanged
         {
             public BookFixedBodyViewModel(Books.IBookFixed book) { this.Book = book; }
             public BookFixedBodyViewModel() { }
 
-
             public event PropertyChangedEventHandler PropertyChanged;
 
-            public Books.IBookFixed Book { get { return _Book; } set { _Book = value; RaisePropertyChanged("Book"); } }
+            public Books.IBookFixed Book { get { return _Book; } set { _Book = value; RaisePropertyChanged(nameof(Book)); } }
             private Books.IBookFixed _Book;
+
+            //public int SelectedPage { get { return _SelectedPage; } set { _Book = value; RaisePropertyChanged(nameof(SelectedPage)); } }
+            //private int _SelectedPage;
 
             protected void RaisePropertyChanged(string propertyName)
             {
@@ -201,4 +194,5 @@ namespace BookViewerApp
         }
         #endregion
     }
+
 }

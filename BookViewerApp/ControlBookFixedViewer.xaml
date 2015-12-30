@@ -11,7 +11,15 @@
     >
     <Grid>
         <local:ControlBookFixedViewerBody DataContext="{Binding}" x:Name="BodyControl"/>
-        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Compact"  x:Name="CommandBarMain" />
+        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Compact"  x:Name="CommandBarMain" Background="{x:Null}" >
+            <CommandBar.Content>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox  x:Name="TextBoxSelectedPage" TextChanged="TextBoxPageCount_TextChanged" InputScope="Number"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"/>
+                    <TextBlock Text="" x:Name="TextBlockPageCount" VerticalAlignment="Center"/>
+                </StackPanel>
+            </CommandBar.Content>
+        </CommandBar>
     </Grid>
 
 </UserControl>

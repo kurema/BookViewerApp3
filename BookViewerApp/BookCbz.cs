@@ -60,6 +60,7 @@ namespace BookViewerApp.Books.Cbz
                     entries.Add(file);
                 }
             }
+            entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
             AvailableEntries = entries.ToArray();
         }
     }
