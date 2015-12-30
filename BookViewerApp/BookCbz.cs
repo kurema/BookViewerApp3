@@ -34,18 +34,6 @@ namespace BookViewerApp.Books.Cbz
             var s = AvailableEntries[i].Open();
             var ms = new MemoryStream();
             s.CopyTo(ms);
-
-            //var b =new byte[4096];
-            //ms.Read(b, 0, 4095);
-            //var t=b.Length;
-
-            //return new Books.VirtualPage(() => {
-            //    var ms = AvailableEntries[i].Open();
-            //    return new Image.ImagePageStream(ms.AsRandomAccessStream());
-            //});
-
-            //var ms = AvailableEntries[i].Open();
-
             return new Image.ImagePageStream(ms.AsRandomAccessStream());
         }
 

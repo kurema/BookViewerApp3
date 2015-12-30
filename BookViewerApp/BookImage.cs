@@ -53,7 +53,6 @@ namespace BookViewerApp.Books.Image
             var image = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
             stream.Seek(0);
             image.SetSource(stream);
-            //await image.SetSourceAsync(stream);
             return image;
         }
         
