@@ -75,7 +75,7 @@ namespace BookViewerApp
         public int SelectedPage
         {
             get { return FlipView.SelectedIndex; }
-            set { FlipView.SelectedIndex = value; }
+            set { if(CanSelect(value)) FlipView.SelectedIndex = value; }
         }
 
         public bool CanSelect(int i)
@@ -160,12 +160,21 @@ namespace BookViewerApp
             {
                 var picker = new Windows.Storage.Pickers.FileOpenPicker();
                 picker.FileTypeFilter.Add(".pdf");
+                picker.FileTypeFilter.Add(".zip");
+                picker.FileTypeFilter.Add(".cbz");
                 var file = await picker.PickSingleFileAsync();//ToDo:Prepare for Exception.
-                if (file != null)
+                if (file == null) { }
+                else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
                 {
                     var book = new Books.Pdf.PdfBook();
                     await book.Load(file);
                     TargetControl.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
+                }
+                else if (new String[]{".zip",".cbz" }.Contains( Path.GetExtension(file.Path).ToLower()))
+                {
+                    var book = new Books.Cbz.CbzBook();
+                    await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                    TargetControl.DataContext = new BookFixedBodyViewModel(book);
                 }
             }
         }

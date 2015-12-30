@@ -31,25 +31,48 @@ namespace BookViewerApp.Books.Cbz
 
         public IPage GetPage(uint i)
         {
-            return new Image.ImagePageStream(AvailableEntries[i].Open());
+            var s = AvailableEntries[i].Open();
+            var ms = new MemoryStream();
+            s.CopyTo(ms);
+
+            //var b =new byte[4096];
+            //ms.Read(b, 0, 4095);
+            //var t=b.Length;
+
+            //return new Books.VirtualPage(() => {
+            //    var ms = AvailableEntries[i].Open();
+            //    return new Image.ImagePageStream(ms.AsRandomAccessStream());
+            //});
+
+            //var ms = AvailableEntries[i].Open();
+
+            return new Image.ImagePageStream(ms.AsRandomAccessStream());
         }
 
         public async Task LoadAsync(Stream stream)
         {
             await Task.Run(() =>
             {
-                Content = new ZipArchive(stream, ZipArchiveMode.Read);
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                Content = new ZipArchive(stream, ZipArchiveMode.Read,false,Encoding.GetEncoding(932));
                 OnLoaded(new EventArgs());
             }
             );
 
             var entries = new List<ZipArchiveEntry>();
             string[] supportedFile = {".jpg",".jpeg",".gif",".png" };//fix me!
+            var cm=Content.Mode;
             var files = Content.Entries;
             foreach(var file in files)
             {
-                if (supportedFile.Contains(Path.GetExtension(file.Name).ToLower())) { entries.Add(file); }
+                var s = Path.GetExtension(file.Name).ToLower();
+                var b = supportedFile.Contains(Path.GetExtension(file.Name).ToLower());
+                if (supportedFile.Contains(Path.GetExtension(file.Name).ToLower()))
+                {
+                    entries.Add(file);
+                }
             }
+            AvailableEntries = entries.ToArray();
         }
     }
 
