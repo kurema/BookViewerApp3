@@ -88,19 +88,13 @@ namespace BookViewerApp
             return i >= 0 && i < PageCount;
         }
 
-        private string OldID = null;
-
-        private async void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (Model != null)
             {
-                if (OldID != null) { (await BookInfoStorage.GetBookInfoByIDAsync(OldID)).SetLastReadPage((uint)this.SelectedPage); }
-
                 FlipView.ItemsSource = GetPageAccessors(Model.Book);
                 SelectedPage = 0;
                 RaisePageCountChanged();
-
-                OldID = Model.Book.ID;
 
                 if (LoadLastReadPageAsDefault) LoadLastReadPage();
             }
