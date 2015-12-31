@@ -39,6 +39,7 @@ namespace BookViewerApp
             //I know I should use Binding.
             BodyControl.SelectedPageChanged += (s, e) => { this.TextBoxSelectedPage.Text = BodyControl.SelectedPage.ToString(); };
             BodyControl.PageCountChanged += (s, e) => { this.TextBlockPageCount.Text = BodyControl.PageCount.ToString(); };
+
         }
 
         public System.Windows.Input.ICommand CommandPageNext;

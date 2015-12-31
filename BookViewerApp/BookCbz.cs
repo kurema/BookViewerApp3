@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO.Compression;
+using Windows.UI.Xaml.Media;
 
 namespace BookViewerApp.Books.Cbz
 {
@@ -31,10 +32,7 @@ namespace BookViewerApp.Books.Cbz
 
         public IPage GetPage(uint i)
         {
-            var s = AvailableEntries[i].Open();
-            var ms = new MemoryStream();
-            s.CopyTo(ms);
-            return new Image.ImagePageStream(ms.AsRandomAccessStream());
+            return new CbzPage(AvailableEntries[i]);
         }
 
         public async Task LoadAsync(Stream stream)
@@ -62,6 +60,34 @@ namespace BookViewerApp.Books.Cbz
             }
             entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
             AvailableEntries = entries.ToArray();
+        }
+    }
+
+    public class CbzPage : IPage
+    {
+        private ZipArchiveEntry Content;
+        public IPageOptions Option
+        {
+            get; set;
+        }
+
+        public CbzPage(ZipArchiveEntry entry)
+        {
+            Content = entry;
+        }
+
+        public async Task<ImageSource> GetImageSourceAsync()
+        {
+            var s = Content.Open();
+            var ms = new MemoryStream();
+            s.CopyTo(ms);
+            s.Dispose();
+            return await new Image.ImagePageStream(ms.AsRandomAccessStream()).GetImageSourceAsync();
+        }
+
+        public async Task<bool> UpdateRequiredAsync()
+        {
+            return false;
         }
     }
 
