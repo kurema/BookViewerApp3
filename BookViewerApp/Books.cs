@@ -16,6 +16,7 @@ namespace BookViewerApp.Books
     {
         uint PageCount { get; }
         IPage GetPage(uint i);
+        string ID { get; }
     }
 
     public interface IPage

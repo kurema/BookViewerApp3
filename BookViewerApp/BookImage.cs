@@ -90,6 +90,19 @@ namespace BookViewerApp.Books.Image
             }
         }
 
+        public string ID
+        {
+            get
+            {
+                string result = "";
+                foreach(var item in Content)
+                {
+                    result += "\"" + item.GetHashCode() + "\"";
+                }
+                return Functions.GetHash(result);
+            }
+        }
+
         public event EventHandler Loaded;
 
         private void OnLoaded(EventArgs e)

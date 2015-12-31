@@ -32,9 +32,12 @@ namespace BookViewerApp
 
             var buttons = new List<AppBarButton>();
 
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous),Label=rl.GetString("PreviousPage") });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("NextPage") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageTop, Icon = new SymbolIcon(Symbol.Previous), Label = rl.GetString("PageTop") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous),Label=rl.GetString("PagePrevious") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageNext") });
             CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal), Label = rl.GetString("OpenLocalBook") });
+
+            BodyControl.LoadLastReadPageAsDefault = true;
 
             //I know I should use Binding.
             BodyControl.SelectedPageChanged += (s, e) => { this.TextBoxSelectedPage.Text = BodyControl.SelectedPage.ToString(); };
@@ -45,6 +48,7 @@ namespace BookViewerApp
         public System.Windows.Input.ICommand CommandPageNext;
         public System.Windows.Input.ICommand CommandPagePrevious;
         public System.Windows.Input.ICommand CommandSelectFile;
+        public System.Windows.Input.ICommand CommandPageTop;
 
         public void Open(Windows.Storage.IStorageFile file)
         {
@@ -56,6 +60,7 @@ namespace BookViewerApp
             CommandPageNext = new ControlBookFixedViewerBody.CommandAddPage(Target, 1);
             CommandPagePrevious = new ControlBookFixedViewerBody.CommandAddPage(Target, -1);
             CommandSelectFile = new ControlBookFixedViewerBody.CommandOpenPicker(Target);
+            CommandPageTop = new ControlBookFixedViewerBody.CommandSetPage(Target, 0);
         }
 
         private void TextBoxPageCount_TextChanged(object sender, TextChangedEventArgs e)

@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NextPage" xml:space="preserve">
-    <value>次</value>
-  </data>
   <data name="OpenLocalBook" xml:space="preserve">
     <value>開く</value>
   </data>
-  <data name="PreviousPage" xml:space="preserve">
+  <data name="PageNext" xml:space="preserve">
+    <value>次</value>
+  </data>
+  <data name="PagePrevious" xml:space="preserve">
     <value>前</value>
+  </data>
+  <data name="PageTop" xml:space="preserve">
+    <value>最初</value>
   </data>
 </root>

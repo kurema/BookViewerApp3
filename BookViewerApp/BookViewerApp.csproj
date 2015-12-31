@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="BookCbz.cs" />
     <Compile Include="BookImage.cs" />
+    <Compile Include="BookInfoStorage.cs" />
     <Compile Include="Books.cs" />
     <Compile Include="BookPdf.cs" />
     <Compile Include="ControlBookFixedViewer.xaml.cs">
@@ -115,6 +116,7 @@
     <Compile Include="ControlPageViewer.xaml.cs">
       <DependentUpon>ControlPageViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Functions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

@@ -45,8 +45,28 @@ namespace BookViewerApp
             this.InitializeComponent();
 
             this.DataContextChanged += ControlBookViewer_DataContextChanged;
-            this.FlipView.SelectionChanged += (s,e) => { RaiseSelectedPageChanged(); };
+            this.FlipView.SelectionChanged += async (s,e) => { RaiseSelectedPageChanged(); await SaveLastReadPage(); };
 
+        }
+
+        public bool LoadLastReadPageAsDefault = true;
+
+        public async void LoadLastReadPage()
+        {
+            var bookInfo = await GetBookInfoAsync();
+            if (bookInfo != null)
+            {
+                var lastpage = bookInfo.GetLastReadPage();
+                if (lastpage != null) SelectedPage = (int)lastpage.Page;
+            }
+        }
+
+        public async System.Threading.Tasks.Task<BookInfoStorage.BookInfo> GetBookInfoAsync() {
+            if (this.Model != null && Model.Book!=null)
+            {
+                return (await BookInfoStorage.GetBookInfoByIDAsync(Model.Book.ID));
+            }
+            else return null;
         }
 
         public int PageCount
@@ -68,13 +88,33 @@ namespace BookViewerApp
             return i >= 0 && i < PageCount;
         }
 
-        private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private string OldID = null;
+
+        private async void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (Model != null)
             {
+                if (OldID != null) { (await BookInfoStorage.GetBookInfoByIDAsync(OldID)).SetLastReadPage((uint)this.SelectedPage); }
+
                 FlipView.ItemsSource = GetPageAccessors(Model.Book);
                 SelectedPage = 0;
                 RaisePageCountChanged();
+
+                OldID = Model.Book.ID;
+
+                if (LoadLastReadPageAsDefault) LoadLastReadPage();
+            }
+        }
+
+        private async System.Threading.Tasks.Task SaveLastReadPage()
+        {
+            if (Model != null)
+            {
+                var bookInfo = await GetBookInfoAsync();
+                if (bookInfo != null)
+                {
+                    bookInfo.SetLastReadPage((uint)this.SelectedPage);
+                }
             }
         }
 
@@ -142,6 +182,42 @@ namespace BookViewerApp
                 }
             }
         }
+
+        public class CommandSetPage : System.Windows.Input.ICommand
+        {
+            private ControlBookFixedViewerBody TargetControl;
+            public event EventHandler CanExecuteChanged;
+            public int TargetPage;
+
+            public CommandSetPage(ControlBookFixedViewerBody TargetControl, int TargetPage)
+            {
+                this.TargetControl = TargetControl;
+                this.TargetPage = TargetPage;
+
+                TargetControl.SelectedPageChanged += (s, e) => { RaiseCanExecuteChanged(); };
+                TargetControl.PageCountChanged += (s, e) => { RaiseCanExecuteChanged(); };
+            }
+
+            protected void RaiseCanExecuteChanged()
+            {
+                if (CanExecuteChanged != null)
+                    CanExecuteChanged(this, new EventArgs());
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return TargetControl.CanSelect(TargetPage) && TargetControl.SelectedPage!=TargetPage;
+            }
+
+            public void Execute(object parameter)
+            {
+                if (TargetControl.CanSelect(TargetControl.SelectedPage + TargetPage))
+                {
+                    TargetControl.SelectedPage = TargetPage;
+                }
+            }
+        }
+
 
         public class CommandOpenPicker : System.Windows.Input.ICommand
         {

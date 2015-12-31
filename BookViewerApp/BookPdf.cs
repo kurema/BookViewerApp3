@@ -26,6 +26,11 @@ namespace BookViewerApp.Books.Pdf
             }
         }
 
+        public string ID
+        {
+            get;private set;
+        }
+
         public IPage GetPage(uint i)
         {
             if (i < PageCount) return new PdfPage(Content.GetPage(i));
@@ -37,6 +42,7 @@ namespace BookViewerApp.Books.Pdf
             Content = await pdf.PdfDocument.LoadFromFileAsync(file);
             OnLoaded(new EventArgs());
             PageLoaded = true;
+            ID = Functions.CombineStringAndDouble(file.Name, Content.PageCount);
         }
 
         private void OnLoaded(EventArgs e)

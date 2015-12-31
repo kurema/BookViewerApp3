@@ -23,6 +23,23 @@ namespace BookViewerApp.Books.Cbz
             }
         }
 
+        public string ID
+        {
+            get
+            {
+                if (_IDCache != null) return _IDCache;
+                string result = "";
+                foreach(var item in AvailableEntries)
+                {
+                    result += Functions.CombineStringAndDouble(item.Name, item.Length);
+                }
+                return Functions.GetHash(result);
+            }
+        }
+        private string _IDCache = null;
+
+
+
         public event EventHandler Loaded;
 
         private void OnLoaded(EventArgs e)
