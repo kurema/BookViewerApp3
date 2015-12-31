@@ -149,6 +149,7 @@ namespace BookViewerApp
             private DateTime ReadTimeThis;
             public DateTime ReadTimeLast;
             public double ReadTimeSpan;
+            public bool PageReversed = false;
 
             public BookInfo()
             {

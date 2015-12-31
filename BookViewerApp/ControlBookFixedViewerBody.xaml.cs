@@ -26,6 +26,39 @@ namespace BookViewerApp
         public event EventHandler PageCountChanged;
         public event EventHandler SelectedPageChanged;
 
+        public bool Reversed {
+            get {
+                var book = Model.Book;
+                bool result = false;
+                while(book!=null && book is Books.ReversedBook)
+                {
+                    book = (book as Books.ReversedBook).Origin;
+                    result = !result;
+                }
+                return result;
+            }
+            set
+            {
+                if (Reversed != value)
+                {
+                    SwapReverse();
+                }
+            }
+        }
+
+        private void SwapReverse()
+        {
+            if (Model != null && Model.Book != null)
+            {
+                this.DataContextChanged -= ControlBookViewer_DataContextChanged;
+                var page = this.SelectedPage;
+                this.DataContext = new BookFixedBodyViewModel(new Books.ReversedBook(Model.Book));
+                UpdateDataContext();
+                this.DataContextChanged += ControlBookViewer_DataContextChanged;
+                this.SelectedPage = page;
+            }
+        }
+
 
         private void RaisePageCountChanged()
         {
@@ -45,21 +78,11 @@ namespace BookViewerApp
             this.InitializeComponent();
 
             this.DataContextChanged += ControlBookViewer_DataContextChanged;
-            this.FlipView.SelectionChanged += async (s,e) => { RaiseSelectedPageChanged(); await SaveLastReadPage(); };
+            this.FlipView.SelectionChanged += async (s,e) => { RaiseSelectedPageChanged(); await SaveBookInfoAsync(); };
 
         }
 
         public bool LoadLastReadPageAsDefault = true;
-
-        public async void LoadLastReadPage()
-        {
-            var bookInfo = await GetBookInfoAsync();
-            if (bookInfo != null)
-            {
-                var lastpage = bookInfo.GetLastReadPage();
-                if (lastpage != null) SelectedPage = (int)lastpage.Page;
-            }
-        }
 
         public async System.Threading.Tasks.Task<BookInfoStorage.BookInfo> GetBookInfoAsync() {
             if (this.Model != null && Model.Book!=null)
@@ -79,16 +102,28 @@ namespace BookViewerApp
 
         public int SelectedPage
         {
-            get { return FlipView.SelectedIndex; }
-            set { if(CanSelect(value)) FlipView.SelectedIndex = value; }
+            get {
+                return Reversed ? PageCount - FlipView.SelectedIndex : FlipView.SelectedIndex + 1; }
+            set { if (CanSelect(value)) { FlipView.SelectedIndex = Reversed ? PageCount - value : value - 1; } }
+        }
+
+        public int SelectedPageVisual
+        {
+            get { return FlipView.SelectedIndex + 1; }
+            set { if (CanSelect(value)) FlipView.SelectedIndex = value - 1; }
         }
 
         public bool CanSelect(int i)
         {
-            return i >= 0 && i < PageCount;
+            return i > 0 && i <= PageCount;
         }
 
         private void ControlBookViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            UpdateDataContext();
+        }
+
+        private async void UpdateDataContext()
         {
             if (Model != null)
             {
@@ -96,11 +131,26 @@ namespace BookViewerApp
                 SelectedPage = 0;
                 RaisePageCountChanged();
 
-                if (LoadLastReadPageAsDefault) LoadLastReadPage();
+                await LoadBookInfoAsync();
             }
         }
 
-        private async System.Threading.Tasks.Task SaveLastReadPage()
+        public async System.Threading.Tasks.Task LoadBookInfoAsync(BookInfoStorage.BookInfo bi = null)
+        {
+            var bookInfo = await GetBookInfoAsync();
+            if (bookInfo != null)
+            {
+                bool pageRev = bookInfo.PageReversed;
+                var selectedPage = bookInfo.GetLastReadPage()?.Page;
+                this.Reversed = bookInfo.PageReversed;
+                if (LoadLastReadPageAsDefault)
+                {
+                    if (selectedPage != null) SelectedPage = (int)selectedPage;
+                }
+            }
+        }
+
+        private async System.Threading.Tasks.Task SaveBookInfoAsync()
         {
             if (Model != null)
             {
@@ -108,6 +158,7 @@ namespace BookViewerApp
                 if (bookInfo != null)
                 {
                     bookInfo.SetLastReadPage((uint)this.SelectedPage);
+                    bookInfo.PageReversed = this.Reversed;
                 }
             }
         }
@@ -165,14 +216,14 @@ namespace BookViewerApp
 
             public bool CanExecute(object parameter)
             {
-                return TargetControl.CanSelect(TargetControl.SelectedPage+ ChangeValue);
+                return TargetControl.CanSelect(TargetControl.SelectedPageVisual+ ChangeValue);
             }
 
             public void Execute(object parameter)
             {
-                if (TargetControl.CanSelect(TargetControl.SelectedPage + ChangeValue))
+                if (TargetControl.CanSelect(TargetControl.SelectedPageVisual + ChangeValue))
                 {
-                    TargetControl.SelectedPage += ChangeValue;
+                    TargetControl.SelectedPageVisual += ChangeValue;
                 }
             }
         }
@@ -200,18 +251,68 @@ namespace BookViewerApp
 
             public bool CanExecute(object parameter)
             {
-                return TargetControl.CanSelect(TargetPage) && TargetControl.SelectedPage!=TargetPage;
+                return TargetControl.CanSelect(TargetPage) && TargetControl.SelectedPageVisual != TargetPage;
             }
 
             public void Execute(object parameter)
             {
-                if (TargetControl.CanSelect(TargetControl.SelectedPage + TargetPage))
+                if (TargetControl.CanSelect(TargetPage))
                 {
-                    TargetControl.SelectedPage = TargetPage;
+                    TargetControl.SelectedPageVisual = TargetPage;
                 }
             }
         }
 
+        public class CommandLastPage : System.Windows.Input.ICommand
+        {
+            private ControlBookFixedViewerBody TargetControl;
+            public event EventHandler CanExecuteChanged;
+
+            public CommandLastPage(ControlBookFixedViewerBody TargetControl)
+            {
+                this.TargetControl = TargetControl;
+
+                TargetControl.SelectedPageChanged += (s, e) => { RaiseCanExecuteChanged(); };
+                TargetControl.PageCountChanged += (s, e) => { RaiseCanExecuteChanged(); };
+            }
+
+            protected void RaiseCanExecuteChanged()
+            {
+                if (CanExecuteChanged != null)
+                    CanExecuteChanged(this, new EventArgs());
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return TargetControl.SelectedPageVisual != TargetControl.PageCount;
+            }
+
+            public void Execute(object parameter)
+            {
+                TargetControl.SelectedPageVisual = TargetControl.PageCount;
+            }
+        }
+
+        public class CommandSwapReverse : System.Windows.Input.ICommand
+        {
+            private ControlBookFixedViewerBody TargetControl;
+            public event EventHandler CanExecuteChanged;
+
+            public CommandSwapReverse(ControlBookFixedViewerBody TargetControl)
+            {
+                this.TargetControl = TargetControl;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                TargetControl.Reversed = !TargetControl.Reversed;
+            }
+        }
 
         public class CommandOpenPicker : System.Windows.Input.ICommand
         {
@@ -240,7 +341,6 @@ namespace BookViewerApp
         }
         #endregion Commands
 
-
         #region ViewModel
 
         public class BookFixedBodyViewModel : INotifyPropertyChanged
@@ -252,9 +352,6 @@ namespace BookViewerApp
 
             public Books.IBookFixed Book { get { return _Book; } set { _Book = value; RaisePropertyChanged(nameof(Book)); } }
             private Books.IBookFixed _Book;
-
-            //public int SelectedPage { get { return _SelectedPage; } set { _Book = value; RaisePropertyChanged(nameof(SelectedPage)); } }
-            //private int _SelectedPage;
 
             protected void RaisePropertyChanged(string propertyName)
             {

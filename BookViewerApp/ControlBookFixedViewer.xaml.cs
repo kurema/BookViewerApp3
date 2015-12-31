@@ -27,7 +27,6 @@ namespace BookViewerApp
 
             InitializeCommands(this.BodyControl);
 
-
             var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
 
             var buttons = new List<AppBarButton>();
@@ -35,7 +34,10 @@ namespace BookViewerApp
             CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageTop, Icon = new SymbolIcon(Symbol.Previous), Label = rl.GetString("PageTop") });
             CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous),Label=rl.GetString("PagePrevious") });
             CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageNext") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageLast, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageEnd") });
             CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal), Label = rl.GetString("OpenLocalBook") });
+
+            CommandBarMain.SecondaryCommands.Add(new AppBarButton() {Command=CommandPageReverse,Icon=new SymbolIcon(Symbol.Switch) ,Label= rl.GetString("PageReverse") });
 
             BodyControl.LoadLastReadPageAsDefault = true;
 
@@ -49,6 +51,8 @@ namespace BookViewerApp
         public System.Windows.Input.ICommand CommandPagePrevious;
         public System.Windows.Input.ICommand CommandSelectFile;
         public System.Windows.Input.ICommand CommandPageTop;
+        public System.Windows.Input.ICommand CommandPageLast;
+        public System.Windows.Input.ICommand CommandPageReverse;
 
         public void Open(Windows.Storage.IStorageFile file)
         {
@@ -60,7 +64,9 @@ namespace BookViewerApp
             CommandPageNext = new ControlBookFixedViewerBody.CommandAddPage(Target, 1);
             CommandPagePrevious = new ControlBookFixedViewerBody.CommandAddPage(Target, -1);
             CommandSelectFile = new ControlBookFixedViewerBody.CommandOpenPicker(Target);
-            CommandPageTop = new ControlBookFixedViewerBody.CommandSetPage(Target, 0);
+            CommandPageTop = new ControlBookFixedViewerBody.CommandSetPage(Target, 1);
+            CommandPageLast = new ControlBookFixedViewerBody.CommandLastPage(Target);
+            CommandPageReverse = new ControlBookFixedViewerBody.CommandSwapReverse(Target);
         }
 
         private void TextBoxPageCount_TextChanged(object sender, TextChangedEventArgs e)

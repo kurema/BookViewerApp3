@@ -120,11 +120,17 @@
   <data name="OpenLocalBook" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="PageEnd" xml:space="preserve">
+    <value>End</value>
+  </data>
   <data name="PageNext" xml:space="preserve">
     <value>Next</value>
   </data>
   <data name="PagePrevious" xml:space="preserve">
     <value>Previous</value>
+  </data>
+  <data name="PageReverse" xml:space="preserve">
+    <value>Reverse page direction</value>
   </data>
   <data name="PageTop" xml:space="preserve">
     <value>First</value>

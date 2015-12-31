@@ -120,11 +120,17 @@
   <data name="OpenLocalBook" xml:space="preserve">
     <value>打開</value>
   </data>
+  <data name="PageEnd" xml:space="preserve">
+    <value>最後頁</value>
+  </data>
   <data name="PageNext" xml:space="preserve">
     <value>下頁</value>
   </data>
   <data name="PagePrevious" xml:space="preserve">
     <value>上頁</value>
+  </data>
+  <data name="PageReverse" xml:space="preserve">
+    <value>反向頁面方向</value>
   </data>
   <data name="PageTop" xml:space="preserve">
     <value>首頁</value>

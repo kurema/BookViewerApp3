@@ -124,4 +124,41 @@ namespace BookViewerApp.Books
         }
     }
 
+    public class ReversedBook : IBookFixed
+    {
+        public IBookFixed Origin { get; private set; }
+
+        public ReversedBook(IBookFixed origin)
+        {
+            this.Origin = origin;
+            this.Loaded += (s, e) => { OnLoaded(e); };
+        }
+
+        public string ID
+        {
+            get
+            {
+                return Origin.ID;
+            }
+        }
+
+        public uint PageCount
+        {
+            get
+            {
+                return Origin.PageCount;
+            }
+        }
+
+        public event EventHandler Loaded;
+        private void OnLoaded(EventArgs e)
+        {
+            if (Loaded != null) Loaded(this, e);
+        }
+
+        public IPage GetPage(uint i)
+        {
+            return Origin.GetPage(Origin.PageCount - i - 1);
+        }
+    }
 }
