@@ -1,0 +1,33 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookViewerApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:BookShelfViewModels="using:BookViewerApp.BookShelfViewModels"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    x:Class="BookViewerApp.BookShelfItemControl"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="300" d:DataContext="{d:DesignInstance BookShelfViewModels:ItemViewModel}"
+    >
+    <UserControl.Resources>
+        <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>
+        <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Image Source="{Binding Path=TitleImage}" Stretch="UniformToFill" Grid.RowSpan="2"/>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#7FFFFFFF">
+            <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Left" Margin="5" />
+        </StackPanel>
+        <ProgressBar Grid.Row="1" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" >
+            <ProgressBar.RenderTransform>
+                <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+    </Grid>
+</UserControl>

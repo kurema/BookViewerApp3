@@ -19,7 +19,7 @@ using System.ComponentModel;
 
 namespace BookViewerApp
 {
-    public sealed partial class ControlBookFixedViewerBody : UserControl
+    public sealed partial class BookFixedViewerBodyControl : UserControl
     {
         private BookFixedBodyViewModel Model { get { return (BookFixedBodyViewModel)DataContext; } }
 
@@ -73,7 +73,7 @@ namespace BookViewerApp
         }
 
 
-        public ControlBookFixedViewerBody()
+        public BookFixedViewerBodyControl()
         {
             this.InitializeComponent();
 
@@ -163,11 +163,11 @@ namespace BookViewerApp
             }
         }
 
-        public ControlPageViewer.PageViewModel[] GetPageAccessors(Books.IBookFixed book) {
-            var result = new ControlPageViewer.PageViewModel[book.PageCount];
+        public PageViewerControl.PageViewModel[] GetPageAccessors(Books.IBookFixed book) {
+            var result = new PageViewerControl.PageViewModel[book.PageCount];
             for (uint i = 0; i < book.PageCount; i++)
             {
-                var item = new ControlPageViewer.PageViewModel();
+                var item = new PageViewerControl.PageViewModel();
                 uint value = i;
                 item.SetPageAccessor(new Func<Books.IPage>(() => { var page= book.GetPage(value); page.Option = new Books.PageOptionsControl(this);return page; }));
                 result[i] = item;
@@ -182,7 +182,7 @@ namespace BookViewerApp
             {
                 var book = new Books.Pdf.PdfBook();
                 await book.Load(file);
-                this.DataContext = new ControlBookFixedViewerBody.BookFixedBodyViewModel(book);
+                this.DataContext = new BookFixedViewerBodyControl.BookFixedBodyViewModel(book);
             }
             else if (new String[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
             {
@@ -195,11 +195,11 @@ namespace BookViewerApp
 
         public class CommandAddPage : System.Windows.Input.ICommand
         {
-            private ControlBookFixedViewerBody TargetControl;
+            private BookFixedViewerBodyControl TargetControl;
             public event EventHandler CanExecuteChanged;
             public int ChangeValue;
 
-            public CommandAddPage(ControlBookFixedViewerBody TargetControl,int ChangeValue)
+            public CommandAddPage(BookFixedViewerBodyControl TargetControl,int ChangeValue)
             {
                 this.TargetControl = TargetControl;
                 this.ChangeValue = ChangeValue;
@@ -230,11 +230,11 @@ namespace BookViewerApp
 
         public class CommandSetPage : System.Windows.Input.ICommand
         {
-            private ControlBookFixedViewerBody TargetControl;
+            private BookFixedViewerBodyControl TargetControl;
             public event EventHandler CanExecuteChanged;
             public int TargetPage;
 
-            public CommandSetPage(ControlBookFixedViewerBody TargetControl, int TargetPage)
+            public CommandSetPage(BookFixedViewerBodyControl TargetControl, int TargetPage)
             {
                 this.TargetControl = TargetControl;
                 this.TargetPage = TargetPage;
@@ -265,10 +265,10 @@ namespace BookViewerApp
 
         public class CommandLastPage : System.Windows.Input.ICommand
         {
-            private ControlBookFixedViewerBody TargetControl;
+            private BookFixedViewerBodyControl TargetControl;
             public event EventHandler CanExecuteChanged;
 
-            public CommandLastPage(ControlBookFixedViewerBody TargetControl)
+            public CommandLastPage(BookFixedViewerBodyControl TargetControl)
             {
                 this.TargetControl = TargetControl;
 
@@ -295,10 +295,10 @@ namespace BookViewerApp
 
         public class CommandSwapReverse : System.Windows.Input.ICommand
         {
-            private ControlBookFixedViewerBody TargetControl;
+            private BookFixedViewerBodyControl TargetControl;
             public event EventHandler CanExecuteChanged;
 
-            public CommandSwapReverse(ControlBookFixedViewerBody TargetControl)
+            public CommandSwapReverse(BookFixedViewerBodyControl TargetControl)
             {
                 this.TargetControl = TargetControl;
             }
@@ -317,9 +317,9 @@ namespace BookViewerApp
         public class CommandOpenPicker : System.Windows.Input.ICommand
         {
             public event EventHandler CanExecuteChanged;
-            private ControlBookFixedViewerBody TargetControl;
+            private BookFixedViewerBodyControl TargetControl;
 
-            public CommandOpenPicker(ControlBookFixedViewerBody TargetControl)
+            public CommandOpenPicker(BookFixedViewerBodyControl TargetControl)
             {
                 this.TargetControl = TargetControl;
             }
@@ -342,7 +342,7 @@ namespace BookViewerApp
         #endregion Commands
 
         #region ViewModel
-
+        //Not fully used...
         public class BookFixedBodyViewModel : INotifyPropertyChanged
         {
             public BookFixedBodyViewModel(Books.IBookFixed book) { this.Book = book; }

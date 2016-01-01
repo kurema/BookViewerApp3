@@ -17,22 +17,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace BookViewerApp
 {
-    public sealed partial class ControlPagesViewer : UserControl
+    public sealed partial class BookShelfItemControl : UserControl
     {
-        public ControlPagesViewer()
+        public BookShelfItemControl()
         {
             this.InitializeComponent();
-
-            this.DataContextChanged += (s, e) => { this.ScrollViewerMain.ZoomToFactor(1.0f); };
-        }
-
-        private void ScrollViewerMain_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //Code-behind should not be used. But it is powerful.
-            ControlPageViewerMain.Width = ScrollViewerMain.ActualWidth;
-            ControlPageViewerMain.Height = ScrollViewerMain.ActualHeight;
-
-            ControlPageViewerMain.UpdateSize();
         }
     }
 }

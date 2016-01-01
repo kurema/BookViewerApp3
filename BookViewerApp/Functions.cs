@@ -20,5 +20,16 @@ namespace BookViewerApp
         {
             return "\"" + str + "\"" + "<" + value.ToString() + "> ";
         }
+
+        public static Windows.Storage.StorageFolder GetSaveFolderRoaming()
+        {
+            return Windows.Storage.ApplicationData.Current.RoamingFolder;
+        }
+
+        public static Windows.Storage.StorageFolder GetSaveFolderLocal()
+        {
+            return Windows.Storage.ApplicationData.Current.LocalFolder;
+        }
+
     }
 }

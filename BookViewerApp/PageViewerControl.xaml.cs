@@ -19,11 +19,11 @@ using System.Threading.Tasks;
 
 namespace BookViewerApp
 {
-    public sealed partial class ControlPageViewer : UserControl
+    public sealed partial class PageViewerControl : UserControl
     {
         private BookViewerApp.Books.IPage Page { get { return ((PageViewModel)this.DataContext).Page; } set { ((PageViewModel)this.DataContext).Page = value; } }
 
-        public ControlPageViewer()
+        public PageViewerControl()
         {
             this.InitializeComponent();
 

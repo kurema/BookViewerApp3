@@ -108,7 +108,7 @@ namespace BookViewerApp
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
             var rootFrame = new Frame();
-            rootFrame.Navigate(typeof(PageBookFixedViewer), args);
+            rootFrame.Navigate(typeof(BookFixedViewerPage), args);
 
             Window.Current.Content = rootFrame;
             Window.Current.Activate();

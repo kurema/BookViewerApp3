@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BookShelfTitleNew" xml:space="preserve">
+    <value>本棚</value>
+  </data>
   <data name="OpenLocalBook" xml:space="preserve">
     <value>開く</value>
   </data>

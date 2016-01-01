@@ -104,26 +104,35 @@
     <Compile Include="BookInfoStorage.cs" />
     <Compile Include="Books.cs" />
     <Compile Include="BookPdf.cs" />
-    <Compile Include="ControlBookFixedViewer.xaml.cs">
-      <DependentUpon>ControlBookFixedViewer.xaml</DependentUpon>
+    <Compile Include="BookShelfItemControl.xaml.cs">
+      <DependentUpon>BookShelfItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ControlBookFixedViewerBody.xaml.cs">
-      <DependentUpon>ControlBookFixedViewerBody.xaml</DependentUpon>
+    <Compile Include="BookShelfControl.xaml.cs">
+      <DependentUpon>BookShelfControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ControlPagesViewer.xaml.cs">
-      <DependentUpon>ControlPagesViewer.xaml</DependentUpon>
+    <Compile Include="BookShelfStorage.cs" />
+    <Compile Include="BookFixedViewerControl.xaml.cs">
+      <DependentUpon>BookFixedViewerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ControlPageViewer.xaml.cs">
-      <DependentUpon>ControlPageViewer.xaml</DependentUpon>
+    <Compile Include="BookFixedViewerBodyControl.xaml.cs">
+      <DependentUpon>BookFixedViewerBodyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BookShelfViewModels.cs" />
+    <Compile Include="PagesViewerControl.xaml.cs">
+      <DependentUpon>PagesViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageViewerControl.xaml.cs">
+      <DependentUpon>PageViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageBookFixedViewer.xaml.cs">
-      <DependentUpon>PageBookFixedViewer.xaml</DependentUpon>
+    <Compile Include="BookFixedViewerPage.xaml.cs">
+      <DependentUpon>BookFixedViewerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueConverters.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -145,19 +154,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ControlBookFixedViewer.xaml">
+    <Page Include="BookShelfItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ControlBookFixedViewerBody.xaml">
+    <Page Include="BookShelfControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ControlPagesViewer.xaml">
+    <Page Include="BookShelfPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ControlPageViewer.xaml">
+    <Page Include="BookFixedViewerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BookFixedViewerBodyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PagesViewerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -165,7 +186,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PageBookFixedViewer.xaml">
+    <Page Include="BookFixedViewerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

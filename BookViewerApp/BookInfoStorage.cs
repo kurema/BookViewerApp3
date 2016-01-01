@@ -11,8 +11,8 @@ namespace BookViewerApp
     public class BookInfoStorage
     {
         private const string fileName = "Bookinfo.xml";
-        private static Windows.Storage.StorageFolder DataFolderRoaming { get { return Windows.Storage.ApplicationData.Current.RoamingFolder; } }
-        private static Windows.Storage.StorageFolder DataFolderLocal { get { return Windows.Storage.ApplicationData.Current.LocalFolder; } }
+        private static Windows.Storage.StorageFolder DataFolderRoaming { get { return Functions.GetSaveFolderRoaming(); } }
+        private static Windows.Storage.StorageFolder DataFolderLocal { get { return Functions.GetSaveFolderLocal(); } }
 
         static System.Threading.SemaphoreSlim fileRoamingSemaphore = new System.Threading.SemaphoreSlim(1, 1);
         static System.Threading.SemaphoreSlim fileLocalSemaphore = new System.Threading.SemaphoreSlim(1, 1);
@@ -41,7 +41,7 @@ namespace BookViewerApp
             return infoRoaming.ToArray();
         }
 
-        internal static async Task<BookInfo[]> LoadAsyncOne(Windows.Storage.StorageFile file,System.Threading.SemaphoreSlim sem)
+        private static async Task<BookInfo[]> LoadAsyncOne(Windows.Storage.StorageFile file,System.Threading.SemaphoreSlim sem)
         {
             if (file == null) return null;
 
@@ -132,7 +132,7 @@ namespace BookViewerApp
             var bis = (await GetBookInfoAsync());
             foreach(var item in bis)
             {
-                if (item.ID == id) { return item; }
+                if (item.ID == id) { item.Reload(); return item; }
             }
 
             var book = new BookInfo() { ID = id };
@@ -155,6 +155,11 @@ namespace BookViewerApp
             {
                 ReadTimeLast = ReadTimeThis = DateTime.Now;
                 if (ReadTimeFirst == DateTime.MinValue) ReadTimeFirst = DateTime.Now;
+            }
+
+            public void Reload()
+            {
+                ReadTimeThis = DateTime.Now;
             }
 
             public BookmarkItem GetLastReadPage()

@@ -18,10 +18,10 @@ using Windows.UI.Xaml.Navigation;
 
 namespace BookViewerApp
 {
-    public sealed partial class ControlBookFixedViewer : UserControl
+    public sealed partial class BookFixedViewerControl : UserControl
     {
 
-        public ControlBookFixedViewer()
+        public BookFixedViewerControl()
         {
             this.InitializeComponent();
 
@@ -42,9 +42,21 @@ namespace BookViewerApp
             BodyControl.LoadLastReadPageAsDefault = true;
 
             //I know I should use Binding.
-            BodyControl.SelectedPageChanged += (s, e) => { this.TextBoxSelectedPage.Text = BodyControl.SelectedPage.ToString(); };
-            BodyControl.PageCountChanged += (s, e) => { this.TextBlockPageCount.Text = BodyControl.PageCount.ToString(); };
+            BodyControl.SelectedPageChanged += (s, e) => { this.TextBoxSelectedPage.Text = BodyControl.SelectedPage.ToString(); UpdateProgressBar(); };
+            BodyControl.PageCountChanged += (s, e) => { this.TextBlockPageCount.Text = BodyControl.PageCount.ToString(); UpdateProgressBar(); };
+        }
 
+        public void UpdateProgressBar()
+        {
+            ProgressBarMain.Value = BodyControl.PageCount <= 0 ? 0 : (double)BodyControl.SelectedPage / (double)BodyControl.PageCount * 100.0;
+            if (BodyControl.Reversed)
+            {
+                ProgressBarMain.RenderTransform = new CompositeTransform() { ScaleX = -1 };
+            }
+            else
+            {
+                ProgressBarMain.RenderTransform = null;
+            }
         }
 
         public System.Windows.Input.ICommand CommandPageNext;
@@ -59,14 +71,14 @@ namespace BookViewerApp
             this.BodyControl.Open(file);
         }
 
-        public void InitializeCommands(ControlBookFixedViewerBody Target)
+        public void InitializeCommands(BookFixedViewerBodyControl Target)
         {
-            CommandPageNext = new ControlBookFixedViewerBody.CommandAddPage(Target, 1);
-            CommandPagePrevious = new ControlBookFixedViewerBody.CommandAddPage(Target, -1);
-            CommandSelectFile = new ControlBookFixedViewerBody.CommandOpenPicker(Target);
-            CommandPageTop = new ControlBookFixedViewerBody.CommandSetPage(Target, 1);
-            CommandPageLast = new ControlBookFixedViewerBody.CommandLastPage(Target);
-            CommandPageReverse = new ControlBookFixedViewerBody.CommandSwapReverse(Target);
+            CommandPageNext = new BookFixedViewerBodyControl.CommandAddPage(Target, 1);
+            CommandPagePrevious = new BookFixedViewerBodyControl.CommandAddPage(Target, -1);
+            CommandSelectFile = new BookFixedViewerBodyControl.CommandOpenPicker(Target);
+            CommandPageTop = new BookFixedViewerBodyControl.CommandSetPage(Target, 1);
+            CommandPageLast = new BookFixedViewerBodyControl.CommandLastPage(Target);
+            CommandPageReverse = new BookFixedViewerBodyControl.CommandSwapReverse(Target);
         }
 
         private void TextBoxPageCount_TextChanged(object sender, TextChangedEventArgs e)

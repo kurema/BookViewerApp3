@@ -20,9 +20,9 @@ namespace BookViewerApp
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class PageBookFixedViewer : Page
+    public sealed partial class BookFixedViewerPage : Page
     {
-        public PageBookFixedViewer()
+        public BookFixedViewerPage()
         {
             this.InitializeComponent();
         }

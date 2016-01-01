@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="BookViewerApp.PageBookFixedViewer"
+    x:Class="BookViewerApp.BookFixedViewerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BookViewerApp"
@@ -7,5 +7,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <local:ControlBookFixedViewer x:Name="BodyControl" />
+    <local:BookFixedViewerControl x:Name="BodyControl" />
 </Page>
