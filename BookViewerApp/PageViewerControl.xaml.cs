@@ -21,7 +21,7 @@ namespace BookViewerApp
 {
     public sealed partial class PageViewerControl : UserControl
     {
-        private BookViewerApp.Books.IPage Page { get { return ((PageViewModel)this.DataContext).Page; } set { ((PageViewModel)this.DataContext).Page = value; } }
+        private BookViewerApp.Books.IPageFixed Page { get { return ((PageViewModel)this.DataContext).Page; } set { ((PageViewModel)this.DataContext).Page = value; } }
 
         public PageViewerControl()
         {
@@ -36,7 +36,7 @@ namespace BookViewerApp
             if(this.DataContext!=null && ((PageViewModel)this.DataContext).SelfCalculating==false)await LoadAsync();
         }
 
-        public async System.Threading.Tasks.Task SetPageAsync(Books.IPage page) {
+        public async System.Threading.Tasks.Task SetPageAsync(Books.IPageFixed page) {
             this.Page = page;
             await LoadAsync();
         }
@@ -44,7 +44,7 @@ namespace BookViewerApp
         private async System.Threading.Tasks.Task LoadAsync() {
             if (this.Page != null)
             {
-                this.TargetImage.Source = await Page.GetImageSourceAsync();
+                this.TargetImage.Source = await Page.GetBitmapAsync();
             }
         }
 
@@ -53,7 +53,7 @@ namespace BookViewerApp
             //ToDo: 一定時間待機してサイズ調節が落ち着くのを待つ。
             if (this.Page != null && (await Page.UpdateRequiredAsync()))
             {
-                var src = await Page.GetImageSourceAsync();
+                var src = await Page.GetBitmapAsync();
                 if (src != null)
                 {
                     this.TargetImage.Source = src;
@@ -63,20 +63,20 @@ namespace BookViewerApp
 
         public class PageViewModel : INotifyPropertyChanged
         {
-            public PageViewModel(Books.IPage page) { this.Page = page; }
+            public PageViewModel(Books.IPageFixed page) { this.Page = page; }
             public PageViewModel() {  }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
             public bool SelfCalculating = false;
 
-            public Books.IPage Page { get { Prepare();return _PageCache;  } set { _PageCache = value; PageCacheLatest = true; RaisePropertyChanged(nameof(Page)); } }
-            private Books.IPage _PageCache;
+            public Books.IPageFixed Page { get { Prepare();return _PageCache;  } set { _PageCache = value; PageCacheLatest = true; RaisePropertyChanged(nameof(Page)); } }
+            private Books.IPageFixed _PageCache;
             private bool PageCacheLatest = false;
 
-            private Func<Books.IPage> PageAccessor;
+            private Func<Books.IPageFixed> PageAccessor;
 
-            public void SetPageAccessor(Func<Books.IPage> accessor)
+            public void SetPageAccessor(Func<Books.IPageFixed> accessor)
             {
                 this.PageAccessor = accessor;
                 PageCacheLatest = false;

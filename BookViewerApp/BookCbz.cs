@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using System.IO.Compression;
 using Windows.UI.Xaml.Media;
+using Windows.Storage;
 
 namespace BookViewerApp.Books.Cbz
 {
@@ -47,7 +48,7 @@ namespace BookViewerApp.Books.Cbz
             if (Loaded != null) Loaded(this, e);
         }
 
-        public IPage GetPage(uint i)
+        public IPageFixed GetPage(uint i)
         {
             return new CbzPage(AvailableEntries[i]);
         }
@@ -80,7 +81,7 @@ namespace BookViewerApp.Books.Cbz
         }
     }
 
-    public class CbzPage : IPage
+    public class CbzPage : IPageFixed
     {
         private ZipArchiveEntry Content;
         public IPageOptions Option
@@ -93,18 +94,27 @@ namespace BookViewerApp.Books.Cbz
             Content = entry;
         }
 
-        public async Task<ImageSource> GetImageSourceAsync()
+        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
         {
             var s = Content.Open();
             var ms = new MemoryStream();
             s.CopyTo(ms);
             s.Dispose();
-            return await new Image.ImagePageStream(ms.AsRandomAccessStream()).GetImageSourceAsync();
+            return await new Image.ImagePageStream(ms.AsRandomAccessStream()).GetBitmapAsync();
         }
 
         public async Task<bool> UpdateRequiredAsync()
         {
             return false;
+        }
+
+        public async Task SaveImageAsync(StorageFile file,uint width)
+        {
+            try {
+                //if (!System.IO.File.Exists(file.Path))
+                    Content.ExtractToFile(file.Path, true);
+            }
+            catch { }
         }
     }
 

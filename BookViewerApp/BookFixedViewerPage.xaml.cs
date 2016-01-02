@@ -25,12 +25,22 @@ namespace BookViewerApp
         public BookFixedViewerPage()
         {
             this.InitializeComponent();
+
         }
 
         public void Open(Windows.Storage.IStorageFile file)
         {
-            BodyControl.Open(file);
+            if (Books.BookManager.IsFileAvailabe(file))
+            {
+                BodyControl.Open(file);
+            }
         }
+
+        public void Open(Books.IBookFixed book)
+        {
+            BodyControl.Open(book);
+        }
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -45,6 +55,13 @@ namespace BookViewerApp
                         break;
                     }
                 }
+            }
+            else if(e.Parameter!=null && e.Parameter is Books.IBookFixed){
+                Open((Books.IBookFixed)e.Parameter);
+            }
+            else if (e.Parameter != null && e.Parameter is Windows.Storage.IStorageFile)
+            {
+                Open((Windows.Storage.IStorageFile)e.Parameter);
             }
         }
     }

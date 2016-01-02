@@ -23,5 +23,13 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
         }
+
+        public void Open()
+        {
+            if(this.DataContext is BookShelfViewModels.BookViewModel)
+            {
+                var context = this.DataContext as BookShelfViewModels.BookViewModel;
+            }
+        }
     }
 }

@@ -102,6 +102,7 @@
     <Compile Include="BookCbz.cs" />
     <Compile Include="BookImage.cs" />
     <Compile Include="BookInfoStorage.cs" />
+    <Compile Include="BookManager.cs" />
     <Compile Include="Books.cs" />
     <Compile Include="BookPdf.cs" />
     <Compile Include="BookShelfItemControl.xaml.cs">
@@ -109,6 +110,9 @@
     </Compile>
     <Compile Include="BookShelfControl.xaml.cs">
       <DependentUpon>BookShelfControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BookShelfPage.xaml.cs">
+      <DependentUpon>BookShelfPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BookShelfStorage.cs" />
     <Compile Include="BookFixedViewerControl.xaml.cs">
@@ -118,6 +122,7 @@
       <DependentUpon>BookFixedViewerBodyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="BookShelfViewModels.cs" />
+    <Compile Include="ThumbnailManager.cs" />
     <Compile Include="PagesViewerControl.xaml.cs">
       <DependentUpon>PagesViewerControl.xaml</DependentUpon>
     </Compile>
@@ -162,15 +167,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookShelfPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="BookFixedViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BookFixedViewerBodyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BookShelfPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

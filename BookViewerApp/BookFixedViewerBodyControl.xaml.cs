@@ -87,7 +87,7 @@ namespace BookViewerApp
         public async System.Threading.Tasks.Task<BookInfoStorage.BookInfo> GetBookInfoAsync() {
             if (this.Model != null && Model.Book!=null)
             {
-                return (await BookInfoStorage.GetBookInfoByIDAsync(Model.Book.ID));
+                return (await BookInfoStorage.GetBookInfoByIDOrCreateAsync(Model.Book.ID));
             }
             else return null;
         }
@@ -169,7 +169,7 @@ namespace BookViewerApp
             {
                 var item = new PageViewerControl.PageViewModel();
                 uint value = i;
-                item.SetPageAccessor(new Func<Books.IPage>(() => { var page= book.GetPage(value); page.Option = new Books.PageOptionsControl(this);return page; }));
+                item.SetPageAccessor(new Func<Books.IPageFixed>(() => { var page= book.GetPage(value); page.Option = new Books.PageOptionsControl(this);return page; }));
                 result[i] = item;
             }
             return result;
@@ -177,19 +177,17 @@ namespace BookViewerApp
 
         public async void Open(Windows.Storage.IStorageFile file)
         {
-            if (file == null) { }
-            else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
+            var book=(await Books.BookManager.GetBookFromFile(file));
+            if(book is Books.IBookFixed)
             {
-                var book = new Books.Pdf.PdfBook();
-                await book.Load(file);
-                this.DataContext = new BookFixedViewerBodyControl.BookFixedBodyViewModel(book);
+                Open(book as Books.IBookFixed);
             }
-            else if (new String[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
-            {
-                var book = new Books.Cbz.CbzBook();
-                await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
-                this.DataContext = new BookFixedBodyViewModel(book);
-            }
+        }
+
+        public void Open(Books.IBookFixed book)
+        {
+            if (book != null)
+                this.DataContext = new BookFixedBodyViewModel(book as Books.IBookFixed);
         }
         #region Commands
 

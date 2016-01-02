@@ -71,6 +71,11 @@ namespace BookViewerApp
             this.BodyControl.Open(file);
         }
 
+        public void Open(Books.IBookFixed book)
+        {
+            BodyControl.Open(book);
+        }
+
         public void InitializeCommands(BookFixedViewerBodyControl Target)
         {
             CommandPageNext = new BookFixedViewerBodyControl.CommandAddPage(Target, 1);

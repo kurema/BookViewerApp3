@@ -72,7 +72,7 @@ namespace BookViewerApp
                 // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
                 // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
                 //構成します
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                rootFrame.Navigate(typeof(BookShelfPage), e.Arguments);
             }
             // 現在のウィンドウがアクティブであることを確認します
             Window.Current.Activate();
@@ -100,6 +100,7 @@ namespace BookViewerApp
             var deferral = e.SuspendingOperation.GetDeferral();
 
             await BookInfoStorage.SaveAsync();
+            await BookShelfStorage.SaveAsync();
 
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();

@@ -34,8 +34,8 @@ namespace BookViewerApp
                 var f = await GetDataFileLocalAsync();
                 using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
                 {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(List<BookShelf>));
-                    return (List<BookShelf>)serializer.Deserialize(s);
+                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookShelf[]));
+                    return ((BookShelf[])serializer.Deserialize(s)).ToList();
                 }
             }
             catch {
@@ -47,6 +47,11 @@ namespace BookViewerApp
             }
         }
 
+        public static async Task SaveAsync()
+        {
+            await SaveAsync(await GetBookShelves());
+        }
+
         private static async Task SaveAsync(List<BookShelf> items)
         {
             await fileLocalSemaphore.WaitAsync();
@@ -55,8 +60,8 @@ namespace BookViewerApp
                 var f = await DataFolderLocal.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
                 using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream())
                 {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(List<BookShelf>));
-                    serializer.Serialize(s, items);
+                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookShelf[]));
+                    serializer.Serialize(s, items.ToArray());
                 }
             }
             catch { }
@@ -75,9 +80,70 @@ namespace BookViewerApp
              string Title { get; set; }
         }
 
+        public async static Task<BookShelf> GetFromStorageFolder(Windows.Storage.StorageFolder folder, string Token=null,string[] Path=null)
+        {
+            var result = new BookShelf();
+            result.Title = folder.DisplayName;
+
+            List<string> path = (Path ?? new string[0]).ToList();
+            if (Token == null)
+            {
+                Token = Books.BookManager.StorageItemRegister(folder);
+            }
+            else
+            {
+                path.Add(folder.Name);
+            }
+
+            foreach (var item in await folder.GetFoldersAsync())
+            {
+                var f = await GetFromStorageFolder(item, Token, path.ToArray());
+                if (!f.IsEmpty())
+                {
+                    result.Folders.Add(f);
+                }
+            }
+            foreach(var item in await folder.GetFilesAsync())
+            {
+                var f = await GetFromStorageFile(item, Token, path.ToArray());
+                if (f != null)
+                {
+                    result.Files.Add(f);
+                }
+            }
+            return result;
+        }
+
+        public async static Task<BookShelf.BookShelfBook> GetFromStorageFile(Windows.Storage.StorageFile file, string Token=null,string[] Path=null) {
+            if (!Books.BookManager.IsFileAvailabe(file)) return null;
+
+            var book = await Books.BookManager.GetBookFromFile(file);
+            var bookBS= new BookShelf.BookShelfBook() { ID = book.ID };
+            bookBS.Title = file.DisplayName;
+            if(book is Books.IBookFixed)
+            {
+                bookBS.Size = (int)(book as Books.IBookFixed).PageCount;
+                await ThumbnailManager.SaveImageAsync(book);
+            }
+
+            List<string> path = Path.ToList();
+            if (Token == null)
+            {
+                Token = Books.BookManager.StorageItemRegister(file);
+            }
+            else
+            {
+                path.Add(file.Name);
+            }
+            bookBS.Access = new BookAccessInfo() { AccessToken = Token, Path = Books.BookManager.PathJoin(path.ToArray()) };
+            return bookBS;
+        }
+
         public class BookShelf:IBookShelfItem
         {
-            public List<IBookShelfItem> Contents = new List<IBookShelfItem>();
+            public List<BookShelf> Folders = new List<BookShelf>();
+            public List<BookShelfBook> Files = new List<BookShelfBook>();
+
             public string Title { get; set; }
 
             public BookShelf()
@@ -86,11 +152,24 @@ namespace BookViewerApp
                 Title = rl.GetString("BookShelfTitleNew");
             }
 
+            public bool IsEmpty()
+            {
+                if(Files.Count() > 0) { return false; }
+                if (Folders.Count() == 0) { return true; }
+                foreach(var item in Folders)
+                {
+                    if (!item.IsEmpty()) return false;
+                }
+                return true;
+            }
+
             public class BookShelfBook:IBookShelfItem
             {
                 public string ID = "";
                 private BookInfoStorage.BookInfo BookInfoCache;
                 public string Title { get; set; }
+                public int Size;//読んだ割合を出すのに使います。
+                public BookAccessInfo Access;
 
                 public async Task<BookInfoStorage.BookInfo> GetBookInfoAsync()
                 {
@@ -103,6 +182,19 @@ namespace BookViewerApp
                     }
                     return BookInfoCache;
                 }
+            }
+        }
+
+        public class BookAccessInfo
+        {
+            public string AccessToken;
+            public string Path;
+
+            public async Task<Windows.Storage.IStorageItem> TryGetItem()
+            {
+                var item = await Books.BookManager.StorageItemGet(AccessToken, Path);
+                if (item is Windows.Storage.StorageFile) { return item; }
+                else { return null; }
             }
         }
     }

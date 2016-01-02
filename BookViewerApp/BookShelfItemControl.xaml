@@ -9,18 +9,19 @@
     x:Class="BookViewerApp.BookShelfItemControl"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="300" d:DataContext="{d:DesignInstance BookShelfViewModels:ItemViewModel}"
+    d:DesignWidth="300" d:DataContext="{d:DesignInstance BookShelfViewModels:BookViewModel}"
     >
     <UserControl.Resources>
         <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>
         <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
+        <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Image Source="{Binding Path=TitleImage}" Stretch="UniformToFill" Grid.RowSpan="2"/>
+        <Image Source="{Binding Path=ID,Converter={StaticResource ResourceKey=BookIdToImageSource}}" Stretch="UniformToFill" Grid.RowSpan="2"/>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#7FFFFFFF">
             <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Left" Margin="5" />
         </StackPanel>

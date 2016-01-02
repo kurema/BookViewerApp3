@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
@@ -22,32 +23,55 @@ namespace BookViewerApp
 {
     public sealed partial class BookShelfControl : UserControl
     {
+        public event ItemClickedEventHandler ItemClicked;
+        public delegate void ItemClickedEventHandler(object sender, ItemClickedEventArgs e);
+        public class ItemClickedEventArgs : EventArgs
+        {
+            public BookShelfViewModels.IItemViewModel SelectedItem;
+        }
+        public void OnItemClicked (BookShelfViewModels.IItemViewModel vm)
+        {
+            if (ItemClicked != null)
+                ItemClicked(this, new ItemClickedEventArgs() { SelectedItem = vm });
+        }
+
+
         public BookShelfControl()
         {
             this.InitializeComponent();
 
-            BookShelfItemsSource.Source = new BookShelfViewModels.BookShelfModel[]
-            {
-                new BookShelfViewModels.BookShelfModel("本棚1") {
-
-                new BookShelfViewModels.ItemViewModel() {  ReadRate=0.50,Reversed=true,Title="sample Book" },
-                new BookShelfViewModels.ItemViewModel() {  ReadRate=0.80,Reversed=false,Title="test Book" }
-                },
-                new BookShelfViewModels.BookShelfModel("本棚2") {
-                new BookShelfViewModels.ItemViewModel() {  ReadRate=0.20,Reversed=true,Title="gaga Book" },
-                new BookShelfViewModels.ItemViewModel() {  ReadRate=0.60,Reversed=false,Title="ee Book" }
-                }
-            };
             SetBookShelfItemSize(300, 300);
+        }
+
+        public void SetSource(params BookShelfViewModels.BookShelfViewModel[] vms)
+        {
+            BookShelfItemsSource.Source = vms;
+        }
+
+        public async Task OpenAsync()
+        {
+            SetSource(await BookShelfViewModels.BookShelfViewModel.GetFromBookShelfStorage());
+        }
+
+        public async Task OpenAsync(params BookShelfStorage.BookShelf[] storage)
+        {
+            SetSource(await BookShelfViewModels.BookShelfViewModel.GetFromBookShelfStorage(storage));
         }
 
         private void SetBookShelfItemSize(double width,double height)
         {
             BookShelfItemStyle.Setters.Clear();
-            BookShelfItemStyle.Setters.Add(new Setter(BookShelfItemControl.WidthProperty, width));
-            BookShelfItemStyle.Setters.Add(new Setter(BookShelfItemControl.HeightProperty, height));
+            BookShelfItemStyle.Setters.Add(new Setter(WidthProperty, width));
+            BookShelfItemStyle.Setters.Add(new Setter(HeightProperty, height));
         }
 
+        private void GridViewMain_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem is BookShelfViewModels.IItemViewModel)
+            {
+                OnItemClicked((BookShelfViewModels.IItemViewModel)((sender as GridView).SelectedValue as BookShelfViewModels.IItemViewModel));
+            }
+        }
 
     }
 }

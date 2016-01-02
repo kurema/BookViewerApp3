@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace BookViewerApp
 {
     static class Functions
@@ -29,6 +31,25 @@ namespace BookViewerApp
         public static Windows.Storage.StorageFolder GetSaveFolderLocal()
         {
             return Windows.Storage.ApplicationData.Current.LocalFolder;
+        }
+
+        public static Windows.Storage.StorageFolder GetSaveFolderLocalCache()
+        {
+            return Windows.Storage.ApplicationData.Current.LocalCacheFolder;
+        }
+
+        public static async Task SaveStreamToFile(Windows.Storage.Streams.IRandomAccessStream stream,Windows.Storage.IStorageFile file)
+        {
+            stream.Seek(0);
+            using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
+            {
+                var buffer = new byte[stream.Size];
+                var ibuffer = buffer.AsBuffer();
+                stream.Seek(0);
+                await stream.ReadAsync(ibuffer, (uint)stream.Size, Windows.Storage.Streams.InputStreamOptions.None);
+                await fileStream.WriteAsync(ibuffer);
+            }
+
         }
 
     }

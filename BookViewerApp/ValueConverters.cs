@@ -22,6 +22,22 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
+    public class BookIdToImageSource : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+            ThumbnailManager.SetToImageSourceNoWait(value.ToString(), result);
+            return result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+            // this is impossible.
+        }
+    }
+
     public class BoolToDoubleValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

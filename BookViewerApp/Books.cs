@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml.Media;
 
 namespace BookViewerApp.Books
@@ -10,20 +11,21 @@ namespace BookViewerApp.Books
     public interface IBook
     {
         event EventHandler Loaded;
+        string ID { get; }
     }
 
     public interface IBookFixed:IBook
     {
         uint PageCount { get; }
-        IPage GetPage(uint i);
-        string ID { get; }
+        IPageFixed GetPage(uint i);
     }
 
-    public interface IPage
+    public interface IPageFixed
     {
         IPageOptions Option { get; set; }
-        Task<Windows.UI.Xaml.Media.ImageSource> GetImageSourceAsync();
+        Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
         Task<bool> UpdateRequiredAsync();
+        Task SaveImageAsync(Windows.Storage.StorageFile file,uint width);
     }
 
     public interface IPageOptions
@@ -86,11 +88,11 @@ namespace BookViewerApp.Books
         }
     }
 
-    public class VirtualPage : IPage
+    public class VirtualPage : IPageFixed
     {
-        private Func<IPage> accessor;
+        private Func<IPageFixed> accessor;
 
-        private IPage PageCache = null;
+        private IPageFixed PageCache = null;
 
         public IPageOptions Option
         {
@@ -99,12 +101,12 @@ namespace BookViewerApp.Books
         }
         private IPageOptions _Option = new PageOptions();
 
-        public VirtualPage(Func<IPage> accessor)
+        public VirtualPage(Func<IPageFixed> accessor)
         {
             this.accessor = accessor;
         }
 
-        public async Task<IPage> GetPage()
+        public async Task<IPageFixed> GetPage()
         {
             if (PageCache == null)
                 return await Task.Run(() => { PageCache = accessor(); PageCache.Option = this.Option; return PageCache; });
@@ -112,15 +114,20 @@ namespace BookViewerApp.Books
                 return PageCache;
         }
 
-        public async Task<ImageSource> GetImageSourceAsync()
+        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
         {
             var body = await GetPage();
-            return await body.GetImageSourceAsync();
+            return await body.GetBitmapAsync();
         }
 
         public async Task<bool> UpdateRequiredAsync()
         {
             return await(await GetPage()).UpdateRequiredAsync();
+        }
+
+        public async Task SaveImageAsync(StorageFile file,uint width)
+        {
+            await (await GetPage()).SaveImageAsync(file,width);
         }
     }
 
@@ -156,7 +163,7 @@ namespace BookViewerApp.Books
             if (Loaded != null) Loaded(this, e);
         }
 
-        public IPage GetPage(uint i)
+        public IPageFixed GetPage(uint i)
         {
             return Origin.GetPage(Origin.PageCount - i - 1);
         }

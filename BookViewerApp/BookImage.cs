@@ -4,16 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace BookViewerApp.Books.Image
 {
-    public class ImagePageUrl : IPage
+    public class ImagePageUrl : IPageFixed
     {
         public Uri Uri
         {
-            get;private set;
+            get; private set;
         }
 
         public IPageOptions Option
@@ -23,7 +26,7 @@ namespace BookViewerApp.Books.Image
 
         public ImagePageUrl(Uri uri) { this.Uri = uri; }
 
-        public async Task<ImageSource> GetImageSourceAsync()
+        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
         {
             return new Windows.UI.Xaml.Media.Imaging.BitmapImage(Uri);
         }
@@ -32,9 +35,21 @@ namespace BookViewerApp.Books.Image
         {
             return false;
         }
+
+        public async Task SaveImageAsync(StorageFile file,uint width)
+        {
+            //ToDo: Fix me!
+            if (Uri.IsFile)
+            {
+                var thm = await (await StorageFile.GetFileFromApplicationUriAsync(Uri)).GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView);
+
+                await Functions.SaveStreamToFile(thm, file);
+            }
+        }
     }
 
-    public class ImagePageStream : IPage
+
+    public class ImagePageStream : IPageFixed
     {
         private IRandomAccessStream stream;
 
@@ -48,14 +63,19 @@ namespace BookViewerApp.Books.Image
             get; set;
         }
 
-        public async Task<ImageSource> GetImageSourceAsync()
+        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
         {
             var image = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
             stream.Seek(0);
             image.SetSource(stream);
             return image;
         }
-        
+
+        public async Task SaveImageAsync(StorageFile file,uint width)
+        {
+            await Functions.SaveStreamToFile(stream, file);
+        }
+
         public async Task<bool> UpdateRequiredAsync()
         {
             return false;
@@ -110,7 +130,7 @@ namespace BookViewerApp.Books.Image
             if (Loaded != null) Loaded(this, e);
         }
 
-        public IPage GetPage(uint i)
+        public IPageFixed GetPage(uint i)
         {
             return new ImagePageUrl(Content[i]);
         }

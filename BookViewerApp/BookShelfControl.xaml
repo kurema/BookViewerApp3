@@ -5,6 +5,7 @@
     xmlns:local="using:BookViewerApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:BookShelfViewModels="using:BookViewerApp.BookShelfViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -13,10 +14,9 @@
         <CollectionViewSource x:Name="BookShelfItemsSource" IsSourceGrouped="True" ItemsPath="Books"/>
     </UserControl.Resources>
 
-    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" 
-              >
+    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True">
         <GridView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="BookShelfViewModels:BookViewModel">
                 <local:BookShelfItemControl x:Name="BookShelfItemControlInTemplate" DataContext="{Binding}" Style="{StaticResource BookShelfItemSize}" />
             </DataTemplate>
         </GridView.ItemTemplate>

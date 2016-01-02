@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows;
+using Windows.Storage;
 using Windows.UI.Xaml.Media;
 using pdf = Windows.Data.Pdf;
 
@@ -31,7 +32,7 @@ namespace BookViewerApp.Books.Pdf
             get;private set;
         }
 
-        public IPage GetPage(uint i)
+        public IPageFixed GetPage(uint i)
         {
             if (i < PageCount) return new PdfPage(Content.GetPage(i));
             else throw new Exception("Incorrect page.");//ToDo:Implement Exception.
@@ -52,7 +53,7 @@ namespace BookViewerApp.Books.Pdf
 
     }
 
-    public class PdfPage : IPage
+    public class PdfPage : IPageFixed
     {
         public pdf.PdfPage Content { get; private set; }
 
@@ -99,7 +100,7 @@ namespace BookViewerApp.Books.Pdf
             await Content.PreparePageAsync();
         }
 
-        public async Task<ImageSource> GetImageSourceAsync()
+        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
         {
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await RenderToStreamAsync(stream);
@@ -113,6 +114,15 @@ namespace BookViewerApp.Books.Pdf
             if (LastOption!=null && Option != null && LastOption.TargetHeight < Option.TargetHeight || LastOption.TargetWidth < Option.TargetWidth)
             { return true; }
             else { return false; }
+        }
+
+        public async Task SaveImageAsync(StorageFile file,uint width)
+        {
+            var pdfOption = new pdf.PdfPageRenderOptions();
+            pdfOption.DestinationWidth = width;
+            var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
+            await Content.RenderToStreamAsync(stream, pdfOption);
+            await Functions.SaveStreamToFile(stream, file);
         }
     }
 }
