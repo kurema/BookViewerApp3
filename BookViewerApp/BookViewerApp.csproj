@@ -105,6 +105,9 @@
     <Compile Include="BookManager.cs" />
     <Compile Include="Books.cs" />
     <Compile Include="BookPdf.cs" />
+    <Compile Include="BookShelfContainerControl.xaml.cs">
+      <DependentUpon>BookShelfContainerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BookShelfItemControl.xaml.cs">
       <DependentUpon>BookShelfItemControl.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BookShelfContainerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BookShelfItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -117,25 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddLocalDirectory.Label" xml:space="preserve">
+    <value>添加目錄到書架</value>
+  </data>
   <data name="BookShelfTitleNew" xml:space="preserve">
     <value>書架</value>
   </data>
-  <data name="OpenLocalBook" xml:space="preserve">
+  <data name="ClearAllBookShelf.Label" xml:space="preserve">
+    <value>清除所有書架</value>
+  </data>
+  <data name="GoToBookShelf.Label" xml:space="preserve">
+    <value>去書架</value>
+  </data>
+  <data name="LoadingFolder.Completed.Message" xml:space="preserve">
+    <value>裝載工作已經完成。 謝謝。</value>
+  </data>
+  <data name="LoadingFolder.Started.Message" xml:space="preserve">
+    <value>這將需要一段時間。不要關閉這個應用程序加載時。</value>
+  </data>
+  <data name="LoadingFolder.Title" xml:space="preserve">
+    <value>添加目錄</value>
+  </data>
+  <data name="OpenLocalBook.Label" xml:space="preserve">
     <value>打開</value>
   </data>
-  <data name="PageEnd" xml:space="preserve">
+  <data name="PageEnd.Label" xml:space="preserve">
     <value>最後頁</value>
   </data>
-  <data name="PageNext" xml:space="preserve">
+  <data name="PageNext.Label" xml:space="preserve">
     <value>下頁</value>
   </data>
-  <data name="PagePrevious" xml:space="preserve">
+  <data name="PagePrevious.Label" xml:space="preserve">
     <value>上頁</value>
   </data>
-  <data name="PageReverse" xml:space="preserve">
+  <data name="PageReverse.Label" xml:space="preserve">
     <value>反向頁面方向</value>
   </data>
-  <data name="PageTop" xml:space="preserve">
+  <data name="PageTop.Label" xml:space="preserve">
     <value>首頁</value>
   </data>
 </root>

@@ -30,14 +30,13 @@ namespace BookViewerApp
             Refresh();
         }
 
-        public BookShelfPage(params BookShelfViewModels.BookShelfViewModel[] vm)
-        {
-            this.InitializeComponent();
-
-            this.BodyControl.ItemClicked += BodyControl_ItemClicked;
-            SetViewModel(vm);
+        private async void Refresh() {
+            //ToDo: Search correct way of doing this.
+            var src = await BookShelfViewModels.BookShelfViewModel.GetBookShelfViewModels(false);
+            BookShelfList.ItemsSource = src;
+            if (src.Count > 0)
+                BookShelfList.SelectedIndex = 0;
         }
-
 
         private async void BodyControl_ItemClicked(object sender, BookShelfControl.ItemClickedEventArgs e)
         {
@@ -49,21 +48,11 @@ namespace BookViewerApp
                     this.Frame.Navigate(typeof(BookFixedViewerPage),book as Books.IBookFixed);
                 }
             }
-            else if(e.SelectedItem is BookShelfViewModels.BookShelfViewModel){
-                this.Frame.Navigate(typeof(BookFixedViewerPage), (e.SelectedItem as BookShelfViewModels.BookShelfViewModel));
+            else if(e.SelectedItem is BookShelfViewModels.BookContainerViewModel){
+                this.Frame.Navigate(typeof(BookFixedViewerPage), (e.SelectedItem as BookShelfViewModels.BookContainerViewModel));
             }
         }
 
-        private async void Refresh()
-        {
-            var storage = await BookShelfStorage.GetBookShelves();
-            await BodyControl.OpenAsync(storage.ToArray());
-        }
-
-        private void SetViewModel(params BookShelfViewModels.BookShelfViewModel[] vm)
-        {
-            BodyControl.SetSource(vm);
-        }
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -73,9 +62,29 @@ namespace BookViewerApp
                 picker.FileTypeFilter.Add(ext);
             }
             var folder = await picker.PickSingleFolderAsync();
-            var storage = await BookShelfStorage.GetBookShelves();
-            storage.Add(await BookShelfStorage.GetFromStorageFolder(folder));
-            await BodyControl.OpenAsync(storage.ToArray());
+            if (folder != null)
+            {
+                var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
+
+                var dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Started/Message"), rl.GetString("LoadingFolder/Title"));
+                await dialog.ShowAsync();
+                var storage = await BookShelfStorage.GetBookShelves();
+                storage.Add(BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(folder)));
+                dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Completed/Message"), rl.GetString("LoadingFolder/Title"));
+                await dialog.ShowAsync();
+            }
+            Refresh();
+        }
+
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            BookShelfStorage.Clear();
+            Refresh();
+        }
+
+        private void AppBarButton_Click_2(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -21,7 +21,7 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Image Source="{Binding Path=ID,Converter={StaticResource ResourceKey=BookIdToImageSource}}" Stretch="UniformToFill" Grid.RowSpan="2"/>
+        <Image Source="{Binding Path=ID,Converter={StaticResource ResourceKey=BookIdToImageSource}}" Stretch="UniformToFill" Grid.RowSpan="1"/>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#7FFFFFFF">
             <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Left" Margin="5" />
         </StackPanel>

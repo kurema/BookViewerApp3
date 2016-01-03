@@ -14,14 +14,117 @@ using System.Collections.ObjectModel;
 
 namespace BookViewerApp.BookShelfViewModels
 {
-    public class BookShelfViewModel : INotifyPropertyChanged, IEnumerable<IItemViewModel>, IItemViewModel
+    public class BookShelfViewModel : INotifyPropertyChanged, IEnumerable<BookContainerViewModel>
     {
-        public BookShelfViewModel(string Title)
+        public async static Task<ObservableCollection<BookShelfViewModel>> GetBookShelfViewModels (bool addSecretShelf){
+            var storages = await BookShelfStorage.GetBookShelves();
+            var result= new ObservableCollection<BookShelfViewModel>(); ;
+            foreach(var item in storages)
+            {
+                if (addSecretShelf || item.Secret == false)
+                {
+                    var content = new BookShelfViewModel();
+                    content.Title = item.Title;
+                    content.Containers = new ObservableCollection<BookContainerViewModel>(await BookContainerViewModel.GetFromBookShelfStorage(item.Folders));
+                    result.Add(content);
+                }
+            }
+            return result;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public string Title
+        {
+            get { return _Title; }
+            set { _Title = value; OnPropertyChanged(nameof(Title)); }
+        }
+        private string _Title;
+        public string TitleID { get
+            {
+                if (Containers.Count > 0) return Containers[0].TitleID;
+                else return null;
+            }
+        }
+
+        private void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        public IEnumerator<BookContainerViewModel> GetEnumerator()
+        {
+            return ((IEnumerable<BookContainerViewModel>)Containers).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<BookContainerViewModel>)Containers).GetEnumerator();
+        }
+
+        public ObservableCollection<BookContainerViewModel> Containers
+        {
+            get { return _Containers; }
+            set
+            {
+                _Containers.CollectionChanged -= _Containers_CollectionChanged;
+                foreach(var item in _Containers)
+                {
+                    item.PropertyChanged -= Item_PropertyChanged;
+                }
+                _Containers = value;
+                foreach (var item in value)
+                {
+                    item.PropertyChanged += Item_PropertyChanged;
+                }
+                _Containers.CollectionChanged += _Containers_CollectionChanged;
+                OnPropertyChanged(nameof(Containers));
+                OnPropertyChanged(nameof(TitleID));
+            }
+        }
+        private ObservableCollection<BookContainerViewModel> _Containers = new ObservableCollection<BookContainerViewModel>();
+
+        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(TitleID))
+            {
+                OnPropertyChanged(nameof(TitleID));
+            }
+        }
+
+        private void _Containers_CollectionChanged(object sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(TitleID));
+        }
+
+    }
+
+    public class BookContainerViewModel : INotifyPropertyChanged, IEnumerable<IItemViewModel>, IItemViewModel
+    {
+        public BookContainerViewModel(string Title)
         {
             this.Title = Title;
         }
-        public BookShelfViewModel()
+        public BookContainerViewModel()
         {
+        }
+
+        public string TitleID
+        {
+            get
+            {
+                string result = null;
+                foreach(var item in this)
+                {
+                    if(item is BookViewModel)
+                    {
+                        return (item as BookViewModel).ID;
+                    }else if(item is BookContainerViewModel && result==null)
+                    {
+                        result = (item as BookContainerViewModel).TitleID;
+                    }
+                }
+                return result;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -47,7 +150,23 @@ namespace BookViewerApp.BookShelfViewModels
         }
         private string _Title;
 
-        public ObservableCollection<IItemViewModel> Books { get { return _Books; } set { _Books = value; OnPropertyChanged(nameof(Books)); } }
+        public ObservableCollection<IItemViewModel> Books
+        {
+            get { return _Books; }
+            set {
+                _Books.CollectionChanged -= BooksCollectionChanged;
+                _Books = value;
+                _Books.CollectionChanged += BooksCollectionChanged;
+                OnPropertyChanged(nameof(Books));
+                OnPropertyChanged(nameof(TitleID));
+            }
+        }
+
+        private void BooksCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(TitleID));
+        }
+
         private ObservableCollection<IItemViewModel> _Books = new ObservableCollection<IItemViewModel>();
 
         public void Add(IItemViewModel item)
@@ -55,15 +174,22 @@ namespace BookViewerApp.BookShelfViewModels
             Books.Add(item);
         }
 
-        public async static Task<BookShelfViewModel[]> GetFromBookShelfStorage()
+        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index)
         {
             var storages= await BookShelfStorage.GetBookShelves();
-            return await GetFromBookShelfStorage(storages);
+            if (storages.Count > index)
+            {
+                return await GetFromBookShelfStorage(storages[index].Folders);
+            }
+            else {
+                return new BookContainerViewModel[0];
+            }
+
         }
 
-        public async static Task<BookShelfViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookShelf> storages)
+        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookContainer> storages)
         {
-            var result = new List<BookShelfViewModel>();
+            var result = new List<BookContainerViewModel>();
 
             foreach (var item in storages)
             {
@@ -73,16 +199,16 @@ namespace BookViewerApp.BookShelfViewModels
         }
 
 
-        public async static Task<BookShelfViewModel> GetFromBookShelfStorage(BookShelfStorage.BookShelf storage)
+        public async static Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage)
         {
-            BookShelfViewModel result = new BookShelfViewModel(storage.Title);
+            BookContainerViewModel result = new BookContainerViewModel(storage.Title);
             foreach (var item in storage.Folders)
             {
-                result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookShelf));
+                result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookContainer));
             }
             foreach (var item in storage.Files)
             {
-                result.Add(await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookShelf.BookShelfBook));
+                result.Add(await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook));
             }
             return result;
         }
@@ -154,7 +280,7 @@ namespace BookViewerApp.BookShelfViewModels
         public bool Reversed { get { return _Reversed; } set { _Reversed = value; OnPropertyChanged(nameof(Reversed)); } }
         private bool _Reversed;
 
-        public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookShelf.BookShelfBook storage)
+        public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage)
         {
             var result= new BookViewModel(storage.ID, storage.Size,storage.Access) { Title = storage.Title };
             await result.GetFromBookInfoStorageAsync();

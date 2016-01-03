@@ -117,25 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddLocalDirectory.Label" xml:space="preserve">
+    <value>フォルダを追加</value>
+  </data>
   <data name="BookShelfTitleNew" xml:space="preserve">
     <value>本棚</value>
   </data>
-  <data name="OpenLocalBook" xml:space="preserve">
+  <data name="ClearAllBookShelf.Label" xml:space="preserve">
+    <value>本棚を全て削除</value>
+  </data>
+  <data name="GoToBookShelf.Label" xml:space="preserve">
+    <value>本棚を開く</value>
+  </data>
+  <data name="LoadingFolder.Completed.Message" xml:space="preserve">
+    <value>読み込みが完了しました。</value>
+  </data>
+  <data name="LoadingFolder.Started.Message" xml:space="preserve">
+    <value>フォルダの読み込みが完了するまで操作を継続できます。読み込みが完了し通知されるまでまでアプリを終了したりスリープ状態にしないでください。</value>
+  </data>
+  <data name="LoadingFolder.Title" xml:space="preserve">
+    <value>フォルダ読み込み</value>
+  </data>
+  <data name="OpenLocalBook.Label" xml:space="preserve">
     <value>開く</value>
   </data>
-  <data name="PageEnd" xml:space="preserve">
+  <data name="PageEnd.Label" xml:space="preserve">
     <value>最後</value>
   </data>
-  <data name="PageNext" xml:space="preserve">
+  <data name="PageNext.Label" xml:space="preserve">
     <value>次</value>
   </data>
-  <data name="PagePrevious" xml:space="preserve">
+  <data name="PagePrevious.Label" xml:space="preserve">
     <value>前</value>
   </data>
-  <data name="PageReverse" xml:space="preserve">
+  <data name="PageReverse.Label" xml:space="preserve">
     <value>ページ方向を転換</value>
   </data>
-  <data name="PageTop" xml:space="preserve">
+  <data name="PageTop.Label" xml:space="preserve">
     <value>最初</value>
   </data>
 </root>

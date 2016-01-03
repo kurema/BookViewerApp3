@@ -26,6 +26,11 @@ namespace BookViewerApp
 
         private static List<BookShelf> BookShelvesCache;
 
+        public static void Clear()
+        {
+            BookShelvesCache = new List<BookShelf>();
+        }
+
         private static async Task<List<BookShelf>> LoadDataLocalAsync()
         {
             await fileLocalSemaphore.WaitAsync();
@@ -75,14 +80,9 @@ namespace BookViewerApp
             return BookShelvesCache ?? await LoadAsync();
         }
 
-        public interface IBookShelfItem
+        public async static Task<BookContainer> GetFromStorageFolder(Windows.Storage.StorageFolder folder, string Token = null, string[] Path = null)
         {
-             string Title { get; set; }
-        }
-
-        public async static Task<BookShelf> GetFromStorageFolder(Windows.Storage.StorageFolder folder, string Token=null,string[] Path=null)
-        {
-            var result = new BookShelf();
+            var result = new BookContainer();
             result.Title = folder.DisplayName;
 
             List<string> path = (Path ?? new string[0]).ToList();
@@ -103,7 +103,8 @@ namespace BookViewerApp
                     result.Folders.Add(f);
                 }
             }
-            foreach(var item in await folder.GetFilesAsync())
+
+            foreach (var item in await folder.GetFilesAsync())
             {
                 var f = await GetFromStorageFile(item, Token, path.ToArray());
                 if (f != null)
@@ -111,14 +112,31 @@ namespace BookViewerApp
                     result.Files.Add(f);
                 }
             }
+
             return result;
         }
 
-        public async static Task<BookShelf.BookShelfBook> GetFromStorageFile(Windows.Storage.StorageFile file, string Token=null,string[] Path=null) {
+        public static BookShelf GetFlatBookShelf(BookContainer shelf)
+        {
+            var result = new BookShelf();
+            if (shelf.Files.Count > 0)
+            {
+                result.Folders.Add(shelf);
+            }
+            result.Title = shelf.Title;
+
+            foreach (var item in shelf.Folders)
+            {
+                result.Folders.AddRange(GetFlatBookShelf(item).Folders);
+            }
+            return result;
+        }
+
+        public async static Task<BookContainer.BookShelfBook> GetFromStorageFile(Windows.Storage.StorageFile file, string Token=null,string[] Path=null) {
             if (!Books.BookManager.IsFileAvailabe(file)) return null;
 
             var book = await Books.BookManager.GetBookFromFile(file);
-            var bookBS= new BookShelf.BookShelfBook() { ID = book.ID };
+            var bookBS= new BookContainer.BookShelfBook() { ID = book.ID };
             bookBS.Title = file.DisplayName;
             if(book is Books.IBookFixed)
             {
@@ -139,17 +157,28 @@ namespace BookViewerApp
             return bookBS;
         }
 
-        public class BookShelf:IBookShelfItem
+        public class BookShelf
         {
-            public List<BookShelf> Folders = new List<BookShelf>();
-            public List<BookShelfBook> Files = new List<BookShelfBook>();
-
-            public string Title { get; set; }
+            public List<BookContainer> Folders = new List<BookContainer>();
+            public string Title;
+            public bool Secret = false;
 
             public BookShelf()
             {
                 var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
                 Title = rl.GetString("BookShelfTitleNew");
+            }
+        }
+
+        public class BookContainer
+        {
+            public List<BookContainer> Folders = new List<BookContainer>();
+            public List<BookShelfBook> Files = new List<BookShelfBook>();
+
+            public string Title { get; set; }
+
+            public BookContainer()
+            {
             }
 
             public bool IsEmpty()
@@ -163,7 +192,7 @@ namespace BookViewerApp
                 return true;
             }
 
-            public class BookShelfBook:IBookShelfItem
+            public class BookShelfBook
             {
                 public string ID = "";
                 private BookInfoStorage.BookInfo BookInfoCache;

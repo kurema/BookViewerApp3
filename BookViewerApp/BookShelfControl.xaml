@@ -8,13 +8,15 @@
     xmlns:BookShelfViewModels="using:BookViewerApp.BookShelfViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+             d:DataContext="BookShelfViewModels:BookShelfViewModel"
+             >
     <UserControl.Resources>
         <Style x:Key="BookShelfItemSize" TargetType="local:BookShelfItemControl" x:Name="BookShelfItemStyle" />
-        <CollectionViewSource x:Name="BookShelfItemsSource" IsSourceGrouped="True" ItemsPath="Books"/>
+        <CollectionViewSource Source="{Binding Path=Containers}" x:Name="BookShelfItemsSource" IsSourceGrouped="True" ItemsPath="Books"/>
     </UserControl.Resources>
 
-    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True">
+    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True" SelectedIndex="-1">
         <GridView.ItemTemplate>
             <DataTemplate x:DataType="BookShelfViewModels:BookViewModel">
                 <local:BookShelfItemControl x:Name="BookShelfItemControlInTemplate" DataContext="{Binding}" Style="{StaticResource BookShelfItemSize}" />

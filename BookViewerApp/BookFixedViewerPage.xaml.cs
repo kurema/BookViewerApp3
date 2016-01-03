@@ -26,6 +26,7 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
+            BodyControl.GoToBookShelf += (s, e) => { this.Frame.Navigate(typeof(BookShelfPage)); };
         }
 
         public void Open(Windows.Storage.IStorageFile file)

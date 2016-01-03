@@ -43,19 +43,19 @@ namespace BookViewerApp
             SetBookShelfItemSize(300, 300);
         }
 
-        public void SetSource(params BookShelfViewModels.BookShelfViewModel[] vms)
+        public void SetSource(params BookShelfViewModels.BookContainerViewModel[] vms)
         {
             BookShelfItemsSource.Source = vms;
         }
 
         public async Task OpenAsync()
         {
-            SetSource(await BookShelfViewModels.BookShelfViewModel.GetFromBookShelfStorage());
+            SetSource(await BookShelfViewModels.BookContainerViewModel.GetFromBookShelfStorage(0));
         }
 
-        public async Task OpenAsync(params BookShelfStorage.BookShelf[] storage)
+        public async Task OpenAsync(params BookShelfStorage.BookContainer[] storage)
         {
-            SetSource(await BookShelfViewModels.BookShelfViewModel.GetFromBookShelfStorage(storage));
+            SetSource(await BookShelfViewModels.BookContainerViewModel.GetFromBookShelfStorage(storage));
         }
 
         private void SetBookShelfItemSize(double width,double height)
@@ -69,7 +69,7 @@ namespace BookViewerApp
         {
             if (e.ClickedItem is BookShelfViewModels.IItemViewModel)
             {
-                OnItemClicked((BookShelfViewModels.IItemViewModel)((sender as GridView).SelectedValue as BookShelfViewModels.IItemViewModel));
+                OnItemClicked(e.ClickedItem as BookShelfViewModels.IItemViewModel);
             }
         }
 

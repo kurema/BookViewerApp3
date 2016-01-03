@@ -20,6 +20,11 @@ namespace BookViewerApp
 {
     public sealed partial class BookFixedViewerControl : UserControl
     {
+        public event EventHandler GoToBookShelf;
+        private void OnGoToBookShelf()
+        {
+            if (GoToBookShelf != null) GoToBookShelf(this, new EventArgs());
+        }
 
         public BookFixedViewerControl()
         {
@@ -31,13 +36,17 @@ namespace BookViewerApp
 
             var buttons = new List<AppBarButton>();
 
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageTop, Icon = new SymbolIcon(Symbol.Previous), Label = rl.GetString("PageTop") });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous),Label=rl.GetString("PagePrevious") });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageNext") });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageLast, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageEnd") });
-            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal), Label = rl.GetString("OpenLocalBook") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageTop, Icon = new SymbolIcon(Symbol.Previous), Label = rl.GetString("PageTop/Label") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPagePrevious, Icon = new SymbolIcon(Symbol.Previous),Label=rl.GetString("PagePrevious/Label") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageNext, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageNext/Label") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandPageLast, Icon = new SymbolIcon(Symbol.Next), Label = rl.GetString("PageEnd/Label") });
+            CommandBarMain.PrimaryCommands.Add(new AppBarButton() { Command = CommandSelectFile, Icon = new SymbolIcon(Symbol.OpenLocal), Label = rl.GetString("OpenLocalBook/Label") });
 
-            CommandBarMain.SecondaryCommands.Add(new AppBarButton() {Command=CommandPageReverse,Icon=new SymbolIcon(Symbol.Switch) ,Label= rl.GetString("PageReverse") });
+            CommandBarMain.SecondaryCommands.Add(new AppBarButton() {Command=CommandPageReverse,Icon=new SymbolIcon(Symbol.Switch) ,Label= rl.GetString("PageReverse/Label") });
+            //fix me!
+            var goShelf = new AppBarButton() { Label = rl.GetString("GoToBookShelf/Label") };
+            goShelf.Click += (s, e) => { OnGoToBookShelf(); };
+            CommandBarMain.SecondaryCommands.Add(goShelf);
 
             BodyControl.LoadLastReadPageAsDefault = true;
 
