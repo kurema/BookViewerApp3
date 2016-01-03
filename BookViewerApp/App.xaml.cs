@@ -30,6 +30,13 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            LoadStorages();
+        }
+
+        private async void LoadStorages()
+        {
+            await BookInfoStorage.LoadAsync();
+            await BookShelfStorage.LoadAsync();
         }
 
         /// <summary>
@@ -72,7 +79,7 @@ namespace BookViewerApp
                 // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
                 // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
                 //構成します
-                rootFrame.Navigate(typeof(BookShelfPage), e.Arguments);
+                rootFrame.Navigate(typeof(BookFixedViewer2), e.Arguments);
             }
             // 現在のウィンドウがアクティブであることを確認します
             Window.Current.Activate();

@@ -82,9 +82,16 @@ namespace BookViewerApp
             Refresh();
         }
 
-        private void AppBarButton_Click_2(object sender, RoutedEventArgs e)
+        private async void AppBarButton_Click_2(object sender, RoutedEventArgs e)
         {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            foreach (var ext in Books.BookManager.AvailableExtensions)
+            {
+                picker.FileTypeFilter.Add(ext);
+            }
+            var file = await picker.PickSingleFileAsync();
 
+            this.Frame.Navigate(typeof(BookFixedViewerPage), file);
         }
     }
 }

@@ -39,12 +39,16 @@ namespace BookViewerApp
             }
             set
             {
-                if (Reversed != value)
+                if (Reversed != value && CanReverse)
                 {
+                    CanReverse = false;
                     SwapReverse();
+                    CanReverse = true;
                 }
             }
         }
+
+        private bool CanReverse = true;
 
         private void SwapReverse()
         {
@@ -54,8 +58,8 @@ namespace BookViewerApp
                 var page = this.SelectedPage;
                 this.DataContext = new BookFixedBodyViewModel(new Books.ReversedBook(Model.Book));
                 UpdateDataContext();
-                this.DataContextChanged += ControlBookViewer_DataContextChanged;
                 this.SelectedPage = page;
+                this.DataContextChanged += ControlBookViewer_DataContextChanged;
             }
         }
 
@@ -128,19 +132,19 @@ namespace BookViewerApp
             if (Model != null)
             {
                 FlipView.ItemsSource = GetPageAccessors(Model.Book);
-                SelectedPage = 0;
+                //SelectedPage = 1;
                 RaisePageCountChanged();
 
                 await LoadBookInfoAsync();
             }
         }
 
+
         public async System.Threading.Tasks.Task LoadBookInfoAsync(BookInfoStorage.BookInfo bi = null)
         {
             var bookInfo = await GetBookInfoAsync();
             if (bookInfo != null)
             {
-                bool pageRev = bookInfo.PageReversed;
                 var selectedPage = bookInfo.GetLastReadPage()?.Page;
                 this.Reversed = bookInfo.PageReversed;
                 if (LoadLastReadPageAsDefault)
@@ -148,6 +152,11 @@ namespace BookViewerApp
                     if (selectedPage != null) SelectedPage = (int)selectedPage;
                 }
             }
+            else
+            {
+                this.SelectedPage = 1;
+            }
+
         }
 
         private async System.Threading.Tasks.Task SaveBookInfoAsync()
@@ -157,8 +166,18 @@ namespace BookViewerApp
                 var bookInfo = await GetBookInfoAsync();
                 if (bookInfo != null)
                 {
-                    bookInfo.SetLastReadPage((uint)this.SelectedPage);
-                    bookInfo.PageReversed = this.Reversed;
+                    if (Model !=null)
+                    {
+                        if(this.SelectedPageVisual>1 && this.SelectedPage>1)
+                        {
+                            bookInfo.SetLastReadPage((uint)this.SelectedPage);
+                            bookInfo.PageReversed = this.Reversed;
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
             }
         }
@@ -189,6 +208,7 @@ namespace BookViewerApp
             if (book != null)
                 this.DataContext = new BookFixedBodyViewModel(book as Books.IBookFixed);
         }
+
         #region Commands
 
         public class CommandAddPage : System.Windows.Input.ICommand
@@ -330,9 +350,10 @@ namespace BookViewerApp
             public async void Execute(object parameter)
             {
                 var picker = new Windows.Storage.Pickers.FileOpenPicker();
-                picker.FileTypeFilter.Add(".pdf");
-                picker.FileTypeFilter.Add(".zip");
-                picker.FileTypeFilter.Add(".cbz");
+                foreach(var ext in Books.BookManager.AvailableExtensions)
+                {
+                    picker.FileTypeFilter.Add(ext);
+                }
                 var file = await picker.PickSingleFileAsync();
                 TargetControl.Open(file);
             }

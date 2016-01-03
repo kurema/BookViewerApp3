@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace BookViewerApp.Books
 {
@@ -24,6 +25,7 @@ namespace BookViewerApp.Books
     {
         IPageOptions Option { get; set; }
         Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
+        Task SetBitmapAsync(Windows.UI.Xaml.Media.Imaging.BitmapImage image);
         Task<bool> UpdateRequiredAsync();
         Task SaveImageAsync(Windows.Storage.StorageFile file,uint width);
     }
@@ -128,6 +130,12 @@ namespace BookViewerApp.Books
         public async Task SaveImageAsync(StorageFile file,uint width)
         {
             await (await GetPage()).SaveImageAsync(file,width);
+        }
+
+        public async Task SetBitmapAsync(BitmapImage image)
+        {
+            var body = await GetPage();
+            await body.SetBitmapAsync(image);
         }
     }
 

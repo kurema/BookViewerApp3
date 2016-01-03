@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows;
 using Windows.Storage;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using pdf = Windows.Data.Pdf;
 
 namespace BookViewerApp.Books.Pdf
@@ -123,6 +124,13 @@ namespace BookViewerApp.Books.Pdf
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await Content.RenderToStreamAsync(stream, pdfOption);
             await Functions.SaveStreamToFile(stream, file);
+        }
+
+        public async Task SetBitmapAsync(BitmapImage image)
+        {
+            var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
+            await RenderToStreamAsync(stream);
+            await image.SetSourceAsync(stream);
         }
     }
 }

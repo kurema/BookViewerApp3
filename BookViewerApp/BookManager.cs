@@ -81,5 +81,16 @@ namespace BookViewerApp.Books
             }
             return currentFolder;
         }
+
+        public async static Task<Books.IBook> PickBook()
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            foreach (var ext in Books.BookManager.AvailableExtensions)
+            {
+                picker.FileTypeFilter.Add(ext);
+            }
+            var file = await picker.PickSingleFileAsync();
+            return (await GetBookFromFile(file));
+        }
     }
 }

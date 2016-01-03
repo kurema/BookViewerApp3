@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.IO.Compression;
 using Windows.UI.Xaml.Media;
 using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace BookViewerApp.Books.Cbz
 {
@@ -115,6 +116,15 @@ namespace BookViewerApp.Books.Cbz
                     Content.ExtractToFile(file.Path, true);
             }
             catch { }
+        }
+
+        public async Task SetBitmapAsync(BitmapImage image)
+        {
+            var s = Content.Open();
+            var ms = new MemoryStream();
+            s.CopyTo(ms);
+            s.Dispose();
+            await new Image.ImagePageStream(ms.AsRandomAccessStream()).SetBitmapAsync(image);
         }
     }
 

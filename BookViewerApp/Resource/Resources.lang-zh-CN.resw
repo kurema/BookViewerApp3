@@ -120,6 +120,9 @@
   <data name="AddLocalDirectory.Label" xml:space="preserve">
     <value>添加目录到书架</value>
   </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Book Viewer</value>
+  </data>
   <data name="BookShelfTitleNew" xml:space="preserve">
     <value>书架</value>
   </data>

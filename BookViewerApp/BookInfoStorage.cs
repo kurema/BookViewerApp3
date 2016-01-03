@@ -127,6 +127,11 @@ namespace BookViewerApp
             return BookInfosCache;
         }
 
+        public static List<BookInfo> GetBookInfo()
+        {
+            return BookInfosCache;
+        }
+
         public async static Task<BookInfo> GetBookInfoByIDOrCreateAsync(string id)
         {
             var result = await GetBookInfoByIDAsync(id);
@@ -134,6 +139,21 @@ namespace BookViewerApp
 
             var book = new BookInfo() { ID = id };
             (await GetBookInfoAsync()).Add(book);
+            return book;
+        }
+
+        public static BookInfo GetBookInfoByIDOrCreate(string id)
+        {
+            var bis = GetBookInfo();
+            if (bis == null) return null;
+
+            foreach (var item in bis)
+            {
+                if (item.ID == id) { item.Reload(); return item; }
+            }
+
+            var book = new BookInfo() { ID = id };
+            bis.Add(book);
             return book;
         }
 

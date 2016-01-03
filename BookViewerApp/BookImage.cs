@@ -9,6 +9,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace BookViewerApp.Books.Image
 {
@@ -46,6 +47,11 @@ namespace BookViewerApp.Books.Image
                 await Functions.SaveStreamToFile(thm, file);
             }
         }
+
+        public async Task SetBitmapAsync(BitmapImage image)
+        {
+            image.UriSource = Uri;
+        }
     }
 
 
@@ -74,6 +80,12 @@ namespace BookViewerApp.Books.Image
         public async Task SaveImageAsync(StorageFile file,uint width)
         {
             await Functions.SaveStreamToFile(stream, file);
+        }
+
+        public async Task SetBitmapAsync(BitmapImage image)
+        {
+            stream.Seek(0);
+            image.SetSource(stream);
         }
 
         public async Task<bool> UpdateRequiredAsync()
