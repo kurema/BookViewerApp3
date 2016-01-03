@@ -34,16 +34,49 @@ namespace BookViewerApp
             SaveInfo();
         }
 
-    private async void AppBarButton_OpenFile(object sender, RoutedEventArgs e)
+        private async void AppBarButton_OpenFile(object sender, RoutedEventArgs e)
         {
             var book = await Books.BookManager.PickBook();
-            if (book != null && book is Books.IBookFixed)
-                (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(book as Books.IBookFixed, this.flipView);
+            Open(book);
+        }
+
+        private void Open(Books.IBook book)
+        {
+            if (book != null && book is Books.IBookFixed) (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(book, this.flipView);
+        }
+
+        private async void Open(Windows.Storage.IStorageFile file)
+        {
+            Open(await Books.BookManager.GetBookFromFile(file));
         }
 
         public void SaveInfo()
         {
             (this.DataContext as BookFixed2ViewModels.BookViewModel).SaveInfo();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null && e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
+            {
+                var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
+                if (args.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
+                {
+                    foreach (Windows.Storage.IStorageFile item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args).Files)
+                    {
+                        Open(item);
+                        break;
+                    }
+                }
+            }
+            else if (e.Parameter != null && e.Parameter is Books.IBookFixed)
+            {
+                Open((Books.IBookFixed)e.Parameter);
+            }
+            else if (e.Parameter != null && e.Parameter is Windows.Storage.IStorageFile)
+            {
+                Open((Windows.Storage.IStorageFile)e.Parameter);
+            }
         }
 
     }
