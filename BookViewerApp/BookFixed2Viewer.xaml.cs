@@ -45,6 +45,11 @@ namespace BookViewerApp
             if (book != null && book is Books.IBookFixed) (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(book as Books.IBookFixed, this.flipView);
         }
 
+        private void SetBookShelfModel(BookShelfViewModels.BookViewModel ViewModel)
+        {
+            (this.DataContext as BookFixed2ViewModels.BookViewModel).AsBookShelfBook = ViewModel;
+        }
+
         private async void Open(Windows.Storage.IStorageFile file)
         {
             Open(await Books.BookManager.GetBookFromFile(file));
@@ -57,7 +62,8 @@ namespace BookViewerApp
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter != null && e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
+            if (e.Parameter == null) { }
+            if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {
                 var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
                 if (args.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
@@ -69,18 +75,29 @@ namespace BookViewerApp
                     }
                 }
             }
-            else if (e.Parameter != null && e.Parameter is Books.IBookFixed)
+            else if (e.Parameter is Books.IBookFixed)
             {
                 Open((Books.IBookFixed)e.Parameter);
             }
-            else if (e.Parameter != null && e.Parameter is Windows.Storage.IStorageFile)
+            else if (e.Parameter is Windows.Storage.IStorageFile)
             {
                 Open((Windows.Storage.IStorageFile)e.Parameter);
+            }
+            else if(e. Parameter is BookAndParentNavigationParamater)
+            {
+                Open(((BookAndParentNavigationParamater)e.Parameter).BookViewerModel);
+                SetBookShelfModel(((BookAndParentNavigationParamater)e.Parameter).BookShelfModel);
             }
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
             currentView.AppViewBackButtonVisibility = Frame.CanGoBack ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed; currentView.BackRequested += CurrentView_BackRequested;
             currentView.BackRequested += CurrentView_BackRequested;
+        }
+
+        public struct BookAndParentNavigationParamater
+        {
+            public Books.IBookFixed BookViewerModel;
+            public BookShelfViewModels.BookViewModel BookShelfModel;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

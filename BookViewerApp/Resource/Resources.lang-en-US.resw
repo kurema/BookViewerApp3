@@ -123,6 +123,12 @@
   <data name="AppName" xml:space="preserve">
     <value>Book Viewer</value>
   </data>
+  <data name="BookNext.Label" xml:space="preserve">
+    <value>Read the next book</value>
+  </data>
+  <data name="BookPrevious.Label" xml:space="preserve">
+    <value>Read the previous book</value>
+  </data>
   <data name="BookShelfTitleNew" xml:space="preserve">
     <value>Bookshelf</value>
   </data>

@@ -45,13 +45,17 @@ namespace BookViewerApp
                 var book = await (e.SelectedItem as BookShelfViewModels.BookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    this.Frame.Navigate(typeof(BookFixedViewer2),book as Books.IBookFixed);
+                    //this.Frame.Navigate(typeof(BookFixedViewer2),book as Books.IBookFixed);
+                    var param = new BookFixedViewer2.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel };
+                    this.Frame.Navigate(typeof(BookFixedViewer2), param);
                 }
             }
-            else if(e.SelectedItem is BookShelfViewModels.BookContainerViewModel){
-                this.Frame.Navigate(typeof(BookFixedViewer2), (e.SelectedItem as BookShelfViewModels.BookContainerViewModel));
-            }
+            //else if(e.SelectedItem is BookShelfViewModels.BookContainerViewModel){
+            //    this.Frame.Navigate(typeof(BookFixedViewer2), (e.SelectedItem as BookShelfViewModels.BookContainerViewModel));
+            //}
         }
+
+
 
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)

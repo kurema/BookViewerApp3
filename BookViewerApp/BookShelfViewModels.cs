@@ -96,7 +96,6 @@ namespace BookViewerApp.BookShelfViewModels
         {
             OnPropertyChanged(nameof(TitleID));
         }
-
     }
 
     public class BookContainerViewModel : INotifyPropertyChanged, IEnumerable<IItemViewModel>, IItemViewModel
@@ -209,7 +208,7 @@ namespace BookViewerApp.BookShelfViewModels
             }
             foreach (var item in storage.Files)
             {
-                result.Add(await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook));
+                result.Add(await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook,result));
             }
             return result;
         }
@@ -232,12 +231,15 @@ namespace BookViewerApp.BookShelfViewModels
         public string ID { get; private set; }
         private BookShelfStorage.BookAccessInfo AccessInfo;
 
-        public BookViewModel(string ID, int BookSize,BookShelfStorage.BookAccessInfo accessInfo)
+        public BookViewModel(string ID, int BookSize,BookShelfStorage.BookAccessInfo accessInfo,BookContainerViewModel Parent)
         {
             this.ID = ID;
             this.BookSize = BookSize;
-            AccessInfo = accessInfo;
+            this.AccessInfo = accessInfo;
+            this.Parent = Parent;
         }
+
+        public BookContainerViewModel Parent { get; private set; }
 
         public async Task<Books.IBook> TryGetBook()
         {
@@ -282,9 +284,9 @@ namespace BookViewerApp.BookShelfViewModels
         public bool Reversed { get { return _Reversed; } set { _Reversed = value; OnPropertyChanged(nameof(Reversed)); } }
         private bool _Reversed = false;
 
-        public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage)
+        public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage,BookContainerViewModel parent)
         {
-            var result= new BookViewModel(storage.ID, storage.Size,storage.Access) { Title = storage.Title };
+            var result= new BookViewModel(storage.ID, storage.Size,storage.Access,parent) { Title = storage.Title };
             await result.GetFromBookInfoStorageAsync();
             return result;
         }

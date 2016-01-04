@@ -28,22 +28,26 @@ namespace BookViewerApp.BookFixed2ViewModels
             };
         }
 
-        private ICommandEventRaiseable _PageVisualAddCommand;
-        private ICommandEventRaiseable _PageVisualSetCommand;
-        private ICommandEventRaiseable _PageVisualMaxCommand;
-        private ICommandEventRaiseable _SwapReverseCommand;
+        private Commands.ICommandEventRaiseable _PageVisualAddCommand;
+        private Commands.ICommandEventRaiseable _PageVisualSetCommand;
+        private Commands.ICommandEventRaiseable _PageVisualMaxCommand;
+        private Commands.ICommandEventRaiseable _SwapReverseCommand;
+        private System.Windows.Input.ICommand _GoNextBookCommand;
+        private System.Windows.Input.ICommand _GoPreviousBookCommand;
 
-        public ICommandEventRaiseable PageVisualAddCommand { get {return _PageVisualAddCommand = _PageVisualAddCommand?? new PageVisualAddCommand(this); } }
-        public ICommandEventRaiseable PageVisualSetCommand { get { return _PageVisualSetCommand = _PageVisualSetCommand ?? new PageVisualSetCommand(this); } }
-        public ICommandEventRaiseable PageVisualMaxCommand { get { return _PageVisualMaxCommand = _PageVisualMaxCommand ?? new PageVisualMaxCommand(this); } }
-        public ICommandEventRaiseable SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new CommandBase((a)=> { return true; },(a)=> { this.Reversed = !this.Reversed; }); } }
+        public Commands.ICommandEventRaiseable PageVisualAddCommand { get {return _PageVisualAddCommand = _PageVisualAddCommand?? new Commands.PageVisualAddCommand(this); } }
+        public Commands.ICommandEventRaiseable PageVisualSetCommand { get { return _PageVisualSetCommand = _PageVisualSetCommand ?? new Commands.PageVisualSetCommand(this); } }
+        public Commands.ICommandEventRaiseable PageVisualMaxCommand { get { return _PageVisualMaxCommand = _PageVisualMaxCommand ?? new Commands.PageVisualMaxCommand(this); } }
+        public Commands.ICommandEventRaiseable SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new Commands.CommandBase((a)=> { return true; },(a)=> { this.Reversed = !this.Reversed; }); } }
+        public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
+        public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
 
-        public async void Initialize(Books.IBookFixed value, Control target)
+        public async void Initialize(Books.IBookFixed value, Control target=null)
         {
             if (BookInfo != null) SaveInfo();
 
             var pages = new ObservableCollection<PageViewModel>();
-            var option = new Books.PageOptionsControl(target);
+            var option = OptionCache = target == null ? OptionCache : new Books.PageOptionsControl(target);
             for (uint i = 0; i < value.PageCount; i++)
             {
                 uint page = i;
@@ -52,19 +56,29 @@ namespace BookViewerApp.BookFixed2ViewModels
             }
             this._Reversed = false;
             this._PageSelected = 0;
+            ID = value.ID;
             this.Pages = pages;
             BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
             this.PageSelected = (int)(BookInfo?.GetLastReadPage()?.Page ?? 1);
             this.Reversed = BookInfo?.PageReversed ?? false;
+            OnPropertyChanged(nameof(Reversed));
+            this.AsBookShelfBook = null;
         }
 
-        private BookInfoStorage.BookInfo BookInfo=null;//ID to save
+        private Books.PageOptionsControl OptionCache;
+
+        public BookShelfViewModels.BookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value;OnPropertyChanged(nameof(AsBookShelfBook)); } }
+        public BookShelfViewModels.BookViewModel _AsBookShelfBook;
+
+        private BookInfoStorage.BookInfo BookInfo=null;
         public void SaveInfo()
         {
             BookInfo.SetLastReadPage((uint)this.PageSelected);
             BookInfo.PageReversed = this.Reversed;
         }
 
+        public string ID { get { return _ID; } private set { _ID = value;OnPropertyChanged(nameof(ID)); } }
+        private string _ID;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
@@ -146,93 +160,157 @@ namespace BookViewerApp.BookFixed2ViewModels
         }
     }
 
-    public interface ICommandEventRaiseable: System.Windows.Input.ICommand
+    public class Commands
     {
-        void OnCanExecuteChanged();
-    }
 
-    public class PageVisualAddCommand : ICommandEventRaiseable
-    {
-        public event EventHandler CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
-
-        private BookViewModel model;
-
-        public PageVisualAddCommand(BookViewModel model) { this.model = model; }
-
-        public bool CanExecute(object parameter)
+        public interface ICommandEventRaiseable : System.Windows.Input.ICommand
         {
-            return model.PagesCount > model.PageSelectedVisual + int.Parse(parameter as string) && model.PageSelectedVisual >= -int.Parse(parameter as string);
+            void OnCanExecuteChanged();
         }
 
-        public void Execute(object parameter)
+        public class PageVisualAddCommand : ICommandEventRaiseable
         {
-            model.PageSelectedVisual += int.Parse(parameter as string);
-        }
-    }
+            public event EventHandler CanExecuteChanged;
+            public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
 
-    public class PageVisualSetCommand : ICommandEventRaiseable
-    {
-        public event EventHandler CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+            private BookViewModel model;
 
-        private BookViewModel model;
+            public PageVisualAddCommand(BookViewModel model) { this.model = model; }
 
-        public PageVisualSetCommand(BookViewModel model) { this.model = model; }
+            public bool CanExecute(object parameter)
+            {
+                return model.PagesCount > model.PageSelectedVisual + int.Parse(parameter as string) && model.PageSelectedVisual >= -int.Parse(parameter as string);
+            }
 
-        public bool CanExecute(object parameter)
-        {
-            return model.PagesCount > int.Parse(parameter as string) && 0 <= int.Parse(parameter as string) && model.PageSelectedVisual != int.Parse(parameter as string);
-        }
-
-        public void Execute(object parameter)
-        {
-            model.PageSelectedVisual = int.Parse(parameter as string);
-        }
-    }
-
-    public class PageVisualMaxCommand : ICommandEventRaiseable
-    {
-        public event EventHandler CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
-
-        private BookViewModel model;
-
-        public PageVisualMaxCommand(BookViewModel model) { this.model = model; }
-
-        public bool CanExecute(object parameter)
-        {
-            return model.PagesCount > 0 && model.PageSelectedVisual != model.PagesCount - 1;
+            public void Execute(object parameter)
+            {
+                model.PageSelectedVisual += int.Parse(parameter as string);
+            }
         }
 
-        public void Execute(object parameter)
+        public class PageVisualSetCommand : ICommandEventRaiseable
         {
-            model.PageSelectedVisual = model.PagesCount - 1;
-        }
-    }
+            public event EventHandler CanExecuteChanged;
+            public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
 
-    public class CommandBase : ICommandEventRaiseable
-    {
-        public event EventHandler CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+            private BookViewModel model;
 
-        private Func<object, bool> CanExecuteFunc;
-        private Action<object> ExecuteAction;
+            public PageVisualSetCommand(BookViewModel model) { this.model = model; }
 
-        public CommandBase(Func<object, bool> CanExecuteFunc, Action<object> ExecuteAction)
-        {
-            this.CanExecuteFunc = CanExecuteFunc;
-            this.ExecuteAction = ExecuteAction;
-        }
+            public bool CanExecute(object parameter)
+            {
+                return model.PagesCount > int.Parse(parameter as string) && 0 <= int.Parse(parameter as string) && model.PageSelectedVisual != int.Parse(parameter as string);
+            }
 
-        public bool CanExecute(object parameter)
-        {
-            return CanExecuteFunc(parameter);
+            public void Execute(object parameter)
+            {
+                model.PageSelectedVisual = int.Parse(parameter as string);
+            }
         }
 
-        public void Execute(object parameter)
+        public class PageVisualMaxCommand : ICommandEventRaiseable
         {
-            ExecuteAction(parameter);
+            public event EventHandler CanExecuteChanged;
+            public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+
+            private BookViewModel model;
+
+            public PageVisualMaxCommand(BookViewModel model) { this.model = model; }
+
+            public bool CanExecute(object parameter)
+            {
+                return model.PagesCount > 0 && model.PageSelectedVisual != model.PagesCount - 1;
+            }
+
+            public void Execute(object parameter)
+            {
+                model.PageSelectedVisual = model.PagesCount - 1;
+            }
+        }
+
+        public class AddNumberToSelectedBook : System.Windows.Input.ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+            public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+
+            private BookViewModel ViewModel;
+            private int NumberToAdd;
+
+            public AddNumberToSelectedBook(BookViewModel vm, int i)
+            {
+                vm.PropertyChanged += (s, e) => { OnCanExecuteChanged(); };
+                ViewModel = vm;
+                NumberToAdd = i;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return GetAddedBook(ViewModel.ID) != null;
+            }
+
+            public async void Execute(object parameter)
+            {
+                var bookFVM = GetAddedBook(ViewModel.ID);
+                var book = await bookFVM.TryGetBook();
+                if (book is Books.IBookFixed)
+                {
+                    ViewModel.Initialize(book as Books.IBookFixed);
+                    ViewModel.AsBookShelfBook = bookFVM;
+                }
+            }
+
+            public BookShelfViewModels.BookViewModel GetAddedBook(string ID)
+            {
+                var books = ViewModel.AsBookShelfBook?.Parent?.Books;
+                if (books == null) return null;
+                //var book = books.Where(a => (a is BookShelfViewModels.BookViewModel && (a as BookShelfViewModels.BookViewModel).ID == ID)).First();
+                var book = ViewModel.AsBookShelfBook;
+
+                int cnt = 0;
+                if (NumberToAdd == 0) return book as BookShelfViewModels.BookViewModel;
+                if (this.NumberToAdd > 0)
+                {
+                    for (int i = books.IndexOf(book) + 1; i < books.Count; i++)
+                    {
+                        if (books[i] is BookShelfViewModels.BookViewModel) cnt++;
+                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookViewModel;
+                    }
+                }
+                else
+                {
+                    for (int i = books.IndexOf(book) - 1; i >= 0; i--)
+                    {
+                        if (books[i] is BookShelfViewModels.BookViewModel) cnt--;
+                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookViewModel;
+                    }
+                }
+                return null;
+            }
+        }
+
+        public class CommandBase : ICommandEventRaiseable
+        {
+            public event EventHandler CanExecuteChanged;
+            public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+
+            private Func<object, bool> CanExecuteFunc;
+            private Action<object> ExecuteAction;
+
+            public CommandBase(Func<object, bool> CanExecuteFunc, Action<object> ExecuteAction)
+            {
+                this.CanExecuteFunc = CanExecuteFunc;
+                this.ExecuteAction = ExecuteAction;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return CanExecuteFunc(parameter);
+            }
+
+            public void Execute(object parameter)
+            {
+                ExecuteAction(parameter);
+            }
         }
     }
 
