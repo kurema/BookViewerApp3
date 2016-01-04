@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,22 +31,23 @@ namespace BookViewerApp.Books
         Task SaveImageAsync(Windows.Storage.StorageFile file,uint width);
     }
 
-    public interface IPageOptions
+    public interface IPageOptions:System.ComponentModel.INotifyPropertyChanged
     {
         double TargetWidth { get; }
         double TargetHeight { get; }
-        event EventHandler Updated;
+        //event EventHandler Updated;
     }
 
     public class PageOptions : IPageOptions
     {
-        public double TargetWidth { get { return _TargetWidth; } set { _TargetWidth = value; OnUpdated(new EventArgs()); } }
+        public double TargetWidth { get { return _TargetWidth; } set { _TargetWidth = value; OnPropertyChanged(nameof(TargetWidth)); } }
         private double _TargetWidth;
-        public double TargetHeight { get { return _TargetHeight; } set { _TargetHeight = value; OnUpdated(new EventArgs()); } }
+        public double TargetHeight { get { return _TargetHeight; } set { _TargetHeight = value; OnPropertyChanged(nameof(TargetHeight)); } }
         private double _TargetHeight;
 
-        public event EventHandler Updated;
-        protected virtual void OnUpdated(EventArgs e) { if (Updated != null) Updated(this, e); }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
     }
 
     public class PageOptionsControl : IPageOptions
@@ -63,14 +65,17 @@ namespace BookViewerApp.Books
                 _TargetControl.SizeChanged -= Control_SizeChanged;
                 _TargetControl = value;
                 _TargetControl.SizeChanged += Control_SizeChanged;
-                OnUpdated(new EventArgs());
+                OnPropertyChanged(nameof(TargetWidth));
+                OnPropertyChanged(nameof(TargetHeight));
 
             }
         }
         private Windows.UI.Xaml.Controls.Control _TargetControl;
 
         public event EventHandler Updated;
-        protected virtual void OnUpdated(EventArgs e) { if (Updated != null) Updated(this, e); }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs( name)); }
 
         public PageOptionsControl(Windows.UI.Xaml.Controls.Control control)
         {
@@ -81,7 +86,8 @@ namespace BookViewerApp.Books
 
         private void Control_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
-            OnUpdated(new EventArgs());
+            OnPropertyChanged(nameof(TargetWidth));
+            OnPropertyChanged(nameof(TargetHeight));
         }
 
         public static explicit operator PageOptions(PageOptionsControl item)

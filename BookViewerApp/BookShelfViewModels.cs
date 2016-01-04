@@ -18,7 +18,8 @@ namespace BookViewerApp.BookShelfViewModels
     {
         public async static Task<ObservableCollection<BookShelfViewModel>> GetBookShelfViewModels (bool addSecretShelf){
             var storages = await BookShelfStorage.GetBookShelves();
-            var result= new ObservableCollection<BookShelfViewModel>(); ;
+            var result= new ObservableCollection<BookShelfViewModel>();
+            if (storages == null) return null;
             foreach(var item in storages)
             {
                 if (addSecretShelf || item.Secret == false)
@@ -259,7 +260,8 @@ namespace BookViewerApp.BookShelfViewModels
             if (bookInfo != null)
             {
                 this.Reversed = bookInfo.PageReversed;
-                this.ReadRate = bookInfo.GetLastReadPage().Page / (double)BookSize;
+                this.ReadRate = (bookInfo.GetLastReadPage()?.Page ?? 0) / (double)BookSize;
+                //Issue: asyncの関係でSetLastReadPage()の前に GetLastReadPage()が実行されることがあるようだ。
             }
             else
             {
@@ -278,7 +280,7 @@ namespace BookViewerApp.BookShelfViewModels
         private double _ReadRate = 0.0;
 
         public bool Reversed { get { return _Reversed; } set { _Reversed = value; OnPropertyChanged(nameof(Reversed)); } }
-        private bool _Reversed;
+        private bool _Reversed = false;
 
         public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage)
         {

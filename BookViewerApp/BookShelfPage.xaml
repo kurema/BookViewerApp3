@@ -36,6 +36,13 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
                     </ToggleButton>
                     <ListView x:Name="BookShelfList" Grid.Row="1" Grid.Column="1">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <local:BookShelfContainerControl DataContext="{Binding}" Height="200"/>

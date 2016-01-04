@@ -45,11 +45,11 @@ namespace BookViewerApp
                 var book = await (e.SelectedItem as BookShelfViewModels.BookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    this.Frame.Navigate(typeof(BookFixedViewerPage),book as Books.IBookFixed);
+                    this.Frame.Navigate(typeof(BookFixedViewer2),book as Books.IBookFixed);
                 }
             }
             else if(e.SelectedItem is BookShelfViewModels.BookContainerViewModel){
-                this.Frame.Navigate(typeof(BookFixedViewerPage), (e.SelectedItem as BookShelfViewModels.BookContainerViewModel));
+                this.Frame.Navigate(typeof(BookFixedViewer2), (e.SelectedItem as BookShelfViewModels.BookContainerViewModel));
             }
         }
 
@@ -91,7 +91,8 @@ namespace BookViewerApp
             }
             var file = await picker.PickSingleFileAsync();
 
-            this.Frame.Navigate(typeof(BookFixedViewerPage), file);
+            this.Frame.Navigate(typeof(BookFixedViewer2), file);
         }
+
     }
 }

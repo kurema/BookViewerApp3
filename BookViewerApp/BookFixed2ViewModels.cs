@@ -48,6 +48,7 @@ namespace BookViewerApp.BookFixed2ViewModels
             {
                 uint page = i;
                 pages.Add(new PageViewModel(new Books.VirtualPage(() => { var p = value.GetPage(page); p.Option = option; return p; })));
+                //pages.Add(new PageViewModel(value.GetPage(page)));
             }
             this._Reversed = false;
             this._PageSelected = 0;
@@ -74,20 +75,20 @@ namespace BookViewerApp.BookFixed2ViewModels
         public int PageSelected
         {
             get { return _PageSelected+1; }
-            set { _PageSelected = value-1; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); }
+            set { _PageSelected = value-1; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); OnPropertyChanged(nameof(ReadRate)); }
         }
         private int _PageSelected = -1;
 
         public int PageSelectedVisual
         {
             get { return Reversed ? Pages.Count() - _PageSelected - 1 : _PageSelected; }
-            set { _PageSelected = Reversed ? Pages.Count() - value - 1 : value; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); }
+            set { _PageSelected = Reversed ? Pages.Count() - value - 1 : value; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); OnPropertyChanged(nameof(ReadRate)); }
         }
 
         public ObservableCollection<PageViewModel> Pages
         {
             get { return _Pages; }
-            set { _Pages = value;OnPropertyChanged(nameof(Pages));OnPropertyChanged(nameof(PagesCount)); }
+            set { _Pages = value;OnPropertyChanged(nameof(Pages));OnPropertyChanged(nameof(PagesCount)); OnPropertyChanged(nameof(ReadRate)); }
         }
         private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
 
@@ -95,7 +96,7 @@ namespace BookViewerApp.BookFixed2ViewModels
 
         public double ReadRate
         {
-            get { return (double)PageSelected / Pages.Count(); }
+            get { return Math.Min((double)PageSelected / Pages.Count(),1.0); }
             set { PageSelected = (int)(value * Pages.Count);  OnPropertyChanged(nameof(ReadRate)); }
         }
 
@@ -108,9 +109,9 @@ namespace BookViewerApp.BookFixed2ViewModels
                 {
                     var oldPage = this.PageSelected;
                     _Reversed = value;
-                    OnPropertyChanged(nameof(Reversed));
                     Pages = new ObservableCollection<PageViewModel>(Pages.Reverse());
                     PageSelected = oldPage;
+                    OnPropertyChanged(nameof(Reversed));
                 }
             }
 
@@ -130,7 +131,14 @@ namespace BookViewerApp.BookFixed2ViewModels
 
         private Books.IPageFixed Page;
 
-        public ImageSource Source { get { var src = new BitmapImage();SetImageNoWait(src); return src; } }
+        public ImageSource Source { get
+            {
+                if (_Source != null) return _Source;
+                _Source = new BitmapImage();
+                SetImageNoWait(_Source);
+                return _Source;
+            } }
+        public BitmapImage _Source;
 
         private async void SetImageNoWait(BitmapImage im)
         {

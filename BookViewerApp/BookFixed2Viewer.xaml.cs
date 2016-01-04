@@ -42,7 +42,7 @@ namespace BookViewerApp
 
         private void Open(Books.IBook book)
         {
-            if (book != null && book is Books.IBookFixed) (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(book, this.flipView);
+            if (book != null && book is Books.IBookFixed) (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(book as Books.IBookFixed, this.flipView);
         }
 
         private async void Open(Windows.Storage.IStorageFile file)
@@ -77,7 +77,30 @@ namespace BookViewerApp
             {
                 Open((Windows.Storage.IStorageFile)e.Parameter);
             }
+
+            var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = Frame.CanGoBack ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed; currentView.BackRequested += CurrentView_BackRequested;
+            currentView.BackRequested += CurrentView_BackRequested;
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            SaveInfo();
+
+            var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+            currentView.BackRequested -= CurrentView_BackRequested;
+
+            base.OnNavigatedFrom(e);
+        }
+
+        private void CurrentView_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+                e.Handled = true;
+            }
+        }
     }
 }

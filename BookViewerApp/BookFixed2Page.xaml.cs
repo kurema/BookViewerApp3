@@ -17,22 +17,22 @@ using Windows.UI.Xaml.Navigation;
 
 namespace BookViewerApp
 {
-    public sealed partial class PagesViewerControl : UserControl
+    public sealed partial class BookFixed2Page : UserControl
     {
-        public PagesViewerControl()
+        public BookFixed2Page()
         {
             this.InitializeComponent();
-
-            this.DataContextChanged += (s, e) => { this.ScrollViewerMain.ZoomToFactor(1.0f); };
         }
 
-        private void ScrollViewerMain_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //Code-behind should not be used. But it is powerful.
-            ControlPageViewerMain.Width = ScrollViewerMain.ActualWidth;
-            ControlPageViewerMain.Height = ScrollViewerMain.ActualHeight;
+            grid.Width = this.ActualWidth;
+            grid.Height = this.ActualHeight;
+        }
 
-            ControlPageViewerMain.UpdateSize();
+        private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            scrollViewer.ZoomToFactor(1.0f);
         }
     }
 }
