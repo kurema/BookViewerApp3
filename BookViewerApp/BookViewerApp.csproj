@@ -126,6 +126,10 @@
     </Compile>
     <Compile Include="BookShelfStorage.cs" />
     <Compile Include="BookShelfViewModels.cs" />
+    <Compile Include="InfoPage.xaml.cs">
+      <DependentUpon>InfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPageViewModel.cs" />
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -175,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BookShelfPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

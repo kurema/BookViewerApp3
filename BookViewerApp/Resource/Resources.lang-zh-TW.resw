@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutThisApp.Label" xml:space="preserve">
+    <value>關於此應用</value>
+  </data>
   <data name="AddLocalDirectory.Label" xml:space="preserve">
     <value>添加目錄到書架</value>
   </data>

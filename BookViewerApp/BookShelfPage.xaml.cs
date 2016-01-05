@@ -45,18 +45,11 @@ namespace BookViewerApp
                 var book = await (e.SelectedItem as BookShelfViewModels.BookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    //this.Frame.Navigate(typeof(BookFixedViewer2),book as Books.IBookFixed);
                     var param = new BookFixedViewer2.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel };
                     this.Frame.Navigate(typeof(BookFixedViewer2), param);
                 }
             }
-            //else if(e.SelectedItem is BookShelfViewModels.BookContainerViewModel){
-            //    this.Frame.Navigate(typeof(BookFixedViewer2), (e.SelectedItem as BookShelfViewModels.BookContainerViewModel));
-            //}
         }
-
-
-
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -74,16 +67,24 @@ namespace BookViewerApp
                 await dialog.ShowAsync();
                 var storage = await BookShelfStorage.GetBookShelves();
                 storage.Add(BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(folder)));
+                //{
+                //    var str=((await BookShelfStorage.GetFromStorageFolder(folder)));
+                //    var bs=new BookShelfStorage.BookShelf();
+                //    bs.Folders = new List<BookShelfStorage.BookContainer>() { str };
+                //    storage.Add(bs);
+                //}
                 dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Completed/Message"), rl.GetString("LoadingFolder/Title"));
                 await dialog.ShowAsync();
             }
+            await BookShelfStorage.SaveAsync();
             Refresh();
         }
 
-        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        private async void AppBarButton_Click_ClearBookShelfStorage(object sender, RoutedEventArgs e)
         {
             BookShelfStorage.Clear();
             Refresh();
+            await BookShelfStorage.SaveAsync();
         }
 
         private async void AppBarButton_Click_2(object sender, RoutedEventArgs e)
@@ -98,5 +99,9 @@ namespace BookViewerApp
             this.Frame.Navigate(typeof(BookFixedViewer2), file);
         }
 
+        private void AppBarButton_Click_GoToInfoPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(InfoPage));
+        }
     }
 }

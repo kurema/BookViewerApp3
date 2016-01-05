@@ -7,21 +7,35 @@
     xmlns:BookShelfViewModels="using:BookViewerApp.BookShelfViewModels"
     x:Class="BookViewerApp.BookShelfPage"
     mc:Ignorable="d"
-    Background="Black"
     >
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Uid="ClearAllBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_1"/>
+                <AppBarButton x:Uid="ClearAllBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_ClearBookShelfStorage"/>
+                <AppBarButton x:Uid="AboutThisApp" Click="AppBarButton_Click_GoToInfoPage"/>
             </CommandBar.SecondaryCommands>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_2"/>
             <AppBarButton x:Uid="AddLocalDirectory" Icon="Folder" Label="" Click="AppBarButton_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
     <Grid>
-        <SplitView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" DisplayMode="CompactOverlay" x:Name="SplitView"
-			CompactPaneLength="{Binding ActualWidth, ElementName=HamburgerButton, Mode=TwoWay}"
-			IsPaneOpen="{Binding IsChecked, ElementName=HamburgerButton, Mode=TwoWay}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ToggleButton x:Name="HamburgerButton"  Foreground="Black" VerticalAlignment="Top">
+            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
+        </ToggleButton>
+        <Grid Grid.Column="1" Background="Black">
+            <TextBlock Foreground="White" DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" Text="{Binding Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <SplitView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="SplitView"
+                   DisplayMode="Inline"
+			IsPaneOpen="{Binding IsChecked, ElementName=HamburgerButton, Mode=TwoWay}" Grid.Row="1" Grid.ColumnSpan="2">
             <SplitView.Pane>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -32,9 +46,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ToggleButton x:Name="HamburgerButton"  Foreground="Black" VerticalAlignment="Top">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
-                    </ToggleButton>
+
                     <ListView x:Name="BookShelfList" Grid.Row="1" Grid.Column="1">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">

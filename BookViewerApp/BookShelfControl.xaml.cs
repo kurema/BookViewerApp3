@@ -72,6 +72,28 @@ namespace BookViewerApp
                 OnItemClicked(e.ClickedItem as BookShelfViewModels.IItemViewModel);
             }
         }
+    }
 
+    namespace TemplateSelectors
+    {
+        public sealed class BookShelfItemTemplateSelector : DataTemplateSelector
+        {
+            public DataTemplate ContainerTemplate { get; set; }
+            public DataTemplate BookTemplate { get; set; }
+
+            protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+            {
+                if (item is BookShelfViewModels.BookContainerViewModel)
+                {
+                    return ContainerTemplate;
+                }
+                else if (item is BookShelfViewModels.BookViewModel)
+                {
+                    return BookTemplate;
+                }
+                return base.SelectTemplateCore(item, container);
+            }
+
+        }
     }
 }

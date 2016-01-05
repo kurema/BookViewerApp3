@@ -19,7 +19,10 @@
         <Image Source="{Binding Path=TitleID,Converter={StaticResource ResourceKey=BookIdToImageSource}}" Stretch="UniformToFill"/>
         <Grid  Background="#4C000000"/>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#7F000000" >
-            <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Left" Margin="5" Foreground="White"/>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <SymbolIcon Margin="0,0,5,0" Symbol="Folder" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
+                <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Left" Foreground="White"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>
