@@ -130,6 +130,10 @@
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="InfoPageViewModel.cs" />
+    <Compile Include="SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingStorage.cs" />
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -189,6 +193,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

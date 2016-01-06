@@ -168,4 +168,7 @@
   <data name="PageTop.Label" xml:space="preserve">
     <value>首页</value>
   </data>
+  <data name="ToggleFullScreen.Label" xml:space="preserve">
+    <value>切换全屏模式</value>
+  </data>
 </root>

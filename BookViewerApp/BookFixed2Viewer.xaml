@@ -49,6 +49,7 @@
                 <AppBarButton Icon="OpenFile" x:Uid="OpenLocalBook" Click="AppBarButton_OpenFile"/>
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="ToggleFullScreen" Click="AppBarButton_ToggleFullScreen" />
                 <AppBarButton x:Uid="BookPrevious" Command="{Binding GoPreviousBookCommand}"/>
                 <AppBarButton x:Uid="BookNext" Command="{Binding GoNextBookCommand}"/>
                 <AppBarButton x:Uid="PageReverse" Command="{Binding SwapReverseCommand}"/>

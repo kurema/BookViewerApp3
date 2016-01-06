@@ -168,4 +168,7 @@
   <data name="PageTop.Label" xml:space="preserve">
     <value>First</value>
   </data>
+  <data name="ToggleFullScreen.Label" xml:space="preserve">
+    <value>Toggle full screen mode.</value>
+  </data>
 </root>
