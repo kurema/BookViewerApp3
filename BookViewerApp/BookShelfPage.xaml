@@ -12,6 +12,7 @@
         <CommandBar>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Uid="ClearAllBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_ClearBookShelfStorage"/>
+                <AppBarButton x:Uid="Setting" Click="AppBarButton_Click_GoToSetting"/>
                 <AppBarButton x:Uid="AboutThisApp" Click="AppBarButton_Click_GoToInfoPage"/>
             </CommandBar.SecondaryCommands>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_2"/>
@@ -34,7 +35,7 @@
             <TextBlock Foreground="White" DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" Text="{Binding Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <SplitView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="SplitView"
-                   DisplayMode="Inline"
+                   DisplayMode="Overlay"
 			IsPaneOpen="{Binding IsChecked, ElementName=HamburgerButton, Mode=TwoWay}" Grid.Row="1" Grid.ColumnSpan="2">
             <SplitView.Pane>
                 <Grid>

@@ -168,6 +168,21 @@
   <data name="PageTop.Label" xml:space="preserve">
     <value>最初</value>
   </data>
+  <data name="Setting.Label" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>ブックビュワーを開いた時、自動的に全画面モードに切り替えます。</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>標準で全画面表示にする</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>新たに開いたり本を右綴じと認識する。</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>標準で右綴じにする</value>
+  </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>全画面モード切替</value>
   </data>

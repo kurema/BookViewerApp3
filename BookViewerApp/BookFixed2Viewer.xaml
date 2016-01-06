@@ -56,7 +56,7 @@
             </CommandBar.SecondaryCommands>
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding Path=PageSelected,Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding Path=PageSelected,Mode=TwoWay}" VerticalAlignment="Center" InputScope="Number"/>
                     <TextBlock Text="/" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding Path=PagesCount,Mode=OneWay}" VerticalAlignment="Center"/>
                 </StackPanel>

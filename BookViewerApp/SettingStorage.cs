@@ -19,59 +19,92 @@ namespace BookViewerApp
         public static Windows.Storage.ApplicationDataContainer LocalSettings { get { return Windows.Storage.ApplicationData.Current.LocalSettings; } }
         public static Windows.Storage.ApplicationDataContainer RoamingSettings { get { return Windows.Storage.ApplicationData.Current.RoamingSettings; } }
 
-
-        public interface ISettingInstance
+        private static SettingInstance[] _SettingInstances = null;
+        public static SettingInstance[] SettingInstances
         {
-
+            get
+            {
+                return _SettingInstances ??
+                    new SettingInstance[]
+                    {
+                        new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter(),false),
+                        new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter(),false),
+                    };
+            }
         }
 
-        public class SettingInstance<type>
+        public static object GetValue(string Key)
+        {
+            foreach(var item in SettingInstances)
+            {
+                if (item.Key == Key)
+                {
+                    return item.GetValue();
+                }
+            }
+            return null;
+        }
+
+        public class SettingInstance
         {
             public string StringResourceKey;
 
             public string Key { get; private set; }
             public bool IsLocal { get; private set; }
-            public type DefaultValue { get; private set; }
+            public object DefaultValue { get; private set; }
+            private Func<object, bool> IsValidObject { get; set; }
 
-            public TypeConverter<type> Converter { get; private set; }
-            private type Cache;
+            public TypeConverter Converter { get; private set; }
+            private object Cache;
 
             private Windows.Storage.ApplicationDataContainer Setting { get { return (IsLocal ? LocalSettings : RoamingSettings); } }
 
             public Type GetGenericType()
             {
-                return typeof(type);
+                return Converter.GetConvertType();
             }
 
-            public SettingInstance(string Key,string StringResourceKey,type DefaultValue,TypeConverter<type> Converter,bool IsLocal = true)
+            public SettingInstance(string Key,string StringResourceKey,object DefaultValue,TypeConverter Converter,bool IsLocal = true, Func<object, bool> CheckValid=null)
             {
                 this.Key = Key;
-                this.StringResourceKey = StringResourceKey;
+                this.StringResourceKey = "Setting_"+StringResourceKey;
                 this.DefaultValue = DefaultValue;
                 this.IsLocal = IsLocal;
                 this.Converter = Converter;
+                this.IsValidObject = (a) => { return true; };
             }
 
-            public void SetValue(type Value)
+            public void SetValue(object Value)
             {
+                if (!IsValid(Value)) return;
+
                 Cache = Value;
                 Setting.CreateContainer(Key, Windows.Storage.ApplicationDataCreateDisposition.Always);
-                Setting.Values[Key] = Converter.GetString(Value);
+                Setting.Values[Key] = Converter.GetStringGeneral(Value);
             }
 
             public void SetValueAsString(string Value)
             {
-                type result;
-                if (Converter.TryGetType(Value, out result))
+                object result;
+                if (Converter.TryGetTypeGeneral(Value, out result))
                     SetValue(result);
             }
 
-            public string GetValueAsString(string Value)
+            public string GetValueAsString()
             {
-                return Converter.GetString(GetValue());
+                return Converter.GetStringGeneral(GetValue());
             }
 
-            public type GetValue()
+            public bool IsValid(object obj)
+            {
+                if (obj.GetType() == GetGenericType())//?
+                {
+                    return IsValidObject(obj);
+                }
+                return false;
+            }
+
+            public object GetValue()
             {
                 object data;
                 if( Setting.Values.TryGetValue(Key, out data) == false)
@@ -81,8 +114,8 @@ namespace BookViewerApp
                 }
                 else
                 {
-                    type result;
-                    if(Converter.TryGetType(data.ToString(),out result))
+                    object result;
+                    if(Converter.TryGetTypeGeneral(data.ToString(),out result))
                     {
                         Cache = result;
                         return result;
@@ -96,58 +129,123 @@ namespace BookViewerApp
             }
         }
 
-        public interface TypeConverter<type>
+        public interface TypeConverter
         {
-            String GetString(type value);
-            bool TryGetType(string value,out type result);
+            String GetStringGeneral(object value);
+            bool TryGetTypeGeneral(string value, out object result);
+
+            Type GetConvertType();
         }
+
 
         public class TypeConverters
         {
-            public class StringConverter : TypeConverter<string>
+            public class StringConverter : TypeConverter
             {
-                public string GetString(string value)
+                public Type GetConvertType()
                 {
-                    return value;
+                    return typeof(string);
                 }
 
-                public bool TryGetType(string value, out string result)
+                public string GetStringGeneral(object value)
+                {
+                    return value.ToString();
+                }
+
+                public bool TryGetTypeGeneral(string value, out object result)
                 {
                     result = value;
                     return true;
                 }
+
             }
 
-            public class IntConverter : TypeConverter<int>
+            public class BoolConverter : TypeConverter
             {
-                public string GetString(int value)
+                public Type GetConvertType()
+                {
+                    return typeof(bool);
+                }
+
+                public string GetStringGeneral(object value)
                 {
                     return value.ToString();
                 }
 
-                public bool TryGetType(string value, out int result)
+                public bool TryGetTypeGeneral(string value, out object result)
                 {
-                    return int.TryParse(value, out result);
+                    bool data;
+                    if (bool.TryParse(value, out data))
+                    {
+                        result = data;
+                        return true;
+                    }
+                    result = null;
+                    return false;
                 }
             }
 
-            public class DoubleConverter : TypeConverter<double>
+            public class IntConverter : TypeConverter
             {
-                public string GetString(double value)
+                public Type GetConvertType()
+                {
+                    return typeof(int);
+                }
+
+                public string GetStringGeneral(object value)
                 {
                     return value.ToString();
                 }
 
-                public bool TryGetType(string value, out double result)
+                public bool TryGetTypeGeneral(string value, out object result)
                 {
-                    return double.TryParse(value, out result);
+                    int data;
+                    if (int.TryParse(value, out data))
+                    {
+                        result = data;
+                        return true;
+                    }
+                    result = null;
+                    return false;
+                }
+
+            }
+
+            public class DoubleConverter : TypeConverter
+            {
+                public Type GetConvertType()
+                {
+                    return typeof(double);
+                }
+
+                public string GetStringGeneral(object value)
+                {
+                    return value.ToString();
+                }
+
+                public bool TryGetTypeGeneral(string value, out object result)
+                {
+                    double data;
+                    if (double.TryParse(value, out data))
+                    {
+                        result = data;
+                        return true;
+                    }
+                    result = null;
+                    return false;
                 }
             }
 
-            public class SerializableConverter<type> : TypeConverter<type>
+            public class SerializableConverter<type> : TypeConverter
             {
-                public string GetString(type value)
+                public Type GetConvertType()
                 {
+                    return typeof(type);
+                }
+
+                public string GetStringGeneral(object value)
+                {
+                    if (!(value is type)) return null;
                     System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
                     using (System.IO.TextWriter tw = new System.IO.StringWriter())
                     {
@@ -156,16 +254,7 @@ namespace BookViewerApp
                     }
                 }
 
-                public type AsType(string value)
-                {
-                    System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
-                    using (System.IO.TextReader tr = new System.IO.StringReader(value))
-                    {
-                        return (type)xs.Deserialize(tr);
-                    }
-                }
-
-                public bool TryGetType(string value, out type result)
+                public bool TryGetTypeGeneral(string value, out object result)
                 {
                     System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
                     using (System.IO.TextReader tr = new System.IO.StringReader(value))

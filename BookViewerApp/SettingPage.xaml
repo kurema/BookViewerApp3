@@ -5,9 +5,42 @@
     xmlns:local="using:BookViewerApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:template="using:BookViewerApp.TemplateSelectors"
     mc:Ignorable="d">
-
-    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </StackPanel>
+    <Page.Resources>
+        <Style TargetType="Border" x:Key="ItemBorder">
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="3"/>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <ListView x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsItemClickEnabled="False" Grid.ColumnSpan="2">
+            <ListView.ItemTemplateSelector>
+                <template:SettingTemplateSelector>
+                    <template:SettingTemplateSelector.TemplateBool>
+                        <DataTemplate>
+                            <Border Style="{StaticResource ItemBorder}">
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Description}"/>
+                                    <ToggleSwitch IsOn="{Binding Value,Mode=TwoWay}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </template:SettingTemplateSelector.TemplateBool>
+                    <template:SettingTemplateSelector.TemplateDouble>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding Title}"/>
+                                <Slider Value="{Binding Value}" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </template:SettingTemplateSelector.TemplateDouble>
+                </template:SettingTemplateSelector>
+            </ListView.ItemTemplateSelector>
+        </ListView>
+    </Grid>
 </Page>

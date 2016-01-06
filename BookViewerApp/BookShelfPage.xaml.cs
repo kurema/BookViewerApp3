@@ -103,5 +103,10 @@ namespace BookViewerApp
         {
             this.Frame.Navigate(typeof(InfoPage));
         }
+
+        private void AppBarButton_Click_GoToSetting(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SettingPage));
+        }
     }
 }

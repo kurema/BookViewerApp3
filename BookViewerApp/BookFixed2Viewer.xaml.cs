@@ -93,6 +93,11 @@ namespace BookViewerApp
             currentView.AppViewBackButtonVisibility = Frame.CanGoBack ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed; currentView.BackRequested += CurrentView_BackRequested;
             currentView.BackRequested += CurrentView_BackRequested;
 
+            if ((bool)SettingStorage.GetValue("DefaultFullScreen"))
+            {
+                var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+                v.TryEnterFullScreenMode();
+            }
         }
 
         public struct BookAndParentNavigationParamater
@@ -124,14 +129,18 @@ namespace BookViewerApp
             }
         }
 
-        private void AppBarButton_ToggleFullScreen(object sender, RoutedEventArgs e)
+        public void ToggleFullScreen()
         {
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
             if (v.IsFullScreenMode)
                 v.ExitFullScreenMode();
             else
                 v.TryEnterFullScreenMode();
+        }
 
+        private void AppBarButton_ToggleFullScreen(object sender, RoutedEventArgs e)
+        {
+            ToggleFullScreen();
         }
     }
 }

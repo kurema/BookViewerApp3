@@ -176,7 +176,7 @@ namespace BookViewerApp
             private DateTime ReadTimeThis;
             public DateTime ReadTimeLast;
             public double ReadTimeSpan;
-            public bool PageReversed = false;
+            public bool PageReversed = (bool)SettingStorage.GetValue("DefaultPageReverse");
 
             public BookInfo()
             {
