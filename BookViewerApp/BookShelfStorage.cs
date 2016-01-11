@@ -129,6 +129,7 @@ namespace BookViewerApp
             {
                 result.Folders.AddRange(GetFlatBookShelf(item).Folders);
             }
+            shelf.Folders = new List<BookContainer>();
             return result;
         }
 

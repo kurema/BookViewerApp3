@@ -168,6 +168,21 @@
   <data name="PageTop.Label" xml:space="preserve">
     <value>First</value>
   </data>
+  <data name="Setting.Label" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>Set full screen mode on when you open a book.</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>Set full screen as default.</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>Reverse page as default when you open a new book.</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>Reverse page as default.</value>
+  </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>
   </data>

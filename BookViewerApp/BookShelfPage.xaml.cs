@@ -54,7 +54,7 @@ namespace BookViewerApp
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var picker= new Windows.Storage.Pickers.FolderPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensions)
+            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
             {
                 picker.FileTypeFilter.Add(ext);
             }
@@ -73,11 +73,13 @@ namespace BookViewerApp
                 //    bs.Folders = new List<BookShelfStorage.BookContainer>() { str };
                 //    storage.Add(bs);
                 //}
+
+                Refresh();
+
                 dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Completed/Message"), rl.GetString("LoadingFolder/Title"));
                 await dialog.ShowAsync();
             }
             await BookShelfStorage.SaveAsync();
-            Refresh();
         }
 
         private async void AppBarButton_Click_ClearBookShelfStorage(object sender, RoutedEventArgs e)
@@ -90,7 +92,7 @@ namespace BookViewerApp
         private async void AppBarButton_Click_2(object sender, RoutedEventArgs e)
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensions)
+            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
             {
                 picker.FileTypeFilter.Add(ext);
             }

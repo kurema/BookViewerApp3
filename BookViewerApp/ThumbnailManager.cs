@@ -76,7 +76,12 @@ namespace BookViewerApp
 
         public static String EscapeString(string str)
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(str)).Replace("=", "").Replace('+', '-').Replace('/', '_');
+            //return Convert.ToBase64String(Encoding.UTF8.GetBytes(str)).Replace("=", "").Replace('+', '-').Replace('/', '_');
+            foreach(char t in System.IO.Path.GetInvalidFileNameChars())
+            {
+                str=str.Replace(t, '_');
+            }
+            return str;
         }
     }
 }

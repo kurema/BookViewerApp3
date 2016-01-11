@@ -40,7 +40,6 @@ namespace BookViewerApp
 
         public static async Task SaveStreamToFile(Windows.Storage.Streams.IRandomAccessStream stream,Windows.Storage.IStorageFile file)
         {
-            stream.Seek(0);
             using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
             {
                 var buffer = new byte[stream.Size];

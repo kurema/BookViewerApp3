@@ -65,7 +65,7 @@ namespace BookViewerApp.Books.Cbz
             );
 
             var entries = new List<ZipArchiveEntry>();
-            string[] supportedFile = {".jpg",".jpeg",".gif",".png",".bmp",".tiff",".tif",".hdp",".wdp",".jxr"};//Not smart yet.
+            string[] supportedFile = BookManager.AvailableExtensionsImage;
             var cm=Content.Mode;
             var files = Content.Entries;
             foreach(var file in files)

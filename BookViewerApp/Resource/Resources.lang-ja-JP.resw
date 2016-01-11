@@ -178,7 +178,7 @@
     <value>標準で全画面表示にする</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
-    <value>新たに開いたり本を右綴じと認識する。</value>
+    <value>新たに開いた本を右綴じと認識する。</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
     <value>標準で右綴じにする</value>

@@ -25,7 +25,7 @@ namespace BookViewerApp.Books
     public interface IPageFixed
     {
         IPageOptions Option { get; set; }
-        Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
+        //Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
         Task SetBitmapAsync(Windows.UI.Xaml.Media.Imaging.BitmapImage image);
         Task<bool> UpdateRequiredAsync();
         Task SaveImageAsync(Windows.Storage.StorageFile file,uint width);
@@ -122,11 +122,11 @@ namespace BookViewerApp.Books
                 return PageCache;
         }
 
-        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
-        {
-            var body = await GetPage();
-            return await body.GetBitmapAsync();
-        }
+        //public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
+        //{
+        //    var body = await GetPage();
+        //    return await body.GetBitmapAsync();
+        //}
 
         public async Task<bool> UpdateRequiredAsync()
         {

@@ -118,6 +118,12 @@
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding License}" Text="{Binding Content}" FontSize="8"/>
             </Grid>
         </GridViewItem>
-    </VariableSizedWrapGrid>
+            <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileExtraBig}">
+                <Grid>
+                    <TextBlock VerticalAlignment="Bottom" Text="SharpCompress"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding License}" Text="{Binding Content}" FontSize="8"/>
+                </Grid>
+            </GridViewItem>
+        </VariableSizedWrapGrid>
     </ScrollViewer>
 </Page>

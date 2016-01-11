@@ -25,14 +25,24 @@ namespace BookViewerApp.Books
                 await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
                 return book;
             }
+            else if (new string[] { ".rar", ".cbr" }.Contains(Path.GetExtension(file.Path).ToLower()))
+            {
+                var book = new Books.Compressed.CompressedBook();
+                await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                return book;
+            }
+
             return null;
         }
 
-        public static string[] AvailableExtensions { get { return new string[] { ".pdf", ".zip", ".cbz" }; } }
+        public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr" }; } }
+
+        public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr" }; } }
+
 
         public static bool IsFileAvailabe(Windows.Storage.IStorageFile file)
         {
-            return AvailableExtensions.Contains(Path.GetExtension(file.Path).ToLower());
+            return AvailableExtensionsArchive.Contains(Path.GetExtension(file.Path).ToLower());
         }
 
         public static string StorageItemRegister(Windows.Storage.IStorageItem file)
@@ -85,7 +95,7 @@ namespace BookViewerApp.Books
         public async static Task<Books.IBook> PickBook()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensions)
+            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
             {
                 picker.FileTypeFilter.Add(ext);
             }
