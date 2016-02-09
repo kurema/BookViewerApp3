@@ -13,7 +13,7 @@
 
     <ScrollViewer x:Name="scrollViewer" ZoomMode="Enabled" MinZoomFactor="1.0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged">
         <Grid x:Name="grid">
-            <Image Source="{Binding Source}"  HorizontalAlignment="Center" />
+            <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

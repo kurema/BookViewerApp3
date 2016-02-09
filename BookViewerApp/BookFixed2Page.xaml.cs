@@ -28,6 +28,8 @@ namespace BookViewerApp
         {
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
+
+            (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
         }
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)

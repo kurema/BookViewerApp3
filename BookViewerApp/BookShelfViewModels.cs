@@ -26,7 +26,7 @@ namespace BookViewerApp.BookShelfViewModels
                 {
                     var content = new BookShelfViewModel();
                     content.Title = item.Title;
-                    content.Containers = new ObservableCollection<BookContainerViewModel>(await BookContainerViewModel.GetFromBookShelfStorage(item.Folders));
+                    content.Containers = new ObservableCollection<BookContainerViewModel>(await BookContainerViewModel.GetFromBookShelfStorage(item.Folders,content));
                     result.Add(content);
                 }
             }
@@ -100,12 +100,11 @@ namespace BookViewerApp.BookShelfViewModels
 
     public class BookContainerViewModel : INotifyPropertyChanged, IEnumerable<IItemViewModel>, IItemViewModel
     {
-        public BookContainerViewModel(string Title)
+        public BookContainerViewModel(string Title,BookShelfViewModel Shelf, BookContainerViewModel Parent=null)
         {
             this.Title = Title;
-        }
-        public BookContainerViewModel()
-        {
+            this.Parent = Parent;
+            this.BookShelf = Shelf;
         }
 
         public string TitleID
@@ -126,6 +125,9 @@ namespace BookViewerApp.BookShelfViewModels
                 return result;
             }
         }
+
+        public BookContainerViewModel Parent { get; private set; }
+        public BookShelfViewModel BookShelf { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
@@ -174,37 +176,36 @@ namespace BookViewerApp.BookShelfViewModels
             Books.Add(item);
         }
 
-        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index)
+        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index, BookShelfViewModel Shelf)
         {
             var storages= await BookShelfStorage.GetBookShelves();
             if (storages.Count > index)
             {
-                return await GetFromBookShelfStorage(storages[index].Folders);
+                return await GetFromBookShelfStorage(storages[index].Folders,Shelf);
             }
             else {
                 return new BookContainerViewModel[0];
             }
-
         }
 
-        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookContainer> storages)
+        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookContainer> storages, BookShelfViewModel Shelf)
         {
             var result = new List<BookContainerViewModel>();
 
             foreach (var item in storages)
             {
-                result.Add(await GetFromBookShelfStorage(item));
+                result.Add(await GetFromBookShelfStorage(item,Shelf));
             }
             return result.ToArray();
         }
 
 
-        public async static Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage)
+        public async static Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage,BookShelfViewModel Shelf,BookContainerViewModel Parent=null)
         {
-            BookContainerViewModel result = new BookContainerViewModel(storage.Title);
+            BookContainerViewModel result = new BookContainerViewModel(storage.Title,Shelf,Parent);
             foreach (var item in storage.Folders)
             {
-                result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookContainer));
+                result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookContainer,Shelf,result));
             }
             foreach (var item in storage.Files)
             {

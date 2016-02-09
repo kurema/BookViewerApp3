@@ -35,7 +35,6 @@ namespace BookViewerApp.Books
     {
         double TargetWidth { get; }
         double TargetHeight { get; }
-        //event EventHandler Updated;
     }
 
     public class PageOptions : IPageOptions
@@ -67,7 +66,6 @@ namespace BookViewerApp.Books
                 _TargetControl.SizeChanged += Control_SizeChanged;
                 OnPropertyChanged(nameof(TargetWidth));
                 OnPropertyChanged(nameof(TargetHeight));
-
             }
         }
         private Windows.UI.Xaml.Controls.Control _TargetControl;

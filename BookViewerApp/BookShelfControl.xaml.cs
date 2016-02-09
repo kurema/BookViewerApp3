@@ -48,16 +48,6 @@ namespace BookViewerApp
             BookShelfItemsSource.Source = vms;
         }
 
-        public async Task OpenAsync()
-        {
-            SetSource(await BookShelfViewModels.BookContainerViewModel.GetFromBookShelfStorage(0));
-        }
-
-        public async Task OpenAsync(params BookShelfStorage.BookContainer[] storage)
-        {
-            SetSource(await BookShelfViewModels.BookContainerViewModel.GetFromBookShelfStorage(storage));
-        }
-
         private void SetBookShelfItemSize(double width,double height)
         {
             BookShelfItemStyle.Setters.Clear();

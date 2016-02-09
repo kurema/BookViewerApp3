@@ -141,7 +141,9 @@ namespace BookViewerApp.BookFixed2ViewModels
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
-        public PageViewModel(Books.IPageFixed page) { this.Page = page; }
+        public PageViewModel(Books.IPageFixed page) {
+            this.Page = page;
+        }
 
         private Books.IPageFixed Page;
 
@@ -150,9 +152,16 @@ namespace BookViewerApp.BookFixed2ViewModels
                 if (_Source != null) return _Source;
                 _Source = new BitmapImage();
                 SetImageNoWait(_Source);
+                //Page.Option.PropertyChanged += (s, e) => SetImageNoWait(_Source);
                 return _Source;
-            } }
+            }
+        }
         public BitmapImage _Source;
+
+        public void UpdateSource()
+        {
+            SetImageNoWait(_Source);
+        }
 
         private async void SetImageNoWait(BitmapImage im)
         {
@@ -162,7 +171,6 @@ namespace BookViewerApp.BookFixed2ViewModels
 
     public class Commands
     {
-
         public interface ICommandEventRaiseable : System.Windows.Input.ICommand
         {
             void OnCanExecuteChanged();

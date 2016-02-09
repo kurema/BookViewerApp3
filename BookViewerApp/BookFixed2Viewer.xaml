@@ -32,11 +32,6 @@
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <local:BookFixed2Page DataContext="{Binding}"/>
-                    <!--<ScrollViewer ZoomMode="Enabled" MinZoomFactor="1.0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <Grid>
-                            <Image Source="{Binding Source}"  HorizontalAlignment="Center" />
-                        </Grid>
-                    </ScrollViewer>-->
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
