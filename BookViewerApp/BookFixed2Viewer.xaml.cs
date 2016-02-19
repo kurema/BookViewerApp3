@@ -27,6 +27,12 @@ namespace BookViewerApp
             this.InitializeComponent();
 
             Application.Current.Suspending += CurrentApplication_Suspending;
+
+            if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
+            {
+                this.AppBarButtonLeftmost.Visibility = Visibility.Collapsed;
+                this.AppBarButtonRightmost.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void CurrentApplication_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)

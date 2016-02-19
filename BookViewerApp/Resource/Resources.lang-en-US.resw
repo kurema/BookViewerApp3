@@ -195,6 +195,12 @@
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
     <value>Reverse page as default.</value>
   </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
+    <value>Show go to rightmost/leftmost button in book viewer.</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
+    <value>Show go to rightmost /leftmost button.</value>
+  </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>
   </data>

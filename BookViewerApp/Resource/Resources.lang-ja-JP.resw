@@ -195,6 +195,12 @@
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
     <value>標準で右綴じにする</value>
   </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
+    <value>ブックビュワーで右端/左端へ移動するボタンを表示する。</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
+    <value>右端/左端へのボタンを表示する</value>
+  </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>全画面モード切替</value>
   </data>

@@ -37,10 +37,17 @@
         </FlipView>
         <CommandBar Background="Transparent" x:Name="CommandBar1" VerticalAlignment="Bottom">
             <CommandBar.PrimaryCommands>
-                <AppBarButton Icon="Previous" x:Uid="PageLeftmost" Command="{Binding PageVisualSetCommand}" CommandParameter="0"/>
+                <!--<AppBarButton Icon="Bookmarks" x:Uid="Bookmarks">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <Button Content="Hi"/>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>-->
+                <AppBarButton x:Name="AppBarButtonLeftmost" Icon="Previous" x:Uid="PageLeftmost" Command="{Binding PageVisualSetCommand}" CommandParameter="0"/>
                 <AppBarButton Icon="Previous" x:Uid="PageLeft" Command="{Binding PageVisualAddCommand}" CommandParameter="-1"/>
                 <AppBarButton Icon="Next" x:Uid="PageRight" Command="{Binding PageVisualAddCommand}" CommandParameter="1"/>
-                <AppBarButton Icon="Next" x:Uid="PageRightmost" Command="{Binding PageVisualMaxCommand}"/>
+                <AppBarButton x:Name="AppBarButtonRightmost" Icon="Next" x:Uid="PageRightmost" Command="{Binding PageVisualMaxCommand}"/>
                 <AppBarButton Icon="OpenFile" x:Uid="OpenLocalBook" Click="AppBarButton_OpenFile"/>
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>

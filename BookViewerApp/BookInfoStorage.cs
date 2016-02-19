@@ -31,11 +31,18 @@ namespace BookViewerApp
         {
             var infoRoaming = (await LoadAsyncOne(await GetDataFileRoamingAsync(), fileRoamingSemaphore) ?? new BookInfo[0]).ToList();
             var infoLocal = (await LoadAsyncOne(await GetDataFileLocalAsync(), fileLocalSemaphore) ?? new BookInfo[0]).ToList();
-            foreach(var item in infoLocal)
+            foreach (var item in infoLocal)
             {
-                if (infoRoaming.FindIndex((s) => s.ID == item.ID) == -1)
+                var rindex = infoRoaming.FindIndex((s) => s.ID == item.ID);
+                if (rindex == -1)
                 {
                     infoRoaming.Add(item);
+                }
+                else if (infoRoaming[rindex].ReadTimeLast < item.ReadTimeLast)
+                {
+                    infoRoaming.RemoveAt(rindex);
+                    infoRoaming.Add(item);
+
                 }
             }
             return infoRoaming.ToArray();

@@ -322,4 +322,8 @@ namespace BookViewerApp.BookFixed2ViewModels
         }
     }
 
+    public class BookmarkViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
 }
