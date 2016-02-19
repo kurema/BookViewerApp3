@@ -156,6 +156,12 @@
   <data name="PageEnd.Label" xml:space="preserve">
     <value>End</value>
   </data>
+  <data name="PageLeft.Label" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="PageLeftmost.Label" xml:space="preserve">
+    <value>Leftmost</value>
+  </data>
   <data name="PageNext.Label" xml:space="preserve">
     <value>Next</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="PageReverse.Label" xml:space="preserve">
     <value>Reverse page direction</value>
+  </data>
+  <data name="PageRight.Label" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="PageRightmost.Label" xml:space="preserve">
+    <value>Rightmost</value>
   </data>
   <data name="PageTop.Label" xml:space="preserve">
     <value>First</value>

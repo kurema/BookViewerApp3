@@ -11,6 +11,8 @@
     >
     <Page.Resources>
         <x:Double x:Key="TileSize">100</x:Double>
+        <x:Double x:Key="TileLicenseSize">400</x:Double>
+
         <Thickness x:Key="MarginTile">10</Thickness>
         <Thickness x:Key="MarginInside">5</Thickness>
         <Style TargetType="Grid">
@@ -25,6 +27,10 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="GridViewItem" x:Key="TileLicense" BasedOn="{StaticResource TileBasic}">
+            <Setter Property="VariableSizedWrapGrid.ColumnSpan" Value="4"/>
+            <Setter Property="VariableSizedWrapGrid.RowSpan" Value="4"/>
         </Style>
         <Style TargetType="GridViewItem" x:Key="TileExtraBig" BasedOn="{StaticResource TileBasic}">
             <Setter Property="VariableSizedWrapGrid.ColumnSpan" Value="3"/>
@@ -55,6 +61,7 @@
         <vm:Info/>
     </Page.DataContext>
     <ScrollViewer  VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
+        <StackPanel>
     <VariableSizedWrapGrid ItemHeight="{StaticResource TileSize}" ItemWidth="{StaticResource TileSize}" Orientation="Horizontal">
         <GridViewItem Style="{StaticResource TileExtraBig}" Background="{StaticResource BrushBlue}">
         <Grid>
@@ -112,18 +119,27 @@
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Description}"/>
             </Grid>
         </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileExtraBig}">
+                <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileLicense}">
             <Grid>
                 <TextBlock VerticalAlignment="Bottom" Text="License"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding License}" Text="{Binding Content}" FontSize="8"/>
-            </Grid>
-        </GridViewItem>
-            <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileExtraBig}">
-                <Grid>
-                    <TextBlock VerticalAlignment="Bottom" Text="SharpCompress"/>
-                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding License}" Text="{Binding Content}" FontSize="8"/>
+                    <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock DataContext="{Binding License}" Text="{Binding Content}" />
+                    </Viewbox>
                 </Grid>
-            </GridViewItem>
+        </GridViewItem>
         </VariableSizedWrapGrid>
+            <GridView ItemsSource="{Binding Licenses}">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                            <Grid Background="{StaticResource BrushTeal}" Width="{StaticResource TileLicenseSize}" Height="{StaticResource TileLicenseSize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock VerticalAlignment="Bottom" Text="{Binding Title}" Foreground="White"/>
+                                <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Content}" Foreground="White" />
+                                </Viewbox>
+                            </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </StackPanel>
     </ScrollViewer>
 </Page>

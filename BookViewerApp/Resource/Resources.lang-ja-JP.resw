@@ -156,6 +156,12 @@
   <data name="PageEnd.Label" xml:space="preserve">
     <value>最後</value>
   </data>
+  <data name="PageLeft.Label" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="PageLeftmost.Label" xml:space="preserve">
+    <value>左端</value>
+  </data>
   <data name="PageNext.Label" xml:space="preserve">
     <value>次</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="PageReverse.Label" xml:space="preserve">
     <value>ページ方向を転換</value>
+  </data>
+  <data name="PageRight.Label" xml:space="preserve">
+    <value>右</value>
+  </data>
+  <data name="PageRightmost.Label" xml:space="preserve">
+    <value>右端</value>
   </data>
   <data name="PageTop.Label" xml:space="preserve">
     <value>最初</value>

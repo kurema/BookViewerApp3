@@ -156,6 +156,12 @@
   <data name="PageEnd.Label" xml:space="preserve">
     <value>最后页</value>
   </data>
+  <data name="PageLeft.Label" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="PageLeftmost.Label" xml:space="preserve">
+    <value>左端</value>
+  </data>
   <data name="PageNext.Label" xml:space="preserve">
     <value>上页</value>
   </data>
@@ -165,8 +171,29 @@
   <data name="PageReverse.Label" xml:space="preserve">
     <value>反向页面方向</value>
   </data>
+  <data name="PageRight.Label" xml:space="preserve">
+    <value>右</value>
+  </data>
+  <data name="PageRightmost.Label" xml:space="preserve">
+    <value>右端</value>
+  </data>
   <data name="PageTop.Label" xml:space="preserve">
     <value>首页</value>
+  </data>
+  <data name="Setting.Label" xml:space="preserve">
+    <value>环境</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>当你打开一本书阅读器，自动切换到全屏模式。</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>要在标准的全屏幕显示</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>认识到正确的结合新近打开的书</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>向右标准结合</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>切换全屏模式</value>

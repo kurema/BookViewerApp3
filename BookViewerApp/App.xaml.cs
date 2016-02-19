@@ -37,6 +37,7 @@ namespace BookViewerApp
         {
             await BookInfoStorage.LoadAsync();
             await BookShelfStorage.LoadAsync();
+            await LicenseStorage.LoadAsync();
         }
 
         /// <summary>
