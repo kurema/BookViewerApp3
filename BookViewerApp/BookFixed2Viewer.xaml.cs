@@ -20,9 +20,9 @@ namespace BookViewerApp
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class BookFixedViewer2 : Page
+    public sealed partial class BookFixed2Viewer : Page
     {
-        public BookFixedViewer2()
+        public BookFixed2Viewer()
         {
             this.InitializeComponent();
 
@@ -147,6 +147,14 @@ namespace BookViewerApp
         private void AppBarButton_ToggleFullScreen(object sender, RoutedEventArgs e)
         {
             ToggleFullScreen();
+        }
+
+        private void BookmarkClicked(object sender, ItemClickEventArgs e)
+        {
+            if (this.DataContext != null && this.DataContext is BookFixed2ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is BookFixed2ViewModels.BookmarkViewModel)
+            {
+                (this.DataContext as BookFixed2ViewModels.BookViewModel).PageSelected = (e.ClickedItem as BookFixed2ViewModels.BookmarkViewModel).Page;
+            }
         }
     }
 }

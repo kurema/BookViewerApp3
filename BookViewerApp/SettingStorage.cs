@@ -27,10 +27,11 @@ namespace BookViewerApp
                 return _SettingInstances=_SettingInstances ??
                     new SettingInstance[]
                     {
-                        new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter(),false),
-                        new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter(),false),
-                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",true,new TypeConverters.BoolConverter(),true),
-
+                        new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter()),
+                        new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter()),
+                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",true,new TypeConverters.BoolConverter()),
+                        new SettingInstance("SyncBookmarks","SyncBookmarks",true,new TypeConverters.BoolConverter()),
+                        new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter()),
                     };
             }
         }

@@ -17,7 +17,7 @@
         </Style>
     </Page.Resources>
     <Grid>
-        <ListView x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsItemClickEnabled="False" Grid.ColumnSpan="2">
+        <ListView x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsItemClickEnabled="False" Grid.ColumnSpan="2" SelectionMode="None">
             <ListView.ItemTemplateSelector>
                 <template:SettingTemplateSelector>
                     <template:SettingTemplateSelector.TemplateBool>

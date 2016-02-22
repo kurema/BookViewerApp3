@@ -29,7 +29,7 @@ namespace BookViewerApp
 
         internal static async Task<BookInfo[]> LoadAsync()
         {
-            var infoRoaming = (await LoadAsyncOne(await GetDataFileRoamingAsync(), fileRoamingSemaphore) ?? new BookInfo[0]).ToList();
+            var infoRoaming = (bool)SettingStorage.GetValue("SyncBookmarks") ? (await LoadAsyncOne(await GetDataFileRoamingAsync(), fileRoamingSemaphore) ?? new BookInfo[0]).ToList() : new List<BookInfo>();
             var infoLocal = (await LoadAsyncOne(await GetDataFileLocalAsync(), fileLocalSemaphore) ?? new BookInfo[0]).ToList();
             foreach (var item in infoLocal)
             {
@@ -90,6 +90,8 @@ namespace BookViewerApp
 
         private static async Task SaveDataRoamingAsync(BookInfo[] items)
         {
+            if (!(bool)SettingStorage.GetValue("SyncBookmarks")) { return; }
+
             await fileRoamingSemaphore.WaitAsync();
             try
             {
@@ -216,6 +218,7 @@ namespace BookViewerApp
             {
                 public uint Page = 0;
                 public BookmarkItemType Type = BookmarkItemType.UserDefined;
+                public string Title = "";
                 public enum BookmarkItemType
                 {
                     LastRead, UserDefined

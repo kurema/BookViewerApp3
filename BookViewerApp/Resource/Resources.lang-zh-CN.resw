@@ -183,24 +183,6 @@
   <data name="Setting.Label" xml:space="preserve">
     <value>环境</value>
   </data>
-  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
-    <value>当你打开一本书阅读器，自动切换到全屏模式。</value>
-  </data>
-  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
-    <value>要在标准的全屏幕显示</value>
-  </data>
-  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
-    <value>认识到正确的结合新近打开的书</value>
-  </data>
-  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>向右标准结合</value>
-  </data>
-  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
-    <value>显示一个按钮，一个书观察者移动到右/左边缘。</value>
-  </data>
-  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
-    <value>要查看按钮，最右边/左边缘</value>
-  </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>切换全屏模式</value>
   </data>

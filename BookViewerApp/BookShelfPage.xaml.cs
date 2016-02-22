@@ -31,11 +31,34 @@ namespace BookViewerApp
         }
 
         private async void Refresh() {
-            //ToDo: Search correct way of doing this.
             var src = await BookShelfViewModels.BookShelfViewModel.GetBookShelfViewModels(false);
             BookShelfList.ItemsSource = src;
             if (src.Count > 0)
-                BookShelfList.SelectedIndex = 0;
+            {
+                BookShelfList.SelectedIndex = this.LastSelectedBookShelfIndex;
+            }
+        }
+
+        private const string LastSelectedBookShelfIndexKey = "LastSelectedBookShelfIndex";
+
+        private int LastSelectedBookShelfIndex
+        {
+            get
+            {
+                if (Windows.Storage.ApplicationData.Current.LocalSettings.Values.ContainsKey(LastSelectedBookShelfIndexKey) && Windows.Storage.ApplicationData.Current.LocalSettings.Values[LastSelectedBookShelfIndexKey] is int)
+                {
+                    return (int)Windows.Storage.ApplicationData.Current.LocalSettings.Values[LastSelectedBookShelfIndexKey];
+                }
+                else { return 0; }
+            }
+            set
+            {
+                if (!Windows.Storage.ApplicationData.Current.LocalSettings.Values.ContainsKey(LastSelectedBookShelfIndexKey))
+                {
+                    Windows.Storage.ApplicationData.Current.LocalSettings.CreateContainer(LastSelectedBookShelfIndexKey, Windows.Storage.ApplicationDataCreateDisposition.Always);
+                }
+                Windows.Storage.ApplicationData.Current.LocalSettings.Values[LastSelectedBookShelfIndexKey] = value;
+            }
         }
 
         private async void BodyControl_ItemClicked(object sender, BookShelfControl.ItemClickedEventArgs e)
@@ -45,8 +68,8 @@ namespace BookViewerApp
                 var book = await (e.SelectedItem as BookShelfViewModels.BookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    var param = new BookFixedViewer2.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel };
-                    this.Frame.Navigate(typeof(BookFixedViewer2), param);
+                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel };
+                    this.Frame.Navigate(typeof(BookFixed2Viewer), param);
                 }
             }
         }
@@ -98,7 +121,7 @@ namespace BookViewerApp
             }
             var file = await picker.PickSingleFileAsync();
 
-            this.Frame.Navigate(typeof(BookFixedViewer2), file);
+            this.Frame.Navigate(typeof(BookFixed2Viewer), file);
         }
 
         private void AppBarButton_Click_GoToInfoPage(object sender, RoutedEventArgs e)
@@ -109,6 +132,13 @@ namespace BookViewerApp
         private void AppBarButton_Click_GoToSetting(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SettingPage));
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            this.LastSelectedBookShelfIndex = BookShelfList.SelectedIndex;
+
+            base.OnNavigatingFrom(e);
         }
     }
 }

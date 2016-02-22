@@ -126,6 +126,18 @@
   <data name="AppName" xml:space="preserve">
     <value>Book Viewer</value>
   </data>
+  <data name="BookmarkBasic.Title" xml:space="preserve">
+    <value>Bookmark</value>
+  </data>
+  <data name="BookmarkLastread.Title" xml:space="preserve">
+    <value>[Automatic]</value>
+  </data>
+  <data name="Bookmarks.Label" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
+    <value>Title</value>
+  </data>
   <data name="BookNext.Label" xml:space="preserve">
     <value>Read the next book</value>
   </data>
@@ -195,11 +207,23 @@
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
     <value>Reverse page as default.</value>
   </data>
+  <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
+    <value>Automatically open page where you read last time.</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
+    <value>Automatically open last read page.</value>
+  </data>
   <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
     <value>Show go to rightmost/leftmost button in book viewer.</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
     <value>Show go to rightmost /leftmost button.</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
+    <value>Sync bookmarks over the cloud.</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
+    <value>Sync bookmarks.</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>

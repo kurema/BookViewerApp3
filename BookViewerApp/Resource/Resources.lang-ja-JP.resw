@@ -126,6 +126,18 @@
   <data name="AppName" xml:space="preserve">
     <value>Book Viewer</value>
   </data>
+  <data name="BookmarkBasic.Title" xml:space="preserve">
+    <value>栞</value>
+  </data>
+  <data name="BookmarkLastread.Title" xml:space="preserve">
+    <value>[自動保存]</value>
+  </data>
+  <data name="Bookmarks.Label" xml:space="preserve">
+    <value>栞</value>
+  </data>
+  <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
   <data name="BookNext.Label" xml:space="preserve">
     <value>次の本へ</value>
   </data>
@@ -195,11 +207,23 @@
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
     <value>標準で右綴じにする</value>
   </data>
+  <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
+    <value>自動的に前回その本を読んだページを開きます。</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
+    <value>前回読んだページを開く。</value>
+  </data>
   <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
     <value>ブックビュワーで右端/左端へ移動するボタンを表示する。</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
     <value>右端/左端へのボタンを表示する</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
+    <value>クラウドを通じて栞を同期する。</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
+    <value>栞を同期する。</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>全画面モード切替</value>
