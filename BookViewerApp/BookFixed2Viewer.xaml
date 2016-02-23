@@ -41,15 +41,11 @@
                     <AppBarButton.Flyout>
                         <Flyout>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <ListView ItemsSource="{Binding Path=Bookmarks}" IsItemClickEnabled="True" ItemClick="BookmarkClicked" SelectionMode="None" Grid.ColumnSpan="2">
+                                <ListView ItemsSource="{Binding Path=Bookmarks}" IsItemClickEnabled="True" ItemClick="BookmarkClicked" SelectionMode="None">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -65,10 +61,7 @@
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
-                                <Button  Grid.Row="1" Grid.Column="1" Command="{Binding AddCurrentPageToBookmarkCommand}" CommandParameter="{Binding Text, ElementName=textBox}">
-                                    <SymbolIcon Symbol="Add"/>
-                                </Button>
-                                <TextBox x:Uid="BookmarkTitle" x:Name="textBox" Grid.Row="1" Grid.Column="0" PlaceholderText="Title"/>
+                                <TextBox x:Uid="BookmarkTitle" Grid.Row="1" Text="{Binding CurrentBookmarkName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Flyout>
                     </AppBarButton.Flyout>
@@ -87,7 +80,7 @@
             </CommandBar.SecondaryCommands>
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding Path=PageSelected,Mode=TwoWay}" VerticalAlignment="Center" InputScope="Number"/>
+                    <TextBox Text="{Binding Path=PageSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" InputScope="Number"/>
                     <TextBlock Text="/" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding Path=PagesCount,Mode=OneWay}" VerticalAlignment="Center"/>
                 </StackPanel>

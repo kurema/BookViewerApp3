@@ -106,13 +106,6 @@
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding License}" Text="{Binding Title}"/>
             </Grid>
         </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushDeepPurple}" Style="{StaticResource TileBig}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="Advertisement"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Ad"/>
-                <UI:AdControl AdUnitId="10043136" ApplicationId="d25517cb-12d4-4699-8bdc-52040c712cab" />
-            </Grid>
-        </GridViewItem>
         <GridViewItem Background="{StaticResource BrushIndigo}" Style="{StaticResource TileExtraBig}">
             <Grid>
                 <TextBlock VerticalAlignment="Bottom" Text="Description"/>
