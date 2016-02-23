@@ -42,7 +42,6 @@ namespace BookViewerApp
                 {
                     infoRoaming.RemoveAt(rindex);
                     infoRoaming.Add(item);
-
                 }
             }
             return infoRoaming.ToArray();
