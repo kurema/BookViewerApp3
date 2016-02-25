@@ -201,7 +201,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -1787,7 +1787,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -3406,7 +3406,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -5030,7 +5030,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -6649,7 +6649,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -8273,7 +8273,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -9892,7 +9892,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.3": {
+      "sharpcompress/0.11.5": {
         "compile": {
           "lib/netcore45/SharpCompress.dll": {}
         },
@@ -11924,8 +11924,8 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "sharpcompress/0.11.3": {
-      "sha512": "dvBjSCyTF10siV7LBTLWSk7jwIP0TsfAx+kub14aVSKCJoNS4k0mSZd62/71tlB0D27lk+LeDyg/YLN4NswOKA==",
+    "sharpcompress/0.11.5": {
+      "sha512": "X/70qpJHEz3VnRz4wM1CkehgMMCeqSOYxWl7wMpm83uSIMAeaGQw3ND097rAGy8Tg9YFN1KTvyBbd5nEOUtqeg==",
       "type": "Package",
       "files": [
         "[Content_Types].xml",
@@ -11933,7 +11933,7 @@
         "lib/net40/SharpCompress.dll",
         "lib/netcore45/SharpCompress.dll",
         "lib/portable-net4+sl5+wp8+win8/SharpCompress.dll",
-        "package/services/metadata/core-properties/342dde8f17a347fc96f2c2729e1b186d.psmdcp",
+        "package/services/metadata/core-properties/414089870a1b4e1ca1cc6d0f9f96500e.psmdcp",
         "sharpcompress.nuspec"
       ]
     },
@@ -14636,7 +14636,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",
-      "sharpcompress >= 0.11.3"
+      "sharpcompress >= 0.11.5"
     ],
     "UAP,Version=v10.0": []
   }
