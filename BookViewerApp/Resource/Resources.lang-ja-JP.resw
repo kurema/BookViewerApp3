@@ -211,7 +211,7 @@
     <value>自動的に前回その本を読んだページを開きます。</value>
   </data>
   <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
-    <value>前回読んだページを開く。</value>
+    <value>前回読んだページを開く</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
     <value>ブックビュワーで右端/左端へ移動するボタンを表示する。</value>
@@ -223,9 +223,15 @@
     <value>クラウドを通じて栞を同期する。</value>
   </data>
   <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
-    <value>栞を同期する。</value>
+    <value>栞を同期する</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>全画面モード切替</value>
+  </data>
+  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+    <value>本棚を削除</value>
+  </data>
+  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+    <value>本棚を秘密にする</value>
   </data>
 </root>

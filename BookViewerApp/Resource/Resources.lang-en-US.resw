@@ -228,4 +228,10 @@
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>
   </data>
+  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+    <value>Clear this bookshelf</value>
+  </data>
+  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+    <value>Toggle secret</value>
+  </data>
 </root>

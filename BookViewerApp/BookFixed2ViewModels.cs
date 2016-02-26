@@ -61,7 +61,8 @@ namespace BookViewerApp.BookFixed2ViewModels
             ID = value.ID;
             this.Pages = pages;
             BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
-            this.PageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1):1;
+            var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1):1;
+            this.PageSelected = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
             this.Reversed = BookInfo?.PageReversed ?? false;
             OnPropertyChanged(nameof(Reversed));
             this.AsBookShelfBook = null;
@@ -81,6 +82,7 @@ namespace BookViewerApp.BookFixed2ViewModels
         private BookInfoStorage.BookInfo BookInfo=null;
         public void SaveInfo()
         {
+            if (BookInfo == null) return;
             BookInfo.Bookmarks.Clear();
             BookInfo.SetLastReadPage((uint)this.PageSelected);
             foreach (var bm in this.Bookmarks)
@@ -228,7 +230,10 @@ namespace BookViewerApp.BookFixed2ViewModels
 
         private async void SetImageNoWait(BitmapImage im)
         {
-            await Page.SetBitmapAsync(im);
+            try {
+                await Page.SetBitmapAsync(im);
+            }
+            catch { }
         }
     }
 

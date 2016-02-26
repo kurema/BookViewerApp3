@@ -63,7 +63,7 @@
     <ScrollViewer  VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
         <StackPanel>
     <VariableSizedWrapGrid ItemHeight="{StaticResource TileSize}" ItemWidth="{StaticResource TileSize}" Orientation="Horizontal">
-        <GridViewItem Style="{StaticResource TileExtraBig}" Background="{StaticResource BrushBlue}">
+                <GridViewItem Style="{StaticResource TileExtraBig}" Background="#135c31">
         <Grid>
             <Image Source="{Binding LogoUri}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{StaticResource TileSize}" Height="{StaticResource TileSize}"/>
             <TextBlock Text="{Binding DisplayName}" TextWrapping="Wrap" HorizontalAlignment="Left"  VerticalAlignment="Bottom"/>

@@ -138,6 +138,9 @@
   <data name="ClearAllBookShelf.Label" xml:space="preserve">
     <value>清除所有书架</value>
   </data>
+  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+    <value>删除书架</value>
+  </data>
   <data name="GoToBookShelf.Label" xml:space="preserve">
     <value>去书架</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="PageTop.Label" xml:space="preserve">
     <value>首页</value>
+  </data>
+  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+    <value>秘密书架</value>
   </data>
   <data name="Setting.Label" xml:space="preserve">
     <value>环境</value>

@@ -17,7 +17,7 @@
         <CollectionViewSource Source="{Binding Path=Containers}" x:Name="BookShelfItemsSource" IsSourceGrouped="True" ItemsPath="Books"/>
     </UserControl.Resources>
 
-    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True" SelectedIndex="-1">
+    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True" SelectedIndex="-1" SelectionMode="None">
         <GridView.ItemTemplateSelector>
             <TemplateSelectors:BookShelfItemTemplateSelector>
                 <TemplateSelectors:BookShelfItemTemplateSelector.BookTemplate>

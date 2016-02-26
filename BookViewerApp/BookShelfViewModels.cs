@@ -27,6 +27,7 @@ namespace BookViewerApp.BookShelfViewModels
                     var content = new BookShelfViewModel();
                     content.Title = item.Title;
                     content.Containers = new ObservableCollection<BookContainerViewModel>(await BookContainerViewModel.GetFromBookShelfStorage(item.Folders,content));
+                    content.Secret = item.Secret;
                     result.Add(content);
                 }
             }
@@ -46,6 +47,13 @@ namespace BookViewerApp.BookShelfViewModels
                 else return null;
             }
         }
+
+        public bool Secret
+        {
+            get { return _Secret; }
+            set { _Secret = value; OnPropertyChanged(nameof(Secret)); }
+        }
+        private bool _Secret;
 
         private void OnPropertyChanged(string name)
         {
