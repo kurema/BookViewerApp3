@@ -21,7 +21,7 @@
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>D629419739D55AC867A783C36DB420BA532E32B0</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>3DD42531150CA1D6DFC9D8AECCB398801AAFFE60</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -119,6 +119,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="BookViewerApp_StoreKey.pfx" />
+    <None Include="BookViewerApp_TemporaryKey.pfx" />
     <None Include="project.json" />
     <PRIResource Include="Resource\Resources.lang-zh-CN.resw" />
     <PRIResource Include="Resource\Resources.lang-zh-TW.resw" />
@@ -232,8 +233,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BookViewerApp_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

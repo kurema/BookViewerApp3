@@ -228,7 +228,11 @@ namespace BookViewerApp
             for (int i = 0; i < storage.Count; i++)
             {
                 if (!storage[i].Secret || this.SecretMode) cnt++;
-                if (tgt == i) return cnt;
+                if (tgt == i)
+                {
+                    if (cnt == -1 && BookShelfList.Items.Count > 0) { return 0; }
+                    return cnt;
+                }
             }
             return Math.Min(0, BookShelfList.Items.Count - 1);
         }
