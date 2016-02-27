@@ -199,3 +199,4 @@ Screenshot/
 BundleArtifacts/
 *.appx
 _pkginfo.txt
+Package.StoreAssociation.xml

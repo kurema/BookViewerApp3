@@ -234,4 +234,19 @@
   <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
     <value>本棚を秘密にする</value>
   </data>
+  <data name="Setting_TileHeight.Description" xml:space="preserve">
+    <value>本棚で本を示すタイルの高さ</value>
+  </data>
+  <data name="Setting_TileHeight.Title" xml:space="preserve">
+    <value>本タイルの高さ</value>
+  </data>
+  <data name="Setting_TileWidth.Description" xml:space="preserve">
+    <value>本棚で本を示すタイルの幅</value>
+  </data>
+  <data name="Setting_TileWidth.Title" xml:space="preserve">
+    <value>本タイルの幅</value>
+  </data>
+  <data name="ReloadBookShelf.Label" xml:space="preserve">
+    <value>更新</value>
+  </data>
 </root>

@@ -77,6 +77,22 @@ namespace BookViewerApp
                 }
             }
 
+            public object Minimum
+            {
+                get
+                {
+                    return target.Minimum;
+                }
+            }
+
+            public object Maximum
+            {
+                get
+                {
+                    return target.Maximum;
+                }
+            }
+
             public string ValidRangeDescription
             {
                 get

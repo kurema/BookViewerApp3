@@ -183,6 +183,9 @@
   <data name="PageTop.Label" xml:space="preserve">
     <value>首页</value>
   </data>
+  <data name="ReloadBookShelf.Label" xml:space="preserve">
+    <value>更新</value>
+  </data>
   <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
     <value>秘密书架</value>
   </data>

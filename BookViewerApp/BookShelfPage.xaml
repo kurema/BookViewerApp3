@@ -19,6 +19,7 @@
             </CommandBar.SecondaryCommands>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_OpenLocalFile"/>
             <AppBarButton x:Uid="AddLocalDirectory" Icon="Folder" Label="" Click="AppBarButton_Click_AddLocalDirectory"/>
+            <AppBarButton x:Uid="ReloadBookShelf" Icon="Refresh" Label="" Click="AppBarButton_Click_ReloadBookShelf"/>
         </CommandBar>
     </Page.BottomAppBar>
     <Grid>
@@ -66,7 +67,10 @@
                     </ListView>
                 </Grid>
             </SplitView.Pane>
-            <local:BookShelfControl DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" x:Name="BodyControl"/>
+            <Grid>
+                <local:BookShelfControl DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" x:Name="BodyControl"/>
+                <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ProgressRing" IsActive="True" Visibility="Collapsed" Width="50" Height="50"/>
+            </Grid>
         </SplitView>
     </Grid>
 </Page>

@@ -24,7 +24,7 @@ namespace BookViewerApp
         {
             get
             {
-                return _SettingInstances=_SettingInstances ??
+                return _SettingInstances = _SettingInstances ??
                     new SettingInstance[]
                     {
                         new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter()),
@@ -32,6 +32,8 @@ namespace BookViewerApp
                         new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("SyncBookmarks","SyncBookmarks",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter()),
+                        new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter()) {Minimum=0,Maximum=1000 },
+                        new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=1000 },
                     };
             }
         }
@@ -59,6 +61,9 @@ namespace BookViewerApp
 
             public TypeConverter Converter { get; private set; }
             private object Cache;
+
+            public object Minimum{ get; set; }
+            public object Maximum { get; set; }
 
             private Windows.Storage.ApplicationDataContainer Setting { get { return (IsLocal ? LocalSettings : RoamingSettings); } }
 

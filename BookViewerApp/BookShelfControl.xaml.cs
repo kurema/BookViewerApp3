@@ -40,7 +40,7 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
-            SetBookShelfItemSize(300, 300);
+            SetBookShelfItemSize((double)SettingStorage.GetValue("TileWidth"), (double)SettingStorage.GetValue("TileHeight"));
         }
 
         public void SetSource(params BookShelfViewModels.BookContainerViewModel[] vms)

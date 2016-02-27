@@ -234,4 +234,19 @@
   <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
     <value>Toggle secret</value>
   </data>
+  <data name="Setting_TileHeight.Description" xml:space="preserve">
+    <value>The height of book tile in bookshelf.</value>
+  </data>
+  <data name="Setting_TileHeight.Title" xml:space="preserve">
+    <value>Height of book tile</value>
+  </data>
+  <data name="Setting_TileWidth.Description" xml:space="preserve">
+    <value>The width of book tile in bookshelf.</value>
+  </data>
+  <data name="Setting_TileWidth.Title" xml:space="preserve">
+    <value>Width of book tile</value>
+  </data>
+  <data name="ReloadBookShelf.Label" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
 </root>

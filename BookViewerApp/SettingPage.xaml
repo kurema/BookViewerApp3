@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:template="using:BookViewerApp.TemplateSelectors"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     mc:Ignorable="d">
     <Page.Resources>
         <Style TargetType="Border" x:Key="ItemBorder">
@@ -15,6 +16,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
+        <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
     </Page.Resources>
     <Grid>
         <ListView x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsItemClickEnabled="False" Grid.ColumnSpan="2" SelectionMode="None">
@@ -33,10 +35,16 @@
                     </template:SettingTemplateSelector.TemplateBool>
                     <template:SettingTemplateSelector.TemplateDouble>
                         <DataTemplate>
-                            <Grid>
-                                <TextBlock Text="{Binding Title}"/>
-                                <Slider Value="{Binding Value}" HorizontalAlignment="Right"/>
-                            </Grid>
+                            <Border Style="{StaticResource ItemBorder}">
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Description}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox InputScope="Number" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="30"/>
+                                        <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
                         </DataTemplate>
                     </template:SettingTemplateSelector.TemplateDouble>
                 </template:SettingTemplateSelector>

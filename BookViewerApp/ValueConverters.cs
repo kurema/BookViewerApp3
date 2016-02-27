@@ -22,6 +22,29 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
+    public class TextToDoubleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is string) { return value; }
+            else if (value is double) { return ((double)value).ToString(); }
+            return "0";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            double result;
+            if (double.TryParse(value.ToString(), out result))
+            {
+                return (double)result;
+            }
+            else
+            {
+                return 0.0;
+            }
+        }
+    }
+
     public class BookIdToImageSource : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

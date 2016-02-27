@@ -169,6 +169,17 @@ namespace BookViewerApp
                 var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
                 Title = rl.GetString("BookShelfTitleNew");
             }
+
+            public string GetFirstAccessToken() {
+                foreach (var f in this.Folders)
+                {
+                    if (f.Files.Count > 0)
+                    {
+                        return f.Files[0].Access.AccessToken;
+                    }
+                }
+                return null;
+            }
         }
 
         public class BookContainer
