@@ -201,14 +201,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Collections": "[4.0.0, )",
@@ -1785,14 +1777,6 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
-        }
-      },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -3404,14 +3388,6 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
-        }
-      },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -5030,14 +5006,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Collections": "[4.0.0, )",
@@ -6647,14 +6615,6 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
-        }
-      },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -8273,14 +8233,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Collections": "[4.0.0, )",
@@ -9890,14 +9842,6 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
-        }
-      },
-      "sharpcompress/0.11.5": {
-        "compile": {
-          "lib/netcore45/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netcore45/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -11922,19 +11866,6 @@
         "ref/net46/Microsoft.Win32.Primitives.dll",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._"
-      ]
-    },
-    "sharpcompress/0.11.5": {
-      "sha512": "X/70qpJHEz3VnRz4wM1CkehgMMCeqSOYxWl7wMpm83uSIMAeaGQw3ND097rAGy8Tg9YFN1KTvyBbd5nEOUtqeg==",
-      "type": "Package",
-      "files": [
-        "[Content_Types].xml",
-        "_rels/.rels",
-        "lib/net40/SharpCompress.dll",
-        "lib/netcore45/SharpCompress.dll",
-        "lib/portable-net4+sl5+wp8+win8/SharpCompress.dll",
-        "package/services/metadata/core-properties/414089870a1b4e1ca1cc6d0f9f96500e.psmdcp",
-        "sharpcompress.nuspec"
       ]
     },
     "System.AppContext/4.0.0": {
@@ -14635,8 +14566,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",
-      "sharpcompress >= 0.11.5"
+      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0"
     ],
     "UAP,Version=v10.0": []
   }

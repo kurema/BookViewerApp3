@@ -226,6 +226,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sharpcompress-0.11.5\SharpCompress\SharpCompress.Portable.csproj">
+      <Project>{7fa7d133-1417-4f85-9998-4c618ac8feda}</Project>
+      <Name>SharpCompress.Portable</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

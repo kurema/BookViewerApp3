@@ -5,16 +5,21 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookViewerApp", "BookViewerApp\BookViewerApp.csproj", "{AB303D80-1960-4AD3-A357-455B1E97215A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpCompress.Portable", "sharpcompress-0.11.5\SharpCompress\SharpCompress.Portable.csproj", "{7FA7D133-1417-4F85-9998-4C618AC8FEDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|ARM.ActiveCfg = Debug|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|ARM.Build.0 = Debug|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -24,6 +29,7 @@ Global
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|x86.ActiveCfg = Debug|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|x86.Build.0 = Debug|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|x86.Deploy.0 = Debug|x86
+		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|Any CPU.ActiveCfg = Release|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|ARM.ActiveCfg = Release|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|ARM.Build.0 = Release|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|ARM.Deploy.0 = Release|ARM
@@ -33,6 +39,22 @@ Global
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|x86.ActiveCfg = Release|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|x86.Build.0 = Release|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|x86.Deploy.0 = Release|x86
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Debug|x86.Build.0 = Debug|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|ARM.Build.0 = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|x64.Build.0 = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|x86.ActiveCfg = Release|Any CPU
+		{7FA7D133-1417-4F85-9998-4C618AC8FEDA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
