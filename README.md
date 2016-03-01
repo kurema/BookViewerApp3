@@ -14,5 +14,5 @@ A: Right tap on "about".
 
 Q: From where did you get books displayed on screenshot? Is it legal?  
 A: [Here](http://mangaonweb.com/satoshuho/download/). It's legal. "英語版" means "English version" by the way.  
-The screenshot is not in this repository because it's not compatible with MIT License.  
-I also recommend [mangaz.com](http://www.mangaz.com).
+The screenshots are not in this repository because it's not compatible with MIT License.  
+[j-comi](http://www.j-comi.jp/) also provided some free PDFs but not anymore.
