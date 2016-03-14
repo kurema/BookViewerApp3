@@ -200,4 +200,3 @@ BundleArtifacts/
 *.appx
 _pkginfo.txt
 Package.StoreAssociation.xml
-sharpcompress-*/
