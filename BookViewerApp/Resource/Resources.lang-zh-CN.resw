@@ -126,6 +126,12 @@
   <data name="AppName" xml:space="preserve">
     <value>Book Viewer</value>
   </data>
+  <data name="BookmarkLast.Title" xml:space="preserve">
+    <value>最后页</value>
+  </data>
+  <data name="BookmarkTop.Title" xml:space="preserve">
+    <value>首页</value>
+  </data>
   <data name="BookNext.Label" xml:space="preserve">
     <value>读下书</value>
   </data>

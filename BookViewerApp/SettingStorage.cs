@@ -29,11 +29,12 @@ namespace BookViewerApp
                     {
                         new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter()),
                         new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter()),
-                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",true,new TypeConverters.BoolConverter()),
+                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter()),
                         new SettingInstance("SyncBookmarks","SyncBookmarks",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter()) {Minimum=0,Maximum=1000 },
                         new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=1000 },
+                        new SettingInstance("BackgroundBrightness","BackgroundBrightness",90,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=100 },
                     };
             }
         }

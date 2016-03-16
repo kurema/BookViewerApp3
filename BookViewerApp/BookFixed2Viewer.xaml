@@ -28,7 +28,7 @@
                 <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <FlipView x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" >
+        <FlipView x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" >
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <local:BookFixed2Page DataContext="{Binding}"/>

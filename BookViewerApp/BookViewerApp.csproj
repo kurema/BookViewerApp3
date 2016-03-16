@@ -119,7 +119,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="BookViewerApp_StoreKey.pfx" />
-    <None Include="BookViewerApp_TemporaryKey.pfx" />
     <None Include="project.json" />
     <PRIResource Include="Resource\Resources.lang-zh-CN.resw" />
     <PRIResource Include="Resource\Resources.lang-zh-TW.resw" />
@@ -239,7 +238,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BookViewerApp_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

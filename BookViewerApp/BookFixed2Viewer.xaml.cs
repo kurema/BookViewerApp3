@@ -33,6 +33,9 @@ namespace BookViewerApp
                 this.AppBarButtonLeftmost.Visibility = Visibility.Collapsed;
                 this.AppBarButtonRightmost.Visibility = Visibility.Collapsed;
             }
+
+            var br = (byte)((double)SettingStorage.GetValue("BackgroundBrightness") / 100.0 * 255.0);
+            this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
         }
 
         private void CurrentApplication_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)

@@ -249,4 +249,16 @@
   <data name="ReloadBookShelf.Label" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="BookmarkLast.Title" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="BookmarkTop.Title" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
+    <value>Brightness of background. 100:White, 0:Black.</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
+    <value>Brightness of background.</value>
+  </data>
 </root>
