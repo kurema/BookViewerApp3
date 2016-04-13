@@ -250,10 +250,10 @@
     <value>更新</value>
   </data>
   <data name="BookmarkLast.Title" xml:space="preserve">
-    <value>最終ページ</value>
+    <value>[最終]</value>
   </data>
   <data name="BookmarkTop.Title" xml:space="preserve">
-    <value>先頭ページ</value>
+    <value>[先頭]</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
     <value>背景色の明るさを設定します。100で白、0で黒です。</value>

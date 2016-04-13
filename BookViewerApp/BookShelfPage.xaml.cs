@@ -149,6 +149,7 @@ namespace BookViewerApp
             {
                 CurrentOperationCount++;
                 var result= BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(item as Windows.Storage.StorageFolder));
+                result.Secret = target.Secret;
                 var CurrentIndex = storage.IndexOf(target);
                 if (CurrentIndex >= 0)
                 {

@@ -250,10 +250,10 @@
     <value>Refresh</value>
   </data>
   <data name="BookmarkLast.Title" xml:space="preserve">
-    <value>End</value>
+    <value>[End]</value>
   </data>
   <data name="BookmarkTop.Title" xml:space="preserve">
-    <value>First</value>
+    <value>[Top]</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
     <value>Brightness of background. 100:White, 0:Black.</value>

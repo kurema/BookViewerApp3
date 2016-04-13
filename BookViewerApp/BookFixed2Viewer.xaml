@@ -28,7 +28,7 @@
                 <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <FlipView x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" >
+        <FlipView x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" UseTouchAnimationsForAllNavigation="False">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <local:BookFixed2Page DataContext="{Binding}"/>
@@ -55,7 +55,7 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="{Binding Page}" Grid.Column="0"/>
-                                                <TextBlock Text=" ... " Grid.Column="1"/>
+                                                <TextBlock Text="..." Grid.Column="1" Margin="10,0"/>
                                                 <TextBlock Text="{Binding Title}" Grid.Column="2"/>
                                             </Grid>
                                         </DataTemplate>
