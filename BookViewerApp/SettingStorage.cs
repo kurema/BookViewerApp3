@@ -35,6 +35,9 @@ namespace BookViewerApp
                         new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter()) {Minimum=0,Maximum=1000 },
                         new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=1000 },
                         new SettingInstance("BackgroundBrightness","BackgroundBrightness",90,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=100 },
+                        new SettingInstance("ScrollAnimation","ScrollAnimation",true,new TypeConverters.BoolConverter()),
+                        new SettingInstance("FolderNameToExclude","FolderNameToExclude",null,new TypeConverters.RegexConverter()),
+                        new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter()),
                     };
             }
         }
@@ -80,7 +83,7 @@ namespace BookViewerApp
                 this.DefaultValue = DefaultValue;
                 this.IsLocal = IsLocal;
                 this.Converter = Converter;
-                this.IsValidObject = (a) => { return true; };
+                this.IsValidObject = (a) => { object result; return Converter.TryGetTypeGeneral(a.ToString(), out result); };
             }
 
             public void SetValue(object Value)
@@ -106,11 +109,11 @@ namespace BookViewerApp
 
             public bool IsValid(object obj)
             {
-                if (obj.GetType() == GetGenericType())//?
+                //if (obj.GetType() == GetGenericType())//?
                 {
                     return IsValidObject(obj);
                 }
-                return false;
+                //return false;
             }
 
             public object GetValue()
@@ -166,7 +169,6 @@ namespace BookViewerApp
                     result = value;
                     return true;
                 }
-
             }
 
             public class BoolConverter : TypeConverter
@@ -242,6 +244,36 @@ namespace BookViewerApp
                     }
                     result = null;
                     return false;
+                }
+            }
+
+            public class RegexConverter : TypeConverter
+            {
+                public Type GetConvertType()
+                {
+                    return typeof(System.Text.RegularExpressions.Regex);
+                }
+
+                public string GetStringGeneral(object value)
+                {
+                    if (value is System.Text.RegularExpressions.Regex)
+                    {
+                        return (value as System.Text.RegularExpressions.Regex).ToString();
+                    }
+                    else return value?.ToString();
+                }
+
+                public bool TryGetTypeGeneral(string value, out object result)
+                {
+                    try{
+                        result = new System.Text.RegularExpressions.Regex(value);
+                        return true;
+                    }
+                    catch
+                    {
+                        result = null;
+                        return false;
+                    }
                 }
             }
 

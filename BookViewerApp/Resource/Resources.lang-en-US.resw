@@ -261,4 +261,22 @@
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
     <value>Brightness of background.</value>
   </data>
+  <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
+    <value>Use scroll animation on book viewer.</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
+    <value>Scroll animation</value>
+  </data>
+  <data name="Setting_BookNameTrim.Description" xml:space="preserve">
+    <value>Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</value>
+  </data>
+  <data name="Setting_BookNameTrim.Title" xml:space="preserve">
+    <value>Book name to trim</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
+    <value>Exclude folder in bookshelf view if match in regular expression.</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
+    <value>Folder name to exclude</value>
+  </data>
 </root>

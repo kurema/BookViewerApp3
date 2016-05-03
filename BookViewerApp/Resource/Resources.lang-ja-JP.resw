@@ -261,4 +261,22 @@
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
     <value>背景色の明るさ</value>
   </data>
+  <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
+    <value>読書画面でのスクロール時にアニメーション表示する。</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
+    <value>スクロールアニメーション</value>
+  </data>
+  <data name="Setting_BookNameTrim.Description" xml:space="preserve">
+    <value>ファイル名の内で該当した部分を表示しません。正規表現で入力。(例:\(.*\))</value>
+  </data>
+  <data name="Setting_BookNameTrim.Title" xml:space="preserve">
+    <value>除外対象ファイル名</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
+    <value>正規表現で該当した場合、本棚に表示しません。</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
+    <value>除外対象フォルダ名</value>
+  </data>
 </root>

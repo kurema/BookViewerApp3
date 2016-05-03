@@ -47,6 +47,17 @@
                             </Border>
                         </DataTemplate>
                     </template:SettingTemplateSelector.TemplateDouble>
+                    <template:SettingTemplateSelector.TemplateRegex>
+                        <DataTemplate>
+                            <Border Style="{StaticResource ItemBorder}">
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Description}"/>
+                                    <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </template:SettingTemplateSelector.TemplateRegex>
                 </template:SettingTemplateSelector>
             </ListView.ItemTemplateSelector>
         </ListView>

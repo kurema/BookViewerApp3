@@ -45,9 +45,23 @@ namespace BookViewerApp.BookFixed2ViewModels
         public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
         public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
 
+        public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
+        public string _Title = "";
+
+        public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
+        {
+            var book = await Books.BookManager.GetBookFromFile(value);
+            if (book != null && book is Books.IBookFixed)
+            {
+                Initialize(book as Books.IBookFixed, target);
+                this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
+            }
+        }
+
         public async void Initialize(Books.IBookFixed value, Control target=null)
         {
             if (BookInfo != null) SaveInfo();
+            this.Title = "";
 
             var pages = new ObservableCollection<PageViewModel>();
             var option = OptionCache = target == null ? OptionCache : new Books.PageOptionsControl(target);
@@ -337,10 +351,12 @@ namespace BookViewerApp.BookFixed2ViewModels
             public async void Execute(object parameter)
             {
                 var bookFVM = GetAddedBook(ViewModel.ID);
-                var book = await bookFVM.TryGetBook();
+                var file = await bookFVM.TryGetBookFile();
+                var book = await Books.BookManager.GetBookFromFile(file);
                 if (book is Books.IBookFixed)
                 {
                     ViewModel.Initialize(book as Books.IBookFixed);
+                    ViewModel.Title = System.IO.Path.GetFileNameWithoutExtension(file.Name);
                     ViewModel.AsBookShelfBook = bookFVM;
                 }
             }

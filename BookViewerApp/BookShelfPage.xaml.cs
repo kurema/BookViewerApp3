@@ -81,7 +81,7 @@ namespace BookViewerApp
                 var book = await (e.SelectedItem as BookShelfViewModels.BookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel };
+                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel,Title= (e.SelectedItem as BookShelfViewModels.BookViewModel).Title };
                     this.Frame.Navigate(typeof(BookFixed2Viewer), param);
                 }
             }

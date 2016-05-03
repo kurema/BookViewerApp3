@@ -151,6 +151,7 @@ namespace BookViewerApp
             public DataTemplate TemplateInt { get; set; }
             public DataTemplate TemplateDouble { get; set; }
             public DataTemplate TemplateString { get; set; }
+            public DataTemplate TemplateRegex { get; set; }
             public DataTemplate TemplateGeneralString { get; set; }
 
             protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
@@ -174,6 +175,10 @@ namespace BookViewerApp
                 else if (itemVM.Type == typeof(String))
                 {
                     return TemplateString;
+                }
+                else if (itemVM.Type == typeof(System.Text.RegularExpressions.Regex))
+                {
+                    return TemplateRegex;
                 }
                 else
                 {

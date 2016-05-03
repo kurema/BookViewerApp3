@@ -26,6 +26,8 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
+            OriginalTitle = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title;
+
             Application.Current.Suspending += CurrentApplication_Suspending;
 
             if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
@@ -36,7 +38,19 @@ namespace BookViewerApp
 
             var br = (byte)((double)SettingStorage.GetValue("BackgroundBrightness") / 100.0 * 255.0);
             this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
+
+            (this.DataContext as BookFixed2ViewModels.BookViewModel).PropertyChanged += (s, e) =>
+            {
+                if(e.PropertyName == nameof(BookFixed2ViewModels.BookViewModel.Title))
+                {
+                    SetTitle((this.DataContext as BookFixed2ViewModels.BookViewModel).Title);
+                }
+            };
+
+            flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
         }
+
+        private string OriginalTitle;
 
         private void CurrentApplication_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
@@ -45,8 +59,13 @@ namespace BookViewerApp
 
         private async void AppBarButton_OpenFile(object sender, RoutedEventArgs e)
         {
-            var book = await Books.BookManager.PickBook();
-            Open(book);
+            var file = await Books.BookManager.PickFile();
+            Open(file);
+        }
+
+        private void Open(Windows.Storage.IStorageFile file)
+        {
+            (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(file, this.flipView);
         }
 
         private void Open(Books.IBook book)
@@ -57,11 +76,6 @@ namespace BookViewerApp
         private void SetBookShelfModel(BookShelfViewModels.BookViewModel ViewModel)
         {
             (this.DataContext as BookFixed2ViewModels.BookViewModel).AsBookShelfBook = ViewModel;
-        }
-
-        private async void Open(Windows.Storage.IStorageFile file)
-        {
-            Open(await Books.BookManager.GetBookFromFile(file));
         }
 
         public void SaveInfo()
@@ -94,8 +108,10 @@ namespace BookViewerApp
             }
             else if(e. Parameter is BookAndParentNavigationParamater)
             {
-                Open(((BookAndParentNavigationParamater)e.Parameter).BookViewerModel);
-                SetBookShelfModel(((BookAndParentNavigationParamater)e.Parameter).BookShelfModel);
+                var param = (BookAndParentNavigationParamater)e.Parameter;
+                Open(param.BookViewerModel);
+                SetBookShelfModel(param.BookShelfModel);
+                (this.DataContext as BookFixed2ViewModels.BookViewModel).Title = param.Title;
             }
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
@@ -113,6 +129,12 @@ namespace BookViewerApp
         {
             public Books.IBookFixed BookViewerModel;
             public BookShelfViewModels.BookViewModel BookShelfModel;
+            public string Title;
+        }
+
+        public void SetTitle(string Title)
+        {
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = Title;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -125,6 +147,8 @@ namespace BookViewerApp
 
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
             v.ExitFullScreenMode();
+
+            SetTitle(this.OriginalTitle);
 
             base.OnNavigatedFrom(e);
         }

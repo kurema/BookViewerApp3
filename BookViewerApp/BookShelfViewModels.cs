@@ -202,7 +202,8 @@ namespace BookViewerApp.BookShelfViewModels
 
             foreach (var item in storages)
             {
-                result.Add(await GetFromBookShelfStorage(item,Shelf));
+                if (SettingStorage.GetValue("FolderNameToExclude") == null || !((System.Text.RegularExpressions.Regex)SettingStorage.GetValue("FolderNameToExclude")).IsMatch(item.Title))
+                    result.Add(await GetFromBookShelfStorage(item, Shelf));
             }
             return result.ToArray();
         }
@@ -210,10 +211,10 @@ namespace BookViewerApp.BookShelfViewModels
 
         public async static Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage,BookShelfViewModel Shelf,BookContainerViewModel Parent=null)
         {
-            BookContainerViewModel result = new BookContainerViewModel(storage.Title,Shelf,Parent);
+            BookContainerViewModel result = new BookContainerViewModel(storage.Title, Shelf, Parent);
             foreach (var item in storage.Folders)
             {
-                result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookContainer,Shelf,result));
+                result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookContainer, Shelf, result));
             }
             foreach (var item in storage.Files)
             {
@@ -252,10 +253,20 @@ namespace BookViewerApp.BookShelfViewModels
 
         public async Task<Books.IBook> TryGetBook()
         {
-            var item=(await AccessInfo.TryGetItem());
+            var item=(await TryGetBookFile());
             if(item!= null && item is Windows.Storage.IStorageFile)
             {
                 return await Books.BookManager.GetBookFromFile(item as Windows.Storage.IStorageFile);
+            }
+            return null;
+        }
+
+        public async Task<Windows.Storage.IStorageFile> TryGetBookFile()
+        {
+            var item = (await AccessInfo.TryGetItem());
+            if (item != null && item is Windows.Storage.IStorageFile)
+            {
+                return (item as Windows.Storage.IStorageFile);
             }
             return null;
         }
@@ -295,7 +306,8 @@ namespace BookViewerApp.BookShelfViewModels
 
         public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage,BookContainerViewModel parent)
         {
-            var result= new BookViewModel(storage.ID, storage.Size,storage.Access,parent) { Title = storage.Title };
+            var reg1 = SettingStorage.GetValue("BookNameTrim") as System.Text.RegularExpressions.Regex;
+            var result = new BookViewModel(storage.ID, storage.Size,storage.Access,parent) { Title = reg1 == null ? storage.Title : reg1.Replace(storage.Title, "") };
             await result.GetFromBookInfoStorageAsync();
             return result;
         }
