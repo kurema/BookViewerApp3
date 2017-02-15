@@ -11,7 +11,8 @@
     DataContextChanged="UserControl_DataContextChanged"
     >
 
-    <ScrollViewer x:Name="scrollViewer" ZoomMode="Enabled" MinZoomFactor="1.0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged">
+    <ScrollViewer x:Name="scrollViewer" ZoomMode="Enabled" MinZoomFactor="1.0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged"
+                  ManipulationDelta="scrollViewer_ManipulationDelta" ManipulationMode="All">
         <Grid x:Name="grid">
             <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>
         </Grid>

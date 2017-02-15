@@ -34,7 +34,17 @@ namespace BookViewerApp
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            scrollViewer.ZoomToFactor(1.0f);
+            scrollViewer.ChangeView(0, 0, 1.0f);
+            //scrollViewer.ZoomToFactor(1.0f);
+        }
+
+        private void scrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
+            {
+                e.Handled = true;
+                scrollViewer.ChangeView(scrollViewer.HorizontalOffset- e.Delta.Translation.X * scrollViewer.ZoomFactor, scrollViewer.VerticalOffset - e.Delta.Translation.Y*scrollViewer.ZoomFactor, null);
+            }
         }
     }
 }
