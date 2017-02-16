@@ -24,7 +24,7 @@ namespace BookViewerApp.Books.Compressed
         private string IDCache = null;
         private string GetID() {
             string result = "";
-            foreach (var item in Entries)
+            foreach (var item in Entries.OrderBy((a) => a.Key))
             {
                 result += Functions.CombineStringAndDouble(item.Key, item.Size);
             }
@@ -66,7 +66,19 @@ namespace BookViewerApp.Books.Compressed
 
                     }
                 }
-                entries.Sort((a, b) => a.Key.CompareTo(b.Key));
+                if ((bool)SettingStorage.GetValue("SortNaturalOrder"))
+                {
+                    entries.Sort((a, b) => NaturalSort.NaturalCompare(a.Key, b.Key));
+                }else
+                {
+                    entries.Sort((a,b)=>a.Key.CompareTo(b.Key));
+
+                }
+                if ((bool)SettingStorage.GetValue("SortCoverComesFirst"))
+                {
+                    entries.Sort((a, b) => b.Key.ToLower().Contains("cover").CompareTo(a.Key.ToLower().Contains("cover")));
+                }
+
                 Entries = entries.ToArray();
                 OnLoaded();
             });

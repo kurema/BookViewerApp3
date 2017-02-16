@@ -162,6 +162,7 @@
     </Compile>
     <Compile Include="InfoPageViewModel.cs" />
     <Compile Include="LicenseStorage.cs" />
+    <Compile Include="NaturalSort.cs" />
     <Compile Include="SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>

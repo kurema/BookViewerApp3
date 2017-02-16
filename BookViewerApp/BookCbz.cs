@@ -31,7 +31,7 @@ namespace BookViewerApp.Books.Cbz
             {
                 if (_IDCache != null) return _IDCache;
                 string result = "";
-                foreach(var item in AvailableEntries)
+                foreach (var item in AvailableEntries.OrderBy((a) => a.FullName))
                 {
                     result += Functions.CombineStringAndDouble(item.Name, item.Length);
                 }
@@ -77,7 +77,20 @@ namespace BookViewerApp.Books.Cbz
                     entries.Add(file);
                 }
             }
-            entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
+            if ((bool)SettingStorage.GetValue("SortNaturalOrder"))
+            {
+                entries.Sort((a, b) => NaturalSort.NaturalCompare(a.FullName, b.FullName));
+            }
+            else
+            {
+                entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
+            }
+
+            if ((bool)SettingStorage.GetValue("SortCoverComesFirst"))
+            {
+                entries.Sort((a, b) => b.FullName.ToLower().Contains("cover").CompareTo(a.FullName.ToLower().Contains("cover")));
+            }
+
             AvailableEntries = entries.ToArray();
         }
     }

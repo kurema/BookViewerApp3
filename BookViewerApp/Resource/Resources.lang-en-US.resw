@@ -279,4 +279,16 @@
   <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
     <value>Folder name to exclude</value>
   </data>
+  <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
+    <value>Assume picture that has "cover" in  the file name to be first file in CBZ/CBR.</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
+    <value>Assume cover picture by file name in CBZ/CBR</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
+    <value>Sort by natural order in CBZ/CBR (ex:01.jpg→2.jpg→003.jpg)</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
+    <value>Natural Sort in CBZ/CBR</value>
+  </data>
 </root>

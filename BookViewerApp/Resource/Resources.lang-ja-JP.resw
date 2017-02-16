@@ -279,4 +279,16 @@
   <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
     <value>除外対象フォルダ名</value>
   </data>
+  <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
+    <value>Cbz/Cbrファイル内で"cover"を含むファイルを先頭にします。</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
+    <value>"cover"を含むファイルを先頭にする</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
+    <value>Cbz/Cbrファイル内のソートを自然順(例:01.jpg→2.jpg→003.jpg)にします。</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
+    <value>自然順ソート</value>
+  </data>
 </root>

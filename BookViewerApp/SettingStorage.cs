@@ -38,6 +38,8 @@ namespace BookViewerApp
                         new SettingInstance("ScrollAnimation","ScrollAnimation",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("FolderNameToExclude","FolderNameToExclude",null,new TypeConverters.RegexConverter()),
                         new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter()),
+                        new SettingInstance("SortNaturalOrder","SortNaturalOrder",false,new TypeConverters.BoolConverter()),
+                        new SettingInstance("SortCoverComesFirst","SortCoverComesFirst",false,new TypeConverters.BoolConverter()),
                     };
             }
         }
