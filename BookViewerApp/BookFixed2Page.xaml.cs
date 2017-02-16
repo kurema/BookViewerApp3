@@ -39,15 +39,6 @@ namespace BookViewerApp
             (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
         }
 
-        private void scrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
-        {
-            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
-            {
-                e.Handled = true;
-                scrollViewer.ChangeView(InitialHorizontalOffset - e.Cumulative.Translation.X, InitialVerticalOffset - e.Cumulative.Translation.Y, null);
-            }
-        }
-
         private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
@@ -55,13 +46,6 @@ namespace BookViewerApp
 
         private double InitialHorizontalOffset;
         private double InitialVerticalOffset;
-        private void scrollViewer_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            InitialHorizontalOffset = scrollViewer.HorizontalOffset;
-            InitialVerticalOffset = scrollViewer.VerticalOffset;
-        }
-
         private Windows.UI.Input.PointerPoint InitialPoint;
 
         private void scrollViewer_PointerPressed(object sender, PointerRoutedEventArgs e)
