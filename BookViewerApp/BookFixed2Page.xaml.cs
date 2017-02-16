@@ -35,7 +35,8 @@ namespace BookViewerApp
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             scrollViewer.ChangeView(0, 0, 1.0f);
-            //scrollViewer.ZoomToFactor(1.0f);
+
+            (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
         }
 
         private void scrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
@@ -45,6 +46,11 @@ namespace BookViewerApp
                 e.Handled = true;
                 scrollViewer.ChangeView(scrollViewer.HorizontalOffset- e.Delta.Translation.X * scrollViewer.ZoomFactor, scrollViewer.VerticalOffset - e.Delta.Translation.Y*scrollViewer.ZoomFactor, null);
             }
+        }
+
+        private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
         }
     }
 }
