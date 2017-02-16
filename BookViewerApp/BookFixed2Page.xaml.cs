@@ -36,7 +36,7 @@ namespace BookViewerApp
         {
             scrollViewer.ChangeView(0, 0, 1.0f);
 
-            (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
+            (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
         }
 
         private void scrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
@@ -44,13 +44,42 @@ namespace BookViewerApp
             if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
             {
                 e.Handled = true;
-                scrollViewer.ChangeView(scrollViewer.HorizontalOffset- e.Delta.Translation.X * scrollViewer.ZoomFactor, scrollViewer.VerticalOffset - e.Delta.Translation.Y*scrollViewer.ZoomFactor, null);
+                scrollViewer.ChangeView(InitialHorizontalOffset - e.Cumulative.Translation.X, InitialVerticalOffset - e.Cumulative.Translation.Y, null);
             }
         }
 
         private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
+        }
+
+        private double InitialHorizontalOffset;
+        private double InitialVerticalOffset;
+        private void scrollViewer_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            InitialHorizontalOffset = scrollViewer.HorizontalOffset;
+            InitialVerticalOffset = scrollViewer.VerticalOffset;
+        }
+
+        private Windows.UI.Input.PointerPoint InitialPoint;
+
+        private void scrollViewer_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            InitialHorizontalOffset = scrollViewer.HorizontalOffset;
+            InitialVerticalOffset = scrollViewer.VerticalOffset;
+            InitialPoint = e.GetCurrentPoint(scrollViewer);
+
+        }
+
+        private void scrollViewer_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse && e.Pointer.IsInContact)
+            {
+                var point = e.GetCurrentPoint(scrollViewer);
+                scrollViewer.ChangeView(InitialHorizontalOffset - (point.Position.X - InitialPoint.Position.X), InitialVerticalOffset - (point.Position.Y - InitialPoint.Position.Y), null);
+                e.Handled = true;
+            }
         }
     }
 }

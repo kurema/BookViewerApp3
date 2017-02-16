@@ -12,7 +12,7 @@
     >
 
     <ScrollViewer x:Name="scrollViewer" ZoomMode="Enabled" MinZoomFactor="1.0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" SizeChanged="ScrollViewer_SizeChanged"
-                  ManipulationDelta="scrollViewer_ManipulationDelta" ManipulationMode="All">
+                  PointerPressed="scrollViewer_PointerPressed" PointerMoved="scrollViewer_PointerMoved" >
         <Grid x:Name="grid">
             <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>
         </Grid>

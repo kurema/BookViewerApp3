@@ -36,7 +36,7 @@ namespace BookViewerApp
                 this.AppBarButtonRightmost.Visibility = Visibility.Collapsed;
             }
 
-            var br = (byte)((Int32)SettingStorage.GetValue("BackgroundBrightness") / 100.0 * 255.0);
+            var br = (byte)(((double)SettingStorage.GetValue("BackgroundBrightness")) / 100.0 * 255.0);
             this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
 
             (this.DataContext as BookFixed2ViewModels.BookViewModel).PropertyChanged += (s, e) =>
