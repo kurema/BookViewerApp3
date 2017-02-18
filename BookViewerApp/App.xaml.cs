@@ -116,6 +116,11 @@ namespace BookViewerApp
 
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
+            if(((Frame)Window.Current?.Content)?.Content is BookFixed2Viewer)
+            {
+                (((Frame)Window.Current?.Content)?.Content as BookFixed2Viewer).SaveInfo();
+            }
+
             var rootFrame = new Frame();
             rootFrame.Navigate(typeof(BookFixed2Viewer), args);
 

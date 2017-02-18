@@ -77,6 +77,7 @@
                 <AppBarButton x:Uid="BookPrevious" Command="{Binding GoPreviousBookCommand}"/>
                 <AppBarButton x:Uid="BookNext" Command="{Binding GoNextBookCommand}"/>
                 <AppBarButton x:Uid="PageReverse" Command="{Binding SwapReverseCommand}"/>
+                <AppBarButton x:Uid="GoToBookShelf" Click="AppBarButton_GoToBookshelf"/>
             </CommandBar.SecondaryCommands>
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">

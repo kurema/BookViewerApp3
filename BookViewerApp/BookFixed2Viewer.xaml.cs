@@ -183,5 +183,12 @@ namespace BookViewerApp
                 (this.DataContext as BookFixed2ViewModels.BookViewModel).PageSelected = (e.ClickedItem as BookFixed2ViewModels.BookmarkViewModel).Page;
             }
         }
+
+        private void AppBarButton_GoToBookshelf(object sender, RoutedEventArgs e)
+        {
+            this.SaveInfo();
+
+            this.Frame.Navigate(typeof(BookShelfPage), null);
+        }
     }
 }
