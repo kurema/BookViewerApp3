@@ -226,12 +226,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="SharpCompress, Version=0.11.3.0, Culture=neutral, PublicKeyToken=570b92f84e51a2ce, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\sharpcompress-0.11.5\Portable\SharpCompress.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
