@@ -77,20 +77,25 @@ namespace BookViewerApp.Books.Cbz
                     entries.Add(file);
                 }
             }
+
+            IOrderedEnumerable<ZipArchiveEntry> tempOrder;
             if ((bool)SettingStorage.GetValue("SortNaturalOrder"))
             {
-                entries.Sort((a, b) => NaturalSort.NaturalCompare(a.FullName, b.FullName));
+                tempOrder = entries.OrderBy((a) => new NaturalSort.NaturalList(a.FullName));
+                //entries.Sort((a, b) => NaturalSort.NaturalCompare(a.FullName, b.FullName));
             }
             else
             {
-                entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
+                tempOrder = entries.OrderBy((a) => a.FullName);
+                //entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
             }
 
             if ((bool)SettingStorage.GetValue("SortCoverComesFirst"))
             {
-                entries.Sort((a, b) => b.FullName.ToLower().Contains("cover").CompareTo(a.FullName.ToLower().Contains("cover")));
+                tempOrder = tempOrder.ThenBy((a) => a.FullName.ToLower().Contains("cover"));
+                //entries.Sort((a, b) => b.FullName.ToLower().Contains("cover").CompareTo(a.FullName.ToLower().Contains("cover")));
             }
-
+            entries = tempOrder.ToList();
             AvailableEntries = entries.ToArray();
         }
     }

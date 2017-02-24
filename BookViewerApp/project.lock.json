@@ -311,26 +311,6 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.1.0": {
         "type": "package",
         "dependencies": {
@@ -2725,26 +2705,6 @@
           "runtimes/win8-arm/native/clrcompression.dll": {}
         }
       },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.1.0": {
         "type": "package",
         "dependencies": {
@@ -5032,26 +4992,6 @@
           "runtimes/win8-arm-aot/native/_._": {}
         }
       },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.1.0": {
         "type": "package",
         "dependencies": {
@@ -7307,26 +7247,6 @@
         },
         "runtime": {
           "runtimes/win/lib/netcore50/System.Private.Uri.dll": {}
-        }
-      },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.1.0": {
@@ -9625,26 +9545,6 @@
           "runtimes/aot/lib/netcore50/System.Private.Uri.dll": {}
         }
       },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        }
-      },
       "System.AppContext/4.1.0": {
         "type": "package",
         "dependencies": {
@@ -11900,26 +11800,6 @@
         },
         "runtime": {
           "runtimes/win/lib/netcore50/System.Private.Uri.dll": {}
-        }
-      },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.1.0": {
@@ -14216,26 +14096,6 @@
         },
         "runtime": {
           "runtimes/aot/lib/netcore50/System.Private.Uri.dll": {}
-        }
-      },
-      "SharpCompress/0.15.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11",
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.Linq": "4.1.0",
-          "System.Resources.ResourceManager": "4.0.1",
-          "System.Runtime.Extensions": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpCompress.dll": {}
         }
       },
       "System.AppContext/4.1.0": {
@@ -17187,22 +17047,6 @@
         "runtime.win8-arm.runtime.native.System.IO.Compression.4.0.1.nupkg.sha512",
         "runtime.win8-arm.runtime.native.System.IO.Compression.nuspec",
         "runtimes/win8-arm/native/clrcompression.dll"
-      ]
-    },
-    "SharpCompress/0.15.1": {
-      "sha512": "iiT6dsbWMoo7RA1JCrbyo7jhoArxAQm0FRgXRQmT7B8EbiVo4bjW57mUnjN9/oNUsPjyOAz/4bGaequX+tpWiQ==",
-      "type": "package",
-      "path": "SharpCompress/0.15.1",
-      "files": [
-        "SharpCompress.0.15.1.nupkg.sha512",
-        "SharpCompress.nuspec",
-        "lib/net35/SharpCompress.dll",
-        "lib/net40/SharpCompress.dll",
-        "lib/net45/SharpCompress.dll",
-        "lib/netstandard1.0/SharpCompress.dll",
-        "lib/netstandard1.3/SharpCompress.dll",
-        "lib/portable40-net40+sl5+win8+wp8+wpa81/SharpCompress.dll",
-        "lib/portable45-net45+win8+wp8+wpa81/SharpCompress.dll"
       ]
     },
     "System.AppContext/4.1.0": {
@@ -22110,8 +21954,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.2.2",
-      "SharpCompress >= 0.15.1"
+      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.2.2"
     ],
     "UAP,Version=v10.0": []
   },

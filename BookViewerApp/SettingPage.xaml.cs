@@ -127,7 +127,7 @@ namespace BookViewerApp
 
         private void CurrentView_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
         {
-            if (Frame.CanGoBack)
+            if (Frame?.CanGoBack==true)
             {
                 Frame.GoBack();
                 e.Handled = true;
@@ -137,7 +137,7 @@ namespace BookViewerApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
-            currentView.AppViewBackButtonVisibility = Frame.CanGoBack ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed; currentView.BackRequested += CurrentView_BackRequested;
+            currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed; currentView.BackRequested += CurrentView_BackRequested;
             currentView.BackRequested += CurrentView_BackRequested;
         }
 

@@ -34,7 +34,7 @@ namespace BookViewerApp
                         new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter()) {Minimum=0,Maximum=1000 },
                         new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=1000 },
-                        new SettingInstance("BackgroundBrightness","BackgroundBrightness",90,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=100 },
+                        new SettingInstance("BackgroundBrightness","BackgroundBrightness",90.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=100 },
                         new SettingInstance("ScrollAnimation","ScrollAnimation",true,new TypeConverters.BoolConverter()),
                         new SettingInstance("FolderNameToExclude","FolderNameToExclude",null,new TypeConverters.RegexConverter()),
                         new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter()),

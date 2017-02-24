@@ -45,16 +45,16 @@ namespace BookViewerApp.Books.Compressed
             if (Loaded != null) Loaded(this, new EventArgs());
         }
 
-        private SharpCompress.Archives.IArchiveEntry Target;
-        private SharpCompress.Archives.IArchiveEntry[] Entries;
+        private SharpCompress.Archive.IArchiveEntry Target;
+        private SharpCompress.Archive.IArchiveEntry[] Entries;
 
         public async Task LoadAsync(System.IO.Stream sr)
         {
-            SharpCompress.Archives.IArchive archive;
+            SharpCompress.Archive.IArchive archive;
             await Task.Run(() =>
             {
-                archive = SharpCompress.Archives.ArchiveFactory.Open(sr);
-                var entries = new List<SharpCompress.Archives.IArchiveEntry>();
+                archive = SharpCompress.Archive.ArchiveFactory.Open(sr);
+                var entries = new List<SharpCompress.Archive.IArchiveEntry>();
                 foreach (var entry in archive.Entries)
                 {
                     if (!entry.IsDirectory && !entry.IsEncrypted)
@@ -66,19 +66,22 @@ namespace BookViewerApp.Books.Compressed
 
                     }
                 }
+
+                IOrderedEnumerable<SharpCompress.Archive.IArchiveEntry> tempOrder;
                 if ((bool)SettingStorage.GetValue("SortNaturalOrder"))
                 {
-                    entries.Sort((a, b) => NaturalSort.NaturalCompare(a.Key, b.Key));
+                    tempOrder = entries.OrderBy((a) => new NaturalSort.NaturalList(a.Key));
+                    //entries.Sort((a, b) => NaturalSort.NaturalCompare(a.Key, b.Key));
                 }else
                 {
-                    entries.Sort((a,b)=>a.Key.CompareTo(b.Key));
-
+                    tempOrder = entries.OrderBy((a) => a.Key);
+                    //entries.Sort((a,b)=>a.Key.CompareTo(b.Key));
                 }
                 if ((bool)SettingStorage.GetValue("SortCoverComesFirst"))
                 {
-                    entries.Sort((a, b) => b.Key.ToLower().Contains("cover").CompareTo(a.Key.ToLower().Contains("cover")));
+                    tempOrder = tempOrder.ThenBy((a) => a.Key.ToLower().Contains("cover"));
                 }
-
+                entries = tempOrder.ToList();
                 Entries = entries.ToArray();
                 OnLoaded();
             });
@@ -97,9 +100,9 @@ namespace BookViewerApp.Books.Compressed
             get; set;
         }
 
-        private SharpCompress.Archives.IArchiveEntry Entry;
+        private SharpCompress.Archive.IArchiveEntry Entry;
 
-        public CompressedPage(SharpCompress.Archives.IArchiveEntry Entry) { this.Entry = Entry; }
+        public CompressedPage(SharpCompress.Archive.IArchiveEntry Entry) { this.Entry = Entry; }
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
