@@ -25,7 +25,7 @@ namespace BookViewerApp.Books
                 await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
                 return book;
             }
-            else if (new string[] { ".rar", ".cbr" }.Contains(Path.GetExtension(file.Path).ToLower()))
+            else if (new string[] { ".rar", ".cbr", ".7z", ".cb7" }.Contains(Path.GetExtension(file.Path).ToLower()))
             {
                 var book = new Books.Compressed.CompressedBook();
                 await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
@@ -35,7 +35,7 @@ namespace BookViewerApp.Books
             return null;
         }
 
-        public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr" }; } }
+        public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", "7z", "cb7" }; } }
 
         public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr" }; } }
 

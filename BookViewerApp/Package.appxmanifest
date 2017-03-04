@@ -32,6 +32,8 @@
               <uap:FileType ContentType="application/x-cbz">.zip</uap:FileType>
               <uap:FileType ContentType="application/x-cbr">.cbr</uap:FileType>
               <uap:FileType ContentType="application/x-cbr">.rar</uap:FileType>
+              <uap:FileType ContentType="application/x-cb7">.7z</uap:FileType>
+              <uap:FileType ContentType="application/x-cb7">.cb7</uap:FileType>
             </uap:SupportedFileTypes>
           </uap:FileTypeAssociation>
         </uap:Extension>
