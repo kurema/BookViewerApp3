@@ -241,8 +241,11 @@ namespace BookViewerApp
         private async void AppBarButton_Click_AppBarButton_Click_ClearBookShelfStorageSingle(object sender, RoutedEventArgs e)
         {
             var storage = await BookShelfStorage.GetBookShelves();
-            storage.RemoveAt(await GetActualCurrentIndex());
-            await BookShelfStorage.SaveAsync();
+            if (storage.Count > 0)
+            {
+                storage.RemoveAt(await GetActualCurrentIndex());
+                await BookShelfStorage.SaveAsync();
+            }
             Refresh();
         }
 
