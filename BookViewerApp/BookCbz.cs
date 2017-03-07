@@ -59,10 +59,16 @@ namespace BookViewerApp.Books.Cbz
             await Task.Run(() =>
             {
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                Content = new ZipArchive(stream, ZipArchiveMode.Read,false,Encoding.GetEncoding(932));
-                OnLoaded(new EventArgs());
+                try
+                {
+                    Content = new ZipArchive(stream, ZipArchiveMode.Read, false, Encoding.GetEncoding(932));
+                    OnLoaded(new EventArgs());
+                }
+                catch {  }
             }
             );
+
+            if (Content == null) { return; }
 
             var entries = new List<ZipArchiveEntry>();
             string[] supportedFile = BookManager.AvailableExtensionsImage;

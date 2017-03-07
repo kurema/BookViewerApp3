@@ -20,22 +20,23 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="1" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" >
+        <ProgressBar Grid.Row="2" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" >
             <ProgressBar.RenderTransform>
                 <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <FlipView x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}">
+        <FlipView Grid.RowSpan="2" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <local:BookFixed2Page DataContext="{Binding}"/>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-        <CommandBar Background="Transparent" x:Name="CommandBar1" VerticalAlignment="Bottom">
+        <CommandBar Grid.RowSpan="2" Background="Transparent" x:Name="CommandBar1" VerticalAlignment="Bottom">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Icon="Bookmarks" x:Uid="Bookmarks">
                     <AppBarButton.Flyout>
@@ -87,5 +88,6 @@
                 </StackPanel>
             </CommandBar.Content>
         </CommandBar>
+        <ProgressBar Grid.Row="0" IsIndeterminate="{Binding Loading}" Name="progressBarLoading" Background="{x:Null}" />
     </Grid>
 </Page>

@@ -219,7 +219,7 @@ namespace BookViewerApp.BookShelfViewModels
             foreach (var item in storage.Files)
             {
                 var temp = await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook, result);
-                if (temp != null)
+                if (temp != null && temp.BookSize>0)
                     result.Add(temp);
             }
             return result;

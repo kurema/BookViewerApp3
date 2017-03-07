@@ -70,7 +70,6 @@ namespace BookViewerApp.Books
         }
         private Windows.UI.Xaml.Controls.Control _TargetControl;
 
-        public event EventHandler Updated;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs( name)); }

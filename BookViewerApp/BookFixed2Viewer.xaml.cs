@@ -70,7 +70,8 @@ namespace BookViewerApp
 
         private void Open(Books.IBook book)
         {
-            if (book != null && book is Books.IBookFixed) (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(book as Books.IBookFixed, this.flipView);
+            var dc = (this.DataContext as BookFixed2ViewModels.BookViewModel);
+            if (book != null && book is Books.IBookFixed) dc.Initialize(book as Books.IBookFixed, this.flipView);
         }
 
         private void SetBookShelfModel(BookShelfViewModels.BookViewModel ViewModel)
