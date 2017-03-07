@@ -6,11 +6,14 @@ A plain and simple book reader app on Windows 10 UWP.
 本棚機能付き読書アプリ
 
 # FAQ
-Q: How to add books to bookshelf.  
+Q: How to add books to bookshelf?  
 A: Click on the folder icon at bottom.
 
-Q: How to enter secret mode.  
+Q: How to enter secret mode?  
 A: Right tap on "about".
+
+Q: How to zoom with mouse?  
+A: Crtl + Scroll.  
 
 Q: From where did you get books displayed on screenshot? Is it legal?  
 A: [Here](http://mangaonweb.com/satoshuho/download/). It's legal. "英語版" means "English version" by the way.  
