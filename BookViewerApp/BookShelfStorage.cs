@@ -237,6 +237,12 @@ namespace BookViewerApp
                 if (item is Windows.Storage.StorageFile) { return item; }
                 else { return null; }
             }
+
+            public async Task<bool> IsAccessible()
+            {
+                var item = await Books.BookManager.StorageItemGet(AccessToken, Path);
+                return (item is Windows.Storage.StorageFile);
+            }
         }
     }
 }

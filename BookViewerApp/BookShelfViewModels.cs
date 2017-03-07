@@ -57,7 +57,7 @@ namespace BookViewerApp.BookShelfViewModels
 
         private void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public IEnumerator<BookContainerViewModel> GetEnumerator()
@@ -218,7 +218,9 @@ namespace BookViewerApp.BookShelfViewModels
             }
             foreach (var item in storage.Files)
             {
-                result.Add(await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook,result));
+                var temp = await BookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook, result);
+                if (temp != null)
+                    result.Add(temp);
             }
             return result;
         }
@@ -234,7 +236,7 @@ namespace BookViewerApp.BookShelfViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public int BookSize { get; private set; }
@@ -307,6 +309,7 @@ namespace BookViewerApp.BookShelfViewModels
         public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage,BookContainerViewModel parent)
         {
             var reg1 = SettingStorage.GetValue("BookNameTrim") as System.Text.RegularExpressions.Regex;
+            if(! await storage.Access.IsAccessible()) { return null; }
             var result = new BookViewModel(storage.ID, storage.Size,storage.Access,parent) { Title = reg1 == null ? storage.Title : reg1.Replace(storage.Title, "") };
             await result.GetFromBookInfoStorageAsync();
             return result;

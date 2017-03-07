@@ -31,8 +31,7 @@ namespace BookViewerApp
         }
         public void OnItemClicked (BookShelfViewModels.IItemViewModel vm)
         {
-            if (ItemClicked != null)
-                ItemClicked(this, new ItemClickedEventArgs() { SelectedItem = vm });
+            ItemClicked?.Invoke(this, new ItemClickedEventArgs() { SelectedItem = vm });
         }
 
 

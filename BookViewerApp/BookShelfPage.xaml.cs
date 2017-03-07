@@ -241,7 +241,7 @@ namespace BookViewerApp
         private async void AppBarButton_Click_AppBarButton_Click_ClearBookShelfStorageSingle(object sender, RoutedEventArgs e)
         {
             var storage = await BookShelfStorage.GetBookShelves();
-            if (storage.Count > 0)
+            if (storage.Count > 0 && BookShelfList.SelectedIndex > -1)
             {
                 storage.RemoveAt(await GetActualCurrentIndex());
                 await BookShelfStorage.SaveAsync();
@@ -259,8 +259,11 @@ namespace BookViewerApp
         private async void AppBarButton_Click_SetThisBookShelfSecret(object sender, RoutedEventArgs e)
         {
             var bs = (await GetCurrentBookShelf());
-            bs.Secret = !bs.Secret;
-            await BookShelfStorage.SaveAsync();
+            if (bs != null)
+            {
+                bs.Secret = !bs.Secret;
+                await BookShelfStorage.SaveAsync();
+            }
         }
 
         private void AppBarButton_RightTapped(object sender, RightTappedRoutedEventArgs e)
