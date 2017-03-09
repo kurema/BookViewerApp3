@@ -137,6 +137,7 @@ namespace BookViewerApp
             if (!Books.BookManager.IsFileAvailabe(file)) return null;
 
             var book = await Books.BookManager.GetBookFromFile(file);
+            if (book == null) return null;
             var bookBS= new BookContainer.BookShelfBook() { ID = book.ID };
             bookBS.Title = file.DisplayName;
             if(book is Books.IBookFixed)

@@ -86,7 +86,7 @@ namespace BookViewerApp.Books.Compressed
                     Entries = entries.ToArray();
                     OnLoaded();
                 }
-                catch { }
+                catch { this.Entries = new SharpCompress.Archive.IArchiveEntry[0]; }
             });
         }
 

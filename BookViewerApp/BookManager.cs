@@ -16,19 +16,40 @@ namespace BookViewerApp.Books
             else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
             {
                 var book = new Books.Pdf.PdfBook();
-                await book.Load(file);
+                try
+                {
+                    await book.Load(file);
+                }
+                catch { return null; }
+                if (book.PageCount <= 0) { return null; }
                 return book;
             }
             else if (new string[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
             {
                 var book = new Books.Cbz.CbzBook();
-                await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                try
+                {
+                    await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                }
+                catch
+                {
+                    return null;
+                }
+                if (book.PageCount <= 0) { return null; }
                 return book;
             }
             else if (new string[] { ".rar", ".cbr", ".7z", ".cb7" }.Contains(Path.GetExtension(file.Path).ToLower()))
             {
                 var book = new Books.Compressed.CompressedBook();
-                await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                try
+                {
+                    await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                }
+                catch
+                {
+                    return null;
+                }
+                if (book.PageCount <= 0) { return null; }
                 return book;
             }
 
