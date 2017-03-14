@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BookViewerApp.BookFixed2ViewModels;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -22,6 +23,8 @@ namespace BookViewerApp
     /// </summary>
     public sealed partial class BookFixed2Viewer : Page
     {
+        private BookFixed2ViewModels.BookViewModel Binding => (BookViewModel) this.DataContext;
+
         public BookFixed2Viewer()
         {
             this.InitializeComponent();
@@ -39,11 +42,11 @@ namespace BookViewerApp
             var br = (byte)(((double)SettingStorage.GetValue("BackgroundBrightness")) / 100.0 * 255.0);
             this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
 
-            (this.DataContext as BookFixed2ViewModels.BookViewModel).PropertyChanged += (s, e) =>
+            ((BookViewModel) this.DataContext).PropertyChanged += (s, e) =>
             {
                 if(e.PropertyName == nameof(BookFixed2ViewModels.BookViewModel.Title))
                 {
-                    SetTitle((this.DataContext as BookFixed2ViewModels.BookViewModel).Title);
+                    SetTitle(Binding?.Title);
                 }
             };
 
@@ -65,23 +68,23 @@ namespace BookViewerApp
 
         private void Open(Windows.Storage.IStorageFile file)
         {
-            (this.DataContext as BookFixed2ViewModels.BookViewModel).Initialize(file, this.flipView);
+            Binding?.Initialize(file, this.flipView);
         }
 
         private void Open(Books.IBook book)
         {
-            var dc = (this.DataContext as BookFixed2ViewModels.BookViewModel);
-            if (book != null && book is Books.IBookFixed) dc.Initialize(book as Books.IBookFixed, this.flipView);
+            if (book != null && book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed) book, this.flipView);
         }
 
-        private void SetBookShelfModel(BookShelfViewModels.BookViewModel ViewModel)
+        private void SetBookShelfModel(BookShelfViewModels.BookViewModel viewModel)
         {
-            (this.DataContext as BookFixed2ViewModels.BookViewModel).AsBookShelfBook = ViewModel;
+            if (Binding != null)
+                Binding.AsBookShelfBook = viewModel;
         }
 
         public void SaveInfo()
         {
-            (this.DataContext as BookFixed2ViewModels.BookViewModel).SaveInfo();
+            Binding?.SaveInfo();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -92,10 +95,13 @@ namespace BookViewerApp
                 var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
                 if (args.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
                 {
-                    foreach (Windows.Storage.IStorageFile item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args).Files)
+                    foreach (var item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args).Files)
                     {
-                        Open(item);
-                        break;
+                        if (item is Windows.Storage.IStorageFile)
+                        {
+                            Open((Windows.Storage.IStorageFile) item);
+                            break;
+                        }
                     }
                 }
             }
@@ -112,7 +118,8 @@ namespace BookViewerApp
                 var param = (BookAndParentNavigationParamater)e.Parameter;
                 Open(param.BookViewerModel);
                 SetBookShelfModel(param.BookShelfModel);
-                (this.DataContext as BookFixed2ViewModels.BookViewModel).Title = param.Title;
+                if (Binding != null)
+                    Binding.Title = param.Title;
             }
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
@@ -133,9 +140,9 @@ namespace BookViewerApp
             public string Title;
         }
 
-        public void SetTitle(string Title)
+        public void SetTitle(string title)
         {
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = Title;
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = title;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -179,9 +186,9 @@ namespace BookViewerApp
 
         private void BookmarkClicked(object sender, ItemClickEventArgs e)
         {
-            if (this.DataContext != null && this.DataContext is BookFixed2ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is BookFixed2ViewModels.BookmarkViewModel)
+            if (DataContext is BookFixed2ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is BookFixed2ViewModels.BookmarkViewModel)
             {
-                (this.DataContext as BookFixed2ViewModels.BookViewModel).PageSelected = (e.ClickedItem as BookFixed2ViewModels.BookmarkViewModel).Page;
+                ((BookFixed2ViewModels.BookViewModel) this.DataContext).PageSelected = ((BookFixed2ViewModels.BookmarkViewModel) e.ClickedItem).Page;
             }
         }
 
