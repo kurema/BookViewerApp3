@@ -10,7 +10,7 @@ namespace BookViewerApp
 {
     public static class ThumbnailManager
     {
-        private static Windows.Storage.StorageFolder DataFolder { get { return Functions.GetSaveFolderLocalCache(); } }
+        private static Windows.Storage.StorageFolder DataFolder => Functions.GetSaveFolderLocalCache();
 
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetImageSourceAsync(string ID)
         {
@@ -30,7 +30,7 @@ namespace BookViewerApp
         }
 
         //Not smart at all...
-        public async static void SetToImageSourceNoWait(string ID,Windows.UI.Xaml.Media.Imaging.BitmapImage image) {
+        public static async void SetToImageSourceNoWait(string ID,Windows.UI.Xaml.Media.Imaging.BitmapImage image) {
             var file= (await GetImageFileAsync(ID));
             if (file == null) return;
             var src = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
@@ -38,7 +38,10 @@ namespace BookViewerApp
             try {
                 await image.SetSourceAsync(src);
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
         }
 
         public static async Task SaveImageAsync(Books.IBook book)
@@ -72,7 +75,7 @@ namespace BookViewerApp
             return "Thumbnail_" + EscapeString(ID) + Extension;
         }
 
-        public static string Extension { get { return ".image"; } }
+        public static string Extension => ".image";
 
         public static String EscapeString(string str)
         {

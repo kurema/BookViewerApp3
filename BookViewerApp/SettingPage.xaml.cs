@@ -42,7 +42,10 @@ namespace BookViewerApp
         {
             public event PropertyChangedEventHandler PropertyChanged;
 
-            private void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
+            private void OnPropertyChanged(string name)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
 
             private SettingStorage.SettingInstance target;
 
@@ -77,21 +80,9 @@ namespace BookViewerApp
                 }
             }
 
-            public object Minimum
-            {
-                get
-                {
-                    return target.Minimum;
-                }
-            }
+            public object Minimum => target.Minimum;
 
-            public object Maximum
-            {
-                get
-                {
-                    return target.Maximum;
-                }
-            }
+            public object Maximum => target.Maximum;
 
             public string ValidRangeDescription
             {
@@ -160,7 +151,7 @@ namespace BookViewerApp
                 {
                     return base.SelectTemplateCore(item, container);
                 }
-                var itemVM = item as SettingPage.SettingViewModel;
+                var itemVM = (SettingPage.SettingViewModel) item;
                 if(itemVM.Type == typeof(bool))
                 {
                     return TemplateBool;

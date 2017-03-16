@@ -12,7 +12,7 @@ namespace BookViewerApp
     public class BookShelfStorage
     {
         private const string fileName = "BookShelf.xml";
-        private static Windows.Storage.StorageFolder DataFolderLocal { get { return Functions.GetSaveFolderLocal(); } }
+        private static Windows.Storage.StorageFolder DataFolderLocal => Functions.GetSaveFolderLocal();
         static System.Threading.SemaphoreSlim fileLocalSemaphore = new System.Threading.SemaphoreSlim(1, 1);
         private static async Task<Windows.Storage.StorageFile> GetDataFileLocalAsync()
         {
@@ -80,7 +80,7 @@ namespace BookViewerApp
             return BookShelvesCache ?? await LoadAsync();
         }
 
-        public async static Task<BookContainer> GetFromStorageFolder(Windows.Storage.StorageFolder folder, string Token = null, string[] Path = null)
+        public static async Task<BookContainer> GetFromStorageFolder(Windows.Storage.StorageFolder folder, string Token = null, string[] Path = null)
         {
             var result = new BookContainer();
             result.Title = folder.DisplayName;
@@ -133,7 +133,7 @@ namespace BookViewerApp
             return result;
         }
 
-        public async static Task<BookContainer.BookShelfBook> GetFromStorageFile(Windows.Storage.StorageFile file, string Token=null,string[] Path=null) {
+        public static async Task<BookContainer.BookShelfBook> GetFromStorageFile(Windows.Storage.StorageFile file, string Token=null,string[] Path=null) {
             if (!Books.BookManager.IsFileAvailabe(file)) return null;
 
             var book = await Books.BookManager.GetBookFromFile(file);
@@ -196,8 +196,8 @@ namespace BookViewerApp
 
             public bool IsEmpty()
             {
-                if(Files.Count() > 0) { return false; }
-                if (Folders.Count() == 0) { return true; }
+                if(Files.Any()) { return false; }
+                if (!Folders.Any()) { return true; }
                 foreach(var item in Folders)
                 {
                     if (!item.IsEmpty()) return false;

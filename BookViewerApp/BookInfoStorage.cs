@@ -101,7 +101,10 @@ namespace BookViewerApp
                     serializer.Serialize(s, items);
                 }
             }
-            catch {  }
+            catch
+            {
+                // ignored
+            }
             finally
             {
                 fileRoamingSemaphore.Release();
@@ -120,7 +123,10 @@ namespace BookViewerApp
                     serializer.Serialize(s, items);
                 }
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
             finally
             {
                 fileLocalSemaphore.Release();
@@ -140,7 +146,7 @@ namespace BookViewerApp
             return BookInfosCache;
         }
 
-        public async static Task<BookInfo> GetBookInfoByIDOrCreateAsync(string id)
+        public static async Task<BookInfo> GetBookInfoByIDOrCreateAsync(string id)
         {
             var result = await GetBookInfoByIDAsync(id);
             if (result != null) return result;
@@ -165,7 +171,7 @@ namespace BookViewerApp
             return book;
         }
 
-        public async static Task<BookInfo> GetBookInfoByIDAsync(string id)
+        public static async Task<BookInfo> GetBookInfoByIDAsync(string id)
         {
             var bis = (await GetBookInfoAsync());
             foreach (var item in bis)

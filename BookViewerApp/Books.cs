@@ -152,26 +152,14 @@ namespace BookViewerApp.Books
             this.Loaded += (s, e) => { OnLoaded(e); };
         }
 
-        public string ID
-        {
-            get
-            {
-                return Origin.ID;
-            }
-        }
+        public string ID => Origin.ID;
 
-        public uint PageCount
-        {
-            get
-            {
-                return Origin.PageCount;
-            }
-        }
+        public uint PageCount => Origin.PageCount;
 
         public event EventHandler Loaded;
         private void OnLoaded(EventArgs e)
         {
-            if (Loaded != null) Loaded(this, e);
+            Loaded?.Invoke(this, e);
         }
 
         public IPageFixed GetPage(uint i)

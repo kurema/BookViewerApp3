@@ -39,7 +39,7 @@ namespace BookViewerApp
                 AppBarButtonToggleSecret.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
             }
         }
-        static private bool _SecretMode = false;
+        private static bool _SecretMode = false;
 
         private async void Refresh() {
             UpdateLoadingStatus();
@@ -106,7 +106,7 @@ namespace BookViewerApp
                 storage.Add(BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(folder)));
                 CurrentOperationCount--;
                 Refresh();
-                BookShelfList.SelectedIndex = BookShelfList.Items.Count - 1;
+                if (BookShelfList.Items != null) BookShelfList.SelectedIndex = BookShelfList.Items.Count - 1;
 
                 dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Completed/Message"), rl.GetString("LoadingFolder/Title"));
                 await dialog.ShowAsync();
@@ -229,13 +229,12 @@ namespace BookViewerApp
             for (int i = 0; i < storage.Count; i++)
             {
                 if (!storage[i].Secret || this.SecretMode) cnt++;
-                if (tgt == i)
-                {
-                    if (cnt == -1 && BookShelfList.Items.Count > 0) { return 0; }
-                    return cnt;
-                }
+                if (tgt != i) continue;
+                if (BookShelfList.Items != null && (cnt == -1 && BookShelfList.Items.Count > 0)) { return 0; }
+                return cnt;
             }
-            return Math.Min(0, BookShelfList.Items.Count - 1);
+            if (BookShelfList.Items != null) return Math.Min(0, BookShelfList.Items.Count - 1);
+            return -1;
         }
 
         private async void AppBarButton_Click_AppBarButton_Click_ClearBookShelfStorageSingle(object sender, RoutedEventArgs e)

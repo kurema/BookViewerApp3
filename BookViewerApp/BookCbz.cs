@@ -46,7 +46,7 @@ namespace BookViewerApp.Books.Cbz
 
         private void OnLoaded(EventArgs e)
         {
-            if (Loaded != null) Loaded(this, e);
+            Loaded?.Invoke(this, e);
         }
 
         public IPageFixed GetPage(uint i)

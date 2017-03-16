@@ -31,18 +31,12 @@ namespace BookViewerApp.Books.Compressed
             return Functions.GetHash(result);
         }
 
-        public uint PageCount
-        {
-            get
-            {
-                return (uint)Entries.Count();
-            }
-        }
+        public uint PageCount => (uint)Entries.Count();
 
         public event EventHandler Loaded;
         private void OnLoaded()
         {
-            if (Loaded != null) Loaded(this, new EventArgs());
+            Loaded?.Invoke(this, new EventArgs());
         }
 
         //private SharpCompress.Archive.IArchiveEntry Target;

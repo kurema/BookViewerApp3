@@ -114,13 +114,7 @@ namespace BookViewerApp.Books.Image
             Content = result;
         }
 
-        public uint PageCount
-        {
-            get
-            {
-                return (uint)Content.Count();
-            }
-        }
+        public uint PageCount => (uint)Content.Count();
 
         public string ID
         {
@@ -139,7 +133,7 @@ namespace BookViewerApp.Books.Image
 
         private void OnLoaded(EventArgs e)
         {
-            if (Loaded != null) Loaded(this, e);
+            Loaded?.Invoke(this, e);
         }
 
         public IPageFixed GetPage(uint i)

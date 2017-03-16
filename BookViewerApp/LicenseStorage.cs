@@ -11,7 +11,7 @@ namespace BookViewerApp
 {
     public class LicenseStorage
     {
-        public static string CurrentLicense { get { return _CurrentLicense; } }
+        public static string CurrentLicense => _CurrentLicense;
         private static string _CurrentLicense;
 
         public static string GetLicense(string Key)

@@ -118,14 +118,17 @@ namespace BookViewerApp
         {
             if (Window.Current?.Content != null && ((Frame)Window.Current?.Content)?.Content is BookFixed2Viewer)
             {
-                (((Frame)Window.Current?.Content)?.Content as BookFixed2Viewer).SaveInfo();
+                (((Frame)Window.Current?.Content)?.Content as BookFixed2Viewer)?.SaveInfo();
             }
 
             var rootFrame = new Frame();
             rootFrame.Navigate(typeof(BookFixed2Viewer), args);
 
-            Window.Current.Content = rootFrame;
-            Window.Current.Activate();
+            if (Window.Current != null)
+            {
+                Window.Current.Content = rootFrame;
+                Window.Current.Activate();
+            }
             //base.OnFileActivated(args);
         }
     }

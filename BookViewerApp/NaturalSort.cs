@@ -93,7 +93,9 @@ namespace BookViewerApp
             {
                 if (this.Kind == NaturalKind.Number && other.Kind == NaturalKind.Number)
                 {
-                    return this.Number.Value.CompareTo(other.Number.Value);
+                    if (this.Number != null && other.Number != null)
+                        return this.Number.Value.CompareTo(other.Number.Value);
+                    else return this.Number == null && other.Number == null?0:1;
                 }
                 else
                 {

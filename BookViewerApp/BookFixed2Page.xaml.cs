@@ -29,7 +29,7 @@ namespace BookViewerApp
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
 
-            (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
+            (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
         }
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -41,7 +41,7 @@ namespace BookViewerApp
 
         private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            (DataContext as BookFixed2ViewModels.PageViewModel).UpdateSource();
+            (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
         }
 
         private double InitialHorizontalOffset;

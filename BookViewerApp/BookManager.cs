@@ -10,7 +10,7 @@ namespace BookViewerApp.Books
 {
     public class BookManager
     {
-        public async static Task<IBook> GetBookFromFile(Windows.Storage.IStorageFile file)
+        public static async Task<IBook> GetBookFromFile(Windows.Storage.IStorageFile file)
         {
             if (file == null) { return null; }
             else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
@@ -72,7 +72,7 @@ namespace BookViewerApp.Books
             return acl.Add(file);
         }
 
-        public async static Task<Windows.Storage.IStorageItem> StorageItemGet(string id)
+        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string id)
         {
             var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
             return await acl.GetItemAsync(id);
@@ -90,12 +90,12 @@ namespace BookViewerApp.Books
             return Path.Split(FileSplitLetter);
         }
 
-        public async static Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string Path)
+        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string Path)
         {
             return await StorageItemGet(token, PathSplit(Path));
         }
 
-        public async static Task<Windows.Storage.IStorageItem> StorageItemGet(string token,string[] Path)
+        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token,string[] Path)
         {
             Windows.Storage.IStorageItem currentFolder = await StorageItemGet(token);
             foreach(var item in Path)
@@ -113,7 +113,7 @@ namespace BookViewerApp.Books
             return currentFolder;
         }
 
-        public async static Task<Windows.Storage.StorageFile> PickFile()
+        public static async Task<Windows.Storage.StorageFile> PickFile()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
@@ -124,7 +124,7 @@ namespace BookViewerApp.Books
 
         }
 
-        public async static Task<Books.IBook> PickBook()
+        public static async Task<Books.IBook> PickBook()
         {
             return (await GetBookFromFile(await PickFile()));
         }

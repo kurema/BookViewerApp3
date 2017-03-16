@@ -65,20 +65,20 @@ namespace BookViewerApp
             public object DefaultValue { get; private set; }
             private Func<object, bool> IsValidObject { get; set; }
 
-            public TypeConverter Converter { get; private set; }
+            public ITypeConverter Converter { get; private set; }
             private object Cache;
 
             public object Minimum{ get; set; }
             public object Maximum { get; set; }
 
-            private Windows.Storage.ApplicationDataContainer Setting { get { return (IsLocal ? LocalSettings : RoamingSettings); } }
+            private Windows.Storage.ApplicationDataContainer Setting => (IsLocal ? LocalSettings : RoamingSettings);
 
             public Type GetGenericType()
             {
                 return Converter.GetConvertType();
             }
 
-            public SettingInstance(string Key,string StringResourceKey,object DefaultValue,TypeConverter Converter,bool IsLocal = true, Func<object, bool> CheckValid=null)
+            public SettingInstance(string Key,string StringResourceKey,object DefaultValue,ITypeConverter Converter,bool IsLocal = true, Func<object, bool> CheckValid=null)
             {
                 this.Key = Key;
                 this.StringResourceKey = "Setting_"+StringResourceKey;
@@ -143,7 +143,7 @@ namespace BookViewerApp
             }
         }
 
-        public interface TypeConverter
+        public interface ITypeConverter
         {
             String GetStringGeneral(object value);
             bool TryGetTypeGeneral(string value, out object result);
@@ -154,7 +154,7 @@ namespace BookViewerApp
 
         public class TypeConverters
         {
-            public class StringConverter : TypeConverter
+            public class StringConverter : ITypeConverter
             {
                 public Type GetConvertType()
                 {
@@ -173,7 +173,7 @@ namespace BookViewerApp
                 }
             }
 
-            public class BoolConverter : TypeConverter
+            public class BoolConverter : ITypeConverter
             {
                 public Type GetConvertType()
                 {
@@ -198,7 +198,7 @@ namespace BookViewerApp
                 }
             }
 
-            public class IntConverter : TypeConverter
+            public class IntConverter : ITypeConverter
             {
                 public Type GetConvertType()
                 {
@@ -224,7 +224,7 @@ namespace BookViewerApp
 
             }
 
-            public class DoubleConverter : TypeConverter
+            public class DoubleConverter : ITypeConverter
             {
                 public Type GetConvertType()
                 {
@@ -249,7 +249,7 @@ namespace BookViewerApp
                 }
             }
 
-            public class RegexConverter : TypeConverter
+            public class RegexConverter : ITypeConverter
             {
                 public Type GetConvertType()
                 {
@@ -279,16 +279,16 @@ namespace BookViewerApp
                 }
             }
 
-            public class SerializableConverter<type> : TypeConverter
+            public class SerializableConverter<T> : ITypeConverter
             {
                 public Type GetConvertType()
                 {
-                    return typeof(type);
+                    return typeof(T);
                 }
 
                 public string GetStringGeneral(object value)
                 {
-                    if (!(value is type)) return null;
+                    if (!(value is T)) return null;
                     System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
                     using (System.IO.TextWriter tw = new System.IO.StringWriter())
                     {
@@ -308,17 +308,17 @@ namespace BookViewerApp
                         }
                         catch
                         {
-                            result = default(type);
+                            result = default(T);
                             return false;
                         }
                         if (xs.CanDeserialize(xr))
                         {
-                            result = (type)xs.Deserialize(xr);
+                            result = (T)xs.Deserialize(xr);
                             return true;
                         }
                         else
                         {
-                            result = default(type);
+                            result = default(T);
                             return false;
                         }
                     }

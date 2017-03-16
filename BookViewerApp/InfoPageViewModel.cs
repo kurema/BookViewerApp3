@@ -18,37 +18,37 @@ namespace BookViewerApp.InfoPageViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;//never be called.
 
-        private Windows.ApplicationModel.Package CurrentPackage { get { return Windows.ApplicationModel.Package.Current; } }
+        private Windows.ApplicationModel.Package CurrentPackage => Windows.ApplicationModel.Package.Current;
 
-        private Windows.ApplicationModel.PackageId ID { get { return Windows.ApplicationModel.Package.Current.Id; } }
+        private Windows.ApplicationModel.PackageId ID => Windows.ApplicationModel.Package.Current.Id;
 
-        public string VersionText { get { return string.Format("{0}.{1}.{2}.{3}",VersionInfo.Major,VersionInfo.Minor,VersionInfo.Revision,VersionInfo.Revision); } }
+        public string VersionText => string.Format("{0}.{1}.{2}.{3}",VersionInfo.Major,VersionInfo.Minor,VersionInfo.Revision,VersionInfo.Revision);
 
-        public Windows.ApplicationModel.PackageVersion VersionInfo { get { return CurrentPackage.Id.Version; } }
+        public Windows.ApplicationModel.PackageVersion VersionInfo => CurrentPackage.Id.Version;
 
-        public string Architecture { get { return ID.Architecture.ToString(); } }
+        public string Architecture => ID.Architecture.ToString();
 
-        public string Name { get { return ID.Name; } }
+        public string Name => ID.Name;
 
-        public string FamilyName { get { return ID.FamilyName; } }
+        public string FamilyName => ID.FamilyName;
 
-        public string FullName { get { return ID.FullName; } }
+        public string FullName => ID.FullName;
 
-        public string Publisher { get { return ID.Publisher; } }
+        public string Publisher => ID.Publisher;
 
-        public string PublisherID { get { return ID.PublisherId; } }
+        public string PublisherID => ID.PublisherId;
 
-        public string InstalledLocation { get { return CurrentPackage.InstalledLocation.Path; } }
+        public string InstalledLocation => CurrentPackage.InstalledLocation.Path;
 
-        public string DisplayName { get { return CurrentPackage.DisplayName; } }
+        public string DisplayName => CurrentPackage.DisplayName;
 
-        public string PublisherDisplayName { get { return CurrentPackage.PublisherDisplayName; } }
+        public string PublisherDisplayName => CurrentPackage.PublisherDisplayName;
 
-        public Uri LogoUri { get { return CurrentPackage.Logo; } }
+        public Uri LogoUri => CurrentPackage.Logo;
 
-        public string Description { get { return CurrentPackage.Description; } }
+        public string Description => CurrentPackage.Description;
 
-        public string InstalledDate { get { return CurrentPackage.InstalledDate.ToString(); } }
+        public string InstalledDate => CurrentPackage.InstalledDate.ToString();
 
         public License License { get
             {
@@ -99,7 +99,10 @@ namespace BookViewerApp.InfoPageViewModel
     public class SimpleTile : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
+        public void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         public string Title { get { return _Title; } set { _Title = value;OnPropertyChanged(nameof(Title)); } }
         private string _Title = "";

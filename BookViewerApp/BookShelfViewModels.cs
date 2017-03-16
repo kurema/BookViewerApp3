@@ -16,7 +16,7 @@ namespace BookViewerApp.BookShelfViewModels
 {
     public class BookShelfViewModel : INotifyPropertyChanged, IEnumerable<BookContainerViewModel>
     {
-        public async static Task<ObservableCollection<BookShelfViewModel>> GetBookShelfViewModels (bool addSecretShelf){
+        public static async Task<ObservableCollection<BookShelfViewModel>> GetBookShelfViewModels (bool addSecretShelf){
             var storages = await BookShelfStorage.GetBookShelves();
             var result= new ObservableCollection<BookShelfViewModel>();
             if (storages == null) return null;
@@ -140,7 +140,7 @@ namespace BookViewerApp.BookShelfViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public IEnumerator<IItemViewModel> GetEnumerator()
@@ -184,7 +184,7 @@ namespace BookViewerApp.BookShelfViewModels
             Books.Add(item);
         }
 
-        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index, BookShelfViewModel Shelf)
+        public static async Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index, BookShelfViewModel Shelf)
         {
             var storages= await BookShelfStorage.GetBookShelves();
             if (storages.Count > index)
@@ -196,7 +196,7 @@ namespace BookViewerApp.BookShelfViewModels
             }
         }
 
-        public async static Task<BookContainerViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookContainer> storages, BookShelfViewModel Shelf)
+        public static async Task<BookContainerViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookContainer> storages, BookShelfViewModel Shelf)
         {
             var result = new List<BookContainerViewModel>();
 
@@ -209,7 +209,7 @@ namespace BookViewerApp.BookShelfViewModels
         }
 
 
-        public async static Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage,BookShelfViewModel Shelf,BookContainerViewModel Parent=null)
+        public static async Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage,BookShelfViewModel Shelf,BookContainerViewModel Parent=null)
         {
             BookContainerViewModel result = new BookContainerViewModel(storage.Title, Shelf, Parent);
             foreach (var item in storage.Folders)
@@ -256,9 +256,9 @@ namespace BookViewerApp.BookShelfViewModels
         public async Task<Books.IBook> TryGetBook()
         {
             var item=(await TryGetBookFile());
-            if(item!= null && item is Windows.Storage.IStorageFile)
+            if(item!= null)
             {
-                return await Books.BookManager.GetBookFromFile(item as Windows.Storage.IStorageFile);
+                return await Books.BookManager.GetBookFromFile(item);
             }
             return null;
         }
@@ -266,11 +266,7 @@ namespace BookViewerApp.BookShelfViewModels
         public async Task<Windows.Storage.IStorageFile> TryGetBookFile()
         {
             var item = (await AccessInfo.TryGetItem());
-            if (item != null && item is Windows.Storage.IStorageFile)
-            {
-                return (item as Windows.Storage.IStorageFile);
-            }
-            return null;
+            return item as Windows.Storage.IStorageFile;
         }
 
         public async Task GetFromBookInfoStorageAsync()
@@ -306,7 +302,7 @@ namespace BookViewerApp.BookShelfViewModels
         public bool Reversed { get { return _Reversed; } set { _Reversed = value; OnPropertyChanged(nameof(Reversed)); } }
         private bool _Reversed = false;
 
-        public async static Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage,BookContainerViewModel parent)
+        public static async Task<BookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage,BookContainerViewModel parent)
         {
             var reg1 = SettingStorage.GetValue("BookNameTrim") as System.Text.RegularExpressions.Regex;
             if(! await storage.Access.IsAccessible()) { return null; }

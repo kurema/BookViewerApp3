@@ -49,7 +49,7 @@ namespace BookViewerApp.Books.Pdf
 
         private void OnLoaded(EventArgs e)
         {
-            if (Loaded != null) Loaded(this, e);
+            Loaded?.Invoke(this, e);
         }
 
     }

@@ -73,7 +73,7 @@ namespace BookViewerApp
 
         private void Open(Books.IBook book)
         {
-            if (book != null && book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed) book, this.flipView);
+            if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed) book, this.flipView);
         }
 
         private void SetBookShelfModel(BookShelfViewModels.BookViewModel viewModel)
