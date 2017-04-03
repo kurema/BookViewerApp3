@@ -86,14 +86,7 @@ namespace BookViewerApp.Books.Compressed
 
         public IPageFixed GetPage(uint i)
         {
-            try
-            {
-                return new CompressedPage(Entries[i]);
-            }
-            catch
-            {
-                return null;
-            }
+            return new CompressedPage(Entries[i]);
         }
     }
 
@@ -127,12 +120,19 @@ namespace BookViewerApp.Books.Compressed
 
         private Windows.Storage.Streams.IRandomAccessStream GetStream()
         {
-            var s = Entry.OpenEntryStream();
-            var ms = new MemoryStream();
-            s.CopyTo(ms);
-            s.Dispose();
-            ms.Seek(0, SeekOrigin.Begin);
-            return ms.AsRandomAccessStream();
+            try
+            {
+                var s = Entry.OpenEntryStream();
+                var ms = new MemoryStream();
+                s.CopyTo(ms);
+                s.Dispose();
+                ms.Seek(0, SeekOrigin.Begin);
+                return ms.AsRandomAccessStream();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task SetBitmapAsync(BitmapImage image)

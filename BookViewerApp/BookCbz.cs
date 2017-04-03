@@ -144,11 +144,18 @@ namespace BookViewerApp.Books.Cbz
 
         public async Task SetBitmapAsync(BitmapImage image)
         {
-            var s = Content.Open();
-            var ms = new MemoryStream();
-            s.CopyTo(ms);
-            s.Dispose();
-            await new Image.ImagePageStream(ms.AsRandomAccessStream()).SetBitmapAsync(image);
+            try
+            {
+                var s = Content.Open();
+                var ms = new MemoryStream();
+                s.CopyTo(ms);
+                s.Dispose();
+                await new Image.ImagePageStream(ms.AsRandomAccessStream()).SetBitmapAsync(image);
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 
