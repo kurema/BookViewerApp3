@@ -44,24 +44,27 @@ namespace BookViewerApp
             (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
         }
 
-        private double InitialHorizontalOffset;
-        private double InitialVerticalOffset;
-        private Windows.UI.Input.PointerPoint InitialPoint;
+        private double _initialHorizontalOffset;
+        private double _initialVerticalOffset;
+        private Windows.UI.Input.PointerPoint _initialPoint;
 
         private void scrollViewer_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            InitialHorizontalOffset = scrollViewer.HorizontalOffset;
-            InitialVerticalOffset = scrollViewer.VerticalOffset;
-            InitialPoint = e.GetCurrentPoint(scrollViewer);
+            _initialHorizontalOffset = scrollViewer.HorizontalOffset;
+            _initialVerticalOffset = scrollViewer.VerticalOffset;
+            _initialPoint = e.GetCurrentPoint(scrollViewer);
 
         }
 
         private void scrollViewer_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
-            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse && e.Pointer.IsInContact)
+            if (e.Pointer?.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse &&
+                e.Pointer?.IsInContact == true)
             {
                 var point = e.GetCurrentPoint(scrollViewer);
-                scrollViewer.ChangeView(InitialHorizontalOffset - (point.Position.X - InitialPoint.Position.X), InitialVerticalOffset - (point.Position.Y - InitialPoint.Position.Y), null);
+                if (point == null || _initialPoint == null) return;
+                scrollViewer.ChangeView(_initialHorizontalOffset - (point.Position.X - _initialPoint.Position.X),
+                    _initialVerticalOffset - (point.Position.Y - _initialPoint.Position.Y), null);
                 e.Handled = true;
             }
         }

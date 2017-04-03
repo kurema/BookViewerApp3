@@ -86,7 +86,14 @@ namespace BookViewerApp.Books.Compressed
 
         public IPageFixed GetPage(uint i)
         {
-            return new CompressedPage(Entries[i]);
+            try
+            {
+                return new CompressedPage(Entries[i]);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 
