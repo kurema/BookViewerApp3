@@ -26,7 +26,8 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <FlipView Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved">
+        <FlipView Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved"
+                  PointerEntered="FlipView_OnPointerEntered">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <local:BookFixed2Page DataContext="{Binding}"/>

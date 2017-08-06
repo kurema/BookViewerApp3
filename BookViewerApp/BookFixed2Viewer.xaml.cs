@@ -274,5 +274,11 @@ namespace BookViewerApp
                 MakeStackPanelZoomVisibleForAWhile();
             }
         }
+
+        private void FlipView_OnPointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            e.Handled = false;
+            MakeStackPanelZoomVisibleForAWhile();
+        }
     }
 }
