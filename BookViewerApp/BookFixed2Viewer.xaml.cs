@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using BookViewerApp.BookFixed2ViewModels;
+using System.Threading.Tasks;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -234,6 +235,44 @@ namespace BookViewerApp
             if (Binding.Reversed) { rate = 1 - rate; }
             Binding.ReadRate = Math.Round(rate*(Binding.PagesCount))/(Binding.PagesCount);
             e.Handled = true;
+        }
+
+        private int FlipView_OnPointerMoved_DelayCount = 0;
+        private void FlipView_OnPointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            e.Handled = false;
+            MakeStackPanelZoomVisibleForAWhile();
+        }
+
+        private async void MakeStackPanelZoomVisibleForAWhile()
+        {
+            int visibleTime = (int) ((double) SettingStorage.GetValue("ZoomButtonShowTimespan") * 1000.0);
+            if (visibleTime <= 0) { return; }
+            StackPanelZoom.Visibility = Visibility.Visible;
+            FlipView_OnPointerMoved_DelayCount++;
+            await Task.Delay(visibleTime);
+            FlipView_OnPointerMoved_DelayCount--;
+            if (FlipView_OnPointerMoved_DelayCount == 0)
+                StackPanelZoom.Visibility = Visibility.Collapsed;
+        }
+
+        private void ButtonBase_ZoomIn_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (flipView.SelectedItem is PageViewModel)
+            {
+                var pvm= (flipView.SelectedItem as PageViewModel);
+                pvm.ZoomRequest(pvm.ZoomFactor * 1.3f);
+                MakeStackPanelZoomVisibleForAWhile();
+            }
+        }
+        private void ButtonBase_ZoomOut_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (flipView.SelectedItem is PageViewModel)
+            {
+                var pvm = (flipView.SelectedItem as PageViewModel);
+                pvm.ZoomRequest(pvm.ZoomFactor / 1.3f);
+                MakeStackPanelZoomVisibleForAWhile();
+            }
         }
     }
 }

@@ -291,4 +291,10 @@
   <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
     <value>Natural Sort in CBZ/CBR</value>
   </data>
+  <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
+    <value>Seconds to display the zoom button when you touch the screen (0:disable).</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
+    <value>Zoom button display time</value>
+  </data>
 </root>

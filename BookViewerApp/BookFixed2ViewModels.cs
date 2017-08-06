@@ -265,6 +265,25 @@ namespace BookViewerApp.BookFixed2ViewModels
             }
         }
 
+        public void ZoomRequest(float factor)
+        {
+            OnZoomRequested(factor);
+        }
+        private void OnZoomRequested(float factor)
+        {
+            ZoomRequested?.Invoke(this, new ZoomRequestedEventArgs(factor));
+        }
+        public ZoomRequestedEventHandler ZoomRequested;
+        public delegate void ZoomRequestedEventHandler(object sender, ZoomRequestedEventArgs e);
+        public class ZoomRequestedEventArgs : EventArgs
+        {
+            public float ZoomFactor;
+            public ZoomRequestedEventArgs(float factor)
+            {
+                this.ZoomFactor = factor;
+            }
+        }
+
         private float _ZoomFactor=1.0f;
 
         public ImageSource Source { get

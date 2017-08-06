@@ -40,6 +40,7 @@ namespace BookViewerApp
                         new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter()),
                         new SettingInstance("SortNaturalOrder","SortNaturalOrder",false,new TypeConverters.BoolConverter()),
                         new SettingInstance("SortCoverComesFirst","SortCoverComesFirst",false,new TypeConverters.BoolConverter()),
+                        new SettingInstance("ZoomButtonShowTimespan","ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter()){Minimum = 0,Maximum = 10},
                     };
             }
         }

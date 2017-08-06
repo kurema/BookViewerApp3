@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -21,26 +22,105 @@ using BookViewerApp.BookFixed2ViewModels;
 
 namespace BookViewerApp
 {
-    public sealed partial class BookFixed2Page : UserControl
+    public sealed partial class BookFixed2Page : UserControl,INotifyPropertyChanged
     {
-        //public void OnPropertyChanged(string name) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
-        //public event PropertyChangedEventHandler PropertyChanged;
-        public float ZoomFactor
+        public void OnPropertyChanged(string name) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public float? ZoomFactor
         {
             get { return scrollViewer.ZoomFactor; }
-            set { scrollViewer.ChangeView(null, null, value); }
+            set
+            {
+                if(!value.HasValue)return;
+                var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value.Value), scrollViewer.MinZoomFactor);
+                if(value!=resultFactor) { throw new ArgumentOutOfRangeException();}
+                scrollViewer.ChangeView(null,null, resultFactor);
+                OnPropertyChanged(nameof(ZoomFactor));
+            }
         }
 
         public BookFixed2Page()
         {
             this.InitializeComponent();
 
-            this.scrollViewer.ViewChanged += (s2, e2) =>
+            this.DataContextChanged += (s3, e3) =>
             {
+                this.scrollViewer.ViewChanged += (s2, e2) =>
+                {
+                    if (this.DataContext is PageViewModel)
+                        (this.DataContext as PageViewModel).ZoomFactor = scrollViewer.ZoomFactor;
+                };
                 if (this.DataContext is PageViewModel)
-                    (this.DataContext as PageViewModel).ZoomFactor = scrollViewer.ZoomFactor;
+                {
+                    (this.DataContext as PageViewModel).ZoomRequested += (s2, e2) =>
+                    {
+                        var value = e2.ZoomFactor;
+                        var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value),
+                            scrollViewer.MinZoomFactor);
+                        var currentFactor = this.ZoomFactor;
+                        changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
+                    };
+                    (this.DataContext as PageViewModel).PropertyChanged += (s2, e2) =>
+                    {
+                        if (e2.PropertyName == nameof(PageViewModel.ZoomFactor))
+                        {
+                            try
+                            {
+                                this.ZoomFactor = (this.DataContext as PageViewModel)?.ZoomFactor;
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                if (this.DataContext is PageViewModel && this.ZoomFactor.HasValue)
+                                    (this.DataContext as PageViewModel).ZoomFactor = this.ZoomFactor.Value;
+                            }
+                        }
+                    };
+                }
             };
         }
+
+        private void changeViewWithKeepCurrentCenter(ScrollViewer sv, float zoomFactor)
+        {
+            double originalWidth = sv.ExtentWidth / sv.ZoomFactor;
+            double originalHeight = sv.ExtentHeight / sv.ZoomFactor;
+
+            double originalCenterX = 0;
+            double originalCenterY = 0;
+
+            if (sv.ViewportWidth < sv.ExtentWidth)
+            {
+                double eCenterX = sv.HorizontalOffset + sv.ViewportWidth / 2;
+                originalCenterX = eCenterX / sv.ZoomFactor;
+            }
+            else
+            {
+                double eCenterX = sv.HorizontalOffset + sv.ExtentWidth / 2;
+                originalCenterX = eCenterX / sv.ZoomFactor;
+            }
+
+            if (sv.ViewportHeight < sv.ExtentHeight)
+            {
+                double eCenterY = sv.VerticalOffset + sv.ViewportHeight / 2;
+                originalCenterY = eCenterY / sv.ZoomFactor;
+            }
+            else
+            {
+                double eCenterY = sv.VerticalOffset + sv.ExtentHeight / 2;
+                originalCenterY = eCenterY / sv.ZoomFactor;
+            }
+
+
+            double newExtentCenterX = originalCenterX * zoomFactor;
+            double newExtentCenterY = originalCenterY * zoomFactor;
+
+            double newExtentWidth = originalWidth * zoomFactor;
+            double newExtentHeight = originalHeight * zoomFactor;
+
+            double newExtentOffsetX = newExtentCenterX - sv.ViewportWidth / 2;
+            double newExtentOffsetY = newExtentCenterY - sv.ViewportHeight / 2;
+            sv.ChangeView(newExtentOffsetX, newExtentOffsetY, zoomFactor, false);
+        }
+
 
         private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {

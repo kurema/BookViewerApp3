@@ -291,4 +291,10 @@
   <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
     <value>自然順ソート</value>
   </data>
+  <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
+    <value>画面をタッチした際ズームボタンを表示する時間 (0で非表示)</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
+    <value>ズームボタン表示時間</value>
+  </data>
 </root>

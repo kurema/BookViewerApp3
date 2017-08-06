@@ -18,7 +18,6 @@
         <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
         <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
         <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
-        <ValueConverter:VisibileIfPageViewModelZoomFactorIsNotOne x:Key="VisibleIfEtc" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -27,7 +26,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <FlipView Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}">
+        <FlipView Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <local:BookFixed2Page DataContext="{Binding}"/>
@@ -41,12 +40,12 @@
         </ProgressBar>
         <Canvas Grid.Row="2" Grid.RowSpan="2" Background="Transparent" Tapped="Scroller_Tapped" PointerMoved="UIElement_OnPointerMoved"/>
         <StackPanel Background="{x:Null}"  Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Bottom">
-            <StackPanel HorizontalAlignment="Right" Visibility="{Binding SelectedItem,ElementName=flipView,Converter={StaticResource VisibleIfEtc},Mode=OneWay}">
-                <RepeatButton Background="Transparent" Padding="0" Margin="0" Width="Auto" Height="Auto">
-                    <AppBarButton Icon="ZoomOut" Label="縮小" IsCompact="True" />
+            <StackPanel HorizontalAlignment="Right" x:Name="StackPanelZoom" Visibility="Collapsed">
+                <RepeatButton Background="Transparent" Padding="0" Margin="0" Width="Auto" Height="Auto" Click="ButtonBase_ZoomOut_OnClick">
+                    <SymbolIcon Symbol="ZoomOut" Width="60" Height="60"/>
                 </RepeatButton>
-                <RepeatButton Background="Transparent" Padding="0" Margin="0" Width="Auto" Height="Auto">
-                    <AppBarButton Icon="ZoomIn" Label="拡大" IsCompact="True"  />
+                <RepeatButton Background="Transparent" Padding="0" Margin="0" Width="Auto" Height="Auto" Click="ButtonBase_ZoomIn_OnClick">
+                    <SymbolIcon Symbol="ZoomIn" Width="60" Height="60"/>
                 </RepeatButton>
             </StackPanel>
             <CommandBar Background="{x:Null}" x:Name="CommandBar1" >

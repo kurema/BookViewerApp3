@@ -62,23 +62,6 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class VisibileIfPageViewModelZoomFactorIsNotOne : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if(value is PageViewModel && (value as PageViewModel).ZoomFactor!=1.0f)
-            {
-                return Visibility.Visible;
-            }
-            return Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class FloatEqualOneToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
