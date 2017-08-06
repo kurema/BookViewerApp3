@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -51,7 +52,18 @@ namespace BookViewerApp
             };
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
+
+            this.Loaded += (s, e) => { this.IsLoaded = true; };
+            this.LayoutUpdated += (s, e) =>
+            {
+                if (this.IsLoaded)
+                {
+                    flipView.Focus(FocusState.Programmatic);
+                }
+            };
         }
+
+        private bool IsLoaded = false;
 
         private string OriginalTitle;
 

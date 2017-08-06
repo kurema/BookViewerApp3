@@ -136,7 +136,16 @@ namespace BookViewerApp.BookFixed2ViewModels
         public int PageSelected
         {
             get { return _PageSelected+1; }
-            set { if (value > PagesCount) return; _PageSelected = value-1; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); OnPropertyChanged(nameof(ReadRate)); OnPropertyChanged(nameof(CurrentBookmarkName)); }
+            set
+            {
+                if (value > PagesCount) return;
+                if (value == 0) _PageSelected = 0;
+                _PageSelected = value - 1;
+                OnPropertyChanged(nameof(PageSelected));
+                OnPropertyChanged(nameof(PageSelectedVisual));
+                OnPropertyChanged(nameof(ReadRate));
+                OnPropertyChanged(nameof(CurrentBookmarkName));
+            }
         }
         private int _PageSelected = -1;
 
