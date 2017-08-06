@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
@@ -68,13 +69,23 @@ namespace BookViewerApp
                     _initialVerticalOffset - (point.Position.Y - _initialPoint.Position.Y), null);
                 e.Handled = true;
             }
+            else
+            {
+                e.Handled = false;
+            }
         }
 
-        private void ScrollViewer_OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private async void ScrollViewer_OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            var scrollViewer = sender as ScrollViewer;
-            var doubleTapPoint = e.GetPosition(scrollViewer);
 
+            if (e.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Mouse)
+            {
+                await Task.Delay(100);
+            }
+            var scrollViewer = sender as ScrollViewer;
+            if (scrollViewer == null) return;
+
+            var doubleTapPoint = e.GetPosition(scrollViewer);
             if (scrollViewer.ZoomFactor != 1.0)
             {
                 scrollViewer.ChangeView(null, null, 1);
@@ -83,6 +94,8 @@ namespace BookViewerApp
             {
                 scrollViewer.ChangeView(doubleTapPoint.X, doubleTapPoint.Y, 2);
             }
+            e.Handled = true;
         }
+
     }
 }

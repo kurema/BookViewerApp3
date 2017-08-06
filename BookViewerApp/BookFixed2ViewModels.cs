@@ -140,7 +140,7 @@ namespace BookViewerApp.BookFixed2ViewModels
             {
                 if (value > PagesCount) return;
                 if (value == 0) _PageSelected = 0;
-                _PageSelected = value - 1;
+                else _PageSelected = value - 1;
                 OnPropertyChanged(nameof(PageSelected));
                 OnPropertyChanged(nameof(PageSelectedVisual));
                 OnPropertyChanged(nameof(ReadRate));

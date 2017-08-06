@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography.X509Certificates;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
@@ -32,6 +33,7 @@ namespace BookViewerApp
 
             OriginalTitle = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title;
 
+
             Application.Current.Suspending += CurrentApplication_Suspending;
 
             if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
@@ -54,13 +56,16 @@ namespace BookViewerApp
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
             this.Loaded += (s, e) => { this.IsLoaded = true; };
-            this.LayoutUpdated += (s, e) =>
+            this.LayoutUpdated += BookFixed2Viewer_LayoutUpdated;
+        }
+
+        private void BookFixed2Viewer_LayoutUpdated(object sender, object e)
+        {
+            this.LayoutUpdated -= BookFixed2Viewer_LayoutUpdated;
+            if (this.IsLoaded)
             {
-                if (this.IsLoaded)
-                {
-                    flipView.Focus(FocusState.Programmatic);
-                }
-            };
+                flipView.Focus(FocusState.Programmatic);
+            }
         }
 
         private bool IsLoaded = false;
@@ -209,6 +214,26 @@ namespace BookViewerApp
             this.SaveInfo();
 
             this.Frame.Navigate(typeof(BookShelfPage), null);
+        }
+
+        private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            //This is ugly. I want to use Binding.
+            var ui = (Canvas) sender;
+            var rate=e.GetPosition(ui).X/ ui.ActualWidth;
+            if (Binding.Reversed) { rate=1-rate; }
+            Binding.ReadRate = rate;
+        }
+
+        private void UIElement_OnPointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            var ui = (Canvas)sender;
+            var cp = e.GetCurrentPoint(ui);
+            if (!cp.IsInContact) return;
+            var rate =cp.Position.X / ui.ActualWidth;
+            if (Binding.Reversed) { rate = 1 - rate; }
+            Binding.ReadRate = Math.Round(rate*(Binding.PagesCount))/(Binding.PagesCount);
+            e.Handled = true;
         }
     }
 }

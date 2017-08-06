@@ -22,7 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <FlipView Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}">
@@ -32,7 +32,13 @@
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-        <CommandBar Grid.Row="0" Grid.RowSpan="3" Background="Transparent" x:Name="CommandBar1" VerticalAlignment="Bottom">
+        <ProgressBar Grid.Row="3" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" SmallChange="0">
+            <ProgressBar.RenderTransform>
+                <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <Canvas Grid.Row="2" Grid.RowSpan="2" Background="Transparent" Tapped="Scroller_Tapped" PointerMoved="UIElement_OnPointerMoved"/>
+        <CommandBar Grid.Row="1" Grid.RowSpan="2" Background="{x:Null}" x:Name="CommandBar1" VerticalAlignment="Bottom">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Icon="Bookmarks" x:Uid="Bookmarks">
                     <AppBarButton.Flyout>
@@ -85,44 +91,5 @@
             </CommandBar.Content>
         </CommandBar>
         <ProgressBar Grid.Row="0" IsIndeterminate="{Binding Loading}" Background="{x:Null}"  />
-        <ProgressBar Grid.Row="3" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" SmallChange="0" >
-            <ProgressBar.RenderTransform>
-                <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
-            </ProgressBar.RenderTransform>
-        </ProgressBar>
-        <!--
-        <Slider Grid.Row="2" Grid.RowSpan="2"
-                Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter},Mode=TwoWay}"
-                RenderTransformOrigin="0.5,0.5" SmallChange="0" StepFrequency="1E-05" Background="Transparent"
-                BorderBrush="Transparent">
-            <Slider.RenderTransform>
-                <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
-            </Slider.RenderTransform>
-            <Slider.Template>
-                <ControlTemplate TargetType="Slider">
-                    <Grid Background="Transparent">
-                        <Grid.Resources>
-                            <Style x:Key="SliderThumbStyle" TargetType="Thumb">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Thumb">
-                                            <Ellipse Fill="White" Width="20" Height="20" Margin="-5,-8,-5,-5" Stroke="LimeGreen" />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Rectangle x:Name="HorizontalDecreaseRect" RadiusX="5" RadiusY="5" Fill="Black" Grid.Row="1" Margin="0,0,0,3" />
-                        <Thumb Style="{StaticResource SliderThumbStyle}" Grid.Column="1" DataContext="{TemplateBinding Value}" Background="Transparent" BorderBrush="Transparent"></Thumb>
-                    </Grid>
-                </ControlTemplate>
-            </Slider.Template>
-        </Slider>
-    -->
     </Grid>
 </Page>
