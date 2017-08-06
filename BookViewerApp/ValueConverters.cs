@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Data;
+using BookViewerApp.BookFixed2ViewModels;
 
 namespace BookViewerApp.ValueConverters
 {
@@ -58,6 +59,40 @@ namespace BookViewerApp.ValueConverters
         {
             throw new NotImplementedException();
             // this is impossible.
+        }
+    }
+
+    public class VisibileIfPageViewModelZoomFactorIsNotOne : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value is PageViewModel && (value as PageViewModel).ZoomFactor!=1.0f)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class FloatEqualOneToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is float && (float) value != 1.0f)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
         }
     }
 

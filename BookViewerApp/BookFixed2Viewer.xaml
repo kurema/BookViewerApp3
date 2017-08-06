@@ -17,6 +17,8 @@
         <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>
         <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
         <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
+        <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
+        <ValueConverter:VisibileIfPageViewModelZoomFactorIsNotOne x:Key="VisibleIfEtc" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -38,58 +40,68 @@
             </ProgressBar.RenderTransform>
         </ProgressBar>
         <Canvas Grid.Row="2" Grid.RowSpan="2" Background="Transparent" Tapped="Scroller_Tapped" PointerMoved="UIElement_OnPointerMoved"/>
-        <CommandBar Grid.Row="1" Grid.RowSpan="2" Background="{x:Null}" x:Name="CommandBar1" VerticalAlignment="Bottom">
-            <CommandBar.PrimaryCommands>
-                <AppBarButton Icon="Bookmarks" x:Uid="Bookmarks">
-                    <AppBarButton.Flyout>
-                        <Flyout>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <ListView ItemsSource="{Binding Path=Bookmarks}" IsItemClickEnabled="True" ItemClick="BookmarkClicked" SelectionMode="None">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding Page}" Grid.Column="0"/>
-                                                <TextBlock Text="..." Grid.Column="1" Margin="10,0"/>
-                                                <TextBlock Text="{Binding Title}" Grid.Column="2"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                                <TextBox x:Uid="BookmarkTitle" Grid.Row="1" Text="{Binding CurrentBookmarkName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                            </Grid>
-                        </Flyout>
-                    </AppBarButton.Flyout>
-                </AppBarButton>
-                <AppBarButton x:Name="AppBarButtonLeftmost" Icon="Previous" x:Uid="PageLeftmost" Command="{Binding PageVisualSetCommand}" CommandParameter="0"/>
-                <AppBarButton Icon="Previous" x:Uid="PageLeft" Command="{Binding PageVisualAddCommand}" CommandParameter="-1"/>
-                <AppBarButton Icon="Next" x:Uid="PageRight" Command="{Binding PageVisualAddCommand}" CommandParameter="1"/>
-                <AppBarButton x:Name="AppBarButtonRightmost" Icon="Next" x:Uid="PageRightmost" Command="{Binding PageVisualMaxCommand}"/>
-                <AppBarButton Icon="OpenFile" x:Uid="OpenLocalBook" Click="AppBarButton_OpenFile"/>
-            </CommandBar.PrimaryCommands>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton x:Uid="ToggleFullScreen" Click="AppBarButton_ToggleFullScreen" />
-                <AppBarButton x:Uid="BookPrevious" Command="{Binding GoPreviousBookCommand}"/>
-                <AppBarButton x:Uid="BookNext" Command="{Binding GoNextBookCommand}"/>
-                <AppBarButton x:Uid="PageReverse" Command="{Binding SwapReverseCommand}"/>
-                <AppBarButton x:Uid="GoToBookShelf" Click="AppBarButton_GoToBookshelf"/>
-            </CommandBar.SecondaryCommands>
-            <CommandBar.Content>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Name="textBoxPageSelected" Text="{Binding Path=PageSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" InputScope="Number"/>
-                    <TextBlock Text="/" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding Path=PagesCount,Mode=OneWay}" VerticalAlignment="Center"/>
-                </StackPanel>
-            </CommandBar.Content>
-        </CommandBar>
+        <StackPanel Background="{x:Null}"  Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Bottom">
+            <StackPanel HorizontalAlignment="Right" Visibility="{Binding SelectedItem,ElementName=flipView,Converter={StaticResource VisibleIfEtc},Mode=OneWay}">
+                <RepeatButton Background="Transparent" Padding="0" Margin="0" Width="Auto" Height="Auto">
+                    <AppBarButton Icon="ZoomOut" Label="縮小" IsCompact="True" />
+                </RepeatButton>
+                <RepeatButton Background="Transparent" Padding="0" Margin="0" Width="Auto" Height="Auto">
+                    <AppBarButton Icon="ZoomIn" Label="拡大" IsCompact="True"  />
+                </RepeatButton>
+            </StackPanel>
+            <CommandBar Background="{x:Null}" x:Name="CommandBar1" >
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton Icon="Bookmarks" x:Uid="Bookmarks">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <ListView ItemsSource="{Binding Path=Bookmarks}" IsItemClickEnabled="True" ItemClick="BookmarkClicked" SelectionMode="None">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Page}" Grid.Column="0"/>
+                                                    <TextBlock Text="..." Grid.Column="1" Margin="10,0"/>
+                                                    <TextBlock Text="{Binding Title}" Grid.Column="2"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <TextBox x:Uid="BookmarkTitle" Grid.Row="1" Text="{Binding CurrentBookmarkName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                    <AppBarButton x:Name="AppBarButtonLeftmost" Icon="Previous" x:Uid="PageLeftmost" Command="{Binding PageVisualSetCommand}" CommandParameter="0"/>
+                    <AppBarButton Icon="Previous" x:Uid="PageLeft" Command="{Binding PageVisualAddCommand}" CommandParameter="-1"/>
+                    <AppBarButton Icon="Next" x:Uid="PageRight" Command="{Binding PageVisualAddCommand}" CommandParameter="1"/>
+                    <AppBarButton x:Name="AppBarButtonRightmost" Icon="Next" x:Uid="PageRightmost" Command="{Binding PageVisualMaxCommand}"/>
+                    <AppBarButton Icon="OpenFile" x:Uid="OpenLocalBook" Click="AppBarButton_OpenFile"/>
+                </CommandBar.PrimaryCommands>
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton x:Uid="ToggleFullScreen" Click="AppBarButton_ToggleFullScreen" />
+                    <AppBarButton x:Uid="BookPrevious" Command="{Binding GoPreviousBookCommand}"/>
+                    <AppBarButton x:Uid="BookNext" Command="{Binding GoNextBookCommand}"/>
+                    <AppBarButton x:Uid="PageReverse" Command="{Binding SwapReverseCommand}"/>
+                    <AppBarButton x:Uid="GoToBookShelf" Click="AppBarButton_GoToBookshelf"/>
+                </CommandBar.SecondaryCommands>
+                <CommandBar.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Name="textBoxPageSelected" Text="{Binding Path=PageSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" InputScope="Number"/>
+                        <TextBlock Text="/" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Path=PagesCount,Mode=OneWay}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </CommandBar.Content>
+            </CommandBar>
+        </StackPanel>
         <ProgressBar Grid.Row="0" IsIndeterminate="{Binding Loading}" Background="{x:Null}"  />
     </Grid>
 </Page>

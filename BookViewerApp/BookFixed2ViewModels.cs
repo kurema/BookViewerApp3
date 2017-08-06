@@ -252,6 +252,21 @@ namespace BookViewerApp.BookFixed2ViewModels
 
         private Books.IPageFixed Page;
 
+        public float ZoomFactor
+        {
+            get
+            {
+                return this._ZoomFactor;
+            }
+            set
+            {
+                this._ZoomFactor = value;
+                OnPropertyChanged(nameof(ZoomFactor));
+            }
+        }
+
+        private float _ZoomFactor=1.0f;
+
         public ImageSource Source { get
             {
                 if (_Source != null) return _Source;

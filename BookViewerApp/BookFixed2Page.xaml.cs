@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -14,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BookViewerApp.BookFixed2ViewModels;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -21,9 +23,23 @@ namespace BookViewerApp
 {
     public sealed partial class BookFixed2Page : UserControl
     {
+        //public void OnPropertyChanged(string name) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        public float ZoomFactor
+        {
+            get { return scrollViewer.ZoomFactor; }
+            set { scrollViewer.ChangeView(null, null, value); }
+        }
+
         public BookFixed2Page()
         {
             this.InitializeComponent();
+
+            this.scrollViewer.ViewChanged += (s2, e2) =>
+            {
+                if (this.DataContext is PageViewModel)
+                    (this.DataContext as PageViewModel).ZoomFactor = scrollViewer.ZoomFactor;
+            };
         }
 
         private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
