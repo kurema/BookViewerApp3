@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BookViewerApp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("CBZ/CBR/PDF viewer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BookViewerApp")]
-[assembly: AssemblyCopyright("Copyright © kurema  2015-2016")]
+[assembly: AssemblyCopyright("Copyright © kurema  2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

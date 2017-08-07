@@ -22,7 +22,7 @@ namespace BookViewerApp.InfoPageViewModel
 
         private Windows.ApplicationModel.PackageId ID => Windows.ApplicationModel.Package.Current.Id;
 
-        public string VersionText => string.Format("{0}.{1}.{2}.{3}",VersionInfo.Major,VersionInfo.Minor,VersionInfo.Revision,VersionInfo.Revision);
+        public string VersionText => string.Format("{0}.{1}.{2}.{3}",VersionInfo.Major,VersionInfo.Minor,VersionInfo.Build,VersionInfo.Revision);
 
         public Windows.ApplicationModel.PackageVersion VersionInfo => CurrentPackage.Id.Version;
 
@@ -36,7 +36,7 @@ namespace BookViewerApp.InfoPageViewModel
 
         public string Publisher => ID.Publisher;
 
-        public string PublisherID => ID.PublisherId;
+        public string PublisherId => ID.PublisherId;
 
         public string InstalledLocation => CurrentPackage.InstalledLocation.Path;
 

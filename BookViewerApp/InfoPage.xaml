@@ -62,74 +62,68 @@
     </Page.DataContext>
     <ScrollViewer  VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
         <StackPanel>
-    <VariableSizedWrapGrid ItemHeight="{StaticResource TileSize}" ItemWidth="{StaticResource TileSize}" Orientation="Horizontal">
+            <VariableSizedWrapGrid ItemHeight="{StaticResource TileSize}" ItemWidth="{StaticResource TileSize}" Orientation="Horizontal">
                 <GridViewItem Style="{StaticResource TileExtraBig}" Background="#135c31">
-        <Grid>
-            <Image Source="{Binding LogoUri}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{StaticResource TileSize}" Height="{StaticResource TileSize}"/>
-            <TextBlock Text="{Binding DisplayName}" TextWrapping="Wrap" HorizontalAlignment="Left"  VerticalAlignment="Bottom"/>
-        </Grid>
-        </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource Tile}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="Version"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding VersionText}"/>
-            </Grid>
-        </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource Tile}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="CPU"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Architecture}"/>
-            </Grid>
-        </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushLightGreen}" Style="{StaticResource TileBig}">
-            <Grid>
-            <StackPanel VerticalAlignment="Bottom">
-                    <TextBlock Text="Infomation"/>
-                </StackPanel>
-                <StackPanel VerticalAlignment="Top">
-                    <TextBlock Text="Installed:"/>
-                    <TextBlock Text="{Binding InstalledDate}"/>
-                    <TextBlock Text="Name:"/>
-                    <TextBlock Text="{Binding Name}"/>
-                </StackPanel>
-            </Grid>
-        </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileWide}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="Developer"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding PublisherDisplayName}"/>
-            </Grid>
-        </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileWide}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="License"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding License}" Text="{Binding Title}"/>
-            </Grid>
-        </GridViewItem>
-        <GridViewItem Background="{StaticResource BrushIndigo}" Style="{StaticResource TileExtraBig}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="Description"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Description}"/>
-            </Grid>
-        </GridViewItem>
+                    <Grid>
+                        <Image Source="{Binding LogoUri}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{StaticResource TileSize}" Height="{StaticResource TileSize}"/>
+                        <TextBlock Text="{Binding DisplayName}" TextWrapping="Wrap" HorizontalAlignment="Left"  VerticalAlignment="Bottom"/>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource Tile}">
+                    <Grid>
+                        <TextBlock VerticalAlignment="Bottom" Text="Version"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding VersionText}"/>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource Tile}">
+                    <Grid>
+                        <TextBlock VerticalAlignment="Bottom" Text="CPU"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Architecture}"/>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem Background="{StaticResource BrushLightGreen}" Style="{StaticResource TileBig}">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Bottom">
+                            <TextBlock Text="Infomation"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Top">
+                            <TextBlock Text="Installed:"/>
+                            <TextBlock Text="{Binding InstalledDate}"/>
+                            <TextBlock Text="Name:"/>
+                            <TextBlock Text="{Binding Name}"/>
+                        </StackPanel>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileWide}">
+                    <Grid>
+                        <TextBlock VerticalAlignment="Bottom" Text="Developer"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding PublisherDisplayName}"/>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem Background="{StaticResource BrushIndigo}" Style="{StaticResource TileWide}">
+                    <Grid>
+                        <TextBlock VerticalAlignment="Bottom" Text="Description"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Description}"/>
+                    </Grid>
+                </GridViewItem>
                 <GridViewItem Background="{StaticResource BrushTeal}" Style="{StaticResource TileLicense}">
-            <Grid>
-                <TextBlock VerticalAlignment="Bottom" Text="License"/>
-                    <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock DataContext="{Binding License}" Text="{Binding Content}" />
-                    </Viewbox>
-                </Grid>
-        </GridViewItem>
-        </VariableSizedWrapGrid>
-            <GridView ItemsSource="{Binding Licenses}">
+                    <Grid>
+                        <TextBlock VerticalAlignment="Bottom" Text="License"/>
+                        <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock DataContext="{Binding License}" Text="{Binding Content}" />
+                        </Viewbox>
+                    </Grid>
+                </GridViewItem>
+            </VariableSizedWrapGrid>
+            <GridView ItemsSource="{Binding Licenses}" Margin="{StaticResource MarginTile}">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                            <Grid Background="{StaticResource BrushTeal}" Width="{StaticResource TileLicenseSize}" Height="{StaticResource TileLicenseSize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <TextBlock VerticalAlignment="Bottom" Text="{Binding Title}" Foreground="White"/>
-                                <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding Content}" Foreground="White" />
-                                </Viewbox>
-                            </Grid>
+                        <Grid Padding="{StaticResource MarginInside}" Background="{StaticResource BrushTeal}" Width="{StaticResource TileLicenseSize}" Height="{StaticResource TileLicenseSize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <TextBlock VerticalAlignment="Bottom" Text="{Binding Title}" Foreground="White"/>
+                            <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding Content}" Foreground="White" />
+                            </Viewbox>
+                        </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
