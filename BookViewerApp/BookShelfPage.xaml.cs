@@ -49,6 +49,11 @@ namespace BookViewerApp
             if (src.Count > 0)
             {
                 BookShelfList.SelectedIndex = await GetActualCurrentLastSelectedBookShelf();
+                WelcomeControl1.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                WelcomeControl1.Visibility = Visibility.Visible;
             }
         }
 

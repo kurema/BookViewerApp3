@@ -5,11 +5,48 @@
     xmlns:local="using:BookViewerApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
 
-    <Grid>
+    </UserControl.Resources>
 
+    <Grid Background="#EEEEEE" BorderBrush="Black" BorderThickness="1">
+        <FlipView Grid.Row="0" Background="Transparent">
+            <Grid Background="#135C31">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Source="Assets/Square310x310Logo.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="20" Stretch="None" />
+                <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AppName, Mode=OneTime}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Foreground="White" />
+            </Grid>
+            <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Padding="20">How to use...</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <AppBarButton Icon="OpenFile" IsCompact="True"/>
+                        <TextBlock VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=OpenLocalBook/Label, Mode=OneTime}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <AppBarButton Icon="Folder" IsCompact="True"/>
+                        <TextBlock VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AddLocalDirectory/Label, Mode=OneTime}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <AppBarButton Icon="More" IsCompact="True"/>
+                        <TextBlock VerticalAlignment="Center" Text="More" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton x:Name="HamburgerButton"  Foreground="Black" VerticalAlignment="Top">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
+                        </ToggleButton>
+                        <TextBlock VerticalAlignment="Center" Text="Switch book shelf." />
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </FlipView>
     </Grid>
 </UserControl>
