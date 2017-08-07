@@ -243,18 +243,23 @@ namespace BookViewerApp
         }
 
         private int MakeCommandBarVisibleForAWhile_DelayCount = 0;
+
         private async void MakeCommandBarVisibleForAWhile()
         {
-            return;
-            int visibleTime = (int)((double)SettingStorage.GetValue("CommandBarShowTimespan") * 1000.0);
-            if (visibleTime <= 0) { return; }
+            int visibleTime = (int) ((double) SettingStorage.GetValue("CommandBarShowTimespan") * 1000.0);
+            if (visibleTime <= 0) return;
             CommandBar1.Visibility = Visibility.Visible;
             CommandBar1.Foreground = new SolidColorBrush(Colors.Black);
             MakeCommandBarVisibleForAWhile_DelayCount++;
             await Task.Delay(visibleTime);
             MakeCommandBarVisibleForAWhile_DelayCount--;
             if (MakeCommandBarVisibleForAWhile_DelayCount == 0)
-                CommandBar1.Foreground = new SolidColorBrush(Colors.Transparent);
+            {
+                if (CommandBar1.FocusState != FocusState.Unfocused || CommandBar1.IsOpen)
+                    MakeCommandBarVisibleForAWhile();
+                else
+                    CommandBar1.Foreground = new SolidColorBrush(Colors.Transparent);
+            }
         }
 
         private int MakeStackPanelZoomVisibleForAWhile_DelayCount = 0;
@@ -290,6 +295,13 @@ namespace BookViewerApp
         }
 
         private void FlipView_OnPointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            e.Handled = false;
+            MakeStackPanelZoomVisibleForAWhile();
+            MakeCommandBarVisibleForAWhile();
+        }
+
+        private void CommandBar1_OnPointerMoved(object sender, PointerRoutedEventArgs e)
         {
             e.Handled = false;
             MakeStackPanelZoomVisibleForAWhile();
