@@ -41,6 +41,7 @@ namespace BookViewerApp
                         new SettingInstance("SortNaturalOrder","SortNaturalOrder",false,new TypeConverters.BoolConverter()),
                         new SettingInstance("SortCoverComesFirst","SortCoverComesFirst",false,new TypeConverters.BoolConverter()),
                         new SettingInstance("ZoomButtonShowTimespan","ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter()){Minimum = 0,Maximum = 10},
+                        //new SettingInstance("CommandBarShowTimespan","CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter()){Minimum = 0,Maximum = 10},
                     };
             }
         }

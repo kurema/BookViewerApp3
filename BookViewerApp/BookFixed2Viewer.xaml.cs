@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using BookViewerApp.BookFixed2ViewModels;
 using System.Threading.Tasks;
+using Windows.UI;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -37,39 +38,36 @@ namespace BookViewerApp
 
             Application.Current.Suspending += CurrentApplication_Suspending;
 
-            if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
+            if (!(bool) SettingStorage.GetValue("ShowRightmostAndLeftmost"))
             {
                 this.AppBarButtonLeftmost.Visibility = Visibility.Collapsed;
                 this.AppBarButtonRightmost.Visibility = Visibility.Collapsed;
             }
 
-            var br = (byte)(((double)SettingStorage.GetValue("BackgroundBrightness")) / 100.0 * 255.0);
-            this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
+            var br = (byte) (((double) SettingStorage.GetValue("BackgroundBrightness")) / 100.0 * 255.0);
+            this.Background = new SolidColorBrush(new Windows.UI.Color() {A = 255, B = br, G = br, R = br});
 
             ((BookViewModel) this.DataContext).PropertyChanged += (s, e) =>
             {
-                if(e.PropertyName == nameof(BookFixed2ViewModels.BookViewModel.Title))
+                if (e.PropertyName == nameof(BookFixed2ViewModels.BookViewModel.Title))
                 {
                     SetTitle(Binding?.Title);
                 }
             };
 
-            flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
+            flipView.UseTouchAnimationsForAllNavigation = (bool) SettingStorage.GetValue("ScrollAnimation");
 
-            this.Loaded += (s, e) => { this.IsLoaded = true; };
-            this.LayoutUpdated += BookFixed2Viewer_LayoutUpdated;
-        }
-
-        private void BookFixed2Viewer_LayoutUpdated(object sender, object e)
-        {
-            this.LayoutUpdated -= BookFixed2Viewer_LayoutUpdated;
-            if (this.IsLoaded)
+            if (Binding != null)
             {
-                flipView.Focus(FocusState.Programmatic);
+                Binding.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(BookViewModel.Loading))
+                    {
+                        flipView.Focus(FocusState.Programmatic);
+                    }
+                };
             }
         }
-
-        private bool IsLoaded = false;
 
         private string OriginalTitle;
 
@@ -237,22 +235,38 @@ namespace BookViewerApp
             e.Handled = true;
         }
 
-        private int FlipView_OnPointerMoved_DelayCount = 0;
         private void FlipView_OnPointerMoved(object sender, PointerRoutedEventArgs e)
         {
             e.Handled = false;
             MakeStackPanelZoomVisibleForAWhile();
+            MakeCommandBarVisibleForAWhile();
         }
 
+        private int MakeCommandBarVisibleForAWhile_DelayCount = 0;
+        private async void MakeCommandBarVisibleForAWhile()
+        {
+            return;
+            int visibleTime = (int)((double)SettingStorage.GetValue("CommandBarShowTimespan") * 1000.0);
+            if (visibleTime <= 0) { return; }
+            CommandBar1.Visibility = Visibility.Visible;
+            CommandBar1.Foreground = new SolidColorBrush(Colors.Black);
+            MakeCommandBarVisibleForAWhile_DelayCount++;
+            await Task.Delay(visibleTime);
+            MakeCommandBarVisibleForAWhile_DelayCount--;
+            if (MakeCommandBarVisibleForAWhile_DelayCount == 0)
+                CommandBar1.Foreground = new SolidColorBrush(Colors.Transparent);
+        }
+
+        private int MakeStackPanelZoomVisibleForAWhile_DelayCount = 0;
         private async void MakeStackPanelZoomVisibleForAWhile()
         {
             int visibleTime = (int) ((double) SettingStorage.GetValue("ZoomButtonShowTimespan") * 1000.0);
             if (visibleTime <= 0) { return; }
             StackPanelZoom.Visibility = Visibility.Visible;
-            FlipView_OnPointerMoved_DelayCount++;
+            MakeStackPanelZoomVisibleForAWhile_DelayCount++;
             await Task.Delay(visibleTime);
-            FlipView_OnPointerMoved_DelayCount--;
-            if (FlipView_OnPointerMoved_DelayCount == 0)
+            MakeStackPanelZoomVisibleForAWhile_DelayCount--;
+            if (MakeStackPanelZoomVisibleForAWhile_DelayCount == 0)
                 StackPanelZoom.Visibility = Visibility.Collapsed;
         }
 
@@ -279,6 +293,7 @@ namespace BookViewerApp
         {
             e.Handled = false;
             MakeStackPanelZoomVisibleForAWhile();
+            MakeCommandBarVisibleForAWhile();
         }
     }
 }

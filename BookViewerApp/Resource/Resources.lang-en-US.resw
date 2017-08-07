@@ -292,9 +292,27 @@
     <value>Natural Sort in CBZ/CBR</value>
   </data>
   <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
-    <value>Seconds to display the zoom button when you touch the screen (0:disable).</value>
+    <value>Seconds to display the zoom button when you touch the screen (0: disable).</value>
   </data>
   <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
     <value>Zoom button display time</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
+    <value>Seconds to display the menu when you touch the screen in book viewer page (0: always).</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
+    <value>Menu display time in book viewer</value>
+  </data>
+  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Switch bookshelf.</value>
+  </data>
+  <data name="Welcome_HowToConfigure" xml:space="preserve">
+    <value>How to change settings</value>
+  </data>
+  <data name="Welcome_HowToUse" xml:space="preserve">
+    <value>How to use</value>
+  </data>
+  <data name="Welcome_OpenMenu" xml:space="preserve">
+    <value>Open the menu.</value>
   </data>
 </root>

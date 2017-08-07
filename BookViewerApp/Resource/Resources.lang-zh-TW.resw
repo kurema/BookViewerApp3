@@ -213,4 +213,16 @@
   <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
     <value>標題</value>
   </data>
+  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>切換書架</value>
+  </data>
+  <data name="Welcome_HowToConfigure" xml:space="preserve">
+    <value>如何打開配置頁面</value>
+  </data>
+  <data name="Welcome_HowToUse" xml:space="preserve">
+    <value>如何使用</value>
+  </data>
+  <data name="Welcome_OpenMenu" xml:space="preserve">
+    <value>打開其他功能</value>
+  </data>
 </root>

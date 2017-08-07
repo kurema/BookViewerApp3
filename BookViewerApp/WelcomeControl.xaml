@@ -24,26 +24,49 @@
                 <Image Grid.Row="0" Source="Assets/Square310x310Logo.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="20" Stretch="None" />
                 <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AppName, Mode=OneTime}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Foreground="White" />
             </Grid>
-            <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" Background="{StaticResource AppBarBackgroundThemeBrush}">
                 <StackPanel>
-                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Padding="20">How to use...</TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <AppBarButton Icon="OpenFile" IsCompact="True"/>
-                        <TextBlock VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=OpenLocalBook/Label, Mode=OneTime}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <AppBarButton Icon="Folder" IsCompact="True"/>
-                        <TextBlock VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AddLocalDirectory/Label, Mode=OneTime}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <AppBarButton Icon="More" IsCompact="True"/>
-                        <TextBlock VerticalAlignment="Center" Text="More" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <ToggleButton x:Name="HamburgerButton"  Foreground="Black" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Padding="20" 
+                               Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Welcome_HowToUse, Mode=OneTime}"/>
+                        <AppBarButton Grid.Column="0" Grid.Row="1" Icon="OpenFile" IsCompact="True"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=OpenLocalBook/Label, Mode=OneTime}" />
+                        <AppBarButton Grid.Column="0" Grid.Row="2" Icon="Folder" IsCompact="True"/>
+                        <TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AddLocalDirectory/Label, Mode=OneTime}" />
+                        <AppBarButton Grid.Column="0" Grid.Row="3" Icon="More" IsCompact="True"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Welcome_OpenMenu, Mode=OneTime}" />
+                        <ToggleButton Grid.Column="0" Grid.Row="4"  Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
                         </ToggleButton>
-                        <TextBlock VerticalAlignment="Center" Text="Switch book shelf." />
+                        <TextBlock Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=SwitchBookShelfToggle/ToolTipService/ToolTip, Mode=OneTime}" />
+                    </Grid>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Padding="20" 
+                               Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Welcome_HowToConfigure, Mode=OneTime}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
+                        <TextBlock VerticalAlignment="Center" Text="→" />
+                        <Button VerticalAlignment="Stretch" Background="{StaticResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Setting/Label, Mode=OneTime}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
+                        <TextBlock VerticalAlignment="Center" Text="→"/>
+                        <Button VerticalAlignment="Stretch" Background="{StaticResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=GoToBookShelf/Label, Mode=OneTime}" />
+                        <TextBlock VerticalAlignment="Center" Text="→" />
+                        <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
+                        <TextBlock VerticalAlignment="Center" Text="→" />
+                        <Button VerticalAlignment="Stretch" Background="{StaticResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Setting/Label, Mode=OneTime}" />
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

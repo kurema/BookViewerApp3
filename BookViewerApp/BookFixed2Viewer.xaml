@@ -26,7 +26,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <FlipView Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved"
+        <FlipView TabIndex="0" Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved"
                   PointerEntered="FlipView_OnPointerEntered">
             <FlipView.ItemTemplate>
                 <DataTemplate>
@@ -49,7 +49,7 @@
                     <SymbolIcon Symbol="ZoomIn" Width="60" Height="60"/>
                 </RepeatButton>
             </StackPanel>
-            <CommandBar Background="{x:Null}" x:Name="CommandBar1" >
+            <CommandBar Background="{x:Null}" x:Name="CommandBar1">
                 <CommandBar.PrimaryCommands>
                     <AppBarButton Icon="Bookmarks" x:Uid="Bookmarks">
                         <AppBarButton.Flyout>
@@ -94,8 +94,8 @@
                     <AppBarButton x:Uid="GoToBookShelf" Click="AppBarButton_GoToBookshelf"/>
                 </CommandBar.SecondaryCommands>
                 <CommandBar.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Name="textBoxPageSelected" Text="{Binding Path=PageSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" InputScope="Number"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+                        <TextBox Name="textBoxPageSelected" Text="{Binding Path=PageSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" InputScope="Number" PreventKeyboardDisplayOnProgrammaticFocus="True"/>
                         <TextBlock Text="/" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Path=PagesCount,Mode=OneWay}" VerticalAlignment="Center"/>
                     </StackPanel>

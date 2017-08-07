@@ -297,4 +297,22 @@
   <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
     <value>ズームボタン表示時間</value>
   </data>
+  <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
+    <value>書籍画面で画面をタッチした際メニューを表示する時間 (0で常時表示)</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
+    <value>書籍メニュー表示時間</value>
+  </data>
+  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>本棚を切り替え</value>
+  </data>
+  <data name="Welcome_HowToConfigure" xml:space="preserve">
+    <value>設定の開き方</value>
+  </data>
+  <data name="Welcome_HowToUse" xml:space="preserve">
+    <value>使い方</value>
+  </data>
+  <data name="Welcome_OpenMenu" xml:space="preserve">
+    <value>メニューを開く</value>
+  </data>
 </root>
