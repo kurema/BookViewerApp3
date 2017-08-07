@@ -14,7 +14,7 @@
 
     </UserControl.Resources>
 
-    <Grid Background="#EEEEEE" BorderBrush="Black" BorderThickness="1">
+    <Grid Background="#EEEEEE" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" BorderThickness="1">
         <FlipView Grid.Row="0" Background="Transparent">
             <Grid Background="#135C31">
                 <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
                 <Image Grid.Row="0" Source="Assets/Square310x310Logo.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="20" Stretch="None" />
                 <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AppName, Mode=OneTime}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Foreground="White" />
             </Grid>
-            <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" Background="{StaticResource AppBarBackgroundThemeBrush}">
+            <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" Background="{ThemeResource AppBarBackgroundThemeBrush}">
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -47,7 +47,7 @@
                         <TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AddLocalDirectory/Label, Mode=OneTime}" />
                         <AppBarButton Grid.Column="0" Grid.Row="3" Icon="More" IsCompact="True"/>
                         <TextBlock Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Welcome_OpenMenu, Mode=OneTime}" />
-                        <ToggleButton Grid.Column="0" Grid.Row="4"  Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <ToggleButton Grid.Column="0" Grid.Row="4"  VerticalAlignment="Center" HorizontalAlignment="Center">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
                         </ToggleButton>
                         <TextBlock Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=SwitchBookShelfToggle/ToolTipService/ToolTip, Mode=OneTime}" />
@@ -57,16 +57,16 @@
                     <StackPanel Orientation="Horizontal">
                         <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
                         <TextBlock VerticalAlignment="Center" Text="→" />
-                        <Button VerticalAlignment="Stretch" Background="{StaticResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Setting/Label, Mode=OneTime}" />
+                        <Button VerticalAlignment="Stretch" Background="{ThemeResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Setting/Label, Mode=OneTime}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
                         <TextBlock VerticalAlignment="Center" Text="→"/>
-                        <Button VerticalAlignment="Stretch" Background="{StaticResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=GoToBookShelf/Label, Mode=OneTime}" />
+                        <Button VerticalAlignment="Stretch" Background="{ThemeResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=GoToBookShelf/Label, Mode=OneTime}" />
                         <TextBlock VerticalAlignment="Center" Text="→" />
                         <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
                         <TextBlock VerticalAlignment="Center" Text="→" />
-                        <Button VerticalAlignment="Stretch" Background="{StaticResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Setting/Label, Mode=OneTime}" />
+                        <Button VerticalAlignment="Stretch" Background="{ThemeResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Setting/Label, Mode=OneTime}" />
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

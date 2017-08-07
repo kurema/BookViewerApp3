@@ -35,7 +35,6 @@ namespace BookViewerApp
 
             OriginalTitle = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title;
 
-
             Application.Current.Suspending += CurrentApplication_Suspending;
 
             if (!(bool) SettingStorage.GetValue("ShowRightmostAndLeftmost"))
@@ -44,7 +43,9 @@ namespace BookViewerApp
                 this.AppBarButtonRightmost.Visibility = Visibility.Collapsed;
             }
 
-            var br = (byte) (((double) SettingStorage.GetValue("BackgroundBrightness")) / 100.0 * 255.0);
+            var brSet = (double) SettingStorage.GetValue("BackgroundBrightness");
+            var br = (byte) ((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
+                             255.0);
             this.Background = new SolidColorBrush(new Windows.UI.Color() {A = 255, B = br, G = br, R = br});
 
             ((BookViewModel) this.DataContext).PropertyChanged += (s, e) =>
@@ -249,7 +250,9 @@ namespace BookViewerApp
             int visibleTime = (int) ((double) SettingStorage.GetValue("CommandBarShowTimespan") * 1000.0);
             if (visibleTime <= 0) return;
             CommandBar1.Visibility = Visibility.Visible;
-            CommandBar1.Foreground = new SolidColorBrush(Colors.Black);
+
+            //CommandBar1.Foreground = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? RequestedThemeProperty.: Colors.Black);//ad-hoc fix me
+            CommandBar1.Foreground = (Brush) App.Current.Resources.ThemeDictionaries["AppBarItemForegroundThemeBrush"];
             MakeCommandBarVisibleForAWhile_DelayCount++;
             await Task.Delay(visibleTime);
             MakeCommandBarVisibleForAWhile_DelayCount--;

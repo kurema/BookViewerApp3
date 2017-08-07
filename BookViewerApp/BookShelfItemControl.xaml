@@ -22,9 +22,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Image Source="{Binding Path=ID,Converter={StaticResource ResourceKey=BookIdToImageSource}}" Stretch="UniformToFill" Grid.RowSpan="1"/>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#7FFFFFFF">
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Opacity="0.5"/>
+
             <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Left" Margin="5" />
-        </StackPanel>
+        </Grid>
         <ProgressBar Grid.Row="1" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" >
             <ProgressBar.RenderTransform>
                 <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>

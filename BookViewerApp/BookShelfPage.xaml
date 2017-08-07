@@ -31,11 +31,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ToggleButton x:Name="HamburgerButton"  Foreground="Black" VerticalAlignment="Top" ToolTipService.ToolTip="switch book shelf" x:Uid="SwitchBookShelfToggle">
+        <ToggleButton x:Name="HamburgerButton"  VerticalAlignment="Top" ToolTipService.ToolTip="switch book shelf" x:Uid="SwitchBookShelfToggle">
             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
         </ToggleButton>
-        <Grid Grid.Row="0" Grid.Column="1" Background="Black">
-            <TextBlock Foreground="White" DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" Text="{Binding Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid Grid.Row="0" Grid.Column="1" Background="{ThemeResource ApplicationForegroundThemeBrush}">
+            <TextBlock Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" Text="{Binding Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <SplitView Grid.Column="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="SplitView"
                    DisplayMode="Overlay"

@@ -256,7 +256,7 @@
     <value>[Top]</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
-    <value>Brightness of background. 100:White, 0:Black.</value>
+    <value>Brightness of background. 100:White, 0:Black. (Opposite in dark theme)</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
     <value>Brightness of background.</value>
