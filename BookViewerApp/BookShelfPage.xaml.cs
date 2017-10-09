@@ -30,6 +30,8 @@ namespace BookViewerApp
             Refresh();
 
             Application.Current.Suspending += Current_Suspending;
+
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title="";
         }
 
         private bool SecretMode
@@ -275,6 +277,35 @@ namespace BookViewerApp
             SetActualCurrentLastSelectedBookShelf();
             SecretMode = !SecretMode;
             Refresh();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+            currentView.BackRequested += CurrentView_BackRequested;
+
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = "";
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+            currentView.BackRequested -= CurrentView_BackRequested;
+        }
+
+        private void CurrentView_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
+        {
+            if (Frame?.CanGoBack == true)
+            {
+                Frame.GoBack();
+                e.Handled = true;
+            }
         }
     }
 }
