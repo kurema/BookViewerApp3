@@ -107,7 +107,7 @@ namespace BookViewerApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) { }
-            if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
+            else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {
                 var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
                 if (args.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
@@ -140,7 +140,7 @@ namespace BookViewerApp
             }
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
-            currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed; currentView.BackRequested += CurrentView_BackRequested;
+            currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             currentView.BackRequested += CurrentView_BackRequested;
 
             if ((bool)SettingStorage.GetValue("DefaultFullScreen"))
