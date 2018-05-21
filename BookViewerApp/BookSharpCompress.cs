@@ -40,17 +40,17 @@ namespace BookViewerApp.Books.Compressed
         }
 
         //private SharpCompress.Archive.IArchiveEntry Target;
-        private SharpCompress.Archive.IArchiveEntry[] Entries;
+        private SharpCompress.Archives.IArchiveEntry[] Entries;
 
         public async Task LoadAsync(System.IO.Stream sr)
         {
-            SharpCompress.Archive.IArchive archive;
+            SharpCompress.Archives.IArchive archive;
             await Task.Run(() =>
             {
                 try
                 {
-                    archive = SharpCompress.Archive.ArchiveFactory.Open(sr);
-                    var entries = new List<SharpCompress.Archive.IArchiveEntry>();
+                    archive = SharpCompress.Archives.ArchiveFactory.Open(sr);
+                    var entries = new List<SharpCompress.Archives.IArchiveEntry>();
                     foreach (var entry in archive.Entries)
                     {
                         if (!entry.IsDirectory && !entry.IsEncrypted)
@@ -63,7 +63,7 @@ namespace BookViewerApp.Books.Compressed
                         }
                     }
 
-                    IOrderedEnumerable<SharpCompress.Archive.IArchiveEntry> tempOrder;
+                    IOrderedEnumerable<SharpCompress.Archives.IArchiveEntry> tempOrder;
                     if ((bool)SettingStorage.GetValue("SortNaturalOrder"))
                     {
                         tempOrder = entries.OrderBy((a) => new NaturalSort.NaturalList(a.Key));
@@ -80,7 +80,7 @@ namespace BookViewerApp.Books.Compressed
                     Entries = entries.ToArray();
                     OnLoaded();
                 }
-                catch { this.Entries = new SharpCompress.Archive.IArchiveEntry[0]; }
+                catch { this.Entries = new SharpCompress.Archives.IArchiveEntry[0]; }
             });
         }
 
@@ -97,9 +97,9 @@ namespace BookViewerApp.Books.Compressed
             get; set;
         }
 
-        private SharpCompress.Archive.IArchiveEntry Entry;
+        private SharpCompress.Archives.IArchiveEntry Entry;
 
-        public CompressedPage(SharpCompress.Archive.IArchiveEntry Entry) { this.Entry = Entry; }
+        public CompressedPage(SharpCompress.Archives.IArchiveEntry Entry) { this.Entry = Entry; }
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
