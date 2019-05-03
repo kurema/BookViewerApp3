@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "6.1.4",
-    "SharpCompress": "0.21.1"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.2.8",
+    "SharpCompress": "0.23.0"
   },
   "frameworks": {
     "uap10.0": {}
