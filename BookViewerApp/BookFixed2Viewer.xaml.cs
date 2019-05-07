@@ -68,6 +68,12 @@ namespace BookViewerApp
                     }
                 };
             }
+
+            //if (Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
+            {
+                flipView.FocusVisualPrimaryBrush = new SolidColorBrush(Colors.Transparent);
+                flipView.FocusVisualSecondaryBrush = new SolidColorBrush(Colors.Transparent);
+            }
         }
 
         private string OriginalTitle;
