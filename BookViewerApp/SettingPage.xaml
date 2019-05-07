@@ -40,7 +40,7 @@
                                     <TextBlock FontWeight="Bold" Text="{Binding Title}" />
                                     <TextBlock Text="{Binding Description}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBox InputScope="Number" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="30"/>
+                                        <TextBox InputScope="Number" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
                                         <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -53,7 +53,7 @@
                                 <StackPanel>
                                     <TextBlock FontWeight="Bold" Text="{Binding Title}" />
                                     <TextBlock Text="{Binding Description}"/>
-                                    <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}"/>
+                                    <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="300"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
