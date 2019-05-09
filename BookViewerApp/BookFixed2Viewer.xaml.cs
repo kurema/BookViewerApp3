@@ -73,6 +73,8 @@ namespace BookViewerApp
             {
                 flipView.FocusVisualPrimaryBrush = new SolidColorBrush(Colors.Transparent);
                 flipView.FocusVisualSecondaryBrush = new SolidColorBrush(Colors.Transparent);
+
+                AppBarButtonBookmark.AllowFocusOnInteraction = true;
             }
         }
 

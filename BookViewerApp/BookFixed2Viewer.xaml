@@ -51,7 +51,7 @@
             </StackPanel>
             <CommandBar Background="{x:Null}" x:Name="CommandBar1" VerticalContentAlignment="Center" PointerMoved="CommandBar1_OnPointerMoved">
                 <CommandBar.PrimaryCommands>
-                    <AppBarButton Foreground="{Binding Path=Foreground ,ElementName=CommandBar1}" Icon="Bookmarks" x:Uid="Bookmarks">
+                    <AppBarButton Foreground="{Binding Path=Foreground ,ElementName=CommandBar1}" Icon="Bookmarks" x:Uid="Bookmarks" x:Name="AppBarButtonBookmark">
                         <AppBarButton.Flyout>
                             <Flyout>
                                 <Grid>
