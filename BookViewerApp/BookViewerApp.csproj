@@ -11,8 +11,8 @@
     <AssemblyName>BookViewerApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -124,9 +124,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="BookViewerApp_StoreKey.pfx" />
-    <None Include="BookViewerApp_TemporaryKey.pfx" />
-    <None Include="BookViewerApp_TemporaryKey2.pfx" />
-    <None Include="BookViewerApp_TemporaryKey3.pfx" />
     <PRIResource Include="Resource\Resources.lang-zh-CN.resw" />
     <PRIResource Include="Resource\Resources.lang-zh-TW.resw" />
     <PRIResource Include="Resource\Resources.lang-ja-JP.resw" />
@@ -136,52 +133,52 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookCbz.cs" />
-    <Compile Include="BookFixed2Page.xaml.cs">
+    <Compile Include="Books\BookCbz.cs" />
+    <Compile Include="Views\BookFixed2Page.xaml.cs">
       <DependentUpon>BookFixed2Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookFixed2ViewModels.cs" />
-    <Compile Include="BookFixed2Viewer.xaml.cs">
+    <Compile Include="ViewModels\BookFixed2ViewModels.cs" />
+    <Compile Include="Views\BookFixed2Viewer.xaml.cs">
       <DependentUpon>BookFixed2Viewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookImage.cs" />
-    <Compile Include="BookInfoStorage.cs" />
-    <Compile Include="BookManager.cs" />
-    <Compile Include="Books.cs" />
-    <Compile Include="BookPdf.cs" />
-    <Compile Include="BookSharpCompress.cs" />
-    <Compile Include="BookShelfContainerControl.xaml.cs">
+    <Compile Include="Books\BookImage.cs" />
+    <Compile Include="Storages\BookInfoStorage.cs" />
+    <Compile Include="Manager\BookManager.cs" />
+    <Compile Include="Books\Books.cs" />
+    <Compile Include="Books\BookPdf.cs" />
+    <Compile Include="Books\BookSharpCompress.cs" />
+    <Compile Include="Views\BookShelfContainerControl.xaml.cs">
       <DependentUpon>BookShelfContainerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookShelfItemControl.xaml.cs">
+    <Compile Include="Views\BookShelfItemControl.xaml.cs">
       <DependentUpon>BookShelfItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookShelfControl.xaml.cs">
+    <Compile Include="Views\BookShelfControl.xaml.cs">
       <DependentUpon>BookShelfControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookShelfPage.xaml.cs">
+    <Compile Include="Views\BookShelfPage.xaml.cs">
       <DependentUpon>BookShelfPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookShelfStorage.cs" />
-    <Compile Include="BookShelfViewModels.cs" />
-    <Compile Include="InfoPage.xaml.cs">
+    <Compile Include="Storages\BookShelfStorage.cs" />
+    <Compile Include="ViewModels\BookShelfViewModels.cs" />
+    <Compile Include="Views\InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InfoPageViewModel.cs" />
-    <Compile Include="LicenseStorage.cs" />
-    <Compile Include="NaturalSort.cs" />
-    <Compile Include="SettingPage.xaml.cs">
+    <Compile Include="ViewModels\InfoPageViewModel.cs" />
+    <Compile Include="Storages\LicenseStorage.cs" />
+    <Compile Include="Helper\NaturalSort.cs" />
+    <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingStorage.cs" />
-    <Compile Include="ThumbnailManager.cs" />
-    <Compile Include="Functions.cs" />
+    <Compile Include="Manager\ThumbnailManager.cs" />
+    <Compile Include="Helper\Functions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueConverters.cs" />
-    <Compile Include="WelcomeControl.xaml.cs">
+    <Compile Include="Helper\ValueConverters.cs" />
+    <Compile Include="Views\WelcomeControl.xaml.cs">
       <DependentUpon>WelcomeControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -199,31 +196,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="BookFixed2Page.xaml">
+    <Page Include="Views\BookFixed2Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookFixed2Viewer.xaml">
+    <Page Include="Views\BookFixed2Viewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookShelfContainerControl.xaml">
+    <Page Include="Views\BookShelfContainerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookShelfItemControl.xaml">
+    <Page Include="Views\BookShelfItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookShelfControl.xaml">
+    <Page Include="Views\BookShelfControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookShelfPage.xaml">
+    <Page Include="Views\BookShelfPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InfoPage.xaml">
+    <Page Include="Views\InfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,11 +228,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SettingPage.xaml">
+    <Page Include="Views\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WelcomeControl.xaml">
+    <Page Include="Views\WelcomeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -248,6 +245,7 @@
       <Version>0.23.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
@@ -255,7 +253,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BookViewerApp_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

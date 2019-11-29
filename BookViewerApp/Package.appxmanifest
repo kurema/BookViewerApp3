@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="6269kurema.BookViewer" Publisher="CN=5E93616C-E6FD-4F3F-9466-8AC306D36152" Version="1.1.18.0" />
+  <Identity Name="6269kurema.BookViewer3" Publisher="CN=5E93616C-E6FD-4F3F-9466-8AC306D36152" Version="1.1.18.0" />
   <mp:PhoneIdentity PhoneProductId="db8120ac-c5e5-473b-b4c0-168180f33027" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>BookViewer</DisplayName>
+    <DisplayName>BookViewer3</DisplayName>
     <PublisherDisplayName>kurema</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
     <Description>PDF/CBZ/CBR viewer</Description>
@@ -15,7 +15,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BookViewerApp.App">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BookViewerApp3.App">
       <uap:VisualElements DisplayName="ms-resource:AppName" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="CBZ/CBR/PDF Viewer" BackgroundColor="#135C31">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png">
           <uap:ShowNameOnTiles>
