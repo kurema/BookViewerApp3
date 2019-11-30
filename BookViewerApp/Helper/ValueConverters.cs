@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Data;
-using BookViewerApp.BookFixed2ViewModels;
+using BookViewerApp.ViewModels;
 
 namespace BookViewerApp.ValueConverters
 {
@@ -105,6 +105,41 @@ namespace BookViewerApp.ValueConverters
                 else if ((double)value == -1.0) return true;
             }
             return false;
+        }
+    }
+
+    public class BoolToFlowDirectionConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value is bool b && targetType==typeof(FlowDirection))
+            {
+                return b ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+            }
+            else if(targetType == typeof(FlowDirection))
+            {
+                return FlowDirection.LeftToRight;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            if(value is FlowDirection f && targetType==typeof(bool))
+            {
+                return f == FlowDirection.RightToLeft;
+            }
+            else if(targetType == typeof(bool))
+            {
+                return false;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 

@@ -134,6 +134,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
+    <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="ViewModels\BookShelf2ViewModel.cs" />
     <Compile Include="Views\BookFixed2Page.xaml.cs">
       <DependentUpon>BookFixed2Page.xaml</DependentUpon>
     </Compile>
@@ -147,6 +149,9 @@
     <Compile Include="Books\Books.cs" />
     <Compile Include="Books\BookPdf.cs" />
     <Compile Include="Books\BookSharpCompress.cs" />
+    <Compile Include="Views\BookShelf2Page.xaml.cs">
+      <DependentUpon>BookShelf2Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BookShelfContainerControl.xaml.cs">
       <DependentUpon>BookShelfContainerControl.xaml</DependentUpon>
     </Compile>
@@ -188,6 +193,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
@@ -201,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BookFixed2Viewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BookShelf2Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,10 +249,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.8</Version>
+      <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="SharpCifs.Std">
+      <Version>0.2.13</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
-      <Version>0.23.0</Version>
+      <Version>0.24.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

@@ -83,12 +83,12 @@ namespace BookViewerApp
 
         private async void BodyControl_ItemClicked(object sender, BookShelfControl.ItemClickedEventArgs e)
         {
-            if (e.SelectedItem is BookShelfViewModels.BookViewModel)
+            if (e.SelectedItem is BookShelfViewModels.BookShelfBookViewModel)
             {
-                var book = await (e.SelectedItem as BookShelfViewModels.BookViewModel).TryGetBook();
+                var book = await (e.SelectedItem as BookShelfViewModels.BookShelfBookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookViewModel,Title= (e.SelectedItem as BookShelfViewModels.BookViewModel).Title };
+                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookShelfBookViewModel,Title= (e.SelectedItem as BookShelfViewModels.BookShelfBookViewModel).Title };
                     this.Frame.Navigate(typeof(BookFixed2Viewer), param);
                 }
             }
@@ -306,6 +306,11 @@ namespace BookViewerApp
                 Frame.GoBack();
                 e.Handled = true;
             }
+        }
+
+        private void AppBarButton_Debug_1(object sender, RightTappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(BookShelf2Page), null);
         }
     }
 }

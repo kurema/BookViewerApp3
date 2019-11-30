@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using BookViewerApp.BookFixed2ViewModels;
+using BookViewerApp.ViewModels;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -127,19 +127,19 @@ namespace BookViewerApp
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
 
-            (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
+            (DataContext as ViewModels.PageViewModel)?.UpdateSource();
         }
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             scrollViewer.ChangeView(0, 0, 1.0f);
 
-            (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
+            (DataContext as ViewModels.PageViewModel)?.UpdateSource();
         }
 
         private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            (DataContext as BookFixed2ViewModels.PageViewModel)?.UpdateSource();
+            (DataContext as ViewModels.PageViewModel)?.UpdateSource();
         }
 
         private double _initialHorizontalOffset;

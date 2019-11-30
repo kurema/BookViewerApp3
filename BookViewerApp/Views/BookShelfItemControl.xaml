@@ -9,7 +9,7 @@
     x:Class="BookViewerApp.BookShelfItemControl"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="300" d:DataContext="{d:DesignInstance BookShelfViewModels:BookViewModel}"
+    d:DesignWidth="300" d:DataContext="{d:DesignInstance BookShelfViewModels:BookShelfBookViewModel}"
     >
     <UserControl.Resources>
         <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>

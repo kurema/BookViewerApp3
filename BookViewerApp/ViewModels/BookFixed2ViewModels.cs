@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
 
-namespace BookViewerApp.BookFixed2ViewModels
+namespace BookViewerApp.ViewModels
 {
     public class BookViewModel : INotifyPropertyChanged
     {
@@ -104,8 +104,8 @@ namespace BookViewerApp.BookFixed2ViewModels
 
         private Books.PageOptionsControl OptionCache;
 
-        public BookShelfViewModels.BookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value;OnPropertyChanged(nameof(AsBookShelfBook)); } }
-        private BookShelfViewModels.BookViewModel _AsBookShelfBook;
+        public BookShelfViewModels.BookShelfBookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value;OnPropertyChanged(nameof(AsBookShelfBook)); } }
+        private BookShelfViewModels.BookShelfBookViewModel _AsBookShelfBook;
 
         public bool Loading { get { return _Loading; } set { _Loading = value; OnPropertyChanged(nameof(Loading)); } }
         private bool _Loading = true;
@@ -151,8 +151,8 @@ namespace BookViewerApp.BookFixed2ViewModels
 
         public int PageSelectedVisual
         {
-            get { return Reversed ? Pages.Count() - _PageSelected - 1 : _PageSelected; }
-            set { _PageSelected = Reversed ? Pages.Count() - value - 1 : value; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); OnPropertyChanged(nameof(ReadRate)); OnPropertyChanged(nameof(CurrentBookmarkName)); }
+            get { return _PageSelected; }
+            set { _PageSelected = value; OnPropertyChanged(nameof(PageSelected)); OnPropertyChanged(nameof(PageSelectedVisual)); OnPropertyChanged(nameof(ReadRate)); OnPropertyChanged(nameof(CurrentBookmarkName)); }
         }
 
         public ObservableCollection<PageViewModel> Pages
@@ -215,10 +215,7 @@ namespace BookViewerApp.BookFixed2ViewModels
             {
                 if (Reversed != value)
                 {
-                    var oldPage = this.PageSelected;
                     _Reversed = value;
-                    Pages = new ObservableCollection<PageViewModel>(Pages.Reverse());
-                    PageSelected = oldPage;
                     OnPropertyChanged(nameof(Reversed));
                 }
             }
@@ -415,7 +412,7 @@ namespace BookViewerApp.BookFixed2ViewModels
                 }
             }
 
-            public BookShelfViewModels.BookViewModel GetAddedBook(string ID)
+            public BookShelfViewModels.BookShelfBookViewModel GetAddedBook(string ID)
             {
                 var books = ViewModel.AsBookShelfBook?.Parent?.Books;
                 if (books == null) return null;
@@ -423,21 +420,21 @@ namespace BookViewerApp.BookFixed2ViewModels
                 var book = ViewModel.AsBookShelfBook;
 
                 int cnt = 0;
-                if (NumberToAdd == 0) return book as BookShelfViewModels.BookViewModel;
+                if (NumberToAdd == 0) return book as BookShelfViewModels.BookShelfBookViewModel;
                 if (this.NumberToAdd > 0)
                 {
                     for (int i = books.IndexOf(book) + 1; i < books.Count; i++)
                     {
-                        if (books[i] is BookShelfViewModels.BookViewModel) cnt++;
-                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookViewModel;
+                        if (books[i] is BookShelfViewModels.BookShelfBookViewModel) cnt++;
+                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookShelfBookViewModel;
                     }
                 }
                 else
                 {
                     for (int i = books.IndexOf(book) - 1; i >= 0; i--)
                     {
-                        if (books[i] is BookShelfViewModels.BookViewModel) cnt--;
-                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookViewModel;
+                        if (books[i] is BookShelfViewModels.BookShelfBookViewModel) cnt--;
+                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookShelfBookViewModel;
                     }
                 }
                 return null;

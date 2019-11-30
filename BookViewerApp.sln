@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookViewerApp", "BookViewerApp\BookViewerApp.csproj", "{AB303D80-1960-4AD3-A357-455B1E97215A}"
 EndProject
@@ -18,6 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|Any CPU.Build.0 = Debug|x86
+		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|ARM.ActiveCfg = Debug|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|ARM.Build.0 = Debug|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -28,6 +30,8 @@ Global
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|x86.Build.0 = Debug|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Debug|x86.Deploy.0 = Debug|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|Any CPU.ActiveCfg = Release|x86
+		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|Any CPU.Build.0 = Release|x86
+		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|Any CPU.Deploy.0 = Release|x86
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|ARM.ActiveCfg = Release|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|ARM.Build.0 = Release|ARM
 		{AB303D80-1960-4AD3-A357-455B1E97215A}.Release|ARM.Deploy.0 = Release|ARM
@@ -40,5 +44,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D690A2D-E395-40EB-B506-A5722EB4DF01}
 	EndGlobalSection
 EndGlobal

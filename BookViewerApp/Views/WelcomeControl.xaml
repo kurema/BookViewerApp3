@@ -21,7 +21,7 @@
                     <RowDefinition/>
                     <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Source="Assets/Square310x310Logo.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="20" Stretch="None" />
+                <Image Grid.Row="0" Source="/Assets/Square310x310Logo.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="20" Stretch="None" />
                 <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=AppName, Mode=OneTime}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Foreground="White" />
             </Grid>
             <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" Background="{ThemeResource AppBarBackgroundThemeBrush}">

@@ -14,7 +14,7 @@
                 <AppBarButton x:Uid="ClearAllBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_ClearBookShelfStorage"/>
                 <AppBarButton x:Uid="ClearThisBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_AppBarButton_Click_ClearBookShelfStorageSingle"/>
                 <AppBarButton x:Uid="SetThisBookShelfSecret" Icon="Clear" Label="" Click="AppBarButton_Click_SetThisBookShelfSecret" x:Name="AppBarButtonToggleSecret" Visibility="Collapsed"/>
-                <AppBarButton x:Uid="Setting" Click="AppBarButton_Click_GoToSetting"/>
+                <AppBarButton x:Uid="Setting" Click="AppBarButton_Click_GoToSetting" RightTapped="AppBarButton_Debug_1"/>
                 <AppBarButton x:Uid="AboutThisApp" Tapped="AppBarButton_Click_GoToInfoPage" IsRightTapEnabled="True" RightTapped="AppBarButton_RightTapped"/>
             </CommandBar.SecondaryCommands>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_OpenLocalFile"/>

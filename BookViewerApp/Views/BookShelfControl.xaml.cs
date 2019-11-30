@@ -76,7 +76,7 @@ namespace BookViewerApp
                 {
                     return ContainerTemplate;
                 }
-                else if (item is BookShelfViewModels.BookViewModel)
+                else if (item is BookShelfViewModels.BookShelfBookViewModel)
                 {
                     return BookTemplate;
                 }

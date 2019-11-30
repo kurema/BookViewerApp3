@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using BookViewerApp.BookFixed2ViewModels;
+using BookViewerApp.ViewModels;
 using System.Threading.Tasks;
 using Windows.UI;
 
@@ -27,7 +27,7 @@ namespace BookViewerApp
     /// </summary>
     public sealed partial class BookFixed2Viewer : Page
     {
-        private BookFixed2ViewModels.BookViewModel Binding => (BookViewModel) this.DataContext;
+        private ViewModels.BookViewModel Binding => (BookViewModel) this.DataContext;
 
         public BookFixed2Viewer()
         {
@@ -50,7 +50,7 @@ namespace BookViewerApp
 
             ((BookViewModel) this.DataContext).PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(BookFixed2ViewModels.BookViewModel.Title))
+                if (e.PropertyName == nameof(ViewModels.BookViewModel.Title))
                 {
                     SetTitle(Binding?.Title);
                 }
@@ -101,7 +101,7 @@ namespace BookViewerApp
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed) book, this.flipView);
         }
 
-        private void SetBookShelfModel(BookShelfViewModels.BookViewModel viewModel)
+        private void SetBookShelfModel(BookShelfViewModels.BookShelfBookViewModel viewModel)
         {
             if (Binding != null)
                 Binding.AsBookShelfBook = viewModel;
@@ -161,7 +161,7 @@ namespace BookViewerApp
         public struct BookAndParentNavigationParamater
         {
             public Books.IBookFixed BookViewerModel;
-            public BookShelfViewModels.BookViewModel BookShelfModel;
+            public BookShelfViewModels.BookShelfBookViewModel BookShelfModel;
             public string Title;
         }
 
@@ -211,9 +211,9 @@ namespace BookViewerApp
 
         private void BookmarkClicked(object sender, ItemClickEventArgs e)
         {
-            if (DataContext is BookFixed2ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is BookFixed2ViewModels.BookmarkViewModel)
+            if (DataContext is ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is ViewModels.BookmarkViewModel)
             {
-                ((BookFixed2ViewModels.BookViewModel) this.DataContext).PageSelected = ((BookFixed2ViewModels.BookmarkViewModel) e.ClickedItem).Page;
+                ((ViewModels.BookViewModel) this.DataContext).PageSelected = ((ViewModels.BookmarkViewModel) e.ClickedItem).Page;
             }
         }
 
