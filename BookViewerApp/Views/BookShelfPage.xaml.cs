@@ -310,7 +310,7 @@ namespace BookViewerApp
 
         private void AppBarButton_Debug_1(object sender, RightTappedRoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(BookShelf2Page), null);
+            this.Frame.Navigate(typeof(HomePage), null);
         }
     }
 }

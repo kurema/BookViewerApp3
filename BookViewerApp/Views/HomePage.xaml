@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="BookViewerApp.BookShelf2Page"
+    x:Class="BookViewerApp.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BookViewerApp"
@@ -10,19 +10,27 @@
     xmlns:dc="using:BookViewerApp.BookShelfViewModels"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
-        <vm:BookShelf2ViewModel/>
+        <vm:HomeViewModel/>
     </Page.DataContext>
-    <NavigationView>
+    <NavigationView
+        IsSettingsVisible="True" SelectionChanged="NavigationView_SelectionChanged"
+        MenuItemsSource="{Binding MenuItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
         <NavigationView.AutoSuggestBox>
             <AutoSuggestBox QueryIcon="Find"/>
         </NavigationView.AutoSuggestBox>
-        <NavigationView.MenuItems>
+        <NavigationView.MenuItemTemplate>
+            <DataTemplate x:DataType="vm:BookShelf2ViewModelMenuItem">
+                <NavigationViewItem Content="{Binding Title}" Icon="{Binding Icon}">
+                </NavigationViewItem>
+            </DataTemplate>
+        </NavigationView.MenuItemTemplate>
+        <!--<NavigationView.MenuItems>
             <NavigationViewItem Content="History" Tag="Library">
                 <NavigationViewItem.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE81C;"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-        </NavigationView.MenuItems>
-        <Frame/>
+        </NavigationView.MenuItems>-->
+        <Frame x:Name="frame"/>
     </NavigationView>
 </Page>
