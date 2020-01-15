@@ -46,17 +46,17 @@ namespace BookViewerApp
         private async void Refresh() {
             UpdateLoadingStatus();
 
-            var src = await BookShelfViewModels.BookShelfViewModel.GetBookShelfViewModels(SecretMode);
-            BookShelfList.ItemsSource = src;
-            if (src.Count > 0)
-            {
-                BookShelfList.SelectedIndex = await GetActualCurrentLastSelectedBookShelf();
-                WelcomeControl1.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                WelcomeControl1.Visibility = Visibility.Visible;
-            }
+            //var src = await BookShelfViewModels.BookShelfViewModel.GetBookShelfViewModels(SecretMode);
+            //BookShelfList.ItemsSource = src;
+            //if (src.Count > 0)
+            //{
+            //    BookShelfList.SelectedIndex = await GetActualCurrentLastSelectedBookShelf();
+            //    WelcomeControl1.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    WelcomeControl1.Visibility = Visibility.Visible;
+            //}
         }
 
         private const string LastSelectedBookShelfIndexKey = "LastSelectedBookShelfIndex";
@@ -96,29 +96,29 @@ namespace BookViewerApp
 
         private async void AppBarButton_Click_AddLocalDirectory(object sender, RoutedEventArgs e)
         {
-            var picker= new Windows.Storage.Pickers.FolderPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
-            {
-                picker.FileTypeFilter.Add(ext);
-            }
-            var folder = await picker.PickSingleFolderAsync();
-            if (folder != null)
-            {
-                var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
+        //    var picker= new Windows.Storage.Pickers.FolderPicker();
+        //    foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
+        //    {
+        //        picker.FileTypeFilter.Add(ext);
+        //    }
+        //    var folder = await picker.PickSingleFolderAsync();
+        //    if (folder != null)
+        //    {
+        //        var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
 
-                var dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Started/Message"), rl.GetString("LoadingFolder/Title"));
-                await dialog.ShowAsync();
-                var storage = await BookShelfStorage.GetBookShelves();
-                CurrentOperationCount++;
-                storage.Add(BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(folder)));
-                CurrentOperationCount--;
-                Refresh();
-                if (BookShelfList.Items != null) BookShelfList.SelectedIndex = BookShelfList.Items.Count - 1;
+        //        var dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Started/Message"), rl.GetString("LoadingFolder/Title"));
+        //        await dialog.ShowAsync();
+        //        var storage = await BookShelfStorage.GetBookShelves();
+        //        CurrentOperationCount++;
+        //        storage.Add(BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(folder)));
+        //        CurrentOperationCount--;
+        //        Refresh();
+        //        if (BookShelfList.Items != null) BookShelfList.SelectedIndex = BookShelfList.Items.Count - 1;
 
-                dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Completed/Message"), rl.GetString("LoadingFolder/Title"));
-                await dialog.ShowAsync();
-            }
-            await BookShelfStorage.SaveAsync();
+        //        dialog = new Windows.UI.Popups.MessageDialog(rl.GetString("LoadingFolder/Completed/Message"), rl.GetString("LoadingFolder/Title"));
+        //        await dialog.ShowAsync();
+        //    }
+        //    await BookShelfStorage.SaveAsync();
         }
 
         private int CurrentOperationCount
@@ -147,31 +147,31 @@ namespace BookViewerApp
 
         private async void AppBarButton_Click_ReloadBookShelf(object sender, RoutedEventArgs e)
         {
-            var cbs = (await GetCurrentBookShelf());
-            if (cbs == null) return;
-            var item= await Books.BookManager.StorageItemGet(cbs.GetFirstAccessToken());
-            var storage = await BookShelfStorage.GetBookShelves();
-            var target = storage[(await GetActualCurrentIndex())];
-            if (item is Windows.Storage.StorageFolder)
-            {
-                CurrentOperationCount++;
-                var result= BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(item as Windows.Storage.StorageFolder));
-                result.Secret = target.Secret;
-                var CurrentIndex = storage.IndexOf(target);
-                if (CurrentIndex >= 0)
-                {
-                    storage[CurrentIndex] = result;
-                }
-                CurrentOperationCount--;
-                Refresh();
-            }
+            //var cbs = (await GetCurrentBookShelf());
+            //if (cbs == null) return;
+            //var item= await Books.BookManager.StorageItemGet(cbs.GetFirstAccessToken());
+            //var storage = await BookShelfStorage.GetBookShelves();
+            //var target = storage[(await GetActualCurrentIndex())];
+            //if (item is Windows.Storage.StorageFolder)
+            //{
+            //    CurrentOperationCount++;
+            //    var result= BookShelfStorage.GetFlatBookShelf(await BookShelfStorage.GetFromStorageFolder(item as Windows.Storage.StorageFolder));
+            //    result.Secret = target.Secret;
+            //    var CurrentIndex = storage.IndexOf(target);
+            //    if (CurrentIndex >= 0)
+            //    {
+            //        storage[CurrentIndex] = result;
+            //    }
+            //    CurrentOperationCount--;
+            //    Refresh();
+            //}
         }
 
         private async void AppBarButton_Click_ClearBookShelfStorage(object sender, RoutedEventArgs e)
         {
-            BookShelfStorage.Clear();
-            Refresh();
-            await BookShelfStorage.SaveAsync();
+            //BookShelfStorage.Clear();
+            //Refresh();
+            //await BookShelfStorage.SaveAsync();
         }
 
         private async void AppBarButton_Click_OpenLocalFile(object sender, RoutedEventArgs e)
@@ -210,16 +210,16 @@ namespace BookViewerApp
 
         public async System.Threading.Tasks.Task<int> GetActualCurrentIndex()
         {
-            var storage = await BookShelfStorage.GetBookShelves();
-            int result = -1;
-            for (int i = 0; i < storage.Count; i++)
-            {
-                if (!storage[i].Secret || this.SecretMode) result++;
-                if (result == BookShelfList.SelectedIndex)
-                {
-                    return i;
-                }
-            }
+            //var storage = await BookShelfStorage.GetBookShelves();
+            //int result = -1;
+            //for (int i = 0; i < storage.Count; i++)
+            //{
+            //    if (!storage[i].Secret || this.SecretMode) result++;
+            //    if (result == BookShelfList.SelectedIndex)
+            //    {
+            //        return i;
+            //    }
+            //}
             return -1;
         }
 
@@ -228,48 +228,48 @@ namespace BookViewerApp
             this.LastSelectedBookShelfIndex = Math.Max(0, await GetActualCurrentIndex());
         }
 
-        private async System.Threading.Tasks.Task<int> GetActualCurrentLastSelectedBookShelf()
-        {
-            var storage = await BookShelfStorage.GetBookShelves();
-            int cnt = -1;
-            int tgt = this.LastSelectedBookShelfIndex;
-            for (int i = 0; i < storage.Count; i++)
-            {
-                if (!storage[i].Secret || this.SecretMode) cnt++;
-                if (tgt != i) continue;
-                if (BookShelfList.Items != null && (cnt == -1 && BookShelfList.Items.Count > 0)) { return 0; }
-                return cnt;
-            }
-            if (BookShelfList.Items != null) return Math.Min(0, BookShelfList.Items.Count - 1);
-            return -1;
-        }
+        //private async System.Threading.Tasks.Task<int> GetActualCurrentLastSelectedBookShelf()
+        //{
+        //    var storage = await BookShelfStorage.GetBookShelves();
+        //    int cnt = -1;
+        //    int tgt = this.LastSelectedBookShelfIndex;
+        //    for (int i = 0; i < storage.Count; i++)
+        //    {
+        //        if (!storage[i].Secret || this.SecretMode) cnt++;
+        //        if (tgt != i) continue;
+        //        if (BookShelfList.Items != null && (cnt == -1 && BookShelfList.Items.Count > 0)) { return 0; }
+        //        return cnt;
+        //    }
+        //    if (BookShelfList.Items != null) return Math.Min(0, BookShelfList.Items.Count - 1);
+        //    return -1;
+        //}
 
         private async void AppBarButton_Click_AppBarButton_Click_ClearBookShelfStorageSingle(object sender, RoutedEventArgs e)
         {
-            var storage = await BookShelfStorage.GetBookShelves();
-            if (storage.Count > 0 && BookShelfList.SelectedIndex > -1)
-            {
-                storage.RemoveAt(await GetActualCurrentIndex());
-                await BookShelfStorage.SaveAsync();
-            }
-            Refresh();
+            //    var storage = await BookShelfStorage.GetBookShelves();
+            //    if (storage.Count > 0 && BookShelfList.SelectedIndex > -1)
+            //    {
+            //        storage.RemoveAt(await GetActualCurrentIndex());
+            //        await BookShelfStorage.SaveAsync();
+            //    }
+            //    Refresh();
         }
 
-        private async System.Threading.Tasks.Task<BookShelfStorage.BookShelf> GetCurrentBookShelf()
-        {
-            if (BookShelfList.SelectedIndex < 0) return null;
-            var storage = await BookShelfStorage.GetBookShelves();
-            return storage[await GetActualCurrentIndex()];
-        }
+    //private async System.Threading.Tasks.Task<BookShelfStorage.BookShelf> GetCurrentBookShelf()
+    //{
+    //    if (BookShelfList.SelectedIndex < 0) return null;
+    //    var storage = await BookShelfStorage.GetBookShelves();
+    //    return storage[await GetActualCurrentIndex()];
+    //}
 
-        private async void AppBarButton_Click_SetThisBookShelfSecret(object sender, RoutedEventArgs e)
+    private async void AppBarButton_Click_SetThisBookShelfSecret(object sender, RoutedEventArgs e)
         {
-            var bs = (await GetCurrentBookShelf());
-            if (bs != null)
-            {
-                bs.Secret = !bs.Secret;
-                await BookShelfStorage.SaveAsync();
-            }
+            //var bs = (await GetCurrentBookShelf());
+            //if (bs != null)
+            //{
+            //    bs.Secret = !bs.Secret;
+            //    await BookShelfStorage.SaveAsync();
+            //}
         }
 
         private void AppBarButton_RightTapped(object sender, RightTappedRoutedEventArgs e)

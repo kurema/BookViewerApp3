@@ -402,14 +402,14 @@ namespace BookViewerApp.ViewModels
             public async void Execute(object parameter)
             {
                 var bookFVM = GetAddedBook(ViewModel.ID);
-                var file = await bookFVM.TryGetBookFile();
-                var book = await Books.BookManager.GetBookFromFile(file);
-                if (book is Books.IBookFixed)
-                {
-                    ViewModel.Initialize(book as Books.IBookFixed);
-                    ViewModel.Title = System.IO.Path.GetFileNameWithoutExtension(file.Name);
-                    ViewModel.AsBookShelfBook = bookFVM;
-                }
+                //var file = await bookFVM.TryGetBookFile();
+                //var book = await Books.BookManager.GetBookFromFile(file);
+                //if (book is Books.IBookFixed)
+                //{
+                //    ViewModel.Initialize(book as Books.IBookFixed);
+                //    ViewModel.Title = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+                //    ViewModel.AsBookShelfBook = bookFVM;
+                //}
             }
 
             public BookShelfViewModels.BookShelfBookViewModel GetAddedBook(string ID)

@@ -165,7 +165,6 @@
     <Compile Include="Views\BookShelfPage.xaml.cs">
       <DependentUpon>BookShelfPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Storages\BookShelfStorage.cs" />
     <Compile Include="ViewModels\BookShelfViewModels.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
