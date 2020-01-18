@@ -1,0 +1,221 @@
+﻿<UserControl
+    x:Class="BookViewerApp.BookFixed3ViewerControllerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookViewerApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="540.667"
+    
+    xmlns:BookFixed2ViewModel="using:BookViewerApp.ViewModels"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+
+    >
+    <UserControl.DataContext>
+        <BookFixed2ViewModel:BookViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>
+        <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
+        <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
+        <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
+        <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
+    </UserControl.Resources>
+
+    <Grid x:Name="RootGrid" Background="#DDFFFFFF">
+        <Grid.Resources>
+            <!-- New AppBar button style 48x48 pixels in size -->
+            <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
+                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                <Setter Property="AllowFocusOnInteraction" Value="True" />
+            </Style>
+            <!-- New AppBarToggle button style 48x48 pixels in size -->
+            <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
+                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                <Setter Property="AllowFocusOnInteraction" Value="True" />
+            </Style>
+            <!-- New CommandBar Style -->
+            <Style x:Key="CommandBarStyle" TargetType="CommandBar">
+                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="OverflowButtonVisibility" Value="Collapsed" />
+            </Style>
+        </Grid.Resources>
+
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ControlPanelVisibilityStates">
+                <VisualState x:Name="ControlPanelFadeIn">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ControlPanel_ControlPanelVisibilityStates_Border">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="50" To="0.5" Duration="0:0:0.3" />
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="ControlPanelFadeOut">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ControlPanel_ControlPanelVisibilityStates_Border">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0" />
+                        </DoubleAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="ControlPanel_ControlPanelVisibilityStates_Border">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="False" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="0.5" To="50" Duration="0:0:0.7" />
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border">
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="TranslateVertical" X="0" Y="0"/>
+            </Border.RenderTransform>
+            <Grid x:Name="ControlPanelGrid"
+                                VerticalAlignment="Bottom"
+                                RenderTransformOrigin="0.5,0.5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="ErrorBorder"
+                                    Width="320"
+                                    Height="96"
+                                    HorizontalAlignment="Center"
+                                    Visibility="Collapsed">
+                    <TextBlock x:Name="ErrorTextBlock"
+                                        TextWrapping="WrapWholeWords"
+                                        Margin="12" />
+                </Border>
+                <Border x:Name="BookReaderControls_Page_Border" Grid.Row="1">
+                    <Grid x:Name="BookReaderControls_Page_Grid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Slider x:Name="ProgressSlider"
+                                            Margin="12,0"
+                                            MinWidth="80"
+                                            Height="33"
+                                            VerticalAlignment="Center"
+                                            IsThumbToolTipEnabled="False"
+                                Maximum="{Binding PagesCount}"
+                                Value="{Binding PageSelectedDisplay,Mode=TwoWay}"
+                                RenderTransformOrigin="0.5,0.5" 
+                                >
+                            <Slider.RenderTransform>
+                                <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
+                            </Slider.RenderTransform>
+                        </Slider>
+                        <Grid x:Name="PageTextGrid"
+                                            Margin="12,0"
+                                            Grid.Row="1"
+                                            Height="15">
+                            <TextBlock x:Name="PageInfoElement"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                       xmlns:sys="using:System"
+                                       >
+                                <Run Text="{Binding PageSelectedDisplay}"/>
+                                <Run Text=" / "/>
+                                <Run Text="{Binding PagesCount}"/>
+                            </TextBlock>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="BookReaderControls_Command_Border"
+                                    Grid.Row="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <CommandBar HorizontalAlignment="Left" x:Name="BookReaderControlsCommandBar_Left" Grid.Column="0" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
+                            <CommandBar.PrimaryCommands>
+                                <AppBarButton Icon="Home"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              >
+                                </AppBarButton>
+                            </CommandBar.PrimaryCommands>
+                        </CommandBar>
+                        <CommandBar HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main" Grid.Column="1" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
+                            <CommandBar.PrimaryCommands>
+                                <AppBarButton Icon="Previous"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              Command="{Binding PageVisualAddCommand}"
+                                              CommandParameter="-1"
+                                              >
+                                </AppBarButton>
+                                <AppBarButton Icon="Next"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              Command="{Binding PageVisualAddCommand}"
+                                              CommandParameter="1"
+                                              >
+                                </AppBarButton>
+                            </CommandBar.PrimaryCommands>
+                        </CommandBar>
+                        <CommandBar HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
+                            <CommandBar.PrimaryCommands>
+                                <AppBarButton Icon="Bookmarks"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              AllowFocusOnInteraction="True"
+                                              >
+                                    <!-- Note: This looks ugly and it's not my fault! -->
+                                    <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/679 -->
+                                    <AppBarButton.Flyout>
+                                        <Flyout Placement="Top" >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <ListView>
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Page}" Grid.Column="0"/>
+                                                                <TextBlock Text="..." Grid.Column="1" Margin="10,0"/>
+                                                                <TextBlock Text="{Binding Title}" Grid.Column="2"/>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                                <TextBox Grid.Row="1" Text="{Binding CurrentBookmarkName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                            </Grid>
+                                        </Flyout>
+                                    </AppBarButton.Flyout>
+                                </AppBarButton>
+                                <AppBarButton Icon="FullScreen"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              >
+                                </AppBarButton>
+                            </CommandBar.PrimaryCommands>
+                        </CommandBar>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

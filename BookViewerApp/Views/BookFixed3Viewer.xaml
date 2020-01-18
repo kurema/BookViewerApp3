@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="BookViewerApp.BookFixed3Viewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookViewerApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+
+    xmlns:BookFixed2ViewModel="using:BookViewerApp.ViewModels"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    
+    Background="#EEEEEE"
+    >
+    <Page.DataContext>
+        <BookFixed2ViewModel:BookViewModel/>
+    </Page.DataContext>
+    <UserControl.Resources>
+        <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>
+        <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
+        <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
+        <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
+        <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ProgressBar Grid.Row="0" IsIndeterminate="{Binding Loading}" Background="{x:Null}"  />
+        <FlipView Grid.RowSpan="3" TabIndex="0" Grid.Row="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
+                  FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}">
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <local:BookFixed2Page DataContext="{Binding}"/>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+        <local:BookFixed3ViewerControllerControl DataContext="{Binding}" Grid.Row="2" />
+    </Grid>
+</Page>

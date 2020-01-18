@@ -213,7 +213,7 @@ namespace BookViewerApp
         {
             if (DataContext is ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is ViewModels.BookmarkViewModel)
             {
-                ((ViewModels.BookViewModel) this.DataContext).PageSelected = ((ViewModels.BookmarkViewModel) e.ClickedItem).Page;
+                ((ViewModels.BookViewModel) this.DataContext).PageSelectedDisplay = ((ViewModels.BookmarkViewModel) e.ClickedItem).Page;
             }
         }
 

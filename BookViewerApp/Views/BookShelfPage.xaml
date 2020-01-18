@@ -18,6 +18,7 @@
                 <AppBarButton x:Uid="AboutThisApp" Tapped="AppBarButton_Click_GoToInfoPage" IsRightTapEnabled="True" RightTapped="AppBarButton_RightTapped"/>
             </CommandBar.SecondaryCommands>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_OpenLocalFile"/>
+            <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_OpenLocalFile3"/>
             <AppBarButton x:Uid="AddLocalDirectory" Icon="Folder" Label="" Click="AppBarButton_Click_AddLocalDirectory"/>
             <AppBarButton x:Uid="ReloadBookShelf" Icon="Refresh" Label="" Click="AppBarButton_Click_ReloadBookShelf"/>
         </CommandBar>

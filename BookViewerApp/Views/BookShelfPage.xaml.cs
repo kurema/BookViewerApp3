@@ -186,6 +186,20 @@ namespace BookViewerApp
             if (file != null) this.Frame.Navigate(typeof(BookFixed2Viewer), file);
         }
 
+
+        private async void AppBarButton_Click_OpenLocalFile3(object sender, RoutedEventArgs e)
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
+            {
+                picker.FileTypeFilter.Add(ext);
+            }
+            var file = await picker.PickSingleFileAsync();
+
+            if (file != null) this.Frame.Navigate(typeof(BookFixed3Viewer), file);
+        }
+
+
         private void AppBarButton_Click_GoToInfoPage(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(InfoPage));

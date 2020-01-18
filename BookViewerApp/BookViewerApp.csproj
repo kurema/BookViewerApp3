@@ -150,6 +150,12 @@
     <Compile Include="Books\Books.cs" />
     <Compile Include="Books\BookPdf.cs" />
     <Compile Include="Books\BookSharpCompress.cs" />
+    <Compile Include="Views\BookFixed3Viewer.xaml.cs">
+      <DependentUpon>BookFixed3Viewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookFixed3ViewerControllerControl.xaml.cs">
+      <DependentUpon>BookFixed3ViewerControllerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -207,6 +213,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BookFixed2Viewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BookFixed3Viewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BookFixed3ViewerControllerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
