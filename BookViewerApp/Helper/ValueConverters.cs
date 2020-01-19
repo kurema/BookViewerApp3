@@ -143,6 +143,29 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
+    public class BoolToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string[] text = parameter.ToString().Split(':');
+            if (text.Length < 2) throw new ArgumentException();
+            if (value is bool b)
+            {
+                return b ? text[0] : text[1];
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            string[] text = parameter.ToString().Split(':');
+            return text[0] == value.ToString();
+        }
+    }
+
     public sealed class LocalizeConverter : IValueConverter
     {
         private static readonly Windows.ApplicationModel.Resources.ResourceLoader Loader = new Windows.ApplicationModel.Resources.ResourceLoader();
@@ -150,7 +173,7 @@ namespace BookViewerApp.ValueConverters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string resourceId = parameter as string;
-            return !string.IsNullOrEmpty(resourceId) ? Loader.GetString(resourceId) : DependencyProperty.UnsetValue;
+            return !string.IsNullOrEmpty(resourceId) ? Loader.GetString(resourceId.Replace('.', '/')) : DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -134,6 +134,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
+    <Compile Include="Helper\InvalidCommand.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />

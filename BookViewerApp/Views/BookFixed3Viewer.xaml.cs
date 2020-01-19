@@ -31,6 +31,41 @@ namespace BookViewerApp
         public BookFixed3Viewer()
         {
             this.InitializeComponent();
+
+            if (Binding?.ToggleFullScreenCommand != null) Binding.ToggleFullScreenCommand = new DelegateCommand((a) => ToggleFullScreen());
+            Application.Current.Suspending += (s, e) => Binding?.SaveInfo();
+
+            OriginalTitle = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title;
+
+            ((BookViewModel)this.DataContext).PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(ViewModels.BookViewModel.Title))
+                {
+                    SetTitle(Binding?.Title);
+                }
+            };
+
+            var brSet = (double)SettingStorage.GetValue("BackgroundBrightness");
+            var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
+                             255.0);
+            //this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
+            var color = new Windows.UI.Color() { A = 255, B = br, G = br, R = br };
+            this.Background = new AcrylicBrush()
+            {
+                BackgroundSource=AcrylicBackgroundSource.HostBackdrop,
+                TintColor=color,
+                FallbackColor=color,
+                TintOpacity=0.8
+            };
+
+            flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
+        }
+
+        private string OriginalTitle;
+
+        public void SetTitle(string title)
+        {
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = title;
         }
 
         public struct BookAndParentNavigationParamater
@@ -97,7 +132,7 @@ namespace BookViewerApp
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            //SaveInfo();
+            Binding?.SaveInfo();
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
             currentView.AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
@@ -106,7 +141,7 @@ namespace BookViewerApp
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
             v.ExitFullScreenMode();
 
-            //SetTitle(this.OriginalTitle);
+            SetTitle(this.OriginalTitle);
 
             base.OnNavigatedFrom(e);
         }
@@ -128,6 +163,16 @@ namespace BookViewerApp
         private void Open(Books.IBook book)
         {
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
+        }
+
+        private void Canvas_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ViewerController.SetControlPanelVisibility(true);
+
+            //var ui = (Canvas)sender;
+            //var rate = e.GetPosition(ui).X / ui.ActualWidth;
+            //if (Binding.Reversed) { rate = 1 - rate; }
+            //Binding.ReadRate = rate;
         }
     }
 }

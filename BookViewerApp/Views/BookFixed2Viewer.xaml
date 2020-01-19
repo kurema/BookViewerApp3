@@ -27,7 +27,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <FlipView TabIndex="0" Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelectedVisual,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved"
+        <FlipView TabIndex="0" Grid.Row="0" Grid.RowSpan="3" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}" PointerMoved="FlipView_OnPointerMoved"
                   PointerEntered="FlipView_OnPointerEntered" FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}">
             <FlipView.ItemTemplate>
                 <DataTemplate>
@@ -97,7 +97,7 @@
             </CommandBar>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5">
-            <TextBox Name="textBoxPageSelected" Text="{Binding Path=PageSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" InputScope="Number" PreventKeyboardDisplayOnProgrammaticFocus="True" Background="Transparent"/>
+            <TextBox Name="textBoxPageSelected" Text="{Binding Path=PageSelectedDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" InputScope="Number" PreventKeyboardDisplayOnProgrammaticFocus="True" Background="Transparent"/>
             <TextBlock Text="/" VerticalAlignment="Center"/>
             <TextBlock Text="{Binding Path=PagesCount,Mode=OneWay}" VerticalAlignment="Center"/>
         </StackPanel>

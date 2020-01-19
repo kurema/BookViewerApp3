@@ -11,8 +11,7 @@
     
     xmlns:BookFixed2ViewModel="using:BookViewerApp.ViewModels"
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
-
-    >
+    xmlns:Windows10version1903="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)">
     <UserControl.DataContext>
         <BookFixed2ViewModel:BookViewModel/>
     </UserControl.DataContext>
@@ -22,21 +21,148 @@
         <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
         <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
         <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
+        <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+        <ControlTemplate x:Key="RepeatButtonTemplate1" TargetType="RepeatButton">
+            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BackgroundSizing="{TemplateBinding BackgroundSizing}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" CornerRadius="{TemplateBinding CornerRadius}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="PointerOver">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBackgroundPointerOver}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBackgroundPressed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBorderBrushPressed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBackgroundDisabled}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBorderBrushDisabled}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonForegroundDisabled}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </ContentPresenter>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
+            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BackgroundSizing="{TemplateBinding BackgroundSizing}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" CornerRadius="{TemplateBinding CornerRadius}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <Storyboard>
+                                <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="PointerOver">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBackgroundPointerOver}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBackgroundPressed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBorderBrushPressed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBackgroundDisabled}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonBorderBrushDisabled}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonForegroundDisabled}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </ContentPresenter>
+        </ControlTemplate>
+
+        <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="XamlAutoFontFamily"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
+            <Setter Property="TextLineBounds" Value="Full"/>
+        </Style>
+        <Style x:Key="CaptionTextBlockStyle" BasedOn="{StaticResource BaseTextBlockStyle}" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="RootGrid" Background="#DDFFFFFF">
+    <Grid x:Name="RootGrid" Background="Transparent">
         <Grid.Resources>
             <!-- New AppBar button style 48x48 pixels in size -->
             <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
                 <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                 <Setter Property="AllowFocusOnInteraction" Value="True" />
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <RevealBorderBrush/>
+                    </Setter.Value>
+                </Setter>
             </Style>
             <!-- New AppBarToggle button style 48x48 pixels in size -->
             <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
                 <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                 <Setter Property="AllowFocusOnInteraction" Value="True" />
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <RevealBorderBrush/>
+                    </Setter.Value>
+                </Setter>
             </Style>
             <!-- New CommandBar Style -->
             <Style x:Key="CommandBarStyle" TargetType="CommandBar">
@@ -44,8 +170,37 @@
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="OverflowButtonVisibility" Value="Collapsed" />
             </Style>
+            <!-- StackPanel Style-->
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="AllowFocusOnInteraction" Value="True" />
+                <Setter Property="BorderThickness" Value="{ThemeResource AppBarButtonRevealBorderThemeThickness}" />
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <RevealBorderBrush/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="RepeatButtonStyle" TargetType="RepeatButton">
+                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="{ThemeResource AppBarButtonRevealBorderThemeThickness}" />
+                <Setter Property="AllowFocusOnInteraction" Value="True" />
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <RevealBorderBrush/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="StackPanelStyle" TargetType="StackPanel">
+                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>
         </Grid.Resources>
-
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="ControlPanelVisibilityStates">
@@ -57,6 +212,9 @@
                         </DoubleAnimationUsingKeyFrames>
                         <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="50" To="0.5" Duration="0:0:0.3" />
                     </Storyboard>
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.IsHitTestVisible" Value="True"/>
+                    </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="ControlPanelFadeOut">
                     <Storyboard>
@@ -69,11 +227,17 @@
                         </ObjectAnimationUsingKeyFrames>
                         <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="0.5" To="50" Duration="0:0:0.7" />
                     </Storyboard>
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.IsHitTestVisible" Value="False"/>
+                    </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border">
+        <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border" >
+            <Border.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" TintColor="{StaticResource SystemChromeAltHighColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2"   FallbackColor="{StaticResource SystemChromeMediumColor}" />
+            </Border.Background>
             <Border.RenderTransform>
                 <TranslateTransform x:Name="TranslateVertical" X="0" Y="0"/>
             </Border.RenderTransform>
@@ -127,10 +291,8 @@
                                             Grid.Row="1"
                                             Height="15">
                             <TextBlock x:Name="PageInfoElement"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
-                                       xmlns:sys="using:System"
-                                       >
+                                           HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom">
                                 <Run Text="{Binding PageSelectedDisplay}"/>
                                 <Run Text=" / "/>
                                 <Run Text="{Binding PagesCount}"/>
@@ -155,7 +317,7 @@
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>
                         </CommandBar>
-                        <CommandBar HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main" Grid.Column="1" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
+                        <!--<CommandBar HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main" Grid.Column="1" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton Icon="Previous"
                                               Style='{StaticResource AppBarButtonStyle}'
@@ -170,12 +332,42 @@
                                               >
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>
-                        </CommandBar>
-                        <CommandBar HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
+                        </CommandBar>-->
+                        <StackPanel HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main_StackPanel"  Grid.Column="1" Margin="0,0" Style="{StaticResource StackPanelStyle}" >
+                            <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" >
+                                <SymbolIcon Symbol="Previous"/>
+                            </Button>
+                            <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}" 
+                                          Delay="500" Interval="100"
+                                          Command="{Binding PageVisualAddCommand}"
+                                          CommandParameter="-1"
+                                          ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageLeft.Label, Mode=OneTime}"
+                                          >
+                                <SymbolIcon Symbol="Previous" />
+                            </RepeatButton>
+                            <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}"
+                                          Delay="500" Interval="100"
+                                          Command="{Binding PageVisualAddCommand}"
+                                          CommandParameter="1"
+                                          ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageRight.Label, Mode=OneTime}"
+                                >
+                                <SymbolIcon Symbol="Next" />
+                            </RepeatButton>
+                            <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualMaxCommand}" >
+                                <SymbolIcon Symbol="Next"/>
+                            </Button>
+                        </StackPanel>
+                        <CommandBar HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="True">
                             <CommandBar.PrimaryCommands>
+                                <AppBarToggleButton Icon="Pin"
+                                              Style='{StaticResource AppBarToggleButtonStyle}'
+                                              IsChecked="{Binding IsControlPinned,Mode=TwoWay}"
+                                              />
+
                                 <AppBarButton Icon="Bookmarks"
                                               Style='{StaticResource AppBarButtonStyle}'
                                               AllowFocusOnInteraction="True"
+                                              ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Bookmarks.Label, Mode=OneTime}"
                                               >
                                     <!-- Note: This looks ugly and it's not my fault! -->
                                     <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/679 -->
@@ -186,7 +378,7 @@
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <ListView>
+                                                <ListView ItemsSource="{Binding Bookmarks}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_SelectBookmark" >
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate>
                                                             <Grid>
@@ -207,8 +399,15 @@
                                         </Flyout>
                                     </AppBarButton.Flyout>
                                 </AppBarButton>
+                                <AppBarButton Icon="Rotate"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              Command="{Binding SwapReverseCommand}"
+                                              ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageReverse.Label, Mode=OneTime}"
+                                              />
                                 <AppBarButton Icon="FullScreen"
                                               Style='{StaticResource AppBarButtonStyle}'
+                                              Command="{Binding ToggleFullScreenCommand}"
+                                              ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ToggleFullScreen.Label, Mode=OneTime}"
                                               >
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>

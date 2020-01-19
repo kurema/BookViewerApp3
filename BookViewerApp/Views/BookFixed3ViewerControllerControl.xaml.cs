@@ -22,12 +22,55 @@ namespace BookViewerApp
         public BookFixed3ViewerControllerControl()
         {
             this.InitializeComponent();
+
+            this.LosingFocus += BookFixed3ViewerControllerControl_LosingFocus;
+            try
+            {
+                this.Focus(FocusState.Programmatic);
+            }
+            catch { }
+        }
+
+        private void BookFixed3ViewerControllerControl_LosingFocus(UIElement sender, LosingFocusEventArgs args)
+        {
+            var ui = args.NewFocusedElement as FrameworkElement;
+            if ((this.DataContext as ViewModels.BookViewModel)?.IsControlPinned == true)
+            {
+                return;
+            }
+            if (this.BaseUri != ui?.BaseUri && !(ui is Popup))
+                SetControlPanelVisibility(false);
         }
 
         public void SetControlPanelVisibility(bool visibility)
         {
-            if (visibility) VisualStateManager.GoToState(this, "ControlPanelFadeIn", true);
-            else VisualStateManager.GoToState(this, "ControlPanelFadeOut", true);
+            if (visibility)
+            {
+                VisualStateManager.GoToState(this, "ControlPanelFadeIn", true);
+                try
+                {
+                    this.Focus(FocusState.Programmatic);
+                }
+                catch { }
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "ControlPanelFadeOut", true);
+            }
+        }
+
+        private void ListView_SelectBookmark(object sender, ItemClickEventArgs e)
+        {
+            if (e.OriginalSource is ListView view)
+            {
+                if (e.ClickedItem is ViewModels.BookmarkViewModel model)
+                {
+                    if (this.DataContext is ViewModels.BookViewModel v)
+                    {
+                        v.PageSelectedDisplay = model.Page;
+                    }
+                }
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
+using System.Windows.Input;
 
 namespace BookViewerApp.ViewModels
 {
@@ -36,17 +37,27 @@ namespace BookViewerApp.ViewModels
 
         private System.Windows.Input.ICommand _GoNextBookCommand;
         private System.Windows.Input.ICommand _GoPreviousBookCommand;
+        private System.Windows.Input.ICommand _ToggleFullScreenCommand;
+
+        //private ICommand _TogglePinCommand;
+        //public ICommand TogglePinCommand => _TogglePinCommand = _TogglePinCommand ?? new DelegateCommand((a) => IsControlPinned = !IsControlPinned);
+
 
         public Commands.ICommandEventRaiseable PageVisualAddCommand { get {return _PageVisualAddCommand = _PageVisualAddCommand?? new Commands.PageVisualAddCommand(this); } }
         public Commands.ICommandEventRaiseable PageVisualSetCommand { get { return _PageVisualSetCommand = _PageVisualSetCommand ?? new Commands.PageVisualSetCommand(this); } }
         public Commands.ICommandEventRaiseable PageVisualMaxCommand { get { return _PageVisualMaxCommand = _PageVisualMaxCommand ?? new Commands.PageVisualMaxCommand(this); } }
         public Commands.ICommandEventRaiseable SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new Commands.CommandBase((a)=> { return true; },(a)=> { this.Reversed = !this.Reversed; }); } }
         public Commands.ICommandEventRaiseable AddCurrentPageToBookmarkCommand { get { return _AddCurrentPageToBookmarkCommand = _AddCurrentPageToBookmarkCommand ?? new Commands.AddCurrentPageToBookmark(this); } }
+        public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand = _ToggleFullScreenCommand ?? new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
+
         public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
         public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
 
         public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
         public string _Title = "";
+
+        public bool IsControlPinned { get => _IsControlPinned; set { _IsControlPinned = value;OnPropertyChanged(nameof(IsControlPinned)); } }
+        private bool _IsControlPinned = false;
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
         {
@@ -138,7 +149,7 @@ namespace BookViewerApp.ViewModels
             get { return _PageSelected; }
             set
             {
-                if (value - 1 > PagesCount) return;
+                if (value >= PagesCount) return;
                 if (value < 0) _PageSelected = 0;
                 else _PageSelected = value;
                 OnPropertyChanged(nameof(PageSelectedDisplay));
@@ -241,6 +252,8 @@ namespace BookViewerApp.ViewModels
             get { return _Bookmarks; }
             set { _Bookmarks = value; BookmarksSort(); OnPropertyChanged(nameof(Bookmarks)); OnPropertyChanged(nameof(CurrentBookmarkName));  }
         }
+
+
         private ObservableCollection<BookmarkViewModel> _Bookmarks = new ObservableCollection<BookmarkViewModel>();
 
         private void BookmarksSort()
