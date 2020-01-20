@@ -32,7 +32,13 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
-            if (Binding?.ToggleFullScreenCommand != null) Binding.ToggleFullScreenCommand = new DelegateCommand((a) => ToggleFullScreen());
+            if (Binding != null) Binding.ToggleFullScreenCommand = new DelegateCommand((a) => ToggleFullScreen());
+            if (Binding != null) Binding.GoToHomeCommand = new DelegateCommand((a) =>
+            {
+                Binding?.SaveInfo();
+                this.Frame.Navigate(typeof(HomePage), null);
+            });
+         
             Application.Current.Suspending += (s, e) => Binding?.SaveInfo();
 
             OriginalTitle = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title;
@@ -59,6 +65,7 @@ namespace BookViewerApp
             };
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
+
         }
 
         private string OriginalTitle;
@@ -163,16 +170,6 @@ namespace BookViewerApp
         private void Open(Books.IBook book)
         {
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
-        }
-
-        private void Canvas_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ViewerController.SetControlPanelVisibility(true);
-
-            //var ui = (Canvas)sender;
-            //var rate = e.GetPosition(ui).X / ui.ActualWidth;
-            //if (Binding.Reversed) { rate = 1 - rate; }
-            //Binding.ReadRate = rate;
         }
     }
 }

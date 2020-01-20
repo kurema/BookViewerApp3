@@ -34,7 +34,8 @@ namespace BookViewerApp
                 if(!value.HasValue)return;
                 var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value.Value), scrollViewer.MinZoomFactor);
                 if(value!=resultFactor) { throw new ArgumentOutOfRangeException();}
-                scrollViewer.ChangeView(null,null, resultFactor);
+                scrollViewer.ChangeView(null, null, resultFactor);
+                //changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
                 OnPropertyChanged(nameof(ZoomFactor));
             }
         }

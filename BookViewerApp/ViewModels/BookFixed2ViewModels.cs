@@ -38,6 +38,8 @@ namespace BookViewerApp.ViewModels
         private System.Windows.Input.ICommand _GoNextBookCommand;
         private System.Windows.Input.ICommand _GoPreviousBookCommand;
         private System.Windows.Input.ICommand _ToggleFullScreenCommand;
+        private System.Windows.Input.ICommand _GoToHomeCommand;
+
 
         //private ICommand _TogglePinCommand;
         //public ICommand TogglePinCommand => _TogglePinCommand = _TogglePinCommand ?? new DelegateCommand((a) => IsControlPinned = !IsControlPinned);
@@ -49,6 +51,7 @@ namespace BookViewerApp.ViewModels
         public Commands.ICommandEventRaiseable SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new Commands.CommandBase((a)=> { return true; },(a)=> { this.Reversed = !this.Reversed; }); } }
         public Commands.ICommandEventRaiseable AddCurrentPageToBookmarkCommand { get { return _AddCurrentPageToBookmarkCommand = _AddCurrentPageToBookmarkCommand ?? new Commands.AddCurrentPageToBookmark(this); } }
         public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand = _ToggleFullScreenCommand ?? new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
+        public ICommand GoToHomeCommand { get => _GoToHomeCommand = _GoToHomeCommand ?? new InvalidCommand(); set => _GoToHomeCommand = value; }
 
         public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
         public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
@@ -144,6 +147,15 @@ namespace BookViewerApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        public PageViewModel PageSelectedViewModel
+        {
+            get
+            {
+                if (PageSelected < 0 || PagesCount <= PageSelected) return null;
+                return Pages[PageSelected];
+            }
+        }
+
         public int PageSelected
         {
             get { return _PageSelected; }
@@ -157,6 +169,7 @@ namespace BookViewerApp.ViewModels
                 OnPropertyChanged(nameof(ReadRate));
                 OnPropertyChanged(nameof(CurrentBookmarkName));
                 OnPropertyChanged(nameof(PageSelected));
+                OnPropertyChanged(nameof(PageSelectedViewModel));
             }
         }
 
@@ -182,7 +195,7 @@ namespace BookViewerApp.ViewModels
         public ObservableCollection<PageViewModel> Pages
         {
             get { return _Pages; }
-            set { _Pages = value;OnPropertyChanged(nameof(Pages));OnPropertyChanged(nameof(PagesCount)); OnPropertyChanged(nameof(ReadRate)); }
+            set { _Pages = value;OnPropertyChanged(nameof(Pages));PageSelected = 0; OnPropertyChanged(nameof(PagesCount)); OnPropertyChanged(nameof(ReadRate)); }
         }
         private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
 
@@ -276,6 +289,20 @@ namespace BookViewerApp.ViewModels
 
         private Books.IPageFixed Page;
 
+        private ICommand _ZoomFactorMultiplyCommand;
+        public ICommand ZoomFactorMultiplyCommand { get => _ZoomFactorMultiplyCommand = _ZoomFactorMultiplyCommand ?? new DelegateCommand((a) =>
+        {
+            var d = double.Parse(a.ToString());
+            ZoomRequest(ZoomFactor * (float)d);
+        }
+        //,
+        //    (a) =>
+        //    {
+        //        var d = double.Parse(a.ToString());
+        //        return !(d < 1.0 && ZoomFactor <= 1.0);
+        //    }
+        ); }
+
         public float ZoomFactor
         {
             get
@@ -284,7 +311,7 @@ namespace BookViewerApp.ViewModels
             }
             set
             {
-                this._ZoomFactor = value;
+                this._ZoomFactor = MathF.Max(1.0f, value);
                 OnPropertyChanged(nameof(ZoomFactor));
             }
         }
@@ -319,6 +346,8 @@ namespace BookViewerApp.ViewModels
                 return _Source;
             }
         }
+
+
         public BitmapImage _Source;
 
         public void UpdateSource()
@@ -356,12 +385,12 @@ namespace BookViewerApp.ViewModels
 
             public bool CanExecute(object parameter)
             {
-                return model.PagesCount > model.PageSelectedVisual + int.Parse(parameter as string) && model.PageSelectedVisual >= -int.Parse(parameter as string);
+                return model.PagesCount > model.PageSelectedVisual + int.Parse(parameter.ToString()) && model.PageSelectedVisual >= -int.Parse(parameter.ToString());
             }
 
             public void Execute(object parameter)
             {
-                model.PageSelectedVisual += int.Parse(parameter as string);
+                model.PageSelectedVisual += int.Parse(parameter.ToString());
             }
         }
 
@@ -376,7 +405,7 @@ namespace BookViewerApp.ViewModels
 
             public bool CanExecute(object parameter)
             {
-                return model.PagesCount > int.Parse(parameter as string) && 0 <= int.Parse(parameter as string) && model.PageSelectedVisual != int.Parse(parameter as string);
+                return model.PagesCount > int.Parse(parameter.ToString()) && 0 <= int.Parse(parameter.ToString()) && model.PageSelectedVisual != int.Parse(parameter.ToString());
             }
 
             public void Execute(object parameter)

@@ -19,6 +19,8 @@ namespace BookViewerApp
 {
     public sealed partial class BookFixed3ViewerControllerControl : UserControl
     {
+        private ViewModels.BookViewModel Binding => (ViewModels.BookViewModel)this.DataContext;
+
         public BookFixed3ViewerControllerControl()
         {
             this.InitializeComponent();
@@ -29,6 +31,13 @@ namespace BookViewerApp
                 this.Focus(FocusState.Programmatic);
             }
             catch { }
+
+            if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
+            {
+                this.ButtonLeftmost.Visibility = Visibility.Collapsed;
+                this.ButtonRightmost.Visibility = Visibility.Collapsed;
+            }
+
         }
 
         private void BookFixed3ViewerControllerControl_LosingFocus(UIElement sender, LosingFocusEventArgs args)
@@ -38,8 +47,15 @@ namespace BookViewerApp
             {
                 return;
             }
-            if (this.BaseUri != ui?.BaseUri && !(ui is Popup))
-                SetControlPanelVisibility(false);
+            if (this.BaseUri == ui?.BaseUri) return;
+            //while (ui.Parent!=null)
+            //{
+            //    if (ui is Popup) return;
+            //    ui = ui.Parent as FrameworkElement;
+            //}
+            if (ui is Popup) return;
+            //if (ui != null && ui?.BaseUri == null) return;
+            SetControlPanelVisibility(false);
         }
 
         public void SetControlPanelVisibility(bool visibility)
@@ -72,5 +88,69 @@ namespace BookViewerApp
                 }
             }
         }
+
+        private void PageInfoElement_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        //private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)
+        //{
+        //    var ui = (Canvas)sender;
+        //    var rate = e.GetPosition(ui).X / ui.ActualWidth;
+        //    if (Binding.Reversed) { rate = 1 - rate; }
+        //    Binding.ReadRate = rate;
+        //}
+
+        //private void Scroller_PointerMoved(object sender, PointerRoutedEventArgs e)
+        //{
+        //    var ui = (Canvas)sender;
+        //    var cp = e.GetCurrentPoint(ui);
+        //    if (!cp.IsInContact) return;
+        //    var rate = cp.Position.X / ui.ActualWidth;
+        //    if (Binding.Reversed) { rate = 1 - rate; }
+        //    Binding.ReadRate = Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
+        //    e.Handled = true;
+        //}
+
+        private void Canvas_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            this.SetControlPanelVisibility(true);
+        }
+
+        private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var ui = (Canvas)sender;
+            var rate = e.GetPosition(ui).X / ui.ActualWidth;
+            if (Binding.Reversed) { rate = 1 - rate; }
+            Binding.ReadRate = rate;
+        }
+
+        private void Scroller_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            var ui = (Canvas)sender;
+            var cp = e.GetCurrentPoint(ui);
+            if (!cp.IsInContact) return;
+            var rate = cp.Position.X / ui.ActualWidth;
+            if (Binding.Reversed) { rate = 1 - rate; }
+            Binding.ReadRate = Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
+            e.Handled = true;
+        }
+
+        private void InitializeZoomFactor(object sender, TappedRoutedEventArgs e)
+        {
+            if(Binding?.PageSelectedViewModel?.ZoomFactor != null)
+            {
+                Binding.PageSelectedViewModel.ZoomFactor = 1.0f;
+            }
+        }
+
+        //private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        //{
+        //    if (Binding?.PageSelectedViewModel != null)
+        //    {
+        //        Binding.PageSelectedViewModel.ZoomRequest((float)((sender as Slider).Value / 100.0));
+        //    }
+        //}
     }
 }

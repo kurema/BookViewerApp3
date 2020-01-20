@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="540.667"
+    d:DesignHeight="341"
+    d:DesignWidth="1002"
     
     xmlns:BookFixed2ViewModel="using:BookViewerApp.ViewModels"
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
@@ -18,6 +18,7 @@
     <UserControl.Resources>
         <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>
         <ValueConverter:RateToPersantageValueConverter x:Key="RateToPersantageConverter"/>
+        <ValueConverter:RateToPersantageIntValueConverter x:Key="RateToPersantageIntConverter"/>
         <ValueConverter:BookIdToImageSource x:Key="BookIdToImageSource"/>
         <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
         <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
@@ -140,68 +141,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="RootGrid" Background="Transparent">
-        <Grid.Resources>
-            <!-- New AppBar button style 48x48 pixels in size -->
-            <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
-                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
-                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                <Setter Property="AllowFocusOnInteraction" Value="True" />
-                <Setter Property="BorderBrush">
-                    <Setter.Value>
-                        <RevealBorderBrush/>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <!-- New AppBarToggle button style 48x48 pixels in size -->
-            <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
-                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
-                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                <Setter Property="AllowFocusOnInteraction" Value="True" />
-                <Setter Property="BorderBrush">
-                    <Setter.Value>
-                        <RevealBorderBrush/>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <!-- New CommandBar Style -->
-            <Style x:Key="CommandBarStyle" TargetType="CommandBar">
-                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="OverflowButtonVisibility" Value="Collapsed" />
-            </Style>
-            <!-- StackPanel Style-->
-            <Style x:Key="ButtonStyle" TargetType="Button">
-                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
-                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="AllowFocusOnInteraction" Value="True" />
-                <Setter Property="BorderThickness" Value="{ThemeResource AppBarButtonRevealBorderThemeThickness}" />
-                <Setter Property="BorderBrush">
-                    <Setter.Value>
-                        <RevealBorderBrush/>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="RepeatButtonStyle" TargetType="RepeatButton">
-                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
-                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="BorderThickness" Value="{ThemeResource AppBarButtonRevealBorderThemeThickness}" />
-                <Setter Property="AllowFocusOnInteraction" Value="True" />
-                <Setter Property="BorderBrush">
-                    <Setter.Value>
-                        <RevealBorderBrush/>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="StackPanelStyle" TargetType="StackPanel">
-                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Orientation" Value="Horizontal" />
-            </Style>
-        </Grid.Resources>
-
+    <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="ControlPanelVisibilityStates">
                 <VisualState x:Name="ControlPanelFadeIn">
@@ -211,9 +151,13 @@
                             <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
                         </DoubleAnimationUsingKeyFrames>
                         <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="50" To="0.5" Duration="0:0:0.3" />
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BackgroundGrid">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
+                        </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.IsHitTestVisible" Value="True"/>
+                        <Setter Target="ControlPanel_ProgressBar.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="ControlPanelFadeOut">
@@ -226,53 +170,183 @@
                             <DiscreteObjectKeyFrame KeyTime="0" Value="False" />
                         </ObjectAnimationUsingKeyFrames>
                         <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="0.5" To="50" Duration="0:0:0.7" />
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BackgroundGrid">
+                            <LinearDoubleKeyFrame KeyTime="0" Value="0" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1" />
+                            <LinearDoubleKeyFrame KeyTime="0:0:3.7" Value="1" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:4.4" Value="0" />
+                        </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.IsHitTestVisible" Value="False"/>
+                        <Setter Target="ControlPanel_ProgressBar.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border" >
-            <Border.Background>
-                <AcrylicBrush BackgroundSource="Backdrop" TintColor="{StaticResource SystemChromeAltHighColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2"   FallbackColor="{StaticResource SystemChromeMediumColor}" />
-            </Border.Background>
-            <Border.RenderTransform>
-                <TranslateTransform x:Name="TranslateVertical" X="0" Y="0"/>
-            </Border.RenderTransform>
-            <Grid x:Name="ControlPanelGrid"
-                                VerticalAlignment="Bottom"
-                                RenderTransformOrigin="0.5,0.5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+        <Grid x:Name="BackgroundGrid" Opacity="0">
+            <Grid.Resources>
+                <Style TargetType="RepeatButton">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="Opacity" Value="1"/>
+                </Style>
+            </Grid.Resources>
 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="26" />
+                </Grid.RowDefinitions>
+                <Canvas Grid.Row="1" Tapped="Scroller_Tapped" PointerMoved="Scroller_PointerMoved" Background="Transparent"/>
+                <Canvas Grid.Row="0" Tapped="Canvas_Tapped"  Background="Transparent"/>
+            </Grid>
+
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{ThemeResource MTCMediaButtonHeight}"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="{ThemeResource MTCMediaButtonHeight}"/>
                 </Grid.ColumnDefinitions>
 
-                <Border x:Name="ErrorBorder"
+                <Grid Grid.Column="0" Grid.RowSpan="2" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <RepeatButton Grid.Row="0" Command="{Binding PageVisualAddCommand}" CommandParameter="-1" >
+                        <SymbolIcon Symbol="Previous"/>
+                    </RepeatButton>
+                    <RepeatButton Grid.Row="1" Command="{Binding PageVisualAddCommand}" CommandParameter="1" >
+                        <SymbolIcon Symbol="Next"/>
+                    </RepeatButton>
+                </Grid>
+                <Grid Grid.Column="2" Grid.RowSpan="2" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <RepeatButton Grid.Row="0" Command="{Binding PageVisualAddCommand}" CommandParameter="1" >
+                        <SymbolIcon Symbol="Next"/>
+                    </RepeatButton>
+                    <RepeatButton Grid.Row="1" Command="{Binding PageVisualAddCommand}" CommandParameter="-1" >
+                        <SymbolIcon Symbol="Previous"/>
+                    </RepeatButton>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="RootGrid" Background="Transparent" >
+            <Grid.Resources>
+                <!-- New AppBar button style 48x48 pixels in size -->
+                <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
+                    <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                    <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                    <Setter Property="AllowFocusOnInteraction" Value="True" />
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <RevealBorderBrush/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <!-- New AppBarToggle button style 48x48 pixels in size -->
+                <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
+                    <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                    <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                    <Setter Property="AllowFocusOnInteraction" Value="True" />
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <RevealBorderBrush/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <!-- New CommandBar Style -->
+                <Style x:Key="CommandBarStyle" TargetType="CommandBar">
+                    <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="OverflowButtonVisibility" Value="Collapsed" />
+                </Style>
+                <!-- StackPanel Style-->
+                <Style x:Key="ButtonStyle" TargetType="Button">
+                    <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                    <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="AllowFocusOnInteraction" Value="True" />
+                    <Setter Property="BorderThickness" Value="{ThemeResource AppBarButtonRevealBorderThemeThickness}" />
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <RevealBorderBrush/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="RepeatButtonStyle" TargetType="RepeatButton">
+                    <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+                    <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="{ThemeResource AppBarButtonRevealBorderThemeThickness}" />
+                    <Setter Property="AllowFocusOnInteraction" Value="True" />
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <RevealBorderBrush/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="StackPanelStyle" TargetType="StackPanel">
+                    <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Orientation" Value="Horizontal" />
+                </Style>
+            </Grid.Resources>
+
+
+            <ProgressBar x:Name="ControlPanel_ProgressBar" VerticalAlignment="Bottom" IsHitTestVisible="False" Value="{Binding Path=ReadRate,Converter={StaticResource ResourceKey=RateToPersantageConverter}}" RenderTransformOrigin="0.5,0.5" SmallChange="0" Visibility="Collapsed">
+                <ProgressBar.RenderTransform>
+                    <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
+                </ProgressBar.RenderTransform>
+            </ProgressBar>
+
+            <!--<Canvas VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="26" Background="Transparent" Tapped="Scroller_Tapped" PointerMoved="Scroller_PointerMoved" />-->
+
+            <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border" >
+                <Border.Background>
+                    <AcrylicBrush BackgroundSource="Backdrop" TintColor="{StaticResource SystemChromeAltHighColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2" FallbackColor="{StaticResource SystemChromeMediumColor}" />
+                </Border.Background>
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="TranslateVertical" X="0" Y="0"/>
+                </Border.RenderTransform>
+                <Grid x:Name="ControlPanelGrid"
+                                VerticalAlignment="Bottom"
+                                RenderTransformOrigin="0.5,0.5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="ErrorBorder"
                                     Width="320"
                                     Height="96"
                                     HorizontalAlignment="Center"
                                     Visibility="Collapsed">
-                    <TextBlock x:Name="ErrorTextBlock"
+                        <TextBlock x:Name="ErrorTextBlock"
                                         TextWrapping="WrapWholeWords"
                                         Margin="12" />
-                </Border>
-                <Border x:Name="BookReaderControls_Page_Border" Grid.Row="1">
-                    <Grid x:Name="BookReaderControls_Page_Grid">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Slider x:Name="ProgressSlider"
+                    </Border>
+                    <Border x:Name="BookReaderControls_Page_Border" Grid.Row="1">
+                        <Grid x:Name="BookReaderControls_Page_Grid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Slider x:Name="ProgressSlider"
                                             Margin="12,0"
                                             MinWidth="80"
                                             Height="33"
@@ -282,139 +356,170 @@
                                 Value="{Binding PageSelectedDisplay,Mode=TwoWay}"
                                 RenderTransformOrigin="0.5,0.5" 
                                 >
-                            <Slider.RenderTransform>
-                                <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
-                            </Slider.RenderTransform>
-                        </Slider>
-                        <Grid x:Name="PageTextGrid"
+                                <Slider.RenderTransform>
+                                    <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
+                                </Slider.RenderTransform>
+                            </Slider>
+                            <Grid x:Name="PageTextGrid"
                                             Margin="12,0"
                                             Grid.Row="1"
                                             Height="15">
-                            <TextBlock x:Name="PageInfoElement"
-                                           HorizontalAlignment="Right"
-                                        VerticalAlignment="Bottom">
+                                <TextBlock x:Name="PageInfoElement"
+                                               HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                           Margin="0,0,10,0"
+                                        Tapped="PageInfoElement_Tapped"
+                                       >
+                                <FlyoutBase.AttachedFlyout>
+                                    <Flyout>
+                                        <StackPanel Orientation="Horizontal" >
+                                            <TextBox VerticalAlignment="Center" Text="{Binding PageSelectedDisplay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run Text=" / "/>
+                                                <Run Text="{Binding PagesCount}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Flyout>
+                                </FlyoutBase.AttachedFlyout>
                                 <Run Text="{Binding PageSelectedDisplay}"/>
                                 <Run Text=" / "/>
                                 <Run Text="{Binding PagesCount}"/>
-                            </TextBlock>
+                                </TextBlock>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Border>
+                    </Border>
 
-                <Border x:Name="BookReaderControls_Command_Border"
+                    <Border x:Name="BookReaderControls_Command_Border"
                                     Grid.Row="2">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <CommandBar HorizontalAlignment="Left" x:Name="BookReaderControlsCommandBar_Left" Grid.Column="0" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
-                            <CommandBar.PrimaryCommands>
-                                <AppBarButton Icon="Home"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CommandBar HorizontalAlignment="Left" x:Name="BookReaderControlsCommandBar_Left" Grid.Column="0" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
+                                <CommandBar.PrimaryCommands>
+                                    <AppBarButton Icon="Home"
                                               Style='{StaticResource AppBarButtonStyle}'
+                                              Command="{Binding GoToHomeCommand}"
                                               >
-                                </AppBarButton>
-                            </CommandBar.PrimaryCommands>
-                        </CommandBar>
-                        <!--<CommandBar HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main" Grid.Column="1" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="False">
-                            <CommandBar.PrimaryCommands>
-                                <AppBarButton Icon="Previous"
-                                              Style='{StaticResource AppBarButtonStyle}'
-                                              Command="{Binding PageVisualAddCommand}"
-                                              CommandParameter="-1"
-                                              >
-                                </AppBarButton>
-                                <AppBarButton Icon="Next"
-                                              Style='{StaticResource AppBarButtonStyle}'
-                                              Command="{Binding PageVisualAddCommand}"
-                                              CommandParameter="1"
-                                              >
-                                </AppBarButton>
-                            </CommandBar.PrimaryCommands>
-                        </CommandBar>-->
-                        <StackPanel HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main_StackPanel"  Grid.Column="1" Margin="0,0" Style="{StaticResource StackPanelStyle}" >
-                            <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" >
-                                <SymbolIcon Symbol="Previous"/>
-                            </Button>
-                            <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}" 
+                                    </AppBarButton>
+                                </CommandBar.PrimaryCommands>
+                            </CommandBar>
+                            <StackPanel HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main_StackPanel"  Grid.Column="1" Margin="0,0" Style="{StaticResource StackPanelStyle}" >
+                                <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" x:Name="ButtonLeftmost">
+                                    <SymbolIcon Symbol="Previous"/>
+                                </Button>
+                                <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}" 
                                           Delay="500" Interval="100"
                                           Command="{Binding PageVisualAddCommand}"
                                           CommandParameter="-1"
                                           ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageLeft.Label, Mode=OneTime}"
                                           >
-                                <SymbolIcon Symbol="Previous" />
-                            </RepeatButton>
-                            <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}"
+                                    <SymbolIcon Symbol="Previous" />
+                                </RepeatButton>
+                                <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}"
                                           Delay="500" Interval="100"
                                           Command="{Binding PageVisualAddCommand}"
                                           CommandParameter="1"
                                           ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageRight.Label, Mode=OneTime}"
                                 >
-                                <SymbolIcon Symbol="Next" />
-                            </RepeatButton>
-                            <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualMaxCommand}" >
-                                <SymbolIcon Symbol="Next"/>
-                            </Button>
-                        </StackPanel>
-                        <CommandBar HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="True">
-                            <CommandBar.PrimaryCommands>
-                                <AppBarToggleButton Icon="Pin"
+                                    <SymbolIcon Symbol="Next" />
+                                </RepeatButton>
+                                <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualMaxCommand}" x:Name="ButtonRightmost">
+                                    <SymbolIcon Symbol="Next"/>
+                                </Button>
+                            </StackPanel>
+                            <CommandBar HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource CommandBarStyle}" IsDynamicOverflowEnabled="True">
+                                <CommandBar.PrimaryCommands>
+                                    <AppBarToggleButton Icon="Pin"
                                               Style='{StaticResource AppBarToggleButtonStyle}'
                                               IsChecked="{Binding IsControlPinned,Mode=TwoWay}"
                                               />
+                                    <AppBarButton Icon="Zoom"
+                                              Style='{StaticResource AppBarButtonStyle}'
+                                              AllowFocusOnInteraction="True"
+                                                  >
+                                        <AppBarButton.Flyout>
+                                            <Flyout Placement="Top">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <RepeatButton Grid.Row="1" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="0.83">
+                                                        <SymbolIcon Symbol="ZoomOut"/>
+                                                    </RepeatButton>
+                                                    <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="1.2">
+                                                        <SymbolIcon Symbol="ZoomIn"/>
+                                                    </RepeatButton>
+                                                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" xmlns:system="using:System" Tapped="InitializeZoomFactor">
+                                                        <Run Text="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageIntConverter},Mode=OneWay}"/>
+                                                        <Run Text="%"/>
+                                                    </TextBlock>
 
-                                <AppBarButton Icon="Bookmarks"
+                                                    <!--<Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />-->
+                                                </Grid>
+                                            </Flyout>
+                                        </AppBarButton.Flyout>
+                                    </AppBarButton>
+
+                                    <AppBarButton Icon="Bookmarks"
                                               Style='{StaticResource AppBarButtonStyle}'
                                               AllowFocusOnInteraction="True"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Bookmarks.Label, Mode=OneTime}"
                                               >
-                                    <!-- Note: This looks ugly and it's not my fault! -->
-                                    <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/679 -->
-                                    <AppBarButton.Flyout>
-                                        <Flyout Placement="Top" >
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <ListView ItemsSource="{Binding Bookmarks}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_SelectBookmark" >
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Text="{Binding Page}" Grid.Column="0"/>
-                                                                <TextBlock Text="..." Grid.Column="1" Margin="10,0"/>
-                                                                <TextBlock Text="{Binding Title}" Grid.Column="2"/>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
-                                                </ListView>
-                                                <TextBox Grid.Row="1" Text="{Binding CurrentBookmarkName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                                            </Grid>
-                                        </Flyout>
-                                    </AppBarButton.Flyout>
-                                </AppBarButton>
-                                <AppBarButton Icon="Rotate"
+                                        <!-- Note: This looks ugly and it's not my fault! -->
+                                        <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/679 -->
+                                        <AppBarButton.Flyout>
+                                            <Flyout Placement="Top" >
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <ListView ItemsSource="{Binding Bookmarks}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_SelectBookmark" >
+                                                        <ListView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TextBlock Text="{Binding Page}" Grid.Column="0"/>
+                                                                    <TextBlock Text="..." Grid.Column="1" Margin="10,0"/>
+                                                                    <TextBlock Text="{Binding Title}" Grid.Column="2"/>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </ListView.ItemTemplate>
+                                                    </ListView>
+                                                    <TextBox Grid.Row="1" Text="{Binding CurrentBookmarkName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                                </Grid>
+                                            </Flyout>
+                                        </AppBarButton.Flyout>
+                                    </AppBarButton>
+                                    <AppBarButton Icon="Rotate"
                                               Style='{StaticResource AppBarButtonStyle}'
                                               Command="{Binding SwapReverseCommand}"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageReverse.Label, Mode=OneTime}"
                                               />
-                                <AppBarButton Icon="FullScreen"
+                                    <AppBarButton Icon="FullScreen"
                                               Style='{StaticResource AppBarButtonStyle}'
                                               Command="{Binding ToggleFullScreenCommand}"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ToggleFullScreen.Label, Mode=OneTime}"
                                               >
-                                </AppBarButton>
-                            </CommandBar.PrimaryCommands>
-                        </CommandBar>
-                    </Grid>
-                </Border>
-            </Grid>
-        </Border>
+                                    </AppBarButton>
+                                </CommandBar.PrimaryCommands>
+                            </CommandBar>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
