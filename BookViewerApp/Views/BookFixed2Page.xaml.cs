@@ -146,13 +146,19 @@ namespace BookViewerApp
         private double _initialHorizontalOffset;
         private double _initialVerticalOffset;
         private Windows.UI.Input.PointerPoint _initialPoint;
+        private DateTime _lastClickedTime;
 
-        private void scrollViewer_PointerPressed(object sender, PointerRoutedEventArgs e)
+        private void scrollViewer_PointerInit(PointerRoutedEventArgs e)
         {
             _initialHorizontalOffset = scrollViewer.HorizontalOffset;
             _initialVerticalOffset = scrollViewer.VerticalOffset;
             _initialPoint = e.GetCurrentPoint(scrollViewer);
+            _lastClickedTime = DateTime.Now;
+        }
 
+        private void scrollViewer_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            scrollViewer_PointerInit(e);
         }
 
         private void scrollViewer_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -160,11 +166,16 @@ namespace BookViewerApp
             if (e.Pointer?.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse &&
                 e.Pointer?.IsInContact == true)
             {
+                //Workaround. PointerPressed not fired in some case.
+                if ((DateTime.Now - _lastClickedTime).TotalSeconds > 1) { scrollViewer_PointerInit(e); }
+
                 var point = e.GetCurrentPoint(scrollViewer);
                 if (point == null || _initialPoint == null) return;
                 scrollViewer.ChangeView(_initialHorizontalOffset - (point.Position.X - _initialPoint.Position.X),
                     _initialVerticalOffset - (point.Position.Y - _initialPoint.Position.Y), null);
                 e.Handled = true;
+
+                _lastClickedTime = DateTime.Now;
             }
             else
             {
