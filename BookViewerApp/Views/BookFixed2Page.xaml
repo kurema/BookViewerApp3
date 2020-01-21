@@ -14,8 +14,18 @@
     <ScrollViewer x:Name="scrollViewer" ZoomMode="Enabled" MinZoomFactor="1.0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" SizeChanged="ScrollViewer_SizeChanged"
                   PointerPressed="scrollViewer_PointerPressed" PointerMoved="scrollViewer_PointerMoved" DoubleTapped="ScrollViewer_OnDoubleTapped" IsHorizontalRailEnabled="False" IsVerticalRailEnabled="False"
                   >
-        <Grid x:Name="grid">
+        <Grid  x:Name="grid">
             <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>
+            <!--<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>-->
+            <!--<StackPanel HorizontalAlignment="Center" VerticalAlignment="Stretch" x:Name="stack" Orientation="Horizontal" Background="AliceBlue">
+                <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Left" Grid.Column="1"/>
+                <Image x:Name="image2" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Right" Grid.Column="2"/>
+            </StackPanel>-->
         </Grid>
     </ScrollViewer>
 </UserControl>

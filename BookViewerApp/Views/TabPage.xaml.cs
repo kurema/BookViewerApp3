@@ -57,7 +57,7 @@ namespace BookViewerApp
         private async void TabView_AddTabButtonClick(Microsoft.UI.Xaml.Controls.TabView sender, object args)
         {
             var newTab = new winui.Controls.TabViewItem();
-            newTab.IconSource = new winui.Controls.SymbolIconSource() { Symbol = Symbol.Document };
+            //newTab.IconSource = new winui.Controls.SymbolIconSource() { Symbol = Symbol.Document };
             newTab.Header = "Book";
 
             // The Content of a TabViewItem is often a frame which hosts a page.

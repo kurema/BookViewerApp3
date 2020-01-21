@@ -73,6 +73,8 @@ namespace BookViewerApp
             public object Minimum{ get; set; }
             public object Maximum { get; set; }
 
+            public string GroupName { get; set; }
+
             private Windows.Storage.ApplicationDataContainer Setting => (IsLocal ? LocalSettings : RoamingSettings);
 
             public Type GetGenericType()
@@ -80,7 +82,7 @@ namespace BookViewerApp
                 return Converter.GetConvertType();
             }
 
-            public SettingInstance(string Key,string StringResourceKey,object DefaultValue,ITypeConverter Converter,bool IsLocal = true, Func<object, bool> CheckValid=null)
+            public SettingInstance(string Key,string StringResourceKey,object DefaultValue,ITypeConverter Converter,bool IsLocal = true, Func<object, bool> CheckValid=null,string group="")
             {
                 this.Key = Key;
                 this.StringResourceKey = "Setting_"+StringResourceKey;
@@ -88,6 +90,7 @@ namespace BookViewerApp
                 this.IsLocal = IsLocal;
                 this.Converter = Converter;
                 this.IsValidObject = (a) => { object result; return Converter.TryGetTypeGeneral(a.ToString(), out result); };
+                this.GroupName = group;
             }
 
             public void SetValue(object Value)

@@ -459,7 +459,9 @@
                                               Style='{StaticResource ButtonStyle}'
                                               AllowFocusOnInteraction="True"
                                                   >
-                                    <SymbolIcon Symbol="Zoom"/>
+                                    <Viewbox MaxHeight="16" MinWidth="16">
+                                        <SymbolIcon Symbol="Zoom"  />
+                                    </Viewbox>
                                     <Button.Flyout>
                                             <Flyout Placement="Top">
                                                 <Grid>
@@ -483,7 +485,7 @@
                                                         <Run Text="%"/>
                                                     </TextBlock>
 
-                                                    <Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                                                    <!--<Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />-->
                                                 </Grid>
                                             </Flyout>
                                         </Button.Flyout>

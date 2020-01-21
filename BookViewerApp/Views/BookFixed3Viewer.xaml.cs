@@ -72,7 +72,16 @@ namespace BookViewerApp
 
         public void SetTitle(string title)
         {
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = title;
+            var p = this.Parent;
+
+            if ((this.Parent as Frame)?.Parent is Microsoft.UI.Xaml.Controls.TabViewItem item)
+            {
+                item.Header = title;
+            }
+            else
+            {
+                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = title;
+            }
         }
 
         public struct BookAndParentNavigationParamater
@@ -175,6 +184,11 @@ namespace BookViewerApp
         private void Open(Books.IBook book)
         {
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
+        }
+
+        private void flipView_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ViewerController.SetControlPanelVisibility(true);
         }
     }
 }

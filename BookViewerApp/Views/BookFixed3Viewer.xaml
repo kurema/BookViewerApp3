@@ -36,7 +36,7 @@
                 <RowDefinition Height="{Binding IsControlPinned, Converter={StaticResource BoolToStringConverter},ConverterParameter=0:Auto}"/>
             </Grid.RowDefinitions>
             <FlipView TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
-                  FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}">
+                  FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" >
                 <FlipView.ItemTemplate>
                     <DataTemplate>
                         <local:BookFixed2Page DataContext="{Binding}"/>

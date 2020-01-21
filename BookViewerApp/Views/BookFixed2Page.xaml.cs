@@ -48,12 +48,12 @@ namespace BookViewerApp
             {
                 this.scrollViewer.ViewChanged += (s2, e2) =>
                 {
-                    if (this.DataContext is PageViewModel)
-                        (this.DataContext as PageViewModel).ZoomFactor = scrollViewer.ZoomFactor;
+                    if (this.DataContext is PageViewModel pvm)
+                        pvm.ZoomFactor = scrollViewer.ZoomFactor;
                 };
-                if (this.DataContext is PageViewModel)
+                if (this.DataContext is PageViewModel pv)
                 {
-                    (this.DataContext as PageViewModel).ZoomRequested += (s2, e2) =>
+                    pv.ZoomRequested += (s2, e2) =>
                     {
                         var value = e2.ZoomFactor;
                         var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value),
@@ -61,7 +61,7 @@ namespace BookViewerApp
                         var currentFactor = this.ZoomFactor;
                         changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
                     };
-                    (this.DataContext as PageViewModel).PropertyChanged += (s2, e2) =>
+                    pv.PropertyChanged += (s2, e2) =>
                     {
                         if (e2.PropertyName == nameof(PageViewModel.ZoomFactor))
                         {
@@ -71,8 +71,8 @@ namespace BookViewerApp
                             }
                             catch (ArgumentOutOfRangeException)
                             {
-                                if (this.DataContext is PageViewModel && this.ZoomFactor.HasValue)
-                                    (this.DataContext as PageViewModel).ZoomFactor = this.ZoomFactor.Value;
+                                if (this.ZoomFactor.HasValue)
+                                    pv.ZoomFactor = this.ZoomFactor.Value;
                             }
                         }
                     };
@@ -127,6 +127,8 @@ namespace BookViewerApp
         {
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
+            //stack.Height = this.ActualHeight;
+            //stack.MaxWidth = this.ActualWidth;
 
             (DataContext as ViewModels.PageViewModel)?.UpdateSource();
         }
@@ -204,6 +206,5 @@ namespace BookViewerApp
             }
             e.Handled = true;
         }
-
     }
 }
