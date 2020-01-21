@@ -13,6 +13,7 @@
         <vm:HomeViewModel/>
     </Page.DataContext>
     <NavigationView
+        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
         IsSettingsVisible="True" SelectionChanged="NavigationView_SelectionChanged"
         MenuItemsSource="{Binding MenuItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
         <NavigationView.AutoSuggestBox>

@@ -26,11 +26,6 @@ namespace BookViewerApp
             this.InitializeComponent();
 
             this.LosingFocus += BookFixed3ViewerControllerControl_LosingFocus;
-            try
-            {
-                this.Focus(FocusState.Programmatic);
-            }
-            catch { }
 
             if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
             {
@@ -38,6 +33,14 @@ namespace BookViewerApp
                 this.ButtonRightmost.Visibility = Visibility.Collapsed;
             }
 
+            this.Loaded += (s, e) =>
+            {
+                try
+                {
+                    this.Focus(FocusState.Programmatic);
+                }
+                catch { }
+            };
         }
 
         private void BookFixed3ViewerControllerControl_LosingFocus(UIElement sender, LosingFocusEventArgs args)
@@ -48,13 +51,7 @@ namespace BookViewerApp
                 return;
             }
             if (this.BaseUri == ui?.BaseUri) return;
-            //while (ui.Parent!=null)
-            //{
-            //    if (ui is Popup) return;
-            //    ui = ui.Parent as FrameworkElement;
-            //}
             if (ui is Popup) return;
-            //if (ui != null && ui?.BaseUri == null) return;
             SetControlPanelVisibility(false);
         }
 

@@ -80,7 +80,7 @@ namespace BookViewerApp
                 // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
                 // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
                 //構成します
-                rootFrame.Navigate(typeof(BookShelfPage), e.Arguments);
+                rootFrame.Navigate(typeof(TabPage), e.Arguments);
             }
             // 現在のウィンドウがアクティブであることを確認します
             Window.Current.Activate();
@@ -122,7 +122,7 @@ namespace BookViewerApp
             }
 
             var rootFrame = new Frame();
-            rootFrame.Navigate(typeof(BookFixed2Viewer), args);
+            rootFrame.Navigate(typeof(BookFixed3Viewer), args);
 
             if (Window.Current != null)
             {

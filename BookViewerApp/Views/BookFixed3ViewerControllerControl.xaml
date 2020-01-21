@@ -242,7 +242,7 @@
 
         <Grid x:Name="RootGrid" Background="Transparent" >
             <Grid.Resources>
-                <!-- New AppBar button style 48x48 pixels in size -->
+                 <!--New AppBar button style 48x48 pixels in size--> 
                 <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
                     <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
@@ -253,7 +253,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                <!-- New AppBarToggle button style 48x48 pixels in size -->
+                 <!--New AppBarToggle button style 48x48 pixels in size--> 
                 <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
                     <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
@@ -264,13 +264,13 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                <!-- New CommandBar Style -->
+                 <!--New CommandBar Style--> 
                 <Style x:Key="CommandBarStyle" TargetType="CommandBar">
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="OverflowButtonVisibility" Value="Collapsed" />
                 </Style>
-                <!-- StackPanel Style-->
+                 <!--StackPanel Style-->
                 <Style x:Key="ButtonStyle" TargetType="Button">
                     <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
@@ -321,7 +321,7 @@
                 </ProgressBar.RenderTransform>
             </ProgressBar>
 
-            <!--<Canvas VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="26" Background="Transparent" Tapped="Scroller_Tapped" PointerMoved="Scroller_PointerMoved" />-->
+            <Canvas VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="26" Background="Transparent" Tapped="Scroller_Tapped" PointerMoved="Scroller_PointerMoved" />
 
             <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border" >
                 <Border.Background>
@@ -411,13 +411,13 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel HorizontalAlignment="Left" x:Name="BookReaderControlsCommandBar_Left" Grid.Column="0" Margin="0,0" Style="{StaticResource CommandBarStyle}" Orientation="Horizontal">
-                                <Button 
-                                              Style='{StaticResource ButtonStyle}'
+                            <StackPanel HorizontalAlignment="Left" x:Name="BookReaderControlsCommandBar_Left" Grid.Column="0" Margin="0,0" Style="{StaticResource StackPanelStyle}" Orientation="Horizontal">
+                                <!--<AppBarButton 
+                                              Style='{StaticResource AppBarButtonStyle}'
                                               Command="{Binding GoToHomeCommand}"
                                               >
                                     <SymbolIcon Symbol="Home"/>
-                                </Button>
+                                </AppBarButton>-->
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main_StackPanel"  Grid.Column="1" Margin="0,0" Style="{StaticResource StackPanelStyle}" >
                                 <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" x:Name="ButtonLeftmost">
@@ -443,18 +443,19 @@
                                     <SymbolIcon Symbol="Next"/>
                                 </Button>
                             </StackPanel>
-                            <StackPanel HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource CommandBarStyle}" 
+                            <StackPanel HorizontalAlignment="Right" x:Name="BookReaderControlsCommandBar_Right" Grid.Column="2" Margin="0,0" Style="{StaticResource StackPanelStyle}" 
                                         Orientation="Horizontal"
                                         >
                                 <!--IsDynamicOverflowEnabled="True"-->
                                 <!--<CommandBar.PrimaryCommands>-->
-                                <ToggleButton
-                                              Style='{StaticResource ToggleButtonStyle}'
+                                <AppBarToggleButton
+                                              Style='{StaticResource AppBarToggleButtonStyle}'
                                               IsChecked="{Binding IsControlPinned,Mode=TwoWay}"
                                               >
                                     <SymbolIcon Symbol="Pin"/>
-                                </ToggleButton>
+                                </AppBarToggleButton>
                                 <Button 
+                                    Template="{StaticResource ButtonTemplate}"
                                               Style='{StaticResource ButtonStyle}'
                                               AllowFocusOnInteraction="True"
                                                   >
@@ -482,22 +483,23 @@
                                                         <Run Text="%"/>
                                                     </TextBlock>
 
-                                                    <!--<Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />-->
+                                                    <Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />
                                                 </Grid>
                                             </Flyout>
                                         </Button.Flyout>
                                     </Button>
 
                                 <Button 
+                                    Template="{StaticResource ButtonTemplate}"
                                               Style='{StaticResource ButtonStyle}'
                                               AllowFocusOnInteraction="True"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Bookmarks.Label, Mode=OneTime}"
                                               >
                                     <SymbolIcon Symbol="Bookmarks"/>
 
-                                    <!-- Note: This looks ugly and it's not my fault! -->
-                                        <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/679 -->
-                                    <!-- Some workaround is applied. See commit 8d64ecc8e1f9ad776a7109a1cbd5df0d4ca32866 (Zoom button) -->
+                                     <!--Note: This looks ugly and it's not my fault! 
+                                         https://github.com/microsoft/microsoft-ui-xaml/issues/679 
+                                     Some workaround is applied. See commit 8d64ecc8e1f9ad776a7109a1cbd5df0d4ca32866 (Zoom button)--> 
                                         <Button.Flyout>
                                             <Flyout Placement="Top" >
                                                 <Grid>
@@ -533,20 +535,20 @@
                                             </Flyout>
                                         </Button.Flyout>
                                     </Button>
-                                <Button
-                                              Style='{StaticResource ButtonStyle}'
+                                <AppBarButton
+                                              Style='{StaticResource AppBarButtonStyle}'
                                               Command="{Binding SwapReverseCommand}"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageReverse.Label, Mode=OneTime}"
                                               >
                                     <SymbolIcon Symbol="Rotate"/>
-                                </Button>
-                                <Button
-                                              Style='{StaticResource ButtonStyle}'
+                                </AppBarButton>
+                                <AppBarButton
+                                              Style='{StaticResource AppBarButtonStyle}'
                                               Command="{Binding ToggleFullScreenCommand}"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ToggleFullScreen.Label, Mode=OneTime}"
                                               >
                                     <SymbolIcon Symbol="FullScreen"/>
-                                </Button>
+                                </AppBarButton>
                                 <!--</CommandBar.PrimaryCommands>-->
                             </StackPanel>
                         </Grid>

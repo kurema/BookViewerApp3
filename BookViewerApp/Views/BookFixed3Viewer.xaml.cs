@@ -118,7 +118,7 @@ namespace BookViewerApp
             }
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
-            currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+            //currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             currentView.BackRequested += CurrentView_BackRequested;
 
             if ((bool)SettingStorage.GetValue("DefaultFullScreen"))
@@ -135,6 +135,11 @@ namespace BookViewerApp
                 Frame.GoBack();
                 e.Handled = true;
             }
+        }
+
+        public void SaveInfo()
+        {
+            Binding?.SaveInfo();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
