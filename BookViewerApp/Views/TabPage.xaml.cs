@@ -64,6 +64,13 @@ namespace BookViewerApp
             Frame frame = new Frame();
             newTab.Content = frame;
 
+            {
+                frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
+                sender.TabItems.Add(newTab);
+                sender.SelectedIndex = sender.TabItems.Count - 1;
+                return;
+            }
+
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
             {

@@ -132,8 +132,7 @@ namespace BookViewerApp
 
             if ((bool)SettingStorage.GetValue("DefaultFullScreen"))
             {
-                var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-                v.TryEnterFullScreenMode();
+                TrySetFullScreenMode(true);
             }
         }
 
@@ -141,6 +140,7 @@ namespace BookViewerApp
         {
             if (Frame?.CanGoBack == true)
             {
+                TrySetFullScreenMode(false);
                 Frame.GoBack();
                 e.Handled = true;
             }
@@ -160,7 +160,7 @@ namespace BookViewerApp
             currentView.BackRequested -= CurrentView_BackRequested;
 
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-            v.ExitFullScreenMode();
+            TrySetFullScreenMode(false);
 
             SetTitle(this.OriginalTitle);
 
@@ -170,11 +170,34 @@ namespace BookViewerApp
         public void ToggleFullScreen()
         {
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-            if (v.IsFullScreenMode)
-                v.ExitFullScreenMode();
-            else
-                v.TryEnterFullScreenMode();
+            TrySetFullScreenMode(!v.IsFullScreenMode);
         }
+
+        public void TrySetFullScreenMode(bool fullscreen)
+        {
+            var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+            //One line is better? Or lots of if should do?
+            //var result = fullscreen && v.TryEnterFullScreenMode() && BasicFullScreenFrame == null && this.Parent is Frame && (BasicFullScreenFrame = Window.Current.Content as Frame) != null && (Window.Current.Content = this.Parent as Frame) != null;
+            if (fullscreen)
+            {
+                if(v.TryEnterFullScreenMode())
+                {
+                    if(BasicFullScreenFrame==null && this.Parent is Frame)
+                    {
+                        if ((BasicFullScreenFrame = Window.Current.Content as Frame) != null)
+                            Window.Current.Content = this.Parent as Frame;
+                    }
+                }
+
+            }
+            else
+            {
+                v.ExitFullScreenMode();
+                RestoreFullScreenFrame();
+            }
+        }
+
+        Frame BasicFullScreenFrame = null;
 
         private void Open(Windows.Storage.IStorageFile file)
         {
@@ -189,6 +212,21 @@ namespace BookViewerApp
         private void flipView_Tapped(object sender, TappedRoutedEventArgs e)
         {
             ViewerController.SetControlPanelVisibility(true);
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RestoreFullScreenFrame();
+        }
+
+        public void RestoreFullScreenFrame()
+        {
+            bool isfull = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().IsFullScreenMode;
+            if (!isfull && BasicFullScreenFrame != null)
+            {
+                Window.Current.Content = BasicFullScreenFrame;
+                BasicFullScreenFrame = null;
+            }
         }
     }
 }

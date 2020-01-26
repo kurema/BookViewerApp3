@@ -11,6 +11,8 @@
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    
+    SizeChanged="Page_SizeChanged"
     >
     <Page.DataContext>
         <BookFixed2ViewModel:BookViewModel/>
@@ -23,20 +25,21 @@
         <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
         <ValueConverter:BoolToStringConverter x:Key="BoolToStringConverter" />
     </UserControl.Resources>
-    <Grid>
+    <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="0" IsIndeterminate="{Binding Loading}" Background="{x:Null}"  />
-        <Grid Grid.RowSpan="{Binding IsControlPinned, Converter={StaticResource BoolToStringConverter},ConverterParameter=2:3}" Grid.Row="0" >
+        <ProgressBar Grid.Row="0" IsIndeterminate="{Binding Loading}" Background="{x:Null}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Grid Grid.RowSpan="{Binding IsControlPinned, Converter={StaticResource BoolToStringConverter},ConverterParameter=2:3}" Grid.Row="0"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="{Binding IsControlPinned, Converter={StaticResource BoolToStringConverter},ConverterParameter=0:Auto}"/>
             </Grid.RowDefinitions>
             <FlipView TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
-                  FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" >
+                  FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" 
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <FlipView.ItemTemplate>
                     <DataTemplate>
                         <local:BookFixed2Page DataContext="{Binding}"/>
@@ -45,6 +48,6 @@
             </FlipView>
             <ProgressBar Grid.Row="1" Opacity="0"/>
         </Grid>
-        <local:BookFixed3ViewerControllerControl x:Name="ViewerController" DataContext="{Binding}" Grid.Row="2" Grid.RowSpan="1" />
+        <local:BookFixed3ViewerControllerControl x:Name="ViewerController" DataContext="{Binding}" Grid.Row="2" Grid.RowSpan="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
 </Page>

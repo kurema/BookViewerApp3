@@ -16,16 +16,10 @@
                   >
         <Grid  x:Name="grid">
             <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>
-            <!--<Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>-->
-            <!--<StackPanel HorizontalAlignment="Center" VerticalAlignment="Stretch" x:Name="stack" Orientation="Horizontal" Background="AliceBlue">
-                <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Left" Grid.Column="1"/>
-                <Image x:Name="image2" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Right" Grid.Column="2"/>
-            </StackPanel>-->
         </Grid>
+        <!--<Canvas x:Name="canvas">
+            <Image x:Name="image1" Source="{Binding Source,Mode=OneWay}" />
+            <Image x:Name="image2" Source="{Binding Source,Mode=OneWay}" />
+        </Canvas>-->
     </ScrollViewer>
 </UserControl>
