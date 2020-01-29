@@ -48,7 +48,6 @@ namespace kurema.BrowserControl.ViewModels
                     _Content.NavigationFailed -= Content_NavigationFailed;
                 }
                 SetProperty(ref _Content, value);
-                GoBackForwardCommand.Content = value;
                 if (_Content != null)
                 {
                     _Content.NavigationStarting += Content_NavigationStarting;
@@ -58,21 +57,40 @@ namespace kurema.BrowserControl.ViewModels
             }
         }
 
+
+        private string _HomePage;
+        public string HomePage { get => _HomePage; set => SetProperty(ref _HomePage, value); }
+
+
+        private string _Title;
+        public string Title { get => _Title; set => SetProperty(ref _Title, value); }
+
+
+
         private void Content_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
             GoBackForwardCommand.OnCanExecuteChanged();
+            ReloadCommand.IsLoaded = true;
+            ReloadCommand.OnCanExecuteChanged();
+            Title = Content.DocumentTitle;
             OnPropertyChanged(nameof(Uri));
         }
 
         private void Content_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             GoBackForwardCommand.OnCanExecuteChanged();
+            ReloadCommand.IsLoaded = true;
+            ReloadCommand.OnCanExecuteChanged();
+            Title = Content.DocumentTitle;
             OnPropertyChanged(nameof(Uri));
         }
 
         private void Content_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             GoBackForwardCommand.OnCanExecuteChanged();
+            ReloadCommand.IsLoaded = false;
+            ReloadCommand.OnCanExecuteChanged();
+            Title = Content.DocumentTitle;
             OnPropertyChanged(nameof(Uri));
         }
 
@@ -85,13 +103,13 @@ namespace kurema.BrowserControl.ViewModels
                 {
                     if (!value.Contains("://"))
                     {
-                        if (value.Contains("."))
+                        if (value.Contains(".") && !value.Contains(" ") && !value.Contains("　"))
                         {
-                            Content?.Navigate(new Uri("http://" + value));
+                            Content?.Navigate(new Uri("https://" + value));
                         }
                         else
                         {
-                            Content?.Navigate(new Uri("https://www.google.co.jp/search?q=" + value));
+                            Content?.Navigate(new Uri("https://www.google.com/search?q=" + value));
                         }
                     }
                     else
@@ -104,82 +122,137 @@ namespace kurema.BrowserControl.ViewModels
         }
 
 
-        private GoBackForwardCommandClass _GoBackForwardCommand;
-        public GoBackForwardCommandClass GoBackForwardCommand { get => _GoBackForwardCommand = _GoBackForwardCommand ?? new GoBackForwardCommandClass(); }
+        private Commands.GoBackForwardCommand _GoBackForwardCommand;
+        public Commands.GoBackForwardCommand GoBackForwardCommand => _GoBackForwardCommand = _GoBackForwardCommand ?? new Commands.GoBackForwardCommand(this);
 
-        //I wonder what name is good for case like this...
-        public class GoBackForwardCommandClass : System.Windows.Input.ICommand
+        private Commands.ReloadCommand _ReloadCommand;
+        public Commands.ReloadCommand ReloadCommand => _ReloadCommand = _ReloadCommand ?? new Commands.ReloadCommand(this);
+
+        private Commands.NavigateCommand _NavigateCommand;
+        public Commands.NavigateCommand NavigateCommand => _NavigateCommand = _NavigateCommand ?? new Commands.NavigateCommand(this);
+
+        public class Commands
         {
-            public event EventHandler CanExecuteChanged;
-
-            public void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, new EventArgs());
-
-            private WebView _Content;
-
-            public WebView Content
+            public abstract class CommandBase : System.Windows.Input.ICommand
             {
-                get => _Content; set
+                public event EventHandler CanExecuteChanged;
+
+                public void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, new EventArgs());
+
+
+                protected BrowserControlViewModel _Content;
+                public BrowserControlViewModel Content
                 {
-                    if (_Content != null) _Content.ContentLoading -= UpdateContent;
-                    _Content = value;
-                    if (_Content != null) _Content.ContentLoading += UpdateContent;
+                    get => _Content;
+                    set
+                    {
+                        if (_Content != null) _Content.PropertyChanged -= Value_PropertyChanged;
+                        _Content = value;
+                        if (_Content != null) _Content.PropertyChanged += Value_PropertyChanged;
+                    }
+                }
+
+                private void Value_PropertyChanged(object sender, PropertyChangedEventArgs e)
+                {
+                    if (e.PropertyName == nameof(BrowserControlViewModel.Content))
+                    {
+                        if (_ContentView != null) _ContentView.ContentLoading -= UpdateContent;
+                        _ContentView = Content.Content;
+                        if (_ContentView != null) _ContentView.ContentLoading += UpdateContent;
+
+                    }
+                }
+
+                private WebView _ContentView;
+
+                public WebView ContentView
+                {
+                    get => Content.Content; 
+                }
+
+                protected void UpdateContent(WebView sender, WebViewContentLoadingEventArgs args)
+                {
+                    CanExecuteChanged?.Invoke(this, new EventArgs());
+                }
+
+                public abstract bool CanExecute(object parameter);
+
+                public abstract void Execute(object parameter);
+            }
+
+            public class GoBackForwardCommand : CommandBase
+            {
+                public GoBackForwardCommand()
+                {
+                }
+
+                public GoBackForwardCommand(BrowserControlViewModel model)
+                {
+                    this.Content = model;
+                }
+
+
+                private bool GetDirection(object s) => s?.ToString().ToLower() == "forward";
+
+                public override bool CanExecute(object parameter)
+                {
+                    if (GetDirection(parameter)) return ContentView?.CanGoForward ?? false;
+                    else return ContentView?.CanGoBack ?? false;
+                }
+
+                public override void Execute(object parameter)
+                {
+                    if (GetDirection(parameter)) ContentView?.GoForward();
+                    else ContentView?.GoBack();
                 }
             }
 
-            private void UpdateContent(WebView sender, WebViewContentLoadingEventArgs args)
+            public class ReloadCommand : CommandBase
             {
-                CanExecuteChanged?.Invoke(this, new EventArgs());
-            }
-
-            private bool GetDirection(object s) => s?.ToString().ToLower() == "forward";
-
-            public bool CanExecute(object parameter)
-            {
-                if (GetDirection(parameter)) return _Content?.CanGoForward ?? false;
-                else return _Content?.CanGoBack ?? false;
-            }
-
-            public void Execute(object parameter)
-            {
-                if (GetDirection(parameter)) _Content?.GoForward();
-                else _Content?.GoBack();
-            }
-        }
-
-        public class ReloadCommandClass : System.Windows.Input.ICommand
-        {
-            public event EventHandler CanExecuteChanged;
-
-            private WebView _Content;
-
-            public WebView Content
-            {
-                get => _Content; set
+                public ReloadCommand()
                 {
-                    if (_Content != null) _Content.ContentLoading -= UpdateContent;
-                    _Content = value;
-                    if (_Content != null) _Content.ContentLoading += UpdateContent;
+                }
+
+                public ReloadCommand(BrowserControlViewModel model)
+                {
+                    this.Content = model;
+                }
+
+                public bool IsLoaded { get; set; } = false;
+
+                public override bool CanExecute(object parameter)
+                {
+                    return IsLoaded;
+                }
+
+                public override void Execute(object parameter)
+                {
+                    ContentView?.Refresh();
                 }
             }
 
-            private void UpdateContent(WebView sender, WebViewContentLoadingEventArgs args)
+            public class NavigateCommand : CommandBase
             {
-                CanExecuteChanged?.Invoke(this, new EventArgs());
+                public NavigateCommand()
+                {
+                }
+
+                public NavigateCommand(BrowserControlViewModel model)
+                {
+                    this.Content = model;
+                }
+
+
+                public override bool CanExecute(object parameter)
+                {
+                    return Content?.Content != null && parameter != null;
+                }
+
+                public override void Execute(object parameter)
+                {
+                    if (Content != null) Content.Uri = parameter.ToString();
+                }
             }
-
-
-            public bool CanExecute(object parameter)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Execute(object parameter)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, new EventArgs());
-
         }
     }
 }

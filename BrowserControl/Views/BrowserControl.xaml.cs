@@ -19,6 +19,8 @@ namespace kurema.BrowserControl.Views
 {
     public sealed partial class BrowserControl : UserControl
     {
+        public WebView Control => this.webView;
+
         public BrowserControl()
         {
             this.InitializeComponent();
@@ -41,6 +43,13 @@ namespace kurema.BrowserControl.Views
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             (sender as TextBox)?.SelectAll();
+        }
+
+        public event TypedEventHandler<WebView, WebViewNewWindowRequestedEventArgs> NewWindowRequested;
+
+        private void webView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
+        {
+            NewWindowRequested?.Invoke(sender, args);
         }
     }
 }

@@ -8,5 +8,5 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <local:BrowserControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+    <local:BrowserControl x:Name="control" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 </Page>

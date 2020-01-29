@@ -83,10 +83,10 @@ namespace BookViewerApp.Books.Pdf
                 var pdfOption = new pdf.PdfPageRenderOptions();
                 if (Option.TargetHeight/Content.Size.Height < Option.TargetWidth/Content.Size.Width)
                 {
-                    pdfOption.DestinationHeight = (uint)Option.TargetHeight;
+                    pdfOption.DestinationHeight = (uint)Option.TargetHeight*2;
                 }
                 else {
-                    pdfOption.DestinationWidth = (uint)Option.TargetWidth;
+                    pdfOption.DestinationWidth = (uint)Option.TargetWidth*2;
                 }
                 await Content.RenderToStreamAsync(stream,pdfOption);
             }
@@ -112,7 +112,8 @@ namespace BookViewerApp.Books.Pdf
 
         public async Task<bool> UpdateRequiredAsync()
         {
-            if (LastOption!=null && Option != null && LastOption.TargetHeight < Option.TargetHeight || LastOption.TargetWidth < Option.TargetWidth)
+            if (LastOption != null && Option != null && LastOption.TargetHeight < Option.TargetHeight || LastOption.TargetWidth < Option.TargetWidth)
+                //if (LastOption != null && Option != null)
             { return true; }
             else { return false; }
         }

@@ -116,13 +116,24 @@ namespace BookViewerApp
 
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
-            if (Window.Current?.Content != null && ((Frame)Window.Current?.Content)?.Content is BookFixed2Viewer)
+            if (Window.Current?.Content is Frame f)
             {
-                (((Frame)Window.Current?.Content)?.Content as BookFixed2Viewer)?.SaveInfo();
+                if (f.Content is BookFixed2Viewer v2)
+                {
+                    v2.SaveInfo();
+                }
+                else if (f.Content is BookFixed3Viewer v3)
+                {
+                    v3.SaveInfo();
+                }else if(f.Content is TabPage tp)
+                {
+                    tp.OpenTabBook(args.Files);
+                    return;
+                }
             }
 
             var rootFrame = new Frame();
-            rootFrame.Navigate(typeof(BookFixed3Viewer), args);
+            rootFrame.Navigate(typeof(TabPage), args);
 
             if (Window.Current != null)
             {

@@ -39,16 +39,16 @@
             </Grid.ColumnDefinitions>
             <AppBarButton Grid.Column="0" Icon="Back" Command="{Binding GoBackForwardCommand}" CommandParameter="Back" />
             <AppBarButton Grid.Column="1" Icon="Forward" Command="{Binding GoBackForwardCommand}" CommandParameter="Forward"/>
-            <AppBarButton Grid.Column="2" Icon="Refresh"/>
-            <AppBarButton Grid.Column="3" Icon="Home"/>
+            <AppBarButton Grid.Column="2" Icon="Refresh" Command="{Binding ReloadCommand}"/>
+            <AppBarButton Grid.Column="3" Icon="Home" Command="{Binding NavigateCommand}" CommandParameter="{Binding HomePage}"/>
             <Border Grid.Column="4" Margin="4" Background="{ThemeResource SystemAltHighColor}" CornerRadius="2" BorderThickness="1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>
-                    <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" 
+                    <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
+                    <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" 
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"/>
                 </Grid>
             </Border>
@@ -58,6 +58,7 @@
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
                  
+                 NewWindowRequested="webView_NewWindowRequested"
                  />
     </Grid>
 </UserControl>

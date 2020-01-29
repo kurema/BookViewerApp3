@@ -26,5 +26,21 @@ namespace kurema.BrowserControl.Views
         {
             this.InitializeComponent();
         }
+
+        public BrowserControl Control => this.control;
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter == null) return;
+            else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs arg)
+            {
+            }else if(e.Parameter is string s)
+            {
+                if (control.DataContext is ViewModels.BrowserControlViewModel vm && vm != null)
+                {
+                    vm.Uri = s;
+                }
+            }
+        }
     }
 }

@@ -315,4 +315,10 @@
   <data name="Welcome_OpenMenu" xml:space="preserve">
     <value>Open the menu.</value>
   </data>
+  <data name="Setting_WebHomePage.Description" xml:space="preserve">
+    <value>Home Page.</value>
+  </data>
+  <data name="Setting_WebHomePage.Title" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
 </root>
