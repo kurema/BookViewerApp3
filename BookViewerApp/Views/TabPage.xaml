@@ -8,9 +8,10 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <controls:TabView AddTabButtonClick="TabView_AddTabButtonClick" TabCloseRequested="TabView_TabCloseRequested"
+    <controls:TabView AddTabButtonClick="TabView_AddTabButtonClick" TabCloseRequested="TabView_TabCloseRequested" TabDroppedOutside="tabView_TabDroppedOutside" TabItemsChanged="tabView_TabItemsChanged"
+                      TabStripDrop="tabView_TabStripDrop" TabStripDragOver="tabView_TabStripDragOver" TabDragStarting="tabView_TabDragStarting"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      CanReorderTabs="True"
+                      CanReorderTabs="True" CanDragTabs="True" 
                       x:Name="tabView"
                       >
         <!--<controls:TabView.KeyboardAccelerators>

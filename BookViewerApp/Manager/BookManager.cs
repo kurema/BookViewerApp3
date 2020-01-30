@@ -15,6 +15,55 @@ namespace BookViewerApp.Books
             if (file == null) { return null; }
             else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
             {
+                goto Pdf;
+            }
+            else if (new string[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
+            {
+                goto Zip;
+            }
+            else if (new string[] { ".rar", ".cbr", ".7z", ".cb7" }.Contains(Path.GetExtension(file.Path).ToLower()))
+            {
+                goto SharpCompress;
+            }
+
+            var stream = await file.OpenStreamForReadAsync();
+            var buffer = new byte[32];
+            stream.Read(buffer, 0, stream.Length < 32 ? (int)stream.Length : 32);
+            stream.Close();
+
+            if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d }))
+            {
+                //pdf
+                goto Pdf;
+            }
+            else if (buffer.Take(6).SequenceEqual(new byte[] { 0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C }))
+            {
+                //7zip
+                goto SharpCompress;
+            }
+            else if ((buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x03, 0x04 })) ||
+                (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x05, 0x06 })) ||
+                (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x07, 0x08 }))
+                )
+            {
+                //zip
+                goto Zip;
+            }
+            else if (buffer.Take(7).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 }))
+            {
+                //rar
+                goto SharpCompress;
+            }
+            else if (buffer.Take(8).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 }))
+            {
+                //rar5
+                goto SharpCompress;
+            }
+
+            return null;
+
+        Pdf:;
+            {
                 var book = new Books.Pdf.PdfBook();
                 try
                 {
@@ -24,7 +73,7 @@ namespace BookViewerApp.Books
                 if (book.PageCount <= 0) { return null; }
                 return book;
             }
-            else if (new string[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
+        Zip:;
             {
                 var book = new Books.Cbz.CbzBook();
                 try
@@ -38,7 +87,7 @@ namespace BookViewerApp.Books
                 if (book.PageCount <= 0) { return null; }
                 return book;
             }
-            else if (new string[] { ".rar", ".cbr", ".7z", ".cb7" }.Contains(Path.GetExtension(file.Path).ToLower()))
+        SharpCompress:;
             {
                 var book = new Books.Compressed.CompressedBook();
                 try
@@ -52,8 +101,6 @@ namespace BookViewerApp.Books
                 if (book.PageCount <= 0) { return null; }
                 return book;
             }
-
-            return null;
         }
 
         public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7" }; } }

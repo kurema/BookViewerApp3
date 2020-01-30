@@ -169,8 +169,15 @@ namespace BookViewerApp
 
         public void ToggleFullScreen()
         {
-            var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-            TrySetFullScreenMode(!v.IsFullScreenMode);
+            if (XamlRoot?.Content is TabPage p && p.RootAppWindow != null)
+            {
+                TrySetFullScreenMode(p.RootAppWindow.Presenter.GetConfiguration().Kind != Windows.UI.WindowManagement.AppWindowPresentationKind.FullScreen);
+            }
+            else
+            {
+                var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+                TrySetFullScreenMode(!v.IsFullScreenMode);
+            }
         }
 
         public void TrySetFullScreenMode(bool fullscreen)
@@ -180,20 +187,40 @@ namespace BookViewerApp
             //var result = fullscreen && v.TryEnterFullScreenMode() && BasicFullScreenFrame == null && this.Parent is Frame && (BasicFullScreenFrame = Window.Current.Content as Frame) != null && (Window.Current.Content = this.Parent as Frame) != null;
             if (fullscreen)
             {
-                if(v.TryEnterFullScreenMode())
+                if (XamlRoot?.Content is TabPage p && p.RootAppWindow != null)
                 {
-                    if(BasicFullScreenFrame==null && this.Parent is Frame)
+                    p.RootAppWindow.Presenter.RequestPresentation(Windows.UI.WindowManagement.AppWindowPresentationKind.FullScreen);
+
+                    if (BasicFullScreenFrame == null && this.Parent is Frame)
+                    {
+                        //if ((BasicFullScreenFrame = p.RootAppWindow.Content as Frame) != null)
+                        //    Window.Current.Content = this.Parent as Frame;
+                    }
+
+                    return;
+                }
+                    
+                if (v.TryEnterFullScreenMode())
+                {
+                    if (BasicFullScreenFrame == null && this.Parent is Frame f)
                     {
                         if ((BasicFullScreenFrame = Window.Current.Content as Frame) != null)
-                            Window.Current.Content = this.Parent as Frame;
+                            Window.Current.Content = f;
                     }
+                    return;
                 }
-
             }
             else
             {
-                v.ExitFullScreenMode();
-                RestoreFullScreenFrame();
+                if (XamlRoot?.Content is TabPage p && p.RootAppWindow != null)
+                {
+                    p.RootAppWindow.Presenter.RequestPresentation(Windows.UI.WindowManagement.AppWindowPresentationKind.Default);
+                }
+                else
+                {
+                    v.ExitFullScreenMode();
+                    RestoreFullScreenFrame();
+                }
             }
         }
 

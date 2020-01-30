@@ -315,4 +315,10 @@
   <data name="Welcome_OpenMenu" xml:space="preserve">
     <value>メニューを開く</value>
   </data>
+  <data name="Setting_WebHomePage.Description" xml:space="preserve">
+    <value>ホームページを設定します。</value>
+  </data>
+  <data name="Setting_WebHomePage.Title" xml:space="preserve">
+    <value>ホームページ</value>
+  </data>
 </root>

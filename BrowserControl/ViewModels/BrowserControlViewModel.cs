@@ -58,6 +58,10 @@ namespace kurema.BrowserControl.ViewModels
         }
 
 
+        private ObservableCollection<DownloadItemViewModel> _Downloads = new ObservableCollection<DownloadItemViewModel>();
+        public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }
+
+
         private string _HomePage;
         public string HomePage { get => _HomePage; set => SetProperty(ref _HomePage, value); }
 

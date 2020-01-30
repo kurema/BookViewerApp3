@@ -83,8 +83,13 @@ namespace BookViewerApp.Views
 
             panel.Children.Add(img1);
             panel.Children.Add(img2);
+
+            //panel
+            //https://www.matatabi-ux.com/entry/2015/09/16/120000
+
+            //crop
+            //https://stackoverflow.com/questions/40537189/how-to-crop-bitmap-in-uwp-app
+            //https://stackoverflow.com/questions/39514853/clipping-image-in-windows-store-app?rq=1
         }
-
-
     }
 }

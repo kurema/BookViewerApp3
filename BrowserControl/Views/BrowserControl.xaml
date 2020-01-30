@@ -19,6 +19,11 @@
             <Setter Property="Height" Value="38"/>
             <Setter Property="Width" Value="38"/>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Width" Value="38"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
     </UserControl.Resources>
     <Grid
         HorizontalAlignment="Stretch"
@@ -36,6 +41,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <AppBarButton Grid.Column="0" Icon="Back" Command="{Binding GoBackForwardCommand}" CommandParameter="Back" />
             <AppBarButton Grid.Column="1" Icon="Forward" Command="{Binding GoBackForwardCommand}" CommandParameter="Forward"/>
@@ -52,6 +58,53 @@
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"/>
                 </Grid>
             </Border>
+            <Button Grid.Column="5" >
+                <SymbolIcon Symbol="Download"/>
+                <Button.Flyout>
+                    <Flyout Placement="BottomEdgeAlignedRight">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MinWidth" Value="250"/>
+
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <ListView ItemsSource="{Binding Downloads}" SelectionMode="None" Margin="0">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment"  Value="Stretch"></Setter>
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.Resources>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Height" Value="50"/>
+                                                <Setter Property="Width" Value="50"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding FileName}" VerticalAlignment="Center" FontWeight="Bold" Margin="10" />
+                                        <Button Grid.Column="1"  Command="{Binding OpenCommand}"  VerticalContentAlignment="Center" Background="Transparent">
+                                            <SymbolIcon Symbol="OpenFile"/>
+                                        </Button>
+                                        <ProgressBar Value="{Binding DownloadedRate}" Grid.Row="1" Grid.ColumnSpan="2" Maximum="1.0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
         </Grid>
         <WebView Grid.Row="1" x:Name="webView"
                  

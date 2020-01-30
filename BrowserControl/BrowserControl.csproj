@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ViewModels\BrowserControlViewModel.cs" />
+    <Compile Include="ViewModels\DownloadItemViewModel.cs" />
     <Compile Include="Views\BrowserControl.xaml.cs">
       <DependentUpon>BrowserControl.xaml</DependentUpon>
     </Compile>
