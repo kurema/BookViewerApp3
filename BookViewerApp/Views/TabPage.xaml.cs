@@ -41,16 +41,6 @@ namespace BookViewerApp
         public TabPage()
         {
             this.InitializeComponent();
-
-            //var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            //coreTitleBar.ExtendViewIntoTitleBar = true;
-            //coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
-            //var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            //titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
-            //titleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
-
-            //Window.Current.SetTitleBar(CustomDragRegion);
         }
 
         //ToDo: Delete when tabView_TabItemsChanged no more need this.
@@ -107,6 +97,13 @@ namespace BookViewerApp
             CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
         }
 
+        public void OpenTabNew()
+        {
+            var (frame, newTab) = OpenTab("Welcome");
+
+            frame.Navigate(typeof(NewTabPage), null);
+        }
+
         public void OpenTabBook(IEnumerable< Windows.Storage.IStorageItem> files)
         {
             foreach (var item in files) OpenTabBook(item);
@@ -115,164 +112,92 @@ namespace BookViewerApp
 
         public void OpenTabBook(Windows.Storage.IStorageItem file)
         {
-            var newTab = new winui.Controls.TabViewItem();
-            newTab.Header = "Book";
-            var frame = new Frame();
-            newTab.Content = frame;
+            var (frame, newTab) = OpenTab("Book");
             frame.Navigate(typeof(BookFixed3Viewer), file);
-            tabView.TabItems.Add(newTab);
-            tabView.SelectedIndex = tabView.TabItems.Count - 1;
         }
 
         public void OpenTabWeb(string uri)
         {
-            var newTab = new winui.Controls.TabViewItem();
-            newTab.Header = "Web";
-            var frame = new Frame();
-            newTab.Content = frame;
-            frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);
-            tabView.TabItems.Add(newTab);
-            tabView.SelectedIndex = tabView.TabItems.Count - 1;
+            var (frame, newTab) = OpenTab("Web");
 
-            if (frame.Content is kurema.BrowserControl.Views.BrowserPage content)
+            UIHelper.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
             {
-                content.Control.NewWindowRequested += (s, e) =>
-                {
-                    OpenTabWeb(e.Uri.ToString());
-                    e.Handled = true;
-                };
-
-                content.Control.Control.UnviewableContentIdentified += async (s, e) =>
-                {
-                    string extension = "";
-                    foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
-                    { 
-                        if (Path.GetExtension(e.Uri.ToString()).ToLower()  == ext)
-                        {
-                            extension = ext;
-                            goto success;
-                        }
-                    }
-                    //return;
-                success:;
-                    try
-                    {
-                        var namebody = Path.GetFileNameWithoutExtension(e.Uri.ToString());
-                        namebody = namebody.Length > 32 ? namebody.Substring(0, 32) : namebody;
-                        var item = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(
-                            Path.Combine("Download", namebody + extension)
-                            , Windows.Storage.CreationCollisionOption.GenerateUniqueName);
-                        var downloader = new BackgroundDownloader();
-                        var download = downloader.CreateDownload(e.Uri, item);
-
-                        var vmb = content.Control.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel;
-                        var dlitem = new kurema.BrowserControl.ViewModels.DownloadItemViewModel(item.Name);
-                        vmb?.Downloads.Add(dlitem);
-
-                        await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) => {
-                            try
-                            {
-                                //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
-                                if (t.Progress.TotalBytesToReceive>0) {
-                                    double br = t.Progress.TotalBytesToReceive;
-                                    dlitem.DownloadedRate = br / t.Progress.TotalBytesToReceive;
-                                }
-                            }
-                            catch { }
-                        }));
-
-                        dlitem.DownloadedRate = 1.0;
-                        dlitem.OpenCommand = new DelegateCommand((a) => OpenTabBook(item));
-
-                        OpenTabBook(item);
-                        BookViewerApp.App.Current.Suspending += async (s2, e2) =>
-                        {
-                            try
-                            {
-                                await item.DeleteAsync();
-                            }
-                            catch { }
-                        };
-                    }
-                    catch { }
-                    return;
-                };
+                newTab.Header = title;
             }
-
-            if ((frame.Content as kurema.BrowserControl.Views.BrowserPage)?.Control.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
-            {
-                if (SettingStorage.GetValue("WebHomePage") is string homepage)
-                {
-                    vm.HomePage = homepage;
-                }
-
-                vm.PropertyChanged += (s, e) =>
-                {
-                    if (e.PropertyName == nameof(kurema.BrowserControl.ViewModels.BrowserControlViewModel.Title))
-                    {
-                        newTab.Header = vm.Title;
-                    }
-                };
-            }
-
+            );
         }
 
-        private async void TabView_AddTabButtonClick(Microsoft.UI.Xaml.Controls.TabView sender, object args)
+        public (Frame,winui.Controls.TabViewItem) OpenTab(string title)
         {
             var newTab = new winui.Controls.TabViewItem();
-            //newTab.IconSource = new winui.Controls.SymbolIconSource() { Symbol = Symbol.Document };
-            newTab.Header = "Book";
+            newTab.Header = title;
 
-            // The Content of a TabViewItem is often a frame which hosts a page.
             Frame frame = new Frame();
             newTab.Content = frame;
 
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
-            {
-                picker.FileTypeFilter.Add(ext);
-            }
-            var file = await picker.PickSingleFileAsync();
+            tabView.TabItems.Add(newTab);
+            tabView.SelectedIndex = tabView.TabItems.Count - 1;
 
-            if (file != null)
-            {
-                try
-                {
-                    frame.Navigate(typeof(BookFixed3Viewer), file);
-                    sender.TabItems.Add(newTab);
-                    sender.SelectedIndex = sender.TabItems.Count - 1;
-                }
-                catch (Exception e)
-                {
-                    ContentDialog errorDialog = new ContentDialog
-                    {
-                        Title = "error",
-                        Content = e.Message + "\n\n" + e.StackTrace + "\n\n" + e.InnerException + "\n\n" + e.Source,
-                        CloseButtonText = "OK"
-                    };
-                    await errorDialog.ShowAsync();
-                }
-            }
+            return (frame, newTab);
+        }
+
+        private void TabView_AddTabButtonClick(Microsoft.UI.Xaml.Controls.TabView sender, object args)
+        {
+            OpenTabNew();
         }
 
         private void TabView_TabCloseRequested(Microsoft.UI.Xaml.Controls.TabView sender, Microsoft.UI.Xaml.Controls.TabViewTabCloseRequestedEventArgs args)
         {
-            CloseTab(args.Tab);
+            if (RootAppWindow == null && tabView.TabItems.Count == 1)
+            {
+                OpenTabNew();
+                CloseTab(args.Tab);
+                tabView.SelectedIndex = 0;
+            }
+            else
+            {
+                CloseTab(args.Tab);
+            }
         }
 
-        private void CloseTab(winui.Controls.TabViewItem tab)
+        public async void CloseTab(winui.Controls.TabViewItem tab)
         {
             if (tab == null) return;
             ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.SaveInfo();
+        
             if (tab.IsClosable)
             {
                 tabView.TabItems.Remove(tab);
             }
 
-            //if (tabView.TabItems.Count == 0)
-            //{
-            //    CoreApplication.Exit();
-            //}
+            if (tabView.TabItems.Count == 0)
+            {
+                //https://github.com/microsoft/Xaml-Controls-Gallery/blob/master/XamlControlsGallery/TabViewPages/TabViewWindowingSamplePage.xaml.cs
+                //This is far from smartness. But this is in microsoft repo.
+                //There should be a way to detect this is mainwindow or not, but I dont know.
+                if (RootAppWindow != null)
+                {
+                    await RootAppWindow.CloseAsync();
+                }
+                else
+                {
+                    try
+                    {
+                        //I need to close only main window. But error occurs and I have no idea to how fix it...
+                        //Closing main window is not allowed.
+                        //There is a question but no answer.
+                        //https://stackoverflow.com/questions/39944258/closing-main-window-is-not-allowed
+
+                        //Application.Current.Exit();
+                        //Window.Current.Close();
+                        //OpenTabWeb("https://www.google.com/");
+                    }
+                    catch (System.InvalidOperationException e)
+                    {
+                    }
+                }
+            }
+
         }
 
         #region keyAccelerator
@@ -346,7 +271,8 @@ namespace BookViewerApp
         {
             if (e.Parameter == null || (e.Parameter is string s && s == ""))
             {
-                OpenTabWeb("https://www.google.com/");
+                OpenTabNew();
+                //OpenTabWeb("https://www.google.com/");
             }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {
@@ -378,45 +304,68 @@ namespace BookViewerApp
 
         private async void tabView_TabDroppedOutside(winui.Controls.TabView sender, winui.Controls.TabViewTabDroppedOutsideEventArgs e)
         {
-            if (!Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+            //{
+            //    CloseTab(e.Tab);
+
+            //    var newView = CoreApplication.CreateNewView();
+            //    await newView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //    {
+            //        var frame = new Frame();
+            //        frame.Navigate(typeof(TabPage), null);
+
+            //        (frame.Content as TabPage)?.AddItemToTabs(e.Tab);
+
+            //        Window.Current.Content = frame;
+            //        Window.Current.Activate();
+            //    });
+
+            //    return;
+            //}
+
             {
-                return;
+                if (!Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+                {
+                    return;
+                }
+                if (sender.TabItems.Count <= 1) return;
+
+                var newWindow = await AppWindow.TryCreateAsync();
+                var newPage = new TabPage();
+                newPage.SetupWindow(newWindow);
+                CloseTab(e.Tab);
+                newPage.AddItemToTabs(e.Tab);
+                Windows.UI.Xaml.Hosting.ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
+
+                // Show the window
+                await newWindow.TryShowAsync();
             }
-            if (sender.TabItems.Count <= 1) return;
-
-            var newWindow = await AppWindow.TryCreateAsync();
-            var newPage = new TabPage();
-            newPage.SetupWindow(newWindow);
-            CloseTab(e.Tab);
-            newPage.AddItemToTabs(e.Tab);
-            Windows.UI.Xaml.Hosting.ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
-
-            // Show the window
-            await newWindow.TryShowAsync();
         }
 
-        private async void tabView_TabItemsChanged(winui.Controls.TabView sender, IVectorChangedEventArgs args)
+        private void tabView_TabItemsChanged(winui.Controls.TabView sender, IVectorChangedEventArgs args)
         {
-            if (sender.TabItems.Count == 0)
-            {
-                //https://github.com/microsoft/Xaml-Controls-Gallery/blob/master/XamlControlsGallery/TabViewPages/TabViewWindowingSamplePage.xaml.cs
-                //This is far from smartness. But this is in microsoft repo.
-                //There should be a way to detect this is mainwindow or not, but I dont know.
-                if (RootAppWindow != null)
-                {
-                    await RootAppWindow.CloseAsync();
-                }
-                else
-                {
-                    try
-                    {
-                        Window.Current.Close();
-                    }
-                    catch(System.InvalidOperationException e)
-                    {
-                    }
-                }
-            }
+            ////This is buggy when you exit FullScreen.
+            //if (sender.TabItems.Count == 0)
+            //{
+            //    //https://github.com/microsoft/Xaml-Controls-Gallery/blob/master/XamlControlsGallery/TabViewPages/TabViewWindowingSamplePage.xaml.cs
+            //    //This is far from smartness. But this is in microsoft repo.
+            //    //There should be a way to detect this is mainwindow or not, but I dont know.
+            //    if (RootAppWindow != null)
+            //    {
+            //        await RootAppWindow.CloseAsync();
+            //    }
+            //    else
+            //    {
+            //        try
+            //        {
+            //            Application.Current.Exit();
+            //            //Window.Current.Close();
+            //            //OpenTabWeb("https://www.google.com/");
+            //        }
+            //        catch (System.InvalidOperationException e)
+            //        {
+            //        }
+            //    }
+            //}
         }
 
         private void tabView_TabStripDrop(object sender, DragEventArgs e)
@@ -441,8 +390,11 @@ namespace BookViewerApp
 
                     }
 
-                    var destinationTabViewListView = ((obj as winui.Controls.TabViewItem).Parent as winui.Controls.Primitives.TabViewListView);
-                    destinationTabViewListView?.Items.Remove(obj);
+                    {
+                        //var destinationTabViewListView = ((obj as winui.Controls.TabViewItem).Parent as winui.Controls.Primitives.TabViewListView);
+                        //destinationTabViewListView?.Items.Remove(obj);
+                        if ((obj as winui.Controls.TabViewItem).XamlRoot.Content is TabPage tabPage) tabPage.CloseTab(obj as winui.Controls.TabViewItem);
+                    }
 
                     if (index < 0)
                     {

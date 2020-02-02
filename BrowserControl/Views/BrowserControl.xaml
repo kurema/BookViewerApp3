@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     
     xmlns:vm="using:kurema.BrowserControl.ViewModels"
+    xmlns:vc="using:kurema.BrowserControl.Helper.ValueConverters"
     mc:Ignorable="d"
     d:DesignHeight="696.5"
     d:DesignWidth="839">
@@ -24,6 +25,7 @@
             <Setter Property="Width" Value="38"/>
             <Setter Property="Background" Value="Transparent"/>
         </Style>
+        <vc:IsZeroValueConveter x:Key="IsZero"/>
     </UserControl.Resources>
     <Grid
         HorizontalAlignment="Stretch"
@@ -47,7 +49,7 @@
             <AppBarButton Grid.Column="1" Icon="Forward" Command="{Binding GoBackForwardCommand}" CommandParameter="Forward"/>
             <AppBarButton Grid.Column="2" Icon="Refresh" Command="{Binding ReloadCommand}"/>
             <AppBarButton Grid.Column="3" Icon="Home" Command="{Binding NavigateCommand}" CommandParameter="{Binding HomePage}"/>
-            <Border Grid.Column="4" Margin="4" Background="{ThemeResource SystemAltHighColor}" CornerRadius="2" BorderThickness="1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
+            <Border Grid.Column="4" Grid.ColumnSpan="{Binding Downloads.Count,Converter={StaticResource IsZero},ConverterParameter=2:1}" Margin="4" Background="{ThemeResource SystemAltHighColor}" CornerRadius="2" BorderThickness="1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -58,7 +60,7 @@
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"/>
                 </Grid>
             </Border>
-            <Button Grid.Column="5" >
+            <Button Grid.Column="5" Visibility="{Binding Downloads.Count,Converter={StaticResource IsZero},ConverterParameter=Collapsed:Visible}">
                 <SymbolIcon Symbol="Download"/>
                 <Button.Flyout>
                     <Flyout Placement="BottomEdgeAlignedRight">
@@ -110,8 +112,6 @@
                  
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
-                 
-                 NewWindowRequested="webView_NewWindowRequested"
                  />
     </Grid>
 </UserControl>

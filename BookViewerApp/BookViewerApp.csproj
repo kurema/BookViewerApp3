@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
+    <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -179,6 +180,9 @@
     <Compile Include="ViewModels\InfoPageViewModel.cs" />
     <Compile Include="Storages\LicenseStorage.cs" />
     <Compile Include="Helper\NaturalSort.cs" />
+    <Compile Include="Views\NewTabPage.xaml.cs">
+      <DependentUpon>NewTabPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -256,6 +260,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\NewTabPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -288,6 +296,11 @@
       <Project>{0e2c8720-2e94-4490-895d-8874c218e6d8}</Project>
       <Name>BrowserControl</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.Advertising.Xaml, Version=10.0">
+      <Name>Microsoft Advertising SDK for XAML</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

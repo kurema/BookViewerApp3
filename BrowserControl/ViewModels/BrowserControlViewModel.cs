@@ -46,6 +46,7 @@ namespace kurema.BrowserControl.ViewModels
                     _Content.NavigationStarting -= Content_NavigationStarting;
                     _Content.NavigationCompleted -= Content_NavigationCompleted;
                     _Content.NavigationFailed -= Content_NavigationFailed;
+                    _Content.UnviewableContentIdentified -= _Content_UnviewableContentIdentified;
                 }
                 SetProperty(ref _Content, value);
                 if (_Content != null)
@@ -53,10 +54,15 @@ namespace kurema.BrowserControl.ViewModels
                     _Content.NavigationStarting += Content_NavigationStarting;
                     _Content.NavigationCompleted += Content_NavigationCompleted;
                     _Content.NavigationFailed += Content_NavigationFailed;
+                    _Content.UnviewableContentIdentified += _Content_UnviewableContentIdentified;
                 }
             }
         }
 
+        private void _Content_UnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
+        {
+            OnPropertyChanged(nameof(this.Uri));
+        }
 
         private ObservableCollection<DownloadItemViewModel> _Downloads = new ObservableCollection<DownloadItemViewModel>();
         public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }

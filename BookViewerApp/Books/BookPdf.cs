@@ -112,8 +112,8 @@ namespace BookViewerApp.Books.Pdf
 
         public async Task<bool> UpdateRequiredAsync()
         {
-            if (LastOption != null && Option != null && LastOption.TargetHeight < Option.TargetHeight || LastOption.TargetWidth < Option.TargetWidth)
-                //if (LastOption != null && Option != null)
+            if (LastOption != null && Option != null && LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth)
+            //if (LastOption != null && Option != null)
             { return true; }
             else { return false; }
         }
