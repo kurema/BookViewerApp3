@@ -15,11 +15,8 @@
                   PointerPressed="scrollViewer_PointerPressed" PointerMoved="scrollViewer_PointerMoved" DoubleTapped="ScrollViewer_OnDoubleTapped" IsHorizontalRailEnabled="False" IsVerticalRailEnabled="False"
                   >
         <Grid  x:Name="grid">
-            <Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>
+            <!--<Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>-->
+            <local:SpreadPagePanel x:Name="spreadPanel" Source1="{Binding Source,Mode=OneWay}" Source2="{Binding Source,Mode=OneWay}" HorizontalAlignment="Stretch" Mode="Spread"/>
         </Grid>
-        <!--<Canvas x:Name="canvas">
-            <Image x:Name="image1" Source="{Binding Source,Mode=OneWay}" />
-            <Image x:Name="image2" Source="{Binding Source,Mode=OneWay}" />
-        </Canvas>-->
     </ScrollViewer>
 </UserControl>

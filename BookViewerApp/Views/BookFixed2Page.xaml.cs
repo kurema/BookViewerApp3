@@ -127,6 +127,9 @@ namespace BookViewerApp
         {
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
+
+            spreadPanel.Width = this.ActualWidth;
+            spreadPanel.Height = this.ActualHeight;
             //stack.Height = this.ActualHeight;
             //stack.MaxWidth = this.ActualWidth;
 
