@@ -420,7 +420,9 @@
                                 </AppBarButton>-->
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main_StackPanel"  Grid.Column="1" Margin="0,0" Style="{StaticResource StackPanelStyle}" >
-                                <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" x:Name="ButtonLeftmost">
+                                <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" x:Name="ButtonLeftmost"
+                                        ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageLeftmost.Label, Mode=OneTime}"
+                                        >
                                     <SymbolIcon Symbol="Previous"/>
                                 </Button>
                                 <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}" 
@@ -439,7 +441,9 @@
                                 >
                                     <SymbolIcon Symbol="Next" />
                                 </RepeatButton>
-                                <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualMaxCommand}" x:Name="ButtonRightmost">
+                                <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualMaxCommand}" x:Name="ButtonRightmost"
+                                        ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageRightmost.Label, Mode=OneTime}"
+                                        >
                                     <SymbolIcon Symbol="Next"/>
                                 </Button>
                             </StackPanel>

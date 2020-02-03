@@ -88,7 +88,7 @@ namespace BookViewerApp
         private async void AppBarButton_OpenFile(object sender, RoutedEventArgs e)
         {
             var file = await Books.BookManager.PickFile();
-            Open(file);
+            if (file != null) Open(file);
         }
 
         private void Open(Windows.Storage.IStorageFile file)

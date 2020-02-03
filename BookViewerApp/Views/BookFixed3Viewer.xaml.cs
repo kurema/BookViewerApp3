@@ -255,5 +255,11 @@ namespace BookViewerApp
                 BasicFullScreenFrame = null;
             }
         }
+
+        private async void MenuFlyoutItem_Click_OpenFile(object sender, RoutedEventArgs e)
+        {
+            var file = await Books.BookManager.PickFile();
+            if (file != null) Binding?.Initialize(file, this.flipView);
+        }
     }
 }

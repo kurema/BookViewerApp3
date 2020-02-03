@@ -59,7 +59,7 @@ namespace BookViewerApp
 
         private async void Button_Click_PickBook(object sender, RoutedEventArgs e)
         {
-            var file = await UIHelper.PickBook();
+            var file = await Books.BookManager.PickFile();
             if (file != null)
             {
                 this.Frame.Navigate(typeof(BookFixed3Viewer), file);

@@ -29,16 +29,6 @@ namespace BookViewerApp
 {
     public static class UIHelper
     {
-        public static async Task<Windows.Storage.StorageFile> PickBook()
-        {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
-            {
-                picker.FileTypeFilter.Add(ext);
-            }
-            return await picker.PickSingleFileAsync();
-        }
-
         public static void OpenBrowser(Frame frame,string uri , Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook,Action<string> UpdateTitle)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);
