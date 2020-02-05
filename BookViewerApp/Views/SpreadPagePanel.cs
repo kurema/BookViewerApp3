@@ -56,7 +56,6 @@ namespace BookViewerApp
             new PropertyMetadata(ModeEnum.Default)
             );
 
-
         public ModeEnum Mode
         {
             get => (ModeEnum)this.GetValue(ModeProperty);
@@ -77,7 +76,12 @@ namespace BookViewerApp
                     Stretch = Stretch.UniformToFill
                 };
                 image.ImageOpened += (s, e) => this.InvalidateArrange();
+                image.ImageFailed += (s, e) => this.InvalidateArrange();
                 return image;
+            }
+            void UpdateSource(Image image3,ImageSource source)
+            {
+                if (image3.Source != source) image3.Source = source;
             }
             void DesireChild(int count)
             {
@@ -154,22 +158,15 @@ namespace BookViewerApp
 
                 DesireChild(2);
                 var image1 = this.Children[0] as Image;
-                image1.Source = bmp1;
+                UpdateSource(image1, bmp1);
                 var image2 = this.Children[1] as Image;
-                image2.Source = bmp2;
+                UpdateSource(image2, bmp2);
 
                 image1.Measure(new Size(wr1, h));
                 image2.Measure(new Size(wr2, h));
 
-                if (this.FlowDirection == FlowDirection.LeftToRight) {
-                    image1.Arrange(new Rect(wl, 0, wr1, h));
-                    image2.Arrange(new Rect(wl + wr1, 0, wr2, h));
-                }
-                else
-                {
-                    image2.Arrange(new Rect(wl, 0, wr2, h));
-                    image1.Arrange(new Rect(wl + wr2, 0, wr1, h));
-                }
+                image1.Arrange(new Rect(wl, 0, wr1, h));
+                image2.Arrange(new Rect(wl + wr1, 0, wr2, h));
             }
             goto Conclude;
 
@@ -177,7 +174,7 @@ namespace BookViewerApp
             {
                 DesireChild(1);
                 var image = this.Children[0] as Image;
-                image.Source = bmp1;
+                UpdateSource(image, bmp1);
 
                 if (w1 == 0 || h1 == 0) goto Conclude;
 
@@ -200,20 +197,45 @@ namespace BookViewerApp
             return finalSize;
         }
 
-        public void OnSourceImageOpened(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+
             var panel = d as SpreadPagePanel;
             if (panel == null)
             {
                 return;
             }
 
-            panel.InvalidateArrange();
+
+            RoutedEventHandler routedEventHandler = (s2, e2) => panel.InvalidateArrange();
+            ExceptionRoutedEventHandler exceptionRoutedEventHandler= (s2, e2) => panel.InvalidateArrange();
+
+            {
+                if (e.OldValue is BitmapImage bitmap) {
+                    bitmap.ImageOpened -= routedEventHandler;
+                    bitmap.ImageFailed -= exceptionRoutedEventHandler;
+                }
+            }
+            {
+                if (e.NewValue is BitmapImage bitmap)
+                {
+                    bitmap.ImageOpened += routedEventHandler;
+                    bitmap.ImageFailed += exceptionRoutedEventHandler;
+                }
+            }
+
+            //Image GetImage(ImageSource source)
+            //{
+            //    var image = new Image() { Stretch = Stretch.UniformToFill };
+            //    image.Source = source;
+            //    image.ImageOpened += (s2, e2) => panel.InvalidateArrange();
+            //    image.ImageFailed += (s2, e2) => panel.InvalidateArrange();
+            //    return image;
+            //}
+            //panel.Children.Clear();
+            //panel.Children.Add(GetImage(panel.Source1));
+            //panel.Children.Add(GetImage(panel.Source2));
 
             //panel.Children.Add(img1);
             //panel.Children.Add(img2);

@@ -95,6 +95,7 @@ namespace BookViewerApp.ViewModels
             {
                 uint page = i;
                 pages.Add(new PageViewModel(new Books.VirtualPage(() => { var p = value.GetPage(page); p.Option = option; return p; })));
+                if (i > 0) pages[(int)i - 1].NextPage = pages[(int)i];
             }
             this._Reversed = false;
             this._PageSelected = 0;
@@ -330,6 +331,16 @@ namespace BookViewerApp.ViewModels
             }
         }
 
+        private PageViewModel _NextPage;
+        public PageViewModel NextPage { get => _NextPage; 
+            set
+            {
+                _NextPage = value;
+                OnPropertyChanged(nameof(NextPage));
+            }
+        }
+
+
         public void ZoomRequest(float factor)
         {
             OnZoomRequested(factor);
@@ -356,7 +367,6 @@ namespace BookViewerApp.ViewModels
                 if (_Source != null) return _Source;
                 _Source = new BitmapImage();
                 SetImageNoWait(_Source);
-                //Page.Option.PropertyChanged += (s, e) => SetImageNoWait(_Source);
                 return _Source;
             }
         }

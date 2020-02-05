@@ -51,13 +51,29 @@
             <AppBarButton Grid.Column="3" Icon="Home" Command="{Binding NavigateCommand}" CommandParameter="{Binding HomePage}"/>
             <Border Grid.Column="4" Grid.ColumnSpan="{Binding Downloads.Count,Converter={StaticResource IsZero},ConverterParameter=2:1}" Margin="4" Background="{ThemeResource SystemAltHighColor}" CornerRadius="2" BorderThickness="1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
                 <Grid>
+                    <Grid.Resources>
+                        <Storyboard x:Name="HideErrorStoryboard" AutoReverse="False">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="errorText" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:5" Value="1" />
+                                <EasingDoubleKeyFrame KeyTime="0:0:7" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
                     <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" 
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"/>
+                    <Button Click="Button_Click_OpenBrowser" Grid.Column="2">
+                        <SymbolIcon Symbol="Share" />
+                    </Button>
+                    <Grid Grid.ColumnSpan="2" IsHitTestVisible="False"  x:Name="errorText" Background="{ThemeResource TextBoxBackgroundThemeBrush}" Opacity="0">
+                        <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Text="{Binding LastErrorStatus}" Foreground="{ThemeResource SystemErrorTextColor}" />
+                    </Grid>
                 </Grid>
             </Border>
             <Button Grid.Column="5" Visibility="{Binding Downloads.Count,Converter={StaticResource IsZero},ConverterParameter=Collapsed:Visible}">

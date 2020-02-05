@@ -61,6 +61,13 @@ namespace kurema.BrowserControl.ViewModels
 
         private void _Content_UnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
         {
+            GoBackForwardCommand.OnCanExecuteChanged();
+            ReloadCommand.IsLoaded = true;
+            ReloadCommand.OnCanExecuteChanged();
+            Title = Content.DocumentTitle;
+            LastErrorStatus = null;
+            LastErrorUri = null;
+            _Uri = _UriLastSuccess = _UriLastSuccessPrevious;
             OnPropertyChanged(nameof(this.Uri));
         }
 
@@ -76,6 +83,13 @@ namespace kurema.BrowserControl.ViewModels
         public string Title { get => _Title; set => SetProperty(ref _Title, value); }
 
 
+        private Windows.Web.WebErrorStatus? _LastErrorStatus;
+        public Windows.Web.WebErrorStatus? LastErrorStatus { get => _LastErrorStatus; set => SetProperty(ref _LastErrorStatus, value); }
+
+
+        private Uri _LastErrorUri;
+        public Uri LastErrorUri { get => _LastErrorUri; set => SetProperty(ref _LastErrorUri, value); }
+
 
         private void Content_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
@@ -83,6 +97,9 @@ namespace kurema.BrowserControl.ViewModels
             ReloadCommand.IsLoaded = true;
             ReloadCommand.OnCanExecuteChanged();
             Title = Content.DocumentTitle;
+            LastErrorStatus = e.WebErrorStatus;
+            LastErrorUri = e.Uri;
+            _Uri = UriLastSuccess;
             OnPropertyChanged(nameof(Uri));
         }
 
@@ -92,6 +109,9 @@ namespace kurema.BrowserControl.ViewModels
             ReloadCommand.IsLoaded = true;
             ReloadCommand.OnCanExecuteChanged();
             Title = Content.DocumentTitle;
+            LastErrorStatus = null;
+            LastErrorUri = null;
+            if (args.IsSuccess) UriLastSuccess = _Uri = args.Uri;
             OnPropertyChanged(nameof(Uri));
         }
 
@@ -101,12 +121,31 @@ namespace kurema.BrowserControl.ViewModels
             ReloadCommand.IsLoaded = false;
             ReloadCommand.OnCanExecuteChanged();
             Title = Content.DocumentTitle;
+            LastErrorStatus = null;
+            LastErrorUri = null;
+            _Uri = args.Uri;
             OnPropertyChanged(nameof(Uri));
         }
 
+
+        private Uri _UriLastSuccessPrevious;
+        private Uri _UriLastSuccess;
+        public Uri UriLastSuccess
+        {
+            get => _UriLastSuccess; set
+            {
+                if (UriLastSuccess != value)
+                {
+                    _UriLastSuccessPrevious = _UriLastSuccess;
+                    SetProperty(ref _UriLastSuccess, value);
+                }
+            }
+        }
+
+        private Uri _Uri;
         public string Uri
         {
-            get => Content?.Source?.ToString();
+            get => _Uri?.ToString() ?? Content?.Source?.ToString();
             set
             {
                 try

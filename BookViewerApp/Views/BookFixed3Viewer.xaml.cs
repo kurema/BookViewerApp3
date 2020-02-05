@@ -66,6 +66,23 @@ namespace BookViewerApp
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
+            flipView.SelectionChanged += (s, e) =>
+            {
+                //ToDo:見開き対応。
+                //
+                //1. 以前選択されていたページのイベントを取り消す。
+                //2. 全ページリストアする？
+                //3. 選択中のページの見開き状態から次ページを表示するか切り替える。
+                //4. 選択中のページの見開き状態の変化イベントを登録する。
+                //5. 前のページの見開き状態が、
+                // a) 1ページなら何もしない。
+                // b) 半ページなら前に半ページ後半を挿入する。
+                // c) 2ページかつ2ページ前の見開き状態が2ページなら前ページを削除する。
+                // d) 2ページかつ2ページ前の見開き状態が1ページなら前ページを強制1ページ表示にする。
+                //6. 前ページの見開き状態の変化イベントを登録する。
+
+                //うわしんど。
+            };
         }
 
         private string OriginalTitle;

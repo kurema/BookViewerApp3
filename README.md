@@ -1,21 +1,40 @@
-# BookViewerApp
-https://www.microsoft.com/store/apps/9NBLGGH5N200
+# BookViewerApp 3
+Major update of BookViewer.  
+Ver 2 failed.
 
-A plain and simple book reader app on Windows 10 UWP.
+## ToDo
+とりあえず今の予定。
+思いついた時にチェックします。
+自分用のメモなので英語にはしない。
 
-本棚機能付き読書アプリ
-
-# FAQ
-Q: How to add books to bookshelf?  
-A: Click on the folder icon at bottom.
-
-Q: How to enter secret mode?  
-A: Right tap on "about".
-
-Q: How to zoom with mouse?  
-A: Crtl + Scroll.  
-
-Q: From where did you get books displayed on screenshot? Is it legal?  
-A: [Here](http://mangaonweb.com/satoshuho/download/). It's legal. "英語版" means "English version" by the way.  
-The screenshots are not in this repository because it's not compatible with MIT License.  
-[j-comi](http://www.j-comi.jp/) also provided some free PDFs but not anymore.
+- [ ] 見開き機能
+- - [ ] ViewModelと連携
+- - [ ] 強制1ページ表示
+- - [ ] Controlに切り替えUI
+- - [ ] ContextMenuに切り替えUI
+- [ ] Epub対応
+- - [ ] epub.js+WebView。Zip展開はUWP側で。
+- [ ] 追加機能分の多言語対応
+- [ ] Library
+- - [ ] Storage
+- - [ ] ViewModel
+- - [ ] View/Library
+- - [ ] View/Management
+- [ ] History
+- - [ ] Storage
+- - [ ] Restore
+- [ ] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
+- - [ ] View/Tree
+- - [ ] View/Main
+- [ ] Monetize (以前は1円も収入がなかった。やる気出なかった理由)
+- - [ ] ~~UWP ad~~ サードパーティーもサポートされてるMicrosoft Advertising SDKがキャンセルされるのかは良く分からない。新しいタブのページ。
+- - [ ] Amazon Affiliate。正直微妙。このアプリに合わない。
+- - [ ] Donation. 幅広いチャンネルから。
+- - [ ] Original ad. Kindle本・招待コード・YouTubeチャンネル(今後)。
+- [ ] プロトコル対応
+- - [ ] Samba. (Windows 10 Mobileが死んだ今は意味がないけど、独自でやりたい。)
+- - [ ] SFTP? (面倒。不要。)
+- - [ ] Cloud storage. (PDFをクラウドに上げる人ならいるかもね。)
+- [ ] Publish!
+- - [ ] Publish as beta.
+- - [ ] Publish as product.

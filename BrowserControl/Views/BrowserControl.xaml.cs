@@ -25,11 +25,18 @@ namespace kurema.BrowserControl.Views
         {
             this.InitializeComponent();
 
-            webView.Navigate(new Uri("http://www.google.co.jp/"));
+            //webView.Navigate(new Uri("http://www.google.co.jp/"));
             if (this.DataContext is ViewModels.BrowserControlViewModel vm)
             {
                 vm.Content = this.webView;
             }
+
+            webView.NavigationFailed += WebView_NavigationFailed;
+        }
+
+        private void WebView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        {
+            HideErrorStoryboard.Begin();
         }
 
         private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -43,6 +50,11 @@ namespace kurema.BrowserControl.Views
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             (sender as TextBox)?.SelectAll();
+        }
+
+        private async void Button_Click_OpenBrowser(object sender, RoutedEventArgs e)
+        {
+            if (webView.Source != null) await Windows.System.Launcher.LaunchUriAsync(webView.Source);
         }
     }
 }
