@@ -123,7 +123,49 @@
     <Content Include="LICENSE\SharpCompress">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\reader\css\annotations.css" />
+    <Content Include="res\reader\css\main.css" />
+    <Content Include="res\reader\css\normalize.css" />
+    <Content Include="res\reader\css\popup.css" />
+    <Content Include="res\reader\font\fontello.svg" />
+    <Content Include="res\reader\humans.txt" />
+    <Content Include="res\reader\img\annotator-glyph-sprite.png" />
+    <Content Include="res\reader\img\annotator-icon-sprite.png" />
+    <Content Include="res\reader\img\apple-touch-icon.png" />
+    <Content Include="res\reader\img\cancelfullscreen.png" />
+    <Content Include="res\reader\img\close.png" />
+    <Content Include="res\reader\img\fullscreen.png" />
+    <Content Include="res\reader\img\loader.gif" />
+    <Content Include="res\reader\img\menu-icon.png" />
+    <Content Include="res\reader\img\save.png" />
+    <Content Include="res\reader\img\saved.png" />
+    <Content Include="res\reader\img\settings-s.png" />
+    <Content Include="res\reader\img\settings.png" />
+    <Content Include="res\reader\img\star.png" />
+    <Content Include="res\reader\index.html" />
+    <Content Include="res\reader\js\epub.js" />
+    <Content Include="res\reader\js\epub.min.js" />
+    <Content Include="res\reader\js\hooks.min.js" />
+    <Content Include="res\reader\js\hooks\extensions\highlight.js" />
+    <Content Include="res\reader\js\libs\jquery.min.js" />
+    <Content Include="res\reader\js\libs\localforage.min.js" />
+    <Content Include="res\reader\js\libs\screenfull.js" />
+    <Content Include="res\reader\js\libs\screenfull.min.js" />
+    <Content Include="res\reader\js\libs\zip.min.js" />
+    <Content Include="res\reader\js\plugins\hypothesis.js" />
+    <Content Include="res\reader\js\plugins\search.js" />
+    <Content Include="res\reader\js\reader.js" />
+    <Content Include="res\reader\js\reader.min.js" />
+    <Content Include="res\reader\robots.txt" />
     <None Include="BookViewerApp_StoreKey.pfx" />
+    <Content Include="res\reader\font\fontello.eot" />
+    <Content Include="res\reader\font\fontello.ttf" />
+    <Content Include="res\reader\font\fontello.woff" />
+    <None Include="res\reader\img\.gitignore" />
+    <Content Include="res\reader\js\epub.min.map" />
+    <Content Include="res\reader\js\hooks.min.map" />
+    <Content Include="res\reader\js\reader.js.map" />
+    <Content Include="res\reader\js\reader.min.map" />
     <PRIResource Include="Resource\Resources.lang-zh-CN.resw" />
     <PRIResource Include="Resource\Resources.lang-zh-TW.resw" />
     <PRIResource Include="Resource\Resources.lang-ja-JP.resw" />
@@ -158,6 +200,7 @@
     <Compile Include="Views\BookFixed3ViewerControllerControl.xaml.cs">
       <DependentUpon>BookFixed3ViewerControllerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EpubResolver.cs" />
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>

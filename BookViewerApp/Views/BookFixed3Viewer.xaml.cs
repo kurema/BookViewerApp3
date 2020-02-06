@@ -89,16 +89,7 @@ namespace BookViewerApp
 
         public void SetTitle(string title)
         {
-            var p = this.Parent;
-
-            if ((this.Parent as Frame)?.Parent is Microsoft.UI.Xaml.Controls.TabViewItem item)
-            {
-                item.Header = title;
-            }
-            else
-            {
-                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = title;
-            }
+            UIHelper.SetTitle(this, title);
         }
 
         public struct BookAndParentNavigationParamater

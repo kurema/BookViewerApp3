@@ -29,6 +29,18 @@ namespace BookViewerApp
 {
     public static class UIHelper
     {
+        public static void SetTitle(FrameworkElement targetElement, string title)
+        {
+            if ((targetElement.Parent as Frame)?.Parent is winui.Controls.TabViewItem item)
+            {
+                item.Header = title;
+            }
+            else
+            {
+                ApplicationView.GetForCurrentView().Title = title;
+            }
+        }
+
         public static void OpenBrowser(Frame frame,string uri , Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook,Action<string> UpdateTitle)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);

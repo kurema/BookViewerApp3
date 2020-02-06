@@ -61,7 +61,9 @@ namespace BookViewerApp.Books.Cbz
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
                 try
                 {
-                    Content = new ZipArchive(stream, ZipArchiveMode.Read, false, Encoding.GetEncoding(932));
+                    Content = new ZipArchive(stream, ZipArchiveMode.Read, false,
+                        System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ?
+                        Encoding.GetEncoding(932) : Encoding.UTF8);
                     OnLoaded(new EventArgs());
                 }
                 catch {  }
@@ -109,6 +111,9 @@ namespace BookViewerApp.Books.Cbz
     public class CbzPage : IPageFixed
     {
         private ZipArchiveEntry Content;
+
+        private Windows.Storage.Streams.IRandomAccessStream cache = null;
+
         public IPageOptions Option
         {
             get; set;
@@ -121,11 +126,15 @@ namespace BookViewerApp.Books.Cbz
 
         public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
         {
-            var s = Content.Open();
-            var ms = new MemoryStream();
-            s.CopyTo(ms);
-            s.Dispose();
-            return await new Image.ImagePageStream(ms.AsRandomAccessStream()).GetBitmapAsync();
+            if (cache == null)
+            {
+                var s = Content.Open();
+                var ms = new MemoryStream();
+                s.CopyTo(ms);
+                s.Dispose();
+                cache = ms.AsRandomAccessStream();
+            }
+            return await new Image.ImagePageStream(cache).GetBitmapAsync();
         }
 
         public async Task<bool> UpdateRequiredAsync()
@@ -146,11 +155,15 @@ namespace BookViewerApp.Books.Cbz
         {
             try
             {
-                var s = Content.Open();
-                var ms = new MemoryStream();
-                s.CopyTo(ms);
-                s.Dispose();
-                await new Image.ImagePageStream(ms.AsRandomAccessStream()).SetBitmapAsync(image);
+                if (cache == null)
+                {
+                    var s = Content.Open();
+                    var ms = new MemoryStream();
+                    s.CopyTo(ms);
+                    s.Dispose();
+                    cache = ms.AsRandomAccessStream();
+                }
+                await new Image.ImagePageStream(cache).SetBitmapAsync(image);
             }
             catch
             {

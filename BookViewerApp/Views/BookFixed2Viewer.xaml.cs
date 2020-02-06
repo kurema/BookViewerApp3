@@ -167,7 +167,7 @@ namespace BookViewerApp
 
         public void SetTitle(string title)
         {
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = title;
+            UIHelper.SetTitle(this, title);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -24,6 +24,9 @@
                 <Button HorizontalAlignment="Center" Click="Button_Click_PickBook">
                     <SymbolIcon Symbol="OpenFile"/>
                 </Button>
+                <Button HorizontalAlignment="Center" Click="Button_Click_PickBookEpub">
+                    <SymbolIcon Symbol="OpenFile"/>
+                </Button>
                 <Button HorizontalAlignment="Center" Click="Button_Click_GoToBrowser">
                     <SymbolIcon Symbol="World"/>
                 </Button>

@@ -65,5 +65,23 @@ namespace BookViewerApp
                 this.Frame.Navigate(typeof(BookFixed3Viewer), file);
             }
         }
+
+        private async void Button_Click_PickBookEpub(object sender, RoutedEventArgs e)
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.FileTypeFilter.Add(".epub");
+            var file = await picker.PickSingleFileAsync();
+            if (file == null) return;
+            var resolver = new EpubResolver();
+            await resolver.LoadAsync((await file.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream());
+            this.Frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
+            if (this.Frame.Content is kurema.BrowserControl.Views.BrowserPage content)
+            {
+
+                Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/reader/index.html");
+                //Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/contents/META-INF/container.xml");
+                content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
+            }
+        }
     }
 }

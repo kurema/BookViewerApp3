@@ -109,8 +109,6 @@ namespace kurema.BrowserControl.ViewModels
             ReloadCommand.IsLoaded = true;
             ReloadCommand.OnCanExecuteChanged();
             Title = Content.DocumentTitle;
-            LastErrorStatus = null;
-            LastErrorUri = null;
             if (args.IsSuccess) UriLastSuccess = _Uri = args.Uri;
             OnPropertyChanged(nameof(Uri));
         }
@@ -121,8 +119,6 @@ namespace kurema.BrowserControl.ViewModels
             ReloadCommand.IsLoaded = false;
             ReloadCommand.OnCanExecuteChanged();
             Title = Content.DocumentTitle;
-            LastErrorStatus = null;
-            LastErrorUri = null;
             _Uri = args.Uri;
             OnPropertyChanged(nameof(Uri));
         }
