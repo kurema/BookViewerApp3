@@ -9,6 +9,8 @@ using Windows.Storage.Streams;
 using System.IO.Compression;
 using System.IO;
 
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace BookViewerApp
 {
     public class EpubResolver : Windows.Web.IUriToStreamResolver
@@ -65,81 +67,63 @@ namespace BookViewerApp
                     var entry = Content.Entries.FirstOrDefault(a => a.FullName.ToLower() == pathTail.ToLower());
                     if (entry == null) throw invalid;
 
-                    var s = entry.Open();
 
-                    var ms = new MemoryStream();
-                    await s.CopyToAsync(ms);
-                    s.Dispose();
+                    //The answer is here!
+                    //We can't make AsRandomAccessStream with text and pass it to UriToStreamAsync method.
+                    //https://stackoverflow.com/questions/59185615/how-to-make-a-custom-response-to-my-webview-with-a-iuritostreamresolver
+                    //Why? Why? Why?
+                    //What UriToStreamAsync is for?
+                    //fuck
 
-                    //AsInputStream() or AsRandomAccessStream() just dont work for MemoryStream... At least for UriToStreamAsync...
-                    return ms.AsRandomAccessStream();
-                }
-                throw invalid;
-            }
-            catch (Exception) { throw invalid; }
-        }
-    }
 
-    public class EpubResolverSharp : Windows.Web.IUriToStreamResolver
-    {
-        public IAsyncOperation<IInputStream> UriToStreamAsync(Uri uri)
-        {
-            return GetContent(uri).AsAsyncOperation();
-        }
+                    ////This works somohow. (well... Its not perfect, but thats not the point.)
+                    //var item = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(Path.Combine("epub", System.IO.Path.GetRandomFileName()));
+                    //await Task.Run(() =>
+                    //{
+                    //    try
+                    //    {
+                    //        entry.ExtractToFile(item.Path, true);
+                    //    }
+                    //    catch { }
+                    //});
+                    //return await item.OpenReadAsync();
 
-        private SharpCompress.Archives.IArchiveEntry[] Entries;
+                    byte[] buf = new byte[32768];
+                    var buffer = new Windows.Storage.Streams.Buffer(32768);
 
-        public async Task LoadAsync(System.IO.Stream sr)
-        {
-            SharpCompress.Archives.IArchive archive;
-            await Task.Run(() =>
-            {
-                try
-                {
-                    archive = SharpCompress.Archives.ArchiveFactory.Open(sr);
-                    var entries = new List<SharpCompress.Archives.IArchiveEntry>();
-                    foreach (var entry in archive.Entries)
-                    {
-                        if (!entry.IsDirectory && !entry.IsEncrypted)
+                    using (var s = entry.Open()){
+                        using (var mss = new InMemoryRandomAccessStream())
                         {
-                                entries.Add(entry);
+                            while (true)
+                            {
+                                mss.Seek(0);
+                                int read = s.Read(buf, 0, buf.Length);
+                                if (read == buf.Length)
+                                {
+                                    await mss.WriteAsync(buf.AsBuffer());
+                                }
+                                else if (read > 0)
+                                {
+                                    await mss.WriteAsync(buf.Take(read).ToArray().AsBuffer());
+                                }
+                                else
+                                {
+                                    //{
+                                    //    mss.Seek(0);
+                                    //    var b= new Windows.Storage.Streams.Buffer(32768);
+                                    //    await mss.ReadAsync(b, 32768, InputStreamOptions.None);
+                                    //    var a = Encoding.UTF8.GetString(b.ToArray());
+                                    //}
+
+
+                                    mss.Seek(0);
+                                    return mss;
+                                }
+                            }
                         }
                     }
 
-                    Entries = entries.ToArray();
-                }
-                catch { this.Entries = new SharpCompress.Archives.IArchiveEntry[0]; }
-            });
-        }
-
-        protected async Task<IInputStream> GetContent(Uri uri)
-        {
-            var invalid = new Exception("Invalid Path");
-            if (uri == null) throw invalid;
-            try
-            {
-                //Security!
-                if (uri.LocalPath.ToLower().StartsWith("/epub.js/"))
-                {
-                    var pathTail = uri.LocalPath.Replace("/epub.js/", "", StringComparison.OrdinalIgnoreCase);
-                    var f = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine("ms-appx:///res/epub.js/", pathTail)));
-                    return await f.OpenAsync(Windows.Storage.FileAccessMode.Read);
-                }
-                if (uri.LocalPath.ToLower().StartsWith("/contents/"))
-                {
-                    var pathTail = uri.LocalPath.Replace("/contents/", "", StringComparison.OrdinalIgnoreCase);
-
-                    var entry = Entries.FirstOrDefault(a => a.Key.ToLower() == pathTail.ToLower());
-                    //var entry = Content.GetEntry(pathTail.ToLower());
-                    if (entry == null) throw invalid;
-
-                    var s = entry.OpenEntryStream();
-
-                    var ms = new MemoryStream();
-                    s.CopyTo(ms);
-                    s.Dispose();
-
-                    return ms.AsInputStream();
+                    //AsInputStream() or AsRandomAccessStream() just dont work for MemoryStream... At least for UriToStreamAsync...
                 }
                 throw invalid;
             }
