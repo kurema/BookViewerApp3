@@ -56,5 +56,20 @@ namespace kurema.BrowserControl.Views
         {
             if (webView.Source != null) await Windows.System.Launcher.LaunchUriAsync(webView.Source);
         }
+
+        private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
+        {
+            var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+
+            if (sender?.ContainsFullScreenElement == true && ! v.IsFullScreenMode)
+            {
+                if (v.TryEnterFullScreenMode())
+                {
+                }
+            }else if(sender?.ContainsFullScreenElement == false && v.IsFullScreenMode)
+            {
+                v.ExitFullScreenMode();
+            }
+        }
     }
 }

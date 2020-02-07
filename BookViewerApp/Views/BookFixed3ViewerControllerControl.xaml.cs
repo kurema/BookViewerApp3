@@ -142,6 +142,14 @@ namespace BookViewerApp
             }
         }
 
+        private void TreeView_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
+        {
+            if(args.InvokedItem is ViewModels.TocEntryViewModes toc)
+            {
+                Binding.PageSelected = toc.Page;
+            }
+        }
+
         //private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         //{
         //    if (Binding?.PageSelectedViewModel != null)

@@ -167,4 +167,28 @@ namespace BookViewerApp.Books
             return Origin.GetPage(Origin.PageCount - i - 1);
         }
     }
+
+    public interface ITocProvider
+    {
+        TocItem[] Toc { get; }
+    }
+
+    public class TocItem
+    {
+        public TocItem[] Children { get; set; }
+        public string Title { get; set; }
+        public int Page { get; set; }
+    }
+
+    public interface IDirectionProvider
+    {
+        Direction Direction { get; }
+
+    }
+
+    public enum Direction
+    {
+        Default, R2L, L2R
+    }
+
 }

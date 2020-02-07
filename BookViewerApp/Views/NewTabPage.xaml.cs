@@ -62,25 +62,22 @@ namespace BookViewerApp
             var file = await Books.BookManager.PickFile();
             if (file != null)
             {
-                this.Frame.Navigate(typeof(BookFixed3Viewer), file);
-            }
-        }
+                if (file.FileType.ToLower() == ".epub") {
+                    var resolver = new EpubResolver(file);
+                    this.Frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
+                    UIHelper.SetTitle(this, "Epub Reader");
 
-        private async void Button_Click_PickBookEpub(object sender, RoutedEventArgs e)
-        {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.FileTypeFilter.Add(".epub");
-            var file = await picker.PickSingleFileAsync();
-            if (file == null) return;
-            var resolver = new EpubResolver();
-            await resolver.LoadAsync((await file.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream());
-            this.Frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
-            if (this.Frame.Content is kurema.BrowserControl.Views.BrowserPage content)
-            {
-
-                Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/reader/index.html");
-                //Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/contents/META-INF/container.xml");
-                content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
+                    if (this.Frame.Content is kurema.BrowserControl.Views.BrowserPage content)
+                    {
+                        Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/reader/index.html");
+                        content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
+                    }
+                }
+                else
+                {
+                    UIHelper.SetTitle(this, "Viewer");
+                    this.Frame.Navigate(typeof(BookFixed3Viewer), file);
+                }
             }
         }
     }

@@ -321,4 +321,10 @@
   <data name="Setting_WebHomePage.Title" xml:space="preserve">
     <value>Home Page</value>
   </data>
+  <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
+    <value>Respect direction information of PDF (R2L/L2R).</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
+    <value>Respect direction information</value>
+  </data>
 </root>

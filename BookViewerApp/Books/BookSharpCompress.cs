@@ -11,7 +11,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace BookViewerApp.Books.Compressed
 {
-    public class CompressedBook : IBookFixed
+    public class CompressedBook : IBookFixed, ITocProvider
     {
         public string ID
         {
@@ -38,6 +38,8 @@ namespace BookViewerApp.Books.Compressed
         {
             Loaded?.Invoke(this, new EventArgs());
         }
+
+        public TocItem[] Toc { get; private set; }
 
         //private SharpCompress.Archive.IArchiveEntry Target;
         private SharpCompress.Archives.IArchiveEntry[] Entries;
@@ -77,6 +79,33 @@ namespace BookViewerApp.Books.Compressed
                         tempOrder = tempOrder.ThenBy((a) => a.Key.ToLower().Contains("cover"));
                     }
                     entries = tempOrder.ToList();
+
+                    {
+                        //toc関係
+                        var toc = new List<TocItem>();
+                        for (int i = 0; i < entries.Count; i++)
+                        {
+                            var dirs = Path.GetDirectoryName(entries[i].Key).Split(Path.DirectorySeparatorChar).ToList();
+                            dirs.Add(".");
+
+                            var ctoc = toc;
+                            TocItem lastitem = null;
+                            for (int j = 0; j < dirs.Count(); j++)
+                            {
+                                dirs[j] = dirs[j] == "" ? "." : dirs[j];
+                                if (ctoc.Count == 0 || ctoc.Last().Title != dirs[j])
+                                {
+                                    ctoc.Add(new TocItem() { Children = new TocItem[0], Title = dirs[j], Page = i });
+                                }
+
+                                if (lastitem != null) lastitem.Children = ctoc.ToArray();
+                                lastitem = ctoc.Last();
+                                ctoc = lastitem.Children.ToList();
+                            }
+                        }
+                        this.Toc = toc.ToArray();
+                    }
+
                     Entries = entries.ToArray();
                     OnLoaded();
                 }

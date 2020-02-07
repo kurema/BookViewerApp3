@@ -31,7 +31,11 @@ namespace BookViewerApp
     {
         public static void SetTitle(FrameworkElement targetElement, string title)
         {
-            if ((targetElement.Parent as Frame)?.Parent is winui.Controls.TabViewItem item)
+            if(((targetElement as Page)?.Frame)?.Parent is winui.Controls.TabViewItem item2)
+            {
+                item2.Header = title;
+            }
+            else if ((targetElement.Parent as Frame)?.Parent is winui.Controls.TabViewItem item)
             {
                 item.Header = title;
             }

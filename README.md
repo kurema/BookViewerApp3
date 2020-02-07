@@ -12,8 +12,8 @@ Ver 2 failed.
 - - [ ] 強制1ページ表示
 - - [ ] Controlに切り替えUI
 - - [ ] ContextMenuに切り替えUI
-- [ ] Epub対応
-- - [ ] epub.js+WebView。Zip展開はUWP側で。
+- [x] Epub対応
+- - [x] epub.js+WebView。~~Zip展開はUWP側で。~~
 - [ ] 追加機能分の多言語対応
 - [ ] Library
 - - [ ] Storage
@@ -35,6 +35,12 @@ Ver 2 failed.
 - - [ ] Samba. (Windows 10 Mobileが死んだ今は意味がないけど、独自でやりたい。)
 - - [ ] SFTP? (面倒。不要。)
 - - [ ] Cloud storage. (PDFをクラウドに上げる人ならいるかもね。)
+- [x] toc
+- - [x] CBZ (フォルダ構造から)
+- - [x] PDF (iText的なもので解析)
+- - [x] ViewModels / Views
+- [ ] iText
+- - [ ] 右綴じ確認
 - [ ] Publish!
 - - [ ] Publish as beta.
 - - [ ] Publish as product.

@@ -21,7 +21,7 @@
 
             document.onreadystatechange = function () {
               if (document.readyState == "complete") {
-                window.reader = ePubReader("/contents/", {
+                window.reader = ePubReader("/contents/book.epub", {
                    restore: true
                  });
               }
@@ -36,7 +36,7 @@
         <script src="js/libs/screenfull.min.js"></script>
 
         <!-- Render -->
-        <script src="js/epub.js"></script>
+        <script src="js/epub.min.js"></script>
 
         <!-- Reader -->
         <script src="js/reader.js"></script>
@@ -84,7 +84,7 @@
           </div>
           <div id="metainfo">
             <span id="book-title"></span>
-            <span id="title-seperator">&nbsp;&nbsp;?&nbsp;&nbsp;</span>
+            <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
             <span id="chapter-title"></span>
           </div>
           <div id="title-controls">
@@ -95,9 +95,9 @@
         </div>
 
         <div id="divider"></div>
-        <div id="prev" class="arrow">?</div>
+        <div id="prev" class="arrow">‹</div>
         <div id="viewer"></div>
-        <div id="next" class="arrow">?</div>
+        <div id="next" class="arrow">›</div>
 
         <div id="loader"><img src="img/loader.gif"></div>
       </div>

@@ -321,4 +321,10 @@
   <data name="Setting_WebHomePage.Title" xml:space="preserve">
     <value>ホームページ</value>
   </data>
+  <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
+    <value>PDFファイルの綴じ方情報を参照する。</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
+    <value>綴じ方情報を参照する</value>
+  </data>
 </root>

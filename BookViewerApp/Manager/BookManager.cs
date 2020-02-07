@@ -10,9 +10,9 @@ namespace BookViewerApp.Books
 {
     public class BookManager
     {
-        public static async Task<IBook> GetBookFromFile(Windows.Storage.IStorageFile file)
+        public static async Task<(IBook Book,bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
         {
-            if (file == null) { return null; }
+            if (file == null) { return (null,false); }
             else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
             {
                 goto Pdf;
@@ -25,10 +25,14 @@ namespace BookViewerApp.Books
             {
                 goto SharpCompress;
             }
+            else if (Path.GetExtension(file.Path).ToLower() == ".epub")
+            {
+                goto Epub;
+            }
 
             var stream = await file.OpenStreamForReadAsync();
-            var buffer = new byte[32];
-            stream.Read(buffer, 0, stream.Length < 32 ? (int)stream.Length : 32);
+            var buffer = new byte[64];
+            stream.Read(buffer, 0, stream.Length < 64 ? (int)stream.Length : 64);
             stream.Close();
 
             if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d }))
@@ -47,6 +51,11 @@ namespace BookViewerApp.Books
                 )
             {
                 //zip
+                if (buffer.Skip(0x1e).Take(28).SequenceEqual(Encoding.ASCII.GetBytes("mimetypeapplication/epub+zip")))
+                {
+                    //epub
+                    goto Epub;
+                }
                 goto Zip;
             }
             else if (buffer.Take(7).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 }))
@@ -60,7 +69,7 @@ namespace BookViewerApp.Books
                 goto SharpCompress;
             }
 
-            return null;
+            return (null, false);
 
         Pdf:;
             {
@@ -69,9 +78,9 @@ namespace BookViewerApp.Books
                 {
                     await book.Load(file);
                 }
-                catch { return null; }
-                if (book.PageCount <= 0) { return null; }
-                return book;
+                catch { return (null, false); }
+                if (book.PageCount <= 0) { return (null, false); }
+                return (book, false);
             }
         Zip:;
             {
@@ -82,10 +91,10 @@ namespace BookViewerApp.Books
                 }
                 catch
                 {
-                    return null;
+                    return (null, false);
                 }
-                if (book.PageCount <= 0) { return null; }
-                return book;
+                if (book.PageCount <= 0) { return (null, false); }
+                return (book, false);
             }
         SharpCompress:;
             {
@@ -96,16 +105,26 @@ namespace BookViewerApp.Books
                 }
                 catch
                 {
-                    return null;
+                    return (null, false);
                 }
-                if (book.PageCount <= 0) { return null; }
-                return book;
+                if (book.PageCount <= 0) { return (null, false); }
+                return (book, false);
+            }
+        Epub:;
+            {
+                return (null, true);
             }
         }
 
-        public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7" }; } }
+        public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7", ".epub" }; } }
 
         public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr" }; } }
+
+        public static bool IsEpub(Windows.Storage.IStorageFile file)
+        {
+            if (file.FileType.ToLower() == ".epub") { return true; }
+            return false;
+        }
 
 
         public static bool IsFileAvailabe(Windows.Storage.IStorageFile file)
@@ -173,7 +192,7 @@ namespace BookViewerApp.Books
 
         public static async Task<Books.IBook> PickBook()
         {
-            return (await GetBookFromFile(await PickFile()));
+            return (await GetBookFromFile(await PickFile())).Book;
         }
     }
 }

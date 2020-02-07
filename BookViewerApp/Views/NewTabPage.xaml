@@ -12,32 +12,44 @@
     <Page.Background>
         <AcrylicBrush BackgroundSource="HostBackdrop"  />
     </Page.Background>
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RevealBackgroundBrush/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlTransparentRevealBorderBrush}" />
+        </Style>
+        <Style TargetType="SymbolIcon">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
-            <Grid Height="120">
-                <Button HorizontalAlignment="Right" Margin="30" Background="Transparent" Click="Button_Click_GoToSetting">
-                    <SymbolIcon Symbol="Setting"/>
-                </Button>
-            </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button HorizontalAlignment="Center" Click="Button_Click_PickBook">
+                <Button Click="Button_Click_PickBook">
                     <SymbolIcon Symbol="OpenFile"/>
                 </Button>
-                <Button HorizontalAlignment="Center" Click="Button_Click_PickBookEpub">
-                    <SymbolIcon Symbol="OpenFile"/>
-                </Button>
-                <Button HorizontalAlignment="Center" Click="Button_Click_GoToBrowser">
+                <Button Click="Button_Click_GoToBrowser">
                     <SymbolIcon Symbol="World"/>
                 </Button>
+                <Button HorizontalAlignment="Right" Background="Transparent"
+                        Click="Button_Click_GoToSetting">
+                    <SymbolIcon Symbol="Setting"/>
+                </Button>
             </StackPanel>
-            <UI:AdControl
-  		ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
- 		AdUnitId="test"
+            <!--<UI:AdControl ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
+ 		AdUnitId="test" Background="Black" ErrorOccurred="AdControl_ErrorOccurred"
  		HorizontalAlignment="Center"
  		Width="720"
  		Height="90"
- 		/>
+ 		/>-->
         </StackPanel>
     </ScrollViewer>
 </Page>

@@ -281,7 +281,12 @@ namespace BookViewerApp.BookShelfViewModels
             var bookInfo = await BookInfoStorage.GetBookInfoByIDAsync(ID);
             if (bookInfo != null)
             {
-                this.Reversed = bookInfo.PageReversed;
+                switch (bookInfo.PageDirection)
+                {
+                    case Books.Direction.L2R: this.Reversed = false; break;
+                    case Books.Direction.R2L: this.Reversed = true; break;
+                    case Books.Direction.Default: default: Reversed = (bool)SettingStorage.GetValue("DefaultPageReverse"); break;
+                }
                 this.ReadRate = (bookInfo.GetLastReadPage()?.Page ?? 0) / (double)BookSize;
                 //Issue: asyncの関係でSetLastReadPage()の前に GetLastReadPage()が実行されることがあるようだ。
             }

@@ -10,9 +10,12 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using pdf = Windows.Data.Pdf;
 
+using System.IO;
+using System.Collections;
+
 namespace BookViewerApp.Books.Pdf
 {
-    public class PdfBook : IBookFixed
+    public class PdfBook : IBookFixed,IDirectionProvider,ITocProvider
     {
         public pdf.PdfDocument Content { get; private set; }
         private bool PageLoaded = false;
@@ -33,18 +36,114 @@ namespace BookViewerApp.Books.Pdf
             get;private set;
         }
 
+        public Direction Direction { get; private set; } = Direction.Default;
+
+        public TocItem[] Toc { get; private set; }
+
         public IPageFixed GetPage(uint i)
         {
             if (i < PageCount) return new PdfPage(Content.GetPage(i));
-            else throw new Exception("Incorrect page.");//ToDo:Implement Exception.
+            else throw new Exception("Incorrect page.");
         }
 
         public async Task Load(Windows.Storage.IStorageFile file)
         {
-            Content = await pdf.PdfDocument.LoadFromFileAsync(file);
-            OnLoaded(new EventArgs());
-            PageLoaded = true;
-            ID = Functions.CombineStringAndDouble(file.Name, Content.PageCount);
+            using (var stream = await file.OpenReadAsync())
+            {
+
+                try
+                {
+                    var pr = new iTextSharp.text.pdf.PdfReader(stream.AsStream());
+                    var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr).ToArray();
+                    var nd = pr.GetNamedDestination(false);
+
+                    try
+                    {
+                        //Get page direction information.
+
+                        //It took some hour to write next line. Thanks for
+                        //http://itext.2136553.n4.nabble.com/Using-getSimpleViewerPreferences-td2167775.html
+                        var vp = iTextSharp.text.pdf.intern.PdfViewerPreferencesImp.GetViewerPreferences(pr.Catalog).GetViewerPreferences();
+                        if (vp.Contains(iTextSharp.text.pdf.PdfName.DIRECTION))
+                        {
+                            var name = vp.GetAsName(iTextSharp.text.pdf.PdfName.DIRECTION);
+                            if (name == iTextSharp.text.pdf.PdfName.R2L)
+                            {
+                                this.Direction = Direction.R2L;
+                            }
+                            else if (name == iTextSharp.text.pdf.PdfName.L2R)
+                            {
+                                this.Direction = Direction.L2R;
+                            }
+                            else
+                            {
+                                this.Direction = Direction.Default;
+                            }
+                        }
+                        else
+                        {
+                            this.Direction = Direction.Default;
+                        }
+                    }
+                    catch { }
+                    
+                    TocItem[] GetTocs(Array list)
+                    {
+                        var result = new List<TocItem>();
+                        foreach (var item in list)
+                        {
+                            TocItem tocItem = new TocItem();
+                            if (item is System.Collections.Hashtable itemd)
+                            {
+                                if (itemd.ContainsKey("Named") && itemd["Named"] is string named)
+                                {
+                                    if (nd.ContainsKey(named) && nd[named] is iTextSharp.text.pdf.PdfArray nditem)
+                                    {
+                                        if (nditem.Length > 0 && nditem[0] is iTextSharp.text.pdf.PdfIndirectReference pir)
+                                        {
+                                            //I dont know hot to handle this...
+                                        }
+                                    }
+                                }
+                                if (itemd.ContainsKey("Page"))
+                                {
+                                    var res = ((string)itemd["Page"]).Split(' ');
+                                    int page = 0;
+                                    if (int.TryParse(res[0], out page))
+                                    {
+                                        tocItem.Page = page - 1;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                                else { continue; }
+                                if (itemd.ContainsKey("Title") && itemd["Title"] is string title)
+                                {
+                                    tocItem.Title = title;
+                                }
+                                else { continue; }
+                                if (itemd.ContainsKey("Kids") && itemd["Kids"] is ArrayList kids)
+                                {
+                                    tocItem.Children = GetTocs(kids.ToArray());
+                                }
+                                result.Add(tocItem);
+                            }
+                        }
+                        return result.ToArray();
+                    }
+
+                    this.Toc = GetTocs(bm);
+                    pr.Close();
+                }
+                catch { }
+
+                Content = await pdf.PdfDocument.LoadFromStreamAsync(stream);
+                OnLoaded(new EventArgs());
+                PageLoaded = true;
+                ID = Functions.CombineStringAndDouble(file.Name, Content.PageCount);
+            }
         }
 
         private void OnLoaded(EventArgs e)

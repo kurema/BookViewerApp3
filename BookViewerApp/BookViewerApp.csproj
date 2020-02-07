@@ -143,7 +143,6 @@
     <Content Include="res\reader\img\settings.png" />
     <Content Include="res\reader\img\star.png" />
     <Content Include="res\reader\index.html" />
-    <Content Include="res\reader\js\epub.js" />
     <Content Include="res\reader\js\epub.min.js" />
     <Content Include="res\reader\js\hooks.min.js" />
     <Content Include="res\reader\js\hooks\extensions\highlight.js" />
@@ -162,7 +161,6 @@
     <Content Include="res\reader\font\fontello.ttf" />
     <Content Include="res\reader\font\fontello.woff" />
     <None Include="res\reader\img\.gitignore" />
-    <Content Include="res\reader\js\epub.min.map" />
     <Content Include="res\reader\js\hooks.min.map" />
     <Content Include="res\reader\js\reader.js.map" />
     <Content Include="res\reader\js\reader.min.map" />
@@ -321,6 +319,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="iTextSharp-LGPL">
+      <Version>4.1.6</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>

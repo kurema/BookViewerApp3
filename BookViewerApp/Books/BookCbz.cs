@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace BookViewerApp.Books.Cbz
 {
-    public class CbzBook : IBookFixed
+    public class CbzBook : IBookFixed,ITocProvider
     {
         public ZipArchive Content { get; private set; }
         public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
@@ -38,6 +38,9 @@ namespace BookViewerApp.Books.Cbz
                 return Functions.GetHash(result);
             }
         }
+
+        public TocItem[] Toc { get; private set; }
+
         private string _IDCache = null;
 
 
@@ -76,7 +79,7 @@ namespace BookViewerApp.Books.Cbz
             string[] supportedFile = BookManager.AvailableExtensionsImage;
             var cm=Content.Mode;
             var files = Content.Entries;
-            foreach(var file in files)
+                        foreach(var file in files)
             {
                 var s = Path.GetExtension(file.Name).ToLower();
                 var b = supportedFile.Contains(Path.GetExtension(file.Name).ToLower());
@@ -104,6 +107,33 @@ namespace BookViewerApp.Books.Cbz
                 //entries.Sort((a, b) => b.FullName.ToLower().Contains("cover").CompareTo(a.FullName.ToLower().Contains("cover")));
             }
             entries = tempOrder.ToList();
+
+            {
+                //toc関係
+                var toc = new List<TocItem>();
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var dirs = Path.GetDirectoryName(entries[i].FullName).Split(Path.DirectorySeparatorChar).ToList();
+                    dirs.Add(".");
+
+                    var ctoc = toc;
+                    TocItem lastitem = null;
+                    for (int j = 0; j < dirs.Count(); j++)
+                    {
+                        dirs[j] = dirs[j] == "" ? "." : dirs[j];
+                        if (ctoc.Count == 0 || ctoc.Last().Title != dirs[j])
+                        {
+                            ctoc.Add(new TocItem() { Children = new TocItem[0], Title = dirs[j], Page = i });
+                        }
+
+                        if (lastitem != null) lastitem.Children = ctoc.ToArray();
+                        lastitem = ctoc.Last();
+                        ctoc = lastitem.Children.ToList();
+                    }
+                }
+                this.Toc = toc.ToArray();
+            }
+
             AvailableEntries = entries.ToArray();
         }
     }

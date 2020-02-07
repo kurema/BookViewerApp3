@@ -10,12 +10,20 @@ using System.IO.Compression;
 using System.IO;
 
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Storage;
 
 namespace BookViewerApp
 {
     public class EpubResolver : Windows.Web.IUriToStreamResolver
     {
-        public ZipArchive Content { get; private set; }
+        //This is why you can't decode zip.
+        //https://social.msdn.microsoft.com/Forums/Windowsapps/en-US/28dfbf3e-6fb2-4f6a-b898-d9c361bb2c70/iuritostreamresolveruritostreamasync-invalidcastexception-in-tasktoasyncoperationwithprogress?forum=winappswithcsharp
+        //https://stackoverflow.com/questions/59185615/how-to-make-a-custom-response-to-my-webview-with-a-iuritostreamresolver
+
+        public EpubResolver(StorageFile file)
+        {
+            File = file ?? throw new ArgumentNullException(nameof(file));
+        }
 
         public event EventHandler Loaded;
         private void OnLoaded(EventArgs e)
@@ -23,23 +31,7 @@ namespace BookViewerApp
             Loaded?.Invoke(this, e);
         }
 
-        public async Task LoadAsync(Stream stream)
-        {
-            await Task.Run(() => 
-            {
-                Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                try
-                {
-                    Content = new ZipArchive(stream, ZipArchiveMode.Read, false,
-                        System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ?
-                        Encoding.GetEncoding(932) : Encoding.UTF8);
-                    OnLoaded(new EventArgs());
-                }
-                catch { }
-            }
-            );
-
-        }
+        public Windows.Storage.StorageFile File { get; private set; }
 
         public IAsyncOperation<IInputStream> UriToStreamAsync(Uri uri)
         {
@@ -61,69 +53,9 @@ namespace BookViewerApp
                 }
                 if (uri.LocalPath.ToLower().StartsWith("/contents/"))
                 {
-                    var pathTail = uri.LocalPath.Replace("/contents/", "", StringComparison.OrdinalIgnoreCase);
-                    if (Content == null) throw invalid;
-
-                    var entry = Content.Entries.FirstOrDefault(a => a.FullName.ToLower() == pathTail.ToLower());
-                    if (entry == null) throw invalid;
-
-
-                    //The answer is here!
-                    //We can't make AsRandomAccessStream with text and pass it to UriToStreamAsync method.
-                    //https://stackoverflow.com/questions/59185615/how-to-make-a-custom-response-to-my-webview-with-a-iuritostreamresolver
-                    //Why? Why? Why?
-                    //What UriToStreamAsync is for?
-                    //fuck
-
-
-                    ////This works somohow. (well... Its not perfect, but thats not the point.)
-                    //var item = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(Path.Combine("epub", System.IO.Path.GetRandomFileName()));
-                    //await Task.Run(() =>
-                    //{
-                    //    try
-                    //    {
-                    //        entry.ExtractToFile(item.Path, true);
-                    //    }
-                    //    catch { }
-                    //});
-                    //return await item.OpenReadAsync();
-
-                    byte[] buf = new byte[32768];
-                    var buffer = new Windows.Storage.Streams.Buffer(32768);
-
-                    using (var s = entry.Open()){
-                        using (var mss = new InMemoryRandomAccessStream())
-                        {
-                            while (true)
-                            {
-                                mss.Seek(0);
-                                int read = s.Read(buf, 0, buf.Length);
-                                if (read == buf.Length)
-                                {
-                                    await mss.WriteAsync(buf.AsBuffer());
-                                }
-                                else if (read > 0)
-                                {
-                                    await mss.WriteAsync(buf.Take(read).ToArray().AsBuffer());
-                                }
-                                else
-                                {
-                                    //{
-                                    //    mss.Seek(0);
-                                    //    var b= new Windows.Storage.Streams.Buffer(32768);
-                                    //    await mss.ReadAsync(b, 32768, InputStreamOptions.None);
-                                    //    var a = Encoding.UTF8.GetString(b.ToArray());
-                                    //}
-
-
-                                    mss.Seek(0);
-                                    return mss;
-                                }
-                            }
-                        }
-                    }
-
-                    //AsInputStream() or AsRandomAccessStream() just dont work for MemoryStream... At least for UriToStreamAsync...
+                    var pathTail = uri.LocalPath.Replace("/contents/book.epub", "", StringComparison.OrdinalIgnoreCase);
+                    if (File == null) throw invalid;
+                    return await File.OpenReadAsync();
                 }
                 throw invalid;
             }
