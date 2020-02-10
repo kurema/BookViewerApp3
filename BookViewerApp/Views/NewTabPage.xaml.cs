@@ -80,5 +80,27 @@ namespace BookViewerApp
                 }
             }
         }
+
+        private async void Button_Click_GoToExplorer(object sender, RoutedEventArgs e)
+        {
+            var picker = new Windows.Storage.Pickers.FolderPicker();
+            picker.FileTypeFilter.Add("*");
+            var folder = await picker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                this.Frame.Navigate(typeof(kurema.FileExplorerControl.Views.FileExplorerPage), null);
+                if(this.Frame.Content is kurema.FileExplorerControl.Views.FileExplorerPage content)
+                {
+                    if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
+                    {
+                        control.SetTreeViewItem(new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder)));
+                        //if (control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel vm)
+                        //{
+                        //    //vm.ItemsTree = new System.Collections.ObjectModel.ObservableCollection<kurema.FileExplorerControl.ViewModels.FileItemViewModel>(new[] { new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder)) });
+                        //}
+                    }
+                }
+            }
+        }
     }
 }

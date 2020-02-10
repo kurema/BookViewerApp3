@@ -340,6 +340,10 @@
       <Project>{0e2c8720-2e94-4490-895d-8874c218e6d8}</Project>
       <Name>BrowserControl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileExplorerControl\FileExplorerControl.csproj">
+      <Project>{7d40eb0d-37d2-458a-bfce-bd4fef8244f7}</Project>
+      <Name>FileExplorerControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.Advertising.Xaml, Version=10.0">

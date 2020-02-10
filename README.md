@@ -23,6 +23,7 @@ Ver 2 failed.
 - [ ] History
 - - [ ] Storage
 - - [ ] Restore
+- - [ ] View/ViewModel
 - [ ] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
 - - [ ] View/Tree
 - - [ ] View/Main
@@ -39,8 +40,8 @@ Ver 2 failed.
 - - [x] CBZ (フォルダ構造から)
 - - [x] PDF (iText的なもので解析)
 - - [x] ViewModels / Views
-- [ ] iText
-- - [ ] 右綴じ確認
+- [x] iText
+- - [x] 右綴じ確認
 - [ ] Publish!
 - - [ ] Publish as beta.
 - - [ ] Publish as product.

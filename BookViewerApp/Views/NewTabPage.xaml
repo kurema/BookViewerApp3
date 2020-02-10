@@ -39,6 +39,9 @@
                 <Button Click="Button_Click_GoToBrowser">
                     <SymbolIcon Symbol="World"/>
                 </Button>
+                <Button Click="Button_Click_GoToExplorer">
+                    <SymbolIcon Symbol="Folder"/>
+                </Button>
                 <Button HorizontalAlignment="Right" Background="Transparent"
                         Click="Button_Click_GoToSetting">
                     <SymbolIcon Symbol="Setting"/>

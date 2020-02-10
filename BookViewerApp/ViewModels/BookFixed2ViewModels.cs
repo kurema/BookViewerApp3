@@ -133,6 +133,10 @@ namespace BookViewerApp.ViewModels
                                     break;
                             }
                         }
+                        else
+                        {
+                            this.Reversed = defaultRev;
+                        }
                         break;
                 }
             }
