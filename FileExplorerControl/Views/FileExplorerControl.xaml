@@ -9,19 +9,22 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <UserControl.DataContext>
-        <vm:FileExplorerViewModel/>
-    </UserControl.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="treeview" Grid.Column="0" SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding">
+        <TreeView CanReorderItems="False" CanDragItems="False" x:Name="treeview" Grid.Column="0" SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding">
             <TreeView.ItemTemplate>
                 <DataTemplate>
-                    <TreeViewItem HasUnrealizedChildren="True" Content="{Binding Content.Title}" />
+                    <TreeViewItem HasUnrealizedChildren="True" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="20" Margin="4"
+                                Source="/FileExplorerControl/res/icon_64x64.png" Stretch="UniformToFill" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Content.Title}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </TreeViewItem>
                 </DataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

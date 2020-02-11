@@ -9,8 +9,5 @@
     
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <UserControl.DataContext>
-        <vm:FileExplorerViewModel/>
-    </UserControl.DataContext>
     <local:FileExplorerControl />
 </Page>
