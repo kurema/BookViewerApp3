@@ -71,6 +71,12 @@ namespace BookViewerApp.ViewModels
         public bool IsControlPinned { get => _IsControlPinned; set { _IsControlPinned = value;OnPropertyChanged(nameof(IsControlPinned)); } }
         private bool _IsControlPinned = false;
 
+
+        private SpreadPagePanel.ModeEnum _SpreadMode;
+        public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
+
+
+
         public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
         {
             this.Loading = true;
@@ -82,6 +88,8 @@ namespace BookViewerApp.ViewModels
             }
             this.Loading = false;
         }
+
+        public EventHandler SpreadStatusChangedEventHandler;
 
         public async void Initialize(Books.IBookFixed value, Control target=null)
         {
@@ -95,6 +103,15 @@ namespace BookViewerApp.ViewModels
             {
                 uint page = i;
                 pages.Add(new PageViewModel(new Books.VirtualPage(() => { var p = value.GetPage(page); p.Option = option; return p; })));
+                {
+                    pages[(int)i].PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
+                        {
+                            SpreadStatusChangedEventHandler?.Invoke(this, new EventArgs());
+                        }
+                    };
+                }
                 if (i > 0) pages[(int)i - 1].NextPage = pages[(int)i];
             }
             this._Reversed = false;
@@ -384,6 +401,15 @@ namespace BookViewerApp.ViewModels
             }
         }
 
+        private SpreadPagePanel.DisplayedStatusEnum _SpreadDisplayedStatus = SpreadPagePanel.DisplayedStatusEnum.Single;
+        public SpreadPagePanel.DisplayedStatusEnum SpreadDisplayedStatus
+        {
+            get => _SpreadDisplayedStatus; set
+            {
+                _SpreadDisplayedStatus = value;
+                OnPropertyChanged(nameof(SpreadDisplayedStatus));
+            }
+        }
 
         public void ZoomRequest(float factor)
         {

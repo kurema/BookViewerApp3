@@ -67,6 +67,7 @@ namespace BookViewerApp.Books.Pdf
                         if (vp.Contains(iTextSharp.text.pdf.PdfName.DIRECTION))
                         {
                             var name = vp.GetAsName(iTextSharp.text.pdf.PdfName.DIRECTION);
+
                             if (name == iTextSharp.text.pdf.PdfName.R2L)
                             {
                                 this.Direction = Direction.R2L;

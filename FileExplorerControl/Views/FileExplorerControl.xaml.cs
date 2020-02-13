@@ -65,6 +65,14 @@ namespace kurema.FileExplorerControl.Views
                 args.Node.HasUnrealizedChildren = false;
                 sender.IsEnabled = true;
             }
+
+            if (content.DataContext is ViewModels.ContentViewModel cvm)
+            {
+                if (args.Item is ViewModels.FileItemViewModel vm)
+                {
+                    cvm.Items = vm.Children;
+                }
+            }
         }
     }
 }

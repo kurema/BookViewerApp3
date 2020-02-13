@@ -68,6 +68,19 @@ namespace BookViewerApp
 
             flipView.SelectionChanged += (s, e) =>
             {
+                if (e.AddedItems.Count > 0 && e.AddedItems[0] is ViewModels.PageViewModel vm)
+                {
+                    int current = Binding?.Pages.IndexOf(vm) ?? -1;
+                    var prevPage = current >= 1 ? Binding.Pages[current - 1] : null;
+                    var prevPrevPage = current >= 2 ? Binding.Pages[current - 2] : null;
+
+                    switch (vm.SpreadDisplayedStatus)
+                    {
+                        case SpreadPagePanel.DisplayedStatusEnum.Spread:
+                            break;
+                    }
+                }
+
                 //ToDo:見開き対応。
                 //
                 //1. 以前選択されていたページのイベントを取り消す。

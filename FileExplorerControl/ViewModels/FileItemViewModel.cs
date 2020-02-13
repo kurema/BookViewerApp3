@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
+using Windows.UI.Xaml.Media;
+
 
 namespace kurema.FileExplorerControl.ViewModels
 {
@@ -65,17 +67,6 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             get {
                 return _Children;
-                //if (_Children == null)
-                //{
-                //    Task.Run(async () => {
-                //        await UpdateChildren();
-                //    });
-                //    return null;
-                //}
-                //else
-                //{
-                //    return _Children;
-                //}
             }
             private set
             {
@@ -88,7 +79,20 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public async Task UpdateChildren()
         {
-            Children = new ObservableCollection<FileItemViewModel>((await Content?.GetChildren())?.Select(f => new FileItemViewModel(f)));
+            var children = new ObservableCollection<FileItemViewModel>((await Content?.GetChildren())?.Select(f => new FileItemViewModel(f)));
+            foreach (var item in children)
+            {
+                if (item.IsFolder) {
+                    item.IconSmall = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_folder_s.png"));
+                    item.IconLarge = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_folder_l.png"));
+                }
+                else
+                {
+                    item.IconSmall = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_book_s.png"));
+                    item.IconLarge = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_book_l.png"));
+                }
+                Children = children;
+            }
         }
 
         public string Title => _Content?.FileName ?? "";
@@ -96,5 +100,13 @@ namespace kurema.FileExplorerControl.ViewModels
         public DateTimeOffset LastModified => _Content?.DateCreated??new DateTimeOffset();
 
         public bool IsFolder => _Content?.IsFolder ?? false;
+
+
+        private ImageSource _IconSmall;
+        public ImageSource IconSmall { get => _IconSmall; set => SetProperty(ref _IconSmall, value); }
+
+
+        private ImageSource _IconLarge;
+        public ImageSource IconLarge { get => _IconLarge; set => SetProperty(ref _IconLarge, value); }
     }
 }

@@ -64,8 +64,27 @@ namespace BookViewerApp
 
         public enum ModeEnum
         {
-            Spread,Single,Default
+            Spread, Single, Default, ForceHalfFirst, ForceHalfSecond
         }
+
+        public static readonly DependencyProperty DisplayedStatusProperty = DependencyProperty.Register(
+            nameof(DisplayedStatus),
+            typeof(DisplayedStatusEnum),
+            typeof(SpreadPagePanel),
+            new PropertyMetadata(DisplayedStatusEnum.Single)
+            );
+
+        public DisplayedStatusEnum DisplayedStatus
+        {
+            get => (DisplayedStatusEnum)this.GetValue(DisplayedStatusProperty);
+            set => this.SetValue(DisplayedStatusProperty, value);
+        }
+
+        public enum DisplayedStatusEnum
+        {
+            Single, Spread, HalfFirst, HalfSecond
+        }
+
 
         protected override Size ArrangeOverride(Size finalSize)
         {
@@ -124,7 +143,15 @@ namespace BookViewerApp
             {
                 goto Single;
             }
-            else if(this.Mode==ModeEnum.Single && w1 > h1)
+            else if (this.Mode == ModeEnum.ForceHalfFirst)
+            {
+                goto Half;
+            }
+            else if (this.Mode==ModeEnum.ForceHalfSecond)
+            {
+                goto HalfSecond;
+            }
+            else if (this.Mode==ModeEnum.Single && w1 > h1)
             {
                 goto Half;
             }
@@ -148,6 +175,12 @@ namespace BookViewerApp
         Half:
             DesireChild(1);
             throw new NotImplementedException();
+            DisplayedStatus = DisplayedStatusEnum.HalfFirst;
+            goto Conclude;
+
+        HalfSecond:
+            throw new NotImplementedException();
+            DisplayedStatus = DisplayedStatusEnum.HalfSecond;
             goto Conclude;
 
         Double:
@@ -167,6 +200,8 @@ namespace BookViewerApp
 
                 image1.Arrange(new Rect(wl, 0, wr1, h));
                 image2.Arrange(new Rect(wl + wr1, 0, wr2, h));
+
+                DisplayedStatus = DisplayedStatusEnum.Spread;
             }
             goto Conclude;
 
@@ -190,8 +225,10 @@ namespace BookViewerApp
                     image.Measure(new Size(w, hr));
                     image.Arrange(new Rect(0, (h - hr) / 2.0, w, hr));
                 }
-                goto Conclude;
+
+                DisplayedStatus = DisplayedStatusEnum.Single;
             }
+            goto Conclude;
 
         Conclude:
             return finalSize;

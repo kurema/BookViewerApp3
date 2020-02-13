@@ -192,7 +192,7 @@ namespace BookViewerApp
                         //Window.Current.Close();
                         //OpenTabWeb("https://www.google.com/");
                     }
-                    catch (System.InvalidOperationException e)
+                    catch (System.InvalidOperationException)
                     {
                     }
                 }

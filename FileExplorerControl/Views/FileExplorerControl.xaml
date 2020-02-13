@@ -21,12 +21,13 @@
                     <TreeViewItem HasUnrealizedChildren="True" >
                         <StackPanel Orientation="Horizontal">
                             <Image Height="20" Margin="4"
-                                Source="/FileExplorerControl/res/icon_64x64.png" Stretch="UniformToFill" VerticalAlignment="Center"/>
+                                Source="/FileExplorerControl/res/icon_folder_s.png" Stretch="UniformToFill" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding Content.Title}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </TreeViewItem>
                 </DataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+        <local:FileExplorerContentControl x:Name="content" Grid.Column="1"/>
     </Grid>
 </UserControl>
