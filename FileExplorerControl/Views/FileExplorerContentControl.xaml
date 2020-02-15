@@ -14,45 +14,56 @@
         <vm:ContentViewModel />
     </UserControl.DataContext>
 
-    <GridView ItemsSource="{Binding Items}" SelectionMode="None" IsItemClickEnabled="True">
-        <GridView.ItemContainerStyle>
-            <Style TargetType="GridViewItem">
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <!--<Setter Property="Width" Value="200"/>
-                <Setter Property="Padding" Value="10"/>-->
-            </Style>
-        </GridView.ItemContainerStyle>
-        <GridView.ItemTemplateSelector>
-            <local:FileExplorerContentDataSelector ContentStyle="List">
-                <local:FileExplorerContentDataSelector.TemplateIcon>
-                    <DataTemplate>
-                        <StackPanel>
-                            <Image Height="100" Width="100" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center" TextWrapping="Wrap" />
-                        </StackPanel>
-                    </DataTemplate>
-                </local:FileExplorerContentDataSelector.TemplateIcon>
-                <local:FileExplorerContentDataSelector.TemplateIconWide>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Left">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image MaxHeight="75" Grid.Column="0" Source="{Binding IconLarge}" HorizontalAlignment="Stretch" />
-                            <TextBlock Text="{Binding Title}" Grid.Column="1" VerticalAlignment="Top" Margin="4" />
-                        </Grid>
-                    </DataTemplate>
-                </local:FileExplorerContentDataSelector.TemplateIconWide>
-                <local:FileExplorerContentDataSelector.TemplateList>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding IconSmall}" Width="20" Height="20"/>
-                            <TextBlock Text="{Binding Title}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </local:FileExplorerContentDataSelector.TemplateList>
-            </local:FileExplorerContentDataSelector>
-        </GridView.ItemTemplateSelector>
-    </GridView>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
+        <ItemsControl ItemsSource="{Binding Item.Children}">
+            <ItemsControl.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <local:FileExplorerContentPanel ContentStyle="IconWide" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplateSelector>
+                <local:FileExplorerContentDataSelector ContentStyle="IconWide">
+                    <local:FileExplorerContentDataSelector.TemplateIcon>
+                        <DataTemplate>
+                            <Button Margin="5" DoubleTapped="Button_DoubleTapped">
+                                <StackPanel MaxWidth="200">
+                                    <Image Height="100" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </local:FileExplorerContentDataSelector.TemplateIcon>
+                    <local:FileExplorerContentDataSelector.TemplateIconWide>
+                        <DataTemplate>
+                            <Button Margin="5" DoubleTapped="Button_DoubleTapped">
+                                <Grid HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Height="75" Grid.Column="0" Source="{Binding IconLarge}" HorizontalAlignment="Stretch" />
+                                    <TextBlock Text="{Binding Title}" Grid.Column="1" VerticalAlignment="Top" Margin="10" />
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </local:FileExplorerContentDataSelector.TemplateIconWide>
+                    <local:FileExplorerContentDataSelector.TemplateList>
+                        <DataTemplate>
+                            <Button Margin="5" DoubleTapped="Button_DoubleTapped">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding IconSmall}" Width="20" Height="20"/>
+                                    <TextBlock Text="{Binding Title}" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </local:FileExplorerContentDataSelector.TemplateList>
+                </local:FileExplorerContentDataSelector>
+            </ItemsControl.ItemTemplateSelector>
+        </ItemsControl>
+    </ScrollViewer>
 </UserControl>

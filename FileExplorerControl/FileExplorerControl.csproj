@@ -120,14 +120,22 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="Models\IFileItem.cs" />
     <Compile Include="Models\StorageFileItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ContentViewModel.cs" />
+    <Compile Include="ViewModels\FileExplorerViewModel.cs" />
     <Compile Include="ViewModels\FileItemViewModel.cs" />
+    <Compile Include="Views\FileExplorerAddressBarControl.xaml.cs">
+      <DependentUpon>FileExplorerAddressBarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FileExplorerContentControl.xaml.cs">
       <DependentUpon>FileExplorerContentControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FileExplorerContentDataSelector.cs" />
+    <Compile Include="Views\FileExplorerContentPanel.cs" />
     <Compile Include="Views\FileExplorerControl.xaml.cs">
       <DependentUpon>FileExplorerControl.xaml</DependentUpon>
     </Compile>
@@ -139,6 +147,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.3.191211002</Version>
@@ -153,6 +164,10 @@
     <Content Include="res\icon_unknown_l.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\FileExplorerAddressBarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FileExplorerContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

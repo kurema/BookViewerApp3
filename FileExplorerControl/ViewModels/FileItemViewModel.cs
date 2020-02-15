@@ -91,9 +91,16 @@ namespace kurema.FileExplorerControl.ViewModels
                     item.IconSmall = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_book_s.png"));
                     item.IconLarge = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_book_l.png"));
                 }
-                Children = children;
+                item.Parent = this;
             }
+            Children = children;
         }
+
+
+
+        private FileItemViewModel _Parent;
+        public FileItemViewModel Parent { get => _Parent; set => SetProperty(ref _Parent, value); }
+
 
         public string Title => _Content?.FileName ?? "";
 

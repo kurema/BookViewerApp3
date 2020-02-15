@@ -22,6 +22,18 @@ namespace kurema.FileExplorerControl.Views
         public FileExplorerControl()
         {
             this.InitializeComponent();
+
+            if(this.DataContext is ViewModels.FileExplorerViewModel fvm && this.content.DataContext is ViewModels.ContentViewModel vm)
+            {
+                fvm.Content = vm;
+
+                fvm.Content.PropertyChanged += (s, e) => {
+                    if (e.PropertyName == nameof(ViewModels.ContentViewModel.Item))
+                    {
+                        address.SetAddress(fvm.Content.Item);
+                    }
+                };
+            }
         }
 
         public void SetTreeViewItem(params ViewModels.FileItemViewModel[] fileItemVMs)
@@ -47,7 +59,7 @@ namespace kurema.FileExplorerControl.Views
             {
                 if (args.Item is ViewModels.FileItemViewModel vm)
                 {
-                    await (args.Item as ViewModels.FileItemViewModel).UpdateChildren();
+                    if (vm.Children == null) await vm.UpdateChildren();
                     args.Node.Children.Clear();
                     foreach (var item in vm.Folders)
                     {
@@ -65,13 +77,14 @@ namespace kurema.FileExplorerControl.Views
                 args.Node.HasUnrealizedChildren = false;
                 sender.IsEnabled = true;
             }
+        }
 
-            if (content.DataContext is ViewModels.ContentViewModel cvm)
+        private async void treeview_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
+        {
+            if (args.InvokedItem is TreeViewNode tvn && tvn.Content is ViewModels.FileItemViewModel vm)
             {
-                if (args.Item is ViewModels.FileItemViewModel vm)
-                {
-                    cvm.Items = vm.Children;
-                }
+                await content.SetFolder(vm);
+                if (tvn.IsExpanded == false) tvn.IsExpanded = true;
             }
         }
     }

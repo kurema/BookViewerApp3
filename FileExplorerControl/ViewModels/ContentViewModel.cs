@@ -59,9 +59,88 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
+        public ObservableCollection<FileItemViewModel> History { get; } = new ObservableCollection<FileItemViewModel>();
 
-        private ObservableCollection<FileItemViewModel> _Items;
-        public ObservableCollection<FileItemViewModel> Items { get => _Items; set => SetProperty(ref _Items, value); }
+        private int _SelectedHistory;
+        public int SelectedHistory { get => _SelectedHistory; set
+            {
+                if (!SelectedHistoryWithinRange(value))
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                SetProperty(ref _SelectedHistory, value);
+                OnPropertyChanged(nameof(Item));
 
+                (HistoryShiftCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
+                (GoUpCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
+            }
+        }
+
+        private bool SelectedHistoryWithinRange(int target)
+        {
+            return History != null && 0 <= target && target < History.Count;
+        }
+
+        private System.Windows.Input.ICommand _HistoryShiftCommand;
+        public System.Windows.Input.ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
+            (a) => {
+                this.SelectedHistory += int.Parse(a.ToString());
+            },
+            (a) =>
+            {
+                return SelectedHistoryWithinRange(this.SelectedHistory + int.Parse(a.ToString()));
+            }
+            );
+
+        private System.Windows.Input.ICommand _GoUpCommand;
+        public System.Windows.Input.ICommand GoUpCommand => _GoUpCommand = _GoUpCommand ?? new Helper.DelegateCommand(
+            async (a) =>
+            {
+                if (Item.Parent.Children == null) await Item.Parent.UpdateChildren();
+                Item = Item.Parent;
+            },
+            (a) =>
+            {
+                return Item?.Parent != null;
+            }
+            );
+
+        private System.Windows.Input.ICommand _GoToCommand;
+        public System.Windows.Input.ICommand GoToCommand => _GoToCommand = _GoToCommand ?? new Helper.DelegateCommand(
+            async a =>
+            {
+                if(a is FileItemViewModel vm)
+                {
+                    if (vm.Children == null) await vm.UpdateChildren();
+                    Item = vm;
+                }
+            }
+            );
+
+
+        public FileItemViewModel Item
+        {
+            get => SelectedHistoryWithinRange(SelectedHistory) ? History[SelectedHistory] : null;
+            set
+            {
+                while (History.Count > SelectedHistory + 1)
+                {
+                    History.Remove(History.Last());
+                }
+                History.Add(value);
+                SelectedHistory = History.Count - 1;
+
+                if (value.Children == null)
+                {
+                    Task.Run(
+                        async () =>
+                        {
+                            await value.UpdateChildren();
+                        }
+                        );
+                }
+
+            }
+        }
     }
 }
