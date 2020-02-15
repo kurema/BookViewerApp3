@@ -110,7 +110,7 @@ namespace BookViewerApp
         }
 
 
-        public void OpenTabBook(Windows.Storage.IStorageItem file)
+        public void OpenTabBook(object file)
         {
             var (frame, newTab) = OpenTab("Book");
             frame.Navigate(typeof(BookFixed3Viewer), file);

@@ -123,6 +123,8 @@
     <Content Include="LICENSE\SharpCompress">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\Icon\icon_book_l.png" />
+    <Content Include="res\Icon\icon_book_s.png" />
     <Content Include="res\reader\css\annotations.css" />
     <Content Include="res\reader\css\main.css" />
     <Content Include="res\reader\css\normalize.css" />

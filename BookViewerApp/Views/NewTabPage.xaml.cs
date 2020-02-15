@@ -93,11 +93,41 @@ namespace BookViewerApp
                 {
                     if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
-                        control.SetTreeViewItem(new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder)));
-                        //if (control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel vm)
-                        //{
-                        //    //vm.ItemsTree = new System.Collections.ObjectModel.ObservableCollection<kurema.FileExplorerControl.ViewModels.FileItemViewModel>(new[] { new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder)) });
-                        //}
+                        var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder));
+                        fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviderDelegate((a) => {
+                            if (Books.BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.FileName).ToLower()))
+                            {
+                                return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
+                                () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
+                                );
+                            }
+                            else { return (null, null); }
+                        }));
+                        control.SetTreeViewItem(fv);
+                        await control.ContentControl.SetFolder(fv);
+                        control.ContentControl.FileOpenedEventHandler += (s2,e2) =>
+                        {
+                                
+                            var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
+                            if (!Books.BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.FileName ?? "").ToLower()))
+                            {
+                                return;
+                            }
+
+                            if ((this.XamlRoot?.Content as Frame).Content is TabPage tab)
+                            {
+                                if (fileitem is kurema.FileExplorerControl.Models.StorageFileItem sfi)
+                                {
+                                    tab.OpenTabBook(sfi.Content);
+                                }
+                                else
+                                {
+                                    var stream = fileitem?.OpenStreamForReadAsync();
+                                    if (stream != null)
+                                        tab.OpenTabBook(stream);
+                                }
+                            }
+                        };
                     }
                 }
             }

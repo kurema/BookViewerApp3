@@ -16,5 +16,8 @@ namespace kurema.FileExplorerControl.Models
         DateTimeOffset DateCreated { get; }
 
         bool IsFolder { get; }
+
+        Task<System.IO.Stream> OpenStreamForReadAsync();
+        Task<System.IO.Stream> OpenStreamForWriteAsync();
     }
 }

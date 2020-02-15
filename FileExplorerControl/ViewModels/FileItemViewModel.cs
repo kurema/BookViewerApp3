@@ -77,26 +77,36 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
+        private ObservableCollection<Models.IIconProvider> _IconProviders = new ObservableCollection<IIconProvider>(new[] { new Models.IconProviderDefault() });
+
+        public ObservableCollection<Models.IIconProvider> IconProviders { get => _IconProviders; set
+            {
+                void IconUpdate(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(IconSmall));
+                    OnPropertyChanged(nameof(IconLarge));
+                }
+
+                if (_IconProviders!=null) _IconProviders.CollectionChanged -= IconUpdate;
+                SetProperty(ref _IconProviders, value);
+                IconUpdate(this, null);
+                if (_IconProviders != null) _IconProviders.CollectionChanged += IconUpdate;
+            }
+        }
+
+
         public async Task UpdateChildren()
         {
             var children = new ObservableCollection<FileItemViewModel>((await Content?.GetChildren())?.Select(f => new FileItemViewModel(f)));
             foreach (var item in children)
             {
-                if (item.IsFolder) {
-                    item.IconSmall = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_folder_s.png"));
-                    item.IconLarge = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_folder_l.png"));
-                }
-                else
-                {
-                    item.IconSmall = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_book_s.png"));
-                    item.IconLarge = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_book_l.png"));
-                }
+                //(item.IconSmall, item.IconLarge) = IconProviderDefault.GetIcon(item.Content, IconProviders);
+                item.IconProviders = this.IconProviders;
+
                 item.Parent = this;
             }
             Children = children;
         }
-
-
 
         private FileItemViewModel _Parent;
         public FileItemViewModel Parent { get => _Parent; set => SetProperty(ref _Parent, value); }
@@ -110,10 +120,29 @@ namespace kurema.FileExplorerControl.ViewModels
 
 
         private ImageSource _IconSmall;
-        public ImageSource IconSmall { get => _IconSmall; set => SetProperty(ref _IconSmall, value); }
+        public ImageSource IconSmall { get {
+                if (_IconSmall == null) (_IconSmall, _IconLarge) = IconProviderDefault.GetIcon(this.Content, IconProviders);
+                return _IconSmall;
+            } 
+            set
+            {
+                SetProperty(ref _IconSmall, value);
+            }
+        }
 
 
         private ImageSource _IconLarge;
-        public ImageSource IconLarge { get => _IconLarge; set => SetProperty(ref _IconLarge, value); }
+        public ImageSource IconLarge
+        {
+            get
+            {
+                if (_IconLarge == null) (_IconSmall, _IconLarge) = IconProviderDefault.GetIcon(this.Content, IconProviders);
+                return _IconLarge;
+            }
+            set
+            {
+                SetProperty(ref _IconLarge, value);
+            }
+        }
     }
 }

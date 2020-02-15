@@ -24,12 +24,12 @@ Ver 2 failed.
 - - [ ] Storage
 - - [ ] Restore
 - - [ ] View/ViewModel
-- [ ] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
-- - [ ] View/Tree
-- - [ ] View/Main
+- [x] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
+- - [x] View/Tree
+- - [x] View/Main
 - [ ] Monetize (以前は1円も収入がなかった。やる気出なかった理由)
 - - [ ] ~~UWP ad~~ サードパーティーもサポートされてるMicrosoft Advertising SDKがキャンセルされるのかは良く分からない。新しいタブのページ。
-- - [ ] Amazon Affiliate。正直微妙。このアプリに合わない。
+- - [ ] ~~Amazon Affiliate。正直微妙。このアプリに合わない。~~
 - - [ ] Donation. 幅広いチャンネルから。
 - - [ ] Original ad. Kindle本・招待コード・YouTubeチャンネル(今後)。
 - [ ] プロトコル対応

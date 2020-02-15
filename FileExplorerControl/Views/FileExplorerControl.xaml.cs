@@ -79,6 +79,8 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
+        public FileExplorerContentControl ContentControl => content;
+
         private async void treeview_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
             if (args.InvokedItem is TreeViewNode tvn && tvn.Content is ViewModels.FileItemViewModel vm)

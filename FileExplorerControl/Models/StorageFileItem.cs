@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 using Windows.Storage;
+using System.IO;
 
 namespace kurema.FileExplorerControl.Models
 {
@@ -43,6 +44,24 @@ namespace kurema.FileExplorerControl.Models
         {
             OpenEvent?.Invoke(this, new EventArgs());
         }
-    }
 
+        public async Task<Stream> OpenStreamForReadAsync()
+        {
+            if(Content is StorageFile file)
+            {
+                return await file.OpenStreamForReadAsync();
+            }
+            return null;
+        }
+
+        public async Task<Stream> OpenStreamForWriteAsync()
+        {
+            if (Content is StorageFile file)
+            {
+                return await file.OpenStreamForWriteAsync();
+            }
+            return null;
+        }
+
+    }
 }

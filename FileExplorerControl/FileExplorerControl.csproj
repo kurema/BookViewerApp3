@@ -121,6 +121,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Models\IconProviderDefault.cs" />
+    <Compile Include="Models\IconProviderDelegate.cs" />
+    <Compile Include="Models\IIconProvider.cs" />
     <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="Models\IFileItem.cs" />
     <Compile Include="Models\StorageFileItem.cs" />
@@ -157,8 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="res\icon_unknown_s.png" />
-    <Content Include="res\icon_book_s.png" />
-    <Content Include="res\icon_book_l.png" />
     <Content Include="res\icon_folder_s.png" />
     <Content Include="res\icon_folder_l.png" />
     <Content Include="res\icon_unknown_l.png" />
