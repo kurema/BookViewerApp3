@@ -27,13 +27,43 @@ namespace kurema.FileExplorerControl.Views
             {
                 fvm.Content = vm;
 
-                fvm.Content.PropertyChanged += (s, e) => {
+                fvm.Content.PropertyChanged += async (s, e) => {
                     if (e.PropertyName == nameof(ViewModels.ContentViewModel.Item))
                     {
                         address.SetAddress(fvm.Content.Item);
+
+                        await OpenTreeView(fvm.Content.Item);
                     }
                 };
             }
+        }
+
+        public async System.Threading.Tasks.Task OpenTreeView(ViewModels.FileItemViewModel fv)
+        {
+            var list = new Stack<ViewModels.FileItemViewModel>();
+            var cfv = fv;
+            while (cfv != null)
+            {
+                list.Push(cfv);
+                cfv = cfv.Parent;
+            }
+
+            var cnode = treeview.RootNodes;
+            TreeViewNode ctreenode = null;
+            foreach (var item in list)
+            {
+                ctreenode = cnode.FirstOrDefault(a => a.Content == item);
+                if (ctreenode == null) return;
+                if (ctreenode.Content is ViewModels.FileItemViewModel fvm && fvm.Children == null) await fvm.UpdateChildren();
+                ctreenode.IsExpanded = true;
+                cnode = ctreenode.Children;
+            }
+            //You can't item in single selection mode before Microsoft.UI.Xaml v2.2.190731001-prerelease.
+            //See...
+            //https://github.com/microsoft/microsoft-ui-xaml/pull/243
+            //if (ctreenode == null) return;
+            //treeview.SelectedNodes.Clear();
+            //treeview.SelectedNodes.Add(ctreenode);
         }
 
         public void SetTreeViewItem(params ViewModels.FileItemViewModel[] fileItemVMs)
