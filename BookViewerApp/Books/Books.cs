@@ -180,6 +180,11 @@ namespace BookViewerApp.Books
         public int Page { get; set; }
     }
 
+    public interface IPasswordPdovider
+    {
+        string Password { get; }
+    }
+
     public interface IDirectionProvider
     {
         Direction Direction { get; }

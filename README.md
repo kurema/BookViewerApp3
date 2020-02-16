@@ -42,9 +42,10 @@ Ver 2 failed.
 - - [x] ViewModels / Views
 - [x] iText
 - - [x] 右綴じ確認
-- [ ] Password
-- - [ ] UI
-- - [ ] File
+- [x] Password
+- - [x] UI
+- - [x] File
+- - [ ] Save password
 - [ ] Publish!
 - - [ ] Publish as beta.
 - - [ ] Publish as product.

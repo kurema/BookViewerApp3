@@ -26,6 +26,8 @@ namespace kurema.FileExplorerControl.Models
 
         public bool IsFolder => Content is StorageFolder;
 
+        public string Path => Content?.Path ?? "";
+
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
             if(Content is StorageFolder f)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace kurema.FileExplorerControl.ViewModels
 {
@@ -81,6 +82,13 @@ namespace kurema.FileExplorerControl.ViewModels
             return History != null && 0 <= target && target < History.Count;
         }
 
+        private System.Windows.Input.ICommand _RefreshCommand;
+        public ICommand RefreshCommand => _RefreshCommand = _RefreshCommand ?? new Helper.DelegateCommand(
+            async (a) => await Item?.UpdateChildren(),
+            (a) => Item != null
+            );
+
+
         private System.Windows.Input.ICommand _HistoryShiftCommand;
         public System.Windows.Input.ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
             (a) => {
@@ -130,6 +138,8 @@ namespace kurema.FileExplorerControl.ViewModels
                 History.Add(value);
                 SelectedHistory = History.Count - 1;
 
+                (RefreshCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
+
                 if (value.Children == null)
                 {
                     Task.Run(
@@ -142,5 +152,6 @@ namespace kurema.FileExplorerControl.ViewModels
 
             }
         }
+
     }
 }

@@ -126,5 +126,24 @@ namespace kurema.FileExplorerControl.Views
                 if (tvn.IsExpanded == false) tvn.IsExpanded = true;
             }
         }
+
+        private void address_FocusLostRequested(object sender, EventArgs e)
+        {
+            address.Opacity = 0;
+            address.IsHitTestVisible = false;
+            address_text.Opacity = 1;
+            address_text.IsHitTestVisible = true;
+            address_text.Focus(FocusState.Programmatic);
+
+            address_text.SelectAll();
+        }
+
+        private void address_text_FocusDisengaged(object sender, RoutedEventArgs e)
+        {
+            address.Opacity = 1;
+            address.IsHitTestVisible = true;
+            address_text.Opacity = 0;
+            address_text.IsHitTestVisible = false;
+        }
     }
 }

@@ -76,7 +76,19 @@ namespace BookViewerApp.Books
                 var book = new Books.Pdf.PdfBook();
                 try
                 {
-                    await book.Load(file);
+                    await book.Load(file, async (a) => {
+                        var dialog = new PasswordRequestContentDialog();
+                        var result = await dialog.ShowAsync();
+                        if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
+                        {
+                            return dialog.Password;
+                        }
+                        else
+                        {
+                            throw new Exception();
+                        }
+                    
+                    });
                 }
                 catch { return (null, false); }
                 if (book.PageCount <= 0) { return (null, false); }

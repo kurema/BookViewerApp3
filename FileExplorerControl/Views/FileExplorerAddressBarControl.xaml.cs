@@ -76,5 +76,11 @@ namespace kurema.FileExplorerControl.Views
             }
 
         }
+
+        public event EventHandler FocusLostRequested;
+        private void Button_ClickFocusOff(object sender, PointerRoutedEventArgs e)
+        {
+            FocusLostRequested?.Invoke(this, new EventArgs());
+        }
     }
 }

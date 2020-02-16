@@ -112,7 +112,17 @@
                 <SymbolIcon Symbol="Up"/>
             </Button>
 
-            <local:FileExplorerAddressBarControl x:Name="address" Grid.Column="3"/>
+            <Grid Grid.Column="3" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" BorderThickness="1" Margin="5" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" x:Name="address_text" Text="{Binding Content.Item.Path}" Opacity="0" LostFocus="address_text_FocusDisengaged"  VerticalAlignment="Center"/>
+                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="address_FocusLostRequested"/>
+                <Button Grid.Column="1" Command="{Binding Content.RefreshCommand}">
+                    <SymbolIcon Symbol="Refresh"/>
+                </Button>
+            </Grid>
         </Grid>
         
         <Rectangle Grid.Row="1" Grid.Column="0" Fill="{ThemeResource SystemControlAltHighAcrylicWindowBrush}"/>

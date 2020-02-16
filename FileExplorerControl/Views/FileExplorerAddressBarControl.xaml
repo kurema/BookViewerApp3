@@ -33,9 +33,21 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ScrollViewer  Margin="5" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Auto"  HorizontalScrollMode="Auto">
-        <StackPanel x:Name="stack" Orientation="Horizontal" Background="{ThemeResource TextBoxBackgroundThemeBrush}" 
-                    BorderBrush="{ThemeResource SystemChromeBlackLowColor}" BorderThickness="1">
-        </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Auto"  HorizontalScrollMode="Auto">
+        <Grid Background="{ThemeResource TextBoxBackgroundThemeBrush}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="stack" Orientation="Horizontal" 
+                        Grid.Column="0"
+                        Background="Transparent"
+                    >
+            </StackPanel>
+            <Rectangle  Grid.Column="1" HorizontalAlignment="Stretch" PointerPressed="Button_ClickFocusOff"
+                        Fill="Transparent"
+                        />
+        </Grid>
     </ScrollViewer>
 </UserControl>

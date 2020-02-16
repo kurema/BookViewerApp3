@@ -75,8 +75,6 @@ namespace BookViewerApp.ViewModels
         private SpreadPagePanel.ModeEnum _SpreadMode;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
-
-
         public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
         {
             this.Loading = true;

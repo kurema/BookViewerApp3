@@ -226,6 +226,9 @@
     <Compile Include="Views\NewTabPage.xaml.cs">
       <DependentUpon>NewTabPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PasswordRequestContentDialog.xaml.cs">
+      <DependentUpon>PasswordRequestContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -304,6 +307,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewTabPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PasswordRequestContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
