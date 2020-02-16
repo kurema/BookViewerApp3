@@ -54,7 +54,7 @@ namespace BookViewerApp.Books.Pdf
                 try
                 {
                     var pr = new iTextSharp.text.pdf.PdfReader(stream.AsStream());
-                    var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr).ToArray();
+                    var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr)?.ToArray();
                     var nd = pr.GetNamedDestination(false);
 
                     try
@@ -87,36 +87,80 @@ namespace BookViewerApp.Books.Pdf
                         }
                     }
                     catch { }
-                    
+
+                    var pageRefs = new List<iTextSharp.text.pdf.PRIndirectReference>();
+                    for (int i = 1; i <= pr.NumberOfPages; i++)
+                    {
+                        var oref = pr.GetPageOrigRef(i);
+                        pageRefs.Add(oref);
+                        if (oref == null)
+                        {
+
+                        }
+                    }
+
+                    int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
+                    {
+                        return pageRefs.FindIndex(a =>
+                        {
+                            return a.Number == pref.Number && a.Generation == pref.Generation;
+                        });
+                    }
+
+
                     TocItem[] GetTocs(Array list)
                     {
+                        if (list == null) return new TocItem[0];
+
                         var result = new List<TocItem>();
                         foreach (var item in list)
                         {
                             TocItem tocItem = new TocItem();
-                            if (item is System.Collections.Hashtable itemd)
+                            if (item is Hashtable itemd)
                             {
                                 if (itemd.ContainsKey("Named") && itemd["Named"] is string named)
                                 {
                                     if (nd.ContainsKey(named) && nd[named] is iTextSharp.text.pdf.PdfArray nditem)
                                     {
-                                        if (nditem.Length > 0 && nditem[0] is iTextSharp.text.pdf.PdfIndirectReference pir)
+                                        //Note
+                                        //http://www.pdf-tools.trustss.co.jp/Syntax/catalog.html#destinations
+
+                                        if (nditem.Length>0 && nditem[0] is iTextSharp.text.pdf.PdfIndirectReference pir)
                                         {
-                                            //I dont know hot to handle this...
+                                            //This pir thing is not page number. This is reference to the /Page.
+                                            //https://stackoverflow.com/questions/30855432/how-to-get-the-page-number-of-an-arbitrary-pdf-object
+                                            tocItem.Page = GetPage(pir);
                                         }
+                                    }else if (nd.ContainsKey(named) && nd[named] is iTextSharp.text.pdf.PdfDictionary ndDict)
+                                    {
+                                        //I dont have PDF file to test this...
+                                        continue;
                                     }
                                 }
-                                if (itemd.ContainsKey("Page"))
+                                else if (itemd.ContainsKey("Page"))
                                 {
-                                    var res = ((string)itemd["Page"]).Split(' ');
-                                    int page = 0;
-                                    if (int.TryParse(res[0], out page))
+                                    if (itemd["Page"] is string s)
                                     {
-                                        tocItem.Page = page - 1;
+                                        var res = s.Split(' ');
+                                        int page = 0;
+                                        if (res.Length > 0 && int.TryParse(res[0], out page))
+                                        {
+                                            tocItem.Page = page - 1;
+
+                                            //There may be the case where this is PdfIndirectReference... But I dont have one.
+                                        }
+                                        else
+                                        {
+                                            continue;
+                                        }
                                     }
-                                    else
+                                    else if (itemd["Page"] is iTextSharp.text.pdf.PdfArray nditem)
                                     {
-                                        continue;
+                                        //Does this really happen?
+                                        if (nditem.Length > 0 && nditem[0] is iTextSharp.text.pdf.PdfIndirectReference pir)
+                                        {
+                                            tocItem.Page = GetPage(pir);
+                                        }
                                     }
                                 }
                                 else { continue; }

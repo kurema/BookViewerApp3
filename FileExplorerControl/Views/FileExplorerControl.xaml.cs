@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using winui = Microsoft.UI.Xaml.Controls;
+
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
 namespace kurema.FileExplorerControl.Views
@@ -49,7 +51,7 @@ namespace kurema.FileExplorerControl.Views
             }
 
             var cnode = treeview.RootNodes;
-            TreeViewNode ctreenode = null;
+            winui.TreeViewNode ctreenode = null;
             foreach (var item in list)
             {
                 ctreenode = cnode.FirstOrDefault(a => a.Content == item);
@@ -59,18 +61,23 @@ namespace kurema.FileExplorerControl.Views
                 cnode = ctreenode.Children;
             }
             //You can't item in single selection mode before Microsoft.UI.Xaml v2.2.190731001-prerelease.
-            //See...
+            //See.
             //https://github.com/microsoft/microsoft-ui-xaml/pull/243
-            //if (ctreenode == null) return;
-            //treeview.SelectedNodes.Clear();
-            //treeview.SelectedNodes.Add(ctreenode);
+            //So treeview is replaced by WinUI version.
+
+            treeview.SelectedNode = ctreenode;
+
+            //Maybe you can scroll...
+            //See.
+            //https://stackoverflow.com/questions/52015723/uwp-winui-treeview-programatically-scroll-to-item
+            //But well... I dont like this.
         }
 
         public void SetTreeViewItem(params ViewModels.FileItemViewModel[] fileItemVMs)
         {
             foreach (var item in fileItemVMs)
             {
-                treeview.RootNodes.Add(new TreeViewNode()
+                treeview.RootNodes.Add(new winui.TreeViewNode()
                 {
                     IsExpanded = false,
                     Content = item,
@@ -79,7 +86,7 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        private async void TreeView_Expanding(TreeView sender, TreeViewExpandingEventArgs args)
+        private async void TreeView_Expanding(winui.TreeView sender, winui.TreeViewExpandingEventArgs args)
         {
             if (!args.Node.HasUnrealizedChildren) return;
 
@@ -93,7 +100,7 @@ namespace kurema.FileExplorerControl.Views
                     args.Node.Children.Clear();
                     foreach (var item in vm.Folders)
                     {
-                        args.Node.Children.Add(new TreeViewNode()
+                        args.Node.Children.Add(new winui.TreeViewNode()
                         {
                             IsExpanded = false,
                             Content = item,
@@ -111,9 +118,9 @@ namespace kurema.FileExplorerControl.Views
 
         public FileExplorerContentControl ContentControl => content;
 
-        private async void treeview_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
+        private async void treeview_ItemInvoked(winui.TreeView sender, winui.TreeViewItemInvokedEventArgs args)
         {
-            if (args.InvokedItem is TreeViewNode tvn && tvn.Content is ViewModels.FileItemViewModel vm)
+            if (args.InvokedItem is winui.TreeViewNode tvn && tvn.Content is ViewModels.FileItemViewModel vm)
             {
                 await content.SetFolder(vm);
                 if (tvn.IsExpanded == false) tvn.IsExpanded = true;

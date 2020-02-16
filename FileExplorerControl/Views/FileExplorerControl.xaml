@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:kurema.FileExplorerControl.ViewModels"
     
+    xmlns:ui="using:Microsoft.UI.Xaml.Controls"
+    
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -116,21 +118,21 @@
         <Rectangle Grid.Row="1" Grid.Column="0" Fill="{ThemeResource SystemControlAltHighAcrylicWindowBrush}"/>
         <Rectangle Grid.Row="1" Grid.Column="1" Fill="{ThemeResource SystemControlAltHighAcrylicElementBrush}"/>
         <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
-            <TreeView 
+            <ui:TreeView 
                 CanReorderItems="False" CanDragItems="False" x:Name="treeview"  SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding" ItemInvoked="treeview_ItemInvoked"
                   >
-                <TreeView.ItemTemplate>
+                <ui:TreeView.ItemTemplate>
                     <DataTemplate>
-                        <TreeViewItem HasUnrealizedChildren="True" >
+                        <ui:TreeViewItem HasUnrealizedChildren="True" >
                             <StackPanel Orientation="Horizontal">
                                 <Image Height="20" Margin="4"
                                 Source="{Binding Content.IconSmall}" Stretch="UniformToFill" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Content.Title}" VerticalAlignment="Center"/>
                             </StackPanel>
-                        </TreeViewItem>
+                        </ui:TreeViewItem>
                     </DataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
+                </ui:TreeView.ItemTemplate>
+            </ui:TreeView>
         </ScrollViewer>
         <local:FileExplorerContentControl x:Name="content" Grid.Row="1" Grid.Column="1" Margin="8,0,0,0"/>
         <controls:GridSplitter Grid.Row="1"
