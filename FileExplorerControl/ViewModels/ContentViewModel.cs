@@ -35,25 +35,31 @@ namespace kurema.FileExplorerControl.ViewModels
 
 
         private ContentStyles _ContentStyle=ContentStyles.Icon;
-        public ContentStyles ContentStyle { get => _ContentStyle; set => SetProperty(ref _ContentStyle, value); }
+        public ContentStyles ContentStyle { get => _ContentStyle; set
+            {
+                SetProperty(ref _ContentStyle, value);
+                (SetContentStyleCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
+                OnPropertyChanged(nameof(IsDataGrid));
+            }
+        }
 
         public enum ContentStyles
         {
             Detail, List, Icon ,IconWide
         }
 
-        public bool IsGridView
+        public bool IsDataGrid
         {
             get
             {
                 switch (ContentStyle)
                 {
                     case ContentStyles.Detail:
-                        return false;
+                        return true;
                     case ContentStyles.List:
                     case ContentStyles.Icon:
                     case ContentStyles.IconWide:
-                        return true;
+                        return false;
                     default:
                         return false;
                 }
@@ -99,6 +105,36 @@ namespace kurema.FileExplorerControl.ViewModels
                 return SelectedHistoryWithinRange(this.SelectedHistory + int.Parse(a.ToString()));
             }
             );
+
+        private System.Windows.Input.ICommand _SetContentStyleCommand;
+
+        public System.Windows.Input.ICommand SetContentStyleCommand => _SetContentStyleCommand = _SetContentStyleCommand ?? new Helper.DelegateCommand(
+            a =>
+            {
+                var atxt = a.ToString();
+                foreach (ContentStyles item in Enum.GetValues(typeof(ContentStyles)))
+                {
+                    if (atxt == Enum.GetName(typeof(ContentStyles), item)){
+                        this.ContentStyle = item;
+                        return;
+                    }
+                }
+            },
+            a =>
+            {
+                if (a?.ToString() == this.ContentStyle.ToString()) return false;
+                var atxt = a?.ToString();
+                foreach (ContentStyles item in Enum.GetValues(typeof(ContentStyles)))
+                {
+                    if (atxt == Enum.GetName(typeof(ContentStyles), item))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            );
+
 
         private System.Windows.Input.ICommand _GoUpCommand;
         public System.Windows.Input.ICommand GoUpCommand => _GoUpCommand = _GoUpCommand ?? new Helper.DelegateCommand(

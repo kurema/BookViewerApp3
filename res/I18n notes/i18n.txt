@@ -1,0 +1,9 @@
+PDF
+
+Password
+[jp]
+パスワード
+「」は保護されています。文章を開くパスワードを入力してください。
+[en]
+Password
+'' is protected. Please enter a Document Open Password.

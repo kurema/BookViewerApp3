@@ -7,15 +7,18 @@ namespace kurema.FileExplorerControl.Models
 {
     public class IconProviderDefault : IIconProvider
     {
-        public Func<ImageSource> DefaultIconSmall => () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_unknown_s.png"));
+        public Func<ImageSource> DefaultIconSmall => () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/unknown_s.png"));
 
-        public Func<ImageSource> DefaultIconLarge => () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_unknown_l.png"));
+        public Func<ImageSource> DefaultIconLarge => () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/unknown_l.png"));
+
+        private static Windows.UI.Xaml.Media.Imaging.BitmapImage IconSmallCache;
+        private static Windows.UI.Xaml.Media.Imaging.BitmapImage IconLargeCache;
 
         public Func<ImageSource> GetIconSmall(IFileItem item)
         {
             if (item?.IsFolder == true)
             {
-                return () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_folder_s.png"));
+                return () => IconSmallCache = IconSmallCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png"));
             }
             return null;
         }
@@ -24,7 +27,7 @@ namespace kurema.FileExplorerControl.Models
         {
             if (item?.IsFolder == true)
             {
-                return () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/icon_folder_l.png"));
+                return () => IconLargeCache = IconLargeCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png"));
             }
             return null;
         }

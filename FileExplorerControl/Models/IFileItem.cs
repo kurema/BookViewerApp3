@@ -15,6 +15,7 @@ namespace kurema.FileExplorerControl.Models
         void Open();
 
         DateTimeOffset DateCreated { get; }
+        Task<ulong?> GetSizeAsync();
 
         bool IsFolder { get; }
 

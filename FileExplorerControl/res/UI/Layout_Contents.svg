@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
+	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
+]>
+<svg  version="1.0" id="Layer_1" xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" width="20" height="20"
+	 viewBox="-2 -2 13.25 13.25" overflow="visible" enable-background="new 0 0 11.25 11.25" xml:space="preserve">
+<g>
+	<g>
+		<path d="M0,0v5.25h5.25V0H0z M4.5,4.5H0.75V0.75H4.5V4.5z"/>
+	</g>
+</g>
+<g>
+	<g>
+		<path d="M0,6v5.25h5.25V6H0z M4.5,10.5H0.75V6.75H4.5V10.5z"/>
+	</g>
+</g>
+<rect x="6" width="5.25" height="0.75"/>
+<rect x="6" y="1.5" width="5.25" height="0.75"/>
+<rect x="6" y="4.5" width="5.25" height="0.75"/>
+<rect x="6" y="3" width="5.25" height="0.75"/>
+<rect x="6" y="6" width="5.25" height="0.75"/>
+<rect x="6" y="7.5" width="5.25" height="0.75"/>
+<rect x="6" y="10.5" width="5.25" height="0.75"/>
+<rect x="6" y="9" width="5.25" height="0.75"/>
+</svg>

@@ -28,6 +28,7 @@ namespace kurema.FileExplorerControl.Models
 
         public string Path => Content?.Path ?? "";
 
+
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
             if(Content is StorageFolder f)
@@ -65,5 +66,21 @@ namespace kurema.FileExplorerControl.Models
             return null;
         }
 
+        public async Task<ulong?> GetSizeAsync()
+        {
+            if (IsFolder)
+            {
+                return null;
+            }
+            else if (Content is StorageFile f)
+            {
+                var prop = await f.GetBasicPropertiesAsync();
+                return prop.Size;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -22,13 +22,8 @@ namespace kurema.FileExplorerControl.Views
         public FileExplorerContentControl()
         {
             this.InitializeComponent();
-
-            if (this.DataContext is ViewModels.ContentViewModel vm)
-            {
-                vm.ContentStyle = ViewModels.ContentViewModel.ContentStyles.Icon;
-            }
-
         }
+
 
         public async Task SetFolder(ViewModels.FileItemViewModel folder)
         {
@@ -41,9 +36,44 @@ namespace kurema.FileExplorerControl.Views
 
         public TypedEventHandler<FileExplorerContentControl, ViewModels.FileItemViewModel> FileOpenedEventHandler;
 
-        private async void Button_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private void UserControl_DataContextChanged(Windows.UI.Xaml.FrameworkElement sender, Windows.UI.Xaml.DataContextChangedEventArgs args)
         {
-            if((sender as Button)?.DataContext is ViewModels.FileItemViewModel vm1)
+            if (args.NewValue is ViewModels.ContentViewModel vm)
+            {
+                vm.PropertyChanged += (s, e) =>
+                {
+                    if (s != this.DataContext) return;
+                    if (e.PropertyName == nameof(vm.ContentStyle))
+                    {
+                        if (items.ItemTemplateSelector is FileExplorerContentDataSelector fc)
+                        {
+                            fc.ContentStyle = vm.ContentStyle;
+                            if (vm?.RefreshCommand?.CanExecute(null) == true) vm.RefreshCommand.Execute(null);
+                        }
+                    }
+                };
+            }
+        }
+
+        private async void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(e.AddedItems.Count>0 && e.AddedItems[0] is ViewModels.FileItemViewModel vm1)
+            {
+                if (vm1.IsFolder)
+                {
+                    await SetFolder(vm1);
+                }
+                else
+                {
+                    FileOpenedEventHandler?.Invoke(this, vm1);
+                    (sender as Microsoft.Toolkit.Uwp.UI.Controls.DataGrid).SelectedItem = null;
+                }
+            }
+        }
+
+        private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if ((sender as Button)?.DataContext is ViewModels.FileItemViewModel vm1)
             {
                 if (vm1.IsFolder)
                 {
@@ -55,6 +85,7 @@ namespace kurema.FileExplorerControl.Views
                 }
 
             }
+
         }
     }
 }

@@ -10,8 +10,6 @@ namespace kurema.FileExplorerControl.Views
 {
     public class FileExplorerContentPanel : Panel
     {
-        public ViewModels.ContentViewModel.ContentStyles ContentStyle { get; set; }
-
         protected override Size MeasureOverride(Size availableSize)
         {
             if (Children.Count == 0)

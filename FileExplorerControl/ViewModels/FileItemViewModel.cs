@@ -49,6 +49,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(nameof(Path));
                 OnPropertyChanged(nameof(LastModified));
                 OnPropertyChanged(nameof(IsFolder));
+                OnPropertyChanged(nameof(Size));
             }
         }
 
@@ -121,6 +122,42 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public bool IsFolder => _Content?.IsFolder ?? false;
 
+
+        private ulong? _Size;
+        public ulong? Size
+        {
+            get
+            {
+                if (_Size != null) return _Size;
+                if (_Content == null) return null;
+                if (this.IsFolder)
+                {
+                    if (Children == null) return null;
+                    ulong result = 0;
+                    foreach(var item in Children)
+                    {
+                        if (item.Size == null) return null;
+                        else result += item.Size ?? 0;
+                    }
+                    return result;
+                }
+                else
+                {
+                    //Task.Run(async () =>
+                    //{
+                    //    _Size = await _Content.GetSizeAsync();
+                    //    OnPropertyChanged(nameof(Size));
+                    //});
+                    UpdateSize();
+                    return null;
+                }
+            }
+        }
+        private async void UpdateSize()
+        {
+            _Size = await _Content.GetSizeAsync();
+            OnPropertyChanged(nameof(Size));
+        }
 
         private ImageSource _IconSmall;
         public ImageSource IconSmall { get {

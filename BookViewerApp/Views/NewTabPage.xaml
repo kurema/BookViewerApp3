@@ -37,10 +37,10 @@
                     <SymbolIcon Symbol="OpenFile"/>
                 </Button>
                 <Button Click="Button_Click_GoToBrowser">
-                    <SymbolIcon Symbol="World"/>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB41;"/>
                 </Button>
                 <Button Click="Button_Click_GoToExplorer">
-                    <SymbolIcon Symbol="Folder"/>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC50;"/>
                 </Button>
                 <Button HorizontalAlignment="Right" Background="Transparent"
                         Click="Button_Click_GoToSetting">
