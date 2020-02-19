@@ -145,5 +145,49 @@ namespace kurema.FileExplorerControl.Views
             address_text.Opacity = 0;
             address_text.IsHitTestVisible = false;
         }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton rd)
+            {
+                if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+                {
+                    fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(rd.Tag.ToString(), fevm.Content.Item.Order?.KeyIsAscending ?? true);
+                }
+            }
+        }
+
+        private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton rd)
+            {
+                if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item != null)
+                {
+                    fevm.Content.Item.Order = new ViewModels.FileItemViewModel.OrderStatus();
+                }
+            }
+        }
+
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        {
+            if(sender is ToggleButton tb)
+            {
+                if(this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+                {
+                    fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() == "Ascending");
+                }
+            }
+        }
+
+        private void CheckBox_Unchecked_1(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton tb)
+            {
+                if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+                {
+                    fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() != "Ascending");
+                }
+            }
+        }
     }
 }

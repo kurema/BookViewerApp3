@@ -21,6 +21,7 @@
 
     <UserControl.Resources>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
+        <vc:EqualConverter x:Key="vc_eq"/>
     </UserControl.Resources>
 
     <Grid>
@@ -211,6 +212,21 @@
 
                             </Grid>
                             <Slider Value="{Binding Content.IconSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Content.IconSizeVariable}" Minimum="50" Maximum="150"/>
+                            <Button>
+                                <SymbolIcon Symbol="Sort"/>
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <StackPanel>
+                                            <RadioButton Tag="Title" Content="Title" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" IsChecked="{Binding Content.Item.Order.Key,Converter={StaticResource vc_eq},ConverterParameter=Title,Mode=OneWay}"/>
+                                            <RadioButton Tag="Date" Content="Date" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" IsChecked="{Binding Content.Item.Order.Key,Converter={StaticResource vc_eq},ConverterParameter=Date,Mode=OneWay}"/>
+                                            <RadioButton Tag="Size" Content="Size" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" IsChecked="{Binding Content.Item.Order.Key,Converter={StaticResource vc_eq},ConverterParameter=Size,Mode=OneWay}"/>
+                                            <MenuFlyoutSeparator/>
+                                            <CheckBox Tag="Ascending" Content="Ascending" Checked="CheckBox_Checked_1"  Unchecked="CheckBox_Unchecked_1"  IsChecked="{Binding Content.Item.Order.KeyIsAscending,Mode=OneWay}"/>
+                                            <CheckBox Tag="Descending" Content="Descending" Checked="CheckBox_Checked_1"  Unchecked="CheckBox_Unchecked_1"  IsChecked="{Binding Content.Item.Order.KeyIsAscending,Converter={StaticResource vc_b2s},ConverterParameter=False:True,Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>

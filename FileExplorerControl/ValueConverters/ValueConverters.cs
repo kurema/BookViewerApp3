@@ -48,6 +48,26 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
         }
     }
 
+    public class EqualConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return value?.ToString() == parameter?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            if (value is bool b && b)
+            {
+                return parameter;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
+
     public class IsZeroValueConveter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
