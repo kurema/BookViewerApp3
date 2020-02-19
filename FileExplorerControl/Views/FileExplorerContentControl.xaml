@@ -26,7 +26,7 @@
     <UserControl.Resources>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:UlongToHumanReadableSizeConverter x:Key="vc_u2hrs"/>
-        <vc:OrderToDataGridSortDirection x:Key="vc_o2gsd"/>
+        <vc:OrderToDataGridSortDirectionConverter x:Key="vc_o2gsd"/>
     </UserControl.Resources>
 
 

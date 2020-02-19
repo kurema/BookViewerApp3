@@ -43,6 +43,24 @@ namespace kurema.FileExplorerControl.Views
         {
             if (args.NewValue is ViewModels.ContentViewModel vm)
             {
+                System.ComponentModel.PropertyChangedEventHandler OrderChange = (s, e) =>
+                      {
+                          if (e.PropertyName == nameof(vm.Item.Order))
+                          {
+                              foreach (var column in dataGrid.Columns)
+                              {
+                                  if (vm.Item.Order.Key == column.Tag as string && !string.IsNullOrEmpty(column.Tag as string))
+                                  {
+                                      column.SortDirection = vm.Item.Order.KeyIsAscending ? Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Ascending : Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Descending;
+                                  }
+                                  else
+                                  {
+                                      column.SortDirection = null;
+                                  }
+                              }
+                          }
+                      };
+
                 vm.PropertyChanged += (s, e) =>
                 {
                     if (s != this.DataContext) return;
@@ -54,29 +72,12 @@ namespace kurema.FileExplorerControl.Views
                             if (vm?.RefreshCommand?.CanExecute(null) == true) vm.RefreshCommand.Execute(null);
                         }
                     }
-                };
-
-                if (vm.Item != null)
-                {
-                    vm.Item.PropertyChanged += (s, e) =>
+                    if (e.PropertyName == nameof(vm.Item))
                     {
-                        if(e.PropertyName == nameof(vm.Item.Order))
-                        {
-                            foreach (var column in dataGrid.Columns)
-                            {
-                                if (vm.Item.Order.Key == column.Tag as string && !string.IsNullOrEmpty(column.Tag as string))
-                                {
-                                    column.SortDirection = vm.Item.Order.KeyIsAscending ? Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Ascending : Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Descending;
-                                }
-                                else
-                                {
-                                    column.SortDirection = null;
-                                }
-                            }
-
-                        }
-                    };
-                }
+                        vm.Item.PropertyChanged += OrderChange;
+                    }
+                };
+                vm.SetDefaultOrderSelectors();
             }
         }
 

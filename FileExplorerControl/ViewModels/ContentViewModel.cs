@@ -184,7 +184,6 @@ namespace kurema.FileExplorerControl.ViewModels
             }
             );
 
-
         public FileItemViewModel Item
         {
             get => SelectedHistoryWithinRange(SelectedHistory) ? History[SelectedHistory] : null;
@@ -212,5 +211,122 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
+
+        public void SetDefaultOrderSelectors()
+        {
+            OrderSelectors = new ObservableCollection<OrderSelector>(new[] {
+            new OrderSelector()
+            {
+                Key="Title",Title="Name",Parent=this
+            },
+            new OrderSelector()
+            {
+                Key="Date",Title="Date",Parent=this
+            },
+            new OrderSelector()
+            {
+                Key="Size",Title="Size",Parent=this
+            },
+        });
+        }
+
+        private ObservableCollection<OrderSelector> _OrderSelectors;
+        public ObservableCollection<OrderSelector> OrderSelectors { get => _OrderSelectors; set => SetProperty(ref _OrderSelectors, value); }
+
+        public class OrderSelector:INotifyPropertyChanged
+        {
+
+            #region INotifyPropertyChanged
+            protected bool SetProperty<T>(ref T backingStore, T value,
+                [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
+                System.Action onChanged = null)
+            {
+                if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+                    return false;
+
+                backingStore = value;
+                onChanged?.Invoke();
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+            protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+            {
+                PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+            #endregion
+
+            private string _Key;
+            public string Key { get => _Key; set => SetProperty(ref _Key, value); }
+
+
+            private string _Title;
+            public string Title { get => _Title; set => SetProperty(ref _Title, value); }
+
+            public ContentViewModel Parent { get => parent; set
+                {
+                    SetProperty(ref parent, value);
+
+                    if (parent.Item != null)
+                        parent.Item.PropertyChanged += (s, e) =>
+                        {
+                            if (e.PropertyName == nameof(parent.Item.Order))
+                            {
+                                OnPropertyChanged(nameof(DirectionGlyph));
+                            }
+                        };
+
+                    if (parent != null)
+                        parent.PropertyChanged += (s, e) =>
+                        {
+                            if (e.PropertyName == nameof(parent.Item))
+                            {
+                                OnPropertyChanged(nameof(DirectionGlyph));
+
+                                if (parent.Item != null)
+                                    parent.Item.PropertyChanged += (s2, e2) =>
+                                    {
+                                        if (e.PropertyName == nameof(parent.Item.Order))
+                                        {
+                                            OnPropertyChanged(nameof(DirectionGlyph));
+                                        }
+                                    };
+                            }
+                        };
+                }
+            }
+
+            private ICommand _ShiftCommand;
+            private ContentViewModel parent;
+
+            public ICommand ShiftCommand => _ShiftCommand = _ShiftCommand ?? new Helper.DelegateCommand(
+                a =>{
+                    if (Parent?.Item?.Order == null) return;
+                    Parent.Item.Order = Parent.Item.Order.GetShiftedBasicOrder(this.Key);
+                }
+                );
+
+            public string DirectionGlyph { get =>
+                    new Helper.ValueConverters.OrderToDirectionFontIconGlyphConverter().Convert(Parent.Item.Order, typeof(string), this.Key, null) as string;
+                    }
+
+
+            //private Windows.UI.Xaml.Data.Binding _GlyphBindig;
+            //public Windows.UI.Xaml.Data.Binding GlyphBindig
+            //{
+            //    get
+            //    {
+            //        if (_GlyphBindig == null) return _GlyphBindig;
+            //        var result = new Windows.UI.Xaml.Data.Binding();
+            //        result.Path = new Windows.UI.Xaml.PropertyPath("Parent.Item.Order");
+            //        result.Converter = new Helper.ValueConverters.OrderToDirectionFontIconGlyphConverter();
+            //        result.ConverterParameter = this.Key;
+            //        return _GlyphBindig = result;
+            //    }
+            //}
+
+
+
+        }
     }
 }

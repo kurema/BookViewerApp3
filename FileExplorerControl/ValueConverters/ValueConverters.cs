@@ -35,6 +35,10 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
             {
                 return b ? text[0] : text[1];
             }
+            else if (value is null && text.Length < 3)
+            {
+                return text[2];
+            }
             else
             {
                 throw new ArgumentException();
@@ -85,13 +89,34 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
         }
     }
 
-    public class OrderToDataGridSortDirection : IValueConverter
+    public class OrderToDirectionFontIconGlyphConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (String.IsNullOrEmpty(parameter as string)) return "";
+            var key = parameter.ToString();
+            if (value is ViewModels.FileItemViewModel.OrderStatus status)
+            {
+                if (status.Key == key)
+                {
+                    return status.KeyIsAscending ? "\uE70E" : "\uE70D";
+                }
+            }
+            return "";
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class OrderToDataGridSortDirectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if(value is ViewModels.FileItemViewModel.OrderStatus status)
             {
-                var key = parameter.ToString();
+                var key = parameter?.ToString();
                 if (status.Key == key)
                 {
                     return status.KeyIsAscending ? Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Ascending : Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Descending;
