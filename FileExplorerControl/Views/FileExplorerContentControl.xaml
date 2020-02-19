@@ -16,6 +16,8 @@
     xmlns:vc="using:kurema.FileExplorerControl.Helper.ValueConverters"
     
     DataContextChanged="UserControl_DataContextChanged"
+    
+    x:Name="root"
     >
     <UserControl.DataContext>
         <vm:ContentViewModel />
@@ -24,6 +26,7 @@
     <UserControl.Resources>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:UlongToHumanReadableSizeConverter x:Key="vc_u2hrs"/>
+        <vc:OrderToDataGridSortDirection x:Key="vc_o2gsd"/>
     </UserControl.Resources>
 
 
@@ -37,6 +40,10 @@
                            AutoGenerateColumns="False"
                            SelectionChanged="DataGrid_SelectionChanged"
                            SelectionMode="Single"
+                           
+                           Sorting="DataGrid_Sorting"
+                           
+                           x:Name="dataGrid"
                            >
             <controls:DataGrid.Columns>
                 <controls:DataGridTemplateColumn>
@@ -46,9 +53,9 @@
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
-                <controls:DataGridTextColumn Header="Name" Binding="{Binding Title}" CanUserSort="True"/>
-                <controls:DataGridTextColumn Header="Date" Binding="{Binding LastModified}" CanUserSort="True" />
-                <controls:DataGridTextColumn Header="Size" Binding="{Binding Size,Mode=OneWay,Converter={StaticResource vc_u2hrs}}" CanUserSort="True" />
+                <controls:DataGridTextColumn Tag="Title" Header="Name" Binding="{Binding Title}" CanUserSort="True" />
+                <controls:DataGridTextColumn Tag="Date" Header="Date" Binding="{Binding LastModified}" CanUserSort="True" />
+                <controls:DataGridTextColumn Tag="Size" Header="Size" Binding="{Binding Size,Mode=OneWay,Converter={StaticResource vc_u2hrs}}" CanUserSort="True" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
@@ -71,8 +78,8 @@
                         <local:FileExplorerContentDataSelector.TemplateIcon>
                             <DataTemplate>
                                 <Button Margin="5" Tapped="Button_Tapped" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                                    <StackPanel MaxWidth="200">
-                                        <Image Height="100" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                    <StackPanel MaxWidth="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" MinWidth="100">
+                                        <Image Height="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
                                         <TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center" TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Button>
@@ -86,7 +93,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Height="75" Grid.Column="0" Source="{Binding IconLarge}" HorizontalAlignment="Stretch" />
+                                        <Image Height="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" Grid.Column="0" Source="{Binding IconLarge}" HorizontalAlignment="Stretch" />
                                         <TextBlock Text="{Binding Title}" Grid.Column="1" VerticalAlignment="Top" Margin="10" />
                                     </Grid>
                                 </Button>

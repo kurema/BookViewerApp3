@@ -40,6 +40,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 SetProperty(ref _ContentStyle, value);
                 (SetContentStyleCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
                 OnPropertyChanged(nameof(IsDataGrid));
+                OnPropertyChanged(nameof(IconSizeVariable));
             }
         }
 
@@ -65,6 +66,28 @@ namespace kurema.FileExplorerControl.ViewModels
                 }
             }
         }
+
+        public bool IconSizeVariable
+        {
+            get
+            {
+                switch (ContentStyle)
+                {
+                    case ContentStyles.Detail:
+                    case ContentStyles.List:
+                        return false;
+                    case ContentStyles.Icon:
+                    case ContentStyles.IconWide:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
+
+        private double _IconSize=75.0;
+        public double IconSize { get => _IconSize; set => SetProperty(ref _IconSize, value); }
 
         public ObservableCollection<FileItemViewModel> History { get; } = new ObservableCollection<FileItemViewModel>();
 

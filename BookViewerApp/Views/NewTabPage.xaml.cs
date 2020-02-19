@@ -40,15 +40,24 @@ namespace BookViewerApp
                 homepage = h;
             }
 
-            if ((this.XamlRoot?.Content as Frame).Content is TabPage tab)
+            void OpenBrowser(TabPage tabPage)
             {
                 var item = (this.Parent as Frame)?.Parent as Microsoft.UI.Xaml.Controls.TabViewItem;
-                UIHelper.OpenBrowser(this.Frame, homepage, (a) => { tab.OpenTabWeb(a); }, (b) => { tab.OpenTabBook(b); }, (c) =>
+                UIHelper.OpenBrowser(this.Frame, homepage, (a) => { tabPage.OpenTabWeb(a); }, (b) => { tabPage.OpenTabBook(b); }, (c) =>
                 {
                     {
                         if (item != null) item.Header = c;
                     }
                 });
+            }
+
+            if ((this.XamlRoot?.Content as Frame)?.Content is TabPage tab)
+            {
+                OpenBrowser(tab);
+            }
+            else if (this.XamlRoot.Content is TabPage tab2)
+            {
+                OpenBrowser(tab2);
             }
             else
             {

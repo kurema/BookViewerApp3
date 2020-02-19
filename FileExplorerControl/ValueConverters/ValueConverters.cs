@@ -65,6 +65,34 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
         }
     }
 
+    public class OrderToDataGridSortDirection : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value is ViewModels.FileItemViewModel.OrderStatus status)
+            {
+                var key = parameter.ToString();
+                if (status.Key == key)
+                {
+                    return status.KeyIsAscending ? Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Ascending : Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Descending;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class UlongToHumanReadableSizeConverter : IValueConverter
     {
         public string GetBytesReadable(long i)

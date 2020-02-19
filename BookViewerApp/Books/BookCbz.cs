@@ -167,9 +167,9 @@ namespace BookViewerApp.Books.Cbz
             return await new Image.ImagePageStream(cache).GetBitmapAsync();
         }
 
-        public async Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync()
         {
-            return false;
+            return Task.FromResult(false);
         }
 
         public async Task SaveImageAsync(StorageFile file,uint width)
