@@ -15,7 +15,8 @@ using Windows.UI.Xaml.Navigation;
 
 using System.ComponentModel;
 using System.Threading.Tasks;
-
+using BookViewerApp.ViewModels;
+using BookViewerApp.Storages;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -27,9 +28,9 @@ namespace BookViewerApp
         public delegate void ItemClickedEventHandler(object sender, ItemClickedEventArgs e);
         public class ItemClickedEventArgs : EventArgs
         {
-            public BookShelfViewModels.IItemViewModel SelectedItem;
+            public IItemViewModel SelectedItem;
         }
-        public void OnItemClicked (BookShelfViewModels.IItemViewModel vm)
+        public void OnItemClicked (IItemViewModel vm)
         {
             ItemClicked?.Invoke(this, new ItemClickedEventArgs() { SelectedItem = vm });
         }
@@ -42,7 +43,7 @@ namespace BookViewerApp
             SetBookShelfItemSize((double)SettingStorage.GetValue("TileWidth"), (double)SettingStorage.GetValue("TileHeight"));
         }
 
-        public void SetSource(params BookShelfViewModels.BookContainerViewModel[] vms)
+        public void SetSource(params BookContainerViewModel[] vms)
         {
             BookShelfItemsSource.Source = vms;
         }
@@ -56,9 +57,9 @@ namespace BookViewerApp
 
         private void GridViewMain_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (e.ClickedItem is BookShelfViewModels.IItemViewModel)
+            if (e.ClickedItem is IItemViewModel)
             {
-                OnItemClicked(e.ClickedItem as BookShelfViewModels.IItemViewModel);
+                OnItemClicked(e.ClickedItem as IItemViewModel);
             }
         }
     }
@@ -72,11 +73,11 @@ namespace BookViewerApp
 
             protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
             {
-                if (item is BookShelfViewModels.BookContainerViewModel)
+                if (item is BookContainerViewModel)
                 {
                     return ContainerTemplate;
                 }
-                else if (item is BookShelfViewModels.BookShelfBookViewModel)
+                else if (item is BookShelfBookViewModel)
                 {
                     return BookTemplate;
                 }

@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 using Windows.UI;
 
 using BookViewerApp.Helper;
+using BookViewerApp.Managers;
+using BookViewerApp.Storages;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -89,7 +91,7 @@ namespace BookViewerApp
 
         private async void AppBarButton_OpenFile(object sender, RoutedEventArgs e)
         {
-            var file = await Books.BookManager.PickFile();
+            var file = await BookManager.PickFile();
             if (file != null) Open(file);
         }
 
@@ -103,7 +105,7 @@ namespace BookViewerApp
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed) book, this.flipView);
         }
 
-        private void SetBookShelfModel(BookShelfViewModels.BookShelfBookViewModel viewModel)
+        private void SetBookShelfModel(BookShelfBookViewModel viewModel)
         {
             if (Binding != null)
                 Binding.AsBookShelfBook = viewModel;
@@ -163,7 +165,7 @@ namespace BookViewerApp
         public struct BookAndParentNavigationParamater
         {
             public Books.IBookFixed BookViewerModel;
-            public BookShelfViewModels.BookShelfBookViewModel BookShelfModel;
+            public BookShelfBookViewModel BookShelfModel;
             public string Title;
         }
 

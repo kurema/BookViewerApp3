@@ -77,7 +77,7 @@ namespace BookViewerApp.ValueConverters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-            ThumbnailManager.SetToImageSourceNoWait(value.ToString(), result);
+            Managers.ThumbnailManager.SetToImageSourceNoWait(value.ToString(), result);
             return result;
         }
 

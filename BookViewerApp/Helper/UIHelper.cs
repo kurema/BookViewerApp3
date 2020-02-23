@@ -25,6 +25,8 @@ using Windows.UI.WindowManagement;
 
 using System.Threading.Tasks;
 using BookViewerApp.Helper;
+using BookViewerApp.Managers;
+using BookViewerApp.Storages;
 
 namespace BookViewerApp.Helper
 {
@@ -60,7 +62,7 @@ namespace BookViewerApp.Helper
                 content.Control.Control.UnviewableContentIdentified += async (s, e) =>
                 {
                     string extension = "";
-                    foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
+                    foreach (var ext in BookManager.AvailableExtensionsArchive)
                     {
                         if (Path.GetExtension(e.Uri.ToString()).ToLower() == ext)
                         {

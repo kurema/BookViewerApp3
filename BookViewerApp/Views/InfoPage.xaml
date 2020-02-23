@@ -5,7 +5,7 @@
     xmlns:local="using:BookViewerApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:BookViewerApp.InfoPageViewModel"
+    xmlns:vm="using:BookViewerApp.ViewModels"
     mc:Ignorable="d"
     Background="#FF303030"
     >
@@ -58,7 +58,7 @@
         <SolidColorBrush x:Key="BrushLightGreen" Color="#8BC34A"/>
     </Page.Resources>
     <Page.DataContext>
-        <vm:Info/>
+        <vm:InfoPageViewModel/>
     </Page.DataContext>
     <ScrollViewer  VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
         <StackPanel>

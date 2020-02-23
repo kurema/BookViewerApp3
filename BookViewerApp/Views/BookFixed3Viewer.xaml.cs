@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using Windows.UI;
 
 using BookViewerApp.Helper;
+using BookViewerApp.Managers;
+using BookViewerApp.Storages;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -110,7 +112,7 @@ namespace BookViewerApp
         public struct BookAndParentNavigationParamater
         {
             public Books.IBookFixed BookViewerModel;
-            public BookShelfViewModels.BookShelfBookViewModel BookShelfModel;
+            public BookShelfBookViewModel BookShelfModel;
             public string Title;
         }
 
@@ -281,7 +283,7 @@ namespace BookViewerApp
 
         private async void MenuFlyoutItem_Click_OpenFile(object sender, RoutedEventArgs e)
         {
-            var file = await Books.BookManager.PickFile();
+            var file = await BookManager.PickFile();
             if (file != null) Binding?.Initialize(file, this.flipView);
         }
     }

@@ -8,7 +8,7 @@ using Windows.Graphics.Imaging;
 
 using BookViewerApp.Helper;
 
-namespace BookViewerApp
+namespace BookViewerApp.Managers
 {
     public static class ThumbnailManager
     {

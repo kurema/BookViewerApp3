@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BookViewerApp.Managers;
+using BookViewerApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,12 +85,12 @@ namespace BookViewerApp
 
         private async void BodyControl_ItemClicked(object sender, BookShelfControl.ItemClickedEventArgs e)
         {
-            if (e.SelectedItem is BookShelfViewModels.BookShelfBookViewModel)
+            if (e.SelectedItem is BookShelfBookViewModel)
             {
-                var book = await (e.SelectedItem as BookShelfViewModels.BookShelfBookViewModel).TryGetBook();
+                var book = await (e.SelectedItem as BookShelfBookViewModel).TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfViewModels.BookShelfBookViewModel,Title= (e.SelectedItem as BookShelfViewModels.BookShelfBookViewModel).Title };
+                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfBookViewModel, Title= (e.SelectedItem as BookShelfBookViewModel).Title };
                     this.Frame.Navigate(typeof(BookFixed2Viewer), param);
                 }
             }
@@ -177,7 +179,7 @@ namespace BookViewerApp
         private async void AppBarButton_Click_OpenLocalFile(object sender, RoutedEventArgs e)
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
+            foreach (var ext in BookManager.AvailableExtensionsArchive)
             {
                 picker.FileTypeFilter.Add(ext);
             }
@@ -190,7 +192,7 @@ namespace BookViewerApp
         private async void AppBarButton_Click_OpenLocalFile3(object sender, RoutedEventArgs e)
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
+            foreach (var ext in BookManager.AvailableExtensionsArchive)
             {
                 picker.FileTypeFilter.Add(ext);
             }

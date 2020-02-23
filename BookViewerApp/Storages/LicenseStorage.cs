@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 
-namespace BookViewerApp
+namespace BookViewerApp.Storages
 {
     public class LicenseStorage
     {

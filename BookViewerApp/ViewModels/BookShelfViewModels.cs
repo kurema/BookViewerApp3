@@ -11,8 +11,9 @@ using Windows.UI.Xaml.Data;
 using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
+using BookViewerApp.Storages;
 
-namespace BookViewerApp.BookShelfViewModels
+namespace BookViewerApp.ViewModels
 {
     public class BookShelfViewModel : INotifyPropertyChanged, IEnumerable<BookContainerViewModel>
     {
@@ -41,7 +42,9 @@ namespace BookViewerApp.BookShelfViewModels
             set { _Title = value; OnPropertyChanged(nameof(Title)); }
         }
         private string _Title;
-        public string TitleID { get
+        public string TitleID
+        {
+            get
             {
                 if (Containers.Count > 0) return Containers[0].TitleID;
                 else return null;
@@ -76,7 +79,7 @@ namespace BookViewerApp.BookShelfViewModels
             set
             {
                 _Containers.CollectionChanged -= _Containers_CollectionChanged;
-                foreach(var item in _Containers)
+                foreach (var item in _Containers)
                 {
                     item.PropertyChanged -= Item_PropertyChanged;
                 }
@@ -94,7 +97,7 @@ namespace BookViewerApp.BookShelfViewModels
 
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(TitleID))
+            if (e.PropertyName == nameof(TitleID))
             {
                 OnPropertyChanged(nameof(TitleID));
             }
@@ -105,14 +108,17 @@ namespace BookViewerApp.BookShelfViewModels
             OnPropertyChanged(nameof(TitleID));
         }
     }
+}
 
+namespace BookViewerApp.ViewModels
+{
     public class BookContainerViewModel : INotifyPropertyChanged, IEnumerable<IItemViewModel>, IItemViewModel
     {
-        public BookContainerViewModel(string Title,BookShelfViewModel Shelf, BookContainerViewModel Parent=null)
+        public BookContainerViewModel(string Title, BookShelfViewModel Shelf, BookContainerViewModel Parent = null)
         {
             this.Title = Title;
             this.Parent = Parent;
-            this.BookShelf = Shelf;
+            BookShelf = Shelf;
         }
 
         public string TitleID
@@ -120,12 +126,13 @@ namespace BookViewerApp.BookShelfViewModels
             get
             {
                 string result = null;
-                foreach(var item in this)
+                foreach (var item in this)
                 {
-                    if(item is BookShelfBookViewModel)
+                    if (item is BookShelfBookViewModel)
                     {
                         return (item as BookShelfBookViewModel).ID;
-                    }else if(item is BookContainerViewModel && result==null)
+                    }
+                    else if (item is BookContainerViewModel && result == null)
                     {
                         result = (item as BookContainerViewModel).TitleID;
                     }
@@ -163,7 +170,8 @@ namespace BookViewerApp.BookShelfViewModels
         public ObservableCollection<IItemViewModel> Books
         {
             get { return _Books; }
-            set {
+            set
+            {
                 _Books.CollectionChanged -= BooksCollectionChanged;
                 _Books = value;
                 _Books.CollectionChanged += BooksCollectionChanged;
@@ -227,12 +235,18 @@ namespace BookViewerApp.BookShelfViewModels
         //    return result;
         //}
     }
+}
 
+namespace BookViewerApp.ViewModels
+{
     public interface IItemViewModel : INotifyPropertyChanged
     {
         string Title { get; set; }
     }
+}
 
+namespace BookViewerApp.ViewModels
+{
     public class BookShelfBookViewModel : IItemViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -273,27 +287,27 @@ namespace BookViewerApp.BookShelfViewModels
 
         public async Task GetFromBookInfoStorageAsync()
         {
-            await GetFromBookInfoStorageAsync(this.ID);
+            await GetFromBookInfoStorageAsync(ID);
         }
 
         private async Task GetFromBookInfoStorageAsync(string ID)
         {
-            var bookInfo = await BookInfoStorage.GetBookInfoByIDAsync(ID);
+            var bookInfo = await Storages.BookInfoStorage.GetBookInfoByIDAsync(ID);
             if (bookInfo != null)
             {
                 switch (bookInfo.PageDirection)
                 {
-                    case Books.Direction.L2R: this.Reversed = false; break;
-                    case Books.Direction.R2L: this.Reversed = true; break;
+                    case Books.Direction.L2R: Reversed = false; break;
+                    case Books.Direction.R2L: Reversed = true; break;
                     case Books.Direction.Default: default: Reversed = (bool)SettingStorage.GetValue("DefaultPageReverse"); break;
                 }
-                this.ReadRate = (bookInfo.GetLastReadPage()?.Page ?? 0) / (double)BookSize;
+                ReadRate = (bookInfo.GetLastReadPage()?.Page ?? 0) / (double)BookSize;
                 //Issue: asyncの関係でSetLastReadPage()の前に GetLastReadPage()が実行されることがあるようだ。
             }
             else
             {
-                this.Reversed = false;
-                this.ReadRate = 0;
+                Reversed = false;
+                ReadRate = 0;
             }
         }
 

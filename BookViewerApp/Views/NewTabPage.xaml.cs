@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using BookViewerApp.Helper;
+using BookViewerApp.Managers;
+using BookViewerApp.Storages;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -70,7 +72,7 @@ namespace BookViewerApp
 
         private async void Button_Click_PickBook(object sender, RoutedEventArgs e)
         {
-            var file = await Books.BookManager.PickFile();
+            var file = await BookManager.PickFile();
             if (file != null)
             {
                 if (file.FileType.ToLower() == ".epub") {
@@ -106,7 +108,7 @@ namespace BookViewerApp
                     {
                         var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder));
                         fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviderDelegate((a) => {
-                            if (Books.BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.FileName).ToLower()))
+                            if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.FileName).ToLower()))
                             {
                                 return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
                                 () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
@@ -120,7 +122,7 @@ namespace BookViewerApp
                         {
                                 
                             var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
-                            if (!Books.BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.FileName ?? "").ToLower()))
+                            if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.FileName ?? "").ToLower()))
                             {
                                 return;
                             }

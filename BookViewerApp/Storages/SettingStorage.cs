@@ -12,7 +12,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-namespace BookViewerApp
+namespace BookViewerApp.Storages
 {
     public class SettingStorage
     {

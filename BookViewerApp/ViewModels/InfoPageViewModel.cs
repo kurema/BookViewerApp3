@@ -12,9 +12,11 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-namespace BookViewerApp.InfoPageViewModel
+using BookViewerApp.Storages;
+
+namespace BookViewerApp.ViewModels
 {
-    public class Info : INotifyPropertyChanged
+    public class InfoPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;//never be called.
 
@@ -22,7 +24,7 @@ namespace BookViewerApp.InfoPageViewModel
 
         private Windows.ApplicationModel.PackageId ID => Windows.ApplicationModel.Package.Current.Id;
 
-        public string VersionText => string.Format("{0}.{1}.{2}.{3}",VersionInfo.Major,VersionInfo.Minor,VersionInfo.Build,VersionInfo.Revision);
+        public string VersionText => string.Format("{0}.{1}.{2}.{3}", VersionInfo.Major, VersionInfo.Minor, VersionInfo.Build, VersionInfo.Revision);
 
         public Windows.ApplicationModel.PackageVersion VersionInfo => CurrentPackage.Id.Version;
 
@@ -50,26 +52,34 @@ namespace BookViewerApp.InfoPageViewModel
 
         public string InstalledDate => CurrentPackage.InstalledDate.ToString();
 
-        public License License { get
+        public LicenseViewModel License
+        {
+            get
             {
-                var license=LicenseStorage.CurrentLicense;
-                return new License() { Content = license };
+                var license = LicenseStorage.CurrentLicense;
+                return new LicenseViewModel() { Content = license };
             }
         }
 
-        public License[] Licenses { get
+        public LicenseViewModel[] Licenses
+        {
+            get
             {
                 var files = LicenseStorage.Licenses;
-                var result = new List<License>();
-                foreach(var f in files) {
-                    result.Add(new License() { Content = f.Value, Title = f.Key });
+                var result = new List<LicenseViewModel>();
+                foreach (var f in files)
+                {
+                    result.Add(new LicenseViewModel() { Content = f.Value, Title = f.Key });
                 }
                 return result.ToArray();
             }
         }
     }
+}
 
-    public class License : INotifyPropertyChanged
+namespace BookViewerApp.ViewModels
+{
+    public class LicenseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
@@ -91,12 +101,15 @@ namespace BookViewerApp.InfoPageViewModel
         public string Content
         {
             get { return _Content; }
-            set { _Content = value;OnPropertyChanged(nameof(Content)); }
+            set { _Content = value; OnPropertyChanged(nameof(Content)); }
         }
         private string _Content;
     }
+}
 
-    public class SimpleTile : INotifyPropertyChanged
+namespace BookViewerApp.ViewModels
+{
+    public class SimpleTileViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string name)
@@ -104,7 +117,7 @@ namespace BookViewerApp.InfoPageViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public string Title { get { return _Title; } set { _Title = value;OnPropertyChanged(nameof(Title)); } }
+        public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
         private string _Title = "";
 
         public string Content { get { return _Content; } set { _Content = value; OnPropertyChanged(nameof(Content)); } }

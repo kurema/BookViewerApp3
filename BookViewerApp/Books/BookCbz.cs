@@ -11,6 +11,8 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
 using BookViewerApp.Helper;
+using BookViewerApp.Managers;
+using BookViewerApp.Storages;
 
 namespace BookViewerApp.Books
 {

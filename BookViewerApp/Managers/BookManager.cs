@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
+using BookViewerApp.Books;
 
-namespace BookViewerApp.Books
+namespace BookViewerApp.Managers
 {
     public class BookManager
     {
-        public static async Task<(IBook Book,bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
+        public static async Task<(IBook Book, bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
         {
-            if (file == null) { return (null,false); }
+            if (file == null) { return (null, false); }
             else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
             {
                 goto Pdf;
@@ -45,9 +46,9 @@ namespace BookViewerApp.Books
                 //7zip
                 goto SharpCompress;
             }
-            else if ((buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x03, 0x04 })) ||
-                (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x05, 0x06 })) ||
-                (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x07, 0x08 }))
+            else if (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x03, 0x04 }) ||
+                buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x05, 0x06 }) ||
+                buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x07, 0x08 })
                 )
             {
                 //zip
@@ -73,10 +74,11 @@ namespace BookViewerApp.Books
 
         Pdf:;
             {
-                var book = new Books.PdfBook();
+                var book = new PdfBook();
                 try
                 {
-                    await book.Load(file, async (a) => {
+                    await book.Load(file, async (a) =>
+                    {
                         var dialog = new PasswordRequestContentDialog();
                         var result = await dialog.ShowAsync();
                         if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
@@ -87,7 +89,7 @@ namespace BookViewerApp.Books
                         {
                             throw new Exception();
                         }
-                    
+
                     });
                 }
                 catch { return (null, false); }
@@ -96,10 +98,10 @@ namespace BookViewerApp.Books
             }
         Zip:;
             {
-                var book = new Books.CbzBook();
+                var book = new CbzBook();
                 try
                 {
-                    await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                    await book.LoadAsync((await file.OpenReadAsync()).AsStream());
                 }
                 catch
                 {
@@ -110,10 +112,10 @@ namespace BookViewerApp.Books
             }
         SharpCompress:;
             {
-                var book = new Books.CompressedBook();
+                var book = new CompressedBook();
                 try
                 {
-                    await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
+                    await book.LoadAsync((await file.OpenReadAsync()).AsStream());
                 }
                 catch
                 {
@@ -146,7 +148,7 @@ namespace BookViewerApp.Books
 
         public static string StorageItemRegister(Windows.Storage.IStorageItem file)
         {
-            var acl= Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
             return acl.Add(file);
         }
 
@@ -160,7 +162,7 @@ namespace BookViewerApp.Books
 
         public static string PathJoin(string[] Path)
         {
-            return String.Join(FileSplitLetter.ToString(), Path);
+            return string.Join(FileSplitLetter.ToString(), Path);
         }
 
         public static string[] PathSplit(string Path)
@@ -173,10 +175,10 @@ namespace BookViewerApp.Books
             return await StorageItemGet(token, PathSplit(Path));
         }
 
-        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token,string[] Path)
+        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string[] Path)
         {
             Windows.Storage.IStorageItem currentFolder = await StorageItemGet(token);
-            foreach(var item in Path)
+            foreach (var item in Path)
             {
                 if (currentFolder == null) return null;
                 if (currentFolder is Windows.Storage.StorageFolder)
@@ -194,7 +196,7 @@ namespace BookViewerApp.Books
         public static async Task<Windows.Storage.StorageFile> PickFile()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in Books.BookManager.AvailableExtensionsArchive)
+            foreach (var ext in AvailableExtensionsArchive)
             {
                 picker.FileTypeFilter.Add(ext);
             }
@@ -202,7 +204,7 @@ namespace BookViewerApp.Books
 
         }
 
-        public static async Task<Books.IBook> PickBook()
+        public static async Task<IBook> PickBook()
         {
             return (await GetBookFromFile(await PickFile())).Book;
         }

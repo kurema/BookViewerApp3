@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Collections;
 
 using BookViewerApp.Helper;
+using BookViewerApp.Storages;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 

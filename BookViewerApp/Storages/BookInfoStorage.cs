@@ -8,7 +8,7 @@ using System.IO;
 
 using BookViewerApp.Helper;
 
-namespace BookViewerApp
+namespace BookViewerApp.Storages
 {
     public class BookInfoStorage
     {

@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
 using System.Windows.Input;
 using BookViewerApp.Helper;
+using BookViewerApp.Managers;
+
+using BookViewerApp.Storages;
 
 namespace BookViewerApp.ViewModels
 {
@@ -79,7 +82,7 @@ namespace BookViewerApp.ViewModels
         public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
         {
             this.Loading = true;
-            var book = (await Books.BookManager.GetBookFromFile(value)).Book;
+            var book = (await BookManager.GetBookFromFile(value)).Book;
             if (book != null && book is Books.IBookFixed)
             {
                 Initialize(book as Books.IBookFixed, target);
@@ -183,8 +186,8 @@ namespace BookViewerApp.ViewModels
 
         private Books.PageOptionsControl OptionCache;
 
-        public BookShelfViewModels.BookShelfBookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value;OnPropertyChanged(nameof(AsBookShelfBook)); } }
-        private BookShelfViewModels.BookShelfBookViewModel _AsBookShelfBook;
+        public BookShelfBookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value;OnPropertyChanged(nameof(AsBookShelfBook)); } }
+        private BookShelfBookViewModel _AsBookShelfBook;
 
 
         private ObservableCollection<TocEntryViewModes> _Toc = new ObservableCollection<TocEntryViewModes>();
@@ -537,7 +540,7 @@ namespace BookViewerApp.ViewModels
                 //}
             }
 
-            public BookShelfViewModels.BookShelfBookViewModel GetAddedBook(string ID)
+            public BookShelfBookViewModel GetAddedBook(string ID)
             {
                 var books = ViewModel.AsBookShelfBook?.Parent?.Books;
                 if (books == null) return null;
@@ -545,21 +548,21 @@ namespace BookViewerApp.ViewModels
                 var book = ViewModel.AsBookShelfBook;
 
                 int cnt = 0;
-                if (NumberToAdd == 0) return book as BookShelfViewModels.BookShelfBookViewModel;
+                if (NumberToAdd == 0) return book as BookShelfBookViewModel;
                 if (this.NumberToAdd > 0)
                 {
                     for (int i = books.IndexOf(book) + 1; i < books.Count; i++)
                     {
-                        if (books[i] is BookShelfViewModels.BookShelfBookViewModel) cnt++;
-                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookShelfBookViewModel;
+                        if (books[i] is BookShelfBookViewModel) cnt++;
+                        if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
                     }
                 }
                 else
                 {
                     for (int i = books.IndexOf(book) - 1; i >= 0; i--)
                     {
-                        if (books[i] is BookShelfViewModels.BookShelfBookViewModel) cnt--;
-                        if (cnt == this.NumberToAdd) return books[i] as BookShelfViewModels.BookShelfBookViewModel;
+                        if (books[i] is BookShelfBookViewModel) cnt--;
+                        if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
                     }
                 }
                 return null;

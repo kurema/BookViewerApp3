@@ -190,7 +190,7 @@
     </Compile>
     <Compile Include="Books\BookImage.cs" />
     <Compile Include="Storages\BookInfoStorage.cs" />
-    <Compile Include="Manager\BookManager.cs" />
+    <Compile Include="Managers\BookManager.cs" />
     <Compile Include="Books\Books.cs" />
     <Compile Include="Books\BookPdf.cs" />
     <Compile Include="Books\BookSharpCompress.cs" />
@@ -233,7 +233,7 @@
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Storages\SettingStorage.cs" />
-    <Compile Include="Manager\ThumbnailManager.cs" />
+    <Compile Include="Managers\ThumbnailManager.cs" />
     <Compile Include="Helper\Functions.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
