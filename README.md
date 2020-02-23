@@ -27,7 +27,7 @@ Ver 2 failed.
 - [x] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
 - - [x] View/Tree
 - - [x] View/Main
-- - [ ] Detail
+- - [x] Detail
 - [ ] Monetize (以前は1円も収入がなかった。やる気出なかった理由)
 - - [ ] ~~UWP ad~~ サードパーティーもサポートされてるMicrosoft Advertising SDKがキャンセルされるのかは良く分からない。新しいタブのページ。
 - - [ ] ~~Amazon Affiliate。正直微妙。このアプリに合わない。~~

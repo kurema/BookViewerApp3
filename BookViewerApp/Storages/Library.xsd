@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Library"
+    targetNamespace="http://tempuri.org/Library.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/Library.xsd"
+    xmlns:mstns="http://tempuri.org/Library.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="libraries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="folders">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name=" folder">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="path" minOccurs="0" type="xs:string"/>
+                  </xs:sequence>
+                  <xs:attribute name="title" type="xs:string" />
+                  <xs:attribute name="accessToken" type="xs:string" use="optional" />
+                  <xs:attribute name="id" type="xs:token" />
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="libraries">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

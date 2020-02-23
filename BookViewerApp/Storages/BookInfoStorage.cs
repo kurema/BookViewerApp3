@@ -192,6 +192,8 @@ namespace BookViewerApp
             public double ReadTimeSpan;
             public Books.Direction PageDirection = Books.Direction.Default;
 
+            public string Password;
+
             public BookInfo()
             {
                 ReadTimeLast = ReadTimeThis = DateTime.Now;
