@@ -79,7 +79,7 @@ namespace BookViewerApp.Managers
                 {
                     await book.Load(file, async (a) =>
                     {
-                        var dialog = new PasswordRequestContentDialog();
+                        var dialog = new Views.PasswordRequestContentDialog();
                         var result = await dialog.ShowAsync();
                         if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
                         {

@@ -18,6 +18,7 @@ using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 
 using BookViewerApp.Storages;
+using BookViewerApp.Views;
 
 namespace BookViewerApp.ViewModels
 {

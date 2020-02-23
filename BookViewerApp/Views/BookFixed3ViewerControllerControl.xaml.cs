@@ -17,7 +17,7 @@ using BookViewerApp.Storages;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace BookViewerApp
+namespace BookViewerApp.Views
 {
     public sealed partial class BookFixed3ViewerControllerControl : UserControl
     {

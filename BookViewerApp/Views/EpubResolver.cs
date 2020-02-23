@@ -12,7 +12,7 @@ using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 
-namespace BookViewerApp
+namespace BookViewerApp.Views
 {
     public class EpubResolver : Windows.Web.IUriToStreamResolver
     {
@@ -31,7 +31,7 @@ namespace BookViewerApp
             Loaded?.Invoke(this, e);
         }
 
-        public Windows.Storage.StorageFile File { get; private set; }
+        public StorageFile File { get; private set; }
 
         public IAsyncOperation<IInputStream> UriToStreamAsync(Uri uri)
         {
@@ -48,8 +48,8 @@ namespace BookViewerApp
                 if (uri.LocalPath.ToLower().StartsWith("/reader/"))
                 {
                     var pathTail = uri.LocalPath.Replace("/reader/", "", StringComparison.OrdinalIgnoreCase);
-                    var f = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine("ms-appx:///res/reader/", pathTail)));
-                    return await f.OpenAsync(Windows.Storage.FileAccessMode.Read);
+                    var f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine("ms-appx:///res/reader/", pathTail)));
+                    return await f.OpenAsync(FileAccessMode.Read);
                 }
                 if (uri.LocalPath.ToLower().StartsWith("/contents/"))
                 {

@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Navigation;
 using BookViewerApp.ViewModels;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace BookViewerApp
+namespace BookViewerApp.Views
 {
     public class SpreadPagePanel : Panel
     {
@@ -27,13 +27,13 @@ namespace BookViewerApp
             nameof(Source1),
             typeof(ImageSource),
             typeof(SpreadPagePanel),
-            new PropertyMetadata(null,OnSourceChanged)
+            new PropertyMetadata(null, OnSourceChanged)
             );
 
         public ImageSource Source1
         {
-            get { return (ImageSource)this.GetValue(Source1Property); }
-            set { this.SetValue(Source1Property, value); }
+            get { return (ImageSource)GetValue(Source1Property); }
+            set { SetValue(Source1Property, value); }
         }
 
         public static readonly DependencyProperty Source2Property = DependencyProperty.Register(
@@ -45,8 +45,8 @@ namespace BookViewerApp
 
         public ImageSource Source2
         {
-            get { return (ImageSource)this.GetValue(Source2Property); }
-            set { this.SetValue(Source2Property, value); }
+            get { return (ImageSource)GetValue(Source2Property); }
+            set { SetValue(Source2Property, value); }
         }
 
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
@@ -58,8 +58,8 @@ namespace BookViewerApp
 
         public ModeEnum Mode
         {
-            get => (ModeEnum)this.GetValue(ModeProperty);
-            set => this.SetValue(ModeProperty, value);
+            get => (ModeEnum)GetValue(ModeProperty);
+            set => SetValue(ModeProperty, value);
         }
 
         public enum ModeEnum
@@ -76,8 +76,8 @@ namespace BookViewerApp
 
         public DisplayedStatusEnum DisplayedStatus
         {
-            get => (DisplayedStatusEnum)this.GetValue(DisplayedStatusProperty);
-            set => this.SetValue(DisplayedStatusProperty, value);
+            get => (DisplayedStatusEnum)GetValue(DisplayedStatusProperty);
+            set => SetValue(DisplayedStatusProperty, value);
         }
 
         public enum DisplayedStatusEnum
@@ -90,15 +90,15 @@ namespace BookViewerApp
         {
             Image GetImage()
             {
-                var image= new Image()
+                var image = new Image()
                 {
                     Stretch = Stretch.UniformToFill
                 };
-                image.ImageOpened += (s, e) => this.InvalidateArrange();
-                image.ImageFailed += (s, e) => this.InvalidateArrange();
+                image.ImageOpened += (s, e) => InvalidateArrange();
+                image.ImageFailed += (s, e) => InvalidateArrange();
                 return image;
             }
-            void UpdateSource(Image image3,ImageSource source)
+            void UpdateSource(Image image3, ImageSource source)
             {
                 if (image3.Source != source) image3.Source = source;
             }
@@ -112,18 +112,18 @@ namespace BookViewerApp
                         Children[i] = GetImage();
                     }
                 }
-                for(int i = cCount; i < count; i++)
+                for (int i = cCount; i < count; i++)
                 {
                     Children.Add(GetImage());
                 }
-                for(int i = count; i < cCount; i++)
+                for (int i = count; i < cCount; i++)
                 {
                     Children.RemoveAt(Children.Count - 1);
                 }
             }
 
-            var bmp1 = this.Source1 as BitmapSource;
-            var bmp2 = this.Source2 as BitmapSource;
+            var bmp1 = Source1 as BitmapSource;
+            var bmp2 = Source2 as BitmapSource;
 
             double w1 = bmp1?.PixelWidth ?? 0;
             double h1 = bmp1?.PixelHeight ?? 0;
@@ -139,19 +139,19 @@ namespace BookViewerApp
             {
                 goto Conclude;
             }
-            else if (this.Mode == ModeEnum.Default)
+            else if (Mode == ModeEnum.Default)
             {
                 goto Single;
             }
-            else if (this.Mode == ModeEnum.ForceHalfFirst)
+            else if (Mode == ModeEnum.ForceHalfFirst)
             {
                 goto Half;
             }
-            else if (this.Mode==ModeEnum.ForceHalfSecond)
+            else if (Mode == ModeEnum.ForceHalfSecond)
             {
                 goto HalfSecond;
             }
-            else if (this.Mode==ModeEnum.Single && w1 > h1)
+            else if (Mode == ModeEnum.Single && w1 > h1)
             {
                 goto Half;
             }
@@ -190,9 +190,9 @@ namespace BookViewerApp
                 var wl = (w - wr1 - wr2) / 2.0;
 
                 DesireChild(2);
-                var image1 = this.Children[0] as Image;
+                var image1 = Children[0] as Image;
                 UpdateSource(image1, bmp1);
-                var image2 = this.Children[1] as Image;
+                var image2 = Children[1] as Image;
                 UpdateSource(image2, bmp2);
 
                 image1.Measure(new Size(wr1, h));
@@ -208,7 +208,7 @@ namespace BookViewerApp
         Single:
             {
                 DesireChild(1);
-                var image = this.Children[0] as Image;
+                var image = Children[0] as Image;
                 UpdateSource(image, bmp1);
 
                 if (w1 == 0 || h1 == 0) goto Conclude;
@@ -246,10 +246,11 @@ namespace BookViewerApp
 
 
             RoutedEventHandler routedEventHandler = (s2, e2) => panel.InvalidateArrange();
-            ExceptionRoutedEventHandler exceptionRoutedEventHandler= (s2, e2) => panel.InvalidateArrange();
+            ExceptionRoutedEventHandler exceptionRoutedEventHandler = (s2, e2) => panel.InvalidateArrange();
 
             {
-                if (e.OldValue is BitmapImage bitmap) {
+                if (e.OldValue is BitmapImage bitmap)
+                {
                     bitmap.ImageOpened -= routedEventHandler;
                     bitmap.ImageFailed -= exceptionRoutedEventHandler;
                 }

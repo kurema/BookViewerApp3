@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using BookViewerApp.Storages;
+using BookViewerApp.Views;
 
 namespace BookViewerApp
 {
