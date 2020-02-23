@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
 using System.Windows.Input;
+using BookViewerApp.Helper;
 
 namespace BookViewerApp.ViewModels
 {

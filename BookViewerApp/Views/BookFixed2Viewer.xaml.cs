@@ -18,6 +18,8 @@ using BookViewerApp.ViewModels;
 using System.Threading.Tasks;
 using Windows.UI;
 
+using BookViewerApp.Helper;
+
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace BookViewerApp

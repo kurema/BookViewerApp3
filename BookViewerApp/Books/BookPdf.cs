@@ -13,9 +13,11 @@ using pdf = Windows.Data.Pdf;
 using System.IO;
 using System.Collections;
 
-namespace BookViewerApp.Books.Pdf
+using BookViewerApp.Helper;
+
+namespace BookViewerApp.Books
 {
-    public class PdfBook : IBookFixed,IDirectionProvider,ITocProvider,IPasswordPdovider
+    public class PdfBook : IBookFixed, IDirectionProvider, ITocProvider, IPasswordPdovider
     {
         public pdf.PdfDocument Content { get; private set; }
         private bool PageLoaded = false;
@@ -35,7 +37,7 @@ namespace BookViewerApp.Books.Pdf
 
         public string ID
         {
-            get;private set;
+            get; private set;
         }
 
         public Direction Direction { get; private set; } = Direction.Default;
@@ -48,7 +50,7 @@ namespace BookViewerApp.Books.Pdf
             else throw new Exception("Incorrect page.");
         }
 
-        public static iTextSharp.text.pdf.PdfReader GetPdfReader(Stream stream,string password)
+        public static iTextSharp.text.pdf.PdfReader GetPdfReader(Stream stream, string password)
         {
             try
             {
@@ -71,7 +73,7 @@ namespace BookViewerApp.Books.Pdf
             }
         }
 
-        public static TocItem[] GetTocs(Array list, System.Collections.Hashtable nd, List<iTextSharp.text.pdf.PRIndirectReference> pageRefs)
+        public static TocItem[] GetTocs(Array list, Hashtable nd, List<iTextSharp.text.pdf.PRIndirectReference> pageRefs)
         {
             int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
             {
@@ -155,7 +157,7 @@ namespace BookViewerApp.Books.Pdf
         }
 
 
-        public async Task Load(Windows.Storage.IStorageFile file, Func<int, Task<string>> passwordRequestedCallback,string[] defaultPassword=null)
+        public async Task Load(IStorageFile file, Func<int, Task<string>> passwordRequestedCallback, string[] defaultPassword = null)
         {
             using (var stream = await file.OpenReadAsync())
             {
@@ -202,7 +204,7 @@ namespace BookViewerApp.Books.Pdf
                         //https://qiita.com/kurema/items/3f274507aa5cf9e845a8
                         var vp = iTextSharp.text.pdf.intern.PdfViewerPreferencesImp.GetViewerPreferences(pr.Catalog).GetViewerPreferences();
 
-                        this.Direction = Direction.Default;
+                        Direction = Direction.Default;
 
                         if (vp.Contains(iTextSharp.text.pdf.PdfName.DIRECTION))
                         {
@@ -210,11 +212,11 @@ namespace BookViewerApp.Books.Pdf
 
                             if (name == iTextSharp.text.pdf.PdfName.R2L)
                             {
-                                this.Direction = Direction.R2L;
+                                Direction = Direction.R2L;
                             }
                             else if (name == iTextSharp.text.pdf.PdfName.L2R)
                             {
-                                this.Direction = Direction.L2R;
+                                Direction = Direction.L2R;
                             }
                         }
                     }
@@ -231,7 +233,7 @@ namespace BookViewerApp.Books.Pdf
                         pageRefs.Add(oref);
                     }
 
-                    this.Toc = GetTocs(bm, nd, pageRefs);
+                    Toc = GetTocs(bm, nd, pageRefs);
                     pr.Close();
                 }
                 catch { }
@@ -243,7 +245,7 @@ namespace BookViewerApp.Books.Pdf
                 else
                 {
                     Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password);
-                    this.Password = password;
+                    Password = password;
                 }
                 OnLoaded(new EventArgs());
                 PageLoaded = true;
@@ -257,7 +259,10 @@ namespace BookViewerApp.Books.Pdf
         }
 
     }
+}
 
+namespace BookViewerApp.Books
+{
     public class PdfPage : IPageFixed
     {
         public pdf.PdfPage Content { get; private set; }
@@ -280,19 +285,20 @@ namespace BookViewerApp.Books.Pdf
                 //Strange code. Maybe fix needed.
                 if (Option is PageOptionsControl)
                 {
-                    LastOption = (PageOptions)((PageOptionsControl)this.Option);
+                    LastOption = (PageOptions)(PageOptionsControl)Option;
                 }
                 else { LastOption = Option; }
 
                 var pdfOption = new pdf.PdfPageRenderOptions();
-                if (Option.TargetHeight/Content.Size.Height < Option.TargetWidth/Content.Size.Width)
+                if (Option.TargetHeight / Content.Size.Height < Option.TargetWidth / Content.Size.Width)
                 {
-                    pdfOption.DestinationHeight = (uint)Option.TargetHeight*2;
+                    pdfOption.DestinationHeight = (uint)Option.TargetHeight * 2;
                 }
-                else {
-                    pdfOption.DestinationWidth = (uint)Option.TargetWidth*2;
+                else
+                {
+                    pdfOption.DestinationWidth = (uint)Option.TargetWidth * 2;
                 }
-                await Content.RenderToStreamAsync(stream,pdfOption);
+                await Content.RenderToStreamAsync(stream, pdfOption);
             }
             else
             {
@@ -305,11 +311,11 @@ namespace BookViewerApp.Books.Pdf
             await Content.PreparePageAsync();
         }
 
-        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
+        public async Task<BitmapImage> GetBitmapAsync()
         {
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await RenderToStreamAsync(stream);
-            var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+            var result = new BitmapImage();
             await result.SetSourceAsync(stream);
             return result;
         }
@@ -322,7 +328,7 @@ namespace BookViewerApp.Books.Pdf
             else { return false; }
         }
 
-        public async Task SaveImageAsync(StorageFile file,uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width)
         {
             var pdfOption = new pdf.PdfPageRenderOptions();
             pdfOption.DestinationWidth = width;

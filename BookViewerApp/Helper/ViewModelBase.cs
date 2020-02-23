@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
 
-namespace BookViewerApp
+namespace BookViewerApp.Helper
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

@@ -10,9 +10,11 @@ using Windows.UI.Xaml.Media;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace BookViewerApp.Books.Cbz
+using BookViewerApp.Helper;
+
+namespace BookViewerApp.Books
 {
-    public class CbzBook : IBookFixed,ITocProvider
+    public class CbzBook : IBookFixed, ITocProvider
     {
         public ZipArchive Content { get; private set; }
         public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
@@ -61,7 +63,7 @@ namespace BookViewerApp.Books.Cbz
         {
             await Task.Run(() =>
             {
-                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 try
                 {
                     Content = new ZipArchive(stream, ZipArchiveMode.Read, false,
@@ -69,7 +71,7 @@ namespace BookViewerApp.Books.Cbz
                         Encoding.GetEncoding(932) : Encoding.UTF8);
                     OnLoaded(new EventArgs());
                 }
-                catch {  }
+                catch { }
             }
             );
 
@@ -77,9 +79,9 @@ namespace BookViewerApp.Books.Cbz
 
             var entries = new List<ZipArchiveEntry>();
             string[] supportedFile = BookManager.AvailableExtensionsImage;
-            var cm=Content.Mode;
+            var cm = Content.Mode;
             var files = Content.Entries;
-                        foreach(var file in files)
+            foreach (var file in files)
             {
                 var s = Path.GetExtension(file.Name).ToLower();
                 var b = supportedFile.Contains(Path.GetExtension(file.Name).ToLower());
@@ -131,13 +133,16 @@ namespace BookViewerApp.Books.Cbz
                         ctoc = lastitem.Children.ToList();
                     }
                 }
-                this.Toc = toc.ToArray();
+                Toc = toc.ToArray();
             }
 
             AvailableEntries = entries.ToArray();
         }
     }
+}
 
+namespace BookViewerApp.Books
+{
     public class CbzPage : IPageFixed
     {
         private ZipArchiveEntry Content;
@@ -154,7 +159,7 @@ namespace BookViewerApp.Books.Cbz
             Content = entry;
         }
 
-        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
+        public async Task<BitmapImage> GetBitmapAsync()
         {
             if (cache == null)
             {
@@ -164,7 +169,7 @@ namespace BookViewerApp.Books.Cbz
                 s.Dispose();
                 cache = ms.AsRandomAccessStream();
             }
-            return await new Image.ImagePageStream(cache).GetBitmapAsync();
+            return await new Books.ImagePageStream(cache).GetBitmapAsync();
         }
 
         public Task<bool> UpdateRequiredAsync()
@@ -172,11 +177,12 @@ namespace BookViewerApp.Books.Cbz
             return Task.FromResult(false);
         }
 
-        public async Task SaveImageAsync(StorageFile file,uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width)
         {
-            try {
+            try
+            {
                 //if (!System.IO.File.Exists(file.Path))
-                    Content.ExtractToFile(file.Path, true);
+                Content.ExtractToFile(file.Path, true);
             }
             catch { }
         }
@@ -193,7 +199,7 @@ namespace BookViewerApp.Books.Cbz
                     s.Dispose();
                     cache = ms.AsRandomAccessStream();
                 }
-                await new Image.ImagePageStream(cache).SetBitmapAsync(image);
+                await new ImagePageStream(cache).SetBitmapAsync(image);
             }
             catch
             {

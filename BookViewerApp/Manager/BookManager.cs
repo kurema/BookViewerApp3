@@ -73,7 +73,7 @@ namespace BookViewerApp.Books
 
         Pdf:;
             {
-                var book = new Books.Pdf.PdfBook();
+                var book = new Books.PdfBook();
                 try
                 {
                     await book.Load(file, async (a) => {
@@ -96,7 +96,7 @@ namespace BookViewerApp.Books
             }
         Zip:;
             {
-                var book = new Books.Cbz.CbzBook();
+                var book = new Books.CbzBook();
                 try
                 {
                     await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));
@@ -110,7 +110,7 @@ namespace BookViewerApp.Books
             }
         SharpCompress:;
             {
-                var book = new Books.Compressed.CompressedBook();
+                var book = new Books.CompressedBook();
                 try
                 {
                     await book.LoadAsync(WindowsRuntimeStreamExtensions.AsStream(await file.OpenReadAsync()));

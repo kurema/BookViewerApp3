@@ -24,8 +24,9 @@ using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 
 using System.Threading.Tasks;
+using BookViewerApp.Helper;
 
-namespace BookViewerApp
+namespace BookViewerApp.Helper
 {
     public static class UIHelper
     {

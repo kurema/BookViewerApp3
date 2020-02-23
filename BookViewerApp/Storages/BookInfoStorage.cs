@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using System.IO;
 
+using BookViewerApp.Helper;
+
 namespace BookViewerApp
 {
     public class BookInfoStorage

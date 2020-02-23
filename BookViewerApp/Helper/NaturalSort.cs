@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookViewerApp
+namespace BookViewerApp.Helper
 {
     public class NaturalSort
     {

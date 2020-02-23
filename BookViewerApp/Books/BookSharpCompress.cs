@@ -9,7 +9,9 @@ using Windows.UI.Xaml.Media.Imaging;
 
 using System.Runtime.InteropServices.WindowsRuntime;
 
-namespace BookViewerApp.Books.Compressed
+using BookViewerApp.Helper;
+
+namespace BookViewerApp.Books
 {
     public class CompressedBook : IBookFixed, ITocProvider
     {
@@ -22,7 +24,8 @@ namespace BookViewerApp.Books.Compressed
         }
 
         private string IDCache = null;
-        private string GetID() {
+        private string GetID()
+        {
             string result = "";
             foreach (var item in Entries.OrderBy((a) => a.Key))
             {
@@ -44,7 +47,7 @@ namespace BookViewerApp.Books.Compressed
         //private SharpCompress.Archive.IArchiveEntry Target;
         private SharpCompress.Archives.IArchiveEntry[] Entries;
 
-        public async Task LoadAsync(System.IO.Stream sr)
+        public async Task LoadAsync(Stream sr)
         {
             SharpCompress.Archives.IArchive archive;
             await Task.Run(() =>
@@ -57,7 +60,7 @@ namespace BookViewerApp.Books.Compressed
                     {
                         if (!entry.IsDirectory && !entry.IsEncrypted)
                         {
-                            if (BookManager.AvailableExtensionsImage.Contains(System.IO.Path.GetExtension(entry.Key).ToLower()))
+                            if (BookManager.AvailableExtensionsImage.Contains(Path.GetExtension(entry.Key).ToLower()))
                             {
                                 entries.Add(entry);
                             }
@@ -103,13 +106,13 @@ namespace BookViewerApp.Books.Compressed
                                 ctoc = lastitem.Children.ToList();
                             }
                         }
-                        this.Toc = toc.ToArray();
+                        Toc = toc.ToArray();
                     }
 
                     Entries = entries.ToArray();
                     OnLoaded();
                 }
-                catch { this.Entries = new SharpCompress.Archives.IArchiveEntry[0]; }
+                catch { Entries = new SharpCompress.Archives.IArchiveEntry[0]; }
             });
         }
 
@@ -118,7 +121,10 @@ namespace BookViewerApp.Books.Compressed
             return new CompressedPage(Entries[i]);
         }
     }
+}
 
+namespace BookViewerApp.Books
+{
     public class CompressedPage : IPageFixed
     {
         public IPageOptions Option
@@ -135,7 +141,7 @@ namespace BookViewerApp.Books.Compressed
             try
             {
                 //await Functions.SaveStreamToFile(GetStream(), file);
-                using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
+                using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
                     var s = Entry.OpenEntryStream();
                     var buffer = new byte[s.Length];
@@ -166,7 +172,7 @@ namespace BookViewerApp.Books.Compressed
 
         public async Task SetBitmapAsync(BitmapImage image)
         {
-            await new Image.ImagePageStream(GetStream()).SetBitmapAsync(image);
+            await new ImagePageStream(GetStream()).SetBitmapAsync(image);
         }
 
         public async Task<bool> UpdateRequiredAsync()

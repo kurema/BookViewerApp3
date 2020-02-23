@@ -17,6 +17,8 @@ using BookViewerApp.ViewModels;
 using System.Threading.Tasks;
 using Windows.UI;
 
+using BookViewerApp.Helper;
+
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace BookViewerApp
@@ -32,8 +34,8 @@ namespace BookViewerApp
         {
             this.InitializeComponent();
 
-            if (Binding != null) Binding.ToggleFullScreenCommand = new DelegateCommand((a) => ToggleFullScreen());
-            if (Binding != null) Binding.GoToHomeCommand = new DelegateCommand((a) =>
+            if (Binding != null) Binding.ToggleFullScreenCommand = new Helper.DelegateCommand((a) => ToggleFullScreen());
+            if (Binding != null) Binding.GoToHomeCommand = new Helper.DelegateCommand((a) =>
             {
                 Binding?.SaveInfo();
                 this.Frame.Navigate(typeof(HomePage), null);

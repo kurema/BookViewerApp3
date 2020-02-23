@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookViewerApp
+namespace BookViewerApp.Helper
 {
     public class DelegateCommand : System.Windows.Input.ICommand
     {
@@ -13,7 +13,7 @@ namespace BookViewerApp
         public Func<object, bool> CanExecuteDelegate;
         public Action<object> ExecuteDelegate;
 
-        public DelegateCommand( Action<object> executeDelegate, Func<object, bool> canExecuteDelegate=null)
+        public DelegateCommand(Action<object> executeDelegate, Func<object, bool> canExecuteDelegate = null)
         {
             ExecuteDelegate = executeDelegate ?? throw new ArgumentNullException(nameof(executeDelegate));
             CanExecuteDelegate = canExecuteDelegate;

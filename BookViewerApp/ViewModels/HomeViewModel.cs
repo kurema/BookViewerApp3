@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
 
+using BookViewerApp.Helper;
+
 namespace BookViewerApp.ViewModels
 {
     public class HomeViewModel : ViewModelBase

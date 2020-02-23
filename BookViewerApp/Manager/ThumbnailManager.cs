@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Windows.Graphics.Imaging;
 
+using BookViewerApp.Helper;
+
 namespace BookViewerApp
 {
     public static class ThumbnailManager

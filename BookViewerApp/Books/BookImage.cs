@@ -11,7 +11,10 @@ using Windows.UI.Xaml.Media;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace BookViewerApp.Books.Image
+using BookViewerApp.Helper;
+
+
+namespace BookViewerApp.Books
 {
     public class ImagePageUrl : IPageFixed
     {
@@ -25,11 +28,11 @@ namespace BookViewerApp.Books.Image
             get; set;
         }
 
-        public ImagePageUrl(Uri uri) { this.Uri = uri; }
+        public ImagePageUrl(Uri uri) { Uri = uri; }
 
-        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
+        public async Task<BitmapImage> GetBitmapAsync()
         {
-            return new Windows.UI.Xaml.Media.Imaging.BitmapImage(Uri);
+            return new BitmapImage(Uri);
         }
 
         public async Task<bool> UpdateRequiredAsync()
@@ -37,7 +40,7 @@ namespace BookViewerApp.Books.Image
             return false;
         }
 
-        public async Task SaveImageAsync(StorageFile file,uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width)
         {
             //ToDo: Fix me!
             if (Uri.IsFile)
@@ -53,8 +56,10 @@ namespace BookViewerApp.Books.Image
             image.UriSource = Uri;
         }
     }
+}
 
-
+namespace BookViewerApp.Books
+{
     public class ImagePageStream : IPageFixed
     {
         private IRandomAccessStream stream;
@@ -69,15 +74,15 @@ namespace BookViewerApp.Books.Image
             get; set;
         }
 
-        public async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync()
+        public async Task<BitmapImage> GetBitmapAsync()
         {
-            var image = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+            var image = new BitmapImage();
             stream.Seek(0);
             image.SetSource(stream);
             return image;
         }
 
-        public async Task SaveImageAsync(StorageFile file,uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width)
         {
             await Functions.SaveStreamToFile(stream, file);
         }
@@ -93,7 +98,10 @@ namespace BookViewerApp.Books.Image
             return false;
         }
     }
+}
 
+namespace BookViewerApp.Books
+{
     public class ImageBookUriCollection : IBookFixed
     {
         public Uri[] Content { get { return _Content; } private set { _Content = value; OnLoaded(new EventArgs()); } }
@@ -101,13 +109,13 @@ namespace BookViewerApp.Books.Image
 
         public ImageBookUriCollection(params Uri[] uri)
         {
-            this.Content = uri;
+            Content = uri;
         }
 
-        public ImageBookUriCollection(params String[] uri)
+        public ImageBookUriCollection(params string[] uri)
         {
             var result = new Uri[uri.Count()];
-            for(int i = 0; i < uri.Count(); i++)
+            for (int i = 0; i < uri.Count(); i++)
             {
                 result[i] = new Uri(uri[i]);
             }
@@ -121,7 +129,7 @@ namespace BookViewerApp.Books.Image
             get
             {
                 string result = "";
-                foreach(var item in Content)
+                foreach (var item in Content)
                 {
                     result += "\"" + item.GetHashCode() + "\"";
                 }

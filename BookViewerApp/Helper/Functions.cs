@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using System.Runtime.InteropServices.WindowsRuntime;
 
-namespace BookViewerApp
+namespace BookViewerApp.Helper
 {
     static class Functions
     {
