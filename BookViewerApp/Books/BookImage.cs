@@ -30,14 +30,14 @@ namespace BookViewerApp.Books
 
         public ImagePageUrl(Uri uri) { Uri = uri; }
 
-        public async Task<BitmapImage> GetBitmapAsync()
+        public Task<BitmapImage> GetBitmapAsync()
         {
-            return new BitmapImage(Uri);
+            return Task.FromResult(new BitmapImage(Uri));
         }
 
-        public async Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync()
         {
-            return false;
+            return Task.FromResult(false);
         }
 
         public async Task SaveImageAsync(StorageFile file, uint width)
@@ -51,9 +51,10 @@ namespace BookViewerApp.Books
             }
         }
 
-        public async Task SetBitmapAsync(BitmapImage image)
+        public Task SetBitmapAsync(BitmapImage image)
         {
             image.UriSource = Uri;
+            return Task.CompletedTask;
         }
     }
 }
@@ -74,12 +75,12 @@ namespace BookViewerApp.Books
             get; set;
         }
 
-        public async Task<BitmapImage> GetBitmapAsync()
+        public Task<BitmapImage> GetBitmapAsync()
         {
             var image = new BitmapImage();
             stream.Seek(0);
             image.SetSource(stream);
-            return image;
+            return Task.FromResult(image);
         }
 
         public async Task SaveImageAsync(StorageFile file, uint width)
@@ -87,15 +88,16 @@ namespace BookViewerApp.Books
             await Functions.SaveStreamToFile(stream, file);
         }
 
-        public async Task SetBitmapAsync(BitmapImage image)
+        public Task SetBitmapAsync(BitmapImage image)
         {
             stream.Seek(0);
             image.SetSource(stream);
+            return Task.CompletedTask;
         }
 
-        public async Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync()
         {
-            return false;
+            return Task.FromResult(false);
         }
     }
 }

@@ -179,7 +179,7 @@ namespace BookViewerApp.Books
             return Task.FromResult(false);
         }
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public Task SaveImageAsync(StorageFile file, uint width)
         {
             try
             {
@@ -187,6 +187,7 @@ namespace BookViewerApp.Books
                 Content.ExtractToFile(file.Path, true);
             }
             catch { }
+            return Task.CompletedTask;
         }
 
         public async Task SetBitmapAsync(BitmapImage image)

@@ -528,9 +528,10 @@ namespace BookViewerApp.ViewModels
                 return GetAddedBook(ViewModel.ID) != null;
             }
 
-            public async void Execute(object parameter)
+            public void Execute(object parameter)
             {
-                var bookFVM = GetAddedBook(ViewModel.ID);
+                throw new NotImplementedException();
+                //var bookFVM = GetAddedBook(ViewModel.ID);
                 //var file = await bookFVM.TryGetBookFile();
                 //var book = await Books.BookManager.GetBookFromFile(file);
                 //if (book is Books.IBookFixed)

@@ -175,13 +175,13 @@ namespace BookViewerApp.Views
         Half:
             DesireChild(1);
             throw new NotImplementedException();
-            DisplayedStatus = DisplayedStatusEnum.HalfFirst;
-            goto Conclude;
+            //DisplayedStatus = DisplayedStatusEnum.HalfFirst;
+            //goto Conclude;
 
         HalfSecond:
             throw new NotImplementedException();
-            DisplayedStatus = DisplayedStatusEnum.HalfSecond;
-            goto Conclude;
+            //DisplayedStatus = DisplayedStatusEnum.HalfSecond;
+            //goto Conclude;
 
         Double:
             {

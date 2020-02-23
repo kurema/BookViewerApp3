@@ -192,9 +192,9 @@ namespace BookViewerApp.ViewModels
             Books.Add(item);
         }
 
-        public static async Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index, BookShelfViewModel Shelf)
+        public static Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index, BookShelfViewModel Shelf)
         {
-            return new BookContainerViewModel[0];
+            return Task.FromResult(new BookContainerViewModel[0]);
 
             //var storages = await BookShelfStorage.GetBookShelves();
             //if (storages.Count > index)
@@ -269,14 +269,14 @@ namespace BookViewerApp.ViewModels
 
         public BookContainerViewModel Parent { get; private set; }
 
-        public async Task<Books.IBook> TryGetBook()
+        public Task<Books.IBook> TryGetBook()
         {
             //var item=(await TryGetBookFile());
             //if(item!= null)
             //{
             //    return await Books.BookManager.GetBookFromFile(item);
             //}
-            return null;
+            return Task.FromResult<Books.IBook>(null);
         }
 
         //public async Task<Windows.Storage.IStorageFile> TryGetBookFile()

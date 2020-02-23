@@ -49,7 +49,10 @@ namespace kurema.BrowserControl.ViewModels
 
         public class InvalidCommand : ICommand
         {
+#pragma warning disable 0067
+            //https://anopara.net/2013/12/03/c%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E6%99%82%E3%81%AE%E8%AD%A6%E5%91%8A%E3%82%92%E6%8A%91%E5%88%B6%E3%81%99%E3%82%8B/
             public event EventHandler CanExecuteChanged;
+#pragma warning restore 0067
 
             public bool CanExecute(object parameter)
             {

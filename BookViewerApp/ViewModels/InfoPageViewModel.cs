@@ -18,7 +18,9 @@ namespace BookViewerApp.ViewModels
 {
     public class InfoPageViewModel : INotifyPropertyChanged
     {
+#pragma warning disable 0067
         public event PropertyChangedEventHandler PropertyChanged;//never be called.
+#pragma warning restore 0067
 
         private Windows.ApplicationModel.Package CurrentPackage => Windows.ApplicationModel.Package.Current;
 

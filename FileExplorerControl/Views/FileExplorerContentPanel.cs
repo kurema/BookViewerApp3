@@ -82,8 +82,7 @@ namespace kurema.FileExplorerControl.Views
                     return new Size(finalSize.Width, Math.Max(finalSize.Height, y));
                 }
             }
-
-            return base.ArrangeOverride(finalSize);
+            //return base.ArrangeOverride(finalSize);
         }
     }
 }

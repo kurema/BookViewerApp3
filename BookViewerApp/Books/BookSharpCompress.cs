@@ -177,9 +177,9 @@ namespace BookViewerApp.Books
             await new ImagePageStream(GetStream()).SetBitmapAsync(image);
         }
 
-        public async Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync()
         {
-            return false;
+            return Task.FromResult(false);
         }
     }
 

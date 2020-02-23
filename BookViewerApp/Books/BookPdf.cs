@@ -320,12 +320,12 @@ namespace BookViewerApp.Books
             return result;
         }
 
-        public async Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync()
         {
             if (LastOption != null && Option != null && LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth)
             //if (LastOption != null && Option != null)
-            { return true; }
-            else { return false; }
+            { return Task.FromResult(true); }
+            else { return Task.FromResult(false); }
         }
 
         public async Task SaveImageAsync(StorageFile file, uint width)

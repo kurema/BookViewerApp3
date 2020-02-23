@@ -13,6 +13,11 @@ namespace BookViewerApp.Helper
         public Func<object, bool> CanExecuteDelegate;
         public Action<object> ExecuteDelegate;
 
+        public void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
+
         public DelegateCommand(Action<object> executeDelegate, Func<object, bool> canExecuteDelegate = null)
         {
             ExecuteDelegate = executeDelegate ?? throw new ArgumentNullException(nameof(executeDelegate));
