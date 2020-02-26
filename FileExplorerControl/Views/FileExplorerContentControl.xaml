@@ -27,6 +27,12 @@
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:UlongToHumanReadableSizeConverter x:Key="vc_u2hrs"/>
         <vc:OrderToDataGridSortDirectionConverter x:Key="vc_o2gsd"/>
+
+        <MenuFlyout x:Key="menu_flyout">
+            <MenuFlyoutItem Text="Open" Click="MenuFlyoutItem_Click_Open" />
+            <MenuFlyoutItem Text="Rename" Command="{Binding RenameCommand}"/>
+            <MenuFlyoutItem Text="Delete" Command="{Binding DeleteCommand}" />
+        </MenuFlyout>
     </UserControl.Resources>
 
 
@@ -45,6 +51,12 @@
                            
                            x:Name="dataGrid"
                            >
+            <controls:DataGrid.RowStyle>
+                <Style TargetType="controls:DataGridRow">
+                    <!-- https://stackoverflow.com/questions/54769413/uwp-datagrid-menuflyout-right-click -->
+                    <Setter Property="controls:DataGridRow.ContextFlyout" Value="{StaticResource menu_flyout}" />
+                </Style>
+            </controls:DataGrid.RowStyle>
             <controls:DataGrid.Columns>
                 <controls:DataGridTemplateColumn>
                     <controls:DataGridTemplateColumn.CellTemplate>
@@ -77,7 +89,7 @@
                     <local:FileExplorerContentDataSelector ContentStyle="Icon">
                         <local:FileExplorerContentDataSelector.TemplateIcon>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <Button Margin="5" Tapped="Button_Tapped_Open" HorizontalAlignment="Stretch" VerticalAlignment="Top" ContextFlyout="{StaticResource menu_flyout}">
                                     <StackPanel MaxWidth="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" MinWidth="100">
                                         <Image Height="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
                                         <TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center" TextWrapping="Wrap" />
@@ -87,7 +99,7 @@
                         </local:FileExplorerContentDataSelector.TemplateIcon>
                         <local:FileExplorerContentDataSelector.TemplateIconWide>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped">
+                                <Button Margin="5" Tapped="Button_Tapped_Open" ContextFlyout="{StaticResource menu_flyout}">
                                     <Grid HorizontalAlignment="Left" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -101,7 +113,7 @@
                         </local:FileExplorerContentDataSelector.TemplateIconWide>
                         <local:FileExplorerContentDataSelector.TemplateList>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped">
+                                <Button Margin="5" Tapped="Button_Tapped_Open" ContextFlyout="{StaticResource menu_flyout}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="20"/>
                                         <TextBlock Text="{Binding Title}" />

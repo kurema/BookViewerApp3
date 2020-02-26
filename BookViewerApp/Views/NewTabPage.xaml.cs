@@ -56,13 +56,10 @@ namespace BookViewerApp.Views
                 });
             }
 
-            if ((this.XamlRoot?.Content as Frame)?.Content is TabPage tab)
+            var tab = UIHelper.GetCurrentTabPage(this);
+            if (tab != null)
             {
                 OpenBrowser(tab);
-            }
-            else if (this.XamlRoot.Content is TabPage tab2)
-            {
-                OpenBrowser(tab2);
             }
             else
             {
@@ -128,7 +125,8 @@ namespace BookViewerApp.Views
                                 return;
                             }
 
-                            if ((this.XamlRoot?.Content as Frame).Content is TabPage tab)
+                            var tab = UIHelper.GetCurrentTabPage(this);
+                            if (tab != null)
                             {
                                 if (fileitem is kurema.FileExplorerControl.Models.StorageFileItem sfi)
                                 {

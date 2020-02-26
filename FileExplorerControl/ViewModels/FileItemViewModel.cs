@@ -36,7 +36,6 @@ namespace kurema.FileExplorerControl.ViewModels
         }
         #endregion
 
-
         private Models.IFileItem _Content;
         public Models.IFileItem Content { get => _Content; set
             {
@@ -50,6 +49,8 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(nameof(LastModified));
                 OnPropertyChanged(nameof(IsFolder));
                 OnPropertyChanged(nameof(Size));
+                DeleteCommand?.OnCanExecuteChanged();
+                RenameCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -69,6 +70,61 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(nameof(Children));
                 OnPropertyChanged(nameof(Files));
                 OnPropertyChanged(nameof(Folders));
+            }
+        }
+
+        public Helper.DelegateCommand RenameCommand { get; set; }
+
+        private Helper.DelegateCommand _DeleteCommand;
+        public Helper.DelegateCommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(async (parameter) =>
+        {
+            async Task<(bool,bool)> checkDelete()
+            {
+                if (ParentContent?.DialogDelete != null)
+                {
+                    var result = await ParentContent?.DialogDelete(this);
+                    if (result.delete == false) return (false, false);
+                    return (result.delete, result.completeDelete);
+                }
+                return (true, false);
+            }
+
+            if (Content?.DeleteCommand is Helper.DelegateAsyncCommand dc)
+            {
+                if (dc.CanExecute(parameter))
+                {
+                    var checkResult = await checkDelete();
+                    if (checkResult.Item1)
+                    {
+                        await dc.ExecuteAsync(checkResult.Item2);
+                        await Parent?.UpdateChildren();
+                    }
+                }
+            }
+            else
+            {
+                if (Content?.DeleteCommand?.CanExecute(parameter) == true)
+                {
+                    var checkResult = await checkDelete();
+                    if (checkResult.Item1)
+                    {
+                        Content.DeleteCommand.Execute(checkResult.Item2);
+                    }
+                }
+            }
+        }, a => Content?.DeleteCommand?.CanExecute(a) ?? false);
+
+
+        private ContentViewModel _ParentContent;
+        public ContentViewModel ParentContent { get => _ParentContent; set
+            {
+                SetProperty(ref _ParentContent, value);
+
+                if (Children != null)
+                    foreach (var item in this.Children)
+                    {
+                        item.ParentContent = this.ParentContent;
+                    }
             }
         }
 
@@ -207,6 +263,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 item.IconProviders = this.IconProviders;
 
                 item.Parent = this;
+                item.ParentContent = this.ParentContent;
             }
             Children = children;
         }

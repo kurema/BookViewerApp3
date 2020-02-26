@@ -19,6 +19,9 @@ namespace kurema.FileExplorerControl.Models
 
         bool IsFolder { get; }
 
+        System.Windows.Input.ICommand DeleteCommand { get; }
+        System.Windows.Input.ICommand RenameCommand { get; }
+
         Task<System.IO.Stream> OpenStreamForReadAsync();
         Task<System.IO.Stream> OpenStreamForWriteAsync();
     }

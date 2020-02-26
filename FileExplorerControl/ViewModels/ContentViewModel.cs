@@ -33,6 +33,22 @@ namespace kurema.FileExplorerControl.ViewModels
         }
         #endregion
 
+        #region dialog
+
+        private Func<ViewModels.FileItemViewModel, Task<(bool delete, bool completeDelete)>> _DialogDelete;
+        public Func<ViewModels.FileItemViewModel, Task<(bool delete, bool completeDelete)>> DialogDelete { get => _DialogDelete; set => SetProperty(ref _DialogDelete, value); }
+
+
+        private Func<FileItemViewModel, Task<string>> _DialogRename;
+        public Func<FileItemViewModel, Task<string>> DialogRename { get => _DialogRename; set => SetProperty(ref _DialogRename, value); }
+
+
+        private Func<FileItemViewModel, Task> _DialogProperty;
+        public Func<FileItemViewModel, Task> DialogProperty { get => _DialogProperty; set => SetProperty(ref _DialogProperty, value); }
+
+
+        #endregion
+
 
         private ContentStyles _ContentStyle=ContentStyles.Icon;
         public ContentStyles ContentStyle { get => _ContentStyle; set
@@ -231,6 +247,19 @@ namespace kurema.FileExplorerControl.ViewModels
         }
 
         private ObservableCollection<OrderSelector> _OrderSelectors;
+
+        public ContentViewModel()
+        {
+            History.CollectionChanged += (s, e) =>
+              {
+                  if (e.NewItems != null)
+                      foreach (FileItemViewModel item in e.NewItems)
+                      {
+                          item.ParentContent = this;
+                      }
+              };
+        }
+
         public ObservableCollection<OrderSelector> OrderSelectors { get => _OrderSelectors; set => SetProperty(ref _OrderSelectors, value); }
 
         public class OrderSelector:INotifyPropertyChanged
@@ -286,7 +315,7 @@ namespace kurema.FileExplorerControl.ViewModels
                                 if (parent.Item != null)
                                     parent.Item.PropertyChanged += (s2, e2) =>
                                     {
-                                        if (e.PropertyName == nameof(parent.Item.Order))
+                                        if (e2.PropertyName == nameof(parent.Item.Order))
                                         {
                                             OnPropertyChanged(nameof(DirectionGlyph));
                                         }

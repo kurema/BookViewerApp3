@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Storages;
+using BookViewerApp.Views;
 
 namespace BookViewerApp.Helper
 {
@@ -34,7 +35,7 @@ namespace BookViewerApp.Helper
     {
         public static void SetTitle(FrameworkElement targetElement, string title)
         {
-            if(((targetElement as Page)?.Frame)?.Parent is winui.Controls.TabViewItem item2)
+            if (((targetElement as Page)?.Frame)?.Parent is winui.Controls.TabViewItem item2)
             {
                 item2.Header = title;
             }
@@ -48,7 +49,7 @@ namespace BookViewerApp.Helper
             }
         }
 
-        public static void OpenBrowser(Frame frame,string uri , Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook,Action<string> UpdateTitle)
+        public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);
             if (frame?.Content is kurema.BrowserControl.Views.BrowserPage content)
@@ -85,7 +86,8 @@ namespace BookViewerApp.Helper
                         var dlitem = new kurema.BrowserControl.ViewModels.DownloadItemViewModel(item.Name);
                         vmb?.Downloads.Add(dlitem);
 
-                        await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) => {
+                        await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) =>
+                        {
                             try
                             {
                                 //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
@@ -131,6 +133,23 @@ namespace BookViewerApp.Helper
                     }
                 };
             }
+        }
+
+        public static Views.TabPage GetCurrentTabPage(UIElement ui)
+        {
+            if ((ui?.XamlRoot?.Content as Frame).Content is TabPage tab)
+            {
+                return tab;
+            }
+            else if (ui?.XamlRoot.Content is TabPage tab3)
+            {
+                return tab3;
+            }
+            //else if (Window.Current?.Content is Frame f && f.Content is TabPage tab2)
+            //{
+            //    return tab2;
+            //}
+            return null;
         }
     }
 }

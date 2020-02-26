@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Library"
+    targetNamespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd"
+    xmlns:mstns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <!--
+  How to compile
+  1. Tools→Command Line→Developer Command Prompt
+  2.
+  > cd BookViewerApp\Storages
+  > xsd.exe Library.xsd /c /edb /e:library /l:CS /n:BookViewerApp.Storages.Library
+  -->
+  
+  <xs:element name="library" >
+    <xs:complexType>
+      <xs:sequence>
+        <!--<xs:element name="folders">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="folder">
+                <xs:complexType>
+                  <xs:attribute name="id" type="xs:string" />
+                  <xs:attribute name="token" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>-->
+        <xs:element name="libraries">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="library">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="folder">
+                      <xs:complexType>
+                        <xs:attribute name="token" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="network">
+                      <xs:complexType>
+                        <xs:attribute name="protocol" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="archive">
+                      <xs:complexType>
+                        <xs:attribute name="token" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attribute name="title" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="bookmarks">
+          <xs:complexType>
+            <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="bookmark_group">
+    <xs:choice>
+      <xs:element name="container">
+        <xs:complexType>
+          <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="bookmark">
+        <xs:complexType>
+          <xs:attribute name="url" type="xs:anyURI"/>
+          <xs:attribute name="title" type="xs:string"/>
+          <xs:attribute name="created" type="xs:dateTime"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+
+</xs:schema>

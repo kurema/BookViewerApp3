@@ -195,7 +195,8 @@ namespace BookViewerApp.Views
 
         public void ToggleFullScreen()
         {
-            if (XamlRoot?.Content is TabPage p && p.RootAppWindow != null)
+            var p = UIHelper.GetCurrentTabPage(this);
+            if (p?.RootAppWindow != null)
             {
                 TrySetFullScreenMode(p.RootAppWindow.Presenter.GetConfiguration().Kind != Windows.UI.WindowManagement.AppWindowPresentationKind.FullScreen);
             }
@@ -211,9 +212,10 @@ namespace BookViewerApp.Views
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
             //One line is better? Or lots of if should do?
             //var result = fullscreen && v.TryEnterFullScreenMode() && BasicFullScreenFrame == null && this.Parent is Frame && (BasicFullScreenFrame = Window.Current.Content as Frame) != null && (Window.Current.Content = this.Parent as Frame) != null;
+            var p = UIHelper.GetCurrentTabPage(this);
             if (fullscreen)
             {
-                if (XamlRoot?.Content is TabPage p && p.RootAppWindow != null)
+                if (p?.RootAppWindow != null)
                 {
                     p.RootAppWindow.Presenter.RequestPresentation(Windows.UI.WindowManagement.AppWindowPresentationKind.FullScreen);
 
@@ -238,7 +240,7 @@ namespace BookViewerApp.Views
             }
             else
             {
-                if (XamlRoot?.Content is TabPage p && p.RootAppWindow != null)
+                if (p?.RootAppWindow != null)
                 {
                     p.RootAppWindow.Presenter.RequestPresentation(Windows.UI.WindowManagement.AppWindowPresentationKind.Default);
                 }

@@ -17,7 +17,15 @@ namespace kurema.FileExplorerControl.Models
             Content = content ?? throw new ArgumentNullException(nameof(content));
         }
 
-        public IStorageItem Content { get; set; }
+
+        private IStorageItem _Content;
+        public IStorageItem Content { get => _Content; set
+            {
+                _Content = value;
+                (RenameCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
+                (DeleteCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
+            }
+        }
 
 
         public string FileName => Content.Name;
@@ -28,6 +36,9 @@ namespace kurema.FileExplorerControl.Models
 
         public string Path => Content?.Path ?? "";
 
+        public bool CanDelete => Content != null;
+
+        public bool CanRename => Content != null;
 
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
@@ -82,5 +93,44 @@ namespace kurema.FileExplorerControl.Models
                 return null;
             }
         }
+
+        private System.Windows.Input.ICommand _RenameCommand;
+        public System.Windows.Input.ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) => {
+            if (Content == null) return;
+            if (parameter == null) return;
+            try
+            {
+                await Content?.RenameAsync(parameter.ToString());
+            }
+            catch
+            {
+            }
+        });
+
+
+        private System.Windows.Input.ICommand _DeleteCommand;
+        public System.Windows.Input.ICommand DeleteCommand
+        {
+            get => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+                {
+                    if (parameter is bool complete)
+                    {
+                        if (Content == null) return;
+                        try
+                        {
+                            await Content?.DeleteAsync(complete ? StorageDeleteOption.PermanentDelete : StorageDeleteOption.Default);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }, (b) => Content != null);
+
+            set
+            {
+                _DeleteCommand = value;
+            }
+        }
+
     }
 }

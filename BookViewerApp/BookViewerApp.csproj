@@ -166,6 +166,9 @@
     <Content Include="res\reader\js\hooks.min.map" />
     <Content Include="res\reader\js\reader.js.map" />
     <Content Include="res\reader\js\reader.min.map" />
+    <None Include="Storages\Library.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <PRIResource Include="Resource\Resources.lang-zh-CN.resw" />
     <PRIResource Include="Resource\Resources.lang-zh-TW.resw" />
     <PRIResource Include="Resource\Resources.lang-ja-JP.resw" />
@@ -176,10 +179,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
+    <Compile Include="Extension\BookmarkItem.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
     <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Storages\Library.cs">
+      <DependentUpon>Library.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Storages\LibraryStorage.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="Views\BookFixed2Page.xaml.cs">
       <DependentUpon>BookFixed2Page.xaml</DependentUpon>
@@ -359,6 +367,7 @@
       <Name>Microsoft Advertising SDK for XAML</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

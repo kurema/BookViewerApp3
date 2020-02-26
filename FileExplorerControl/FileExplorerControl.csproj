@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Models\ContainerItem.cs" />
     <Compile Include="Models\IconProviderDefault.cs" />
     <Compile Include="Models\IconProviderDelegate.cs" />
     <Compile Include="Models\IIconProvider.cs" />

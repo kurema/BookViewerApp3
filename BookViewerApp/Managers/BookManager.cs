@@ -146,6 +146,12 @@ namespace BookViewerApp.Managers
             return AvailableExtensionsArchive.Contains(Path.GetExtension(file.Path).ToLower());
         }
 
+        public static void StorageItemUnregister(string token)
+        {
+            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            acl.Remove(token);
+        }
+
         public static string StorageItemRegister(Windows.Storage.IStorageItem file)
         {
             var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
@@ -158,7 +164,7 @@ namespace BookViewerApp.Managers
             return await acl.GetItemAsync(id);
         }
 
-        public static char FileSplitLetter { get { return '\\'; } }
+        public static char FileSplitLetter { get { return Path.DirectorySeparatorChar; } }
 
         public static string PathJoin(string[] Path)
         {

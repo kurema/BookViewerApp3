@@ -31,4 +31,36 @@ namespace kurema.FileExplorerControl.Helper
             ExecuteDelegate?.Invoke(parameter);
         }
     }
+
+    public class DelegateAsyncCommand : System.Windows.Input.ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+
+        public Func<object, bool> CanExecuteDelegate;
+        public Func<object, Task> ExecuteDelegate;
+
+        public void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, new EventArgs());
+
+        public DelegateAsyncCommand(Func<object, Task> executeDelegate, Func<object, bool> canExecuteDelegate = null)
+        {
+            ExecuteDelegate = executeDelegate ?? throw new ArgumentNullException(nameof(executeDelegate));
+            CanExecuteDelegate = canExecuteDelegate;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return CanExecuteDelegate?.Invoke(parameter) ?? true;
+        }
+
+        public async void Execute(object parameter)
+        {
+            await ExecuteDelegate?.Invoke(parameter);
+        }
+
+        public async Task ExecuteAsync(object parameter)
+        {
+            await ExecuteDelegate?.Invoke(parameter);
+        }
+
+    }
 }

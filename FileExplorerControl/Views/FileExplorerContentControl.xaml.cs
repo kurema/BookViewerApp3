@@ -60,6 +60,26 @@ namespace kurema.FileExplorerControl.Views
                               }
                           }
                       };
+                vm.DialogDelete = async (arg) =>
+                {
+                    //ToDo: I18n
+                    var dialog = new Windows.UI.Popups.MessageDialog("Delete file?", "Delete");
+                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete",null,0));
+                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete completely", null, 1));
+                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Cancel", null, 2));
+                    dialog.DefaultCommandIndex = 2;
+                    dialog.CancelCommandIndex = 2;
+
+                    var result = await dialog.ShowAsync();
+                    switch ((int)result.Id)
+                    {
+                        case 0: return (true, false);
+                        case 1: return (true, true);
+                        case 2: return (false, false);
+                        default: return (false, false);
+                    }
+                };
+
 
                 vm.PropertyChanged += (s, e) =>
                 {
@@ -97,21 +117,12 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void Button_Tapped_Open(object sender, TappedRoutedEventArgs e)
         {
             if ((sender as Button)?.DataContext is ViewModels.FileItemViewModel vm1)
             {
-                if (vm1.IsFolder)
-                {
-                    await SetFolder(vm1);
-                }
-                else
-                {
-                    FileOpenedEventHandler?.Invoke(this, vm1);
-                }
-
+                await Open(vm1);
             }
-
         }
 
         public async Task OperateBinding(System.Func<ViewModels.ContentViewModel, Task> action)
@@ -138,6 +149,27 @@ namespace kurema.FileExplorerControl.Views
 
                 return Task.CompletedTask;
             });
+        }
+
+        private async Task Open(ViewModels.FileItemViewModel file)
+        {
+            if (file == null) return;
+            else if (file.IsFolder)
+            {
+                await SetFolder(file);
+            }
+            else
+            {
+                FileOpenedEventHandler?.Invoke(this, file);
+            }
+        }
+
+        private async void MenuFlyoutItem_Click_Open(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if ((sender as MenuFlyoutItem)?.DataContext is ViewModels.FileItemViewModel vm1)
+            {
+                await Open(vm1);
+            }
         }
     }
 }
