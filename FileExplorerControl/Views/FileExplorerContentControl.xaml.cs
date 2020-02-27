@@ -63,20 +63,34 @@ namespace kurema.FileExplorerControl.Views
                 vm.DialogDelete = async (arg) =>
                 {
                     //ToDo: I18n
-                    var dialog = new Windows.UI.Popups.MessageDialog("Delete file?", "Delete");
-                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete",null,0));
-                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete completely", null, 1));
-                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Cancel", null, 2));
-                    dialog.DefaultCommandIndex = 2;
-                    dialog.CancelCommandIndex = 2;
+                    //var dialog = new Windows.UI.Popups.MessageDialog("Delete file?", "Delete");
+                    //dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete",null,0));
+                    //dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete completely", null, 1));
+                    //dialog.Commands.Add(new Windows.UI.Popups.UICommand("Cancel", null, 2));
+                    //dialog.DefaultCommandIndex = 2;
+                    //dialog.CancelCommandIndex = 2;
 
+                    //var result = await dialog.ShowAsync();
+                    //switch ((int)result.Id)
+                    //{
+                    //    case 0: return (true, false);
+                    //    case 1: return (true, true);
+                    //    case 2: return (false, false);
+                    //    default: return (false, false);
+                    //}
+
+                    var dialog = new Views.DeleteContentDialog();
+                    dialog.DataContext = arg;
                     var result = await dialog.ShowAsync();
-                    switch ((int)result.Id)
+                    switch (result)
                     {
-                        case 0: return (true, false);
-                        case 1: return (true, true);
-                        case 2: return (false, false);
-                        default: return (false, false);
+                        case ContentDialogResult.Primary:
+                            return (true, false);
+                        case ContentDialogResult.Secondary:
+                            return (true, true);
+                        case ContentDialogResult.None:
+                        default:
+                            return (false, false);
                     }
                 };
 
@@ -169,6 +183,25 @@ namespace kurema.FileExplorerControl.Views
             if ((sender as MenuFlyoutItem)?.DataContext is ViewModels.FileItemViewModel vm1)
             {
                 await Open(vm1);
+            }
+        }
+
+        private async void MenuFlyoutItem_Click_Property(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if ((sender as MenuFlyoutItem)?.DataContext is ViewModels.FileItemViewModel vm1)
+            {
+                var dialog = new ContentDialog()
+                {
+                    DataContext = vm1,
+                    //IsSecondaryButtonEnabled=true,
+                    //SecondaryButtonText="Float",
+                    CloseButtonText="OK",
+                };
+                dialog.Content = new PropertyControl();
+                //dialog.SecondaryButtonClick += (s2, e2) =>
+                //{
+                //};
+                await dialog.ShowAsync();
             }
         }
     }

@@ -30,8 +30,8 @@
 
         <MenuFlyout x:Key="menu_flyout">
             <MenuFlyoutItem Text="Open" Click="MenuFlyoutItem_Click_Open" />
-            <MenuFlyoutItem Text="Rename" Command="{Binding RenameCommand}"/>
             <MenuFlyoutItem Text="Delete" Command="{Binding DeleteCommand}" />
+            <MenuFlyoutItem Text="Propert" Click="MenuFlyoutItem_Click_Property"/>
         </MenuFlyout>
     </UserControl.Resources>
 

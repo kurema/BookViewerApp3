@@ -132,6 +132,9 @@
     <Compile Include="ViewModels\ContentViewModel.cs" />
     <Compile Include="ViewModels\FileExplorerViewModel.cs" />
     <Compile Include="ViewModels\FileItemViewModel.cs" />
+    <Compile Include="Views\DeleteContentDialog.xaml.cs">
+      <DependentUpon>DeleteContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FileExplorerAddressBarControl.xaml.cs">
       <DependentUpon>FileExplorerAddressBarControl.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,9 @@
     </Compile>
     <Compile Include="Views\FileExplorerPage.xaml.cs">
       <DependentUpon>FileExplorerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PropertyControl.xaml.cs">
+      <DependentUpon>PropertyControl.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\FileExplorerControl.rd.xml" />
   </ItemGroup>
@@ -163,6 +169,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="res\Icons\trash_s.png" />
     <Content Include="res\Icons\unknown_s.png" />
     <Content Include="res\Icons\folder_s.png" />
     <Content Include="res\Icons\unknown_l.png" />
@@ -171,6 +178,10 @@
     <Content Include="res\UI\Layout_Detail.svg" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\DeleteContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FileExplorerAddressBarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +195,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FileExplorerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

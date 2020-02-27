@@ -50,7 +50,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(nameof(IsFolder));
                 OnPropertyChanged(nameof(Size));
                 DeleteCommand?.OnCanExecuteChanged();
-                RenameCommand?.OnCanExecuteChanged();
+                //RenameCommand?.OnCanExecuteChanged();
             }
         }
 
@@ -73,7 +73,7 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
-        public Helper.DelegateCommand RenameCommand { get; set; }
+        //public Helper.DelegateCommand RenameCommand { get; set; }
 
         private Helper.DelegateCommand _DeleteCommand;
         public Helper.DelegateCommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(async (parameter) =>
@@ -272,7 +272,40 @@ namespace kurema.FileExplorerControl.ViewModels
         public FileItemViewModel Parent { get => _Parent; set => SetProperty(ref _Parent, value); }
 
 
-        public string Title => _Content?.FileName ?? "";
+        public string Title
+        {
+            get => _Content?.FileName ?? "";
+            set
+            {
+                Rename(value?.ToString());
+            }
+        }
+
+        private async void Rename(string title)
+        {
+            if (title == Title) return;
+            if (String.IsNullOrEmpty(title)) return;
+            if (Content?.RenameCommand?.CanExecute(title) == true)
+            {
+                if (Content.RenameCommand is Helper.DelegateAsyncCommand renac)
+                {
+                    try
+                    {
+                        await renac.ExecuteAsync(title);
+                    }
+                    catch { return; }
+                }
+                else
+                {
+                    try
+                    {
+                        Content.RenameCommand.Execute(title);
+                    }
+                    catch { return; }
+                }
+            }
+            OnPropertyChanged(nameof(Title));
+        }
 
         public string Path => _Content?.Path ?? "";
 
@@ -301,11 +334,6 @@ namespace kurema.FileExplorerControl.ViewModels
                 }
                 else
                 {
-                    //Task.Run(async () =>
-                    //{
-                    //    _Size = await _Content.GetSizeAsync();
-                    //    OnPropertyChanged(nameof(Size));
-                    //});
                     UpdateSize();
                     return null;
                 }
@@ -313,8 +341,13 @@ namespace kurema.FileExplorerControl.ViewModels
         }
         private async void UpdateSize()
         {
-            _Size = await _Content.GetSizeAsync();
-            OnPropertyChanged(nameof(Size));
+            if (_Content == null) return;
+            try
+            {
+                _Size = await _Content.GetSizeAsync();
+                OnPropertyChanged(nameof(Size));
+            }
+            catch { }
         }
 
         private ImageSource _IconSmall;
