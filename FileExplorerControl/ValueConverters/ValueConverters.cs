@@ -137,6 +137,41 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
             throw new NotImplementedException();
         }
     }
+    
+    public class StringFormatConverter: IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return "";
+            try
+            {
+                return string.Format(parameter?.ToString() ?? "{0}", value);
+            }
+            catch
+            {
+                return value?.ToString();
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public sealed class LocalizeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string resourceId = parameter as string;
+            return !string.IsNullOrEmpty(resourceId) ? Application.ResourceLoader.Loader.GetString(resourceId.Replace('.', '/')) : Windows.UI.Xaml.DependencyProperty.UnsetValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotSupportedException();
+        }
+    }
 
     public class UlongToHumanReadableSizeConverter : IValueConverter
     {

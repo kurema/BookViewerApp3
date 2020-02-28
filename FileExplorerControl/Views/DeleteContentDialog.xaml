@@ -12,13 +12,12 @@
     d:DataContext="{d:DesignInstance vm:FileItemViewModel}"
     
     IsPrimaryButtonEnabled="True"
-    PrimaryButtonText="Yes"
     IsSecondaryButtonEnabled="True"
-    SecondaryButtonText="Completely"
-    CloseButtonText="Cancel"
+    DefaultButton="Close"
     >
     <ContentDialog.Resources>
         <vc:UlongToHumanReadableSizeConverter x:Key="vc_u2hrs"/>
+        <vc:LocalizeConverter x:Key="vc_local"/>
     </ContentDialog.Resources>
 
     <StackPanel>
@@ -28,7 +27,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Source="/FileExplorerControl/res/Icons/trash_s.png" Width="50" VerticalAlignment="Center"/>
-            <TextBlock Text="Do you really delete?" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Delete/Message'}" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Rectangle Margin="0,10" Height="1" Fill="{ThemeResource MenuFlyoutSeparatorThemeBrush}" />
         <Grid>
@@ -48,11 +47,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Name'}"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Title}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Date:"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Date'}"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LastModified}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Size:"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Size'}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Size,Mode=OneWay,Converter={StaticResource vc_u2hrs}}"/>
             </Grid>
         </Grid>

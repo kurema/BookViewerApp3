@@ -11,11 +11,12 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     d:DataContext="{d:DesignInstance vm:FileItemViewModel}"
-    
     >
 
     <UserControl.Resources>
         <vc:UlongToHumanReadableSizeConverter x:Key="vc_u2hrs"/>
+        <vc:StringFormatConverter x:Key="vc_sc"/>
+        <vc:LocalizeConverter x:Key="vc_local"/>
     </UserControl.Resources>
 
     <Grid RowSpacing="5">
@@ -39,19 +40,18 @@
         <Image Source="{Binding IconLarge}" Width="50"/>
         <TextBox Grid.Column="1" Text="{Binding Title,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
         <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Height="1" Fill="{ThemeResource MenuFlyoutSeparatorThemeBrush}" />
-        <TextBlock Grid.Row="2" Text="Path:"/>
+        <TextBlock Grid.Row="2" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Path'}"/>
         <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path}" TextTrimming="CharacterEllipsis"/>
-        <Button Grid.Column="2" Grid.Row="2" Content="Copy" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding Path}"/>
-        <TextBlock Text="Size:" Grid.Row="3"/>
+        <TextBlock Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Size'}" Grid.Row="3"/>
         <TextBlock Grid.Row="3" Grid.Column="1">
             <Run Text="{Binding Size,Mode=OneWay,Converter={StaticResource vc_u2hrs}}"/>
-            <Run Text="("/>
-            <Run Text="{Binding Size,Mode=OneWay}"/>
-            <Run Text="B)"/>
+            <Run Text="{Binding Size,Mode=OneWay,Converter={StaticResource vc_sc},ConverterParameter='({0:n0}B)'}"/>
         </TextBlock>
-        <Button Grid.Column="2" Grid.Row="3" Content="Copy" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding Size}"/>
-        <TextBlock Text="Date:" Grid.Row="4"/>
+        <TextBlock Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Date'}" Grid.Row="4"/>
         <TextBlock Text="{Binding LastModified}" Grid.Column="1" Grid.Row="4"/>
-        <Button Grid.Column="2" Grid.Row="4" Content="Copy" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding LastModified}"/>
+
+        <Button Style="{ThemeResource ButtonRevealStyle}" Grid.Column="2" Grid.Row="2" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource vc_local},ConverterParameter='Command/Copy'}" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding Path}"/>
+        <Button Style="{ThemeResource ButtonRevealStyle}" Grid.Column="2" Grid.Row="3" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource vc_local},ConverterParameter='Command/Copy'}" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding Size}"/>
+        <Button Style="{ThemeResource ButtonRevealStyle}" Grid.Column="2" Grid.Row="4" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource vc_local},ConverterParameter='Command/Copy'}" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding LastModified}"/>
     </Grid>
 </UserControl>

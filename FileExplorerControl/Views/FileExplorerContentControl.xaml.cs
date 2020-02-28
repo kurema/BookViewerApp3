@@ -25,6 +25,13 @@ namespace kurema.FileExplorerControl.Views
         public FileExplorerContentControl()
         {
             this.InitializeComponent();
+
+            {
+                var loader = Application.ResourceLoader.Loader;
+                this.headerName.Header = loader.GetString("Header/Name");
+                this.headerDate.Header = loader.GetString("Header/Date");
+                this.headerSize.Header = loader.GetString("Header/Size");
+            }
         }
 
 
@@ -62,23 +69,6 @@ namespace kurema.FileExplorerControl.Views
                       };
                 vm.DialogDelete = async (arg) =>
                 {
-                    //ToDo: I18n
-                    //var dialog = new Windows.UI.Popups.MessageDialog("Delete file?", "Delete");
-                    //dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete",null,0));
-                    //dialog.Commands.Add(new Windows.UI.Popups.UICommand("Delete completely", null, 1));
-                    //dialog.Commands.Add(new Windows.UI.Popups.UICommand("Cancel", null, 2));
-                    //dialog.DefaultCommandIndex = 2;
-                    //dialog.CancelCommandIndex = 2;
-
-                    //var result = await dialog.ShowAsync();
-                    //switch ((int)result.Id)
-                    //{
-                    //    case 0: return (true, false);
-                    //    case 1: return (true, true);
-                    //    case 2: return (false, false);
-                    //    default: return (false, false);
-                    //}
-
                     var dialog = new Views.DeleteContentDialog();
                     dialog.DataContext = arg;
                     var result = await dialog.ShowAsync();
@@ -195,8 +185,12 @@ namespace kurema.FileExplorerControl.Views
                     DataContext = vm1,
                     //IsSecondaryButtonEnabled=true,
                     //SecondaryButtonText="Float",
-                    CloseButtonText="OK",
                 };
+                {
+                    var loader = Application.ResourceLoader.Loader;
+                    dialog.CloseButtonText = loader.GetString("Command/OK");
+                }
+
                 dialog.Content = new PropertyControl();
                 //dialog.SecondaryButtonClick += (s2, e2) =>
                 //{

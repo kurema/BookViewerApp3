@@ -28,7 +28,7 @@ namespace kurema.FileExplorerControl.Views
 
         private void Button_Click_Copy(object sender, RoutedEventArgs e)
         {
-            var text = (sender as Button)?.DataContext.ToString();
+            var text = (sender as Button)?.DataContext?.ToString();
             if (!string.IsNullOrEmpty(text))
             {
                 DataPackage dataPackage = new DataPackage();

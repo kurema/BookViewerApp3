@@ -25,6 +25,13 @@ namespace kurema.FileExplorerControl.Views
         public DeleteContentDialog()
         {
             this.InitializeComponent();
+
+            {
+                var loader = Application.ResourceLoader.Loader;
+                this.PrimaryButtonText = loader.GetString("Delete/Option/Yes");
+                this.SecondaryButtonText = loader.GetString("Delete/Option/Permanent");
+                this.CloseButtonText = loader.GetString("Delete/Option/No");
+            }
         }
     }
 }
