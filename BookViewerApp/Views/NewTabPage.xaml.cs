@@ -17,6 +17,8 @@ using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
+using kurema.FileExplorerControl.Models.IconProviders;
+using kurema.FileExplorerControl.Models.FileItems;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -104,8 +106,8 @@ namespace BookViewerApp.Views
                 {
                     if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
-                        var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.StorageFileItem(folder));
-                        fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviderDelegate((a) => {
+                        var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new StorageFileItem(folder));
+                        fv.IconProviders.Add(new IconProviderDelegate((a) => {
                             if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.FileName).ToLower()))
                             {
                                 return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
@@ -128,7 +130,7 @@ namespace BookViewerApp.Views
                             var tab = UIHelper.GetCurrentTabPage(this);
                             if (tab != null)
                             {
-                                if (fileitem is kurema.FileExplorerControl.Models.StorageFileItem sfi)
+                                if (fileitem is StorageFileItem sfi)
                                 {
                                     tab.OpenTabBook(sfi.Content);
                                 }

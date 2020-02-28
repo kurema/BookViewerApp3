@@ -122,13 +122,14 @@
   <ItemGroup>
     <Compile Include="Application\ResourceLoader.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
-    <Compile Include="Models\ContainerItem.cs" />
-    <Compile Include="Models\IconProviderDefault.cs" />
-    <Compile Include="Models\IconProviderDelegate.cs" />
-    <Compile Include="Models\IIconProvider.cs" />
+    <Compile Include="Models\FileItem\CombinedItem.cs" />
+    <Compile Include="Models\FileItem\ContainerItem.cs" />
+    <Compile Include="Models\IconProviders\IconProviderDefault.cs" />
+    <Compile Include="Models\IconProviders\IconProviderDelegate.cs" />
+    <Compile Include="Models\IconProviders\IIconProvider.cs" />
     <Compile Include="ValueConverters\ValueConverters.cs" />
-    <Compile Include="Models\IFileItem.cs" />
-    <Compile Include="Models\StorageFileItem.cs" />
+    <Compile Include="Models\FileItem\IFileItem.cs" />
+    <Compile Include="Models\FileItem\StorageFileItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ContentViewModel.cs" />
     <Compile Include="ViewModels\FileExplorerViewModel.cs" />

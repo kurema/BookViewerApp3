@@ -8,7 +8,7 @@ using System.Windows.Input;
 using Windows.Storage;
 using System.IO;
 
-namespace kurema.FileExplorerControl.Models
+namespace kurema.FileExplorerControl.Models.FileItems
 {
     public class StorageFileItem : IFileItem
     {
@@ -19,7 +19,9 @@ namespace kurema.FileExplorerControl.Models
 
 
         private IStorageItem _Content;
-        public IStorageItem Content { get => _Content; set
+        public IStorageItem Content
+        {
+            get => _Content; set
             {
                 _Content = value;
                 (RenameCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
@@ -42,7 +44,7 @@ namespace kurema.FileExplorerControl.Models
 
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
-            if(Content is StorageFolder f)
+            if (Content is StorageFolder f)
             {
                 return new ObservableCollection<IFileItem>((await f.GetItemsAsync()).Select(a => new StorageFileItem(a)));
             }
@@ -61,7 +63,7 @@ namespace kurema.FileExplorerControl.Models
 
         public async Task<Stream> OpenStreamForReadAsync()
         {
-            if(Content is StorageFile file)
+            if (Content is StorageFile file)
             {
                 return await file.OpenStreamForReadAsync();
             }
@@ -94,8 +96,9 @@ namespace kurema.FileExplorerControl.Models
             }
         }
 
-        private System.Windows.Input.ICommand _RenameCommand;
-        public System.Windows.Input.ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) => {
+        private ICommand _RenameCommand;
+        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+        {
             if (Content == null) return;
             if (parameter == null) return;
             try
@@ -108,8 +111,8 @@ namespace kurema.FileExplorerControl.Models
         });
 
 
-        private System.Windows.Input.ICommand _DeleteCommand;
-        public System.Windows.Input.ICommand DeleteCommand
+        private ICommand _DeleteCommand;
+        public ICommand DeleteCommand
         {
             get => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
                 {

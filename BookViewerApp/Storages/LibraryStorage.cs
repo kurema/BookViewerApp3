@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 
 using BookViewerApp.Helper;
+using kurema.FileExplorerControl.Models.FileItems;
 
 namespace BookViewerApp.Storages
 {
@@ -92,9 +93,9 @@ namespace BookViewerApp.Storages
 
         public partial class libraryBookmarksContainerBookmark
         {
-            public kurema.FileExplorerControl.Models.BookmarkItem AsFileItem(Action<kurema.FileExplorerControl.Models.BookmarkItem> action)
+            public BookmarkItem AsFileItem(Action<BookmarkItem> action)
             {
-                var result= new kurema.FileExplorerControl.Models.BookmarkItem()
+                var result= new BookmarkItem()
                 {
                     DateCreated = this.created,
                     FileName = this.title,

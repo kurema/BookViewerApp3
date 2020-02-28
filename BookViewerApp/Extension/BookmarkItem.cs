@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace kurema.FileExplorerControl.Models
+namespace kurema.FileExplorerControl.Models.FileItems
 {
     public class BookmarkItem : IFileItem
     {
@@ -22,8 +22,8 @@ namespace kurema.FileExplorerControl.Models
         public ICommand DeleteCommand { get; set; } = null;
 
 
-        private System.Windows.Input.ICommand _RenameCommand;
-        public System.Windows.Input.ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((parameter) => { this.FileName = parameter?.ToString() ?? FileName; });
+        private ICommand _RenameCommand;
+        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((parameter) => { FileName = parameter?.ToString() ?? FileName; });
 
         public event Windows.Foundation.TypedEventHandler<BookmarkItem, string> Opened;
 
@@ -40,7 +40,7 @@ namespace kurema.FileExplorerControl.Models
 
         public void Open()
         {
-            Opened?.Invoke(this, this.Path);
+            Opened?.Invoke(this, Path);
         }
 
         public Task<Stream> OpenStreamForReadAsync()

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace kurema.FileExplorerControl.Models
+namespace kurema.FileExplorerControl.Models.FileItems
 {
     public class ContainerItem : IFileItem
     {
@@ -18,7 +17,7 @@ namespace kurema.FileExplorerControl.Models
             Children = new ObservableCollection<IFileItem>(children) ?? throw new ArgumentNullException(nameof(children));
         }
 
-        
+
 
         public string FileName { get; set; }
 

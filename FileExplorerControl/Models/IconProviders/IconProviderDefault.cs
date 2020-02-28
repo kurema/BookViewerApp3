@@ -1,9 +1,10 @@
-﻿using System;
+﻿using kurema.FileExplorerControl.Models.FileItems;
+using System;
 using System.Collections.Generic;
 
 using Windows.UI.Xaml.Media;
 
-namespace kurema.FileExplorerControl.Models
+namespace kurema.FileExplorerControl.Models.IconProviders
 {
     public class IconProviderDefault : IIconProvider
     {

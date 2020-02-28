@@ -1,5 +1,4 @@
-﻿using kurema.FileExplorerControl.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +8,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 using Windows.UI.Xaml.Media;
-
+using kurema.FileExplorerControl.Models.IconProviders;
+using kurema.FileExplorerControl.Models.FileItems;
 
 namespace kurema.FileExplorerControl.ViewModels
 {
@@ -36,8 +36,8 @@ namespace kurema.FileExplorerControl.ViewModels
         }
         #endregion
 
-        private Models.IFileItem _Content;
-        public Models.IFileItem Content { get => _Content; set
+        private IFileItem _Content;
+        public IFileItem Content { get => _Content; set
             {
                 SetProperty(ref _Content, value);
                 _Children = null;
@@ -236,9 +236,9 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
-        private ObservableCollection<Models.IIconProvider> _IconProviders = new ObservableCollection<IIconProvider>(new[] { new Models.IconProviderDefault() });
+        private ObservableCollection<IIconProvider> _IconProviders = new ObservableCollection<IIconProvider>(new[] { new IconProviderDefault() });
 
-        public ObservableCollection<Models.IIconProvider> IconProviders { get => _IconProviders; set
+        public ObservableCollection<IIconProvider> IconProviders { get => _IconProviders; set
             {
                 void IconUpdate(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
                 {

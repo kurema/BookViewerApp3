@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using System.Collections.ObjectModel;
 
-namespace kurema.FileExplorerControl.Models
+namespace kurema.FileExplorerControl.Models.FileItems
 {
     public interface IFileItem
     {
