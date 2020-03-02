@@ -22,12 +22,12 @@ namespace BookViewerApp.Views
     /// </summary>
     public sealed partial class PasswordRequestContentDialog : ContentDialog
     {
+        public bool Remember { get; set; } = false;
+
         public PasswordRequestContentDialog()
         {
             this.InitializeComponent();
         }
-
-
 
         public string Password
         {

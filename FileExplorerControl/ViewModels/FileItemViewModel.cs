@@ -274,7 +274,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public string Title
         {
-            get => _Content?.FileName ?? "";
+            get => _Content?.Name ?? "";
             set
             {
                 Rename(value?.ToString());

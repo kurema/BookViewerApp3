@@ -83,7 +83,7 @@ namespace BookViewerApp.Managers
                         var result = await dialog.ShowAsync();
                         if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
                         {
-                            return dialog.Password;
+                            return (dialog.Password, dialog.Remember);
                         }
                         else
                         {

@@ -247,7 +247,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helper\ValueConverters.cs" />
+    <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="Views\SpreadPagePanel.cs" />
     <Compile Include="Views\TabPage.xaml.cs">
       <DependentUpon>TabPage.xaml</DependentUpon>

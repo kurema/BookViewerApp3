@@ -44,6 +44,8 @@ namespace BookViewerApp.Books
 
         public TocItem[] Toc { get; private set; }
 
+        public bool PasswordRemember { get; private set; }
+
         public IPageFixed GetPage(uint i)
         {
             if (i < PageCount) return new PdfPage(Content.GetPage(i));
@@ -157,11 +159,12 @@ namespace BookViewerApp.Books
         }
 
 
-        public async Task Load(IStorageFile file, Func<int, Task<string>> passwordRequestedCallback, string[] defaultPassword = null)
+        public async Task Load(IStorageFile file, Func<int, Task<(string password,bool remember)>> passwordRequestedCallback, string[] defaultPassword = null)
         {
             using (var stream = await file.OpenReadAsync())
             {
                 string password = null;
+                bool passSave = false;
 
                 try
                 {
@@ -185,7 +188,9 @@ namespace BookViewerApp.Books
 
                     for (int i = 0; i < 3; i++)
                     {
-                        password = await passwordRequestedCallback(i);
+                        var result = await passwordRequestedCallback(i);
+                        password = result.password;
+                        passSave = result.remember;
                         pr = GetPdfReader(streamClassic, password);
                         if (pr != null) goto PasswordSuccess;
                     }
@@ -198,7 +203,7 @@ namespace BookViewerApp.Books
                     {
                         //Get page direction information.
 
-                        //It took some hour to write next line. Thanks for
+                        //It took some hours to write next line. Thanks for
                         //http://itext.2136553.n4.nabble.com/Using-getSimpleViewerPreferences-td2167775.html
                         //私が書いた記事はこちら。
                         //https://qiita.com/kurema/items/3f274507aa5cf9e845a8
@@ -246,6 +251,7 @@ namespace BookViewerApp.Books
                 {
                     Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password);
                     Password = password;
+                    PasswordRemember = passSave;
                 }
                 OnLoaded(new EventArgs());
                 PageLoaded = true;

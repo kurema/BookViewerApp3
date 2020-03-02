@@ -26,9 +26,23 @@ namespace BookViewerApp.Storages.Library {
         "ry.xsd", IsNullable=false)]
     public partial class library : object, System.ComponentModel.INotifyPropertyChanged {
         
+        private libraryFolder[] foldersField;
+        
         private libraryLibrary[] librariesField;
         
         private libraryBookmarks bookmarksField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("folder", IsNullable=false)]
+        public libraryFolder[] folders {
+            get {
+                return this.foldersField;
+            }
+            set {
+                this.foldersField = value;
+                this.RaisePropertyChanged("folders");
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("library", IsNullable=false)]
@@ -50,6 +64,39 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.bookmarksField = value;
                 this.RaisePropertyChanged("bookmarks");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd")]
+    public partial class libraryFolder : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string tokenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string token {
+            get {
+                return this.tokenField;
+            }
+            set {
+                this.tokenField = value;
+                this.RaisePropertyChanged("token");
             }
         }
         
@@ -373,6 +420,12 @@ namespace BookViewerApp.Storages.Library {
         
         private object[] itemsField;
         
+        private string titleField;
+        
+        private System.DateTime createdField;
+        
+        private bool createdFieldSpecified;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(libraryBookmarksContainerBookmark))]
         [System.Xml.Serialization.XmlElementAttribute("container", typeof(libraryBookmarksContainer))]
@@ -383,6 +436,42 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.itemsField = value;
                 this.RaisePropertyChanged("Items");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime created {
+            get {
+                return this.createdField;
+            }
+            set {
+                this.createdField = value;
+                this.RaisePropertyChanged("created");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createdSpecified {
+            get {
+                return this.createdFieldSpecified;
+            }
+            set {
+                this.createdFieldSpecified = value;
+                this.RaisePropertyChanged("createdSpecified");
             }
         }
         

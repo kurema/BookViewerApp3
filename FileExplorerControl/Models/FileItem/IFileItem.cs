@@ -10,7 +10,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
     public interface IFileItem
     {
         Task<ObservableCollection<IFileItem>> GetChildren();
-        string FileName { get; }
+        string Name { get; }
         string Path { get; }
         void Open();
 

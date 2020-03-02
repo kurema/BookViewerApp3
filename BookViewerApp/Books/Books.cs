@@ -183,6 +183,7 @@ namespace BookViewerApp.Books
     public interface IPasswordPdovider
     {
         string Password { get; }
+        bool PasswordRemember { get; }
     }
 
     public interface IDirectionProvider

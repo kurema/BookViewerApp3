@@ -17,18 +17,17 @@
   <xs:element name="library" >
     <xs:complexType>
       <xs:sequence>
-        <!--<xs:element name="folders">
+        <xs:element name="folders">
           <xs:complexType>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
               <xs:element name="folder">
                 <xs:complexType>
-                  <xs:attribute name="id" type="xs:string" />
                   <xs:attribute name="token" type="xs:string" />
                 </xs:complexType>
               </xs:element>
             </xs:choice>
           </xs:complexType>
-        </xs:element>-->
+        </xs:element>
         <xs:element name="libraries">
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -74,6 +73,8 @@
       <xs:element name="container">
         <xs:complexType>
           <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:attribute name="title" type="xs:string"/>
+          <xs:attribute name="created" type="xs:dateTime"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="bookmark">

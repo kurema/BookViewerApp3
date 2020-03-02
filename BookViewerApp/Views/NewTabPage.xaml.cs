@@ -108,7 +108,7 @@ namespace BookViewerApp.Views
                     {
                         var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new StorageFileItem(folder));
                         fv.IconProviders.Add(new IconProviderDelegate((a) => {
-                            if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.FileName).ToLower()))
+                            if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
                             {
                                 return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
                                 () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
@@ -122,7 +122,7 @@ namespace BookViewerApp.Views
                         {
                                 
                             var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
-                            if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.FileName ?? "").ToLower()))
+                            if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
                             {
                                 return;
                             }

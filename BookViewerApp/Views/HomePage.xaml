@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:BookViewerApp.ViewModels"
     mc:Ignorable="d"
-    xmlns:dc="using:BookViewerApp.BookShelfViewModels"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
         <vm:HomeViewModel/>

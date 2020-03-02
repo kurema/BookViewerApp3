@@ -30,7 +30,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
 
-        public string FileName => Content.Name;
+        public string Name => Content.Name;
 
         public DateTimeOffset DateCreated => Content.DateCreated;
 

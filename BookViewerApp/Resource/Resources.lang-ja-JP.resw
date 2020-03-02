@@ -327,4 +327,19 @@
   <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
     <value>綴じ方情報を参照する</value>
   </data>
+  <data name="Password.Message" xml:space="preserve">
+    <value>パスワードを入力してください。</value>
+  </data>
+  <data name="Password.Save.Message" xml:space="preserve">
+    <value>パスワードを保存する。</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="Word.Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Word.OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>

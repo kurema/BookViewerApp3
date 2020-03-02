@@ -182,7 +182,7 @@
                                                                     <VisualState.Setters>
                                                                         <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundDisabled}" />
                                                                         <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushDisabled}" />
-                                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundDisabled}" />
+                                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundThemeBrush}" />
                                                                     </VisualState.Setters>
                                                                 </VisualState>
 

@@ -12,14 +12,14 @@ namespace kurema.FileExplorerControl.Models.FileItems
     {
         public ContainerItem(string fileName, string path, params IFileItem[] children)
         {
-            FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            Name = fileName ?? throw new ArgumentNullException(nameof(fileName));
             Path = path ?? throw new ArgumentNullException(nameof(path));
             Children = new ObservableCollection<IFileItem>(children) ?? throw new ArgumentNullException(nameof(children));
         }
 
 
 
-        public string FileName { get; set; }
+        public string Name { get; set; }
 
         public string Path { get; set; }
 

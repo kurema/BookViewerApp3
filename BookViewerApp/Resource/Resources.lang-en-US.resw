@@ -327,4 +327,19 @@
   <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
     <value>Respect direction information</value>
   </data>
+  <data name="Password.Message" xml:space="preserve">
+    <value>Enter password to open.</value>
+  </data>
+  <data name="Password.Save.Message" xml:space="preserve">
+    <value>Save Password</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Word.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Word.OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>
