@@ -27,24 +27,23 @@ namespace BookViewerApp.Storages
                 return _SettingInstances = _SettingInstances ??
                     new SettingInstance[]
                     {
-                        new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter()),
-                        new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter()),
-                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter()),
-                        new SettingInstance("SyncBookmarks","SyncBookmarks",true,new TypeConverters.BoolConverter()),
-                        new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter()),
-                        new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter()) {Minimum=0,Maximum=1000 },
-                        new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=1000 },
-                        new SettingInstance("BackgroundBrightness","BackgroundBrightness",90.0,new TypeConverters.DoubleConverter()){Minimum=0,Maximum=100 },
-                        new SettingInstance("ScrollAnimation","ScrollAnimation",true,new TypeConverters.BoolConverter()),
-                        new SettingInstance("FolderNameToExclude","FolderNameToExclude",null,new TypeConverters.RegexConverter()),
-                        new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter()),
-                        new SettingInstance("SortNaturalOrder","SortNaturalOrder",false,new TypeConverters.BoolConverter()),
-                        new SettingInstance("SortCoverComesFirst","SortCoverComesFirst",false,new TypeConverters.BoolConverter()),
-                        new SettingInstance("ZoomButtonShowTimespan","ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter()){Minimum = 0,Maximum = 10},
-                        new SettingInstance("CommandBarShowTimespan","CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter()){Minimum = 0,Maximum = 10},
-                        new SettingInstance("WebHomePage","WebHomePage","https://www.google.com/",new TypeConverters.StringConverter()),
-                        new SettingInstance("RespectPageDirectionInfo","RespectPageDirectionInfo",true,new TypeConverters.BoolConverter()),
-
+                        new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("SyncBookmarks","SyncBookmarks",true,new TypeConverters.BoolConverter(),group:"Cloud"),
+                        new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete") {Minimum=0,Maximum=1000 },
+                        new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum=0,Maximum=1000 },
+                        new SettingInstance("BackgroundBrightness","BackgroundBrightness",90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){Minimum=0,Maximum=100 },
+                        new SettingInstance("ScrollAnimation","ScrollAnimation",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("FolderNameToExclude","FolderNameToExclude",null,new TypeConverters.RegexConverter(),group:"Library"),
+                        new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter(),group:"Library"),
+                        new SettingInstance("SortNaturalOrder","SortNaturalOrder",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("SortCoverComesFirst","SortCoverComesFirst",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("ZoomButtonShowTimespan","ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum = 0,Maximum = 10},
+                        new SettingInstance("CommandBarShowTimespan","CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum = 0,Maximum = 10},
+                        new SettingInstance("WebHomePage","WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance("RespectPageDirectionInfo","RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                     };
             }
         }

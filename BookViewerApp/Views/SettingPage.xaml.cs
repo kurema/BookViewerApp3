@@ -37,9 +37,8 @@ namespace BookViewerApp.Views
             {
                 src.Add(new SettingViewModel(item));
             }
-            this.SettingPanel.ItemsSource = src;
-
-            UIHelper.SetTitle(this, "");
+            //this.SettingPanel.ItemsSource = src;
+            settingSource.Source = src.GroupBy(a => a.Group);
         }
 
         public class SettingViewModel : INotifyPropertyChanged
@@ -109,6 +108,8 @@ namespace BookViewerApp.Views
                     OnPropertyChanged(nameof(Value));
                 }
             }
+
+            public string Group => target.GroupName;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -135,7 +136,7 @@ namespace BookViewerApp.Views
             //currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             //currentView.BackRequested += CurrentView_BackRequested;
 
-            UIHelper.SetTitle(this, "");
+            UIHelper.SetTitleByResource(this, "Setting");
         }
 
     }

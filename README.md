@@ -14,14 +14,14 @@ Ver 2 failed.
 - - [ ] ContextMenuに切り替えUI
 - [x] Epub対応
 - - [x] epub.js+WebView。~~Zip展開はUWP側で。~~
-- [ ] 追加機能分の多言語対応
+- [x] 追加機能分の多言語対応
 - [ ] Library
 - - [x] Storage
 - - [x] ViewModel
 - - [ ] View/Library
 - - [ ] View/Management
-- [ ] History
-- - [ ] Storage
+- [x] History
+- - [x] Storage
 - - [ ] Restore
 - - [ ] View/ViewModel
 - [x] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)

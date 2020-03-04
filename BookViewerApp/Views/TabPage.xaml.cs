@@ -100,7 +100,7 @@ namespace BookViewerApp.Views
 
         public void OpenTabNew()
         {
-            var (frame, newTab) = OpenTab("Welcome");
+            var (frame, newTab) = OpenTab("NewTab");
 
             frame.Navigate(typeof(NewTabPage), null);
         }
@@ -113,13 +113,13 @@ namespace BookViewerApp.Views
 
         public void OpenTabBook(object file)
         {
-            var (frame, newTab) = OpenTab("Book");
+            var (frame, newTab) = OpenTab("BookViewer");
             frame.Navigate(typeof(BookFixed3Viewer), file);
         }
 
         public void OpenTabWeb(string uri)
         {
-            var (frame, newTab) = OpenTab("Web");
+            var (frame, newTab) = OpenTab("Browser");
 
             UIHelper.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
             {
@@ -128,10 +128,11 @@ namespace BookViewerApp.Views
             );
         }
 
-        public (Frame,winui.Controls.TabViewItem) OpenTab(string title)
+        public (Frame,winui.Controls.TabViewItem) OpenTab(string titleId)
         {
             var newTab = new winui.Controls.TabViewItem();
-            newTab.Header = title;
+            var titleString = Helper.UIHelper.GetTitleByResource(titleId);
+            newTab.Header = String.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
 
             Frame frame = new Frame();
             newTab.Content = frame;

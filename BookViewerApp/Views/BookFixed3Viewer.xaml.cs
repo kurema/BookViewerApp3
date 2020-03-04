@@ -119,6 +119,8 @@ namespace BookViewerApp.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            Helper.UIHelper.SetTitleByResource(this, "BookViewer");
+
             if (e.Parameter == null) { }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {

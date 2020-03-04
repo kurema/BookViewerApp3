@@ -49,6 +49,10 @@ namespace BookViewerApp.Helper
             }
         }
 
+        public static void SetTitleByResource(FrameworkElement targetElement, string id) => SetTitle(targetElement, GetTitleByResource(id));
+
+        public static string GetTitleByResource(string id) => ResourceManager.Loader.GetString("TabHeader/" + id);
+
         public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);

@@ -342,4 +342,49 @@
   <data name="Word.OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Setting.Group.Browser" xml:space="preserve">
+    <value>ブラウザ</value>
+  </data>
+  <data name="Setting.Group.Cloud" xml:space="preserve">
+    <value>クラウド</value>
+  </data>
+  <data name="Setting.Group.Library" xml:space="preserve">
+    <value>ライブラリ</value>
+  </data>
+  <data name="Setting.Group.Obsolete" xml:space="preserve">
+    <value>旧設定</value>
+  </data>
+  <data name="Setting.Group.Viewer" xml:space="preserve">
+    <value>ビュワー</value>
+  </data>
+  <data name="TabHeader.Bookshelf" xml:space="preserve">
+    <value>本棚</value>
+  </data>
+  <data name="TabHeader.BookViewer" xml:space="preserve">
+    <value>ビュワー</value>
+  </data>
+  <data name="TabHeader.Home" xml:space="preserve">
+    <value>ホーム</value>
+  </data>
+  <data name="TabHeader.Info" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="TabHeader.NewTab" xml:space="preserve">
+    <value>新しいタブ</value>
+  </data>
+  <data name="TabHeader.Setting" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="TabHeader.Epub" xml:space="preserve">
+    <value>Epub</value>
+  </data>
+  <data name="TabHeader.Main" xml:space="preserve">
+    <value>メイン</value>
+  </data>
+  <data name="TabHeader.Browser" xml:space="preserve">
+    <value>ブラウザ</value>
+  </data>
+  <data name="TabHeader.Explorer" xml:space="preserve">
+    <value>ファイラー</value>
+  </data>
 </root>

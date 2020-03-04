@@ -342,4 +342,49 @@
   <data name="Word.OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Setting.Group.Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="Setting.Group.Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Setting.Group.Library" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="Setting.Group.Obsolete" xml:space="preserve">
+    <value>Obsolete</value>
+  </data>
+  <data name="Setting.Group.Viewer" xml:space="preserve">
+    <value>Viewer</value>
+  </data>
+  <data name="TabHeader.Bookshelf" xml:space="preserve">
+    <value>Bookshelf</value>
+  </data>
+  <data name="TabHeader.BookViewer" xml:space="preserve">
+    <value>Viewer</value>
+  </data>
+  <data name="TabHeader.Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="TabHeader.Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="TabHeader.NewTab" xml:space="preserve">
+    <value>New Tab</value>
+  </data>
+  <data name="TabHeader.Setting" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="TabHeader.Epub" xml:space="preserve">
+    <value>Epub</value>
+  </data>
+  <data name="TabHeader.Main" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="TabHeader.Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="TabHeader.Explorer" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
 </root>

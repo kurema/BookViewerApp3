@@ -112,7 +112,6 @@ namespace BookViewerApp
             var deferral = e.SuspendingOperation.GetDeferral();
 
             await BookInfoStorage.SaveAsync();
-            //await BookShelfStorage.SaveAsync();
             await LibraryStorage.Content.SaveAsync();
 
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します

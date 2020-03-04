@@ -17,10 +17,32 @@
             <Setter Property="Padding" Value="3"/>
         </Style>
         <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
+        <ValueConverter:LocalizeGroupNameConverter x:Key="vc_lgnc"/>
+        
+        <CollectionViewSource x:Name="settingSource" IsSourceGrouped="True"/>
     </Page.Resources>
-    <Grid>
-        <ListView x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsItemClickEnabled="False" Grid.ColumnSpan="2" SelectionMode="None">
-            <ListView.ItemTemplateSelector>
+    <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+        <ItemsControl x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ItemsSource="{Binding Source={StaticResource settingSource}}" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Key,Converter={StaticResource vc_lgnc},Mode=OneTime}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </ItemsControl.GroupStyle>
+            <ItemsControl.ItemTemplateSelector>
                 <template:SettingTemplateSelector>
                     <template:SettingTemplateSelector.TemplateBool>
                         <DataTemplate>
@@ -70,7 +92,7 @@
                         </DataTemplate>
                     </template:SettingTemplateSelector.TemplateString>
                 </template:SettingTemplateSelector>
-            </ListView.ItemTemplateSelector>
-        </ListView>
-    </Grid>
+            </ItemsControl.ItemTemplateSelector>
+        </ItemsControl>
+    </ScrollViewer>
 </Page>

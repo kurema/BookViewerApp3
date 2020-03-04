@@ -32,10 +32,11 @@ namespace BookViewerApp.Storages
                 var list = (await Task.WhenAll(library.libraries.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
                 result.Add(new ContainerItem("Libraries", "", list));
             }
-            //if (history != null)
-            //{
-                
-            //}
+            if (history != null)
+            {
+                var list = (await Task.WhenAll(history.Select(async a => await a.GetFile())))?.Where(a => a != null)?.Select(a => new StorageFileItem(a))?.ToArray() ?? new IFileItem[0];
+                if (list.Length != 0) result.Add(new ContainerItem("History", "", list));
+            }
             if (library?.bookmarks != null)
             {
                 var list = library.bookmarks.AsFileItem(bookmarkAction).Where(a => a != null).ToArray() ?? new IFileItem[0];

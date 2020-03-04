@@ -27,5 +27,10 @@ namespace BookViewerApp.Views
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Helper.UIHelper.SetTitleByResource(this, "Main");
+        }
+
     }
 }

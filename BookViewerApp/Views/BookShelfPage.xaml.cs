@@ -303,7 +303,8 @@ namespace BookViewerApp.Views
             currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             currentView.BackRequested += CurrentView_BackRequested;
 
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = "";
+            //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = "";
+            Helper.UIHelper.SetTitleByResource(this, "Bookshelf");
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

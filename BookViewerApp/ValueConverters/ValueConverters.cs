@@ -194,12 +194,24 @@ namespace BookViewerApp.ValueConverters
 
     public sealed class LocalizeConverter : IValueConverter
     {
-        private static readonly Windows.ApplicationModel.Resources.ResourceLoader Loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string resourceId = parameter as string;
-            return !string.IsNullOrEmpty(resourceId) ? Loader.GetString(resourceId.Replace('.', '/')) : DependencyProperty.UnsetValue;
+            return !string.IsNullOrEmpty(resourceId) ? Managers.ResourceManager.Loader.GetString(resourceId.Replace('.', '/')) : DependencyProperty.UnsetValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    public sealed class LocalizeGroupNameConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string resourceId = value.ToString();
+            return !string.IsNullOrEmpty(resourceId) ? Managers.ResourceManager.Loader.GetString("Setting/Group/" + resourceId) : DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

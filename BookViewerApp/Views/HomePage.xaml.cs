@@ -67,5 +67,11 @@ namespace BookViewerApp.Views
         {
             frame?.Navigate(type, parameter);
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Helper.UIHelper.SetTitleByResource(this, "Home");
+        }
+
     }
 }

@@ -34,6 +34,14 @@ namespace BookViewerApp.Views
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Helper.UIHelper.SetTitleByResource(this, "NewTab");
+
+            base.OnNavigatedTo(e);
+        }
+
+
         private void Button_Click_GoToSetting(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SettingPage));
@@ -41,6 +49,8 @@ namespace BookViewerApp.Views
 
         private void Button_Click_GoToBrowser(object sender, RoutedEventArgs e)
         {
+            UIHelper.SetTitleByResource(this, "Browser");
+
             string homepage = "https://www.google.com/";
             if (SettingStorage.GetValue("WebHomePage") is string h)
             {
@@ -78,7 +88,7 @@ namespace BookViewerApp.Views
                 if (file.FileType.ToLower() == ".epub") {
                     var resolver = new EpubResolver(file);
                     this.Frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
-                    UIHelper.SetTitle(this, "Epub Reader");
+                    UIHelper.SetTitleByResource(this, "Epub");
 
                     if (this.Frame.Content is kurema.BrowserControl.Views.BrowserPage content)
                     {
@@ -88,7 +98,6 @@ namespace BookViewerApp.Views
                 }
                 else
                 {
-                    UIHelper.SetTitle(this, "Viewer");
                     this.Frame.Navigate(typeof(BookFixed3Viewer), file);
                 }
             }
@@ -101,6 +110,7 @@ namespace BookViewerApp.Views
             var folder = await picker.PickSingleFolderAsync();
             if (folder != null)
             {
+                UIHelper.SetTitleByResource(this, "Explorer");
                 this.Frame.Navigate(typeof(kurema.FileExplorerControl.Views.FileExplorerPage), null);
                 if(this.Frame.Content is kurema.FileExplorerControl.Views.FileExplorerPage content)
                 {

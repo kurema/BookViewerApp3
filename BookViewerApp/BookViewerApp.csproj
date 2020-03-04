@@ -184,6 +184,7 @@
     <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Managers\ResourceManager.cs" />
     <Compile Include="Storages\HistoryStorage.cs" />
     <Compile Include="Storages\Library.cs">
       <DependentUpon>Library.xsd</DependentUpon>

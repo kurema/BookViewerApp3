@@ -47,6 +47,8 @@ namespace BookViewerApp.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            Helper.UIHelper.SetTitleByResource(this, "Info");
+
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
             currentView.AppViewBackButtonVisibility = Frame?.CanGoBack==true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             currentView.BackRequested += CurrentView_BackRequested;

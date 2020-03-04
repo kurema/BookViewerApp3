@@ -54,7 +54,14 @@ namespace BookViewerApp.Storages
 
         internal async Task SaveAsync()
         {
-            if (Content != null) await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
+            try
+            {
+                if (Content != null) await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
+            }
+            catch
+            {
+                //Restore?
+            }
         }
 
         public bool TryAdd<T2>(T2 item)

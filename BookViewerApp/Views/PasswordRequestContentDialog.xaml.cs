@@ -27,6 +27,10 @@ namespace BookViewerApp.Views
         public PasswordRequestContentDialog()
         {
             this.InitializeComponent();
+
+            this.Title = Managers.ResourceManager.Loader.GetString("Password/Title");
+            this.PrimaryButtonText = Managers.ResourceManager.Loader.GetString("Word/OK");
+            this.SecondaryButtonText = Managers.ResourceManager.Loader.GetString("Word/Cancel");
         }
 
         public string Password
