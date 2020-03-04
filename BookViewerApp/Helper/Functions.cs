@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.IO;
 
 namespace BookViewerApp.Helper
 {
@@ -48,8 +49,50 @@ namespace BookViewerApp.Helper
                 await stream.ReadAsync(ibuffer, (uint)stream.Size, Windows.Storage.Streams.InputStreamOptions.None);
                 await fileStream.WriteAsync(ibuffer);
             }
-
         }
 
+        public static async Task SerializeAsync<T>(T content, Windows.Storage.StorageFolder folder, string fileName, System.Threading.SemaphoreSlim semaphore)
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                var f = await folder.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream())
+                {
+                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                    serializer.Serialize(s, content);
+                }
+            }
+            catch { }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
+
+        public static async Task<T> DeserializeAsync<T>(Windows.Storage.StorageFolder folder, string fileName, System.Threading.SemaphoreSlim semaphore) where T : class
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                if (await folder.TryGetItemAsync(fileName) is Windows.Storage.StorageFile f)
+                {
+                    using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
+                    {
+                        var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                        return ((T)serializer.Deserialize(s));
+                    }
+                }
+                else { return null; }
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
     }
 }

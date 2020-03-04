@@ -182,6 +182,7 @@ namespace BookViewerApp.Books
                         if (pr != null)
                         {
                             password = item;
+                            passSave = true;
                             goto PasswordSuccess;
                         }
                     }

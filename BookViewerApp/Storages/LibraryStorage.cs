@@ -14,70 +14,14 @@ namespace BookViewerApp.Storages
 {
     public static class LibraryStorage
     {
-        private const string fileName = "Library.xml";
-        private static Windows.Storage.StorageFolder DataFolderLocal => Functions.GetSaveFolderLocal();
-        static System.Threading.SemaphoreSlim fileLocalSemaphore = new System.Threading.SemaphoreSlim(1, 1);
-
-        internal static async Task<Library.library> LoadAsync()
-        {
-            return Content = await LoadDataLocalAsync() ?? new Library.library();
-        }
-
-        public static Library.library Content { get; set; } = null;
-
-        private static async Task<Library.library> LoadDataLocalAsync()
-        {
-            await fileLocalSemaphore.WaitAsync();
-            try
-            {
-                if (await DataFolderLocal.TryGetItemAsync(fileName) is Windows.Storage.StorageFile f)
-                {
-                    using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
-                    {
-                        var serializer = new System.Xml.Serialization.XmlSerializer(typeof(Library.library));
-                        return ((Library.library)serializer.Deserialize(s));
-                    }
-                }
-                else { return null; }
-            }
-            catch
-            {
-                return null;
-            }
-            finally
-            {
-                fileLocalSemaphore.Release();
-            }
-        }
-
-        public static async Task SaveAsync()
-        {
-            await SaveAsync(Content);
-        }
-
-        public static async Task SaveAsync(Library.library library)
-        {
-            await fileLocalSemaphore.WaitAsync();
-            try
-            {
-                var f = await DataFolderLocal.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream())
-                {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(Library.library));
-                    serializer.Serialize(s, library);
-                }
-            }
-            catch { }
-            finally
-            {
-                fileLocalSemaphore.Release();
-            }
-        }
+        public static StorageContent<Library.library> Content = new StorageContent<Library.library>(StorageContent<Library.library>.SavePlaces.Local, "Library.xml", () => new Library.library());
 
         public static async Task<ContainerItem> GetItem(Action<string> bookmarkAction)
         {
-            var library = await LoadDataLocalAsync();
+            var library = await Content.GetContentAsync();
+            var history = await HistoryStorage.Content.GetContentAsync();
             var result = new List<ContainerItem>();
+
             if (library?.folders != null)
             {
                 var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
@@ -88,6 +32,10 @@ namespace BookViewerApp.Storages
                 var list = (await Task.WhenAll(library.libraries.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
                 result.Add(new ContainerItem("Libraries", "", list));
             }
+            //if (history != null)
+            //{
+                
+            //}
             if (library?.bookmarks != null)
             {
                 var list = library.bookmarks.AsFileItem(bookmarkAction).Where(a => a != null).ToArray() ?? new IFileItem[0];

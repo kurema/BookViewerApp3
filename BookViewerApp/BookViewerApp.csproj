@@ -184,10 +184,13 @@
     <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Storages\HistoryStorage.cs" />
     <Compile Include="Storages\Library.cs">
       <DependentUpon>Library.xsd</DependentUpon>
     </Compile>
     <Compile Include="Storages\LibraryStorage.cs" />
+    <Compile Include="Storages\PathStorage.cs" />
+    <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="Views\BookFixed2Page.xaml.cs">
       <DependentUpon>BookFixed2Page.xaml</DependentUpon>

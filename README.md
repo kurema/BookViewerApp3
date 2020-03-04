@@ -16,8 +16,8 @@ Ver 2 failed.
 - - [x] epub.js+WebView。~~Zip展開はUWP側で。~~
 - [ ] 追加機能分の多言語対応
 - [ ] Library
-- - [ ] Storage
-- - [ ] ViewModel
+- - [x] Storage
+- - [x] ViewModel
 - - [ ] View/Library
 - - [ ] View/Management
 - [ ] History

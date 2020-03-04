@@ -1,7 +1,7 @@
 # Privacy Policy
-This Privacy Policy explains how BookViewer by kurema or forked version of it collects infomation.
+This Privacy Policy explains how BookViewer3 by kurema or forked version of it collects infomation.
 
-Current version of BookViewer does not collect any personal information, statistics, or analytics other than built in mechanisms for applications in the 'Windows Store'.
+Current version of BookViewer3 does not collect any personal information, statistics, or analytics other than built in mechanisms for applications in the 'Windows Store'.
 
 If you contact developer by E-Mail or other ways, all information related will be stored.
 

@@ -39,9 +39,9 @@ namespace BookViewerApp
         private async void LoadStorages()
         {
             await BookInfoStorage.LoadAsync();
-            //await BookShelfStorage.LoadAsync();
             await LicenseStorage.LoadAsync();
-            await LibraryStorage.LoadAsync();
+            await LibraryStorage.Content.GetContentAsync();
+            await HistoryStorage.Content.GetContentAsync();
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace BookViewerApp
 
             await BookInfoStorage.SaveAsync();
             //await BookShelfStorage.SaveAsync();
-            await LibraryStorage.SaveAsync();
+            await LibraryStorage.Content.SaveAsync();
 
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();

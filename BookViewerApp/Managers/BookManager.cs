@@ -158,10 +158,10 @@ namespace BookViewerApp.Managers
             return acl.Add(file);
         }
 
-        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string id)
+        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token)
         {
             var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
-            return await acl.GetItemAsync(id);
+            return await acl.GetItemAsync(token);
         }
 
         public static char FileSplitLetter { get { return Path.DirectorySeparatorChar; } }
