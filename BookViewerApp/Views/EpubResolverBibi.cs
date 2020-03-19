@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage.Streams;
-
-using System.IO.Compression;
 using System.IO;
-
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 
 namespace BookViewerApp.Views
 {
-    public class EpubResolver : Windows.Web.IUriToStreamResolver
+    public class EpubResolverBibi : Windows.Web.IUriToStreamResolver
     {
         //This is why you can't decode zip.
         //https://social.msdn.microsoft.com/Forums/Windowsapps/en-US/28dfbf3e-6fb2-4f6a-b898-d9c361bb2c70/iuritostreamresolveruritostreamasync-invalidcastexception-in-tasktoasyncoperationwithprogress?forum=winappswithcsharp
         //https://stackoverflow.com/questions/59185615/how-to-make-a-custom-response-to-my-webview-with-a-iuritostreamresolver
 
-        public EpubResolver(IStorageFile file)
+        public EpubResolverBibi(IStorageFile file)
         {
             File = file ?? throw new ArgumentNullException(nameof(file));
         }
@@ -45,15 +38,15 @@ namespace BookViewerApp.Views
             try
             {
                 //Security!
-                if (uri.LocalPath.ToLower().StartsWith("/reader/"))
+                if (uri.LocalPath.ToLower().StartsWith("/bibi/"))
                 {
-                    var pathTail = uri.LocalPath.Replace("/reader/", "", StringComparison.OrdinalIgnoreCase);
-                    var f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine("ms-appx:///res/reader/", pathTail)));
-                    return await f.OpenAsync(FileAccessMode.Read);
+                    var pathTail = uri.LocalPath.Replace("/bibi/", "", StringComparison.OrdinalIgnoreCase);
+                    pathTail = string.IsNullOrWhiteSpace(pathTail) ? "index.html" : pathTail;
+                    var f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine("ms-appx:///res/bibi/bibi/", pathTail)));
+                    return await f.OpenReadAsync();
                 }
-                if (uri.LocalPath.ToLower().StartsWith("/contents/"))
+                else if (uri.LocalPath.ToLower() == "/bibi-bookshelf/book.epub")
                 {
-                    var pathTail = uri.LocalPath.Replace("/contents/book.epub", "", StringComparison.OrdinalIgnoreCase);
                     if (File == null) throw invalid;
                     return await File.OpenReadAsync();
                 }

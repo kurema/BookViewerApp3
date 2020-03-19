@@ -239,6 +239,7 @@
       <DependentUpon>BookFixed3ViewerControllerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EpubResolver.cs" />
+    <Compile Include="Views\EpubResolverBibi.cs" />
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
