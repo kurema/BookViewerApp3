@@ -193,6 +193,9 @@
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="Views\AcrylicButtonControl.xaml.cs">
+      <DependentUpon>AcrylicButtonControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BookFixed2Page.xaml.cs">
       <DependentUpon>BookFixed2Page.xaml</DependentUpon>
     </Compile>
@@ -274,6 +277,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\AcrylicButtonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BookFixed2Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

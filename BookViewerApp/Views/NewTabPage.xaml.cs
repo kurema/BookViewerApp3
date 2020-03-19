@@ -116,6 +116,13 @@ namespace BookViewerApp.Views
                 {
                     if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
+                        {
+                            //control.MenuChildrens.Add(new AcrylicButtonControl()
+                            //{
+                            //    Icon = new SymbolIcon(Symbol.Folder)
+                            //});
+                        }
+
                         var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new StorageFileItem(folder));
                         fv.IconProviders.Add(new IconProviderDelegate((a) => {
                             if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))

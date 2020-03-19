@@ -50,3 +50,6 @@ Ver 2 failed.
 - [ ] Publish!
 - - [ ] Publish as beta.
 - - [ ] Publish as product.
+
+## Issue
+- [ ] 高速スクロール時、SetBitmapAsyncの順序が前後する。対策方法が思いつかん。

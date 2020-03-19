@@ -40,6 +40,8 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
+        public UIElementCollection MenuChildrens => this.pageMenuStack.Children;
+
         public async System.Threading.Tasks.Task OpenTreeView(ViewModels.FileItemViewModel fv)
         {
             var list = new Stack<ViewModels.FileItemViewModel>();

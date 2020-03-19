@@ -20,7 +20,7 @@ namespace BookViewerApp.Views
         //https://social.msdn.microsoft.com/Forums/Windowsapps/en-US/28dfbf3e-6fb2-4f6a-b898-d9c361bb2c70/iuritostreamresolveruritostreamasync-invalidcastexception-in-tasktoasyncoperationwithprogress?forum=winappswithcsharp
         //https://stackoverflow.com/questions/59185615/how-to-make-a-custom-response-to-my-webview-with-a-iuritostreamresolver
 
-        public EpubResolver(StorageFile file)
+        public EpubResolver(IStorageFile file)
         {
             File = file ?? throw new ArgumentNullException(nameof(file));
         }
@@ -31,7 +31,7 @@ namespace BookViewerApp.Views
             Loaded?.Invoke(this, e);
         }
 
-        public StorageFile File { get; private set; }
+        public IStorageFile File { get; private set; }
 
         public IAsyncOperation<IInputStream> UriToStreamAsync(Uri uri)
         {

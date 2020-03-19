@@ -94,6 +94,8 @@ namespace BookViewerApp.ViewModels
 
         public EventHandler SpreadStatusChangedEventHandler;
 
+        private string Password = null;
+
         public async void Initialize(Books.IBookFixed value, Control target=null)
         {
             this.Loading = true;
@@ -120,6 +122,11 @@ namespace BookViewerApp.ViewModels
             this._Reversed = false;
             this._PageSelected = 0;
             ID = value.ID;
+            Password = null;
+            if(value is Books.IPasswordPdovider pp)
+            {
+                if (pp.PasswordRemember) Password = pp.Password;
+            }
             this.Pages = pages;
             BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
             var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1):1;
@@ -210,6 +217,7 @@ namespace BookViewerApp.ViewModels
                     BookInfo.Bookmarks.Add(new BookInfoStorage.BookInfo.BookmarkItem() { Page = (uint)bm.Page, Title = bm.Title, Type = BookInfoStorage.BookInfo.BookmarkItem.BookmarkItemType.UserDefined });
             }
             BookInfo.PageDirection = this.Reversed ? Books.Direction.R2L : Books.Direction.L2R;
+            BookInfo.Password = this.Password;
         }
 
         public string ID { get { return _ID; } private set { _ID = value;OnPropertyChanged(nameof(ID)); } }

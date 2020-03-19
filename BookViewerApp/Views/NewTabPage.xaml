@@ -12,47 +12,23 @@
     <Page.Background>
         <AcrylicBrush BackgroundSource="HostBackdrop"  />
     </Page.Background>
-    <Page.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="Width" Value="60"/>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <RevealBackgroundBrush/>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlTransparentRevealBorderBrush}" />
-        </Style>
-        <Style TargetType="SymbolIcon">
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        </Style>
-    </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Click="Button_Click_PickBook">
-                    <SymbolIcon Symbol="OpenFile"/>
-                </Button>
-                <Button Click="Button_Click_GoToBrowser">
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB41;"/>
-                </Button>
-                <Button Click="Button_Click_GoToExplorer">
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC50;"/>
-                </Button>
-                <Button HorizontalAlignment="Right" Background="Transparent"
-                        Click="Button_Click_GoToSetting">
-                    <SymbolIcon Symbol="Setting"/>
-                </Button>
+                <local:AcrylicButtonControl Click="Button_Click_PickBook" Icon="OpenFile" />
+                <local:AcrylicButtonControl Click="Button_Click_GoToBrowser">
+                    <local:AcrylicButtonControl.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB41;"/>
+                    </local:AcrylicButtonControl.Icon>
+                </local:AcrylicButtonControl>
+                <local:AcrylicButtonControl Click="Button_Click_GoToExplorer">
+                    <local:AcrylicButtonControl.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC50;"/>
+                    </local:AcrylicButtonControl.Icon>
+                </local:AcrylicButtonControl>
+                <local:AcrylicButtonControl Click="Button_Click_GoToSetting" Icon="Setting" />
             </StackPanel>
-            <!--<UI:AdControl ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
- 		AdUnitId="test" Background="Black" ErrorOccurred="AdControl_ErrorOccurred"
- 		HorizontalAlignment="Center"
- 		Width="720"
- 		Height="90"
- 		/>-->
         </StackPanel>
     </ScrollViewer>
 </Page>

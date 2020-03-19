@@ -114,7 +114,24 @@ namespace BookViewerApp.Views
         public void OpenTabBook(object file)
         {
             var (frame, newTab) = OpenTab("BookViewer");
-            frame.Navigate(typeof(BookFixed3Viewer), file);
+            if (file is Windows.Storage.IStorageFile item)
+            {
+                if (item.FileType.ToLower() == ".epub") {
+                    var resolver = new EpubResolver(item);
+                    frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
+                    UIHelper.SetTitleByResource(this, "Epub");
+
+                    if (frame.Content is kurema.BrowserControl.Views.BrowserPage content)
+                    {
+                        Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/reader/index.html");
+                        content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
+                    }
+                }
+                else
+                {
+                    frame.Navigate(typeof(BookFixed3Viewer), file);
+                }
+            }
         }
 
         public void OpenTabWeb(string uri)

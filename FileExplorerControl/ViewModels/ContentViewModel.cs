@@ -233,15 +233,15 @@ namespace kurema.FileExplorerControl.ViewModels
             OrderSelectors = new ObservableCollection<OrderSelector>(new[] {
             new OrderSelector()
             {
-                Key="Title",Title="Name",Parent=this
+                Key="Title",Title= Application.ResourceLoader.Loader.GetString("Header/Name"),Parent=this
             },
             new OrderSelector()
             {
-                Key="Date",Title="Date",Parent=this
+                Key="Date",Title=Application.ResourceLoader.Loader.GetString("Header/Date"),Parent=this
             },
             new OrderSelector()
             {
-                Key="Size",Title="Size",Parent=this
+                Key="Size",Title=Application.ResourceLoader.Loader.GetString("Header/Size"),Parent=this
             },
         });
         }

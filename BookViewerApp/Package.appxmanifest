@@ -35,6 +35,7 @@
               <uap:FileType ContentType="application/x-cbr">.rar</uap:FileType>
               <uap:FileType ContentType="application/x-cb7">.7z</uap:FileType>
               <uap:FileType ContentType="application/x-cb7">.cb7</uap:FileType>
+              <uap:FileType ContentType="application/epub+zip">.epub</uap:FileType>
             </uap:SupportedFileTypes>
           </uap:FileTypeAssociation>
         </uap:Extension>
