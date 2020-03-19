@@ -43,6 +43,10 @@ namespace BookViewerApp.Helper
             {
                 item.Header = title;
             }
+            else if(targetElement is winui.Controls.TabViewItem item3)
+            {
+                item3.Header = title;
+            }
             else
             {
                 ApplicationView.GetForCurrentView().Title = title;
@@ -53,90 +57,123 @@ namespace BookViewerApp.Helper
 
         public static string GetTitleByResource(string id) => ResourceManager.Loader.GetString("TabHeader/" + id);
 
-        public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
+        public static class FrameOperation
         {
-            frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);
-            if (frame?.Content is kurema.BrowserControl.Views.BrowserPage content)
+            public static void OpenEpub(Frame frame,Windows.Storage.IStorageFile file)
             {
-                content.Control.Control.NewWindowRequested += (s, e) =>
+                if (file == null) return;
+                //var resolver = new EpubResolver(file);
+                var resolver = new EpubResolverBibi(file);
+                frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
+
+                if (frame.Content is kurema.BrowserControl.Views.BrowserPage content)
                 {
-                    OpenTabWeb?.Invoke(e.Uri.ToString());
-                    e.Handled = true;
-                };
-
-                content.Control.Control.UnviewableContentIdentified += async (s, e) =>
-                {
-                    string extension = "";
-                    foreach (var ext in BookManager.AvailableExtensionsArchive)
-                    {
-                        if (Path.GetExtension(e.Uri.ToString()).ToLower() == ext)
-                        {
-                            extension = ext;
-                            goto success;
-                        }
-                    }
-                success:;
-                    try
-                    {
-                        var namebody = Path.GetFileNameWithoutExtension(e.Uri.ToString());
-                        namebody = namebody.Length > 32 ? namebody.Substring(0, 32) : namebody;
-                        var item = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(
-                            Path.Combine("Download", namebody + extension)
-                            , Windows.Storage.CreationCollisionOption.GenerateUniqueName);
-                        var downloader = new BackgroundDownloader();
-                        var download = downloader.CreateDownload(e.Uri, item);
-
-                        var vmb = content.Control.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel;
-                        var dlitem = new kurema.BrowserControl.ViewModels.DownloadItemViewModel(item.Name);
-                        vmb?.Downloads.Add(dlitem);
-
-                        await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) =>
-                        {
-                            try
-                            {
-                                //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
-                                if (t.Progress.TotalBytesToReceive > 0)
-                                {
-                                    double br = t.Progress.TotalBytesToReceive;
-                                    dlitem.DownloadedRate = br / t.Progress.TotalBytesToReceive;
-                                }
-                            }
-                            catch { }
-                        }));
-
-                        dlitem.DownloadedRate = 1.0;
-                        dlitem.OpenCommand = new DelegateCommand((a) => OpenTabBook?.Invoke(item));
-
-                        OpenTabBook?.Invoke(item);
-                        BookViewerApp.App.Current.Suspending += async (s2, e2) =>
-                        {
-                            try
-                            {
-                                await item.DeleteAsync();
-                            }
-                            catch { }
-                        };
-                    }
-                    catch { }
-                    return;
-                };
+                    Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/bibi/index.html?book=book.epub");
+                    content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
+                }
             }
 
-            if ((frame.Content as kurema.BrowserControl.Views.BrowserPage)?.Control.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
+            public static void OpenBook(Windows.Storage.IStorageFile file, Frame frame, FrameworkElement sender = null)
             {
-                if (SettingStorage.GetValue("WebHomePage") is string homepage)
+                if (file == null) return;
+
+                if (file.ContentType == "application/epub+zip" || file.FileType.ToLower() == ".epub")
                 {
-                    vm.HomePage = homepage;
+                    if (sender != null) SetTitleByResource(sender, "Epub");
+                    OpenEpub(frame, file);
+                }
+                else
+                {
+                    frame.Navigate(typeof(BookFixed3Viewer), file);
+                }
+            }
+
+            public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
+            {
+                frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);
+                if (frame?.Content is kurema.BrowserControl.Views.BrowserPage content)
+                {
+                    content.Control.Control.NewWindowRequested += (s, e) =>
+                    {
+                        OpenTabWeb?.Invoke(e.Uri.ToString());
+                        e.Handled = true;
+                    };
+
+                    content.Control.Control.UnviewableContentIdentified += async (s, e) =>
+                    {
+                        string extension = "";
+                        foreach (var ext in BookManager.AvailableExtensionsArchive)
+                        {
+                            if (Path.GetExtension(e.Uri.ToString()).ToLower() == ext)
+                            {
+                                extension = ext;
+                                goto success;
+                            }
+                        }
+                    success:;
+                        try
+                        {
+                            var namebody = Path.GetFileNameWithoutExtension(e.Uri.ToString());
+                            namebody = namebody.Length > 32 ? namebody.Substring(0, 32) : namebody;
+                            var item = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(
+                                Path.Combine("Download", namebody + extension)
+                                , Windows.Storage.CreationCollisionOption.GenerateUniqueName);
+                            var downloader = new BackgroundDownloader();
+                            var download = downloader.CreateDownload(e.Uri, item);
+
+                            var vmb = content.Control.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel;
+                            var dlitem = new kurema.BrowserControl.ViewModels.DownloadItemViewModel(item.Name);
+                            vmb?.Downloads.Add(dlitem);
+
+                            await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) =>
+                            {
+                                try
+                                {
+                                    //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
+                                    if (t.Progress.TotalBytesToReceive > 0)
+                                    {
+                                        double br = t.Progress.TotalBytesToReceive;
+                                        dlitem.DownloadedRate = br / t.Progress.TotalBytesToReceive;
+                                    }
+                                }
+                                catch { }
+                            }));
+
+                            dlitem.DownloadedRate = 1.0;
+                            dlitem.OpenCommand = new DelegateCommand((a) => OpenTabBook?.Invoke(item));
+
+                            OpenTabBook?.Invoke(item);
+                            BookViewerApp.App.Current.Suspending += async (s2, e2) =>
+                            {
+                                try
+                                {
+                                    await item.DeleteAsync();
+                                }
+                                catch { }
+                            };
+                        }
+                        catch { }
+                        return;
+                    };
                 }
 
-                vm.PropertyChanged += (s, e) =>
+                if ((frame.Content as kurema.BrowserControl.Views.BrowserPage)?.Control.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
                 {
-                    if (e.PropertyName == nameof(kurema.BrowserControl.ViewModels.BrowserControlViewModel.Title))
+                    if (SettingStorage.GetValue("WebHomePage") is string homepage)
                     {
-                        UpdateTitle(vm.Title);
+                        vm.HomePage = homepage;
                     }
-                };
+
+                    vm.PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName == nameof(kurema.BrowserControl.ViewModels.BrowserControlViewModel.Title))
+                        {
+                            UpdateTitle(vm.Title);
+                        }
+                    };
+                }
             }
+
         }
 
         public static Views.TabPage GetCurrentTabPage(UIElement ui)

@@ -123,6 +123,22 @@
     <Content Include="LICENSE\SharpCompress">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\bibi\bibi\and\jo.js" />
+    <Content Include="res\bibi\bibi\extensions\analytics.js" />
+    <Content Include="res\bibi\bibi\extensions\epubcfi.js" />
+    <Content Include="res\bibi\bibi\extensions\extractor\at-once.js" />
+    <Content Include="res\bibi\bibi\extensions\extractor\on-the-fly.bibi-zip-loader.worker.js" />
+    <Content Include="res\bibi\bibi\extensions\extractor\on-the-fly.js" />
+    <Content Include="res\bibi\bibi\extensions\unaccessibilizer.js" />
+    <Content Include="res\bibi\bibi\extensions\zine.js" />
+    <Content Include="res\bibi\bibi\index.html" />
+    <Content Include="res\bibi\bibi\presets\default.js" />
+    <Content Include="res\bibi\bibi\resources\scripts\bibi.js" />
+    <Content Include="res\bibi\bibi\resources\scripts\polyfills\bundle.js" />
+    <Content Include="res\bibi\bibi\resources\scripts\polyfills\encoding.js" />
+    <Content Include="res\bibi\bibi\resources\scripts\polyfills\intersection-observer.js" />
+    <Content Include="res\bibi\bibi\resources\styles\bibi.css" />
+    <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
     <Content Include="res\Icon\icon_book_l.png" />
     <Content Include="res\Icon\icon_book_s.png" />
     <Content Include="res\reader\css\annotations.css" />
@@ -162,6 +178,13 @@
     <Content Include="res\reader\font\fontello.eot" />
     <Content Include="res\reader\font\fontello.ttf" />
     <Content Include="res\reader\font\fontello.woff" />
+    <Content Include="res\bibi\bibi\presets\README.md" />
+    <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.eot" />
+    <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.ttf" />
+    <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.woff" />
+    <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.woff2" />
+    <Content Include="res\bibi\LICENSE" />
+    <Content Include="res\bibi\README.md" />
     <None Include="res\reader\img\.gitignore" />
     <Content Include="res\reader\js\hooks.min.map" />
     <Content Include="res\reader\js\reader.js.map" />
@@ -378,7 +401,9 @@
       <Name>Microsoft Advertising SDK for XAML</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="res\bibi\bibi-bookshelf\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

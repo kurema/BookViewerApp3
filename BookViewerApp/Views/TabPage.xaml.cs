@@ -111,34 +111,32 @@ namespace BookViewerApp.Views
         }
 
 
-        public void OpenTabBook(object file)
+        public void OpenTabBook(Windows.Storage.IStorageItem file)
         {
             var (frame, newTab) = OpenTab("BookViewer");
             if (file is Windows.Storage.IStorageFile item)
             {
-                if (item.FileType.ToLower() == ".epub") {
-                    var resolver = new EpubResolver(item);
-                    frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
-                    UIHelper.SetTitleByResource(this, "Epub");
-
-                    if (frame.Content is kurema.BrowserControl.Views.BrowserPage content)
-                    {
-                        Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/reader/index.html");
-                        content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
-                    }
-                }
-                else
-                {
-                    frame.Navigate(typeof(BookFixed3Viewer), file);
-                }
+                UIHelper.FrameOperation.OpenBook(item, frame,newTab);
             }
         }
+
+        public void OpenTabBook(Stream stream)
+        {
+            var (frame, newTab) = OpenTab("BookViewer");
+            frame.Navigate(typeof(BookFixed3Viewer), stream);
+        }
+
+        public async void OpenTabBook(System.Threading.Tasks.Task<Stream> stream)
+        {
+            OpenTabBook(await stream);
+        }
+
 
         public void OpenTabWeb(string uri)
         {
             var (frame, newTab) = OpenTab("Browser");
 
-            UIHelper.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
+            UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
             {
                 newTab.Header = title;
             }
@@ -300,13 +298,7 @@ namespace BookViewerApp.Views
                 {
                     foreach (var item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args).Files)
                     {
-                        var newTab = new winui.Controls.TabViewItem();
-                        newTab.Header = "Book";
-                        var frame = new Frame();
-                        newTab.Content = frame;
-                        frame.Navigate(typeof(BookFixed3Viewer), item);
-                        tabView.TabItems.Add(newTab);
-                        tabView.SelectedIndex = tabView.TabItems.Count - 1;
+                        OpenTabBook(item);
                     }
                 }
             }

@@ -60,7 +60,7 @@ namespace BookViewerApp.Views
             void OpenBrowser(TabPage tabPage)
             {
                 var item = (this.Parent as Frame)?.Parent as Microsoft.UI.Xaml.Controls.TabViewItem;
-                UIHelper.OpenBrowser(this.Frame, homepage, (a) => { tabPage.OpenTabWeb(a); }, (b) => { tabPage.OpenTabBook(b); }, (c) =>
+                UIHelper.FrameOperation.OpenBrowser(this.Frame, homepage, (a) => { tabPage.OpenTabWeb(a); }, (b) => { tabPage.OpenTabBook(b); }, (c) =>
                 {
                     {
                         if (item != null) item.Header = c;
@@ -76,31 +76,14 @@ namespace BookViewerApp.Views
             else
             {
                 //ToDo: This will not be used. But set correct Action.
-                UIHelper.OpenBrowser(this.Frame, homepage, (a) => { }, (b) => { }, (c) => { });
+                UIHelper.FrameOperation.OpenBrowser(this.Frame, homepage, (a) => { }, (b) => { }, (c) => { });
             }
         }
 
         private async void Button_Click_PickBook(object sender, RoutedEventArgs e)
         {
             var file = await BookManager.PickFile();
-            if (file != null)
-            {
-                if (file.FileType.ToLower() == ".epub") {
-                    var resolver = new EpubResolver(file);
-                    this.Frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
-                    UIHelper.SetTitleByResource(this, "Epub");
-
-                    if (this.Frame.Content is kurema.BrowserControl.Views.BrowserPage content)
-                    {
-                        Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/reader/index.html");
-                        content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
-                    }
-                }
-                else
-                {
-                    this.Frame.Navigate(typeof(BookFixed3Viewer), file);
-                }
-            }
+            UIHelper.FrameOperation.OpenBook(file, this.Frame, this);
         }
 
         private async void Button_Click_GoToExplorer(object sender, RoutedEventArgs e)
@@ -117,10 +100,10 @@ namespace BookViewerApp.Views
                     if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
                         {
-                            //control.MenuChildrens.Add(new AcrylicButtonControl()
-                            //{
-                            //    Icon = new SymbolIcon(Symbol.Folder)
-                            //});
+                            control.MenuChildrens.Add(new AcrylicButtonControl()
+                            {
+                                Icon = new SymbolIcon(Symbol.Folder)
+                            });
                         }
 
                         var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new StorageFileItem(folder));
