@@ -59,17 +59,24 @@ namespace BookViewerApp.Helper
 
         public static class FrameOperation
         {
-            public static void OpenEpub(Frame frame,Windows.Storage.IStorageFile file)
+            public static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, TabPage tabPage = null)
             {
                 if (file == null) return;
-                //var resolver = new EpubResolver(file);
-                var resolver = new EpubResolverBibi(file);
+                var resolver = EpubResolver.GetResolverBibi(file);
                 frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
 
                 if (frame.Content is kurema.BrowserControl.Views.BrowserPage content)
                 {
-                    Uri uri = content.Control.Control.BuildLocalStreamUri("epub", "/bibi/index.html?book=book.epub");
+                    Uri uri = content.Control.Control.BuildLocalStreamUri("epub", resolver.PathHome);
                     content.Control.Control.NavigateToLocalStreamUri(uri, resolver);
+                    if (tabPage != null)
+                    {
+                        content.Control.Control.NewWindowRequested += (s, e) =>
+                        {
+                            tabPage.OpenTabWeb(e.Uri.ToString());
+                            e.Handled = true;
+                        };
+                    }
                 }
             }
 
@@ -80,7 +87,7 @@ namespace BookViewerApp.Helper
                 if (file.ContentType == "application/epub+zip" || file.FileType.ToLower() == ".epub")
                 {
                     if (sender != null) SetTitleByResource(sender, "Epub");
-                    OpenEpub(frame, file);
+                    OpenEpub(frame, file, GetCurrentTabPage(sender));
                 }
                 else
                 {
