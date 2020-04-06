@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>Questo è un commento</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blu</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>Questo è un commento</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutThisApp.Label" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="AddLocalDirectory.Label" xml:space="preserve">
+    <value>Seleziona cartella</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Book Viewer 3</value>
+  </data>
+  <data name="BookmarkBasic.Title" xml:space="preserve">
+    <value>Segnalibro</value>
+  </data>
+  <data name="BookmarkLastread.Title" xml:space="preserve">
+    <value>[Automatico]</value>
+  </data>
+  <data name="Bookmarks.Label" xml:space="preserve">
+    <value>Segnalibri</value>
+  </data>
+  <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
+    <value>Titolo</value>
+  </data>
+  <data name="BookNext.Label" xml:space="preserve">
+    <value>Libro successivo</value>
+  </data>
+  <data name="BookPrevious.Label" xml:space="preserve">
+    <value>Libro precedente</value>
+  </data>
+  <data name="BookShelfTitleNew" xml:space="preserve">
+    <value>Scaffale</value>
+  </data>
+  <data name="ClearAllBookShelf.Label" xml:space="preserve">
+    <value>Pulisci tutta la libreria</value>
+  </data>
+  <data name="GoToBookShelf.Label" xml:space="preserve">
+    <value>Vai allo scaffale</value>
+  </data>
+  <data name="LoadingFolder.Completed.Message" xml:space="preserve">
+    <value>Caricamento completato.</value>
+  </data>
+  <data name="LoadingFolder.Started.Message" xml:space="preserve">
+    <value>Ci vorrà un po\'. Non chiudere l\'app</value>
+  </data>
+  <data name="LoadingFolder.Title" xml:space="preserve">
+    <value>Caricamento cartelle</value>
+  </data>
+  <data name="OpenLocalBook.Label" xml:space="preserve">
+    <value>Apri</value>
+  </data>
+  <data name="PageEnd.Label" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="PageLeft.Label" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="PageLeftmost.Label" xml:space="preserve">
+    <value>Tutto indietro</value>
+  </data>
+  <data name="PageNext.Label" xml:space="preserve">
+    <value>Successiva</value>
+  </data>
+  <data name="PagePrevious.Label" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="PageReverse.Label" xml:space="preserve">
+    <value>Inverti l\'ordine delle pagine</value>
+  </data>
+  <data name="PageRight.Label" xml:space="preserve">
+    <value>Avanti</value>
+  </data>
+  <data name="PageRightmost.Label" xml:space="preserve">
+    <value>Tutto avanti</value>
+  </data>
+  <data name="PageTop.Label" xml:space="preserve">
+    <value>Inizio</value>
+  </data>
+  <data name="Setting.Label" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>Avvia l\'app a schermo intero quando apri un libro.</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>Imposta lo schermo intero come predefinito</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>Inverte l\'ordine delle pagine quando apri un libro.</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>Pagine invertite come predefinito</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
+    <value>Quando apri un libro apre automaticamente la pagina dove eri rimasto.</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
+    <value>Apri l'ultima pagina letta</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
+    <value>Mostra i pulsanti vai tutto indietro/tutto avanti quando un libro è aperto.</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
+    <value>Mostra i pulsanti tutto indietro/avanti</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
+    <value>Sincronizza i segnalibri con il cloud.</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
+    <value>Sincronizza segnalibri</value>
+  </data>
+  <data name="ToggleFullScreen.Label" xml:space="preserve">
+    <value>Schermo intero</value>
+  </data>
+  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+    <value>Pulisci lo scaffale</value>
+  </data>
+  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+    <value>Nascondi scaffale</value>
+  </data>
+  <data name="Setting_TileHeight.Description" xml:space="preserve">
+    <value>Altezza dei titoli dei libri negli scaffali.</value>
+  </data>
+  <data name="Setting_TileHeight.Title" xml:space="preserve">
+    <value>Altezza titoli</value>
+  </data>
+  <data name="Setting_TileWidth.Description" xml:space="preserve">
+    <value>Lunghezza dei titoli dei libri negli scaffali.</value>
+  </data>
+  <data name="Setting_TileWidth.Title" xml:space="preserve">
+    <value>Lunghezza titoli</value>
+  </data>
+  <data name="ReloadBookShelf.Label" xml:space="preserve">
+    <value>Ricarica</value>
+  </data>
+  <data name="BookmarkLast.Title" xml:space="preserve">
+    <value>[Fine]</value>
+  </data>
+  <data name="BookmarkTop.Title" xml:space="preserve">
+    <value>[Inizio]</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
+    <value>Luminosità dello sfondo. 100:Bianco, 0:Nero. (Opposite in dark theme)</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
+    <value>Luminosità sfondo.</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
+    <value>Utilizza l\'animazione a scorrimento quando leggi.</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
+    <value>Animazione a scorrimento</value>
+  </data>
+  <data name="Setting_BookNameTrim.Description" xml:space="preserve">
+    <value>La parte corrispondente del titolo viene nascosta. Inserisci una frase come regola. (es:\(.*\))</value>
+  </data>
+  <data name="Setting_BookNameTrim.Title" xml:space="preserve">
+    <value>Taglia titolo</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
+    <value>Escludi cartella nella vista degli scaffali se il suo nome corrisponde alla frase di regola.</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
+    <value>Escludi cartella</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
+    <value>Assumi che l'immagine avente nome "cover" (copertina) sia la prima immagine dei libri in CBR/CBZ.</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
+    <value>Assumi che la copertina sia la prima immagine</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
+    <value>Ordina in modo naturale le immagini nei libri in CBZ/CBR (ex:01.jpg→2.jpg→003.jpg)</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
+    <value>Ordine naturale nei CBZ/CBR</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
+    <value>Imposta per quanti secondi i bottoni dello zoom vengono mostrati quando tocchi lo schermo (0: disabilita).</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
+    <value>Tempo visualizzazione pulsanti zoom</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
+    <value>Imposta per quanti secondi il menu viene mostrato quando tocchi lo schermo (0: sempre).</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
+    <value>Tempo visualizzazione menu</value>
+  </data>
+  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Passa ad un altro scaffale.</value>
+  </data>
+  <data name="Welcome_HowToConfigure" xml:space="preserve">
+    <value>Come cambiare le impostazioni</value>
+  </data>
+  <data name="Welcome_HowToUse" xml:space="preserve">
+    <value>Come si usa</value>
+  </data>
+  <data name="Welcome_OpenMenu" xml:space="preserve">
+    <value>Apri il menu.</value>
+  </data>
+  <data name="Setting_WebHomePage.Description" xml:space="preserve">
+    <value>Pagina principale.</value>
+  </data>
+  <data name="Setting_WebHomePage.Title" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
+    <value>Rispetta le informazioni di direzione della scrittura nei PDF (RTL/LTR).</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
+    <value>Rispetta informazioni di direzione</value>
+  </data>
+  <data name="Password.Message" xml:space="preserve">
+    <value>Inserisci password per aprire.</value>
+  </data>
+  <data name="Password.Save.Message" xml:space="preserve">
+    <value>Salva Password</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>Conferma Password</value>
+  </data>
+  <data name="Word.Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Word.OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Setting.Group.Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="Setting.Group.Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Setting.Group.Library" xml:space="preserve">
+    <value>Libreria</value>
+  </data>
+  <data name="Setting.Group.Obsolete" xml:space="preserve">
+    <value>Obsoleto</value>
+  </data>
+  <data name="Setting.Group.Viewer" xml:space="preserve">
+    <value>Visualizzatore</value>
+  </data>
+  <data name="TabHeader.Bookshelf" xml:space="preserve">
+    <value>Scaffale</value>
+  </data>
+  <data name="TabHeader.BookViewer" xml:space="preserve">
+    <value>Visualizzatore</value>
+  </data>
+  <data name="TabHeader.Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="TabHeader.Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="TabHeader.NewTab" xml:space="preserve">
+    <value>Nuova Scheda</value>
+  </data>
+  <data name="TabHeader.Setting" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="TabHeader.Epub" xml:space="preserve">
+    <value>Epub</value>
+  </data>
+  <data name="TabHeader.Main" xml:space="preserve">
+    <value>Inizio</value>
+  </data>
+  <data name="TabHeader.Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="TabHeader.Explorer" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+</root>
