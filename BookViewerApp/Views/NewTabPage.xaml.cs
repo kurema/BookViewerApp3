@@ -99,12 +99,13 @@ namespace BookViewerApp.Views
                 {
                     if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
-                        {
-                            control.MenuChildrens.Add(new AcrylicButtonControl()
-                            {
-                                Icon = new SymbolIcon(Symbol.Folder)
-                            });
-                        }
+                        //{
+                        //    control.MenuChildrens.Add(new AcrylicButtonControl()
+                        //    {
+                        //        Icon = new SymbolIcon(Symbol.Folder)
+                        //    });
+                        //}
+                        control.MenuChildrens.Add(new ExplorerMenuControl());
 
                         var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new StorageFileItem(folder));
                         fv.IconProviders.Add(new IconProviderDelegate((a) => {

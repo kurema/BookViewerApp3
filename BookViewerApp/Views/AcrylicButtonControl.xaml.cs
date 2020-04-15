@@ -24,6 +24,27 @@ namespace BookViewerApp.Views
             this.InitializeComponent();
         }
 
+
+
+        //public IconElement Icon
+        //{
+        //    get
+        //    {
+        //        return this.Content as IconElement;
+        //        //return (IconElement)GetValue(IconProperty);
+        //    }
+        //    set
+        //    {
+        //        SetValue(IconProperty, value);
+        //        this.Content = value;
+        //    }
+        //}
+
+        //public static readonly DependencyProperty IconProperty =
+        //    DependencyProperty.Register("Icon", typeof(IconElement), typeof(AcrylicButtonControl), new PropertyMetadata(null));
+
+
+
         public IconElement Icon
         {
             get => this.Content as IconElement;
