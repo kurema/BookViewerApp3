@@ -80,10 +80,9 @@ namespace BookViewerApp.Views
             }
         }
 
-        private async void Button_Click_PickBook(object sender, RoutedEventArgs e)
+        private void Button_Click_PickBook(object sender, RoutedEventArgs e)
         {
-            var file = await BookManager.PickFile();
-            UIHelper.FrameOperation.OpenBook(file, this.Frame, this);
+            UIHelper.FrameOperation.OpenBookPicked(this.Frame, this);
         }
 
         private async void Button_Click_GoToExplorer(object sender, RoutedEventArgs e)
@@ -99,13 +98,8 @@ namespace BookViewerApp.Views
                 {
                     if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
-                        //{
-                        //    control.MenuChildrens.Add(new AcrylicButtonControl()
-                        //    {
-                        //        Icon = new SymbolIcon(Symbol.Folder)
-                        //    });
-                        //}
-                        control.MenuChildrens.Add(new ExplorerMenuControl());
+
+                        control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = this });
 
                         var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new StorageFileItem(folder));
                         fv.IconProviders.Add(new IconProviderDelegate((a) => {

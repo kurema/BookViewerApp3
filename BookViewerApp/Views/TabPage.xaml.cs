@@ -24,6 +24,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 
 using BookViewerApp.Helper;
+using BookViewerApp.Storages;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -132,15 +133,26 @@ namespace BookViewerApp.Views
         }
 
 
+        public void OpenTabWeb()
+        {
+            OpenTabWeb(SettingStorage.GetValue("WebHomePage") as string ?? "https://www.google.com/");
+        }
+
+
         public void OpenTabWeb(string uri)
         {
             var (frame, newTab) = OpenTab("Browser");
-
             UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
             {
                 newTab.Header = title;
             }
             );
+        }
+
+        public void OpenTabSetting()
+        {
+            var (frame, newTab) = OpenTab("Setting");
+            frame?.Navigate(typeof(Views.SettingPage));
         }
 
         public (Frame,winui.Controls.TabViewItem) OpenTab(string titleId)

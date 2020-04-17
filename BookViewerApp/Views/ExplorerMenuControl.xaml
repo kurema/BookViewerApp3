@@ -5,27 +5,17 @@
     xmlns:local="using:BookViewerApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vc="using:BookViewerApp.ValueConverters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <vc:LocalizeConverter x:Key="localvc"/>
+    </UserControl.Resources>
+
     <StackPanel>
-        <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Text="Apps" />
-        <!--<ItemsControl x:Name="itemsControl">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <local:AcrylicButtonControl  Icon="{Binding Icon}"/>
-                        <TextBlock Text="{Binding Title}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
+        <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Text="{Binding Converter={StaticResource localvc},ConverterParameter=Explorer.Apps}"/>
         <ListView x:Name="listView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="listView_ItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate>

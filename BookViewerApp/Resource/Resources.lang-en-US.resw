@@ -387,4 +387,16 @@
   <data name="TabHeader.Explorer" xml:space="preserve">
     <value>Explorer</value>
   </data>
+  <data name="Explorer.Apps" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="Explorer.Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="Explorer.PickBook" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Explorer.Setting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
 </root>

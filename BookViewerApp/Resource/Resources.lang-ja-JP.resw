@@ -387,4 +387,16 @@
   <data name="TabHeader.Explorer" xml:space="preserve">
     <value>ファイラー</value>
   </data>
+  <data name="Explorer.Apps" xml:space="preserve">
+    <value>アプリ</value>
+  </data>
+  <data name="Explorer.Browser" xml:space="preserve">
+    <value>ブラウザ</value>
+  </data>
+  <data name="Explorer.PickBook" xml:space="preserve">
+    <value>ファイルを開く</value>
+  </data>
+  <data name="Explorer.Setting" xml:space="preserve">
+    <value>設定</value>
+  </data>
 </root>

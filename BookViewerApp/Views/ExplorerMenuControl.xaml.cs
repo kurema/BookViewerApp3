@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using BookViewerApp.Helper;
+
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
 namespace BookViewerApp.Views
@@ -25,18 +27,43 @@ namespace BookViewerApp.Views
 
             listView.ItemsSource = new MenuItem[]
             {
-                new MenuItem(Symbol.Folder,"Add Folder",()=>{ }),
-                new MenuItem(Symbol.World,"Browser",()=>{ }),
-                new MenuItem(Symbol.Setting,"Setting",()=>{ }),
+                //new MenuItem(Symbol.Folder,"Add Folder",()=>{ }),
+                new MenuItem(Symbol.World,"Browser",()=>{
+                    var tab=GetTabPage();
+                    if(tab==null) return;
+                    tab.OpenTabWeb();
+                }),
+                new MenuItem(Symbol.OpenFile,"PickBook",()=>{
+                    var tab=GetTabPage();
+                    if(tab==null) return;
+                    var (frame, newTab)= tab.OpenTab("BookViewer");
+                    UIHelper.FrameOperation.OpenBookPicked(frame,newTab);
+
+                }),
+                new MenuItem(Symbol.Setting,"Setting",()=>{
+                    var tab=GetTabPage();
+                    if(tab==null) return;
+                    tab.OpenTabSetting();
+                }),
             };
         }
+
+        public Page OriginPage { get; set; }
+
+        public TabPage GetTabPage()
+        {
+            if (OriginPage == null) return null;
+            return UIHelper.GetCurrentTabPage(OriginPage);
+        }
+
 
         public class MenuItem
         {
             public MenuItem(Symbol icon, string title, Action action)
             {
                 Icon = icon;
-                Title = title ?? throw new ArgumentNullException(nameof(title));
+                _ = title ?? throw new ArgumentNullException(nameof(title));
+                Title = Managers.ResourceManager.Loader.GetString("Explorer/" + title);
                 Action = action ?? throw new ArgumentNullException(nameof(action));
             }
 
