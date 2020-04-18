@@ -57,7 +57,7 @@ namespace kurema.FileExplorerControl.Views
             foreach (var item in list)
             {
                 ctreenode = cnode.FirstOrDefault(a => a.Content is ViewModels.FileItemViewModel fv2 && fv2.Path == item.Path);
-                if (ctreenode == null) return;
+                if (ctreenode == null) continue;
                 if (ctreenode.Content is ViewModels.FileItemViewModel fvm && fvm.Children == null) await fvm.UpdateChildren();
                 ctreenode.IsExpanded = true;
                 cnode = ctreenode.Children;

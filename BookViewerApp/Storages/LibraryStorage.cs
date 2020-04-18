@@ -18,6 +18,8 @@ namespace BookViewerApp.Storages
 
         public static async Task<ContainerItem> GetItem(Action<string> bookmarkAction)
         {
+            string GetWord(string s) => Managers.ResourceManager.Loader.GetString("ExplorerContainer/" + s);
+
             var library = await Content.GetContentAsync();
             var history = await HistoryStorage.Content.GetContentAsync();
             var result = new List<ContainerItem>();
@@ -25,25 +27,33 @@ namespace BookViewerApp.Storages
             if (library?.folders != null)
             {
                 var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
-                result.Add(new ContainerItem("Folders", "", list));
+                result.Add(new ContainerItem(GetWord("Folders"), "/Folders", list));
             }
             if(library?.libraries!=null)
             {
                 var list = (await Task.WhenAll(library.libraries.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
-                result.Add(new ContainerItem("Libraries", "", list));
+                result.Add(new ContainerItem(GetWord("Libraries"), "/Libraries", list)
+                {
+                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a=>(null,null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png")))
+                });
             }
-            if (history != null)
+            if (history != null || true)
             {
                 var list = (await Task.WhenAll(history.Select(async a => await a.GetFile())))?.Where(a => a != null)?.Select(a => new StorageFileItem(a))?.ToArray() ?? new IFileItem[0];
-                if (list.Length != 0) result.Add(new ContainerItem("History", "", list));
+                if (list.Length != 0 || true) result.Add(new ContainerItem(GetWord("Histories"), "/History", list)
+                {
+                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png")))
+                });
             }
-            if (library?.bookmarks != null)
+            if (library?.bookmarks != null || true)
             {
-                var list = library.bookmarks.AsFileItem(bookmarkAction).Where(a => a != null).ToArray() ?? new IFileItem[0];
-                result.Add(new ContainerItem("Bookmarks", "", list));
+                var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
+                result.Add(new ContainerItem(GetWord("Bookmarks"), "/Bookmarks", list){
+                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png")))
+                });
             }
 
-            return new ContainerItem("PC", "", result.ToArray());
+            return new ContainerItem(GetWord("PC"), "/PC", result.ToArray());
         }
     }
 

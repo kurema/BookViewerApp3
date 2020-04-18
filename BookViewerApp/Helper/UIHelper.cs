@@ -101,6 +101,62 @@ namespace BookViewerApp.Helper
                 }
             }
 
+            public static async void OpenExplorer(Frame frame, FrameworkElement sender = null)
+            {
+                {
+                    UIHelper.SetTitleByResource(sender, "Explorer");
+                    frame.Navigate(typeof(kurema.FileExplorerControl.Views.FileExplorerPage), null);
+                    if (frame.Content is kurema.FileExplorerControl.Views.FileExplorerPage content)
+                    {
+                        if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
+                        {
+                            control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
+
+                            var library = await LibraryStorage.GetItem((a) => { });
+
+                            //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
+                            var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
+                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate((a) => {
+                                if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
+                                {
+                                    return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
+                                    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
+                                    );
+                                }
+                                else { return (null, null); }
+                            }));
+                            await fv.UpdateChildren();
+                            control.SetTreeViewItem(fv.Folders);
+                            await control.ContentControl.SetFolder(fv);
+                            control.ContentControl.FileOpenedEventHandler += (s2, e2) =>
+                            {
+
+                                var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
+                                if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
+                                {
+                                    return;
+                                }
+
+                                var tab = UIHelper.GetCurrentTabPage(content);
+                                if (tab != null)
+                                {
+                                    if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
+                                    {
+                                        tab.OpenTabBook(sfi.Content);
+                                    }
+                                    else
+                                    {
+                                        var stream = fileitem?.OpenStreamForReadAsync();
+                                        if (stream != null)
+                                            tab.OpenTabBook(stream);
+                                    }
+                                }
+                            };
+                        }
+                    }
+                }
+            }
+
             public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
             {
                 frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), uri);

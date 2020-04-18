@@ -17,7 +17,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
             Children = new ObservableCollection<IFileItem>(children) ?? throw new ArgumentNullException(nameof(children));
         }
 
-
+        /// <summary>
+        /// Only use DefaultIconLarge/DefaultIconSmall.
+        /// </summary>
+        public IconProviders.IIconProvider IIconProvider;
 
         public string Name { get; set; }
 

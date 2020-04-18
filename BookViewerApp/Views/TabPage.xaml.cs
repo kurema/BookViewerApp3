@@ -127,6 +127,13 @@ namespace BookViewerApp.Views
             frame.Navigate(typeof(BookFixed3Viewer), stream);
         }
 
+        public void OpenTabExplorer()
+        {
+            var (frame, newTab) = OpenTab("Explorer");
+            UIHelper.FrameOperation.OpenExplorer(frame, newTab);
+        }
+
+
         public async void OpenTabBook(System.Threading.Tasks.Task<Stream> stream)
         {
             OpenTabBook(await stream);
@@ -300,8 +307,9 @@ namespace BookViewerApp.Views
         {
             if (e.Parameter == null || (e.Parameter is string s && s == ""))
             {
-                OpenTabNew();
+                //OpenTabNew();
                 //OpenTabWeb("https://www.google.com/");
+                OpenTabExplorer();
             }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {

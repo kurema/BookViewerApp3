@@ -399,4 +399,19 @@
   <data name="Explorer.Setting" xml:space="preserve">
     <value>Setting</value>
   </data>
+  <data name="ExplorerContainer.Bookmarks" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="ExplorerContainer.Folders" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="ExplorerContainer.Histories" xml:space="preserve">
+    <value>Histories</value>
+  </data>
+  <data name="ExplorerContainer.Libraries" xml:space="preserve">
+    <value>Libraries</value>
+  </data>
+  <data name="ExplorerContainer.PC" xml:space="preserve">
+    <value>PC</value>
+  </data>
 </root>

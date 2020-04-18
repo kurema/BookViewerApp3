@@ -17,6 +17,10 @@ namespace kurema.FileExplorerControl.Models.IconProviders
 
         public Func<ImageSource> GetIconSmall(IFileItem item)
         {
+            if (item is ContainerItem container && container.IIconProvider != null)
+            {
+                return container.IIconProvider.DefaultIconSmall;
+            }
             if (item?.IsFolder == true)
             {
                 return () => IconSmallCache = IconSmallCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png"));
@@ -26,6 +30,10 @@ namespace kurema.FileExplorerControl.Models.IconProviders
 
         public Func<ImageSource> GetIconLarge(IFileItem item)
         {
+            if(item is ContainerItem container && container.IIconProvider != null)
+            {
+                return container.IIconProvider.DefaultIconLarge;
+            }
             if (item?.IsFolder == true)
             {
                 return () => IconLargeCache = IconLargeCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png"));

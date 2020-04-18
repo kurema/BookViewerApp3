@@ -141,6 +141,12 @@
     <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
     <Content Include="res\Icon\icon_book_l.png" />
     <Content Include="res\Icon\icon_book_s.png" />
+    <Content Include="res\Icon\icon_clock_l.png" />
+    <Content Include="res\Icon\icon_clock_s.png" />
+    <Content Include="res\Icon\icon_library_l.png" />
+    <Content Include="res\Icon\icon_library_s.png" />
+    <Content Include="res\Icon\icon_star_l.png" />
+    <Content Include="res\Icon\icon_star_s.png" />
     <Content Include="res\reader\css\annotations.css" />
     <Content Include="res\reader\css\main.css" />
     <Content Include="res\reader\css\normalize.css" />

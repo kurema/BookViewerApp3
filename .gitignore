@@ -202,3 +202,4 @@ _pkginfo.txt
 Package.StoreAssociation.xml
 
 project.lock.json
+*.bak
