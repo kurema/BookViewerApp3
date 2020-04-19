@@ -62,7 +62,7 @@ namespace kurema.FileExplorerControl.Views
                 ctreenode.IsExpanded = true;
                 cnode = ctreenode.Children;
             }
-            //You can't item in single selection mode before Microsoft.UI.Xaml v2.2.190731001-prerelease.
+            //You can't get item in single selection mode before Microsoft.UI.Xaml v2.2.190731001-prerelease.
             //See.
             //https://github.com/microsoft/microsoft-ui-xaml/pull/243
             //So treeview is replaced by WinUI version.

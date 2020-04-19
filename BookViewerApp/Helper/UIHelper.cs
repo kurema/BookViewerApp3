@@ -112,7 +112,11 @@ namespace BookViewerApp.Helper
                         {
                             control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
-                            var library = await LibraryStorage.GetItem((a) => { });
+                            var library = await LibraryStorage.GetItem((a) => {
+                                var tab = GetCurrentTabPage(content);
+                                if (tab == null) return;
+                                tab.OpenTabWeb(a);
+                            });
 
                             //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
                             var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
@@ -130,7 +134,7 @@ namespace BookViewerApp.Helper
                             await control.ContentControl.SetFolder(fv);
                             control.ContentControl.FileOpenedEventHandler += (s2, e2) =>
                             {
-
+                                e2?.Content?.Open();
                                 var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
                                 if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
                                 {

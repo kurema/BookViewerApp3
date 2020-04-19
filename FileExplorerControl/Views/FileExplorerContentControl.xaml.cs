@@ -198,5 +198,30 @@ namespace kurema.FileExplorerControl.Views
                 await dialog.ShowAsync();
             }
         }
+
+        private void Button_ContextRequested(Windows.UI.Xaml.UIElement sender, ContextRequestedEventArgs args)
+        {
+            //メニューを追加する。
+            if(sender.ContextFlyout is MenuFlyout menu)
+            {
+                foreach(var item in menu.Items.ToArray())
+                {
+                    if(item.Tag as string != "Default")
+                    {
+                        menu.Items.Remove(item);
+                    }
+                }
+            }
+
+            args.Handled = false;
+        }
+
+        private void StackPanel_LostFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if(((sender as StackPanel).Parent as FlyoutPresenter).Parent is Popup f)
+            {
+                f.IsOpen = false;
+            }
+        }
     }
 }

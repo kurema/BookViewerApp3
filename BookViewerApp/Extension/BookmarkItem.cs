@@ -100,7 +100,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public void Open()
         {
-            ActionOpen?.Invoke(this.Path);
+            ActionOpen?.Invoke(this.TargetUrl);
         }
 
         public Task<Stream> OpenStreamForReadAsync()

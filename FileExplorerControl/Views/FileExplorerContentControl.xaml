@@ -29,11 +29,13 @@
         <vc:OrderToDataGridSortDirectionConverter x:Key="vc_o2gsd"/>
         <vc:LocalizeConverter x:Key="vc_local"/>
 
-        <MenuFlyout x:Key="menu_flyout">
-            <MenuFlyoutItem Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Open'}" Click="MenuFlyoutItem_Click_Open" />
-            <MenuFlyoutItem Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Delete'}" Command="{Binding DeleteCommand}" />
-            <MenuFlyoutItem Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Property'}" Click="MenuFlyoutItem_Click_Property"/>
-        </MenuFlyout>
+        <Flyout x:Key="menu_flyout" Placement="RightEdgeAlignedTop">
+            <StackPanel LostFocus="StackPanel_LostFocus">
+                <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Open'}" Click="MenuFlyoutItem_Click_Open" />
+                <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Delete'}" Command="{Binding DeleteCommand}" />
+                <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Property'}" Click="MenuFlyoutItem_Click_Property"/>
+            </StackPanel>
+        </Flyout>
     </UserControl.Resources>
 
 

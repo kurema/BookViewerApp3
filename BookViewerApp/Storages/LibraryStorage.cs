@@ -37,20 +37,46 @@ namespace BookViewerApp.Storages
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a=>(null,null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png")))
                 });
             }
-            if (history != null || true)
+            if (history != null)
             {
                 var list = (await Task.WhenAll(history.Select(async a => await a.GetFile())))?.Where(a => a != null)?.Select(a => new StorageFileItem(a))?.ToArray() ?? new IFileItem[0];
-                if (list.Length != 0 || true) result.Add(new ContainerItem(GetWord("Histories"), "/History", list)
+                if (list.Length != 0) result.Add(new ContainerItem(GetWord("Histories"), "/History", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png")))
                 });
             }
-            if (library?.bookmarks != null || true)
+            //if (library?.bookmarks != null)
             {
                 var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
-                result.Add(new ContainerItem(GetWord("Bookmarks"), "/Bookmarks", list){
+                var container = new ContainerItem(GetWord("Bookmarks"), "/Bookmarks", list)
+                {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png")))
-                });
+                };
+                result.Add(container);
+                foreach(var item in list)
+                {
+                    switch (item)
+                    {
+                        case StorageBookmarkContainer item1:
+                            item1.ActionDelete = () =>
+                            {
+                                var items = library.bookmarks.Items.ToList();
+                                items.Remove(item1.Content);
+                                library.bookmarks.Items = items.ToArray();
+                                container?.Children?.Remove(item);
+                            };
+                            break;
+                        case StorageBookmarkItem item2:
+                            item2.ActionDelete = () =>
+                            {
+                                var items = library.bookmarks.Items.ToList();
+                                items.Remove(item2.Content);
+                                library.bookmarks.Items = items.ToArray();
+                                container?.Children?.Remove(item);
+                            };
+                            break;
+                    }
+                }
             }
 
             return new ContainerItem(GetWord("PC"), "/PC", result.ToArray());
