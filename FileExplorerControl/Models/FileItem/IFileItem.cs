@@ -22,6 +22,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
         System.Windows.Input.ICommand DeleteCommand { get; }
         System.Windows.Input.ICommand RenameCommand { get; }
 
+        Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; }
+        
+
         Task<System.IO.Stream> OpenStreamForReadAsync();
         Task<System.IO.Stream> OpenStreamForWriteAsync();
     }

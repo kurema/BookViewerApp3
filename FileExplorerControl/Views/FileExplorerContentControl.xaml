@@ -30,9 +30,22 @@
         <vc:LocalizeConverter x:Key="vc_local"/>
 
         <Flyout x:Key="menu_flyout" Placement="RightEdgeAlignedTop">
-            <StackPanel LostFocus="StackPanel_LostFocus">
+            <StackPanel>
                 <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Open'}" Click="MenuFlyoutItem_Click_Open" />
-                <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Delete'}" Command="{Binding DeleteCommand}" />
+                <!--<ItemsControl ItemsSource="{Binding MenuCommands}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <MenuFlyoutItem Text="{Binding Title}" Command="{Binding Command}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>-->
+                <local:MenuMenuCommand MenuCommands="{Binding MenuCommands,Mode=OneWay}"/>
+                <MenuFlyoutItem Tag="Default" Icon="Delete" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Delete'}" Command="{Binding DeleteCommand}" />
                 <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Property'}" Click="MenuFlyoutItem_Click_Property"/>
             </StackPanel>
         </Flyout>

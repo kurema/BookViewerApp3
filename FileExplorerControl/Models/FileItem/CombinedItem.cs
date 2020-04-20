@@ -41,6 +41,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ICommand RenameCommand => null;
 
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
             if (Contents == null) return null;

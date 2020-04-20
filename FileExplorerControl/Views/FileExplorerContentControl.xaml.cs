@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Windows.UI.Xaml;
 
 
 
@@ -20,6 +21,25 @@ using System.Linq;
 
 namespace kurema.FileExplorerControl.Views
 {
+    //Git用。後で削除。
+    //public class FileExplorerContentControlMenuDataTemplateSelector : DataTemplateSelector
+    //{
+    //    public DataTemplate Item { get; set; }
+    //    public DataTemplate SubItem { get; set; }
+
+    //    protected override DataTemplate SelectTemplateCore(object item)
+    //    {
+    //        if (item is Models.MenuCommand mc)
+    //        {
+    //            return mc.HasChild ? SubItem : Item;
+    //        }
+    //        else
+    //        {
+    //            return base.SelectTemplateCore(item);
+    //        }
+    //    }
+    //}
+
     public sealed partial class FileExplorerContentControl : UserControl
     {
         public FileExplorerContentControl()
@@ -197,23 +217,6 @@ namespace kurema.FileExplorerControl.Views
                 //};
                 await dialog.ShowAsync();
             }
-        }
-
-        private void Button_ContextRequested(Windows.UI.Xaml.UIElement sender, ContextRequestedEventArgs args)
-        {
-            //メニューを追加する。
-            if(sender.ContextFlyout is MenuFlyout menu)
-            {
-                foreach(var item in menu.Items.ToArray())
-                {
-                    if(item.Tag as string != "Default")
-                    {
-                        menu.Items.Remove(item);
-                    }
-                }
-            }
-
-            args.Handled = false;
         }
 
         private void StackPanel_LostFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)

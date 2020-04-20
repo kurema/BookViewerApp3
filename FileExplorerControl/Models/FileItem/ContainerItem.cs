@@ -22,6 +22,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         /// </summary>
         public IconProviders.IIconProvider IIconProvider;
 
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+
         public string Name { get; set; }
 
         public string Path { get; set; }

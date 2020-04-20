@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 using BookViewerApp.Helper;
 using kurema.FileExplorerControl.Models.FileItems;
+using kurema.FileExplorerControl.Models;
 
 namespace BookViewerApp.Storages
 {
@@ -34,7 +35,15 @@ namespace BookViewerApp.Storages
                 var list = (await Task.WhenAll(library.libraries.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
                 result.Add(new ContainerItem(GetWord("Libraries"), "/Libraries", list)
                 {
-                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a=>(null,null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png")))
+                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
+                    MenuCommandsProvider = a =>
+                    {
+                        return new MenuCommand[]
+                        {
+                            new MenuCommand("Command1",new DelegateCommand((_)=>{ })),
+                            new MenuCommand("Menu",new MenuCommand("Command2",new DelegateCommand((_)=>{ })),new MenuCommand("Command3",new DelegateCommand((_)=>{ })))
+                        };
+                    }
                 });
             }
             if (history != null)

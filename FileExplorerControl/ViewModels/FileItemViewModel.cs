@@ -49,6 +49,8 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(nameof(LastModified));
                 OnPropertyChanged(nameof(IsFolder));
                 OnPropertyChanged(nameof(Size));
+                OnPropertyChanged(nameof(MenuCommands));
+
                 DeleteCommand?.OnCanExecuteChanged();
                 //RenameCommand?.OnCanExecuteChanged();
             }
@@ -73,7 +75,7 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
-        //public Helper.DelegateCommand RenameCommand { get; set; }
+        public Models.MenuCommand[] MenuCommands => Content?.MenuCommandsProvider?.Invoke(Content) ?? new Models.MenuCommand[0];
 
         private Helper.DelegateCommand _DeleteCommand;
         public Helper.DelegateCommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(async (parameter) =>

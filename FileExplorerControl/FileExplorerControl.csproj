@@ -134,6 +134,7 @@
     <Compile Include="ViewModels\ContentViewModel.cs" />
     <Compile Include="ViewModels\FileExplorerViewModel.cs" />
     <Compile Include="ViewModels\FileItemViewModel.cs" />
+    <Compile Include="Models\MenuCommands\MenuCommand.cs" />
     <Compile Include="Views\DeleteContentDialog.xaml.cs">
       <DependentUpon>DeleteContentDialog.xaml</DependentUpon>
     </Compile>
@@ -150,6 +151,9 @@
     </Compile>
     <Compile Include="Views\FileExplorerPage.xaml.cs">
       <DependentUpon>FileExplorerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MenuMenuCommand.xaml.cs">
+      <DependentUpon>MenuMenuCommand.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PropertyControl.xaml.cs">
       <DependentUpon>PropertyControl.xaml</DependentUpon>
@@ -197,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FileExplorerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MenuMenuCommand.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

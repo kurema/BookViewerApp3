@@ -29,6 +29,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public event Windows.Foundation.TypedEventHandler<BookmarkItem, string> Opened;
 
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
@@ -92,6 +93,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public Action ActionDelete { get; set; }
 
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+
 
         public Task<ulong?> GetSizeAsync()
         {
@@ -144,6 +147,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public Action ActionDelete { get; set; }
         public Action<string> ActionOpen { get; set; }
 
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
@@ -162,6 +166,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                                 list.Remove(bc);
                                 Content.Items = list.ToArray();
                             };
+                            temp.MenuCommandsProvider = this.MenuCommandsProvider;
                             result.Add(temp);
                         }
                         break;
@@ -175,6 +180,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                                 list.Remove(bcb);
                                 Content.Items = list.ToArray();
                             };
+                            temp.MenuCommandsProvider = this.MenuCommandsProvider;
                             result.Add(temp);
                         }
                         break;
