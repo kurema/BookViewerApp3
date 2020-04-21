@@ -191,5 +191,72 @@ namespace kurema.FileExplorerControl.Views
                 }
             }
         }
+
+        private void UserControl_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight };
+            if (args.TryGetPosition(sender, out Point p)) option.Position = p;
+
+            if(this.content.DataContext is ViewModels.ContentViewModel vm)
+            { 
+                var menu = new MenuFlyout();
+                foreach (var item in Models.MenuCommand.GetMenus(vm.Item.MenuCommands)) menu.Items.Add(item);
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Property")
+
+                    };
+                    item.DataContext = vm.Item;
+                    item.Click += MenuFlyoutItem_Click_Property;
+                    menu.Items.Add(item);
+                }
+                menu.ShowAt(sender, option);
+            }
+            args.Handled = true;
+
+        }
+
+        private async void MenuFlyoutItem_Click_Property(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is ViewModels.FileItemViewModel vm)
+            {
+                var dialog = new ContentDialog()
+                {
+                    DataContext = vm,
+                };
+                {
+                    var loader = Application.ResourceLoader.Loader;
+                    dialog.CloseButtonText = loader.GetString("Command/OK");
+                }
+
+                dialog.Content = new PropertyControl();
+                await dialog.ShowAsync();
+            }
+        }
+
+        private void TreeViewItem_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight };
+            if (args.TryGetPosition(sender, out Point p)) option.Position = p;
+
+            if (((sender as FrameworkElement)?.DataContext as winui.TreeViewNode)?.Content is ViewModels.FileItemViewModel vm)
+            {
+                var menu = new MenuFlyout();
+                foreach (var item in Models.MenuCommand.GetMenus(vm.MenuCommands)) menu.Items.Add(item);
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Property")
+
+                    };
+                    item.DataContext = vm;
+                    item.Click += MenuFlyoutItem_Click_Property;
+                    menu.Items.Add(item);
+                }
+                menu.ShowAt(sender, option);
+            }
+            args.Handled = true;
+        }
     }
 }

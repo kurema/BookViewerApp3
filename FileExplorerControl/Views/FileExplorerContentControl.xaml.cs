@@ -21,25 +21,6 @@ using Windows.UI.Xaml;
 
 namespace kurema.FileExplorerControl.Views
 {
-    //Git用。後で削除。
-    //public class FileExplorerContentControlMenuDataTemplateSelector : DataTemplateSelector
-    //{
-    //    public DataTemplate Item { get; set; }
-    //    public DataTemplate SubItem { get; set; }
-
-    //    protected override DataTemplate SelectTemplateCore(object item)
-    //    {
-    //        if (item is Models.MenuCommand mc)
-    //        {
-    //            return mc.HasChild ? SubItem : Item;
-    //        }
-    //        else
-    //        {
-    //            return base.SelectTemplateCore(item);
-    //        }
-    //    }
-    //}
-
     public sealed partial class FileExplorerContentControl : UserControl
     {
         public FileExplorerContentControl()
@@ -53,7 +34,6 @@ namespace kurema.FileExplorerControl.Views
                 this.headerSize.Header = loader.GetString("Header/Size");
             }
         }
-
 
         public async Task SetFolder(ViewModels.FileItemViewModel folder)
         {
@@ -225,6 +205,95 @@ namespace kurema.FileExplorerControl.Views
             {
                 f.IsOpen = false;
             }
+        }
+
+        private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            
+            if( sender is FrameworkElement f && f.DataContext is ViewModels.FileItemViewModel vm)
+            {
+                var menu = new MenuFlyout();
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Open")
+
+                    };
+                    item.Click += MenuFlyoutItem_Click_Open;
+                    menu.Items.Add(item);
+                }
+                foreach (var item in Models.MenuCommand.GetMenus(vm.MenuCommands)) menu.Items.Add(item);
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Delete"),
+                        Command=vm.DeleteCommand,
+                        Icon=new SymbolIcon(Symbol.Delete),
+                    };
+                    menu.Items.Add(item);
+                }
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Property")
+
+                    };
+                    item.Click += MenuFlyoutItem_Click_Property;
+                    menu.Items.Add(item);
+                }
+
+                var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight};
+                if (args.TryGetPosition(sender, out Point p)) option.Position = p;
+                menu.ShowAt(f, option);
+
+                args.Handled = true;
+            }
+        }
+
+        //private async void items_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        //{
+        //    var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight };
+        //    if (args.TryGetPosition(sender, out Point p)) option.Position = p;
+
+        //    await OperateBinding(vm =>
+        //    {
+        //        var menu = new MenuFlyout();
+        //        foreach (var item in Models.MenuCommand.GetMenus(vm.Item.MenuCommands)) menu.Items.Add(item);
+        //        {
+        //            var item = new MenuFlyoutItem()
+        //            {
+        //                Text = Application.ResourceLoader.Loader.GetString("Command/Property")
+
+        //            };
+        //            item.DataContext = vm.Item;
+        //            item.Click += MenuFlyoutItem_Click_Property;
+        //            menu.Items.Add(item);
+        //        }
+        //        menu.ShowAt(sender, option);
+
+        //        return Task.CompletedTask;
+        //    });
+        //    args.Handled = true;
+        //}
+
+        private void dataGrid_LoadingRow(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridRowEventArgs e)
+        {
+            e.Row.ContextRequested += Button_ContextRequested;
+            //e.Row.Tapped += async (s, e2) =>
+            //{
+            //    if (e2.OriginalSource is ViewModels.FileItemViewModel vm1)
+            //    {
+            //        if (vm1.IsFolder)
+            //        {
+            //            await SetFolder(vm1);
+            //        }
+            //        else
+            //        {
+            //            FileOpenedEventHandler?.Invoke(this, vm1);
+            //            (sender as Microsoft.Toolkit.Uwp.UI.Controls.DataGrid).SelectedItem = null;
+            //        }
+            //    }
+            //};
         }
     }
 }

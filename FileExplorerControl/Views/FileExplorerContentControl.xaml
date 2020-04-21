@@ -17,6 +17,7 @@
     
     DataContextChanged="UserControl_DataContextChanged"
     
+    
     x:Name="root"
     >
     <UserControl.DataContext>
@@ -32,18 +33,6 @@
         <Flyout x:Key="menu_flyout" Placement="RightEdgeAlignedTop">
             <StackPanel>
                 <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Open'}" Click="MenuFlyoutItem_Click_Open" />
-                <!--<ItemsControl ItemsSource="{Binding MenuCommands}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <MenuFlyoutItem Text="{Binding Title}" Command="{Binding Command}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>-->
                 <local:MenuMenuCommand MenuCommands="{Binding MenuCommands,Mode=OneWay}"/>
                 <MenuFlyoutItem Tag="Default" Icon="Delete" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Delete'}" Command="{Binding DeleteCommand}" />
                 <MenuFlyoutItem Tag="Default" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Command/Property'}" Click="MenuFlyoutItem_Click_Property"/>
@@ -65,12 +54,14 @@
                            
                            Sorting="DataGrid_Sorting"
                            
+                           LoadingRow="dataGrid_LoadingRow"
+                           
                            x:Name="dataGrid"
                            >
             <controls:DataGrid.RowStyle>
                 <Style TargetType="controls:DataGridRow">
                     <!-- https://stackoverflow.com/questions/54769413/uwp-datagrid-menuflyout-right-click -->
-                    <Setter Property="controls:DataGridRow.ContextFlyout" Value="{StaticResource menu_flyout}" />
+                    <!--<Setter Property="controls:DataGridRow.ContextFlyout" Value="{StaticResource menu_flyout}" />-->
                 </Style>
             </controls:DataGrid.RowStyle>
             <controls:DataGrid.Columns>
@@ -81,7 +72,7 @@
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
-                <controls:DataGridTextColumn Tag="Title" x:Name="headerName" Binding="{Binding Title}" CanUserSort="True" />
+                <controls:DataGridTextColumn Tag="Title" x:Name="headerName" Binding="{Binding Title}" CanUserSort="True"/>
                 <controls:DataGridTextColumn Tag="Date" x:Name="headerDate" Binding="{Binding LastModified}" CanUserSort="True" />
                 <controls:DataGridTextColumn Tag="Size" x:Name="headerSize" Binding="{Binding Size,Mode=OneWay,Converter={StaticResource vc_u2hrs}}" CanUserSort="True" />
             </controls:DataGrid.Columns>
@@ -105,7 +96,7 @@
                     <local:FileExplorerContentDataSelector ContentStyle="Icon">
                         <local:FileExplorerContentDataSelector.TemplateIcon>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped_Open" HorizontalAlignment="Stretch" VerticalAlignment="Top" ContextFlyout="{StaticResource menu_flyout}">
+                                <Button Margin="5" Tapped="Button_Tapped_Open" HorizontalAlignment="Stretch" VerticalAlignment="Top"  ContextRequested="Button_ContextRequested">
                                     <StackPanel MaxWidth="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" MinWidth="100">
                                         <Image Height="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
                                         <TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center" TextWrapping="Wrap" />
@@ -115,7 +106,7 @@
                         </local:FileExplorerContentDataSelector.TemplateIcon>
                         <local:FileExplorerContentDataSelector.TemplateIconWide>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped_Open" ContextFlyout="{StaticResource menu_flyout}">
+                                <Button Margin="5" Tapped="Button_Tapped_Open"  ContextRequested="Button_ContextRequested">
                                     <Grid HorizontalAlignment="Left" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -129,7 +120,7 @@
                         </local:FileExplorerContentDataSelector.TemplateIconWide>
                         <local:FileExplorerContentDataSelector.TemplateList>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped_Open" ContextFlyout="{StaticResource menu_flyout}">
+                                <Button Margin="5" Tapped="Button_Tapped_Open" ContextRequested="Button_ContextRequested">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="20"/>
                                         <TextBlock Text="{Binding Title}" />

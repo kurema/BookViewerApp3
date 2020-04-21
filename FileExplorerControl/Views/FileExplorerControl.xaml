@@ -14,6 +14,8 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
+    
+    
     >
     <UserControl.DataContext>
         <vm:FileExplorerViewModel/>
@@ -26,16 +28,12 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
+        <Grid Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
             <Grid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -261,28 +259,34 @@
                 </Button>
             </Grid>
         </Grid>
-        
-        <Rectangle Grid.Row="1" Grid.Column="0" Fill="{ThemeResource SystemControlAltHighAcrylicWindowBrush}"/>
-        <Rectangle Grid.Row="1" Grid.Column="1" Fill="{ThemeResource SystemControlAltHighAcrylicElementBrush}"/>
-        <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
-            <ui:TreeView 
+
+        <Grid Grid.Row="1" ContextRequested="UserControl_ContextRequested">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Column="0" Fill="{ThemeResource SystemControlAltHighAcrylicWindowBrush}"/>
+            <Rectangle Grid.Column="1" Fill="{ThemeResource SystemControlAltHighAcrylicElementBrush}"/>
+            <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0" Margin="0,0,8,0">
+                <ui:TreeView 
                 CanReorderItems="False" CanDragItems="False" x:Name="treeview"  SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding" ItemInvoked="treeview_ItemInvoked"
                   >
-                <ui:TreeView.ItemTemplate>
-                    <DataTemplate>
-                        <ui:TreeViewItem HasUnrealizedChildren="True" >
-                            <StackPanel Orientation="Horizontal">
-                                <Image Height="20" Margin="4"
+                    <ui:TreeView.ItemTemplate>
+                        <DataTemplate>
+                            <ui:TreeViewItem HasUnrealizedChildren="True" ContextRequested="TreeViewItem_ContextRequested">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="20" Margin="4"
                                 Source="{Binding Content.IconSmall}" Stretch="UniformToFill" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding Content.Title}" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </ui:TreeViewItem>
-                    </DataTemplate>
-                </ui:TreeView.ItemTemplate>
-            </ui:TreeView>
-        </ScrollViewer>
-        <local:FileExplorerContentControl x:Name="content" Grid.Row="1" Grid.Column="1" Margin="8,0,0,0"/>
-        <controls:GridSplitter Grid.Row="1"
+                                    <TextBlock Text="{Binding Content.Title}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:TreeViewItem>
+                        </DataTemplate>
+                    </ui:TreeView.ItemTemplate>
+                </ui:TreeView>
+            </ScrollViewer>
+            <local:FileExplorerContentControl x:Name="content" Grid.Column="1" Margin="8,0,0,0"/>
+            <controls:GridSplitter
             GripperCursor="Default"
             HorizontalAlignment="Left"
             Grid.Column="1"
@@ -290,9 +294,10 @@
             ResizeBehavior="BasedOnAlignment"
             CursorBehavior="ChangeOnSplitterHover"
             Width="16">
-            <controls:GridSplitter.RenderTransform>
-                <TranslateTransform X="-8" />
-            </controls:GridSplitter.RenderTransform>
-        </controls:GridSplitter>
+                <controls:GridSplitter.RenderTransform>
+                    <TranslateTransform X="-8" />
+                </controls:GridSplitter.RenderTransform>
+            </controls:GridSplitter>
+        </Grid>
     </Grid>
 </UserControl>

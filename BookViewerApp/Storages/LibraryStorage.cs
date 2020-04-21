@@ -28,7 +28,7 @@ namespace BookViewerApp.Storages
             if (library?.folders != null)
             {
                 var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
-                result.Add(new ContainerItem(GetWord("Folders"), "/Folders", list));
+                result.Add(new ContainerItem(GetWord("Folders"), "/Folders", list) { MenuCommandsProvider = UIHelper.ContextMenus.Folders });
             }
             if(library?.libraries!=null)
             {
@@ -36,14 +36,14 @@ namespace BookViewerApp.Storages
                 result.Add(new ContainerItem(GetWord("Libraries"), "/Libraries", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
-                    MenuCommandsProvider = a =>
-                    {
-                        return new MenuCommand[]
-                        {
-                            new MenuCommand("Command1",new DelegateCommand((_)=>{ })),
-                            new MenuCommand("Menu",new MenuCommand("Command2",new DelegateCommand((_)=>{ })),new MenuCommand("Command3",new DelegateCommand((_)=>{ })))
-                        };
-                    }
+                    //MenuCommandsProvider = a =>
+                    //{
+                    //    return new MenuCommand[]
+                    //    {
+                    //        new MenuCommand("Command1",new DelegateCommand((_)=>{ })),
+                    //        new MenuCommand("Menu",new MenuCommand("Command2",new DelegateCommand((_)=>{ })),new MenuCommand("Command3",new DelegateCommand((_)=>{ })))
+                    //    };
+                    //}
                 });
             }
             if (history != null)
