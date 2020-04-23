@@ -27,8 +27,10 @@ namespace BookViewerApp.Storages
 
             if (library?.folders != null)
             {
-                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
-                result.Add(new ContainerItem(GetWord("Folders"), "/Folders", list) { MenuCommandsProvider = UIHelper.ContextMenus.Folders });
+                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.FolderToken))))?.Where(a => a != null)?.ToArray() ?? new TokenLibraryItem[0];
+                var container = new ContainerItem(GetWord("Folders"), "/Folders", list) { MenuCommandsProvider = UIHelper.ContextMenus.Folders };
+                result.Add(container);
+                foreach (var item in list) item.Parent = container;
             }
             if(library?.libraries!=null)
             {
@@ -89,6 +91,38 @@ namespace BookViewerApp.Storages
             }
 
             return new ContainerItem(GetWord("PC"), "/PC", result.ToArray());
+        }
+
+        public static Library.libraryLibrary[] GetTokenUsed(string token)
+        {
+            var result = new List<Library.libraryLibrary>();
+            if (Content?.Content?.libraries == null) return new Library.libraryLibrary[0];
+            foreach(var item in Content.Content.libraries)
+            {
+                foreach(var item2 in item.Items)
+                {
+                    switch (item2)
+                    {
+                        case Library.libraryLibraryArchive arc:
+                            if (arc.token == token)
+                            {
+                                result.Add(item);
+                                goto end;
+                            }
+                            break;
+                        case Library.libraryLibraryFolder fol:
+                            if (fol.token == token)
+                            {
+                                result.Add(item);
+                                goto end;
+                            }
+                            break;
+                    }
+                }
+            end:;
+            }
+
+            return result.ToArray();
         }
     }
 
@@ -203,11 +237,22 @@ namespace BookViewerApp.Storages
                 Managers.BookManager.StorageItemUnregister(this.token);
             }
 
-            public async Task<IFileItem> AsFileItem()
+            public async Task<StorageFileItem> AsStorageFileItem()
             {
                 var storage = await GetStorageFolderAsync();
                 if (storage == null) return null;
                 return new StorageFileItem(storage);
+            }
+
+            public async Task<TokenLibraryItem> AsTokenLibraryItem(Func<IFileItem, MenuCommand[]> menuCommand = null, Func<IFileItem, MenuCommand[]> menuCommandCascade = null)
+            {
+                var fileItem = await this.AsStorageFileItem();
+                if (menuCommandCascade != null)
+                {
+                    fileItem.MenuCommandsProviderCascade = menuCommandCascade;
+                    fileItem.MenuCommandsProvider = menuCommandCascade;
+                }
+                return new TokenLibraryItem(this, fileItem) { MenuCommandsProvider = menuCommand };
             }
 
             public async Task<Windows.Storage.StorageFolder> GetStorageFolderAsync()

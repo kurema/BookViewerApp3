@@ -30,6 +30,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProviderCascade { get; set; }
 
         public string Name => Content.Name;
 
@@ -47,7 +48,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             if (Content is StorageFolder f)
             {
-                return new ObservableCollection<IFileItem>((await f.GetItemsAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider=this.MenuCommandsProvider}));
+                return new ObservableCollection<IFileItem>((await f.GetItemsAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade }));
             }
             else
             {

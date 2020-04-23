@@ -222,7 +222,14 @@ namespace kurema.FileExplorerControl.Views
                     item.Click += MenuFlyoutItem_Click_Open;
                     menu.Items.Add(item);
                 }
-                foreach (var item in Models.MenuCommand.GetMenus(vm.MenuCommands)) menu.Items.Add(item);
+                foreach (var item in Models.MenuCommand.GetMenuFlyoutItems(vm.MenuCommands))
+                {
+                    //if(item is MenuFlyoutItem itemM)
+                    //{
+                    //    itemM.CommandParameter = this.DataContext;
+                    //}
+                    menu.Items.Add(item);
+                }
                 {
                     var item = new MenuFlyoutItem()
                     {

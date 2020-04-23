@@ -33,7 +33,7 @@ namespace BookViewerApp.Helper
                 {
                     if (Storages.LibraryStorage.Content?.Content?.folders == null) return list.ToArray();
 
-                    list.Add(new MenuCommand(GetResourceTitle("Folders/AddFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ => {
+                    list.Add(new MenuCommand(GetResourceTitle("Folders/RegisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ => {
                         var picker = new Windows.Storage.Pickers.FolderPicker();
                         picker.FileTypeFilter.Add("*");
                         var folder = await picker.PickSingleFolderAsync();
@@ -44,13 +44,50 @@ namespace BookViewerApp.Helper
                         foldersTemp.Add(folderNew);
                         Storages.LibraryStorage.Content.Content.folders = foldersTemp.ToArray();
 
-                        container.Children.Add(await folderNew.AsFileItem());
+                        var token = await folderNew.AsTokenLibraryItem(FolderToken);
+                        container.Children.Add(token);
+                        token.Parent = container;
 
                         await Storages.LibraryStorage.Content.SaveAsync();
                     })));
 
+
                 }
 
+                return list.ToArray();
+            }
+
+            public static MenuCommand[] FolderToken(IFileItem item)
+            {
+                var list = new List<MenuCommand>();
+
+                if (item is TokenLibraryItem token)
+                {
+                    if (token.Content == null) return list.ToArray();
+                    list.Add(new MenuCommand(GetResourceTitle("Folders/UnregisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
+                    {
+                        var used = Storages.LibraryStorage.GetTokenUsed(token.Content.token);
+                        if (used.Count() == 0) goto remove;
+                        else
+                        {
+                            //show dialog!
+                            return;
+                        }
+
+                    remove:;
+                        if (Storages.LibraryStorage.Content?.Content?.folders == null) return;
+
+                        {
+                            var temp = Storages.LibraryStorage.Content.Content.folders.ToList();
+                            temp.Remove(token.Content);
+                            Storages.LibraryStorage.Content.Content.folders = temp.ToArray();
+                        }
+                        token.Content.Remove();
+                        var brothers= await token.Parent.GetChildren();
+                        brothers.Remove(token);
+                    }
+                    )));
+                }
                 return list.ToArray();
             }
         }

@@ -25,6 +25,26 @@ namespace kurema.FileExplorerControl.Models.FileItems
             this.Name = commonName;
         named:;
             this.Name = this.Name ?? "Combined";
+
+            //Contents.CollectionChanged += (s, e) => {
+            //    void Item_ChildrenUpdated(object sender, EventArgs e2) => OnChildrenUpdated();
+
+            //    OnChildrenUpdated();
+            //    if (e.OldItems != null)
+            //    {
+            //        foreach(IFileItem item in e.OldItems)
+            //        {
+            //            item.ChildrenUpdated -= Item_ChildrenUpdated;
+            //        }
+            //    }
+            //    if(e.NewItems != null)
+            //    {
+            //        foreach (IFileItem item in e.NewItems)
+            //        {
+            //            item.ChildrenUpdated += Item_ChildrenUpdated;
+            //        }
+            //    }
+            //};
         }
 
         public ObservableCollection<IFileItem> Contents { get; } = new ObservableCollection<IFileItem>();
@@ -42,6 +62,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public ICommand RenameCommand => null;
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+
+        public Func<IFileItem, MenuCommand[]> MenuCommandsProviderCascade { get; set; }
 
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
@@ -66,7 +88,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
              {
                  var b = a.ToArray();
                  if (b.Length == 0) return b[0];
-                 return new CombinedItem(b);
+                 return new CombinedItem(b) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade };
              }).OrderBy(a => a.Name));
         }
 

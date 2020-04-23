@@ -88,6 +88,8 @@ namespace BookViewerApp.Storages.Library {
         
         private string tokenField;
         
+        private string titleField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string token {
@@ -97,6 +99,18 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.tokenField = value;
                 this.RaisePropertyChanged("token");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
             }
         }
         

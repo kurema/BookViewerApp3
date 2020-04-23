@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
     <Compile Include="Extension\BookmarkItem.cs" />
+    <Compile Include="Extension\TokenLibraryItem.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
     <Compile Include="Helper\UIHelper.ContextMenus.cs" />
     <Compile Include="Helper\UIHelper.cs" />

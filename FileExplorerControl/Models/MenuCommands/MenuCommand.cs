@@ -28,9 +28,9 @@ namespace kurema.FileExplorerControl.Models
 
         public bool HasChild => Items != null && Items.Count > 0;
 
-        public static IEnumerable<MenuFlyoutItemBase> GetMenus(MenuCommand[] menus) => menus.Select(a => a.GetMenu());
+        public static IEnumerable<MenuFlyoutItemBase> GetMenuFlyoutItems(MenuCommand[] menus) => menus.Select(a => a.GetMenuFlyoutItem());
 
-        public MenuFlyoutItemBase GetMenu()
+        public MenuFlyoutItemBase GetMenuFlyoutItem()
         {
             var menu = this;
             if (menu.HasChild)
@@ -41,7 +41,7 @@ namespace kurema.FileExplorerControl.Models
                 };
                 foreach (var item in menu.Items)
                 {
-                    result.Items.Add(item.GetMenu());
+                    result.Items.Add(item.GetMenuFlyoutItem());
                 }
                 return result;
             }
