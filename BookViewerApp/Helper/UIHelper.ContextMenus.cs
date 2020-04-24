@@ -70,7 +70,18 @@ namespace BookViewerApp.Helper
                         if (used.Count() == 0) goto remove;
                         else
                         {
-                            //show dialog!
+                            var message = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Message");
+                            var title = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Title");
+                            var dlg = new Windows.UI.Popups.MessageDialog($"{message}\n{used.Aggregate("", (a, b) => a + "\n" + b.title)}", title);
+                            dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
+                            dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/Cancel"), null, "cancel"));
+                            dlg.CancelCommandIndex = 1;
+                            dlg.DefaultCommandIndex = 0;
+                            var res = await dlg.ShowAsync();
+                            if (res.Id as string == "ok")
+                            {
+                                goto remove;
+                            }
                             return;
                         }
 
@@ -85,6 +96,8 @@ namespace BookViewerApp.Helper
                         token.Content.Remove();
                         var brothers= await token.Parent.GetChildren();
                         brothers.Remove(token);
+
+                        await Storages.LibraryStorage.Content.SaveAsync();
                     }
                     )));
                 }

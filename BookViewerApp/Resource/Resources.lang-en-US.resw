@@ -420,4 +420,14 @@
   <data name="ContextMenu.Folders.UnregisterFolder.Title" xml:space="preserve">
     <value>Unregister a folder</value>
   </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
+    <value>The folder is referred in following library.
+Are you sure to unregister?</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
+    <value>Unregister folder</value>
+  </data>
+  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
+    <value>Add to library...</value>
+  </data>
 </root>
