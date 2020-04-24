@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutThisApp.Label" xml:space="preserve">
+    <value>關於此應用</value>
+  </data>
+  <data name="AddLocalDirectory.Label" xml:space="preserve">
+    <value>添加目錄到書架</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Book Viewer 3</value>
+  </data>
+  <data name="BookmarkLast.Title" xml:space="preserve">
+    <value>[最後頁]</value>
+  </data>
+  <data name="BookmarkTop.Title" xml:space="preserve">
+    <value>[首頁]</value>
+  </data>
+  <data name="BookNext.Label" xml:space="preserve">
+    <value>讀下書</value>
+  </data>
+  <data name="BookPrevious.Label" xml:space="preserve">
+    <value>讀以前的書</value>
+  </data>
+  <data name="BookShelfTitleNew" xml:space="preserve">
+    <value>書架</value>
+  </data>
+  <data name="ClearAllBookShelf.Label" xml:space="preserve">
+    <value>清除所有書架</value>
+  </data>
+  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+    <value>刪除書架</value>
+  </data>
+  <data name="GoToBookShelf.Label" xml:space="preserve">
+    <value>去書架</value>
+  </data>
+  <data name="LoadingFolder.Completed.Message" xml:space="preserve">
+    <value>裝載工作已經完成。 謝謝。</value>
+  </data>
+  <data name="LoadingFolder.Started.Message" xml:space="preserve">
+    <value>這將需要一段時間。不要關閉這個應用程序加載時。</value>
+  </data>
+  <data name="LoadingFolder.Title" xml:space="preserve">
+    <value>添加目錄</value>
+  </data>
+  <data name="OpenLocalBook.Label" xml:space="preserve">
+    <value>打開</value>
+  </data>
+  <data name="PageEnd.Label" xml:space="preserve">
+    <value>最後頁</value>
+  </data>
+  <data name="PageLeft.Label" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="PageLeftmost.Label" xml:space="preserve">
+    <value>左端</value>
+  </data>
+  <data name="PageNext.Label" xml:space="preserve">
+    <value>下頁</value>
+  </data>
+  <data name="PagePrevious.Label" xml:space="preserve">
+    <value>上頁</value>
+  </data>
+  <data name="PageReverse.Label" xml:space="preserve">
+    <value>反向頁面方向</value>
+  </data>
+  <data name="PageRight.Label" xml:space="preserve">
+    <value>右</value>
+  </data>
+  <data name="PageRightmost.Label" xml:space="preserve">
+    <value>右端</value>
+  </data>
+  <data name="PageTop.Label" xml:space="preserve">
+    <value>首頁</value>
+  </data>
+  <data name="ReloadBookShelf.Label" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+    <value>秘密書架</value>
+  </data>
+  <data name="Setting.Label" xml:space="preserve">
+    <value>環境</value>
+  </data>
+  <data name="ToggleFullScreen.Label" xml:space="preserve">
+    <value>切換全屏模式</value>
+  </data>
+  <data name="BookmarkBasic.Title" xml:space="preserve">
+    <value>書籤</value>
+  </data>
+  <data name="BookmarkLastread.Title" xml:space="preserve">
+    <value>[自動書籤]</value>
+  </data>
+  <data name="Bookmarks.Label" xml:space="preserve">
+    <value>書籤</value>
+  </data>
+  <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
+    <value>標題</value>
+  </data>
+  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>切換書架</value>
+  </data>
+  <data name="Welcome_HowToConfigure" xml:space="preserve">
+    <value>如何打開配置頁面</value>
+  </data>
+  <data name="Welcome_HowToUse" xml:space="preserve">
+    <value>如何使用</value>
+  </data>
+  <data name="Welcome_OpenMenu" xml:space="preserve">
+    <value>打開其他功能</value>
+  </data>
+</root>

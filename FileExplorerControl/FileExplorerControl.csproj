@@ -227,8 +227,10 @@
     <PRIResource Include="Resource\ja-JP\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MultilingualResources\" />
     <Folder Include="Resource\qps-ploc\" />
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\FileExplorerControl.ja-JP.xlf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

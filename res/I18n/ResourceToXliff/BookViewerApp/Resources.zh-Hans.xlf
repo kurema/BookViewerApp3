@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="zh-Hans" original="Resources.resw" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.1915.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="ReswGroup" datatype="resx">
+        <trans-unit id="AboutThisApp.Label" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">关于此应用</target>
+        </trans-unit>
+        <trans-unit id="AddLocalDirectory.Label" translate="yes" xml:space="preserve">
+          <source>Add a directory</source>
+          <target state="translated">添加目录到书架</target>
+        </trans-unit>
+        <trans-unit id="AppName" translate="yes" xml:space="preserve">
+          <source>Book Viewer 3</source>
+          <target state="needs-review-translation">Book Viewer 3</target>
+          <note from="MultilingualUpdate" priority="2">Resource is marked as 'Needs review' since the Source and target were the same value.</note>
+        </trans-unit>
+        <trans-unit id="BookmarkLast.Title" translate="yes" xml:space="preserve">
+          <source>[End]</source>
+          <target state="translated">[最后页]</target>
+        </trans-unit>
+        <trans-unit id="BookmarkTop.Title" translate="yes" xml:space="preserve">
+          <source>[Top]</source>
+          <target state="translated">[首页]</target>
+        </trans-unit>
+        <trans-unit id="BookNext.Label" translate="yes" xml:space="preserve">
+          <source>Read the next book</source>
+          <target state="translated">读下书</target>
+        </trans-unit>
+        <trans-unit id="BookPrevious.Label" translate="yes" xml:space="preserve">
+          <source>Read the previous book</source>
+          <target state="translated">读以前的书</target>
+        </trans-unit>
+        <trans-unit id="BookShelfTitleNew" translate="yes" xml:space="preserve">
+          <source>Bookshelf</source>
+          <target state="translated">书架</target>
+        </trans-unit>
+        <trans-unit id="ClearAllBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Clear all bookshelves</source>
+          <target state="translated">清除所有书架</target>
+        </trans-unit>
+        <trans-unit id="ClearThisBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Clear this bookshelf</source>
+          <target state="translated">删除书架</target>
+        </trans-unit>
+        <trans-unit id="GoToBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Go to bookshelf</source>
+          <target state="translated">去书架</target>
+        </trans-unit>
+        <trans-unit id="LoadingFolder.Completed.Message" translate="yes" xml:space="preserve">
+          <source>Loading has been completed. Thank you.</source>
+          <target state="translated">装载工作已经完成。 谢谢。</target>
+        </trans-unit>
+        <trans-unit id="LoadingFolder.Started.Message" translate="yes" xml:space="preserve">
+          <source>It will take a while. Do not close this app while loading.</source>
+          <target state="translated">这将需要一段时间。不要关闭这个应用程序加载时。</target>
+        </trans-unit>
+        <trans-unit id="LoadingFolder.Title" translate="yes" xml:space="preserve">
+          <source>Loading folders</source>
+          <target state="translated">添加目錄</target>
+        </trans-unit>
+        <trans-unit id="OpenLocalBook.Label" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target state="translated">打开</target>
+        </trans-unit>
+        <trans-unit id="PageEnd.Label" translate="yes" xml:space="preserve">
+          <source>End</source>
+          <target state="translated">最后页</target>
+        </trans-unit>
+        <trans-unit id="PageLeft.Label" translate="yes" xml:space="preserve">
+          <source>Left</source>
+          <target state="translated">左</target>
+        </trans-unit>
+        <trans-unit id="PageLeftmost.Label" translate="yes" xml:space="preserve">
+          <source>Leftmost</source>
+          <target state="translated">左端</target>
+        </trans-unit>
+        <trans-unit id="PageNext.Label" translate="yes" xml:space="preserve">
+          <source>Next</source>
+          <target state="translated">上页</target>
+        </trans-unit>
+        <trans-unit id="PagePrevious.Label" translate="yes" xml:space="preserve">
+          <source>Previous</source>
+          <target state="translated">下页</target>
+        </trans-unit>
+        <trans-unit id="PageReverse.Label" translate="yes" xml:space="preserve">
+          <source>Reverse page direction</source>
+          <target state="translated">反向页面方向</target>
+        </trans-unit>
+        <trans-unit id="PageRight.Label" translate="yes" xml:space="preserve">
+          <source>Right</source>
+          <target state="translated">右</target>
+        </trans-unit>
+        <trans-unit id="PageRightmost.Label" translate="yes" xml:space="preserve">
+          <source>Rightmost</source>
+          <target state="translated">右端</target>
+        </trans-unit>
+        <trans-unit id="PageTop.Label" translate="yes" xml:space="preserve">
+          <source>First</source>
+          <target state="translated">首页</target>
+        </trans-unit>
+        <trans-unit id="ReloadBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Refresh</source>
+          <target state="translated">更新</target>
+        </trans-unit>
+        <trans-unit id="SetThisBookShelfSecret.Label" translate="yes" xml:space="preserve">
+          <source>Toggle secret</source>
+          <target state="translated">秘密书架</target>
+        </trans-unit>
+        <trans-unit id="Setting.Label" translate="yes" xml:space="preserve">
+          <source>Setting</source>
+          <target state="translated">环境</target>
+        </trans-unit>
+        <trans-unit id="ToggleFullScreen.Label" translate="yes" xml:space="preserve">
+          <source>Toggle full screen mode.</source>
+          <target state="translated">切换全屏模式</target>
+        </trans-unit>
+        <trans-unit id="BookmarkBasic.Title" translate="yes" xml:space="preserve">
+          <source>Bookmark</source>
+          <target state="translated">书签</target>
+        </trans-unit>
+        <trans-unit id="BookmarkLastread.Title" translate="yes" xml:space="preserve">
+          <source>[Automatic]</source>
+          <target state="translated">[自动书签]</target>
+        </trans-unit>
+        <trans-unit id="Bookmarks.Label" translate="yes" xml:space="preserve">
+          <source>Bookmarks</source>
+          <target state="translated">书签</target>
+        </trans-unit>
+        <trans-unit id="BookmarkTitle.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Title</source>
+          <target state="translated">标题</target>
+        </trans-unit>
+        <trans-unit id="SwitchBookShelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Switch bookshelf.</source>
+          <target state="translated">切换书架</target>
+        </trans-unit>
+        <trans-unit id="Welcome_HowToConfigure" translate="yes" xml:space="preserve">
+          <source>How to change settings</source>
+          <target state="translated">如何打开配置页面</target>
+        </trans-unit>
+        <trans-unit id="Welcome_HowToUse" translate="yes" xml:space="preserve">
+          <source>How to use</source>
+          <target state="translated">如何使用</target>
+        </trans-unit>
+        <trans-unit id="Welcome_OpenMenu" translate="yes" xml:space="preserve">
+          <source>Open the menu.</source>
+          <target state="translated">打开其他功能</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

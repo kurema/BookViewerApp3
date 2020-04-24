@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="zh-Hant" original="BOOKVIEWERAPP/RESOURCE/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6915.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="BOOKVIEWERAPP/RESOURCE/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="AboutThisApp.Label" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">關於此應用</target>
+        </trans-unit>
+        <trans-unit id="AddLocalDirectory.Label" translate="yes" xml:space="preserve">
+          <source>Add a directory</source>
+          <target state="translated">添加目錄到書架</target>
+        </trans-unit>
+        <trans-unit id="AppName" translate="yes" xml:space="preserve">
+          <source>Book Viewer 3</source>
+          <target state="needs-review-translation">Book Viewer 3</target>
+          <note from="MultilingualUpdate" priority="2">Resource is marked as 'Needs review' since the Source and target were the same value.</note>
+        </trans-unit>
+        <trans-unit id="BookmarkLast.Title" translate="yes" xml:space="preserve">
+          <source>[End]</source>
+          <target state="translated">[最後頁]</target>
+        </trans-unit>
+        <trans-unit id="BookmarkTop.Title" translate="yes" xml:space="preserve">
+          <source>[Top]</source>
+          <target state="translated">[首頁]</target>
+        </trans-unit>
+        <trans-unit id="BookNext.Label" translate="yes" xml:space="preserve">
+          <source>Read the next book</source>
+          <target state="translated">讀下書</target>
+        </trans-unit>
+        <trans-unit id="BookPrevious.Label" translate="yes" xml:space="preserve">
+          <source>Read the previous book</source>
+          <target state="translated">讀以前的書</target>
+        </trans-unit>
+        <trans-unit id="BookShelfTitleNew" translate="yes" xml:space="preserve">
+          <source>Bookshelf</source>
+          <target state="translated">書架</target>
+        </trans-unit>
+        <trans-unit id="ClearAllBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Clear all bookshelves</source>
+          <target state="translated">清除所有書架</target>
+        </trans-unit>
+        <trans-unit id="ClearThisBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Clear this bookshelf</source>
+          <target state="translated">刪除書架</target>
+        </trans-unit>
+        <trans-unit id="GoToBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Go to bookshelf</source>
+          <target state="translated">去書架</target>
+        </trans-unit>
+        <trans-unit id="LoadingFolder.Completed.Message" translate="yes" xml:space="preserve">
+          <source>Loading has been completed. Thank you.</source>
+          <target state="translated">裝載工作已經完成。 謝謝。</target>
+        </trans-unit>
+        <trans-unit id="LoadingFolder.Started.Message" translate="yes" xml:space="preserve">
+          <source>It will take a while. Do not close this app while loading.</source>
+          <target state="translated">這將需要一段時間。不要關閉這個應用程序加載時。</target>
+        </trans-unit>
+        <trans-unit id="LoadingFolder.Title" translate="yes" xml:space="preserve">
+          <source>Loading folders</source>
+          <target state="translated">添加目錄</target>
+        </trans-unit>
+        <trans-unit id="OpenLocalBook.Label" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target state="translated">打開</target>
+        </trans-unit>
+        <trans-unit id="PageEnd.Label" translate="yes" xml:space="preserve">
+          <source>End</source>
+          <target state="translated">最後頁</target>
+        </trans-unit>
+        <trans-unit id="PageLeft.Label" translate="yes" xml:space="preserve">
+          <source>Left</source>
+          <target state="translated">左</target>
+        </trans-unit>
+        <trans-unit id="PageLeftmost.Label" translate="yes" xml:space="preserve">
+          <source>Leftmost</source>
+          <target state="translated">左端</target>
+        </trans-unit>
+        <trans-unit id="PageNext.Label" translate="yes" xml:space="preserve">
+          <source>Next</source>
+          <target state="translated">下頁</target>
+        </trans-unit>
+        <trans-unit id="PagePrevious.Label" translate="yes" xml:space="preserve">
+          <source>Previous</source>
+          <target state="translated">上頁</target>
+        </trans-unit>
+        <trans-unit id="PageReverse.Label" translate="yes" xml:space="preserve">
+          <source>Reverse page direction</source>
+          <target state="translated">反向頁面方向</target>
+        </trans-unit>
+        <trans-unit id="PageRight.Label" translate="yes" xml:space="preserve">
+          <source>Right</source>
+          <target state="translated">右</target>
+        </trans-unit>
+        <trans-unit id="PageRightmost.Label" translate="yes" xml:space="preserve">
+          <source>Rightmost</source>
+          <target state="translated">右端</target>
+        </trans-unit>
+        <trans-unit id="PageTop.Label" translate="yes" xml:space="preserve">
+          <source>First</source>
+          <target state="translated">首頁</target>
+        </trans-unit>
+        <trans-unit id="ReloadBookShelf.Label" translate="yes" xml:space="preserve">
+          <source>Refresh</source>
+          <target state="translated">更新</target>
+        </trans-unit>
+        <trans-unit id="SetThisBookShelfSecret.Label" translate="yes" xml:space="preserve">
+          <source>Toggle secret</source>
+          <target state="translated">秘密書架</target>
+        </trans-unit>
+        <trans-unit id="Setting.Label" translate="yes" xml:space="preserve">
+          <source>Setting</source>
+          <target state="translated">環境</target>
+        </trans-unit>
+        <trans-unit id="ToggleFullScreen.Label" translate="yes" xml:space="preserve">
+          <source>Toggle full screen mode.</source>
+          <target state="translated">切換全屏模式</target>
+        </trans-unit>
+        <trans-unit id="BookmarkBasic.Title" translate="yes" xml:space="preserve">
+          <source>Bookmark</source>
+          <target state="translated">書籤</target>
+        </trans-unit>
+        <trans-unit id="BookmarkLastread.Title" translate="yes" xml:space="preserve">
+          <source>[Automatic]</source>
+          <target state="translated">[自動書籤]</target>
+        </trans-unit>
+        <trans-unit id="Bookmarks.Label" translate="yes" xml:space="preserve">
+          <source>Bookmarks</source>
+          <target state="translated">書籤</target>
+        </trans-unit>
+        <trans-unit id="BookmarkTitle.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Title</source>
+          <target state="translated">標題</target>
+        </trans-unit>
+        <trans-unit id="SwitchBookShelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Switch bookshelf.</source>
+          <target state="translated">切換書架</target>
+        </trans-unit>
+        <trans-unit id="Welcome_HowToConfigure" translate="yes" xml:space="preserve">
+          <source>How to change settings</source>
+          <target state="translated">如何打開配置頁面</target>
+        </trans-unit>
+        <trans-unit id="Welcome_HowToUse" translate="yes" xml:space="preserve">
+          <source>How to use</source>
+          <target state="translated">如何使用</target>
+        </trans-unit>
+        <trans-unit id="Welcome_OpenMenu" translate="yes" xml:space="preserve">
+          <source>Open the menu.</source>
+          <target state="translated">打開其他功能</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultFullScreen.Description" translate="yes" xml:space="preserve">
+          <source>Set full screen mode on when you open a book.</source>
+          <target state="new">Set full screen mode on when you open a book.</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultFullScreen.Title" translate="yes" xml:space="preserve">
+          <source>Set full screen as default.</source>
+          <target state="new">Set full screen as default.</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
+          <source>Reverse page as default when you open a new book.</source>
+          <target state="new">Reverse page as default when you open a new book.</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
+          <source>Reverse page as default.</source>
+          <target state="new">Reverse page as default.</target>
+        </trans-unit>
+        <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
+          <source>Automatically open page where you read last time.</source>
+          <target state="new">Automatically open page where you read last time.</target>
+        </trans-unit>
+        <trans-unit id="Setting_SaveLastReadPage.Title" translate="yes" xml:space="preserve">
+          <source>Automatically open last read page.</source>
+          <target state="new">Automatically open last read page.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowRightmostAndLeftmost.Description" translate="yes" xml:space="preserve">
+          <source>Show go to rightmost/leftmost button in book viewer.</source>
+          <target state="new">Show go to rightmost/leftmost button in book viewer.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowRightmostAndLeftmost.Title" translate="yes" xml:space="preserve">
+          <source>Show go to rightmost /leftmost button.</source>
+          <target state="new">Show go to rightmost /leftmost button.</target>
+        </trans-unit>
+        <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
+          <source>Sync bookmarks over the cloud.</source>
+          <target state="new">Sync bookmarks over the cloud.</target>
+        </trans-unit>
+        <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
+          <source>Sync bookmarks.</source>
+          <target state="new">Sync bookmarks.</target>
+        </trans-unit>
+        <trans-unit id="Setting_TileHeight.Description" translate="yes" xml:space="preserve">
+          <source>The height of book tile in bookshelf.</source>
+          <target state="new">The height of book tile in bookshelf.</target>
+        </trans-unit>
+        <trans-unit id="Setting_TileHeight.Title" translate="yes" xml:space="preserve">
+          <source>Height of book tile</source>
+          <target state="new">Height of book tile</target>
+        </trans-unit>
+        <trans-unit id="Setting_TileWidth.Description" translate="yes" xml:space="preserve">
+          <source>The width of book tile in bookshelf.</source>
+          <target state="new">The width of book tile in bookshelf.</target>
+        </trans-unit>
+        <trans-unit id="Setting_TileWidth.Title" translate="yes" xml:space="preserve">
+          <source>Width of book tile</source>
+          <target state="new">Width of book tile</target>
+        </trans-unit>
+        <trans-unit id="Setting_BackgroundBrightness.Description" translate="yes" xml:space="preserve">
+          <source>Brightness of background. 100:White, 0:Black. (Opposite in dark theme)</source>
+          <target state="new">Brightness of background. 100:White, 0:Black. (Opposite in dark theme)</target>
+        </trans-unit>
+        <trans-unit id="Setting_BackgroundBrightness.Title" translate="yes" xml:space="preserve">
+          <source>Brightness of background.</source>
+          <target state="new">Brightness of background.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
+          <source>Use scroll animation on book viewer.</source>
+          <target state="new">Use scroll animation on book viewer.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ScrollAnimation.Title" translate="yes" xml:space="preserve">
+          <source>Scroll animation</source>
+          <target state="new">Scroll animation</target>
+        </trans-unit>
+        <trans-unit id="Setting_BookNameTrim.Description" translate="yes" xml:space="preserve">
+          <source>Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
+          <target state="new">Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</target>
+        </trans-unit>
+        <trans-unit id="Setting_BookNameTrim.Title" translate="yes" xml:space="preserve">
+          <source>Book name to trim</source>
+          <target state="new">Book name to trim</target>
+        </trans-unit>
+        <trans-unit id="Setting_FolderNameToExclude.Description" translate="yes" xml:space="preserve">
+          <source>Exclude folder in bookshelf view if match in regular expression.</source>
+          <target state="new">Exclude folder in bookshelf view if match in regular expression.</target>
+        </trans-unit>
+        <trans-unit id="Setting_FolderNameToExclude.Title" translate="yes" xml:space="preserve">
+          <source>Folder name to exclude</source>
+          <target state="new">Folder name to exclude</target>
+        </trans-unit>
+        <trans-unit id="Setting_SortCoverComesFirst.Description" translate="yes" xml:space="preserve">
+          <source>Assume picture that has "cover" in  the file name to be first file in CBZ/CBR.</source>
+          <target state="new">Assume picture that has "cover" in  the file name to be first file in CBZ/CBR.</target>
+        </trans-unit>
+        <trans-unit id="Setting_SortCoverComesFirst.Title" translate="yes" xml:space="preserve">
+          <source>Assume cover picture by file name in CBZ/CBR</source>
+          <target state="new">Assume cover picture by file name in CBZ/CBR</target>
+        </trans-unit>
+        <trans-unit id="Setting_SortNaturalOrder.Description" translate="yes" xml:space="preserve">
+          <source>Sort by natural order in CBZ/CBR (ex:01.jpg→2.jpg→003.jpg)</source>
+          <target state="new">Sort by natural order in CBZ/CBR (ex:01.jpg→2.jpg→003.jpg)</target>
+        </trans-unit>
+        <trans-unit id="Setting_SortNaturalOrder.Title" translate="yes" xml:space="preserve">
+          <source>Natural Sort in CBZ/CBR</source>
+          <target state="new">Natural Sort in CBZ/CBR</target>
+        </trans-unit>
+        <trans-unit id="Setting_ZoomButtonShowTimespan.Description" translate="yes" xml:space="preserve">
+          <source>Seconds to display the zoom button when you touch the screen (0: disable).</source>
+          <target state="new">Seconds to display the zoom button when you touch the screen (0: disable).</target>
+        </trans-unit>
+        <trans-unit id="Setting_ZoomButtonShowTimespan.Title" translate="yes" xml:space="preserve">
+          <source>Zoom button display time</source>
+          <target state="new">Zoom button display time</target>
+        </trans-unit>
+        <trans-unit id="Setting_CommandBarShowTimespan.Description" translate="yes" xml:space="preserve">
+          <source>Seconds to display the menu when you touch the screen in book viewer page (0: always).</source>
+          <target state="new">Seconds to display the menu when you touch the screen in book viewer page (0: always).</target>
+        </trans-unit>
+        <trans-unit id="Setting_CommandBarShowTimespan.Title" translate="yes" xml:space="preserve">
+          <source>Menu display time in book viewer</source>
+          <target state="new">Menu display time in book viewer</target>
+        </trans-unit>
+        <trans-unit id="Setting_WebHomePage.Description" translate="yes" xml:space="preserve">
+          <source>Home Page.</source>
+          <target state="new">Home Page.</target>
+        </trans-unit>
+        <trans-unit id="Setting_WebHomePage.Title" translate="yes" xml:space="preserve">
+          <source>Home Page</source>
+          <target state="new">Home Page</target>
+        </trans-unit>
+        <trans-unit id="Setting_RespectPageDirectionInfo.Description" translate="yes" xml:space="preserve">
+          <source>Respect direction information of PDF (R2L/L2R).</source>
+          <target state="new">Respect direction information of PDF (R2L/L2R).</target>
+        </trans-unit>
+        <trans-unit id="Setting_RespectPageDirectionInfo.Title" translate="yes" xml:space="preserve">
+          <source>Respect direction information</source>
+          <target state="new">Respect direction information</target>
+        </trans-unit>
+        <trans-unit id="Password.Message" translate="yes" xml:space="preserve">
+          <source>Enter password to open.</source>
+          <target state="new">Enter password to open.</target>
+        </trans-unit>
+        <trans-unit id="Password.Save.Message" translate="yes" xml:space="preserve">
+          <source>Save Password</source>
+          <target state="new">Save Password</target>
+        </trans-unit>
+        <trans-unit id="Password.Title" translate="yes" xml:space="preserve">
+          <source>Confirm Password</source>
+          <target state="new">Confirm Password</target>
+        </trans-unit>
+        <trans-unit id="Word.Cancel" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="new">Cancel</target>
+        </trans-unit>
+        <trans-unit id="Word.OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="new">OK</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Browser" translate="yes" xml:space="preserve">
+          <source>Browser</source>
+          <target state="new">Browser</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Cloud" translate="yes" xml:space="preserve">
+          <source>Cloud</source>
+          <target state="new">Cloud</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Library" translate="yes" xml:space="preserve">
+          <source>Library</source>
+          <target state="new">Library</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Obsolete" translate="yes" xml:space="preserve">
+          <source>Obsolete</source>
+          <target state="new">Obsolete</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Viewer" translate="yes" xml:space="preserve">
+          <source>Viewer</source>
+          <target state="new">Viewer</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Bookshelf" translate="yes" xml:space="preserve">
+          <source>Bookshelf</source>
+          <target state="new">Bookshelf</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.BookViewer" translate="yes" xml:space="preserve">
+          <source>Viewer</source>
+          <target state="new">Viewer</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Home" translate="yes" xml:space="preserve">
+          <source>Home</source>
+          <target state="new">Home</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Info" translate="yes" xml:space="preserve">
+          <source>Info</source>
+          <target state="new">Info</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.NewTab" translate="yes" xml:space="preserve">
+          <source>New Tab</source>
+          <target state="new">New Tab</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Setting" translate="yes" xml:space="preserve">
+          <source>Config</source>
+          <target state="new">Config</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Epub" translate="yes" xml:space="preserve">
+          <source>Epub</source>
+          <target state="new">Epub</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Main" translate="yes" xml:space="preserve">
+          <source>Main</source>
+          <target state="new">Main</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Browser" translate="yes" xml:space="preserve">
+          <source>Browser</source>
+          <target state="new">Browser</target>
+        </trans-unit>
+        <trans-unit id="TabHeader.Explorer" translate="yes" xml:space="preserve">
+          <source>Explorer</source>
+          <target state="new">Explorer</target>
+        </trans-unit>
+        <trans-unit id="Explorer.Apps" translate="yes" xml:space="preserve">
+          <source>Apps</source>
+          <target state="new">Apps</target>
+        </trans-unit>
+        <trans-unit id="Explorer.Browser" translate="yes" xml:space="preserve">
+          <source>Browser</source>
+          <target state="new">Browser</target>
+        </trans-unit>
+        <trans-unit id="Explorer.PickBook" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target state="new">Open</target>
+        </trans-unit>
+        <trans-unit id="Explorer.Setting" translate="yes" xml:space="preserve">
+          <source>Setting</source>
+          <target state="new">Setting</target>
+        </trans-unit>
+        <trans-unit id="ExplorerContainer.Bookmarks" translate="yes" xml:space="preserve">
+          <source>Bookmarks</source>
+          <target state="new">Bookmarks</target>
+        </trans-unit>
+        <trans-unit id="ExplorerContainer.Folders" translate="yes" xml:space="preserve">
+          <source>Folders</source>
+          <target state="new">Folders</target>
+        </trans-unit>
+        <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
+          <source>Histories</source>
+          <target state="new">Histories</target>
+        </trans-unit>
+        <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
+          <source>Libraries</source>
+          <target state="new">Libraries</target>
+        </trans-unit>
+        <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
+          <source>PC</source>
+          <target state="new">PC</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
+          <source>Register a folder</source>
+          <target state="new">Register a folder</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Folders.UnregisterFolder.Title" translate="yes" xml:space="preserve">
+          <source>Unregister a folder</source>
+          <target state="new">Unregister a folder</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" translate="yes" xml:space="preserve">
+          <source>The folder is referred in following library.
+Are you sure to unregister?</source>
+          <target state="new">The folder is referred in following library.
+Are you sure to unregister?</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" translate="yes" xml:space="preserve">
+          <source>Unregister folder</source>
+          <target state="new">Unregister folder</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Storages.AddToLibrary.Title" translate="yes" xml:space="preserve">
+          <source>Add to library...</source>
+          <target state="new">Add to library...</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

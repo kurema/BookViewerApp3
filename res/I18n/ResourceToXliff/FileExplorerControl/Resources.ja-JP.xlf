@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="ja-JP" original="Resources.resw" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.1915.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="ReswGroup" datatype="resx">
+        <trans-unit id="Command.Copy" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="translated">コピー</target>
+        </trans-unit>
+        <trans-unit id="Command.Delete" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="translated">削除</target>
+        </trans-unit>
+        <trans-unit id="Command.OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="needs-review-translation">OK</target>
+          <note from="MultilingualUpdate" priority="2">Resource is marked as 'Needs review' since the Source and target were the same value.</note>
+        </trans-unit>
+        <trans-unit id="Command.Open" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target state="translated">開く</target>
+        </trans-unit>
+        <trans-unit id="Command.Property" translate="yes" xml:space="preserve">
+          <source>Property</source>
+          <target state="translated">プロパティ</target>
+        </trans-unit>
+        <trans-unit id="Delete.Message" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to delete this item?</source>
+          <target state="translated">このファイルを削除しますか？</target>
+        </trans-unit>
+        <trans-unit id="Delete.Option.No" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target state="translated">いいえ</target>
+        </trans-unit>
+        <trans-unit id="Delete.Option.Permanent" translate="yes" xml:space="preserve">
+          <source>Permanently</source>
+          <target state="translated">完全削除</target>
+        </trans-unit>
+        <trans-unit id="Delete.Option.Yes" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target state="translated">はい</target>
+        </trans-unit>
+        <trans-unit id="Delete.Title" translate="yes" xml:space="preserve">
+          <source>Delete Item</source>
+          <target state="translated">削除</target>
+        </trans-unit>
+        <trans-unit id="Header.Date" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <target state="translated">日時</target>
+        </trans-unit>
+        <trans-unit id="Header.Name" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="translated">名前</target>
+        </trans-unit>
+        <trans-unit id="Header.Size" translate="yes" xml:space="preserve">
+          <source>Size</source>
+          <target state="translated">サイズ</target>
+        </trans-unit>
+        <trans-unit id="Table.Date" translate="yes" xml:space="preserve">
+          <source>Date:</source>
+          <target state="translated">日時:</target>
+        </trans-unit>
+        <trans-unit id="Table.Name" translate="yes" xml:space="preserve">
+          <source>Name:</source>
+          <target state="translated">名前:</target>
+        </trans-unit>
+        <trans-unit id="Table.Path" translate="yes" xml:space="preserve">
+          <source>Path:</source>
+          <target state="translated">パス:</target>
+        </trans-unit>
+        <trans-unit id="Table.Size" translate="yes" xml:space="preserve">
+          <source>Size:</source>
+          <target state="translated">サイズ:</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

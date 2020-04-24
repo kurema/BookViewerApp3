@@ -40,6 +40,7 @@
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
     <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
     <Optimize>false</Optimize>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -197,7 +198,6 @@
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.woff2" />
     <Content Include="res\bibi\LICENSE" />
     <Content Include="res\bibi\README.md" />
-    <PRIResource Include="Resource\ja-JP\Resources.resw" />
     <None Include="res\reader\img\.gitignore" />
     <Content Include="res\reader\js\hooks.min.map" />
     <Content Include="res\reader\js\reader.js.map" />
@@ -205,9 +205,10 @@
     <None Include="Storages\Library.xsd">
       <SubType>Designer</SubType>
     </None>
-    <PRIResource Include="Resource\zh-CN\Resources.resw" />
-    <PRIResource Include="Resource\zh-TW\Resources.resw" />
     <PRIResource Include="Resource\en-US\Resources.resw" />
+    <PRIResource Include="Resource\ja-JP\Resources.resw" />
+    <PRIResource Include="Resource\zh-Hans\Resources.resw" />
+    <PRIResource Include="Resource\zh-Hant\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -424,8 +425,12 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resource\ja\" />
     <Folder Include="res\bibi\bibi-bookshelf\" />
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\BookViewerApp.ja-JP.xlf" />
+    <XliffResource Include="MultilingualResources\BookViewerApp.zh-Hans.xlf" />
+    <XliffResource Include="MultilingualResources\BookViewerApp.zh-Hant.xlf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
