@@ -53,3 +53,8 @@ Ver 2 failed.
 
 ## Issue
 - [ ] 高速スクロール時、SetBitmapAsyncの順序が前後する。対策方法が思いつかん。
+
+## Thanks
+Italian translation is by Emanuele (https://github.com/Manu99it).
+Thank you!
+

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Command.Copy" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="Command.Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="Command.OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Command.Open" xml:space="preserve">
+    <value>Apri</value>
+  </data>
+  <data name="Command.Property" xml:space="preserve">
+    <value>Proprietà</value>
+  </data>
+  <data name="Delete.Message" xml:space="preserve">
+    <value>Sicuro di voler eliminare questo file?</value>
+  </data>
+  <data name="Delete.Option.No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Delete.Option.Permanent" xml:space="preserve">
+    <value>Permanentemente</value>
+  </data>
+  <data name="Delete.Option.Yes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="Delete.Title" xml:space="preserve">
+    <value>Elimina File</value>
+  </data>
+  <data name="Header.Date" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Header.Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="Header.Size" xml:space="preserve">
+    <value>Dimensione</value>
+  </data>
+  <data name="Table.Date" xml:space="preserve">
+    <value>Data:</value>
+  </data>
+  <data name="Table.Name" xml:space="preserve">
+    <value>Nome:</value>
+  </data>
+  <data name="Table.Path" xml:space="preserve">
+    <value>Percorso:</value>
+  </data>
+  <data name="Table.Size" xml:space="preserve">
+    <value>Dimensione:</value>
+  </data>
+</root>

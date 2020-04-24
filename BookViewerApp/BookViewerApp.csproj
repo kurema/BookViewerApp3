@@ -198,6 +198,7 @@
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.woff2" />
     <Content Include="res\bibi\LICENSE" />
     <Content Include="res\bibi\README.md" />
+    <PRIResource Include="Resource\it\Resources.resw" />
     <None Include="res\reader\img\.gitignore" />
     <Content Include="res\reader\js\hooks.min.map" />
     <Content Include="res\reader\js\reader.js.map" />
@@ -428,6 +429,7 @@
     <Folder Include="res\bibi\bibi-bookshelf\" />
   </ItemGroup>
   <ItemGroup>
+    <XliffResource Include="MultilingualResources\BookViewerApp.it.xlf" />
     <XliffResource Include="MultilingualResources\BookViewerApp.ja-JP.xlf" />
     <XliffResource Include="MultilingualResources\BookViewerApp.zh-Hans.xlf" />
     <XliffResource Include="MultilingualResources\BookViewerApp.zh-Hant.xlf" />
