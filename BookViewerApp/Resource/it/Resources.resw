@@ -282,4 +282,44 @@
   <data name="TabHeader.Explorer" xml:space="preserve">
     <value>Explorer</value>
   </data>
+  <data name="Explorer.Apps" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="Explorer.Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="Explorer.PickBook" xml:space="preserve">
+    <value>Apri</value>
+  </data>
+  <data name="Explorer.Setting" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="ExplorerContainer.Bookmarks" xml:space="preserve">
+    <value>Segnalibri</value>
+  </data>
+  <data name="ExplorerContainer.Folders" xml:space="preserve">
+    <value>Cartelle</value>
+  </data>
+  <data name="ExplorerContainer.Libraries" xml:space="preserve">
+    <value>Librerie</value>
+  </data>
+  <data name="ExplorerContainer.PC" xml:space="preserve">
+    <value>PC</value>
+  </data>
+  <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
+    <value>Registra una cartella</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.Title" xml:space="preserve">
+    <value>Annulla la registrazione di una cartella</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
+    <value>La cartella viene indicata dalla seguente libreria.
+Annullare la registrazione?</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
+    <value>Annulla la registrazione di una cartella</value>
+  </data>
+  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
+    <value>Aggiungi elementi al Catalogo multimediale</value>
+  </data>
 </root>

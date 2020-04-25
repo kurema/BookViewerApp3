@@ -11,66 +11,61 @@ namespace BookViewerApp.Managers
 {
     public class BookManager
     {
-        public static async Task<(IBook Book, bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
+        public static BookType? GetBookTypeByPath(string path)
         {
-            if (file == null) { return (null, false); }
-            else if (Path.GetExtension(file.Path).ToLower() == ".pdf")
-            {
-                goto Pdf;
-            }
-            else if (new string[] { ".zip", ".cbz" }.Contains(Path.GetExtension(file.Path).ToLower()))
-            {
-                goto Zip;
-            }
-            else if (new string[] { ".rar", ".cbr", ".7z", ".cb7" }.Contains(Path.GetExtension(file.Path).ToLower()))
-            {
-                goto SharpCompress;
-            }
-            else if (Path.GetExtension(file.Path).ToLower() == ".epub")
-            {
-                goto Epub;
-            }
+            if (path == null) { return null; }
 
-            var stream = await file.OpenStreamForReadAsync();
+            var ext = Path.GetExtension(path).ToLower();
+            switch (ext)
+            {
+                case ".pdf":return BookType.Pdf;
+                case ".zip": case ".cbz":return BookType.Zip;
+                case ".rar": case ".cbr":return BookType.Rar;
+                case ".7z": case ".cb7":return BookType.SevenZip;
+                case ".epub":return BookType.Epub;
+                default:return null;
+            }
+        }
+
+        public static BookType? GetBookTypeByStream(Stream stream)
+        {
             var buffer = new byte[64];
             stream.Read(buffer, 0, stream.Length < 64 ? (int)stream.Length : 64);
             stream.Close();
 
-            if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d }))
-            {
-                //pdf
-                goto Pdf;
-            }
-            else if (buffer.Take(6).SequenceEqual(new byte[] { 0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C }))
-            {
-                //7zip
-                goto SharpCompress;
-            }
+            if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d })) return BookType.Pdf;
+            else if (buffer.Take(6).SequenceEqual(new byte[] { 0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C })) return BookType.SevenZip;
             else if (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x03, 0x04 }) ||
                 buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x05, 0x06 }) ||
                 buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x07, 0x08 })
                 )
             {
-                //zip
                 if (buffer.Skip(0x1e).Take(28).SequenceEqual(Encoding.ASCII.GetBytes("mimetypeapplication/epub+zip")))
                 {
-                    //epub
-                    goto Epub;
+                    return BookType.Epub;
                 }
-                goto Zip;
+                return BookType.Zip;
             }
-            else if (buffer.Take(7).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 }))
+            else if (buffer.Take(7).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 })) return BookType.Rar;
+            else if (buffer.Take(8).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 })) return BookType.Rar;
+
+            return null;
+        }
+
+        public static async Task<(IBook Book, bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
+        {
+            if(file==null) return (null, false);
+            var type = GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
+            switch (type)
             {
-                //rar
-                goto SharpCompress;
-            }
-            else if (buffer.Take(8).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 }))
-            {
-                //rar5
-                goto SharpCompress;
+                case BookType.Epub:goto Epub;
+                case BookType.Zip:goto Zip;
+                case BookType.Rar:goto SharpCompress;
+                case BookType.SevenZip:goto SharpCompress;
+                case BookType.Pdf:goto Pdf;
+                default: return (null, false);
             }
 
-            return (null, false);
 
         Pdf:;
             {
@@ -128,6 +123,11 @@ namespace BookViewerApp.Managers
             {
                 return (null, true);
             }
+        }
+
+        public enum BookType
+        {
+            Epub, Zip, Pdf, Rar, SevenZip
         }
 
         public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7", ".epub" }; } }
@@ -214,5 +214,27 @@ namespace BookViewerApp.Managers
         {
             return (await GetBookFromFile(await PickFile())).Book;
         }
+
+        public async static Task<Windows.Storage.StorageFolder> GetTokenFromPath(string path)
+        {
+            if (path == null) return null;
+
+            path = Path.GetFullPath(path);
+            //var tokens = (await Task.WhenAll(Content.Content.folders.Select(async a => KeyValuePair.Create(a, await a.GetStorageFolderAsync()))));//.ToDictionary(a => a.Key, a => a.Value);
+            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await acl.GetItemAsync(a.Token) as Windows.Storage.StorageFolder)))).Where(a => a.Item2 != null);
+
+            string currentPath = path;
+            while (true)
+            {
+                foreach (var item in tokens)
+                {
+                    if (string.Compare(item.Item2.Path, currentPath, StringComparison.OrdinalIgnoreCase) == 0) return item.Item2;
+                }
+                path = Path.GetDirectoryName(path);
+                if (path == "") return null;
+            }
+        }
+
     }
 }

@@ -93,7 +93,7 @@ namespace BookViewerApp.Storages
             return new ContainerItem(GetWord("PC"), "/PC", result.ToArray());
         }
 
-        public static Library.libraryLibrary[] GetTokenUsed(string token)
+        public static Library.libraryLibrary[] GetTokenUsedByLibrary(string token)
         {
             var result = new List<Library.libraryLibrary>();
             if (Content?.Content?.libraries == null) return new Library.libraryLibrary[0];
@@ -124,6 +124,8 @@ namespace BookViewerApp.Storages
 
             return result.ToArray();
         }
+
+        public static Library.libraryFolder[] GetTokenUsedByFolders(string token) => Content?.Content?.folders.Where(a => a.token == token).ToArray() ?? new Library.libraryFolder[0];
     }
 
     namespace Library

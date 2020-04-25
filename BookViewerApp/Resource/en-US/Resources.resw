@@ -421,7 +421,7 @@
     <value>Unregister a folder</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
-    <value>The folder is referred in following library.
+    <value>The folder is referred by following library.
 Are you sure to unregister?</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">

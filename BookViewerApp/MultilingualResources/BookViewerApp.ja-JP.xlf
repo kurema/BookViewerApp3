@@ -412,10 +412,11 @@
           <target state="translated">フォルダを登録解除</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" translate="yes" xml:space="preserve">
-          <source>The folder is referred in following library.
+          <source>The folder is referred by following library.
 Are you sure to unregister?</source>
-          <target state="translated">このフォルダは以下のライブラリで使用されています。
+          <target state="needs-review-translation">このフォルダは以下のライブラリで使用されています。
 解除してよろしいですか？</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" translate="yes" xml:space="preserve">
           <source>Unregister folder</source>

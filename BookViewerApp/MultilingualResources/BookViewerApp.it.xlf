@@ -374,27 +374,27 @@
         </trans-unit>
         <trans-unit id="Explorer.Apps" translate="yes" xml:space="preserve">
           <source>Apps</source>
-          <target state="new">Apps</target>
+          <target state="translated">Apps</target>
         </trans-unit>
         <trans-unit id="Explorer.Browser" translate="yes" xml:space="preserve">
           <source>Browser</source>
-          <target state="new">Browser</target>
+          <target state="final">Browser</target>
         </trans-unit>
         <trans-unit id="Explorer.PickBook" translate="yes" xml:space="preserve">
           <source>Open</source>
-          <target state="new">Open</target>
+          <target state="final" state-qualifier="tm-suggestion">Apri</target>
         </trans-unit>
         <trans-unit id="Explorer.Setting" translate="yes" xml:space="preserve">
           <source>Setting</source>
-          <target state="new">Setting</target>
+          <target state="final">Impostazioni</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Bookmarks" translate="yes" xml:space="preserve">
           <source>Bookmarks</source>
-          <target state="new">Bookmarks</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Segnalibri</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Folders" translate="yes" xml:space="preserve">
           <source>Folders</source>
-          <target state="new">Folders</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Cartelle</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
           <source>Histories</source>
@@ -402,33 +402,34 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
           <source>Libraries</source>
-          <target state="new">Libraries</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Librerie</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
           <source>PC</source>
-          <target state="new">PC</target>
+          <target state="translated">PC</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Register a folder</source>
-          <target state="new">Register a folder</target>
+          <target state="translated">Registra una cartella</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Unregister a folder</source>
-          <target state="new">Unregister a folder</target>
+          <target state="translated">Annulla la registrazione di una cartella</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" translate="yes" xml:space="preserve">
-          <source>The folder is referred in following library.
+          <source>The folder is referred by following library.
 Are you sure to unregister?</source>
-          <target state="new">The folder is referred in following library.
-Are you sure to unregister?</target>
+          <target state="needs-review-translation">La cartella viene indicata dalla seguente libreria.
+Annullare la registrazione?</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" translate="yes" xml:space="preserve">
           <source>Unregister folder</source>
-          <target state="new">Unregister folder</target>
+          <target state="translated">Annulla la registrazione di una cartella</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Storages.AddToLibrary.Title" translate="yes" xml:space="preserve">
           <source>Add to library...</source>
-          <target state="new">Add to library...</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Aggiungi elementi al Catalogo multimediale</target>
         </trans-unit>
       </group>
     </body>

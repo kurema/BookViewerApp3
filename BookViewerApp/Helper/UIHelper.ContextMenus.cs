@@ -57,6 +57,26 @@ namespace BookViewerApp.Helper
                 return list.ToArray();
             }
 
+            private async static Task<bool> FolderToken_ShowDialog(Storages.Library.libraryLibrary[] used)
+            {
+                //Not used.
+
+                var message = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Message");
+                var title = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Title");
+                var dlg = new Windows.UI.Popups.MessageDialog($"{message}\n{used.Aggregate("", (a, b) => a + "\n" + b.title)}", title);
+                dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
+                dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/Cancel"), null, "cancel"));
+                dlg.CancelCommandIndex = 1;
+                dlg.DefaultCommandIndex = 0;
+                var res = await dlg.ShowAsync();
+                if (res.Id as string == "ok")
+                {
+                    return true;
+                }
+                return false;
+
+            }
+
             public static MenuCommand[] FolderToken(IFileItem item)
             {
                 var list = new List<MenuCommand>();
@@ -66,26 +86,14 @@ namespace BookViewerApp.Helper
                     if (token.Content == null) return list.ToArray();
                     list.Add(new MenuCommand(GetResourceTitle("Folders/UnregisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
                     {
-                        var used = Storages.LibraryStorage.GetTokenUsed(token.Content.token);
-                        if (used.Count() == 0) goto remove;
-                        else
-                        {
-                            var message = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Message");
-                            var title = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Title");
-                            var dlg = new Windows.UI.Popups.MessageDialog($"{message}\n{used.Aggregate("", (a, b) => a + "\n" + b.title)}", title);
-                            dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
-                            dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/Cancel"), null, "cancel"));
-                            dlg.CancelCommandIndex = 1;
-                            dlg.DefaultCommandIndex = 0;
-                            var res = await dlg.ShowAsync();
-                            if (res.Id as string == "ok")
-                            {
-                                goto remove;
-                            }
-                            return;
-                        }
+                        var used = Storages.LibraryStorage.GetTokenUsedByLibrary(token.Content.token);
+                        //参照元が0になってからトークンを削除するように変更したのでダイアログが不要になりました。
+                        //if (used.Count() == 0) goto remove;
+                        //else
+                        //{
+                        //    if (! await FolderToken_ShowDialog(used)) return;
+                        //}
 
-                    remove:;
                         if (Storages.LibraryStorage.Content?.Content?.folders == null) return;
 
                         {
@@ -93,7 +101,7 @@ namespace BookViewerApp.Helper
                             temp.Remove(token.Content);
                             Storages.LibraryStorage.Content.Content.folders = temp.ToArray();
                         }
-                        token.Content.Remove();
+                        if (used.Count() == 0) token.Content.Remove();
                         var brothers= await token.Parent.GetChildren();
                         brothers.Remove(token);
 
@@ -101,6 +109,15 @@ namespace BookViewerApp.Helper
                     }
                     )));
                 }
+                return list.ToArray();
+            }
+
+            public static MenuCommand[] Storage(IFileItem item)
+            {
+                var list = new List<MenuCommand>();
+
+                
+
                 return list.ToArray();
             }
         }
