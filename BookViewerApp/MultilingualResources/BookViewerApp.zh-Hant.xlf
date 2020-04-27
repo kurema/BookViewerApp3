@@ -425,6 +425,14 @@ Are you sure to unregister?</target>
           <source>Add to library...</source>
           <target state="new">Add to library...</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Library.New.Title" translate="yes" xml:space="preserve">
+          <source>New library</source>
+          <target state="new">New library</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.Title" translate="yes" xml:space="preserve">
+          <source>Add to a library</source>
+          <target state="new">Add to a library</target>
+        </trans-unit>
       </group>
     </body>
   </file>

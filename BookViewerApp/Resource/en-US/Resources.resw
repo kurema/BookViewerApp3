@@ -430,4 +430,10 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
     <value>Add to library...</value>
   </data>
+  <data name="ContextMenu.Library.New.Title" xml:space="preserve">
+    <value>New library</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
+    <value>Add to a library</value>
+  </data>
 </root>

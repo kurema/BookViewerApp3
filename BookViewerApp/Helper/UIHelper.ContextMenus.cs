@@ -23,9 +23,9 @@ namespace BookViewerApp.Helper
     {
         public static class ContextMenus
         {
-            private static string GetResourceTitle(string key) => Managers.ResourceManager.Loader.GetString("ContextMenu/"+key+"/Title");
+            private static string GetResourceTitle(string key) => Managers.ResourceManager.Loader.GetString("ContextMenu/" + key + "/Title");
 
-            public static MenuCommand[] Folders(IFileItem item)
+            public static MenuCommand[] MenuFolders(IFileItem item)
             {
                 var list = new List<MenuCommand>();
 
@@ -33,7 +33,8 @@ namespace BookViewerApp.Helper
                 {
                     if (Storages.LibraryStorage.Content?.Content?.folders == null) return list.ToArray();
 
-                    list.Add(new MenuCommand(GetResourceTitle("Folders/RegisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ => {
+                    list.Add(new MenuCommand(GetResourceTitle("Folders/RegisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
+                    {
                         var picker = new Windows.Storage.Pickers.FolderPicker();
                         picker.FileTypeFilter.Add("*");
                         var folder = await picker.PickSingleFolderAsync();
@@ -44,7 +45,7 @@ namespace BookViewerApp.Helper
                         foldersTemp.Add(folderNew);
                         Storages.LibraryStorage.Content.Content.folders = foldersTemp.ToArray();
 
-                        var token = await folderNew.AsTokenLibraryItem(FolderToken);
+                        var token = await folderNew.AsTokenLibraryItem(MenuFolderToken);
                         container.Children.Add(token);
                         token.Parent = container;
 
@@ -57,7 +58,7 @@ namespace BookViewerApp.Helper
                 return list.ToArray();
             }
 
-            private async static Task<bool> FolderToken_ShowDialog(Storages.Library.libraryLibrary[] used)
+            private async static Task<bool> MenuFolderToken_ShowDialog(Storages.Library.libraryLibrary[] used)
             {
                 //Not used.
 
@@ -77,7 +78,7 @@ namespace BookViewerApp.Helper
 
             }
 
-            public static MenuCommand[] FolderToken(IFileItem item)
+            public static MenuCommand[] MenuFolderToken(IFileItem item)
             {
                 var list = new List<MenuCommand>();
 
@@ -102,7 +103,7 @@ namespace BookViewerApp.Helper
                             Storages.LibraryStorage.Content.Content.folders = temp.ToArray();
                         }
                         if (used.Count() == 0) token.Content.Remove();
-                        var brothers= await token.Parent.GetChildren();
+                        var brothers = await token.Parent.GetChildren();
                         brothers.Remove(token);
 
                         await Storages.LibraryStorage.Content.SaveAsync();
@@ -112,11 +113,37 @@ namespace BookViewerApp.Helper
                 return list.ToArray();
             }
 
-            public static MenuCommand[] Storage(IFileItem item)
+            public static MenuCommand[] MenuStorage(IFileItem item)
             {
                 var list = new List<MenuCommand>();
 
-                
+                if (item is StorageFileItem file)
+                {
+                    if (file.IsFolder)
+                    {
+                        var libs = Storages.LibraryStorage.Content?.Content?.libraries;
+                        if (libs != null)
+                        {
+                            var libsToAdd = new List<MenuCommand>();
+                            libs.Select(a => new MenuCommand(a.title, new Helper.DelegateCommand(b =>
+                            {
+
+                            })));
+
+                            libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new Helper.DelegateCommand(a =>
+                            {
+                                
+                            }
+                                )));
+
+                            list.Add(new MenuCommand(GetResourceTitle("StorageFolder/AddToLibrary")));
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
 
                 return list.ToArray();
             }
