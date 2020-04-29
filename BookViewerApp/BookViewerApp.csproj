@@ -281,9 +281,6 @@
     <Compile Include="ViewModels\InfoPageViewModel.cs" />
     <Compile Include="Storages\LicenseStorage.cs" />
     <Compile Include="Helper\NaturalSort.cs" />
-    <Compile Include="Views\NewTabPage.xaml.cs">
-      <DependentUpon>NewTabPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\PasswordRequestContentDialog.xaml.cs">
       <DependentUpon>PasswordRequestContentDialog.xaml</DependentUpon>
     </Compile>
@@ -372,10 +369,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NewTabPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\PasswordRequestContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -396,6 +389,11 @@
   <ItemGroup>
     <PackageReference Include="iTextSharp-LGPL">
       <Version>4.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
+      <Version>3.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>

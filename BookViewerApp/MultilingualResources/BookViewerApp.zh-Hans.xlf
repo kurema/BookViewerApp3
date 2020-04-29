@@ -432,6 +432,14 @@ Are you sure to unregister?</target>
           <source>Add to a library</source>
           <target state="new">Add to a library</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" translate="yes" xml:space="preserve">
+          <source>The folder is already registered.</source>
+          <target state="new">The folder is already registered.</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" translate="yes" xml:space="preserve">
+          <source>Unable to registered</source>
+          <target state="new">Unable to registered</target>
+        </trans-unit>
       </group>
     </body>
   </file>

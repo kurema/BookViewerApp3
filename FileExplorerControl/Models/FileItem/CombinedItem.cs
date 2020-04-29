@@ -57,9 +57,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public bool IsFolder => true;
 
-        public ICommand DeleteCommand => null;
+        public ICommand DeleteCommand { get; set; } = null;
 
-        public ICommand RenameCommand => null;
+        public ICommand RenameCommand { get; set; } = null;
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
@@ -87,7 +87,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             return new ObservableCollection<IFileItem>(result.GroupBy(a => a.Name.ToLower()).Select(a =>
              {
                  var b = a.ToArray();
-                 if (b.Length == 0) return b[0];
+                 if (b.Length == 1) return b[0];
                  return new CombinedItem(b) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade };
              }).OrderBy(a => a.Name));
         }

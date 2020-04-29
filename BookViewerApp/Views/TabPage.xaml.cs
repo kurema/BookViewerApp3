@@ -99,13 +99,6 @@ namespace BookViewerApp.Views
             CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
         }
 
-        public void OpenTabNew()
-        {
-            var (frame, newTab) = OpenTab("NewTab");
-
-            frame.Navigate(typeof(NewTabPage), null);
-        }
-
         public void OpenTabBook(IEnumerable< Windows.Storage.IStorageItem> files)
         {
             foreach (var item in files) OpenTabBook(item);
@@ -179,14 +172,14 @@ namespace BookViewerApp.Views
 
         private void TabView_AddTabButtonClick(Microsoft.UI.Xaml.Controls.TabView sender, object args)
         {
-            OpenTabNew();
+            OpenTabExplorer();
         }
 
         private void TabView_TabCloseRequested(Microsoft.UI.Xaml.Controls.TabView sender, Microsoft.UI.Xaml.Controls.TabViewTabCloseRequestedEventArgs args)
         {
             if (RootAppWindow == null && tabView.TabItems.Count == 1)
             {
-                OpenTabNew();
+                OpenTabExplorer();
                 CloseTab(args.Tab);
                 tabView.SelectedIndex = 0;
             }

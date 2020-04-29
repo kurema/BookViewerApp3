@@ -18,12 +18,12 @@ namespace BookViewerApp.Managers
             var ext = Path.GetExtension(path).ToLower();
             switch (ext)
             {
-                case ".pdf":return BookType.Pdf;
-                case ".zip": case ".cbz":return BookType.Zip;
-                case ".rar": case ".cbr":return BookType.Rar;
-                case ".7z": case ".cb7":return BookType.SevenZip;
-                case ".epub":return BookType.Epub;
-                default:return null;
+                case ".pdf": return BookType.Pdf;
+                case ".zip": case ".cbz": return BookType.Zip;
+                case ".rar": case ".cbr": return BookType.Rar;
+                case ".7z": case ".cb7": return BookType.SevenZip;
+                case ".epub": return BookType.Epub;
+                default: return null;
             }
         }
 
@@ -54,15 +54,15 @@ namespace BookViewerApp.Managers
 
         public static async Task<(IBook Book, bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
         {
-            if(file==null) return (null, false);
+            if (file == null) return (null, false);
             var type = GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
             switch (type)
             {
-                case BookType.Epub:goto Epub;
-                case BookType.Zip:goto Zip;
-                case BookType.Rar:goto SharpCompress;
-                case BookType.SevenZip:goto SharpCompress;
-                case BookType.Pdf:goto Pdf;
+                case BookType.Epub: goto Epub;
+                case BookType.Zip: goto Zip;
+                case BookType.Rar: goto SharpCompress;
+                case BookType.SevenZip: goto SharpCompress;
+                case BookType.Pdf: goto Pdf;
                 default: return (null, false);
             }
 
@@ -187,9 +187,11 @@ namespace BookViewerApp.Managers
             foreach (var item in Path)
             {
                 if (currentFolder == null) return null;
-                if (currentFolder is Windows.Storage.StorageFolder)
+                if (currentFolder is Windows.Storage.StorageFolder f)
                 {
-                    currentFolder = await (currentFolder as Windows.Storage.StorageFolder).TryGetItemAsync(item);
+                    if (String.IsNullOrEmpty(item) || item.Trim() == ".") { }
+                    else if (item.Trim() == "..") { currentFolder = await f.GetParentAsync(); }
+                    else currentFolder = await f.TryGetItemAsync(item);
                 }
                 else
                 {
@@ -215,7 +217,17 @@ namespace BookViewerApp.Managers
             return (await GetBookFromFile(await PickFile())).Book;
         }
 
-        public async static Task<Windows.Storage.StorageFolder> GetTokenFromPath(string path)
+        public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(Windows.Storage.IStorageItem file)
+        {
+            if (file == null) return null;
+            return await Managers.BookManager.GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()
+            {
+                token = Managers.BookManager.StorageItemRegister(file),
+                path = ""
+            };
+        }
+
+        public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPath(string path)
         {
             if (path == null) return null;
 
@@ -229,10 +241,14 @@ namespace BookViewerApp.Managers
             {
                 foreach (var item in tokens)
                 {
-                    if (string.Compare(item.Item2.Path, currentPath, StringComparison.OrdinalIgnoreCase) == 0) return item.Item2;
+                    if (string.Compare(item.Item2.Path, currentPath, StringComparison.OrdinalIgnoreCase) == 0) return new Storages.Library.libraryLibraryFolder()
+                    {
+                        token = item.Token,
+                        path = Path.GetRelativePath(item.Item2.Path, path)
+                    };
                 }
-                path = Path.GetDirectoryName(path);
-                if (path == "") return null;
+                currentPath = Path.GetDirectoryName(currentPath);
+                if (String.IsNullOrEmpty(currentPath)) return null;
             }
         }
 

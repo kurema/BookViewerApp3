@@ -31,7 +31,7 @@ namespace BookViewerApp.Storages
             var library = await Content.GetContentAsync();
             if (library?.libraries != null)
             {
-                var list = (await Task.WhenAll(library.libraries.Select(async a => await a.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
+                var list = (await Task.WhenAll(library.libraries.Select(async a => await a?.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
                 return new ContainerItem(GetItem_GetWord("Libraries"), "/Libraries", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
@@ -59,7 +59,7 @@ namespace BookViewerApp.Storages
             var library = await Content.GetContentAsync();
             if (library?.folders != null)
             {
-                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken))))?.Where(a => a != null)?.ToArray() ?? new TokenLibraryItem[0];
+                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken, UIHelper.ContextMenus.MenuStorage))))?.Where(a => a != null)?.ToArray() ?? new TokenLibraryItem[0];
                 var container = new ContainerItem(GetItem_GetWord("Folders"), "/Folders", list) { MenuCommandsProvider = UIHelper.ContextMenus.MenuFolders };
                 foreach (var item in list) item.Parent = container;
                 return container;
@@ -113,10 +113,41 @@ namespace BookViewerApp.Storages
             var history = await HistoryStorage.Content.GetContentAsync();
             var result = new List<ContainerItem>();
 
-            result.Add(await GetItemFolders());
-            result.Add(await GetItemLibrary());
-            result.Add(await GetItemHistory());
-            result.Add(await GetItemBookmarks(bookmarkAction));
+            var itemFolder = await GetItemFolders();
+            var itemLibrary = await GetItemLibrary();
+            var itemHistory = await GetItemHistory();
+            var itemBookmark = await GetItemBookmarks(bookmarkAction);
+
+            void CopyContainerChildren(ref ContainerItem to, ContainerItem from)
+            {
+                to.Children.Clear();
+                foreach (var item in from.Children) to.Children.Add(item);
+            }
+
+            LibraryUpdateRequest += async (s, e) =>
+            {
+                switch (e)
+                {
+                    case LibraryKind.Bookmarks:
+                        CopyContainerChildren(ref itemBookmark, await GetItemBookmarks(bookmarkAction));
+                        break;
+                    case LibraryKind.Folders:
+                        CopyContainerChildren(ref itemFolder, await GetItemFolders());
+                        break;
+                    case LibraryKind.History:
+                        CopyContainerChildren(ref itemHistory, await GetItemHistory());
+                        break;
+                    case LibraryKind.Library:
+                        CopyContainerChildren(ref itemLibrary, await GetItemLibrary());
+                        break;
+                    default: break;
+                }
+            };
+
+            result.Add(itemFolder);
+            result.Add(itemLibrary);
+            result.Add(itemHistory);
+            result.Add(itemBookmark);
 
             return new ContainerItem(GetItem_GetWord("PC"), "/PC", result.Where(a => a != null).ToArray());
         }
@@ -222,6 +253,16 @@ namespace BookViewerApp.Storages
                 var item = await Managers.BookManager.StorageItemGet(this.token, this.path);
                 return item as Windows.Storage.StorageFolder;
             }
+
+            public bool Compare(libraryLibraryFolder folder)
+            {
+                return this.Compare(folder.token, folder.path);
+            }
+
+            public bool Compare(string token, string path)
+            {
+                return token == this.token && String.Compare(this.path, path, StringComparison.OrdinalIgnoreCase) == 0;
+            }
         }
 
         public partial class libraryLibrary
@@ -248,7 +289,17 @@ namespace BookViewerApp.Storages
                         default: break;
                     }
                 }
-                return new CombinedItem(result.ToArray());
+                var returnValue = new CombinedItem(result.ToArray())
+                {
+                    Name = this.title,
+                };
+                returnValue.RenameCommand = new DelegateCommand(a =>
+                {
+                    this.title = a?.ToString() ?? this.title;
+                    returnValue.Name = this.title;
+                });
+
+                return returnValue;
             }
         }
 

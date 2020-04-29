@@ -45,7 +45,7 @@ namespace BookViewerApp.Helper
                         foldersTemp.Add(folderNew);
                         Storages.LibraryStorage.Content.Content.folders = foldersTemp.ToArray();
 
-                        var token = await folderNew.AsTokenLibraryItem(MenuFolderToken);
+                        var token = await folderNew.AsTokenLibraryItem(MenuFolderToken,MenuStorage);
                         container.Children.Add(token);
                         token.Parent = container;
 
@@ -125,18 +125,48 @@ namespace BookViewerApp.Helper
                         if (libs != null)
                         {
                             var libsToAdd = new List<MenuCommand>();
-                            libs.Select(a => new MenuCommand(a.title, new Helper.DelegateCommand(b =>
-                            {
+                            var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new Helper.DelegateCommand(async b =>
+                             {
+                                 var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
+                                 if (tokenLf != null && a.Items.Any(c => (c as Storages.Library.libraryLibraryFolder)?.Compare(tokenLf) == true))
+                                 {
+                                     var message = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Message");
+                                     var title = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Title");
+                                     var dlg = new Windows.UI.Popups.MessageDialog($"{message}", title);
+                                     dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
+                                     dlg.DefaultCommandIndex = 0;
+                                     var res = await dlg.ShowAsync();
+                                     return;
+                                 }
+                                 {
+                                     var items = a.Items;
+                                     Array.Resize(ref items, items.Length + 1);
+                                     items[items.Length - 1] = tokenLf;
+                                     a.Items = items;
+                                 }
+                                 Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+                                 await Storages.LibraryStorage.Content.SaveAsync();
+                             })));
+                            foreach (var t in commandsToAdd) libsToAdd.Add(t);
 
+                            libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new Helper.DelegateCommand(async a =>
+                            {
+                                var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
+                                {
+                                    var currentLibs = Storages.LibraryStorage.Content.Content.libraries;
+                                    Array.Resize(ref currentLibs, currentLibs.Length + 1);
+                                    currentLibs[currentLibs.Length - 1] = new Storages.Library.libraryLibrary()
+                                    {
+                                        Items = new object[] { tokenLf },
+                                        title = System.IO.Path.GetFileName(file.Path),
+                                    };
+                                    Storages.LibraryStorage.Content.Content.libraries = currentLibs;
+                                }
+                                Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+                                await Storages.LibraryStorage.Content.SaveAsync();
                             })));
 
-                            libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new Helper.DelegateCommand(a =>
-                            {
-                                
-                            }
-                                )));
-
-                            list.Add(new MenuCommand(GetResourceTitle("StorageFolder/AddToLibrary")));
+                            list.Add(new MenuCommand(GetResourceTitle("StorageFolder/AddToLibrary"), libsToAdd.ToArray()));
                         }
                     }
                     else
