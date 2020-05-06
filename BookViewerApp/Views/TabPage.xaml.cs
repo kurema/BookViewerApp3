@@ -99,7 +99,7 @@ namespace BookViewerApp.Views
             CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
         }
 
-        public void OpenTabBook(IEnumerable< Windows.Storage.IStorageItem> files)
+        public void OpenTabBook(IEnumerable<Windows.Storage.IStorageItem> files)
         {
             foreach (var item in files) OpenTabBook(item);
         }
@@ -110,7 +110,7 @@ namespace BookViewerApp.Views
             var (frame, newTab) = OpenTab("BookViewer");
             if (file is Windows.Storage.IStorageFile item)
             {
-                UIHelper.FrameOperation.OpenBook(item, frame,newTab);
+                UIHelper.FrameOperation.OpenBook(item, frame, newTab);
             }
         }
 
@@ -155,7 +155,7 @@ namespace BookViewerApp.Views
             frame?.Navigate(typeof(Views.SettingPage));
         }
 
-        public (Frame,winui.Controls.TabViewItem) OpenTab(string titleId)
+        public (Frame, winui.Controls.TabViewItem) OpenTab(string titleId)
         {
             var newTab = new winui.Controls.TabViewItem();
             var titleString = Helper.UIHelper.GetTitleByResource(titleId);
@@ -193,7 +193,7 @@ namespace BookViewerApp.Views
         {
             if (tab == null) return;
             ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.SaveInfo();
-        
+
             if (tab.IsClosable)
             {
                 tabView.TabItems.Remove(tab);
@@ -446,7 +446,7 @@ namespace BookViewerApp.Views
         private void tabView_TabDragStarting(winui.Controls.TabView sender, winui.Controls.TabViewTabDragStartingEventArgs args)
         {
             //Closing main window causes a problem. So disable it.
-            if (this.tabView.TabItems.Count <= 1 && RootAppWindow == null)return;
+            if (this.tabView.TabItems.Count <= 1 && RootAppWindow == null) return;
 
             var firstItem = args.Tab;
             args.Data.Properties.Add(DataIdentifier, firstItem);

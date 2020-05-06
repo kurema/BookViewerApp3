@@ -325,4 +325,16 @@
   <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
     <value>ライブラリに追加...</value>
   </data>
+  <data name="ContextMenu.Library.New.Title" xml:space="preserve">
+    <value>新しいライブラリ</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
+    <value>ライブラリに追加</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
+    <value>このフォルダは登録済みです。</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
+    <value>登録不能</value>
+  </data>
 </root>

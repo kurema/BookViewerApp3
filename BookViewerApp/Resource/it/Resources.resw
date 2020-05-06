@@ -300,6 +300,9 @@
   <data name="ExplorerContainer.Folders" xml:space="preserve">
     <value>Cartelle</value>
   </data>
+  <data name="ExplorerContainer.Histories" xml:space="preserve">
+    <value>Storia</value>
+  </data>
   <data name="ExplorerContainer.Libraries" xml:space="preserve">
     <value>Librerie</value>
   </data>
@@ -321,5 +324,17 @@ Annullare la registrazione?</value>
   </data>
   <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
     <value>Aggiungi elementi al Catalogo multimediale</value>
+  </data>
+  <data name="ContextMenu.Library.New.Title" xml:space="preserve">
+    <value>Nuova libreria</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
+    <value>Aggiungi a una libreria</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
+    <value>La cartella è già registrata.</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
+    <value>Impossibile registrarsi</value>
   </data>
 </root>

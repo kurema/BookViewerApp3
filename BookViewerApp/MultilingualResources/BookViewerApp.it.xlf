@@ -398,7 +398,7 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
           <source>Histories</source>
-          <target state="new">Histories</target>
+          <target state="translated">Storia</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
           <source>Libraries</source>
@@ -433,19 +433,19 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Library.New.Title" translate="yes" xml:space="preserve">
           <source>New library</source>
-          <target state="new">New library</target>
+          <target state="translated">Nuova libreria</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.Title" translate="yes" xml:space="preserve">
           <source>Add to a library</source>
-          <target state="new">Add to a library</target>
+          <target state="translated">Aggiungi a una libreria</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" translate="yes" xml:space="preserve">
           <source>The folder is already registered.</source>
-          <target state="new">The folder is already registered.</target>
+          <target state="translated">La cartella è già registrata.</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" translate="yes" xml:space="preserve">
           <source>Unable to registered</source>
-          <target state="new">Unable to registered</target>
+          <target state="translated">Impossibile registrarsi</target>
         </trans-unit>
       </group>
     </body>

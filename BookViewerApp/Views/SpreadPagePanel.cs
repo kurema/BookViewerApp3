@@ -85,19 +85,15 @@ namespace BookViewerApp.Views
             Single, Spread, HalfFirst, HalfSecond
         }
 
+        protected Image[] ChildrenCache;
+
+        public SpreadPagePanel()
+        {
+            ChildrenCache = new[] { GetImage(), GetImage() };
+        }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            Image GetImage()
-            {
-                var image = new Image()
-                {
-                    Stretch = Stretch.UniformToFill
-                };
-                image.ImageOpened += (s, e) => InvalidateArrange();
-                image.ImageFailed += (s, e) => InvalidateArrange();
-                return image;
-            }
             void UpdateSource(Image image3, ImageSource source)
             {
                 if (image3.Source != source) image3.Source = source;
@@ -105,16 +101,19 @@ namespace BookViewerApp.Views
             void DesireChild(int count)
             {
                 var cCount = Children.Count;
+
+                if (count > ChildrenCache.Length) Array.Resize(ref ChildrenCache, count);
+
                 for (int i = 0; i < Math.Min(cCount, count); i++)
                 {
                     if (!(Children[i] is Image))
                     {
-                        Children[i] = GetImage();
+                        Children[i] = ChildrenCache[i] = ChildrenCache[i] ?? GetImage();
                     }
                 }
                 for (int i = cCount; i < count; i++)
                 {
-                    Children.Add(GetImage());
+                    Children.Add(ChildrenCache[i] = ChildrenCache[i] ?? GetImage());
                 }
                 for (int i = count; i < cCount; i++)
                 {
@@ -232,6 +231,17 @@ namespace BookViewerApp.Views
 
         Conclude:
             return finalSize;
+        }
+
+        private Image GetImage()
+        {
+            var image = new Image()
+            {
+                Stretch = Stretch.UniformToFill
+            };
+            image.ImageOpened += (s, e) => InvalidateArrange();
+            image.ImageFailed += (s, e) => InvalidateArrange();
+            return image;
         }
 
 

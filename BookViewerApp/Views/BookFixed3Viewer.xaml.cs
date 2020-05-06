@@ -43,7 +43,7 @@ namespace BookViewerApp.Views
                 Binding?.SaveInfo();
                 this.Frame.Navigate(typeof(HomePage), null);
             });
-         
+
             Application.Current.Suspending += (s, e) => Binding?.SaveInfo();
 
             OriginalTitle = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title;
@@ -63,10 +63,10 @@ namespace BookViewerApp.Views
             var color = new Windows.UI.Color() { A = 255, B = br, G = br, R = br };
             this.Background = new AcrylicBrush()
             {
-                BackgroundSource=AcrylicBackgroundSource.HostBackdrop,
-                TintColor=color,
-                FallbackColor=color,
-                TintOpacity=0.8
+                BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
+                TintColor = color,
+                FallbackColor = color,
+                TintOpacity = 0.8
             };
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
@@ -229,7 +229,7 @@ namespace BookViewerApp.Views
 
                     return;
                 }
-                    
+
                 if (v.TryEnterFullScreenMode())
                 {
                     if (BasicFullScreenFrame == null && this.Parent is Frame f)

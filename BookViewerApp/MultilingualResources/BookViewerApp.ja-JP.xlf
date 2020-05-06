@@ -428,19 +428,19 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="ContextMenu.Library.New.Title" translate="yes" xml:space="preserve">
           <source>New library</source>
-          <target state="new">New library</target>
+          <target state="translated">新しいライブラリ</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.Title" translate="yes" xml:space="preserve">
           <source>Add to a library</source>
-          <target state="new">Add to a library</target>
+          <target state="translated">ライブラリに追加</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" translate="yes" xml:space="preserve">
           <source>The folder is already registered.</source>
-          <target state="new">The folder is already registered.</target>
+          <target state="translated">このフォルダは登録済みです。</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" translate="yes" xml:space="preserve">
           <source>Unable to registered</source>
-          <target state="new">Unable to registered</target>
+          <target state="translated">登録不能</target>
         </trans-unit>
       </group>
     </body>

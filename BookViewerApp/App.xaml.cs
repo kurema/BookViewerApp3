@@ -129,7 +129,8 @@ namespace BookViewerApp
                 else if (f.Content is BookFixed3Viewer v3)
                 {
                     v3.SaveInfo();
-                }else if(f.Content is TabPage tp)
+                }
+                else if (f.Content is TabPage tp)
                 {
                     tp.OpenTabBook(args.Files);
                     return;
