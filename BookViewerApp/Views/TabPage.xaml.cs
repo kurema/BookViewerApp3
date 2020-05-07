@@ -212,7 +212,7 @@ namespace BookViewerApp.Views
                 {
                     try
                     {
-                        //I need to close only main window. But error occurs and I have no idea to how fix it...
+                        //I need to close only main window. But error occurs and I have no idea how to fix it...
                         //Closing main window is not allowed.
                         //There is a question but no answer.
                         //https://stackoverflow.com/questions/39944258/closing-main-window-is-not-allowed
@@ -238,7 +238,7 @@ namespace BookViewerApp.Views
             var sec = DateTimeOffset.UtcNow - LastKeyboardActionDateTime;
             if ((DateTimeOffset.UtcNow - LastKeyboardActionDateTime).TotalSeconds > 0.2)
             {
-                OpenTabWeb("https://www.google.com/");
+                OpenTabWeb();
                 LastKeyboardActionDateTime = DateTimeOffset.UtcNow;
             }
         }
@@ -300,13 +300,10 @@ namespace BookViewerApp.Views
         {
             if (e.Parameter == null || (e.Parameter is string s && s == ""))
             {
-                //OpenTabNew();
-                //OpenTabWeb("https://www.google.com/");
                 OpenTabExplorer();
             }
-            else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
+            else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs args)
             {
-                var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
                 if (args.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
                 {
                     foreach (var item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args).Files)
@@ -314,6 +311,9 @@ namespace BookViewerApp.Views
                         OpenTabBook(item);
                     }
                 }
+            }else if(e.Parameter is Windows.Storage.IStorageItem f)
+            {
+                OpenTabBook(f);
             }
 
             SetupWindow(null);

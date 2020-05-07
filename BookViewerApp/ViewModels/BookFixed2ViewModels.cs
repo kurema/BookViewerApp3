@@ -84,9 +84,9 @@ namespace BookViewerApp.ViewModels
         {
             this.Loading = true;
             var book = (await BookManager.GetBookFromFile(value)).Book;
-            if (book != null && book is Books.IBookFixed)
+            if (book is Books.IBookFixed bookf)
             {
-                Initialize(book as Books.IBookFixed, target);
+                Initialize(bookf, target);
                 this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
             }
             this.Loading = false;
