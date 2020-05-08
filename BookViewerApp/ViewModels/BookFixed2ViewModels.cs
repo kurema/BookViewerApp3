@@ -281,11 +281,11 @@ namespace BookViewerApp.ViewModels
         }
         private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
 
-        public int PagesCount { get { return _Pages.Count(); } }
+        public int PagesCount { get { return _Pages.Count; } }
 
         public double ReadRate
         {
-            get { return Math.Min((double)PageSelectedDisplay / Pages.Count(),1.0); }
+            get { return Math.Min((double)PageSelectedDisplay / Pages.Count,1.0); }
             set { PageSelectedDisplay = (int)(value * Pages.Count);  OnPropertyChanged(nameof(ReadRate)); }
         }
 

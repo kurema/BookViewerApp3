@@ -184,6 +184,7 @@ namespace BookViewerApp.Managers
         public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string[] Path)
         {
             Windows.Storage.IStorageItem currentFolder = await StorageItemGet(token);
+            if (Path == null) return currentFolder;
             foreach (var item in Path)
             {
                 if (currentFolder == null) return null;

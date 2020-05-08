@@ -116,15 +116,15 @@ namespace BookViewerApp.Books
 
         public ImageBookUriCollection(params string[] uri)
         {
-            var result = new Uri[uri.Count()];
-            for (int i = 0; i < uri.Count(); i++)
+            var result = new Uri[uri.Length];
+            for (int i = 0; i < uri.Length; i++)
             {
                 result[i] = new Uri(uri[i]);
             }
             Content = result;
         }
 
-        public uint PageCount => (uint)Content.Count();
+        public uint PageCount => (uint)(Content?.Length ?? 0);
 
         public string ID
         {

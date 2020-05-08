@@ -79,15 +79,17 @@ namespace BookViewerApp.ViewModels
             set
             {
                 _Containers.CollectionChanged -= _Containers_CollectionChanged;
-                foreach (var item in _Containers)
-                {
-                    item.PropertyChanged -= Item_PropertyChanged;
-                }
+                if (_Containers != null)
+                    foreach (var item in _Containers)
+                    {
+                        item.PropertyChanged -= Item_PropertyChanged;
+                    }
                 _Containers = value;
-                foreach (var item in value)
-                {
-                    item.PropertyChanged += Item_PropertyChanged;
-                }
+                if (value != null)
+                    foreach (var item in value)
+                    {
+                        item.PropertyChanged += Item_PropertyChanged;
+                    }
                 _Containers.CollectionChanged += _Containers_CollectionChanged;
                 OnPropertyChanged(nameof(Containers));
                 OnPropertyChanged(nameof(TitleID));

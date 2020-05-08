@@ -31,7 +31,7 @@ namespace BookViewerApp.Views
     /// </summary>
     public sealed partial class BookFixed2Viewer : Page
     {
-        private ViewModels.BookViewModel Binding => (BookViewModel) this.DataContext;
+        private ViewModels.BookViewModel Binding => (BookViewModel)this.DataContext;
 
         public BookFixed2Viewer()
         {
@@ -41,26 +41,26 @@ namespace BookViewerApp.Views
 
             Application.Current.Suspending += CurrentApplication_Suspending;
 
-            if (!(bool) SettingStorage.GetValue("ShowRightmostAndLeftmost"))
+            if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
             {
                 this.AppBarButtonLeftmost.Visibility = Visibility.Collapsed;
                 this.AppBarButtonRightmost.Visibility = Visibility.Collapsed;
             }
 
-            var brSet = (double) SettingStorage.GetValue("BackgroundBrightness");
-            var br = (byte) ((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
+            var brSet = (double)SettingStorage.GetValue("BackgroundBrightness");
+            var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
                              255.0);
-            this.Background = new SolidColorBrush(new Windows.UI.Color() {A = 255, B = br, G = br, R = br});
+            this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
 
-            ((BookViewModel) this.DataContext).PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(ViewModels.BookViewModel.Title))
-                {
-                    SetTitle(Binding?.Title);
-                }
-            };
+            ((BookViewModel)this.DataContext).PropertyChanged += (s, e) =>
+           {
+               if (e.PropertyName == nameof(ViewModels.BookViewModel.Title))
+               {
+                   SetTitle(Binding?.Title);
+               }
+           };
 
-            flipView.UseTouchAnimationsForAllNavigation = (bool) SettingStorage.GetValue("ScrollAnimation");
+            flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
             if (Binding != null)
             {
@@ -102,7 +102,7 @@ namespace BookViewerApp.Views
 
         private void Open(Books.IBook book)
         {
-            if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed) book, this.flipView);
+            if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
         }
 
         private void SetBookShelfModel(BookShelfBookViewModel viewModel)
@@ -120,7 +120,7 @@ namespace BookViewerApp.Views
         {
             UIHelper.SetTitleByResource(this, "BookViewer");
 
-            if (e.Parameter == null) { }
+            if (e?.Parameter == null) { }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {
                 var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
@@ -130,7 +130,7 @@ namespace BookViewerApp.Views
                     {
                         if (item is Windows.Storage.IStorageFile)
                         {
-                            Open((Windows.Storage.IStorageFile) item);
+                            Open((Windows.Storage.IStorageFile)item);
                             break;
                         }
                     }
@@ -144,7 +144,7 @@ namespace BookViewerApp.Views
             {
                 Open((Windows.Storage.IStorageFile)e.Parameter);
             }
-            else if(e. Parameter is BookAndParentNavigationParamater)
+            else if (e.Parameter is BookAndParentNavigationParamater)
             {
                 var param = (BookAndParentNavigationParamater)e.Parameter;
                 Open(param.BookViewerModel);
@@ -194,7 +194,7 @@ namespace BookViewerApp.Views
 
         private void CurrentView_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
         {
-            if (Frame?.CanGoBack==true)
+            if (Frame?.CanGoBack == true)
             {
                 Frame.GoBack();
                 e.Handled = true;
@@ -219,7 +219,7 @@ namespace BookViewerApp.Views
         {
             if (DataContext is ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is ViewModels.BookmarkViewModel)
             {
-                ((ViewModels.BookViewModel) this.DataContext).PageSelectedDisplay = ((ViewModels.BookmarkViewModel) e.ClickedItem).Page;
+                ((ViewModels.BookViewModel)this.DataContext).PageSelectedDisplay = ((ViewModels.BookmarkViewModel)e.ClickedItem).Page;
             }
         }
 
@@ -233,9 +233,9 @@ namespace BookViewerApp.Views
         private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)
         {
             //This is ugly. I want to use Binding.
-            var ui = (Canvas) sender;
-            var rate=e.GetPosition(ui).X/ ui.ActualWidth;
-            if (Binding.Reversed) { rate=1-rate; }
+            var ui = (Canvas)sender;
+            var rate = e.GetPosition(ui).X / ui.ActualWidth;
+            if (Binding.Reversed) { rate = 1 - rate; }
             Binding.ReadRate = rate;
         }
 
@@ -244,9 +244,9 @@ namespace BookViewerApp.Views
             var ui = (Canvas)sender;
             var cp = e.GetCurrentPoint(ui);
             if (!cp.IsInContact) return;
-            var rate =cp.Position.X / ui.ActualWidth;
+            var rate = cp.Position.X / ui.ActualWidth;
             if (Binding.Reversed) { rate = 1 - rate; }
-            Binding.ReadRate = Math.Round(rate*(Binding.PagesCount))/(Binding.PagesCount);
+            Binding.ReadRate = Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
             e.Handled = true;
         }
 
@@ -261,12 +261,12 @@ namespace BookViewerApp.Views
 
         private async void MakeCommandBarVisibleForAWhile()
         {
-            int visibleTime = (int) ((double) SettingStorage.GetValue("CommandBarShowTimespan") * 1000.0);
+            int visibleTime = (int)((double)SettingStorage.GetValue("CommandBarShowTimespan") * 1000.0);
             if (visibleTime <= 0) return;
             CommandBar1.Visibility = Visibility.Visible;
 
             //CommandBar1.Foreground = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? RequestedThemeProperty.: Colors.Black);//ad-hoc fix me
-            CommandBar1.Foreground = (Brush) App.Current.Resources.ThemeDictionaries["AppBarItemForegroundThemeBrush"];
+            CommandBar1.Foreground = (Brush)App.Current.Resources.ThemeDictionaries["AppBarItemForegroundThemeBrush"];
             MakeCommandBarVisibleForAWhile_DelayCount++;
             await Task.Delay(visibleTime);
             MakeCommandBarVisibleForAWhile_DelayCount--;
@@ -282,7 +282,7 @@ namespace BookViewerApp.Views
         private int MakeStackPanelZoomVisibleForAWhile_DelayCount = 0;
         private async void MakeStackPanelZoomVisibleForAWhile()
         {
-            int visibleTime = (int) ((double) SettingStorage.GetValue("ZoomButtonShowTimespan") * 1000.0);
+            int visibleTime = (int)((double)SettingStorage.GetValue("ZoomButtonShowTimespan") * 1000.0);
             if (visibleTime <= 0) { return; }
             StackPanelZoom.Visibility = Visibility.Visible;
             MakeStackPanelZoomVisibleForAWhile_DelayCount++;
@@ -296,7 +296,7 @@ namespace BookViewerApp.Views
         {
             if (flipView.SelectedItem is PageViewModel)
             {
-                var pvm= (flipView.SelectedItem as PageViewModel);
+                var pvm = (flipView.SelectedItem as PageViewModel);
                 pvm.ZoomRequest(pvm.ZoomFactor * 1.3f);
                 MakeStackPanelZoomVisibleForAWhile();
             }

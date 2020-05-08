@@ -36,7 +36,7 @@ namespace BookViewerApp.Books
             return Functions.GetHash(result);
         }
 
-        public uint PageCount => (uint)Entries.Count();
+        public uint PageCount => (uint)(Entries?.Length ?? 0);
 
         public event EventHandler Loaded;
         private void OnLoaded()
@@ -95,7 +95,7 @@ namespace BookViewerApp.Books
 
                             var ctoc = toc;
                             TocItem lastitem = null;
-                            for (int j = 0; j < dirs.Count(); j++)
+                            for (int j = 0; j < dirs.Count; j++)
                             {
                                 dirs[j] = dirs[j] == "" ? "." : dirs[j];
                                 if (ctoc.Count == 0 || ctoc.Last().Title != dirs[j])

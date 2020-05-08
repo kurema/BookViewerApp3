@@ -91,7 +91,7 @@ namespace BookViewerApp.Storages
                 this.DefaultValue = DefaultValue;
                 this.IsLocal = IsLocal;
                 this.Converter = Converter;
-                this.IsValidObject = (a) => { object result; return Converter.TryGetTypeGeneral(a.ToString(), out result); };
+                this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { object result; return Converter.TryGetTypeGeneral(a.ToString(), out result); });
                 this.GroupName = group;
             }
 
@@ -170,7 +170,7 @@ namespace BookViewerApp.Storages
 
                 public string GetStringGeneral(object value)
                 {
-                    return value.ToString();
+                    return value?.ToString() ?? "";
                 }
 
                 public bool TryGetTypeGeneral(string value, out object result)

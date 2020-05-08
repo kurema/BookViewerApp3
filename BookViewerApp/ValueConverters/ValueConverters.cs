@@ -210,7 +210,7 @@ namespace BookViewerApp.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string resourceId = value.ToString();
+            string resourceId = value?.ToString();
             return !string.IsNullOrEmpty(resourceId) ? Managers.ResourceManager.Loader.GetString("Setting/Group/" + resourceId) : DependencyProperty.UnsetValue;
         }
 

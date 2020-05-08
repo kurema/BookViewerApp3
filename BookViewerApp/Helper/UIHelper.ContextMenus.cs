@@ -102,7 +102,7 @@ namespace BookViewerApp.Helper
                             temp.Remove(token.Content);
                             Storages.LibraryStorage.Content.Content.folders = temp.ToArray();
                         }
-                        if (used.Count() == 0) token.Content.Remove();
+                        if (used?.Length == 0) token.Content.Remove();
                         var brothers = await token.Parent.GetChildren();
                         brothers.Remove(token);
 

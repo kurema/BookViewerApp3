@@ -32,7 +32,9 @@ namespace BookViewerApp.Views
         {
             this.InitializeComponent();
 
-            var src = new List<SettingViewModel>(SettingStorage.SettingInstances.Count());
+            if (SettingStorage.SettingInstances == null) return;
+
+            var src = new List<SettingViewModel>(SettingStorage.SettingInstances.Length);
             foreach(var item in SettingStorage.SettingInstances)
             {
                 src.Add(new SettingViewModel(item));

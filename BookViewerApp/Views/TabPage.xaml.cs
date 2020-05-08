@@ -101,6 +101,7 @@ namespace BookViewerApp.Views
 
         public void OpenTabBook(IEnumerable<Windows.Storage.IStorageItem> files)
         {
+            if (files == null) return;
             foreach (var item in files) OpenTabBook(item);
         }
 

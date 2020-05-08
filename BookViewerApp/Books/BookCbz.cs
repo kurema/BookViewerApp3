@@ -25,7 +25,7 @@ namespace BookViewerApp.Books
         {
             get
             {
-                return (uint)AvailableEntries.Count();
+                return (uint)(AvailableEntries?.Length ?? 0);
             }
         }
 
@@ -122,7 +122,7 @@ namespace BookViewerApp.Books
 
                     var ctoc = toc;
                     TocItem lastitem = null;
-                    for (int j = 0; j < dirs.Count(); j++)
+                    for (int j = 0; j < dirs.Count; j++)
                     {
                         dirs[j] = dirs[j] == "" ? "." : dirs[j];
                         if (ctoc.Count == 0 || ctoc.Last().Title != dirs[j])
