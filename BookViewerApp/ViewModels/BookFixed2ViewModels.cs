@@ -187,7 +187,7 @@ namespace BookViewerApp.ViewModels
             }
             if(value is Books.ITocProvider pv)
             {
-                this.Toc = new ObservableCollection<TocEntryViewModes>(pv?.Toc?.Select(a => new TocEntryViewModes(a)) ?? new TocEntryViewModes[0]);
+                this.Toc = new ObservableCollection<TocEntryViewModes>(pv?.Toc?.Select(a => new TocEntryViewModes(a)) ?? Array.Empty<TocEntryViewModes>());
             }
             this.Loading = false;
         }

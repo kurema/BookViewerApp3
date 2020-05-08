@@ -39,12 +39,12 @@ namespace kurema.FileExplorerControl.ViewModels
         private IFileItem _Content;
         public IFileItem Content { get => _Content; set
             {
-                void Value_ChildrenUpdated(object sender, EventArgs e)
-                {
-                    OnPropertyChanged(nameof(Children));
-                    OnPropertyChanged(nameof(Folders));
-                    OnPropertyChanged(nameof(Files));
-                }
+                //void Value_ChildrenUpdated(object sender, EventArgs e)
+                //{
+                //    OnPropertyChanged(nameof(Children));
+                //    OnPropertyChanged(nameof(Folders));
+                //    OnPropertyChanged(nameof(Files));
+                //}
 
                 SetProperty(ref _Content, value);
                 _Children = null;

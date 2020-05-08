@@ -59,7 +59,7 @@ namespace BookViewerApp.Storages
                 using (var s = (await file.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
                 {
                     var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
-                    return (BookInfo[])serializer.Deserialize(s);
+                    return serializer.Deserialize(s) as BookInfo[];
                 }
             }
             catch

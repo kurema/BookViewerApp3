@@ -80,7 +80,7 @@ namespace BookViewerApp.Helper
                     using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
                     {
                         var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                        return ((T)serializer.Deserialize(s));
+                        return (serializer.Deserialize(s) as T);
                     }
                 }
                 else { return null; }

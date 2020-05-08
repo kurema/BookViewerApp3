@@ -31,7 +31,7 @@ namespace BookViewerApp.Storages
             var library = await Content.GetContentAsync();
             if (library?.libraries != null)
             {
-                var list = (await Task.WhenAll(library.libraries.Select(async a => await a?.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
+                var list = (await Task.WhenAll(library.libraries.Select(async a => await a?.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
                 return new ContainerItem(GetItem_GetWord("Libraries"), "/Libraries", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
@@ -45,7 +45,7 @@ namespace BookViewerApp.Storages
             var history = await HistoryStorage.Content.GetContentAsync();
             if (history != null)
             {
-                var list = (await Task.WhenAll(history.Select(async a => await a.GetFile())))?.Where(a => a != null)?.Select(a => new StorageFileItem(a))?.ToArray() ?? new IFileItem[0];
+                var list = (await Task.WhenAll(history.Select(async a => await a.GetFile())))?.Where(a => a != null)?.Select(a => new StorageFileItem(a))?.ToArray() ?? Array.Empty<IFileItem>();
                 if (list.Length != 0) return new ContainerItem(GetItem_GetWord("Histories"), "/History", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png")))
@@ -59,7 +59,7 @@ namespace BookViewerApp.Storages
             var library = await Content.GetContentAsync();
             if (library?.folders != null)
             {
-                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken, UIHelper.ContextMenus.MenuStorage))))?.Where(a => a != null)?.ToArray() ?? new TokenLibraryItem[0];
+                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken, UIHelper.ContextMenus.MenuStorage))))?.Where(a => a != null)?.ToArray() ?? Array.Empty<TokenLibraryItem>();
                 var container = new ContainerItem(GetItem_GetWord("Folders"), "/Folders", list) { MenuCommandsProvider = UIHelper.ContextMenus.MenuFolders };
                 foreach (var item in list) item.Parent = container;
                 return container;
@@ -72,7 +72,7 @@ namespace BookViewerApp.Storages
             var library = await Content.GetContentAsync();
             if (library?.bookmarks != null)
             {
-                var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToArray() ?? new IFileItem[0];
+                var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
                 var container = new ContainerItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png")))
@@ -157,7 +157,7 @@ namespace BookViewerApp.Storages
         public static Library.libraryLibrary[] GetTokenUsedByLibrary(string token)
         {
             var result = new List<Library.libraryLibrary>();
-            if (Content?.Content?.libraries == null) return new Library.libraryLibrary[0];
+            if (Content?.Content?.libraries == null) return Array.Empty<Library.libraryLibrary>();
             foreach (var item in Content.Content.libraries)
             {
                 foreach (var item2 in item.Items)
@@ -186,7 +186,7 @@ namespace BookViewerApp.Storages
             return result.ToArray();
         }
 
-        public static Library.libraryFolder[] GetTokenUsedByFolders(string token) => Content?.Content?.folders.Where(a => a.token == token).ToArray() ?? new Library.libraryFolder[0];
+        public static Library.libraryFolder[] GetTokenUsedByFolders(string token) => Content?.Content?.folders.Where(a => a.token == token).ToArray() ?? Array.Empty<Library.libraryFolder>();
     }
 
     namespace Library
