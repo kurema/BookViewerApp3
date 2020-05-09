@@ -24,7 +24,7 @@ namespace BookViewerApp.Storages
 
         public enum SavePlaces
         {
-            Local, Roaming, LocalCache
+            Local, Roaming, LocalCache, InstalledLocation
         }
 
         private Windows.Storage.StorageFolder DataFolder
@@ -39,8 +39,26 @@ namespace BookViewerApp.Storages
                         return Functions.GetSaveFolderRoaming();
                     case SavePlaces.LocalCache:
                         return Functions.GetSaveFolderLocalCache();
+                    case SavePlaces.InstalledLocation:
+                        //Not used. Don't use.
+                        return Windows.ApplicationModel.Package.Current.InstalledLocation;
                     default: return null;
                 }
+            }
+        }
+
+        private async Task<T> DeserializeAsync()
+        {
+            switch (SavePlace)
+            {
+                case SavePlaces.Local:
+                case SavePlaces.Roaming:
+                case SavePlaces.LocalCache:
+                    return await Functions.DeserializeAsync<T>(this.DataFolder, this.FileName, this.Semaphore);
+                case SavePlaces.InstalledLocation:
+                    return await Functions.DeserializeAsync<T>(await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName)),this.Semaphore);
+                default:
+                    return null;
             }
         }
 
@@ -50,13 +68,13 @@ namespace BookViewerApp.Storages
 
         public T GetNew() => GetNewDelegate != null ? GetNewDelegate() : default;
 
-        internal async Task<T> GetContentAsync() => Content = Content ?? await Functions.DeserializeAsync<T>(this.DataFolder, this.FileName, this.Semaphore) ?? GetNew();
+        internal async Task<T> GetContentAsync() => Content = Content ?? await DeserializeAsync() ?? GetNew();
 
         internal async Task SaveAsync()
         {
             try
             {
-                if (Content != null) await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
+                if (Content != null && this.SavePlace != SavePlaces.InstalledLocation) await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
             }
             catch
             {
@@ -76,6 +94,7 @@ namespace BookViewerApp.Storages
 
         public bool TryOperate<T2>(Action<List<T2>> action)
         {
+            if (action == null) return false;
             if(Content is IEnumerable<T2> contentEnum)
             {
                 var itemList = contentEnum.ToList();

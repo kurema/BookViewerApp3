@@ -325,6 +325,15 @@ namespace BookViewerApp.Storages.Library {
         
         private object[] itemsField;
         
+        private string languageField;
+        
+        private bool defaultField;
+        
+        public libraryBookmarks() {
+            this.languageField = "en";
+            this.defaultField = false;
+        }
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(libraryBookmarksContainerBookmark))]
         [System.Xml.Serialization.XmlElementAttribute("container", typeof(libraryBookmarksContainer))]
@@ -335,6 +344,32 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.itemsField = value;
                 this.RaisePropertyChanged("Items");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="language")]
+        [System.ComponentModel.DefaultValueAttribute("en")]
+        public string language {
+            get {
+                return this.languageField;
+            }
+            set {
+                this.languageField = value;
+                this.RaisePropertyChanged("language");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool @default {
+            get {
+                return this.defaultField;
+            }
+            set {
+                this.defaultField = value;
+                this.RaisePropertyChanged("default");
             }
         }
         

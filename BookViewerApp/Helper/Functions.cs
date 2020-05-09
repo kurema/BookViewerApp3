@@ -72,10 +72,22 @@ namespace BookViewerApp.Helper
 
         public static async Task<T> DeserializeAsync<T>(Windows.Storage.StorageFolder folder, string fileName, System.Threading.SemaphoreSlim semaphore) where T : class
         {
+            try
+            {
+                return await DeserializeAsync<T>((await folder.GetItemAsync(fileName)) as Windows.Storage.StorageFile, semaphore);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static async Task<T> DeserializeAsync<T>(Windows.Storage.StorageFile f, System.Threading.SemaphoreSlim semaphore) where T : class
+        {
             await semaphore.WaitAsync();
             try
             {
-                if (await folder.TryGetItemAsync(fileName) is Windows.Storage.StorageFile f)
+                if (f != null)
                 {
                     using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
                     {

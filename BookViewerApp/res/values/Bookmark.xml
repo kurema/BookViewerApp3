@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<bookmarks_library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd">
+  <bookmarks>
+    <bookmarks_collection default="true">
+      <container title="Search">
+        <bookmark url="https://www.google.com/" title="Google" />
+      </container>
+    </bookmarks_collection>
+    <bookmarks_collection language="ja">
+      <container title="検索">
+        <bookmark url="https://www.google.com/" title="Google" />
+        <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
+      </container>
+    </bookmarks_collection>
+  </bookmarks>
+</bookmarks_library>

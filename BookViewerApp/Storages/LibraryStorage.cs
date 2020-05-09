@@ -20,6 +20,8 @@ namespace BookViewerApp.Storages
         public static event Windows.Foundation.TypedEventHandler<object, LibraryKind> LibraryUpdateRequest;
         public static void OnLibraryUpdateRequest(LibraryKind kind) => LibraryUpdateRequest?.Invoke(null, kind);
 
+        public static StorageContent<Library.bookmarks_library> LocalBookmark = new StorageContent<Library.bookmarks_library>(StorageContent<Library.bookmarks_library>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
+
         public enum LibraryKind
         {
             Library, History, Folders, Bookmarks
@@ -70,45 +72,50 @@ namespace BookViewerApp.Storages
         public static async Task<ContainerItem> GetItemBookmarks(Action<string> bookmarkAction)
         {
             var library = await Content.GetContentAsync();
-            if (library?.bookmarks != null)
+            var bookmark_local = await LocalBookmark.GetContentAsync();
+
+            var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
+            if (bookmark_local != null)
             {
-                var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
-                var container = new ContainerItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", list)
-                {
-                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png")))
-                };
-                foreach (var item in list)
-                {
-                    switch (item)
-                    {
-                        case StorageBookmarkContainer item1:
-                            item1.ActionDelete = () =>
-                            {
-                                var items = library.bookmarks.Items.ToList();
-                                items.Remove(item1.Content);
-                                library.bookmarks.Items = items.ToArray();
-                                container?.Children?.Remove(item);
-                            };
-                            break;
-                        case StorageBookmarkItem item2:
-                            item2.ActionDelete = () =>
-                            {
-                                var items = library.bookmarks.Items.ToList();
-                                items.Remove(item2.Content);
-                                library.bookmarks.Items = items.ToArray();
-                                container?.Children?.Remove(item);
-                            };
-                            break;
-                    }
-                }
-                return container;
+                //Refer setting
+                var local = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture)?.AsFileItem(bookmarkAction);
+                if (local != null) list.Insert(0, new ContainerItem("Local bookmark", LocalBookmark.FileName, local));
             }
-            return null;
+
+            var container = new ContainerItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", list.ToArray())
+            {
+                IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png")))
+            };
+            foreach (var item in list)
+            {
+                switch (item)
+                {
+                    case StorageBookmarkContainer item1:
+                        item1.ActionDelete = () =>
+                        {
+                            var items = library.bookmarks.Items.ToList();
+                            items.Remove(item1.Content);
+                            library.bookmarks.Items = items.ToArray();
+                            container?.Children?.Remove(item);
+                        };
+                        break;
+                    case StorageBookmarkItem item2:
+                        item2.ActionDelete = () =>
+                        {
+                            var items = library.bookmarks.Items.ToList();
+                            items.Remove(item2.Content);
+                            library.bookmarks.Items = items.ToArray();
+                            container?.Children?.Remove(item);
+                        };
+                        break;
+                }
+            }
+            if (list.Count == 0) return null;
+            return container;
         }
 
         public static async Task<ContainerItem> GetItem(Action<string> bookmarkAction)
         {
-
             var library = await Content.GetContentAsync();
             var history = await HistoryStorage.Content.GetContentAsync();
             var result = new List<ContainerItem>();
@@ -191,6 +198,31 @@ namespace BookViewerApp.Storages
 
     namespace Library
     {
+        [System.SerializableAttribute()]
+        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+    "ry.xsd")]
+        [System.Xml.Serialization.XmlRootAttribute(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd", IsNullable = false)]
+        public partial class bookmarks_library
+        {
+            [System.Xml.Serialization.XmlArrayItem("bookmarks_collection", IsNullable = false)]
+            public libraryBookmarks[] bookmarks;
+
+            public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
+            {
+                if (bookmarks == null) return null;
+                libraryBookmarks defaultBookmarks = null;
+                libraryBookmarks languageMatchedBookmarks = null;
+                foreach (var item in bookmarks)
+                {
+                    if (item.@default) defaultBookmarks = item;
+                    if (item.language == culture.Name) return item;
+                    if (item.language == culture.TwoLetterISOLanguageName) return item;
+                }
+                return languageMatchedBookmarks ?? defaultBookmarks;
+            }
+        }
+
         public partial class library
         {
             public library()

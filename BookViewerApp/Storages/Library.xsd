@@ -63,11 +63,26 @@
         <xs:element name="bookmarks">
           <xs:complexType>
             <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:attribute name="language" type="xs:language" use="optional" default="en"/>
+            <xs:attribute name="default" type="xs:boolean" use="optional" default="false"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+
+  <!--<xs:element name="bookmark_resource">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bookmarks" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:attribute name="language" type="xs:language" use="optional" default="en"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>-->
 
   <xs:group name="bookmark_group">
     <xs:choice>

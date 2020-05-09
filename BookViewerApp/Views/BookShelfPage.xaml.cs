@@ -85,9 +85,9 @@ namespace BookViewerApp.Views
 
         private async void BodyControl_ItemClicked(object sender, BookShelfControl.ItemClickedEventArgs e)
         {
-            if (e.SelectedItem is BookShelfBookViewModel)
+            if (e.SelectedItem is BookShelfBookViewModel bookShelf)
             {
-                var book = await (e.SelectedItem as BookShelfBookViewModel).TryGetBook();
+                var book = await bookShelf.TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
                     var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfBookViewModel, Title= (e.SelectedItem as BookShelfBookViewModel).Title };

@@ -187,6 +187,7 @@
     <Content Include="res\reader\js\reader.js" />
     <Content Include="res\reader\js\reader.min.js" />
     <Content Include="res\reader\robots.txt" />
+    <Content Include="res\values\Bookmark.xml" />
     <None Include="BookViewerApp_StoreKey.pfx" />
     <Content Include="res\reader\font\fontello.eot" />
     <Content Include="res\reader\font\fontello.ttf" />
