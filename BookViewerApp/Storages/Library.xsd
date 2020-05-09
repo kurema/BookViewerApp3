@@ -65,6 +65,7 @@
             <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
             <xs:attribute name="language" type="xs:language" use="optional" default="en"/>
             <xs:attribute name="default" type="xs:boolean" use="optional" default="false"/>
+            <xs:attribute name="title" type="xs:string" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>

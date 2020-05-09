@@ -56,7 +56,7 @@ namespace kurema.FileExplorerControl.Views
             winui.TreeViewNode ctreenode = null;
             foreach (var item in list)
             {
-                ctreenode = cnode.FirstOrDefault(a => a.Content is ViewModels.FileItemViewModel fv2 && fv2.Path == item.Path);
+                ctreenode = cnode.FirstOrDefault(a => a.Content is ViewModels.FileItemViewModel fv2 && fv2 == item);
                 if (ctreenode == null) continue;
                 if (ctreenode.Content is ViewModels.FileItemViewModel fvm && fvm.Children == null) await fvm.UpdateChildren();
                 ctreenode.IsExpanded = true;

@@ -77,9 +77,10 @@ namespace BookViewerApp.Storages
             var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
             if (bookmark_local != null)
             {
-                //Refer setting
-                var local = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture)?.AsFileItem(bookmarkAction);
-                if (local != null) list.Insert(0, new ContainerItem("Local bookmark", LocalBookmark.FileName, local));
+                //ToDo:Refer setting
+                var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
+                var local = bookmarksCulture?.AsFileItem(bookmarkAction);
+                if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local));
             }
 
             var container = new ContainerItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", list.ToArray())
@@ -198,14 +199,15 @@ namespace BookViewerApp.Storages
 
     namespace Library
     {
-        [System.SerializableAttribute()]
-        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        [Serializable()]
+        [System.Xml.Serialization.XmlType(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
     "ry.xsd")]
-        [System.Xml.Serialization.XmlRootAttribute(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        [System.Xml.Serialization.XmlRoot(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
         "ry.xsd", IsNullable = false)]
         public partial class bookmarks_library
         {
-            [System.Xml.Serialization.XmlArrayItem("bookmarks_collection", IsNullable = false)]
+            [System.Xml.Serialization.XmlArrayItem("bookmarks", IsNullable = false)]
+            [System.Xml.Serialization.XmlArray(ElementName = "multilingual")]
             public libraryBookmarks[] bookmarks;
 
             public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
@@ -217,7 +219,7 @@ namespace BookViewerApp.Storages
                 {
                     if (item.@default) defaultBookmarks = item;
                     if (item.language == culture.Name) return item;
-                    if (item.language == culture.TwoLetterISOLanguageName) return item;
+                    if (item.language == culture.TwoLetterISOLanguageName) languageMatchedBookmarks = item;
                 }
                 return languageMatchedBookmarks ?? defaultBookmarks;
             }

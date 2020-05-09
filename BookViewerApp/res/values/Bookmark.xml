@@ -1,16 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <bookmarks_library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd">
-  <bookmarks>
-    <bookmarks_collection default="true">
+  <multilingual>
+    <bookmarks default="true" title="App bookmark">
       <container title="Search">
         <bookmark url="https://www.google.com/" title="Google" />
       </container>
-    </bookmarks_collection>
-    <bookmarks_collection language="ja">
+    </bookmarks>
+    <bookmarks language="ja" title="おすすめ">
       <container title="検索">
         <bookmark url="https://www.google.com/" title="Google" />
         <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
       </container>
-    </bookmarks_collection>
-  </bookmarks>
+      <container title="本棚">
+        <bookmark url="https://play.google.com/books" title="Google Play" />
+        <bookmark url="https://book.dmm.com/library/" title="DMM電子書籍" />
+      </container>
+    </bookmarks>
+  </multilingual>
 </bookmarks_library>

@@ -68,7 +68,7 @@
                 <controls:DataGridTemplateColumn>
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="20"/>
+                            <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="25"/>
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
@@ -122,7 +122,7 @@
                             <DataTemplate>
                                 <Button Margin="5" Tapped="Button_Tapped_Open" ContextRequested="Button_ContextRequested">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="20"/>
+                                        <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="25"/>
                                         <TextBlock Text="{Binding Title}" />
                                     </StackPanel>
                                 </Button>

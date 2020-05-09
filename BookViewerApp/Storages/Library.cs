@@ -329,6 +329,8 @@ namespace BookViewerApp.Storages.Library {
         
         private bool defaultField;
         
+        private string titleField;
+        
         public libraryBookmarks() {
             this.languageField = "en";
             this.defaultField = false;
@@ -370,6 +372,18 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.defaultField = value;
                 this.RaisePropertyChanged("default");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
             }
         }
         
