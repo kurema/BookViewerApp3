@@ -198,6 +198,7 @@ namespace BookViewerApp.Books
                 {
                     var s = Content.Open();
                     var ms = new MemoryStream();
+                    //await s.CopyToAsync(ms);
                     s.CopyTo(ms);
                     s.Dispose();
                     cache = ms.AsRandomAccessStream();

@@ -79,7 +79,7 @@ namespace BookViewerApp.Books
         {
             var image = new BitmapImage();
             stream.Seek(0);
-            image.SetSource(stream);
+            image?.SetSource(stream);
             return Task.FromResult(image);
         }
 

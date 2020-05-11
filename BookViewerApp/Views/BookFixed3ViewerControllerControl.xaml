@@ -370,11 +370,8 @@
                                 Maximum="{Binding PagesCount}"
                                 Value="{Binding PageSelectedDisplay,Mode=TwoWay}"
                                 RenderTransformOrigin="0.5,0.5" 
-                                >
-                                <Slider.RenderTransform>
-                                    <CompositeTransform ScaleX="{Binding Path=Reversed,Converter={StaticResource ResourceKey=BoolToDoubleConverter}}"/>
-                                </Slider.RenderTransform>
-                            </Slider>
+                                    IsDirectionReversed="{Binding Path=Reversed}"
+                                />
                             <Grid x:Name="PageTextGrid"
                                             Margin="12,0"
                                             Grid.Row="1"

@@ -35,14 +35,11 @@ namespace BookViewerApp.Views
             get
             {
                 return (ImageSource)GetValue(Source1Property);
-                //return (ImageSource)ChildrenCache[0].GetValue(Image.SourceProperty);
-                //var result = (ImageSource)GetValue(Source1Property);
-                //if (result == null && ChildrenCache.Length > 0 && ChildrenCache[0] != null) Source1 = result = ChildrenCache[0].Source;
-                //return result;
             }
             set
             {
-                ChildrenCache[0].SetValue(Image.SourceProperty, value);
+                ChildrenCache[0].Source = value;
+                if (Children.Count > 0 && Children[0] is Image image) image.Source = value;
                 SetValue(Source1Property, value);
             }
         }
@@ -59,10 +56,10 @@ namespace BookViewerApp.Views
             get
             {
                 return (ImageSource)GetValue(Source2Property);
-                //return (ImageSource)ChildrenCache[1].GetValue(Image.SourceProperty);
             }
             set {
-                ChildrenCache[1].SetValue(Image.SourceProperty, value);
+                ChildrenCache[1].Source = value;
+                if (Children.Count > 1 && Children[1] is Image image) image.Source = value;
                 SetValue(Source2Property, value);
             }
         }

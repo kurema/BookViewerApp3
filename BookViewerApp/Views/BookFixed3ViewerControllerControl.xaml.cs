@@ -152,6 +152,22 @@ namespace BookViewerApp.Views
             }
         }
 
+        //Delete this.
+        //private void ProgressSlider_KeyDown(object sender, KeyRoutedEventArgs e)
+        //{
+        //    switch (e.Key)
+        //    {
+        //        case Windows.System.VirtualKey.Left:
+        //            if (Binding?.PageVisualAddCommand?.CanExecute(-1) == true) Binding.PageVisualAddCommand.Execute(-1);
+        //            e.Handled = true;
+        //            break;
+        //        case Windows.System.VirtualKey.Right:
+        //            if (Binding?.PageVisualAddCommand?.CanExecute(1) == true) Binding.PageVisualAddCommand.Execute(1);
+        //            e.Handled = true;
+        //            break;
+        //    }
+        //}
+
         //private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         //{
         //    if (Binding?.PageSelectedViewModel != null)

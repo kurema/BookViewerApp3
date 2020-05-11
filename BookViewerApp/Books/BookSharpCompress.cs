@@ -155,26 +155,27 @@ namespace BookViewerApp.Books
             catch { }
         }
 
-        private Windows.Storage.Streams.IRandomAccessStream GetStream()
+        private Task<Windows.Storage.Streams.IRandomAccessStream> GetStream()
         {
             try
             {
                 var s = Entry.OpenEntryStream();
                 var ms = new MemoryStream();
+                //await s.CopyToAsync(ms);
                 s.CopyTo(ms);
                 s.Dispose();
                 ms.Seek(0, SeekOrigin.Begin);
-                return ms.AsRandomAccessStream();
+                return Task.FromResult(ms.AsRandomAccessStream());
             }
             catch
             {
-                return null;
+                return Task.FromResult<Windows.Storage.Streams.IRandomAccessStream>(null);
             }
         }
 
         public async Task SetBitmapAsync(BitmapImage image)
         {
-            await new ImagePageStream(GetStream()).SetBitmapAsync(image);
+            await new ImagePageStream(await GetStream())?.SetBitmapAsync(image);
         }
 
         public Task<bool> UpdateRequiredAsync()
