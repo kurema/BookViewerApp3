@@ -337,4 +337,19 @@
   <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
     <value>登録不能</value>
   </data>
+  <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
+    <value>プリセットのブックマークを表示。</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
+    <value>プリセットのブックマーク</value>
+  </data>
+  <data name="Setting.Group.Explorer" xml:space="preserve">
+    <value>ファイラー</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
+    <value>検索エンジンのURL(%s：検索語句)。</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
+    <value>検索エンジン</value>
+  </data>
 </root>

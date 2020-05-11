@@ -337,4 +337,19 @@ Annullare la registrazione?</value>
   <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
     <value>Impossibile registrarsi</value>
   </data>
+  <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
+    <value>Mostra segnalibri predefiniti.</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
+    <value>Mostra segnalibri predefiniti</value>
+  </data>
+  <data name="Setting.Group.Explorer" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
+    <value>Imposta l'URL del motore di ricerca che viene utilizzato durante la ricerca dalla barra degli indirizzi (% s al posto della query).</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
+    <value>Ricerca</value>
+  </data>
 </root>

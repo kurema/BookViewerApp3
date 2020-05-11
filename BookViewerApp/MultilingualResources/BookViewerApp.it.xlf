@@ -447,6 +447,28 @@ Annullare la registrazione?</target>
           <source>Unable to registered</source>
           <target state="translated">Impossibile registrarsi</target>
         </trans-unit>
+        <trans-unit id="Setting_ShowPresetBookmarks.Description" translate="yes" xml:space="preserve">
+          <source>Show preset bookmarks.</source>
+          <target state="translated">Mostra segnalibri predefiniti.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowPresetBookmarks.Title" translate="yes" xml:space="preserve">
+          <source>Show preset bookmarks</source>
+          <target state="translated">Mostra segnalibri predefiniti</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Explorer" translate="yes" xml:space="preserve">
+          <source>Explorer</source>
+          <target state="translated">Explorer</target>
+        </trans-unit>
+        <trans-unit id="Setting_WebSearchEngine.Description" translate="yes" xml:space="preserve">
+          <source>Set the URL of search engine which is used when searching from address bar(%s in place of query).</source>
+          <target state="needs-review-translation">Imposta l'URL del motore di ricerca che viene utilizzato durante la ricerca dalla barra degli indirizzi (% s al posto della query).</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="Setting_WebSearchEngine.Title" translate="yes" xml:space="preserve">
+          <source>Search</source>
+          <target state="needs-review-translation">Ricerca</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
       </group>
     </body>
   </file>

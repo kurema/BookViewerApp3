@@ -198,6 +198,10 @@ namespace BookViewerApp.Helper
                     {
                         vm.HomePage = homepage;
                     }
+                    if (SettingStorage.GetValue("WebSearchEngine") is string searchEngine)
+                    {
+                        vm.SearchEngine = searchEngine;
+                    }
 
                     vm.PropertyChanged += (s, e) =>
                     {

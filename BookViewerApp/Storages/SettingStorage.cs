@@ -43,7 +43,9 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ZoomButtonShowTimespan","ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum = 0,Maximum = 10},
                         new SettingInstance("CommandBarShowTimespan","CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum = 0,Maximum = 10},
                         new SettingInstance("WebHomePage","WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance("WebSearchEngine","WebSearchEngine","http://www.google.co.jp/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
                         new SettingInstance("RespectPageDirectionInfo","RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("ShowPresetBookmarks","ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                     };
             }
         }

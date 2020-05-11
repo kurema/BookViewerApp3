@@ -79,6 +79,11 @@ namespace kurema.BrowserControl.ViewModels
         public string HomePage { get => _HomePage; set => SetProperty(ref _HomePage, value); }
 
 
+        private string _SearchEngine = "https://www.google.com/search?q=%s";
+        public string SearchEngine { get => _SearchEngine; set => SetProperty(ref _SearchEngine, value); }
+
+
+
         private string _Title;
         public string Title { get => _Title; set => SetProperty(ref _Title, value); }
 
@@ -150,11 +155,20 @@ namespace kurema.BrowserControl.ViewModels
                     {
                         if (value.Contains(".") && !value.Contains(" ") && !value.Contains("　"))
                         {
-                            Content?.Navigate(new Uri("https://" + value));
+                            try
+                            {
+                                Content?.Navigate(new Uri("https://" + value));
+                            }
+                            catch { }
                         }
                         else
                         {
-                            Content?.Navigate(new Uri("https://www.google.com/search?q=" + value));
+                            try
+                            {
+                                var word = (this.SearchEngine ?? "https://www.google.com/search?q=%s").Replace("%s", value);
+                                Content?.Navigate(new Uri(word));
+                            }
+                            catch { }
                         }
                     }
                     else
@@ -212,7 +226,7 @@ namespace kurema.BrowserControl.ViewModels
 
                 public WebView ContentView
                 {
-                    get => Content.Content; 
+                    get => Content.Content;
                 }
 
                 protected void UpdateContent(WebView sender, WebViewContentLoadingEventArgs args)

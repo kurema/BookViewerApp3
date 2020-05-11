@@ -78,9 +78,12 @@ namespace BookViewerApp.Storages
             if (bookmark_local != null)
             {
                 //ToDo:Refer setting
-                var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
-                var local = bookmarksCulture?.AsFileItem(bookmarkAction);
-                if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local));
+                if ((bool)SettingStorage.GetValue("ShowPresetBookmarks"))
+                {
+                    var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
+                    var local = bookmarksCulture?.AsFileItem(bookmarkAction);
+                    if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local));
+                }
             }
 
             var container = new ContainerItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", list.ToArray())
@@ -128,8 +131,9 @@ namespace BookViewerApp.Storages
 
             void CopyContainerChildren(ref ContainerItem to, ContainerItem from)
             {
+                if (to == null) return;
                 to.Children.Clear();
-                foreach (var item in from.Children) to.Children.Add(item);
+                if (from != null) foreach (var item in from.Children) to.Children.Add(item);
             }
 
             LibraryUpdateRequest += async (s, e) =>

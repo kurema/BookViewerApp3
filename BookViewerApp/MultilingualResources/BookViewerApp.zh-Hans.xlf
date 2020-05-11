@@ -440,6 +440,26 @@ Are you sure to unregister?</target>
           <source>Unable to registered</source>
           <target state="new">Unable to registered</target>
         </trans-unit>
+        <trans-unit id="Setting_ShowPresetBookmarks.Description" translate="yes" xml:space="preserve">
+          <source>Show preset bookmarks.</source>
+          <target state="new">Show preset bookmarks.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowPresetBookmarks.Title" translate="yes" xml:space="preserve">
+          <source>Show preset bookmarks</source>
+          <target state="new">Show preset bookmarks</target>
+        </trans-unit>
+        <trans-unit id="Setting.Group.Explorer" translate="yes" xml:space="preserve">
+          <source>Explorer</source>
+          <target state="new">Explorer</target>
+        </trans-unit>
+        <trans-unit id="Setting_WebSearchEngine.Description" translate="yes" xml:space="preserve">
+          <source>Set the URL of search engine which is used when searching from address bar(%s in place of query).</source>
+          <target state="new">Set the URL of search engine which is used when searching from address bar(%s in place of query).</target>
+        </trans-unit>
+        <trans-unit id="Setting_WebSearchEngine.Title" translate="yes" xml:space="preserve">
+          <source>Search</source>
+          <target state="new">Search</target>
+        </trans-unit>
       </group>
     </body>
   </file>

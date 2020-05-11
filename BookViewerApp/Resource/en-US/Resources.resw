@@ -442,4 +442,19 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
     <value>Unable to registered</value>
   </data>
+  <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
+    <value>Show preset bookmarks.</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
+    <value>Show preset bookmarks</value>
+  </data>
+  <data name="Setting.Group.Explorer" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
+    <value>Set the URL of search engine which is used when searching from address bar(%s in place of query).</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>
