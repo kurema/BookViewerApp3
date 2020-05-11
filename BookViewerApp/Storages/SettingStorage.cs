@@ -27,32 +27,34 @@ namespace BookViewerApp.Storages
                 return _SettingInstances = _SettingInstances ??
                     new SettingInstance[]
                     {
-                        new SettingInstance("DefaultFullScreen","DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("DefaultPageReverse","DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("ShowRightmostAndLeftmost","ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("SyncBookmarks","SyncBookmarks",true,new TypeConverters.BoolConverter(),group:"Cloud"),
-                        new SettingInstance("SaveLastReadPage","SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("TileWidth","TileWidth",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete") {Minimum=0,Maximum=1000 },
-                        new SettingInstance("TileHeight","TileHeight",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum=0,Maximum=1000 },
-                        new SettingInstance("BackgroundBrightness","BackgroundBrightness",90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){Minimum=0,Maximum=100 },
-                        new SettingInstance("ScrollAnimation","ScrollAnimation",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("FolderNameToExclude","FolderNameToExclude",null,new TypeConverters.RegexConverter(),group:"Library"),
-                        new SettingInstance("BookNameTrim","BookNameTrim",null,new TypeConverters.RegexConverter(),group:"Library"),
-                        new SettingInstance("SortNaturalOrder","SortNaturalOrder",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("SortCoverComesFirst","SortCoverComesFirst",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("ZoomButtonShowTimespan","ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum = 0,Maximum = 10},
-                        new SettingInstance("CommandBarShowTimespan","CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete"){Minimum = 0,Maximum = 10},
-                        new SettingInstance("WebHomePage","WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
-                        new SettingInstance("WebSearchEngine","WebSearchEngine","http://www.google.co.jp/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
-                        new SettingInstance("RespectPageDirectionInfo","RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("ShowPresetBookmarks","ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance("DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("SyncBookmarks",true,new TypeConverters.BoolConverter(),group:"Cloud"),
+                        new SettingInstance("SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("TileWidth",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false) {Minimum=0,Maximum=1000 },
+                        new SettingInstance("TileHeight",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum=0,Maximum=1000 },
+                        new SettingInstance("BackgroundBrightness",90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){Minimum=0,Maximum=100 },
+                        new SettingInstance("ScrollAnimation",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("FolderNameToExclude",null,new TypeConverters.RegexConverter(),group:"Library"),
+                        new SettingInstance("BookNameTrim",null,new TypeConverters.RegexConverter(),group:"Library"),
+                        new SettingInstance("SortNaturalOrder",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("SortCoverComesFirst",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
+                        new SettingInstance("CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
+                        new SettingInstance("WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance("WebSearchEngine","http://www.google.co.jp/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance("RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance("ExplorerContentStyle",kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
+                        new SettingInstance("ExplorerIconSize",75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),
                     };
             }
         }
 
         public static object GetValue(string Key)
         {
-            foreach(var item in SettingInstances)
+            foreach (var item in SettingInstances)
             {
                 if (item.Key == Key)
                 {
@@ -60,6 +62,11 @@ namespace BookViewerApp.Storages
                 }
             }
             return null;
+        }
+
+        public static void SetValue(string Key,object value)
+        {
+            SettingInstances?.FirstOrDefault(a => a.Key == Key)?.SetValue(value);
         }
 
         public class SettingInstance
@@ -74,10 +81,12 @@ namespace BookViewerApp.Storages
             public ITypeConverter Converter { get; private set; }
             private object Cache;
 
-            public object Minimum{ get; set; }
+            public object Minimum { get; set; }
             public object Maximum { get; set; }
 
             public string GroupName { get; set; }
+
+            public bool IsVisible { get; set; }
 
             private Windows.Storage.ApplicationDataContainer Setting => (IsLocal ? LocalSettings : RoamingSettings);
 
@@ -86,15 +95,17 @@ namespace BookViewerApp.Storages
                 return Converter.GetConvertType();
             }
 
-            public SettingInstance(string Key,string StringResourceKey,object DefaultValue,ITypeConverter Converter,bool IsLocal = true, Func<object, bool> CheckValid=null,string group="")
+            public SettingInstance(string Key, object DefaultValue, ITypeConverter Converter, bool IsLocal = true, Func<object, bool> CheckValid = null, string group = "", bool isVisible = true)
             {
                 this.Key = Key;
-                this.StringResourceKey = "Setting_"+StringResourceKey;
+                this.StringResourceKey = "Setting_" + Key;
                 this.DefaultValue = DefaultValue;
                 this.IsLocal = IsLocal;
                 this.Converter = Converter;
                 this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { object result; return Converter.TryGetTypeGeneral(a.ToString(), out result); });
                 this.GroupName = group;
+                this.IsVisible = isVisible;
+
             }
 
             public void SetValue(object Value)
@@ -130,7 +141,7 @@ namespace BookViewerApp.Storages
             public object GetValue()
             {
                 object data;
-                if( Setting.Values.TryGetValue(Key, out data) == false)
+                if (Setting.Values.TryGetValue(Key, out data) == false)
                 {
                     Cache = DefaultValue;
                     return DefaultValue;
@@ -138,7 +149,7 @@ namespace BookViewerApp.Storages
                 else
                 {
                     object result;
-                    if(Converter.TryGetTypeGeneral(data.ToString(),out result))
+                    if (Converter.TryGetTypeGeneral(data.ToString(), out result))
                     {
                         Cache = result;
                         return result;
@@ -233,6 +244,37 @@ namespace BookViewerApp.Storages
 
             }
 
+            public class EnumConverter<T> : ITypeConverter where T : Enum
+            {
+                public Type GetConvertType()
+                {
+                    return typeof(T);
+                }
+
+                public string GetStringGeneral(object value)
+                {
+                    return value.ToString();
+                }
+
+                public bool TryGetTypeGeneral(string value, out object result)
+                {
+                    var values = typeof(T).GetEnumValues();
+                    foreach (var t in values)
+                    {
+                        var name = Enum.GetName(typeof(T), t);
+                        if (name == value)
+                        {
+                            result = (T)t;
+                            return true;
+                        }
+                    }
+                    {
+                        result = default(T);
+                        return false;
+                    }
+                }
+            }
+
             public class DoubleConverter : ITypeConverter
             {
                 public Type GetConvertType()
@@ -276,7 +318,8 @@ namespace BookViewerApp.Storages
 
                 public bool TryGetTypeGeneral(string value, out object result)
                 {
-                    try{
+                    try
+                    {
                         result = new System.Text.RegularExpressions.Regex(value);
                         return true;
                     }
@@ -312,7 +355,8 @@ namespace BookViewerApp.Storages
                     using (System.IO.TextReader tr = new System.IO.StringReader(value))
                     {
                         System.Xml.XmlReader xr;
-                        try {
+                        try
+                        {
                             xr = System.Xml.XmlReader.Create(tr);
                         }
                         catch

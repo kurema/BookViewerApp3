@@ -32,8 +32,19 @@ namespace BookViewerApp.Views
 
         public ImageSource Source1
         {
-            get { return (ImageSource)GetValue(Source1Property); }
-            set { SetValue(Source1Property, value); }
+            get
+            {
+                return (ImageSource)GetValue(Source1Property);
+                //return (ImageSource)ChildrenCache[0].GetValue(Image.SourceProperty);
+                //var result = (ImageSource)GetValue(Source1Property);
+                //if (result == null && ChildrenCache.Length > 0 && ChildrenCache[0] != null) Source1 = result = ChildrenCache[0].Source;
+                //return result;
+            }
+            set
+            {
+                ChildrenCache[0].SetValue(Image.SourceProperty, value);
+                SetValue(Source1Property, value);
+            }
         }
 
         public static readonly DependencyProperty Source2Property = DependencyProperty.Register(
@@ -45,8 +56,15 @@ namespace BookViewerApp.Views
 
         public ImageSource Source2
         {
-            get { return (ImageSource)GetValue(Source2Property); }
-            set { SetValue(Source2Property, value); }
+            get
+            {
+                return (ImageSource)GetValue(Source2Property);
+                //return (ImageSource)ChildrenCache[1].GetValue(Image.SourceProperty);
+            }
+            set {
+                ChildrenCache[1].SetValue(Image.SourceProperty, value);
+                SetValue(Source2Property, value);
+            }
         }
 
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
@@ -174,13 +192,13 @@ namespace BookViewerApp.Views
         Half:
             DesireChild(1);
             throw new NotImplementedException();
-            //DisplayedStatus = DisplayedStatusEnum.HalfFirst;
-            //goto Conclude;
+        //DisplayedStatus = DisplayedStatusEnum.HalfFirst;
+        //goto Conclude;
 
         HalfSecond:
             throw new NotImplementedException();
-            //DisplayedStatus = DisplayedStatusEnum.HalfSecond;
-            //goto Conclude;
+        //DisplayedStatus = DisplayedStatusEnum.HalfSecond;
+        //goto Conclude;
 
         Double:
             {

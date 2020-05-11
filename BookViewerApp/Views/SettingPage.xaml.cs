@@ -35,7 +35,7 @@ namespace BookViewerApp.Views
             if (SettingStorage.SettingInstances == null) return;
 
             var src = new List<SettingViewModel>(SettingStorage.SettingInstances.Length);
-            foreach(var item in SettingStorage.SettingInstances)
+            foreach (var item in SettingStorage.SettingInstances.Where(a => a.IsVisible))
             {
                 src.Add(new SettingViewModel(item));
             }
@@ -125,7 +125,7 @@ namespace BookViewerApp.Views
 
         private void CurrentView_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
         {
-            if (Frame?.CanGoBack==true)
+            if (Frame?.CanGoBack == true)
             {
                 Frame.GoBack();
                 e.Handled = true;
@@ -160,11 +160,12 @@ namespace BookViewerApp.Views
                 {
                     return base.SelectTemplateCore(item, container);
                 }
-                var itemVM = (SettingPage.SettingViewModel) item;
-                if(itemVM.Type == typeof(bool))
+                var itemVM = (SettingPage.SettingViewModel)item;
+                if (itemVM.Type == typeof(bool))
                 {
                     return TemplateBool;
-                }else if (itemVM.Type == typeof(int))
+                }
+                else if (itemVM.Type == typeof(int))
                 {
                     return TemplateInt;
                 }

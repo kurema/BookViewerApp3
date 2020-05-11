@@ -118,6 +118,39 @@ namespace BookViewerApp.Helper
                                     }
                                 }
                             };
+
+                            if(control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel fvm && fvm.Content!=null)
+                            {
+                                void Content_PropertyChanged(object _, System.ComponentModel.PropertyChangedEventArgs e)
+                                {
+                                    switch (e.PropertyName)
+                                    {
+                                        case nameof(fvm.Content.ContentStyle):
+                                            SettingStorage.SetValue("ExplorerContentStyle", fvm.Content.ContentStyle);
+                                            break;
+                                        case nameof(fvm.Content.IconSize):
+                                            SettingStorage.SetValue("ExplorerIconSize", fvm.Content.IconSize);
+                                            break;
+                                    }
+                                }
+
+                                fvm.Content.PropertyChanged += Content_PropertyChanged;
+                                fvm.PropertyChanged += (s, e) =>
+                                {
+                                    if (e.PropertyName == nameof(fvm.Content))
+                                    {
+                                        fvm.Content.PropertyChanged += Content_PropertyChanged;
+                                    }
+                                };
+
+                                if (SettingStorage.GetValue("ExplorerContentStyle") is kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles f) {
+                                    fvm.Content.ContentStyle = f;
+                                }
+                                if(SettingStorage.GetValue("ExplorerIconSize") is double d)
+                                {
+                                    fvm.Content.IconSize = d;
+                                }
+                            }
                         }
                     }
                 }
