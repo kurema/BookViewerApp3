@@ -99,9 +99,17 @@ namespace BookViewerApp.ViewModels
                         //サムネイル作成が失敗しても大した問題はない。
                     }
                 }
-                PathStorage.AddOrReplace(value.Path, bookf.ID);
-                await PathStorage.Content.SaveAsync();
-
+                {
+                    await PathStorage.Content.GetContentAsync();
+                    PathStorage.AddOrReplace(value.Path, bookf.ID);
+                    await PathStorage.Content.SaveAsync();
+                }
+                {
+                    await HistoryStorage.Content.GetContentAsync();
+                    await HistoryStorage.AddHistory(new HistoryStorage.HistoryInfo() { Date = DateTimeOffset.Now, Id = bookf.ID, Name = value.Name, Path = value.Path });
+                    await HistoryStorage.Content.SaveAsync();
+                    LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+                }
                 Initialize(bookf, target);
                 this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
             }
@@ -489,6 +497,7 @@ namespace BookViewerApp.ViewModels
 
         private async void SetImageNoWait(BitmapImage im)
         {
+            await Semaphore.WaitAsync();
             try
             {
                 await Page.SetBitmapAsync(im);
@@ -497,7 +506,14 @@ namespace BookViewerApp.ViewModels
             {
                 // ignored
             }
+            finally
+            {
+                Semaphore.Release();
+            }
         }
+
+        public static System.Threading.SemaphoreSlim Semaphore = new System.Threading.SemaphoreSlim(1, 1);
+
     }
 
 

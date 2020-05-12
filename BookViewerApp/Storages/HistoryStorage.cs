@@ -15,12 +15,11 @@ namespace BookViewerApp.Storages
 
         public async static Task AddHistory(HistoryInfo info)
         {
-            Content.TryOperate<HistoryInfo>(a => {
-                a.Add(info);
+            await Content.GetContentAsync();
+            var result = Content.Content.Where(b => b.Id != info.Id).OrderByDescending(b => b.Date).Take(MaximumHistoryCount).ToList();
+            result.Insert(0, info);
+            Content.Content = result.ToArray();
 
-                var sorted = a.OrderByDescending(b => b.Date).ToArray();
-                for (int i = MaximumHistoryCount; i < sorted.Length; i++) a.Remove(sorted[i]);
-            });
             await Content.SaveAsync();
         }
 
@@ -46,6 +45,11 @@ namespace BookViewerApp.Storages
                     {
                         return (await Managers.BookManager.StorageItemGet(Token, PathRelative)) as Windows.Storage.StorageFile;
                     }
+                }
+                else if (!string.IsNullOrWhiteSpace(Path))
+                {
+                    var lib = await Managers.BookManager.GetTokenFromPath(Path);
+                    return (await lib.GetStorageFolderAsync()) as Windows.Storage.StorageFile;
                 }
                 return null;
             }

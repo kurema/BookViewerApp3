@@ -88,21 +88,22 @@ namespace BookViewerApp.Books
             await Functions.SaveStreamToFile(stream, file);
         }
 
-        public Task SetBitmapAsync(BitmapImage image)
+        public async Task SetBitmapAsync(BitmapImage image)
         {
             if (stream == null)
             {
-                return Task.CompletedTask;
+                return;
             }
             stream.Seek(0);
             image?.SetSource(stream);
-            return Task.CompletedTask;
+            return;
         }
 
         public Task<bool> UpdateRequiredAsync()
         {
             return Task.FromResult(false);
         }
+
     }
 }
 

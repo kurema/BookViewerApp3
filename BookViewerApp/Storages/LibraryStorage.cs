@@ -281,15 +281,15 @@ namespace BookViewerApp.Storages
         {
             public async Task<IFileItem> AsFileItem()
             {
-                var storage = await GetStorageFolderAsync();
+                var storage = await GetStorageFolderAsync() as Windows.Storage.StorageFolder;
                 if (storage == null) return null;
                 return new StorageFileItem(storage);
             }
 
-            public async Task<Windows.Storage.StorageFolder> GetStorageFolderAsync()
+            public async Task<Windows.Storage.IStorageItem> GetStorageFolderAsync()
             {
                 var item = await Managers.BookManager.StorageItemGet(this.token, this.path);
-                return item as Windows.Storage.StorageFolder;
+                return item;
             }
 
             public bool Compare(libraryLibraryFolder folder)
