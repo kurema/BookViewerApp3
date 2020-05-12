@@ -37,6 +37,13 @@ namespace BookViewerApp.Books
         double TargetHeight { get; }
     }
 
+    public class BookEpub : IBook
+    {
+        public string ID => Guid.NewGuid().ToString();
+
+        public event EventHandler Loaded;
+    }
+
     public class PageOptions : IPageOptions
     {
         public double TargetWidth { get { return _TargetWidth; } set { _TargetWidth = value; OnPropertyChanged(nameof(TargetWidth)); } }

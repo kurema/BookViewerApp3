@@ -39,7 +39,7 @@ namespace BookViewerApp.Helper
             public static async void OpenBookPicked(Frame frame, FrameworkElement sender)
             {
                 var file = await BookManager.PickFile();
-                UIHelper.FrameOperation.OpenBook(file, frame, sender);
+                OpenBook(file, frame, sender);
             }
 
             public static void OpenBook(Windows.Storage.IStorageFile file, Frame frame, FrameworkElement sender = null)

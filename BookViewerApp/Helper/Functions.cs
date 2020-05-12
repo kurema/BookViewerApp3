@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
+using Windows.Graphics.Imaging;
 
 namespace BookViewerApp.Helper
 {
-    static class Functions
+    public static class Functions
     {
         public static string GetHash(string s)
         {
@@ -19,7 +20,7 @@ namespace BookViewerApp.Helper
             return Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(hash);
         }
 
-        public static string CombineStringAndDouble(string str,double value)
+        public static string CombineStringAndDouble(string str, double value)
         {
             return "\"" + str + "\"" + "<" + value.ToString() + "> ";
         }
@@ -39,7 +40,7 @@ namespace BookViewerApp.Helper
             return Windows.Storage.ApplicationData.Current.LocalCacheFolder;
         }
 
-        public static async Task SaveStreamToFile(Windows.Storage.Streams.IRandomAccessStream stream,Windows.Storage.IStorageFile file)
+        public static async Task SaveStreamToFile(Windows.Storage.Streams.IRandomAccessStream stream, Windows.Storage.IStorageFile file)
         {
             using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
             {
@@ -79,6 +80,36 @@ namespace BookViewerApp.Helper
             catch
             {
                 return null;
+            }
+        }
+
+        public static async Task ResizeImage(Windows.Storage.Streams.IRandomAccessStream origin, Windows.Storage.Streams.IRandomAccessStream result, uint maxSize, Action extractAction = null)
+        {
+            var decoder = await BitmapDecoder.CreateAsync(origin);
+            var softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+
+            double scale = (double)maxSize / Math.Max(decoder.PixelWidth, decoder.PixelHeight);
+
+            var propset = new BitmapPropertySet();
+            propset.Add("ImageQuality", new BitmapTypedValue(0.5, Windows.Foundation.PropertyType.Single));
+            var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, result);
+            encoder.SetSoftwareBitmap(softwareBitmap);
+
+            if (scale >= 1)
+            {
+                extractAction?.Invoke();
+                return;
+            }
+            scale = Math.Min(scale, 0.5);
+            encoder.BitmapTransform.ScaledWidth = (uint)(decoder.PixelWidth * scale);
+            encoder.BitmapTransform.ScaledHeight = (uint)(decoder.PixelHeight * scale);
+            encoder.IsThumbnailGenerated = false;
+            try
+            {
+                await encoder.FlushAsync();
+            }
+            catch
+            {
             }
         }
 

@@ -160,7 +160,7 @@ namespace BookViewerApp.Views
         {
             var newTab = new winui.Controls.TabViewItem();
             var titleString = Helper.UIHelper.GetTitleByResource(titleId);
-            newTab.Header = String.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
+            newTab.Header = string.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
 
             Frame frame = new Frame();
             newTab.Content = frame;

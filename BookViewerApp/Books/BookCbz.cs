@@ -179,15 +179,19 @@ namespace BookViewerApp.Books
             return Task.FromResult(false);
         }
 
-        public Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width)
         {
             try
             {
-                //if (!System.IO.File.Exists(file.Path))
-                Content.ExtractToFile(file.Path, true);
+                using (var s = Content.Open())
+                {
+                    var ms = new MemoryStream();
+                    await s.CopyToAsync(ms);
+                    await Functions.ResizeImage(ms.AsRandomAccessStream(), await file.OpenReadAsync(), width, () => { Content.ExtractToFile(file.Path, true); });
+                }
             }
             catch { }
-            return Task.CompletedTask;
+            return;
         }
 
         public async Task SetBitmapAsync(BitmapImage image)
@@ -196,12 +200,13 @@ namespace BookViewerApp.Books
             {
                 if (cache == null)
                 {
-                    var s = Content.Open();
-                    var ms = new MemoryStream();
-                    //await s.CopyToAsync(ms);
-                    s.CopyTo(ms);
-                    s.Dispose();
-                    cache = ms.AsRandomAccessStream();
+                    using (var s = Content.Open())
+                    {
+                        var ms = new MemoryStream();
+                        //await s.CopyToAsync(ms);
+                        s.CopyTo(ms);
+                        cache = ms.AsRandomAccessStream();
+                    }
                 }
                 await new ImagePageStream(cache).SetBitmapAsync(image);
             }

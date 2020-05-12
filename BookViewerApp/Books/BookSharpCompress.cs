@@ -145,11 +145,19 @@ namespace BookViewerApp.Books
                 //await Functions.SaveStreamToFile(GetStream(), file);
                 using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    var s = Entry.OpenEntryStream();
-                    var buffer = new byte[s.Length];
-                    await s.ReadAsync(buffer, 0, (int)s.Length);
-                    var ibuffer = buffer.AsBuffer();
-                    await fileStream.WriteAsync(ibuffer);
+                    using (var s = Entry.OpenEntryStream())
+                    {
+
+                        var ms = new MemoryStream();
+                        await s.CopyToAsync(ms);
+                        await Functions.ResizeImage(ms.AsRandomAccessStream(), await file.OpenReadAsync(), width, async () =>
+                        {
+                            var buffer = new byte[s.Length];
+                            await s.ReadAsync(buffer, 0, (int)s.Length);
+                            var ibuffer = buffer.AsBuffer();
+                            await fileStream.WriteAsync(ibuffer);
+                        });
+                    }
                 }
             }
             catch { }
