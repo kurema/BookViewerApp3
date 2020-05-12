@@ -136,7 +136,23 @@ namespace BookViewerApp.Books
 
         private SharpCompress.Archives.IArchiveEntry Entry;
 
-        public CompressedPage(SharpCompress.Archives.IArchiveEntry Entry) { this.Entry = Entry; }
+        public CompressedPage(SharpCompress.Archives.IArchiveEntry Entry)
+        {
+            this.Entry = Entry;
+            Cache = new MemoryStreamCache()
+            {
+                MemoryStreamProvider = async (th) =>
+                {
+                    using (var s = Entry.OpenEntryStream())
+                    {
+                        return await th.GetMemoryStreamAsync(s);
+                    }
+                }
+            };
+        }
+
+        private Helper.MemoryStreamCache Cache;
+
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
@@ -145,45 +161,33 @@ namespace BookViewerApp.Books
                 //await Functions.SaveStreamToFile(GetStream(), file);
                 using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    using (var s = Entry.OpenEntryStream())
+                    var ms = await Cache.GetMemoryStreamByProviderAsync();
+                    await Functions.ResizeImage(ms.AsRandomAccessStream(), fileStream, width, async () =>
                     {
-
-                        var ms = new MemoryStream();
-                        await s.CopyToAsync(ms);
-                        await Functions.ResizeImage(ms.AsRandomAccessStream(), await file.OpenReadAsync(), width, async () =>
+                        using (var s = await Cache.GetMemoryStreamByProviderAsync())
                         {
                             var buffer = new byte[s.Length];
                             await s.ReadAsync(buffer, 0, (int)s.Length);
                             var ibuffer = buffer.AsBuffer();
                             await fileStream.WriteAsync(ibuffer);
-                        });
-                    }
+                        }
+                    });
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                try
+                {
+                    await file.DeleteAsync();
+                }
+                catch { }
+            }
         }
 
-        private Task<Windows.Storage.Streams.IRandomAccessStream> GetStream()
-        {
-            try
-            {
-                var s = Entry.OpenEntryStream();
-                var ms = new MemoryStream();
-                //await s.CopyToAsync(ms);
-                s.CopyTo(ms);
-                s.Dispose();
-                ms.Seek(0, SeekOrigin.Begin);
-                return Task.FromResult(ms.AsRandomAccessStream());
-            }
-            catch
-            {
-                return Task.FromResult<Windows.Storage.Streams.IRandomAccessStream>(null);
-            }
-        }
 
         public async Task SetBitmapAsync(BitmapImage image)
         {
-            await new ImagePageStream(await GetStream())?.SetBitmapAsync(image);
+            await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync())?.AsRandomAccessStream())?.SetBitmapAsync(image);
         }
 
         public Task<bool> UpdateRequiredAsync()

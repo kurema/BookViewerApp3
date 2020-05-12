@@ -9,6 +9,8 @@ using BookViewerApp.Managers;
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
 
+using System.Threading.Tasks;
+
 namespace BookViewerApp.Helper
 {
     public static partial class UIHelper
@@ -76,7 +78,7 @@ namespace BookViewerApp.Helper
 
                             //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
                             var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
-                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate((a) => {
+                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) => {
                                 if(a is kurema.FileExplorerControl.Models.FileItems.BookmarkItem || a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
                                 {
                                     return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
@@ -85,6 +87,18 @@ namespace BookViewerApp.Helper
                                 }
                                 if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
                                 {
+                                    var id = PathStorage.GetIdFromPath(a.Path);
+                                    if (!string.IsNullOrEmpty(id))
+                                    {
+                                        var image = await ThumbnailManager.GetImageSourceAsync(id);
+                                        if (image != null)
+                                        {
+                                            return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
+                                            () => image
+                                            );
+                                        }
+                                    }
+
                                     return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
                                     () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
                                     );

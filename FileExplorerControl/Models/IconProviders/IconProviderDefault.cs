@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Windows.UI.Xaml.Media;
 
+using System.Threading.Tasks;
+
 namespace kurema.FileExplorerControl.Models.IconProviders
 {
     public class IconProviderDefault : IIconProvider
@@ -15,33 +17,33 @@ namespace kurema.FileExplorerControl.Models.IconProviders
         private static Windows.UI.Xaml.Media.Imaging.BitmapImage IconSmallCache;
         private static Windows.UI.Xaml.Media.Imaging.BitmapImage IconLargeCache;
 
-        public Func<ImageSource> GetIconSmall(IFileItem item)
+        public Task<Func<ImageSource>> GetIconSmall(IFileItem item)
         {
             if (item is ContainerItem container && container.IIconProvider != null)
             {
-                return container.IIconProvider.DefaultIconSmall;
+                return Task.FromResult(container.IIconProvider.DefaultIconSmall);
             }
             if (item?.IsFolder == true)
             {
-                return () => IconSmallCache = IconSmallCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png"));
+                return Task.FromResult<Func<ImageSource>>(() => IconSmallCache = IconSmallCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png")));
             }
-            return null;
+            return Task.FromResult<Func<ImageSource>>(null);
         }
 
-        public Func<ImageSource> GetIconLarge(IFileItem item)
+        public Task<Func<ImageSource>> GetIconLarge(IFileItem item)
         {
-            if(item is ContainerItem container && container.IIconProvider != null)
+            if (item is ContainerItem container && container.IIconProvider != null)
             {
-                return container.IIconProvider.DefaultIconLarge;
+                return Task.FromResult(container.IIconProvider.DefaultIconLarge);
             }
             if (item?.IsFolder == true)
             {
-                return () => IconLargeCache = IconLargeCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png"));
+                return Task.FromResult<Func<ImageSource>>(() => IconLargeCache = IconLargeCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png")));
             }
-            return null;
+            return Task.FromResult<Func<ImageSource>>(null);
         }
 
-        public static (ImageSource SmallIcon, ImageSource LargeIcon) GetIcon(IFileItem file, IEnumerable<IIconProvider> iconProviders)
+        public async static Task<(ImageSource SmallIcon, ImageSource LargeIcon)> GetIcon(IFileItem file, IEnumerable<IIconProvider> iconProviders)
         {
             Func<ImageSource> small = null;
             Func<ImageSource> large = null;
@@ -50,8 +52,8 @@ namespace kurema.FileExplorerControl.Models.IconProviders
 
             foreach (var item in iconProviders)
             {
-                small = small ?? item.GetIconSmall(file);
-                large = large ?? item.GetIconLarge(file);
+                small = small ?? await item.GetIconSmall(file);
+                large = large ?? await item.GetIconLarge(file);
                 smallDefault = smallDefault ?? item.DefaultIconSmall;
                 largeDefault = largeDefault ?? item.DefaultIconLarge;
             }

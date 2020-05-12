@@ -16,12 +16,13 @@ namespace BookViewerApp.Managers
 
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetImageSourceAsync(string ID)
         {
-            var result= new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+            var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
             var file = (await GetImageFileAsync(ID));
             if (file == null) return null;
             var src = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
             if (src == null) return null;
-            try {
+            try
+            {
                 await result.SetSourceAsync(src);
                 return result;
             }
@@ -32,12 +33,14 @@ namespace BookViewerApp.Managers
         }
 
         //Not smart at all...
-        public static async void SetToImageSourceNoWait(string ID,Windows.UI.Xaml.Media.Imaging.BitmapImage image) {
-            var file= (await GetImageFileAsync(ID));
+        public static async void SetToImageSourceNoWait(string ID, Windows.UI.Xaml.Media.Imaging.BitmapImage image)
+        {
+            var file = (await GetImageFileAsync(ID));
             if (file == null) return;
             var src = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
             if (src == null) return;
-            try {
+            try
+            {
                 await image.SetSourceAsync(src);
             }
             catch
@@ -48,7 +51,7 @@ namespace BookViewerApp.Managers
 
         public static async Task SaveImageAsync(Books.IBook book)
         {
-            if(book is Books.IBookFixed && (book as Books.IBookFixed).PageCount>0)
+            if (book is Books.IBookFixed && (book as Books.IBookFixed).PageCount > 0)
             {
                 if (await GetImageFileAsync(book.ID) == null)
                 {
@@ -64,10 +67,10 @@ namespace BookViewerApp.Managers
 
         public static async Task<Windows.Storage.StorageFile> GetImageFileAsync(string ID)
         {
-            var item= await DataFolder.TryGetItemAsync(GetFileNameFromID(ID));
-            if(item!=null && item is Windows.Storage.StorageFile)
+            var item = await DataFolder.TryGetItemAsync(GetFileNameFromID(ID));
+            if (item != null && item is Windows.Storage.StorageFile sf && (await sf.GetBasicPropertiesAsync()).Size != 0)
             {
-                return item as Windows.Storage.StorageFile;
+                return sf;
             }
             return null;
         }
@@ -77,13 +80,13 @@ namespace BookViewerApp.Managers
             return "Thumbnail_" + EscapeString(ID) + Extension;
         }
 
-        public static string Extension => ".image";
+        public static string Extension => ".jpeg";
 
         public static String EscapeString(string str)
         {
-            foreach(char t in System.IO.Path.GetInvalidFileNameChars())
+            foreach (char t in System.IO.Path.GetInvalidFileNameChars())
             {
-                str=str.Replace(t, '_');
+                str = str.Replace(t, '_');
             }
             return str;
         }

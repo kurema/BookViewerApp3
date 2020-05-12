@@ -17,9 +17,27 @@ namespace BookViewerApp.Storages
 
         public static string GetIdFromPath(string path)
         {
-            var item = Content?.Content?.FirstOrDefault(a => String.Compare(path, a.Path, true) == 0);
+            var item = Content?.Content?.FirstOrDefault(a => a.MatchPath(path));
             if (item != null) return item.ID;
             return null;
+        }
+
+        public static bool AddOrReplace(string path, string id)
+        {
+            var info = PathInfo.GetEncoded(path, id);
+            return Content.TryOperate<PathInfo>(a =>
+            {
+                var f = a.FirstOrDefault(b => b.MatchPath(path));
+                if (f == null)
+                {
+                    a.Add(info);
+                }
+                else
+                {
+                    a.Remove(f);
+                    a.Add(info);
+                }
+            });
         }
 
         public static bool Add(PathInfo info)
@@ -27,15 +45,33 @@ namespace BookViewerApp.Storages
             return Content.TryAdd(info);
         }
 
-        public static bool Add(string path,string id)
-        {
-            return Add(new PathInfo() { Path = path, ID = id });
-        }
 
         public class PathInfo
         {
-            public string Path { get; set; }
+            public PathInfo()
+            {
+            }
+
+            public static PathInfo GetEncoded(string path, string id)
+            {
+                var result = new PathInfo();
+                result.Salt = Guid.NewGuid().ToString();
+                result.PathEncoded = GetPathEncoded(path, result.Salt);
+                result.ID = id;
+                return result;
+            }
+
+            public bool MatchPath(string path)
+            {
+                return GetPathEncoded(path, this.Salt) == this.PathEncoded;
+            }
+
+            public static string GetPathEncoded(string path, string salt) => Functions.GetHash(salt + "\n\n" + path);
+
+            public string PathEncoded { get; set; }
             public string ID { get; set; }
+
+            public string Salt { get; set; }
         }
     }
 }

@@ -52,9 +52,9 @@ namespace BookViewerApp.Managers
             return null;
         }
 
-        public static async Task<(IBook Book, bool IsEpub)> GetBookFromFile(Windows.Storage.IStorageFile file)
+        public static async Task<IBook> GetBookFromFile(Windows.Storage.IStorageFile file)
         {
-            if (file == null) return (null, false);
+            if (file == null) return null;
             var type = GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
             switch (type)
             {
@@ -63,7 +63,7 @@ namespace BookViewerApp.Managers
                 case BookType.Rar: goto SharpCompress;
                 case BookType.SevenZip: goto SharpCompress;
                 case BookType.Pdf: goto Pdf;
-                default: return (null, false);
+                default: return null;
             }
 
 
@@ -87,9 +87,9 @@ namespace BookViewerApp.Managers
 
                     });
                 }
-                catch { return (null, false); }
-                if (book.PageCount <= 0) { return (null, false); }
-                return (book, false);
+                catch { return null; }
+                if (book.PageCount <= 0) { return null; }
+                return book;
             }
         Zip:;
             {
@@ -100,10 +100,10 @@ namespace BookViewerApp.Managers
                 }
                 catch
                 {
-                    return (null, false);
+                    return null;
                 }
-                if (book.PageCount <= 0) { return (null, false); }
-                return (book, false);
+                if (book.PageCount <= 0) { return null; }
+                return book;
             }
         SharpCompress:;
             {
@@ -114,14 +114,14 @@ namespace BookViewerApp.Managers
                 }
                 catch
                 {
-                    return (null, false);
+                    return null;
                 }
-                if (book.PageCount <= 0) { return (null, false); }
-                return (book, false);
+                if (book.PageCount <= 0) { return null; }
+                return book;
             }
         Epub:;
             {
-                return (null, true);
+                return new BookEpub() { File = file };
             }
         }
 
@@ -215,7 +215,7 @@ namespace BookViewerApp.Managers
 
         public static async Task<IBook> PickBook()
         {
-            return (await GetBookFromFile(await PickFile())).Book;
+            return (await GetBookFromFile(await PickFile()));
         }
 
         public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(Windows.Storage.IStorageItem file)

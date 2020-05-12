@@ -22,7 +22,7 @@ using BookViewerApp.Views;
 
 namespace BookViewerApp.ViewModels
 {
-    public class BookViewModel : INotifyPropertyChanged , IBookViewModel
+    public class BookViewModel : INotifyPropertyChanged, IBookViewModel
     {
         public BookViewModel()
         {
@@ -60,9 +60,9 @@ namespace BookViewerApp.ViewModels
         public ICommand PageVisualSetCommand { get { return _PageVisualSetCommand = _PageVisualSetCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
         public ICommand PageVisualMaxCommand { get { return _PageVisualMaxCommand = _PageVisualMaxCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PagesCount - 1, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
         public ICommand PageAddCommand { get { return _PageAddCommand = _PageAddCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PageSelectedVisual + b, (a, b) => a.PageSelected = b); } }
-        public ICommand PageSetCommand { get { return _PageSetCommand = _PageSetCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) =>  b, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
+        public ICommand PageSetCommand { get { return _PageSetCommand = _PageSetCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
         public ICommand PageMaxCommand { get { return _PageMaxCommand = _PageMaxCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PagesCount - 1, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
-        public ICommand SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new Commands.CommandBase((a)=> { return true; },(a)=> { this.Reversed = !this.Reversed; }); } }
+        public ICommand SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new Commands.CommandBase((a) => { return true; }, (a) => { this.Reversed = !this.Reversed; }); } }
         public ICommand AddCurrentPageToBookmarkCommand { get { return _AddCurrentPageToBookmarkCommand = _AddCurrentPageToBookmarkCommand ?? new Commands.AddCurrentPageToBookmark(this); } }
         public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand = _ToggleFullScreenCommand ?? new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
         public ICommand GoToHomeCommand { get => _GoToHomeCommand = _GoToHomeCommand ?? new InvalidCommand(); set => _GoToHomeCommand = value; }
@@ -73,7 +73,7 @@ namespace BookViewerApp.ViewModels
         public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
         private string _Title = "";
 
-        public bool IsControlPinned { get => _IsControlPinned; set { _IsControlPinned = value;OnPropertyChanged(nameof(IsControlPinned)); } }
+        public bool IsControlPinned { get => _IsControlPinned; set { _IsControlPinned = value; OnPropertyChanged(nameof(IsControlPinned)); } }
         private bool _IsControlPinned = false;
 
 
@@ -83,9 +83,25 @@ namespace BookViewerApp.ViewModels
         public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
         {
             this.Loading = true;
-            var book = (await BookManager.GetBookFromFile(value)).Book;
-            if (book is Books.IBookFixed bookf)
+            var book = (await BookManager.GetBookFromFile(value));
+            if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
             {
+                if (await ThumbnailManager.GetImageFileAsync(bookf.ID) == null)
+                {
+                    var fileThumb = await ThumbnailManager.CreateImageFileAsync(bookf.ID);
+                    try
+                    {
+                        await bookf.GetPage(0)?.SaveImageAsync(fileThumb, 500);
+                        //if ((await fileThumb.GetBasicPropertiesAsync()).Size == 0) await fileThumb.DeleteAsync();
+                    }
+                    catch
+                    {
+                        //サムネイル作成が失敗しても大した問題はない。
+                    }
+                }
+                PathStorage.AddOrReplace(value.Path, bookf.ID);
+                await PathStorage.Content.SaveAsync();
+
                 Initialize(bookf, target);
                 this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
             }
@@ -96,7 +112,7 @@ namespace BookViewerApp.ViewModels
 
         private string Password = null;
 
-        public async void Initialize(Books.IBookFixed value, Control target=null)
+        public async void Initialize(Books.IBookFixed value, Control target = null)
         {
             this.Loading = true;
             if (BookInfo != null) SaveInfo();
@@ -123,13 +139,13 @@ namespace BookViewerApp.ViewModels
             this._PageSelected = 0;
             ID = value.ID;
             Password = null;
-            if(value is Books.IPasswordPdovider pp)
+            if (value is Books.IPasswordPdovider pp)
             {
                 if (pp.PasswordRemember) Password = pp.Password;
             }
             this.Pages = pages;
             BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
-            var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1):1;
+            var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
             this.PageSelectedDisplay = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
             {
                 switch (BookInfo?.PageDirection)
@@ -178,14 +194,14 @@ namespace BookViewerApp.ViewModels
             }
             foreach (var bm in BookInfo.Bookmarks)
             {
-                this.Bookmarks.Add(new BookmarkViewModel(bm) );
+                this.Bookmarks.Add(new BookmarkViewModel(bm));
             }
             {
                 var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
                 var bm = new BookmarkViewModel() { Page = this.PagesCount, AutoGenerated = true, Title = rl.GetString("BookmarkLast/Title") };
                 this.Bookmarks.Add(bm);
             }
-            if(value is Books.ITocProvider pv)
+            if (value is Books.ITocProvider pv)
             {
                 this.Toc = new ObservableCollection<TocEntryViewModes>(pv?.Toc?.Select(a => new TocEntryViewModes(a)) ?? Array.Empty<TocEntryViewModes>());
             }
@@ -194,18 +210,18 @@ namespace BookViewerApp.ViewModels
 
         private Books.PageOptionsControl OptionCache;
 
-        public BookShelfBookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value;OnPropertyChanged(nameof(AsBookShelfBook)); } }
+        public BookShelfBookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value; OnPropertyChanged(nameof(AsBookShelfBook)); } }
         private BookShelfBookViewModel _AsBookShelfBook;
 
 
         private ObservableCollection<TocEntryViewModes> _Toc = new ObservableCollection<TocEntryViewModes>();
-        public ObservableCollection<TocEntryViewModes> Toc { get => _Toc; set { _Toc = value;OnPropertyChanged(nameof(Toc)); } }
+        public ObservableCollection<TocEntryViewModes> Toc { get => _Toc; set { _Toc = value; OnPropertyChanged(nameof(Toc)); } }
 
 
         public bool Loading { get { return _Loading; } set { _Loading = value; OnPropertyChanged(nameof(Loading)); } }
         private bool _Loading = true;
 
-        private BookInfoStorage.BookInfo BookInfo=null;
+        private BookInfoStorage.BookInfo BookInfo = null;
         public void SaveInfo()
         {
             if (BookInfo == null) return;
@@ -220,7 +236,7 @@ namespace BookViewerApp.ViewModels
             BookInfo.Password = this.Password;
         }
 
-        public string ID { get { return _ID; } private set { _ID = value;OnPropertyChanged(nameof(ID)); } }
+        public string ID { get { return _ID; } private set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         private string _ID;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -257,7 +273,7 @@ namespace BookViewerApp.ViewModels
 
         public int PageSelectedDisplay
         {
-            get { return _PageSelected+1; }
+            get { return _PageSelected + 1; }
             set
             {
                 PageSelected = value - 1;
@@ -277,7 +293,7 @@ namespace BookViewerApp.ViewModels
         public ObservableCollection<PageViewModel> Pages
         {
             get { return _Pages; }
-            set { _Pages = value;OnPropertyChanged(nameof(Pages));PageSelected = 0; OnPropertyChanged(nameof(PagesCount)); OnPropertyChanged(nameof(ReadRate)); }
+            set { _Pages = value; OnPropertyChanged(nameof(Pages)); PageSelected = 0; OnPropertyChanged(nameof(PagesCount)); OnPropertyChanged(nameof(ReadRate)); }
         }
         private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
 
@@ -285,11 +301,13 @@ namespace BookViewerApp.ViewModels
 
         public double ReadRate
         {
-            get { return Math.Min((double)PageSelectedDisplay / Pages.Count,1.0); }
-            set { PageSelectedDisplay = (int)(value * Pages.Count);  OnPropertyChanged(nameof(ReadRate)); }
+            get { return Math.Min((double)PageSelectedDisplay / Pages.Count, 1.0); }
+            set { PageSelectedDisplay = (int)(value * Pages.Count); OnPropertyChanged(nameof(ReadRate)); }
         }
 
-        public string CurrentBookmarkName { get
+        public string CurrentBookmarkName
+        {
+            get
             {
                 foreach (var bm in this.Bookmarks)
                 {
@@ -311,7 +329,8 @@ namespace BookViewerApp.ViewModels
                             this.Bookmarks.Remove(bm);
                             goto BookmarkUpdate;
                         }
-                        else {
+                        else
+                        {
                             bm.Title = value;
                             goto BookmarkUpdate;
                         }
@@ -321,7 +340,7 @@ namespace BookViewerApp.ViewModels
                 this.Bookmarks.Add(new BookmarkViewModel() { AutoGenerated = false, Page = this.PageSelectedDisplay, Title = value });
                 BookmarksSort();
 
-                BookmarkUpdate:
+            BookmarkUpdate:
                 OnPropertyChanged(nameof(CurrentBookmarkName));
                 OnPropertyChanged(nameof(Bookmarks));
             }
@@ -345,7 +364,7 @@ namespace BookViewerApp.ViewModels
         public ObservableCollection<BookmarkViewModel> Bookmarks
         {
             get { return _Bookmarks; }
-            set { _Bookmarks = value; BookmarksSort(); OnPropertyChanged(nameof(Bookmarks)); OnPropertyChanged(nameof(CurrentBookmarkName));  }
+            set { _Bookmarks = value; BookmarksSort(); OnPropertyChanged(nameof(Bookmarks)); OnPropertyChanged(nameof(CurrentBookmarkName)); }
         }
 
 
@@ -362,7 +381,7 @@ namespace BookViewerApp.ViewModels
         }
     }
 
-    public class PageViewModel : INotifyPropertyChanged,IPageViewModel
+    public class PageViewModel : INotifyPropertyChanged, IPageViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
@@ -370,25 +389,29 @@ namespace BookViewerApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public PageViewModel(Books.IPageFixed page) {
+        public PageViewModel(Books.IPageFixed page)
+        {
             this.Page = page;
         }
 
         private Books.IPageFixed Page;
 
         private ICommand _ZoomFactorMultiplyCommand;
-        public ICommand ZoomFactorMultiplyCommand { get => _ZoomFactorMultiplyCommand = _ZoomFactorMultiplyCommand ?? new DelegateCommand((a) =>
+        public ICommand ZoomFactorMultiplyCommand
         {
-            var d = double.Parse(a.ToString());
-            ZoomRequest(ZoomFactor * (float)d);
+            get => _ZoomFactorMultiplyCommand = _ZoomFactorMultiplyCommand ?? new DelegateCommand((a) =>
+{
+    var d = double.Parse(a.ToString());
+    ZoomRequest(ZoomFactor * (float)d);
+}
+//,
+//    (a) =>
+//    {
+//        var d = double.Parse(a.ToString());
+//        return !(d < 1.0 && ZoomFactor <= 1.0);
+//    }
+);
         }
-        //,
-        //    (a) =>
-        //    {
-        //        var d = double.Parse(a.ToString());
-        //        return !(d < 1.0 && ZoomFactor <= 1.0);
-        //    }
-        ); }
 
         public float ZoomFactor
         {
@@ -404,7 +427,9 @@ namespace BookViewerApp.ViewModels
         }
 
         private PageViewModel _NextPage;
-        public PageViewModel NextPage { get => _NextPage; 
+        public PageViewModel NextPage
+        {
+            get => _NextPage;
             set
             {
                 _NextPage = value;
@@ -441,9 +466,11 @@ namespace BookViewerApp.ViewModels
             }
         }
 
-        private float _ZoomFactor=1.0f;
+        private float _ZoomFactor = 1.0f;
 
-        public ImageSource Source { get
+        public ImageSource Source
+        {
+            get
             {
                 if (_Source != null) return _Source;
                 _Source = new BitmapImage();
@@ -462,7 +489,8 @@ namespace BookViewerApp.ViewModels
 
         private async void SetImageNoWait(BitmapImage im)
         {
-            try {
+            try
+            {
                 await Page.SetBitmapAsync(im);
             }
             catch
@@ -487,7 +515,7 @@ namespace BookViewerApp.ViewModels
             public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
             private BookViewModel model;
 
-            public PageSetGeneralCommand(BookViewModel model, Func<BookViewModel,int, int> getPage, Action<BookViewModel, int> setPage, Func<BookViewModel, int> checkSamePage=null)
+            public PageSetGeneralCommand(BookViewModel model, Func<BookViewModel, int, int> getPage, Action<BookViewModel, int> setPage, Func<BookViewModel, int> checkSamePage = null)
             {
                 this.model = model ?? throw new ArgumentNullException(nameof(model));
                 GetPage = getPage ?? throw new ArgumentNullException(nameof(getPage));
@@ -495,8 +523,8 @@ namespace BookViewerApp.ViewModels
                 CheckSamePage = checkSamePage;
             }
 
-            public Func<BookViewModel,int,int> GetPage { get; private set; }
-            public Action<BookViewModel,int> SetPage { get; private set; }
+            public Func<BookViewModel, int, int> GetPage { get; private set; }
+            public Action<BookViewModel, int> SetPage { get; private set; }
             public Func<BookViewModel, int> CheckSamePage { get; private set; }
 
             public bool CanExecute(object parameter)
@@ -590,9 +618,9 @@ namespace BookViewerApp.ViewModels
 
             public bool CanExecute(object parameter)
             {
-                foreach(var bm in model.Bookmarks)
+                foreach (var bm in model.Bookmarks)
                 {
-                    if(bm.Page==model.PageSelectedDisplay && bm.AutoGenerated == false)
+                    if (bm.Page == model.PageSelectedDisplay && bm.AutoGenerated == false)
                     {
                         return false;
                     }
@@ -662,11 +690,11 @@ namespace BookViewerApp.ViewModels
         public string Title
         {
             get { return _Title; }
-            set { _Title = value;OnPropertyChanged(nameof(Title)); }
+            set { _Title = value; OnPropertyChanged(nameof(Title)); }
         }
         private string _Title;
 
-        public bool AutoGenerated { get { return _AutoGenerated; } set { _AutoGenerated = value;OnPropertyChanged(nameof(_AutoGenerated)); } }
+        public bool AutoGenerated { get { return _AutoGenerated; } set { _AutoGenerated = value; OnPropertyChanged(nameof(_AutoGenerated)); } }
         private bool _AutoGenerated;
     }
 
@@ -733,7 +761,7 @@ namespace BookViewerApp.ViewModels
         int PageSelectedDisplay { get; }
         bool IsControlPinned { get; }
         IPageViewModel PageSelectedViewModel { get; }
-        ObservableCollection<BookmarkViewModel> Bookmarks { get;}
+        ObservableCollection<BookmarkViewModel> Bookmarks { get; }
         string CurrentBookmarkName { get; }
     }
 

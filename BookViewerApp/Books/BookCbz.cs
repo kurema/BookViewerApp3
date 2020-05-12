@@ -149,8 +149,6 @@ namespace BookViewerApp.Books
     {
         private ZipArchiveEntry Content;
 
-        private Windows.Storage.Streams.IRandomAccessStream cache = null;
-
         public IPageOptions Option
         {
             get; set;
@@ -159,20 +157,24 @@ namespace BookViewerApp.Books
         public CbzPage(ZipArchiveEntry entry)
         {
             Content = entry;
+            Cache = new MemoryStreamCache()
+            {
+                MemoryStreamProvider = async (th) =>
+                  {
+                      using (var s = Content.Open())
+                      {
+                          return await th.GetMemoryStreamAsync(s);
+                      }
+                  }
+            };
         }
 
         public async Task<BitmapImage> GetBitmapAsync()
         {
-            if (cache == null)
-            {
-                var s = Content.Open();
-                var ms = new MemoryStream();
-                s.CopyTo(ms);
-                s.Dispose();
-                cache = ms.AsRandomAccessStream();
-            }
-            return await new Books.ImagePageStream(cache).GetBitmapAsync();
+            return await new Books.ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).GetBitmapAsync();
         }
+
+        private Helper.MemoryStreamCache Cache;
 
         public Task<bool> UpdateRequiredAsync()
         {
@@ -183,14 +185,17 @@ namespace BookViewerApp.Books
         {
             try
             {
-                using (var s = Content.Open())
+                using (var fileThumb = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    var ms = new MemoryStream();
-                    await s.CopyToAsync(ms);
-                    await Functions.ResizeImage(ms.AsRandomAccessStream(), await file.OpenReadAsync(), width, () => { Content.ExtractToFile(file.Path, true); });
+                    await Functions.ResizeImage((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream(), fileThumb, width, () => { Content.ExtractToFile(file.Path, true); });
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                try
+                { await file.DeleteAsync(); }
+                catch { }
+            }
             return;
         }
 
@@ -198,17 +203,7 @@ namespace BookViewerApp.Books
         {
             try
             {
-                if (cache == null)
-                {
-                    using (var s = Content.Open())
-                    {
-                        var ms = new MemoryStream();
-                        //await s.CopyToAsync(ms);
-                        s.CopyTo(ms);
-                        cache = ms.AsRandomAccessStream();
-                    }
-                }
-                await new ImagePageStream(cache).SetBitmapAsync(image);
+                await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).SetBitmapAsync(image);
             }
             catch
             {

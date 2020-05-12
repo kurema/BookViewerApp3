@@ -42,6 +42,8 @@ namespace BookViewerApp.Books
         public string ID => Guid.NewGuid().ToString();
 
         public event EventHandler Loaded;
+
+        public IStorageFile File { get; set; }
     }
 
     public class PageOptions : IPageOptions

@@ -13,7 +13,7 @@ namespace kurema.FileExplorerControl.Models.IconProviders
         Func<ImageSource> DefaultIconSmall { get; }
         Func<ImageSource> DefaultIconLarge { get; }
 
-        Func<ImageSource> GetIconSmall(IFileItem item);
-        Func<ImageSource> GetIconLarge(IFileItem item);
+        Task<Func<ImageSource>> GetIconSmall(IFileItem item);
+        Task<Func<ImageSource>> GetIconLarge(IFileItem item);
     }
 }

@@ -222,6 +222,7 @@
     <Compile Include="Extension\BookmarkItem.cs" />
     <Compile Include="Extension\TokenLibraryItem.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
+    <Compile Include="Helper\MemoryStreamCache.cs" />
     <Compile Include="Helper\UIHelper.ContextMenus.cs" />
     <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Helper\UIHelper.FrameOperation.cs" />

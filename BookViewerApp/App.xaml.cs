@@ -42,6 +42,7 @@ namespace BookViewerApp
             await LicenseStorage.LoadAsync();
             await LibraryStorage.Content.GetContentAsync();
             await HistoryStorage.Content.GetContentAsync();
+            await PathStorage.Content.GetContentAsync();
         }
 
         /// <summary>

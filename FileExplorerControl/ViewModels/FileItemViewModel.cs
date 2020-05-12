@@ -13,7 +13,7 @@ using kurema.FileExplorerControl.Models.FileItems;
 
 namespace kurema.FileExplorerControl.ViewModels
 {
-    public partial class FileItemViewModel:INotifyPropertyChanged
+    public partial class FileItemViewModel : INotifyPropertyChanged
     {
 
         #region INotifyPropertyChanged
@@ -37,7 +37,9 @@ namespace kurema.FileExplorerControl.ViewModels
         #endregion
 
         private IFileItem _Content;
-        public IFileItem Content { get => _Content; set
+        public IFileItem Content
+        {
+            get => _Content; set
             {
                 //void Value_ChildrenUpdated(object sender, EventArgs e)
                 //{
@@ -69,11 +71,13 @@ namespace kurema.FileExplorerControl.ViewModels
         }
 
         public FileItemViewModel[] Folders
-             => Children?.Where(a => a.IsFolder).ToArray()?? new FileItemViewModel[0];
+             => Children?.Where(a => a.IsFolder).ToArray() ?? new FileItemViewModel[0];
         public FileItemViewModel[] Files => Children?.Where(a => !a.IsFolder).ToArray() ?? new FileItemViewModel[0];
 
         private OrderStatus _Order = new OrderStatus();
-        public OrderStatus Order { get => _Order; set
+        public OrderStatus Order
+        {
+            get => _Order; set
             {
                 SetProperty(ref _Order, value);
                 OnPropertyChanged(nameof(Children));
@@ -87,7 +91,7 @@ namespace kurema.FileExplorerControl.ViewModels
         private Helper.DelegateCommand _DeleteCommand;
         public Helper.DelegateCommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(async (parameter) =>
         {
-            async Task<(bool,bool)> checkDelete()
+            async Task<(bool, bool)> checkDelete()
             {
                 if (ParentContent?.DialogDelete != null)
                 {
@@ -125,7 +129,9 @@ namespace kurema.FileExplorerControl.ViewModels
 
 
         private ContentViewModel _ParentContent;
-        public ContentViewModel ParentContent { get => _ParentContent; set
+        public ContentViewModel ParentContent
+        {
+            get => _ParentContent; set
             {
                 SetProperty(ref _ParentContent, value);
 
@@ -141,7 +147,8 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public IEnumerable<FileItemViewModel> Children
         {
-            get {
+            get
+            {
                 return Order?.OrderDelegate == null ? _Children : Order?.OrderDelegate(_Children);
             }
             private set
@@ -155,7 +162,9 @@ namespace kurema.FileExplorerControl.ViewModels
 
         private ObservableCollection<IIconProvider> _IconProviders = new ObservableCollection<IIconProvider>(new[] { new IconProviderDefault() });
 
-        public ObservableCollection<IIconProvider> IconProviders { get => _IconProviders; set
+        public ObservableCollection<IIconProvider> IconProviders
+        {
+            get => _IconProviders; set
             {
                 void IconUpdate(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
                 {
@@ -163,7 +172,7 @@ namespace kurema.FileExplorerControl.ViewModels
                     OnPropertyChanged(nameof(IconLarge));
                 }
 
-                if (_IconProviders!=null) _IconProviders.CollectionChanged -= IconUpdate;
+                if (_IconProviders != null) _IconProviders.CollectionChanged -= IconUpdate;
                 SetProperty(ref _IconProviders, value);
                 IconUpdate(this, null);
                 if (_IconProviders != null) _IconProviders.CollectionChanged += IconUpdate;
@@ -189,7 +198,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
             var children_observable = await Content?.GetChildren();
 
-            if(children_observable==null)
+            if (children_observable == null)
             {
                 Children = new List<FileItemViewModel>();
                 return;
@@ -252,7 +261,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public string Path => _Content?.Path ?? "";
 
-        public DateTimeOffset LastModified => _Content?.DateCreated??new DateTimeOffset();
+        public DateTimeOffset LastModified => _Content?.DateCreated ?? new DateTimeOffset();
 
         public bool IsFolder => _Content?.IsFolder ?? false;
 
@@ -268,7 +277,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 {
                     if (Children == null) return null;
                     ulong result = 0;
-                    foreach(var item in Children)
+                    foreach (var item in Children)
                     {
                         if (item.Size == null) return null;
                         else result += item.Size ?? 0;
@@ -294,10 +303,13 @@ namespace kurema.FileExplorerControl.ViewModels
         }
 
         private ImageSource _IconSmall;
-        public ImageSource IconSmall { get {
-                if (_IconSmall == null) (_IconSmall, _IconLarge) = IconProviderDefault.GetIcon(this.Content, IconProviders);
+        public ImageSource IconSmall
+        {
+            get
+            {
+                if (_IconSmall == null) UpdateIcon();
                 return _IconSmall;
-            } 
+            }
             set
             {
                 SetProperty(ref _IconSmall, value);
@@ -310,13 +322,18 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             get
             {
-                if (_IconLarge == null) (_IconSmall, _IconLarge) = IconProviderDefault.GetIcon(this.Content, IconProviders);
+                if (_IconLarge == null) UpdateIcon();
                 return _IconLarge;
             }
             set
             {
                 SetProperty(ref _IconLarge, value);
             }
+        }
+
+        public async void UpdateIcon()
+        {
+            (IconSmall, IconLarge) = await IconProviderDefault.GetIcon(this.Content, IconProviders);
         }
     }
 }
