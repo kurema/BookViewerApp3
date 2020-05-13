@@ -47,7 +47,7 @@ namespace BookViewerApp.Storages
             var history = await HistoryStorage.Content.GetContentAsync();
             if (history != null)
             {
-                var list = (await Task.WhenAll(history.Select(async a => await a.GetFile())))?.Where(a => a != null)?.Select(a => new StorageFileItem(a))?.ToArray() ?? Array.Empty<IFileItem>();
+                var list = (await Task.WhenAll(history.Select(async a => (a, await a.GetFile()))))?.Where(a => a.Item2 != null)?.Select(a => new StorageFileItem(a.Item2) { DateCreatedOverride = a.a.Date })?.ToArray() ?? Array.Empty<IFileItem>();
                 if (list.Length != 0) return new ContainerItem(GetItem_GetWord("Histories"), "/History", list)
                 {
                     IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png")))

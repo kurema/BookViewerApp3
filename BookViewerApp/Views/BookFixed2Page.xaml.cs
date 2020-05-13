@@ -141,6 +141,7 @@ namespace BookViewerApp.Views
             scrollViewer.ChangeView(0, 0, 1.0f);
 
             (DataContext as ViewModels.PageViewModel)?.UpdateSource();
+            this.InvalidateArrange();
         }
 
         private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)

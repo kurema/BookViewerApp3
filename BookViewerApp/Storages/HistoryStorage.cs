@@ -31,7 +31,7 @@ namespace BookViewerApp.Storages
             public string Id { get; set; }
             public string Name { get; set; }
 
-            public DateTimeOffset Date { get; set; }
+            public DateTime Date { get; set; }
 
             public async Task<Windows.Storage.StorageFile> GetFile()
             {

@@ -194,7 +194,7 @@ namespace kurema.FileExplorerControl.Views
 
         private void UserControl_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
         {
-            var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight };
+            var option = new FlyoutShowOptions();
             if (args.TryGetPosition(sender, out Point p)) option.Position = p;
 
             if(this.content.DataContext is ViewModels.ContentViewModel vm)
@@ -237,7 +237,7 @@ namespace kurema.FileExplorerControl.Views
 
         private void TreeViewItem_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
         {
-            var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight };
+            var option = new FlyoutShowOptions();
             if (args.TryGetPosition(sender, out Point p)) option.Position = p;
 
             if (((sender as FrameworkElement)?.DataContext as winui.TreeViewNode)?.Content is ViewModels.FileItemViewModel vm)

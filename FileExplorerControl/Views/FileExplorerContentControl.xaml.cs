@@ -249,7 +249,7 @@ namespace kurema.FileExplorerControl.Views
                     menu.Items.Add(item);
                 }
 
-                var option = new FlyoutShowOptions() { Placement = FlyoutPlacementMode.BottomEdgeAlignedRight};
+                var option = new FlyoutShowOptions();
                 if (args.TryGetPosition(sender, out Point p)) option.Position = p;
                 menu.ShowAt(f, option);
 

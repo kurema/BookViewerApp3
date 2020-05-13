@@ -40,26 +40,29 @@
             </Grid.RowDefinitions>
             <FlipView TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
                   FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" 
-                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <!--<FlipView.Resources>
-                    <Style TargetType="MenuFlyoutItem">
-                        --><!-- Maybe LeftToRight is not good. Setting default value may be better. --><!--
-                        <Setter Property="FlowDirection" Value="LeftToRight" />
-                    </Style>
-                </FlipView.Resources>-->
-                <FlipView.ContextFlyout>
-                    <MenuFlyout>
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      ContextRequested="flipView_ContextRequested"
+                      >
+                <FlipView.Resources>
+                    <MenuFlyout x:Key="ContextFlyout">
+                        <MenuFlyout.MenuFlyoutPresenterStyle>
+                            <Style TargetType="MenuFlyoutPresenter">
+                            </Style>
+                        </MenuFlyout.MenuFlyoutPresenterStyle>
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=OpenLocalBook.Label, Mode=OneTime}" Click="MenuFlyoutItem_Click_OpenFile" Icon="OpenFile"/>
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ToggleFullScreen.Label, Mode=OneTime}"  Command="{Binding ToggleFullScreenCommand}" Icon="FullScreen" />
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageReverse.Label, Mode=OneTime}"  Command="{Binding SwapReverseCommand}" Icon="Rotate" />
                         <!--<MenuFlyoutSubItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Bookmarks.Label, Mode=OneTime}" Icon="Bookmarks" >
-                            --><!-- No ListView kind of stuff... So just disable this. --><!--
+                            -->
+                        <!-- No ListView kind of stuff... So just disable this. -->
+                        <!--
                         </MenuFlyoutSubItem>-->
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageTop.Label, Mode=OneTime}"  Command="{Binding PageSetCommand}" CommandParameter="0" />
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageEnd.Label, Mode=OneTime}"  Command="{Binding PageMaxCommand}" />
                     </MenuFlyout>
-                </FlipView.ContextFlyout>
+
+                </FlipView.Resources>
                 <FlipView.ItemTemplate>
                     <DataTemplate>
                         <local:BookFixed2Page DataContext="{Binding}"/>

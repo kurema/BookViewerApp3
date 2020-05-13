@@ -291,5 +291,17 @@ namespace BookViewerApp.Views
             var file = await BookManager.PickFile();
             if (file != null) Binding?.Initialize(file, this.flipView);
         }
+
+        private void flipView_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            var option = new FlyoutShowOptions();
+            if (args.TryGetPosition(this, out Point p)) option.Position = p;
+            if (sender is FrameworkElement fe && fe.Resources["ContextFlyout"] is MenuFlyout menuFlyout)
+            {
+                menuFlyout.ShowAt(this, option);
+            }
+            args.Handled = true;
+
+        }
     }
 }

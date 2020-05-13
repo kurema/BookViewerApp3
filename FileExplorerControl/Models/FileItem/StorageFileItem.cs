@@ -34,7 +34,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string Name => Content.Name;
 
-        public DateTimeOffset DateCreated => Content.DateCreated;
+        public DateTimeOffset DateCreated => DateCreatedOverride ?? Content.DateCreated;
+
+        //History用。日時を強制的に上書きする。あんまりスマートではない。
+        public DateTimeOffset? DateCreatedOverride { get; set; } = null;
 
         public bool IsFolder => Content is StorageFolder;
 
