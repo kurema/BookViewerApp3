@@ -161,7 +161,15 @@ namespace BookViewerApp.Managers
         public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token)
         {
             var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
-            return await acl.GetItemAsync(token);
+            try
+            {
+                return await acl.GetItemAsync(token);
+            }
+            catch (FileNotFoundException)
+            {
+                //本来は削除するのが正しいかもしれないけど、共有フォルダがアクセスできないとか普通にあるので放置。
+                return null;
+            }
         }
 
         public static char FileSplitLetter { get { return Path.DirectorySeparatorChar; } }
@@ -188,10 +196,10 @@ namespace BookViewerApp.Managers
             foreach (var item in Path)
             {
                 if (currentFolder == null) return null;
-                if (currentFolder is Windows.Storage.StorageFolder f)
+                if (string.IsNullOrEmpty(item) || item.Trim() == ".") { }
+                else if (currentFolder is Windows.Storage.StorageFolder f)
                 {
-                    if (String.IsNullOrEmpty(item) || item.Trim() == ".") { }
-                    else if (item.Trim() == "..") { currentFolder = await f.GetParentAsync(); }
+                    if (item.Trim() == "..") currentFolder = await f.GetParentAsync();
                     else currentFolder = await f.TryGetItemAsync(item);
                 }
                 else
@@ -235,7 +243,7 @@ namespace BookViewerApp.Managers
             path = Path.GetFullPath(path);
             //var tokens = (await Task.WhenAll(Content.Content.folders.Select(async a => KeyValuePair.Create(a, await a.GetStorageFolderAsync()))));//.ToDictionary(a => a.Key, a => a.Value);
             var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
-            var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await acl.GetItemAsync(a.Token) as Windows.Storage.StorageFolder)))).Where(a => a.Item2 != null);
+            var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await StorageItemGet(a.Token))))).Where(a => a.Item2 != null);
 
             string currentPath = path;
             while (true)

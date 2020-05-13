@@ -89,7 +89,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                  var b = a.ToArray();
                  if (b.Length == 1) return b[0];
                  return new CombinedItem(b) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade };
-             }).OrderBy(a => a.Name));
+             }).OrderBy(a => !a.IsFolder).ThenBy(a => a.Name));
         }
 
         public async Task<ulong?> GetSizeAsync()

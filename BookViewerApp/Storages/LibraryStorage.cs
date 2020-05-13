@@ -368,6 +368,7 @@ namespace BookViewerApp.Storages
             public async Task<TokenLibraryItem> AsTokenLibraryItem(Func<IFileItem, MenuCommand[]> menuCommand = null, Func<IFileItem, MenuCommand[]> menuCommandCascade = null)
             {
                 var fileItem = await this.AsStorageFileItem();
+                if (fileItem == null) return null;
                 if (menuCommandCascade != null)
                 {
                     fileItem.MenuCommandsProviderCascade = menuCommandCascade;

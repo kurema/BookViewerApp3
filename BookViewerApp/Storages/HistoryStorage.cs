@@ -35,6 +35,11 @@ namespace BookViewerApp.Storages
 
             public async Task<Windows.Storage.StorageFile> GetFile()
             {
+                if (!string.IsNullOrWhiteSpace(Path))
+                {
+                    var lib = await Managers.BookManager.GetTokenFromPath(Path);
+                    if (lib != null) return (await lib.GetStorageFolderAsync()) as Windows.Storage.StorageFile;
+                }
                 if (!string.IsNullOrWhiteSpace(Token))
                 {
                     if (string.IsNullOrWhiteSpace(Path))
@@ -45,11 +50,6 @@ namespace BookViewerApp.Storages
                     {
                         return (await Managers.BookManager.StorageItemGet(Token, PathRelative)) as Windows.Storage.StorageFile;
                     }
-                }
-                else if (!string.IsNullOrWhiteSpace(Path))
-                {
-                    var lib = await Managers.BookManager.GetTokenFromPath(Path);
-                    return (await lib.GetStorageFolderAsync()) as Windows.Storage.StorageFile;
                 }
                 return null;
             }
