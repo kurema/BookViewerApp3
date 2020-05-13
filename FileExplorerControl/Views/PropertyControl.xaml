@@ -17,6 +17,7 @@
         <vc:UlongToHumanReadableSizeConverter x:Key="vc_u2hrs"/>
         <vc:StringFormatConverter x:Key="vc_sc"/>
         <vc:LocalizeConverter x:Key="vc_local"/>
+        <vc:CanRenameToBoolConverter x:Key="vc_rename"/>
     </UserControl.Resources>
 
     <Grid RowSpacing="5">
@@ -38,7 +39,7 @@
             </Style>
         </Grid.Resources>
         <Image Source="{Binding IconLarge}" Width="50"/>
-        <TextBox Grid.Column="1" Text="{Binding Title,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="1" Text="{Binding Title,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Grid.ColumnSpan="2" VerticalAlignment="Center" IsReadOnly="{Binding Converter={StaticResource vc_rename}}"/>
         <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Height="1" Fill="{ThemeResource MenuFlyoutSeparatorThemeBrush}" />
         <TextBlock Grid.Row="2" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Path'}"/>
         <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path}" TextTrimming="CharacterEllipsis"/>

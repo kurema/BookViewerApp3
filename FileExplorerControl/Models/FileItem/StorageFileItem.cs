@@ -102,18 +102,28 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
         private ICommand _RenameCommand;
-        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+        public ICommand RenameCommand
         {
-            if (Content == null) return;
-            if (parameter == null) return;
-            try
+            get
             {
-                await Content?.RenameAsync(parameter.ToString());
+                return _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+                {
+                    if (Content == null) return;
+                    if (parameter == null) return;
+                    try
+                    {
+                        await Content?.RenameAsync(parameter.ToString());
+                    }
+                    catch
+                    {
+                    }
+                });
             }
-            catch
+            set
             {
+                _RenameCommand = value;
             }
-        });
+        }
 
 
         private ICommand _DeleteCommand;

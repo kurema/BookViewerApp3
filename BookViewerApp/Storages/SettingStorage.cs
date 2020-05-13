@@ -48,6 +48,7 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("ExplorerContentStyle",kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
                         new SettingInstance("ExplorerIconSize",75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),
+                        new SettingInstance("ShowHistories",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                     };
             }
         }

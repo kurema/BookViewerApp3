@@ -42,7 +42,7 @@
         </trans-unit>
         <trans-unit id="BookNext.Label" translate="yes" xml:space="preserve">
           <source>Read the next book</source>
-          <target state="final">Libro successivo</target>
+          <target state="translated">Ci vorrà un po\'. Non chiudere l\'app</target>
         </trans-unit>
         <trans-unit id="BookPrevious.Label" translate="yes" xml:space="preserve">
           <source>Read the previous book</source>
@@ -398,7 +398,8 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
           <source>Histories</source>
-          <target state="translated">Storia</target>
+          <target state="translated">Cronologia</target>
+          <note from="MultilingualEditor" annotates="source" priority="4">History in this case should be translated to "Cronologia" not "Storie". I think.</note>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
           <source>Libraries</source>
@@ -468,6 +469,22 @@ Annullare la registrazione?</target>
           <source>Search</source>
           <target state="needs-review-translation">Ricerca</target>
           <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Histories.HideHistores.Title" translate="yes" xml:space="preserve">
+          <source>Hide histories</source>
+          <target state="translated">Nascondi cronologia</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Histories.ShowHistores.Title" translate="yes" xml:space="preserve">
+          <source>Show histories</source>
+          <target state="translated">Mostra cronologia</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowHistories.Description" translate="yes" xml:space="preserve">
+          <source>Show histories.</source>
+          <target state="translated">Mostra cronologia.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowHistories.Title" translate="yes" xml:space="preserve">
+          <source>Show histories</source>
+          <target state="translated">Mostra cronologia</target>
         </trans-unit>
       </group>
     </body>

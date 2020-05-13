@@ -44,13 +44,29 @@ namespace BookViewerApp.Storages
 
         public static async Task<ContainerItem> GetItemHistory()
         {
+            if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
             var history = await HistoryStorage.Content.GetContentAsync();
             if (history != null)
             {
-                var list = (await Task.WhenAll(history.Select(async a => (a, await a.GetFile()))))?.Where(a => a.Item2 != null)?.Select(a => new StorageFileItem(a.Item2) { DateCreatedOverride = a.a.Date })?.ToArray() ?? Array.Empty<IFileItem>();
+                var list = (await Task.WhenAll(history.Select(async a => (a, await a.GetFile()))))?.Where(a => a.Item2 != null)?.Select(a => new StorageFileItem(a.Item2)
+                {
+                    DateCreatedOverride = a.a.Date,
+                    RenameCommand = new InvalidCommand(),
+                    DeleteCommand = new DelegateCommand(async c => {
+                        await HistoryStorage.DeleteHistory(a.a.Id);
+                    })
+                })?.ToArray() ?? Array.Empty<IFileItem>();
+
                 if (list.Length != 0) return new ContainerItem(GetItem_GetWord("Histories"), "/History", list)
                 {
-                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png")))
+                    IIconProvider = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png"))),
+                    MenuCommandsProvider = UIHelper.ContextMenus.MenuHistories,
+                    DeleteCommand = new DelegateCommand(async a =>
+                    {
+                        HistoryStorage.Content.Content = new HistoryStorage.HistoryInfo[0];
+                        await HistoryStorage.Content.SaveAsync();
+                        OnLibraryUpdateRequest(LibraryKind.History);
+                    }),
                 };
             }
             return null;

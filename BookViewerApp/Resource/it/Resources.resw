@@ -34,7 +34,7 @@
     <value>Titolo</value>
   </data>
   <data name="BookNext.Label" xml:space="preserve">
-    <value>Libro successivo</value>
+    <value>Ci vorrà un po\'. Non chiudere l\'app</value>
   </data>
   <data name="BookPrevious.Label" xml:space="preserve">
     <value>Libro precedente</value>
@@ -301,7 +301,7 @@
     <value>Cartelle</value>
   </data>
   <data name="ExplorerContainer.Histories" xml:space="preserve">
-    <value>Storia</value>
+    <value>Cronologia</value>
   </data>
   <data name="ExplorerContainer.Libraries" xml:space="preserve">
     <value>Librerie</value>
@@ -351,5 +351,17 @@ Annullare la registrazione?</value>
   </data>
   <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
     <value>Ricerca</value>
+  </data>
+  <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
+    <value>Nascondi cronologia</value>
+  </data>
+  <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
+    <value>Mostra cronologia</value>
+  </data>
+  <data name="Setting_ShowHistories.Description" xml:space="preserve">
+    <value>Mostra cronologia.</value>
+  </data>
+  <data name="Setting_ShowHistories.Title" xml:space="preserve">
+    <value>Mostra cronologia</value>
   </data>
 </root>

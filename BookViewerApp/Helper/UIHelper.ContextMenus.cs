@@ -177,6 +177,34 @@ namespace BookViewerApp.Helper
 
                 return list.ToArray();
             }
+
+            public static MenuCommand[] MenuHistories(IFileItem item)
+            {
+                var result = new List<MenuCommand>();
+                if ((bool)Storages.SettingStorage.GetValue("ShowHistories"))
+                {
+                    result.Add(new MenuCommand(GetResourceTitle("Histories/HideHistores"), new Helper.DelegateCommand(a =>
+                    {
+                        Storages.SettingStorage.SetValue("ShowHistories", false);
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.History);
+                    })));
+                }
+                else
+                {
+                    result.Add(new MenuCommand(GetResourceTitle("Histories/ShowHistores"), new Helper.DelegateCommand(a =>
+                    {
+                        Storages.SettingStorage.SetValue("ShowHistories", true);
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.History);
+                    })));
+                }
+                //result.Add(new MenuCommand(GetResourceTitle("Histories/ClearHistores"), new Helper.DelegateCommand(async a =>
+                //{
+                //    Storages.HistoryStorage.Content.Content = new Storages.HistoryStorage.HistoryInfo[0];
+                //    await Storages.HistoryStorage.Content.SaveAsync();
+                //    Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.History);
+                //})));
+                return result.ToArray();
+            }
         }
     }
 }

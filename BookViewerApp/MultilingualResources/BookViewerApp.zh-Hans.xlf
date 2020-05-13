@@ -460,6 +460,22 @@ Are you sure to unregister?</target>
           <source>Search</source>
           <target state="new">Search</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Histories.HideHistores.Title" translate="yes" xml:space="preserve">
+          <source>Hide histories</source>
+          <target state="new">Hide histories</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Histories.ShowHistores.Title" translate="yes" xml:space="preserve">
+          <source>Show histories</source>
+          <target state="new">Show histories</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowHistories.Description" translate="yes" xml:space="preserve">
+          <source>Show histories.</source>
+          <target state="new">Show histories.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowHistories.Title" translate="yes" xml:space="preserve">
+          <source>Show histories</source>
+          <target state="new">Show histories</target>
+        </trans-unit>
       </group>
     </body>
   </file>

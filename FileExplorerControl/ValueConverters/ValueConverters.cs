@@ -137,6 +137,26 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
             throw new NotImplementedException();
         }
     }
+
+    public class CanRenameToBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value is ViewModels.FileItemViewModel vm)
+            {
+                return !(vm?.Content?.RenameCommand?.CanExecute("newname") == true);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
     
     public class StringFormatConverter: IValueConverter
     {

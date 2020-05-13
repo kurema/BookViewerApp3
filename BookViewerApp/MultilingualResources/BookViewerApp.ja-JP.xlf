@@ -454,13 +454,27 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="Setting_WebSearchEngine.Description" translate="yes" xml:space="preserve">
           <source>Set the URL of search engine which is used when searching from address bar(%s in place of query).</source>
-          <target state="needs-review-translation">検索エンジンのURL(%s：検索語句)。</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">検索エンジンのURL(%s：検索語句)。</target>
         </trans-unit>
         <trans-unit id="Setting_WebSearchEngine.Title" translate="yes" xml:space="preserve">
           <source>Search</source>
-          <target state="needs-review-translation">検索エンジン</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">検索エンジン</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Histories.HideHistores.Title" translate="yes" xml:space="preserve">
+          <source>Hide histories</source>
+          <target state="translated">履歴を非表示にする</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Histories.ShowHistores.Title" translate="yes" xml:space="preserve">
+          <source>Show histories</source>
+          <target state="translated">履歴を表示する</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowHistories.Description" translate="yes" xml:space="preserve">
+          <source>Show histories.</source>
+          <target state="translated">ファイラーに履歴を表示する。</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowHistories.Title" translate="yes" xml:space="preserve">
+          <source>Show histories</source>
+          <target state="translated">履歴の表示</target>
         </trans-unit>
       </group>
     </body>

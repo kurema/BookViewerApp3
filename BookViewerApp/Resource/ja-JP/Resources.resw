@@ -352,4 +352,16 @@
   <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
     <value>検索エンジン</value>
   </data>
+  <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
+    <value>履歴を非表示にする</value>
+  </data>
+  <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
+    <value>履歴を表示する</value>
+  </data>
+  <data name="Setting_ShowHistories.Description" xml:space="preserve">
+    <value>ファイラーに履歴を表示する。</value>
+  </data>
+  <data name="Setting_ShowHistories.Title" xml:space="preserve">
+    <value>履歴の表示</value>
+  </data>
 </root>

@@ -34,9 +34,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ObservableCollection<IFileItem> Children { get; } = new ObservableCollection<IFileItem>();
 
-        public ICommand DeleteCommand => null;
+        public ICommand DeleteCommand { get; set; } = null;
 
-        public ICommand RenameCommand => null;
+        public ICommand RenameCommand { get; set; } = null;
 
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {

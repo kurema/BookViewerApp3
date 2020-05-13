@@ -457,4 +457,16 @@ Are you sure to unregister?</value>
   <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
+    <value>Hide histories</value>
+  </data>
+  <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
+    <value>Show histories</value>
+  </data>
+  <data name="Setting_ShowHistories.Description" xml:space="preserve">
+    <value>Show histories.</value>
+  </data>
+  <data name="Setting_ShowHistories.Title" xml:space="preserve">
+    <value>Show histories</value>
+  </data>
 </root>

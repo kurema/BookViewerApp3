@@ -11,8 +11,7 @@ namespace BookViewerApp.Storages
         public static StorageContent<HistoryInfo[]> Content = new StorageContent<HistoryInfo[]>(StorageContent<HistoryInfo[]>.SavePlaces.Local, "Histories.xml", () => new HistoryInfo[0]);
 
         public static readonly int MaximumHistoryCount = 100;
-
-
+        
         public async static Task AddHistory(HistoryInfo info)
         {
             await Content.GetContentAsync();
@@ -20,6 +19,17 @@ namespace BookViewerApp.Storages
             result.Insert(0, info);
             Content.Content = result.ToArray();
 
+            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+            await Content.SaveAsync();
+        }
+
+        public async static Task DeleteHistory(string Id)
+        {
+            await Content.GetContentAsync();
+            var result = Content.Content.Where(b => b.Id != Id).ToList();
+            Content.Content = result.ToArray();
+
+            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
             await Content.SaveAsync();
         }
 
