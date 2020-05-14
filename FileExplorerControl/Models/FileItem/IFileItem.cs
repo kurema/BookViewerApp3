@@ -27,5 +27,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         Task<System.IO.Stream> OpenStreamForReadAsync();
         Task<System.IO.Stream> OpenStreamForWriteAsync();
+
+        object Tag { get; set; }
     }
 }

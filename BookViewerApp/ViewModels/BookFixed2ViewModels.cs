@@ -86,6 +86,10 @@ namespace BookViewerApp.ViewModels
             var book = (await BookManager.GetBookFromFile(value));
             if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
             {
+                Initialize(bookf, target);
+                this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
+                this.Loading = false;
+
                 if (await ThumbnailManager.GetImageFileAsync(bookf.ID) == null)
                 {
                     var fileThumb = await ThumbnailManager.CreateImageFileAsync(bookf.ID);
@@ -109,8 +113,7 @@ namespace BookViewerApp.ViewModels
                     var lib = await BookManager.GetTokenFromPathOrRegister(value);
                     await HistoryStorage.AddHistory(new HistoryStorage.HistoryInfo() { Date = DateTime.Now, Id = bookf.ID, Name = value.Name, Path = value.Path, Token = lib.token, PathRelative = lib.path });
                 }
-                Initialize(bookf, target);
-                this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
+
             }
             this.Loading = false;
         }

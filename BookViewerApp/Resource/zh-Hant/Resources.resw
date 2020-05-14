@@ -120,4 +120,100 @@
   <data name="Welcome_OpenMenu" xml:space="preserve">
     <value>打開其他功能</value>
   </data>
+  <data name="Setting_WebHomePage.Description" xml:space="preserve">
+    <value>首頁</value>
+  </data>
+  <data name="Setting_WebHomePage.Title" xml:space="preserve">
+    <value>首頁</value>
+  </data>
+  <data name="Password.Save.Message" xml:space="preserve">
+    <value>儲存密碼</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>確認密碼</value>
+  </data>
+  <data name="Word.Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Word.OK" xml:space="preserve">
+    <value>確定</value>
+  </data>
+  <data name="Setting.Group.Browser" xml:space="preserve">
+    <value>瀏覽器</value>
+  </data>
+  <data name="Setting.Group.Cloud" xml:space="preserve">
+    <value>雲端</value>
+  </data>
+  <data name="Setting.Group.Library" xml:space="preserve">
+    <value>圖庫</value>
+  </data>
+  <data name="Setting.Group.Obsolete" xml:space="preserve">
+    <value>已過時</value>
+  </data>
+  <data name="Setting.Group.Viewer" xml:space="preserve">
+    <value>檢視器</value>
+  </data>
+  <data name="TabHeader.Bookshelf" xml:space="preserve">
+    <value>書架</value>
+  </data>
+  <data name="TabHeader.BookViewer" xml:space="preserve">
+    <value>檢視器</value>
+  </data>
+  <data name="TabHeader.Home" xml:space="preserve">
+    <value>常用</value>
+  </data>
+  <data name="TabHeader.Info" xml:space="preserve">
+    <value>資訊</value>
+  </data>
+  <data name="TabHeader.NewTab" xml:space="preserve">
+    <value>新索引標籤</value>
+  </data>
+  <data name="TabHeader.Setting" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="TabHeader.Main" xml:space="preserve">
+    <value>主群組</value>
+  </data>
+  <data name="TabHeader.Browser" xml:space="preserve">
+    <value>瀏覽器</value>
+  </data>
+  <data name="TabHeader.Explorer" xml:space="preserve">
+    <value>檔案總管</value>
+  </data>
+  <data name="Explorer.Apps" xml:space="preserve">
+    <value>應用程式</value>
+  </data>
+  <data name="Explorer.Browser" xml:space="preserve">
+    <value>瀏覽器</value>
+  </data>
+  <data name="Explorer.PickBook" xml:space="preserve">
+    <value>開啟</value>
+  </data>
+  <data name="Explorer.Setting" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="ExplorerContainer.Bookmarks" xml:space="preserve">
+    <value>書籤</value>
+  </data>
+  <data name="ExplorerContainer.Folders" xml:space="preserve">
+    <value>資料夾</value>
+  </data>
+  <data name="ExplorerContainer.Libraries" xml:space="preserve">
+    <value>文件庫</value>
+  </data>
+  <data name="ExplorerContainer.PC" xml:space="preserve">
+    <value>電腦</value>
+  </data>
+  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
+    <value>新增到媒體櫃</value>
+  </data>
+  <data name="ContextMenu.Library.New.Title" xml:space="preserve">
+    <value>新增媒體櫃</value>
+  </data>
+  <data name="Setting.Group.Explorer" xml:space="preserve">
+    <value>檔案總管</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
+    <value>搜尋</value>
+  </data>
 </root>

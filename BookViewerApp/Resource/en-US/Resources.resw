@@ -199,31 +199,31 @@
     <value>Set full screen mode on when you open a book.</value>
   </data>
   <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
-    <value>Set full screen as default.</value>
+    <value>Set full screen as default</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
     <value>Reverse page as default when you open a new book.</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>Reverse page as default.</value>
+    <value>Reverse page as default</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
     <value>Automatically open page where you read last time.</value>
   </data>
   <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
-    <value>Automatically open last read page.</value>
+    <value>Automatically open last read page</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
     <value>Show go to rightmost/leftmost button in book viewer.</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
-    <value>Show go to rightmost /leftmost button.</value>
+    <value>Show go to rightmost /leftmost button</value>
   </data>
   <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
     <value>Sync bookmarks over the cloud.</value>
   </data>
   <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
-    <value>Sync bookmarks.</value>
+    <value>Sync bookmarks</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>
@@ -259,7 +259,7 @@
     <value>Brightness of background. 100:White, 0:Black. (Opposite in dark theme)</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
-    <value>Brightness of background.</value>
+    <value>Brightness of background</value>
   </data>
   <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
     <value>Use scroll animation on book viewer.</value>
@@ -268,7 +268,7 @@
     <value>Scroll animation</value>
   </data>
   <data name="Setting_BookNameTrim.Description" xml:space="preserve">
-    <value>Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</value>
+    <value>Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</value>
   </data>
   <data name="Setting_BookNameTrim.Title" xml:space="preserve">
     <value>Book name to trim</value>

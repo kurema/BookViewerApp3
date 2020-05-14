@@ -156,40 +156,40 @@
           <target state="new">Set full screen mode on when you open a book.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultFullScreen.Title" translate="yes" xml:space="preserve">
-          <source>Set full screen as default.</source>
-          <target state="new">Set full screen as default.</target>
+          <source>Set full screen as default</source>
+          <target state="new">Set full screen as default</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
           <source>Reverse page as default when you open a new book.</source>
           <target state="new">Reverse page as default when you open a new book.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default.</source>
-          <target state="new">Reverse page as default.</target>
+          <source>Reverse page as default</source>
+          <target state="new">Reverse page as default</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
           <target state="new">Automatically open page where you read last time.</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Title" translate="yes" xml:space="preserve">
-          <source>Automatically open last read page.</source>
-          <target state="new">Automatically open last read page.</target>
+          <source>Automatically open last read page</source>
+          <target state="new">Automatically open last read page</target>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Description" translate="yes" xml:space="preserve">
           <source>Show go to rightmost/leftmost button in book viewer.</source>
           <target state="new">Show go to rightmost/leftmost button in book viewer.</target>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Title" translate="yes" xml:space="preserve">
-          <source>Show go to rightmost /leftmost button.</source>
-          <target state="new">Show go to rightmost /leftmost button.</target>
+          <source>Show go to rightmost /leftmost button</source>
+          <target state="new">Show go to rightmost /leftmost button</target>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
           <source>Sync bookmarks over the cloud.</source>
           <target state="new">Sync bookmarks over the cloud.</target>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
-          <source>Sync bookmarks.</source>
-          <target state="new">Sync bookmarks.</target>
+          <source>Sync bookmarks</source>
+          <target state="new">Sync bookmarks</target>
         </trans-unit>
         <trans-unit id="Setting_TileHeight.Description" translate="yes" xml:space="preserve">
           <source>The height of book tile in bookshelf.</source>
@@ -212,8 +212,8 @@
           <target state="new">Brightness of background. 100:White, 0:Black. (Opposite in dark theme)</target>
         </trans-unit>
         <trans-unit id="Setting_BackgroundBrightness.Title" translate="yes" xml:space="preserve">
-          <source>Brightness of background.</source>
-          <target state="new">Brightness of background.</target>
+          <source>Brightness of background</source>
+          <target state="new">Brightness of background</target>
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
           <source>Use scroll animation on book viewer.</source>
@@ -224,8 +224,8 @@
           <target state="new">Scroll animation</target>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Description" translate="yes" xml:space="preserve">
-          <source>Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
-          <target state="new">Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</target>
+          <source>Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
+          <target state="new">Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</target>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Title" translate="yes" xml:space="preserve">
           <source>Book name to trim</source>
@@ -273,11 +273,11 @@
         </trans-unit>
         <trans-unit id="Setting_WebHomePage.Description" translate="yes" xml:space="preserve">
           <source>Home Page.</source>
-          <target state="new">Home Page.</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">首頁</target>
         </trans-unit>
         <trans-unit id="Setting_WebHomePage.Title" translate="yes" xml:space="preserve">
           <source>Home Page</source>
-          <target state="new">Home Page</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">首頁</target>
         </trans-unit>
         <trans-unit id="Setting_RespectPageDirectionInfo.Description" translate="yes" xml:space="preserve">
           <source>Respect direction information of PDF (R2L/L2R).</source>
@@ -293,63 +293,63 @@
         </trans-unit>
         <trans-unit id="Password.Save.Message" translate="yes" xml:space="preserve">
           <source>Save Password</source>
-          <target state="new">Save Password</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">儲存密碼</target>
         </trans-unit>
         <trans-unit id="Password.Title" translate="yes" xml:space="preserve">
           <source>Confirm Password</source>
-          <target state="new">Confirm Password</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">確認密碼</target>
         </trans-unit>
         <trans-unit id="Word.Cancel" translate="yes" xml:space="preserve">
           <source>Cancel</source>
-          <target state="new">Cancel</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">取消</target>
         </trans-unit>
         <trans-unit id="Word.OK" translate="yes" xml:space="preserve">
           <source>OK</source>
-          <target state="new">OK</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">確定</target>
         </trans-unit>
         <trans-unit id="Setting.Group.Browser" translate="yes" xml:space="preserve">
           <source>Browser</source>
-          <target state="new">Browser</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">瀏覽器</target>
         </trans-unit>
         <trans-unit id="Setting.Group.Cloud" translate="yes" xml:space="preserve">
           <source>Cloud</source>
-          <target state="new">Cloud</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">雲端</target>
         </trans-unit>
         <trans-unit id="Setting.Group.Library" translate="yes" xml:space="preserve">
           <source>Library</source>
-          <target state="new">Library</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">圖庫</target>
         </trans-unit>
         <trans-unit id="Setting.Group.Obsolete" translate="yes" xml:space="preserve">
           <source>Obsolete</source>
-          <target state="new">Obsolete</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">已過時</target>
         </trans-unit>
         <trans-unit id="Setting.Group.Viewer" translate="yes" xml:space="preserve">
           <source>Viewer</source>
-          <target state="new">Viewer</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">檢視器</target>
         </trans-unit>
         <trans-unit id="TabHeader.Bookshelf" translate="yes" xml:space="preserve">
           <source>Bookshelf</source>
-          <target state="new">Bookshelf</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">書架</target>
         </trans-unit>
         <trans-unit id="TabHeader.BookViewer" translate="yes" xml:space="preserve">
           <source>Viewer</source>
-          <target state="new">Viewer</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">檢視器</target>
         </trans-unit>
         <trans-unit id="TabHeader.Home" translate="yes" xml:space="preserve">
           <source>Home</source>
-          <target state="new">Home</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">常用</target>
         </trans-unit>
         <trans-unit id="TabHeader.Info" translate="yes" xml:space="preserve">
           <source>Info</source>
-          <target state="new">Info</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">資訊</target>
         </trans-unit>
         <trans-unit id="TabHeader.NewTab" translate="yes" xml:space="preserve">
           <source>New Tab</source>
-          <target state="new">New Tab</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">新索引標籤</target>
         </trans-unit>
         <trans-unit id="TabHeader.Setting" translate="yes" xml:space="preserve">
           <source>Config</source>
-          <target state="new">Config</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">設定</target>
         </trans-unit>
         <trans-unit id="TabHeader.Epub" translate="yes" xml:space="preserve">
           <source>Epub</source>
@@ -357,39 +357,39 @@
         </trans-unit>
         <trans-unit id="TabHeader.Main" translate="yes" xml:space="preserve">
           <source>Main</source>
-          <target state="new">Main</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">主群組</target>
         </trans-unit>
         <trans-unit id="TabHeader.Browser" translate="yes" xml:space="preserve">
           <source>Browser</source>
-          <target state="new">Browser</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">瀏覽器</target>
         </trans-unit>
         <trans-unit id="TabHeader.Explorer" translate="yes" xml:space="preserve">
           <source>Explorer</source>
-          <target state="new">Explorer</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">檔案總管</target>
         </trans-unit>
         <trans-unit id="Explorer.Apps" translate="yes" xml:space="preserve">
           <source>Apps</source>
-          <target state="new">Apps</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">應用程式</target>
         </trans-unit>
         <trans-unit id="Explorer.Browser" translate="yes" xml:space="preserve">
           <source>Browser</source>
-          <target state="new">Browser</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">瀏覽器</target>
         </trans-unit>
         <trans-unit id="Explorer.PickBook" translate="yes" xml:space="preserve">
           <source>Open</source>
-          <target state="new">Open</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">開啟</target>
         </trans-unit>
         <trans-unit id="Explorer.Setting" translate="yes" xml:space="preserve">
           <source>Setting</source>
-          <target state="new">Setting</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">設定</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Bookmarks" translate="yes" xml:space="preserve">
           <source>Bookmarks</source>
-          <target state="new">Bookmarks</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">書籤</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Folders" translate="yes" xml:space="preserve">
           <source>Folders</source>
-          <target state="new">Folders</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">資料夾</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
           <source>Histories</source>
@@ -397,11 +397,11 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
           <source>Libraries</source>
-          <target state="new">Libraries</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">文件庫</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
           <source>PC</source>
-          <target state="new">PC</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">電腦</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Register a folder</source>
@@ -423,11 +423,11 @@ Are you sure to unregister?</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Storages.AddToLibrary.Title" translate="yes" xml:space="preserve">
           <source>Add to library...</source>
-          <target state="new">Add to library...</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">新增到媒體櫃</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Library.New.Title" translate="yes" xml:space="preserve">
           <source>New library</source>
-          <target state="new">New library</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">新增媒體櫃</target>
         </trans-unit>
         <trans-unit id="ContextMenu.StorageFolder.AddToLibrary.Title" translate="yes" xml:space="preserve">
           <source>Add to a library</source>
@@ -451,7 +451,7 @@ Are you sure to unregister?</target>
         </trans-unit>
         <trans-unit id="Setting.Group.Explorer" translate="yes" xml:space="preserve">
           <source>Explorer</source>
-          <target state="new">Explorer</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">檔案總管</target>
         </trans-unit>
         <trans-unit id="Setting_WebSearchEngine.Description" translate="yes" xml:space="preserve">
           <source>Set the URL of search engine which is used when searching from address bar(%s in place of query).</source>
@@ -459,7 +459,7 @@ Are you sure to unregister?</target>
         </trans-unit>
         <trans-unit id="Setting_WebSearchEngine.Title" translate="yes" xml:space="preserve">
           <source>Search</source>
-          <target state="new">Search</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">搜尋</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Histories.HideHistores.Title" translate="yes" xml:space="preserve">
           <source>Hide histories</source>

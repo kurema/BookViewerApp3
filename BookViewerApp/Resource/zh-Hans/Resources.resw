@@ -120,4 +120,248 @@
   <data name="Welcome_OpenMenu" xml:space="preserve">
     <value>打开其他功能</value>
   </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>打开书本时将全屏模式设置为打开。</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>将全屏设置为默认值。</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>打开一本新书时，默认为右装订。</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>默认设置为右绑定。</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
+    <value>自动打开您上次阅读的页面。</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
+    <value>记住最后阅读的页面。</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
+    <value>在书籍查看器中显示转到最右/最左按钮。</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
+    <value>显示转到最右边/最左边的按钮。</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
+    <value>在云端同步书签。</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
+    <value>同步书签。</value>
+  </data>
+  <data name="Setting_TileHeight.Description" xml:space="preserve">
+    <value>书架中的书瓦高度。</value>
+  </data>
+  <data name="Setting_TileHeight.Title" xml:space="preserve">
+    <value>书瓦高度</value>
+  </data>
+  <data name="Setting_TileWidth.Description" xml:space="preserve">
+    <value>书架中书瓦的宽度。</value>
+  </data>
+  <data name="Setting_TileWidth.Title" xml:space="preserve">
+    <value>书瓦宽度</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
+    <value>背景的亮度。 100：白色，0：黑色。 （与黑暗主题相反）</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
+    <value>背景的亮度。</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
+    <value>在图书查看器上使用滚动动画。</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
+    <value>滚动动画</value>
+  </data>
+  <data name="Setting_BookNameTrim.Description" xml:space="preserve">
+    <value>匹配的部分隐藏在书名中。以正则表达式输入。（例如：\(.*\)）</value>
+  </data>
+  <data name="Setting_BookNameTrim.Title" xml:space="preserve">
+    <value>要修剪的书名</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
+    <value>如果正则表达式匹配，则在书架视图中排除文件夹。</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
+    <value>排除的文件夹名称</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
+    <value>假定在文件名中具有“cover”的图片是CBZ / CBR中的第一个文件。</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
+    <value>在CBZ / CBR中按文件名假定封面图片</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
+    <value>在CBZ / CBR中按自然顺序排序（例如：01.jpg→2.jpg→003.jpg）</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
+    <value>CBZ / CBR中的自然排序</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
+    <value>触摸屏幕时显示缩放按钮的秒数（0：禁用）。</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
+    <value>变焦按钮显示时间</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
+    <value>当您在书本查看器页面上触摸屏幕时，以秒为单位显示菜单（0：始终）。</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
+    <value>书本查看器中的菜单显示时间</value>
+  </data>
+  <data name="Setting_WebHomePage.Description" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Setting_WebHomePage.Title" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
+    <value>遵守PDF（R2L / L2R）的方向信息。</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
+    <value>尊重方向信息</value>
+  </data>
+  <data name="Password.Message" xml:space="preserve">
+    <value>输入密码以打开。</value>
+  </data>
+  <data name="Password.Save.Message" xml:space="preserve">
+    <value>保存密码</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
+  <data name="Word.Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Word.OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="Setting.Group.Browser" xml:space="preserve">
+    <value>浏览器</value>
+  </data>
+  <data name="Setting.Group.Cloud" xml:space="preserve">
+    <value>云</value>
+  </data>
+  <data name="Setting.Group.Library" xml:space="preserve">
+    <value>库</value>
+  </data>
+  <data name="Setting.Group.Obsolete" xml:space="preserve">
+    <value>过时</value>
+  </data>
+  <data name="Setting.Group.Viewer" xml:space="preserve">
+    <value>查看者</value>
+  </data>
+  <data name="TabHeader.Bookshelf" xml:space="preserve">
+    <value>书架</value>
+  </data>
+  <data name="TabHeader.BookViewer" xml:space="preserve">
+    <value>查看者</value>
+  </data>
+  <data name="TabHeader.Home" xml:space="preserve">
+    <value>住宅</value>
+  </data>
+  <data name="TabHeader.Info" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="TabHeader.NewTab" xml:space="preserve">
+    <value>新选项卡</value>
+  </data>
+  <data name="TabHeader.Setting" xml:space="preserve">
+    <value>配置</value>
+  </data>
+  <data name="TabHeader.Epub" xml:space="preserve">
+    <value>Epub</value>
+  </data>
+  <data name="TabHeader.Main" xml:space="preserve">
+    <value>主要</value>
+  </data>
+  <data name="TabHeader.Browser" xml:space="preserve">
+    <value>浏览器</value>
+  </data>
+  <data name="TabHeader.Explorer" xml:space="preserve">
+    <value>资源管理器</value>
+  </data>
+  <data name="Explorer.Apps" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Explorer.Browser" xml:space="preserve">
+    <value>浏览器</value>
+  </data>
+  <data name="Explorer.PickBook" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Explorer.Setting" xml:space="preserve">
+    <value>设置:</value>
+  </data>
+  <data name="ExplorerContainer.Bookmarks" xml:space="preserve">
+    <value>书签</value>
+  </data>
+  <data name="ExplorerContainer.Folders" xml:space="preserve">
+    <value>个文件夹</value>
+  </data>
+  <data name="ExplorerContainer.Histories" xml:space="preserve">
+    <value>历史</value>
+  </data>
+  <data name="ExplorerContainer.Libraries" xml:space="preserve">
+    <value>库</value>
+  </data>
+  <data name="ExplorerContainer.PC" xml:space="preserve">
+    <value>电脑</value>
+  </data>
+  <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
+    <value>注册文件夹</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.Title" xml:space="preserve">
+    <value>取消注册文件夹</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
+    <value>该文件夹由以下库引用。
+您确定要注销吗？</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
+    <value>取消注册文件夹</value>
+  </data>
+  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
+    <value>添加到媒体库</value>
+  </data>
+  <data name="ContextMenu.Library.New.Title" xml:space="preserve">
+    <value>新建库</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
+    <value>添加到图书馆</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
+    <value>该文件夹已被注册。</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
+    <value>无法注册</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
+    <value>显示预设书签。</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
+    <value>显示预设书签</value>
+  </data>
+  <data name="Setting.Group.Explorer" xml:space="preserve">
+    <value>资源管理器</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
+    <value>设置从地址栏搜索时使用的搜索引擎URL（以％s代替查询）。</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
+    <value>不显示历史</value>
+  </data>
+  <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
+    <value>显示历史</value>
+  </data>
+  <data name="Setting_ShowHistories.Description" xml:space="preserve">
+    <value>显示历史。</value>
+  </data>
+  <data name="Setting_ShowHistories.Title" xml:space="preserve">
+    <value>显示历史</value>
+  </data>
 </root>

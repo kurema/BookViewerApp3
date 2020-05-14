@@ -49,6 +49,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ObservableCollection<IFileItem> Contents { get; } = new ObservableCollection<IFileItem>();
 
+        public object Tag { get; set; }
+
         public string Name { get; set; } = "";
 
         public string Path { get; set; } = "";

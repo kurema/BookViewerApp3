@@ -23,6 +23,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ICommand DeleteCommand { get; set; } = null;
 
+        public object Tag { get; set; }
 
         private ICommand _RenameCommand;
         public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((parameter) => { Name = parameter?.ToString() ?? Name; });
@@ -65,6 +66,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
         }
+
+        public object Tag { get; set; }
 
         public string Name { get => Content.title; set => Content.title = value; }
 
@@ -129,6 +132,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
         }
+
+        public object Tag { get; set; }
 
         public string Name { get => Content.title; set => Content.title = value; }
 

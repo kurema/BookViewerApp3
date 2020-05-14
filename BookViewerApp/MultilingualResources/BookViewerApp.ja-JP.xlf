@@ -115,40 +115,45 @@
           <target state="translated">ブックビュワーを開いた時、自動的に全画面モードに切り替えます。</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultFullScreen.Title" translate="yes" xml:space="preserve">
-          <source>Set full screen as default.</source>
-          <target state="translated">標準で全画面表示にする</target>
+          <source>Set full screen as default</source>
+          <target state="needs-review-translation">標準で全画面表示にする</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
           <source>Reverse page as default when you open a new book.</source>
           <target state="translated">新たに開いた本を右綴じと認識する。</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default.</source>
-          <target state="translated">標準で右綴じにする</target>
+          <source>Reverse page as default</source>
+          <target state="needs-review-translation">標準で右綴じにする</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
           <target state="translated">自動的に前回その本を読んだページを開きます。</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Title" translate="yes" xml:space="preserve">
-          <source>Automatically open last read page.</source>
-          <target state="translated">前回読んだページを開く</target>
+          <source>Automatically open last read page</source>
+          <target state="needs-review-translation">前回読んだページを開く</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Description" translate="yes" xml:space="preserve">
           <source>Show go to rightmost/leftmost button in book viewer.</source>
           <target state="translated">ブックビュワーで右端/左端へ移動するボタンを表示する。</target>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Title" translate="yes" xml:space="preserve">
-          <source>Show go to rightmost /leftmost button.</source>
-          <target state="translated">右端/左端へのボタンを表示する</target>
+          <source>Show go to rightmost /leftmost button</source>
+          <target state="needs-review-translation">右端/左端へのボタンを表示する</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
           <source>Sync bookmarks over the cloud.</source>
           <target state="translated">クラウドを通じて栞を同期する。</target>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
-          <source>Sync bookmarks.</source>
-          <target state="translated">栞を同期する</target>
+          <source>Sync bookmarks</source>
+          <target state="needs-review-translation">栞を同期する</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="ToggleFullScreen.Label" translate="yes" xml:space="preserve">
           <source>Toggle full screen mode.</source>
@@ -195,8 +200,9 @@
           <target state="translated">背景色の明るさを設定します。100で白、0で黒です。 (ダークテーマでは反転)</target>
         </trans-unit>
         <trans-unit id="Setting_BackgroundBrightness.Title" translate="yes" xml:space="preserve">
-          <source>Brightness of background.</source>
-          <target state="translated">背景色の明るさ</target>
+          <source>Brightness of background</source>
+          <target state="needs-review-translation">背景色の明るさ</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
           <source>Use scroll animation on book viewer.</source>
@@ -207,8 +213,9 @@
           <target state="translated">スクロールアニメーション</target>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Description" translate="yes" xml:space="preserve">
-          <source>Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
-          <target state="translated">ファイル名の内で該当した部分を表示しません。正規表現で入力。(例:\(.*\))</target>
+          <source>Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
+          <target state="needs-review-translation">ファイル名の内で該当した部分を表示しません。正規表現で入力。(例:\(.*\))</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Title" translate="yes" xml:space="preserve">
           <source>Book name to trim</source>

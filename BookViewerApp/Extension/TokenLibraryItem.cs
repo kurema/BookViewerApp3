@@ -35,6 +35,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public libraryFolder Content { get; }
         public StorageFileItem ContentFileItem { get; }
 
+        public object Tag { get; set; }
+
         public string Name => String.IsNullOrWhiteSpace(Content?.title) ? ContentFileItem?.Name : Content.title;
 
         public string Path => ContentFileItem?.Path;

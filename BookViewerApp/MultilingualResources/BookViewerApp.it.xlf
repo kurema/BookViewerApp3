@@ -122,40 +122,45 @@
           <target state="final">Avvia l\'app a schermo intero quando apri un libro.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultFullScreen.Title" translate="yes" xml:space="preserve">
-          <source>Set full screen as default.</source>
-          <target state="final">Imposta lo schermo intero come predefinito</target>
+          <source>Set full screen as default</source>
+          <target state="needs-review-translation">Imposta lo schermo intero come predefinito</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
           <source>Reverse page as default when you open a new book.</source>
           <target state="final">Inverte l\'ordine delle pagine quando apri un libro.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default.</source>
-          <target state="final">Pagine invertite come predefinito</target>
+          <source>Reverse page as default</source>
+          <target state="needs-review-translation">Pagine invertite come predefinito</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
           <target state="final">Quando apri un libro apre automaticamente la pagina dove eri rimasto.</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Title" translate="yes" xml:space="preserve">
-          <source>Automatically open last read page.</source>
-          <target state="final">Apri l'ultima pagina letta</target>
+          <source>Automatically open last read page</source>
+          <target state="needs-review-translation">Apri l'ultima pagina letta</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Description" translate="yes" xml:space="preserve">
           <source>Show go to rightmost/leftmost button in book viewer.</source>
           <target state="final">Mostra i pulsanti vai tutto indietro/tutto avanti quando un libro è aperto.</target>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Title" translate="yes" xml:space="preserve">
-          <source>Show go to rightmost /leftmost button.</source>
-          <target state="final">Mostra i pulsanti tutto indietro/avanti</target>
+          <source>Show go to rightmost /leftmost button</source>
+          <target state="needs-review-translation">Mostra i pulsanti tutto indietro/avanti</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
           <source>Sync bookmarks over the cloud.</source>
           <target state="final">Sincronizza i segnalibri con il cloud.</target>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
-          <source>Sync bookmarks.</source>
-          <target state="final">Sincronizza segnalibri</target>
+          <source>Sync bookmarks</source>
+          <target state="needs-review-translation">Sincronizza segnalibri</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="ToggleFullScreen.Label" translate="yes" xml:space="preserve">
           <source>Toggle full screen mode.</source>
@@ -202,8 +207,9 @@
           <target state="final">Luminosità dello sfondo. 100:Bianco, 0:Nero. (Opposite in dark theme)</target>
         </trans-unit>
         <trans-unit id="Setting_BackgroundBrightness.Title" translate="yes" xml:space="preserve">
-          <source>Brightness of background.</source>
-          <target state="final">Luminosità sfondo.</target>
+          <source>Brightness of background</source>
+          <target state="needs-review-translation">Luminosità sfondo.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
           <source>Use scroll animation on book viewer.</source>
@@ -214,8 +220,9 @@
           <target state="final">Animazione a scorrimento</target>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Description" translate="yes" xml:space="preserve">
-          <source>Mathed part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
-          <target state="final">La parte corrispondente del titolo viene nascosta. Inserisci una frase come regola. (es:\(.*\))</target>
+          <source>Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
+          <target state="needs-review-translation">La parte corrispondente del titolo viene nascosta. Inserisci una frase come regola. (es:\(.*\))</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Title" translate="yes" xml:space="preserve">
           <source>Book name to trim</source>

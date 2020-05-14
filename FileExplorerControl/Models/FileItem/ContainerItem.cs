@@ -28,6 +28,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string Path { get; set; }
 
+        public object Tag { get; set; }
+
         public DateTimeOffset DateCreated => DateTimeOffset.Now;
 
         public bool IsFolder => true;

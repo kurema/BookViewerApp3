@@ -151,5 +151,6 @@ namespace kurema.FileExplorerControl.Models.FileItems
             }
         }
 
+        public object Tag { get; set; }
     }
 }
