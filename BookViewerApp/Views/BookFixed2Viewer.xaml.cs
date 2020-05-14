@@ -297,7 +297,7 @@ namespace BookViewerApp.Views
             if (flipView.SelectedItem is PageViewModel)
             {
                 var pvm = (flipView.SelectedItem as PageViewModel);
-                pvm.ZoomRequest(pvm.ZoomFactor * 1.3f);
+                pvm.OnZoomRequested(pvm.ZoomFactor * 1.3f);
                 MakeStackPanelZoomVisibleForAWhile();
             }
         }
@@ -306,7 +306,7 @@ namespace BookViewerApp.Views
             if (flipView.SelectedItem is PageViewModel)
             {
                 var pvm = (flipView.SelectedItem as PageViewModel);
-                pvm.ZoomRequest(pvm.ZoomFactor / 1.3f);
+                pvm.OnZoomRequested(pvm.ZoomFactor / 1.3f);
                 MakeStackPanelZoomVisibleForAWhile();
             }
         }

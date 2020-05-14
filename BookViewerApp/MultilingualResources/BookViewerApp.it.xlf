@@ -42,7 +42,8 @@
         </trans-unit>
         <trans-unit id="BookNext.Label" translate="yes" xml:space="preserve">
           <source>Read the next book</source>
-          <target state="translated">Ci vorrà un po\'. Non chiudere l\'app</target>
+          <target state="final">Libro successivo</target>
+          <note from="MultilingualEditor" annotates="source" priority="4">There was unexpected update. Maybe there was a misoperation. See https://github.com/kurema/BookViewerApp3/commit/890d07fbd4368cf4fbc6d10014b3e354a06f2788</note>
         </trans-unit>
         <trans-unit id="BookPrevious.Label" translate="yes" xml:space="preserve">
           <source>Read the previous book</source>

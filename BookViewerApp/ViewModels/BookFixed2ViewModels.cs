@@ -403,14 +403,30 @@ namespace BookViewerApp.ViewModels
 
         private Books.IPageFixed Page;
 
+
+        private System.Windows.Input.ICommand _MoveCommand;
+        public System.Windows.Input.ICommand MoveCommand => _MoveCommand = _MoveCommand ?? new DelegateCommand(async (parameter) =>
+        {
+            var split = parameter.ToString().Split(',');
+            if (split.Length >= 2)
+            {
+                float x, y;
+                if (float.TryParse(split[0], out x) && float.TryParse(split[1], out y))
+                {
+                    OnMoveRequested(x, y);
+                }
+            }
+        });
+
+
         private ICommand _ZoomFactorMultiplyCommand;
         public ICommand ZoomFactorMultiplyCommand
         {
             get => _ZoomFactorMultiplyCommand = _ZoomFactorMultiplyCommand ?? new DelegateCommand((a) =>
-{
-    var d = double.Parse(a.ToString());
-    ZoomRequest(ZoomFactor * (float)d);
-}
+            {
+                var d = double.Parse(a.ToString());
+                OnZoomRequested(ZoomFactor * (float)d);
+            }
 //,
 //    (a) =>
 //    {
@@ -454,22 +470,34 @@ namespace BookViewerApp.ViewModels
             }
         }
 
-        public void ZoomRequest(float factor)
-        {
-            OnZoomRequested(factor);
-        }
-        private void OnZoomRequested(float factor)
+        public void OnZoomRequested(float factor)
         {
             ZoomRequested?.Invoke(this, new ZoomRequestedEventArgs(factor));
         }
+
+        public void OnMoveRequested(float AddX, float AddY)
+        {
+            ZoomRequested?.Invoke(this, new ZoomRequestedEventArgs(AddX, AddY));
+        }
+
+
         public ZoomRequestedEventHandler ZoomRequested;
         public delegate void ZoomRequestedEventHandler(object sender, ZoomRequestedEventArgs e);
         public class ZoomRequestedEventArgs : EventArgs
         {
-            public float ZoomFactor;
+            public float? ZoomFactor = null;
             public ZoomRequestedEventArgs(float factor)
             {
                 this.ZoomFactor = factor;
+            }
+
+            public float MoveHorizontal = 0;
+            public float MoveVertical = 0;
+
+            public ZoomRequestedEventArgs(float AddX, float AddY)
+            {
+                this.MoveHorizontal = AddX;
+                this.MoveVertical = AddY;
             }
         }
 
@@ -783,6 +811,7 @@ namespace BookViewerApp.ViewModels
     public interface IPageViewModel
     {
         ICommand ZoomFactorMultiplyCommand { get; }
+        ICommand MoveCommand { get; }
         float ZoomFactor { get; set; }
     }
 }

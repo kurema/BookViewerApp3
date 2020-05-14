@@ -12,7 +12,7 @@ namespace BookViewerApp.Managers
 {
     public static class ThumbnailManager
     {
-        private static Windows.Storage.StorageFolder DataFolder => Functions.GetSaveFolderLocalCache();
+        private async static Task<Windows.Storage.StorageFolder> GetDataFolder() => await Functions.GetSaveFolderLocalCache().CreateFolderAsync("thumbnail", Windows.Storage.CreationCollisionOption.OpenIfExists);
 
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetImageSourceAsync(string ID)
         {
@@ -62,12 +62,12 @@ namespace BookViewerApp.Managers
 
         public static async Task<Windows.Storage.StorageFile> CreateImageFileAsync(string ID)
         {
-            return await DataFolder.CreateFileAsync(GetFileNameFromID(ID));
+            return await (await GetDataFolder()).CreateFileAsync(GetFileNameFromID(ID));
         }
 
         public static async Task<Windows.Storage.StorageFile> GetImageFileAsync(string ID)
         {
-            var item = await DataFolder.TryGetItemAsync(GetFileNameFromID(ID));
+            var item = await (await GetDataFolder()).TryGetItemAsync(GetFileNameFromID(ID));
             if (item != null && item is Windows.Storage.StorageFile sf && (await sf.GetBasicPropertiesAsync()).Size != 0)
             {
                 return sf;
@@ -77,7 +77,7 @@ namespace BookViewerApp.Managers
 
         public static string GetFileNameFromID(string ID)
         {
-            return "Thumbnail_" + EscapeString(ID) + Extension;
+            return "" + EscapeString(ID) + Extension;
         }
 
         public static string Extension => ".jpeg";

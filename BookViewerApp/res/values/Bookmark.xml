@@ -11,9 +11,21 @@
         <bookmark url="https://www.google.com/" title="Google" />
         <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
       </container>
+      <container title="無料書籍">
+        <bookmark url="https://www.aozora.gr.jp/" title="青空文庫" />
+        <bookmark url="https://www.gutenberg.org/" title="プロジェクト・グーテンベルク" />
+        <bookmark url="https://archive.org/" title="インターネットアーカイブ" />
+      </container>
       <container title="本棚">
         <bookmark url="https://play.google.com/books" title="Google Play" />
         <bookmark url="https://book.dmm.com/library/" title="DMM電子書籍" />
+      </container>
+      <container title="アプリについて">
+        <container title="kurema">
+          <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
+          <bookmark url="https://github.com/kurema" title="GitHub" />
+        </container>
+        <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
       </container>
     </bookmarks>
   </multilingual>

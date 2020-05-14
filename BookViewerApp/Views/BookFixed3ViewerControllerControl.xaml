@@ -242,7 +242,7 @@
 
         <Grid x:Name="RootGrid" Background="Transparent" >
             <Grid.Resources>
-                 <!--New AppBar button style 48x48 pixels in size--> 
+                <!--New AppBar button style 48x48 pixels in size-->
                 <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
                     <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
@@ -253,7 +253,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                 <!--New AppBarToggle button style 48x48 pixels in size--> 
+                <!--New AppBarToggle button style 48x48 pixels in size-->
                 <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
                     <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
@@ -264,13 +264,13 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                 <!--New CommandBar Style--> 
+                <!--New CommandBar Style-->
                 <Style x:Key="CommandBarStyle" TargetType="CommandBar">
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="OverflowButtonVisibility" Value="Collapsed" />
                 </Style>
-                 <!--StackPanel Style-->
+                <!--StackPanel Style-->
                 <Style x:Key="ButtonStyle" TargetType="Button">
                     <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                     <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
@@ -464,33 +464,46 @@
                                         <SymbolIcon Symbol="Zoom"  />
                                     </Viewbox>
                                     <Button.Flyout>
-                                            <Flyout Placement="Top">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <RepeatButton Grid.Row="1" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="0.83">
-                                                        <SymbolIcon Symbol="ZoomOut"/>
-                                                    </RepeatButton>
-                                                    <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="1.2">
-                                                        <SymbolIcon Symbol="ZoomIn"/>
-                                                    </RepeatButton>
-                                                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" xmlns:system="using:System" Tapped="InitializeZoomFactor">
+                                        <Flyout Placement="Top">
+                                            <Grid Grid.Row="0" Grid.ColumnSpan="3">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <RepeatButton Grid.Row="0" Grid.Column="1" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0,0.1" HorizontalAlignment="Center">
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AD;"/>
+                                                </RepeatButton>
+                                                <RepeatButton Grid.Row="1" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="-0.1,0" HorizontalAlignment="Center">
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0B0;"/>
+                                                </RepeatButton>
+                                                <RepeatButton Grid.Row="1" Grid.Column="1" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0,-0.1" HorizontalAlignment="Center">
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AE;"/>
+                                                </RepeatButton>
+                                                <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0.1,0" HorizontalAlignment="Center">
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AF;"/>
+                                                </RepeatButton>
+                                                <RepeatButton Grid.Row="2" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="0.83">
+                                                    <SymbolIcon Symbol="ZoomOut"/>
+                                                </RepeatButton>
+                                                <RepeatButton Grid.Row="2" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="1.2">
+                                                    <SymbolIcon Symbol="ZoomIn"/>
+                                                </RepeatButton>
+                                                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" xmlns:system="using:System" Tapped="InitializeZoomFactor">
                                                         <Run Text="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageIntConverter},Mode=OneWay}"/>
                                                         <Run Text="%"/>
-                                                    </TextBlock>
+                                                </TextBlock>
 
-                                                    <!--<Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />-->
-                                                </Grid>
-                                            </Flyout>
-                                        </Button.Flyout>
-                                    </Button>
+                                                <!--<Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />-->
+                                            </Grid>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
 
                                 <Button 
                                     Template="{StaticResource ButtonTemplate}"

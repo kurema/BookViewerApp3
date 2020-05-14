@@ -22,7 +22,7 @@ using BookViewerApp.ViewModels;
 
 namespace BookViewerApp.Views
 {
-    public sealed partial class BookFixed2Page : UserControl,INotifyPropertyChanged
+    public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
     {
         public void OnPropertyChanged(string name) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -31,9 +31,9 @@ namespace BookViewerApp.Views
             get { return scrollViewer.ZoomFactor; }
             set
             {
-                if(!value.HasValue)return;
+                if (!value.HasValue) return;
                 var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value.Value), scrollViewer.MinZoomFactor);
-                if(value!=resultFactor) { throw new ArgumentOutOfRangeException();}
+                if (value != resultFactor) { throw new ArgumentOutOfRangeException(); }
                 scrollViewer.ChangeView(null, null, resultFactor);
                 //changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
                 OnPropertyChanged(nameof(ZoomFactor));
@@ -55,11 +55,23 @@ namespace BookViewerApp.Views
                 {
                     pv.ZoomRequested += (s2, e2) =>
                     {
-                        var value = e2.ZoomFactor;
-                        var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value),
-                            scrollViewer.MinZoomFactor);
-                        var currentFactor = this.ZoomFactor;
-                        changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
+                        if (e2.ZoomFactor != null)
+                        {
+                            var value = e2.ZoomFactor;
+                            var resultFactor = Math.Max(Math.Min(scrollViewer.MaxZoomFactor, value ?? 1),
+                                scrollViewer.MinZoomFactor);
+
+                            var currentFactor = this.ZoomFactor;
+                            changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
+                            //ズーム時は移動量は無視される。
+                            //You can't zoom and move.
+                        }
+                        else
+                        {
+                            //移動量は表示範囲に対する割合で。
+                            //offset is rate of viewport.
+                            scrollViewer.ChangeView(scrollViewer.HorizontalOffset - scrollViewer.ViewportWidth * e2.MoveHorizontal, scrollViewer.VerticalOffset - scrollViewer.ViewportHeight * e2.MoveVertical, null, true);
+                        }
                     };
                     pv.PropertyChanged += (s2, e2) =>
                     {
@@ -119,7 +131,7 @@ namespace BookViewerApp.Views
 
             double newExtentOffsetX = newExtentCenterX - sv.ViewportWidth / 2;
             double newExtentOffsetY = newExtentCenterY - sv.ViewportHeight / 2;
-            sv.ChangeView(newExtentOffsetX, newExtentOffsetY, zoomFactor, false);
+            sv.ChangeView(newExtentOffsetX, newExtentOffsetY, zoomFactor, true);
         }
 
 

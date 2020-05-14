@@ -34,7 +34,7 @@
     <value>Titolo</value>
   </data>
   <data name="BookNext.Label" xml:space="preserve">
-    <value>Ci vorrà un po\'. Non chiudere l\'app</value>
+    <value>Libro successivo</value>
   </data>
   <data name="BookPrevious.Label" xml:space="preserve">
     <value>Libro precedente</value>
