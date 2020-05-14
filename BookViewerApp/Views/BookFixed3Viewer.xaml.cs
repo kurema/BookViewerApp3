@@ -152,6 +152,9 @@ namespace BookViewerApp.Views
                 //SetBookShelfModel(param.BookShelfModel);
                 if (Binding != null)
                     Binding.Title = param.Title;
+            }else if(e.Parameter is Stream stream)
+            {
+                throw new NotImplementedException();
             }
 
             var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();

@@ -30,4 +30,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         object Tag { get; set; }
     }
+
+    public interface IIconProviderProvider
+    {
+        IconProviders.IIconProvider Icon { get; set; }
+    }
 }

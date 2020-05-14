@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using System.Collections.Generic;
+
 namespace kurema.FileExplorerControl.Models.FileItems
 {
-    public class ContainerItem : IFileItem, IIconProviderProvider
+    public class ContainerDelegateItem : IFileItem, IIconProviderProvider
     {
-        public ContainerItem(string fileName, string path, params IFileItem[] children)
+        public ContainerDelegateItem(string fileName, string path, Func<ContainerDelegateItem, Task<IEnumerable<IFileItem>>> provider)
         {
             Name = fileName ?? throw new ArgumentNullException(nameof(fileName));
             Path = path ?? throw new ArgumentNullException(nameof(path));
-            Children = new ObservableCollection<IFileItem>(children) ?? throw new ArgumentNullException(nameof(children));
+            ChildrenProvider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
 
         /// <summary>
@@ -34,15 +34,31 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public bool IsFolder => true;
 
-        public ObservableCollection<IFileItem> Children { get; } = new ObservableCollection<IFileItem>();
+        public Func<ContainerDelegateItem, Task<IEnumerable<IFileItem>>> ChildrenProvider { get; }
+
+        public ObservableCollection<IFileItem> ChildrenProvided { get; private set; } = null;
 
         public ICommand DeleteCommand { get; set; } = null;
 
         public ICommand RenameCommand { get; set; } = null;
 
-        public Task<ObservableCollection<IFileItem>> GetChildren()
+        public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
-            return Task.FromResult(Children);
+            var result = await ChildrenProvider?.Invoke(this);
+            if (ChildrenProvided != null)
+            {
+                ChildrenProvided.Clear();
+                foreach (var item in result) ChildrenProvided.Add(item);
+                return ChildrenProvided;
+            }
+            else if (result == null)
+            {
+                return new ObservableCollection<IFileItem>(result);
+            }
+            else
+            {
+                return ChildrenProvided = new ObservableCollection<IFileItem>(result);
+            }
         }
 
         public Task<ulong?> GetSizeAsync()
@@ -66,4 +82,5 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
     }
+
 }

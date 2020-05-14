@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
     <Compile Include="Extension\BookmarkItem.cs" />
+    <Compile Include="Extension\HistoryItem.cs" />
     <Compile Include="Extension\TokenLibraryItem.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
     <Compile Include="Helper\MemoryStreamCache.cs" />
@@ -393,11 +394,6 @@
   <ItemGroup>
     <PackageReference Include="iTextSharp-LGPL">
       <Version>4.1.6</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>3.0.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>

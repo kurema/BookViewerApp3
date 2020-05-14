@@ -19,9 +19,9 @@ namespace kurema.FileExplorerControl.Models.IconProviders
 
         public Task<Func<ImageSource>> GetIconSmall(IFileItem item)
         {
-            if (item is ContainerItem container && container.IIconProvider != null)
+            if (item is IIconProviderProvider container && container.Icon != null)
             {
-                return Task.FromResult(container.IIconProvider.DefaultIconSmall);
+                return Task.FromResult(container.Icon.DefaultIconSmall);
             }
             if (item?.IsFolder == true)
             {
@@ -32,9 +32,9 @@ namespace kurema.FileExplorerControl.Models.IconProviders
 
         public Task<Func<ImageSource>> GetIconLarge(IFileItem item)
         {
-            if (item is ContainerItem container && container.IIconProvider != null)
+            if (item is IIconProviderProvider container && container.Icon != null)
             {
-                return Task.FromResult(container.IIconProvider.DefaultIconLarge);
+                return Task.FromResult(container.Icon.DefaultIconLarge);
             }
             if (item?.IsFolder == true)
             {

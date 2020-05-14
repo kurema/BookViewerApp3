@@ -43,6 +43,9 @@ namespace BookViewerApp.Storages
 
             public DateTime Date { get; set; }
 
+            [System.Xml.Serialization.XmlIgnore]
+            public bool CurrentlyInaccessible { get; set; } = false;
+
             public async Task<Windows.Storage.StorageFile> GetFile()
             {
                 if (!string.IsNullOrWhiteSpace(Path))

@@ -70,7 +70,8 @@ namespace BookViewerApp.Helper
                         {
                             control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
-                            var library = await LibraryStorage.GetItem((a) => {
+                            var library = await LibraryStorage.GetItem((a) =>
+                            {
                                 var tab = GetCurrentTabPage(content);
                                 if (tab == null) return;
                                 tab.OpenTabWeb(a);
@@ -78,8 +79,9 @@ namespace BookViewerApp.Helper
 
                             //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
                             var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
-                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) => {
-                                if(a is kurema.FileExplorerControl.Models.FileItems.BookmarkItem || a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
+                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) =>
+                            {
+                                if (a is kurema.FileExplorerControl.Models.FileItems.BookmarkItem || a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
                                 {
                                     return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
                                     () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
@@ -87,7 +89,7 @@ namespace BookViewerApp.Helper
                                 }
                                 if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
                                 {
-                                    var id = PathStorage.GetIdFromPath(a.Path);
+                                    string id = (a as kurema.FileExplorerControl.Models.FileItems.HistoryItem)?.Content?.Id ?? PathStorage.GetIdFromPath(a.Path);
                                     if (!string.IsNullOrEmpty(id))
                                     {
                                         var image = await ThumbnailManager.GetImageSourceAsync(id);
@@ -108,7 +110,7 @@ namespace BookViewerApp.Helper
                             await fv.UpdateChildren();
                             control.SetTreeViewItem(fv.Folders);
                             await control.ContentControl.SetFolder(fv);
-                            control.ContentControl.FileOpenedEventHandler += (s2, e2) =>
+                            control.ContentControl.FileOpenedEventHandler += async (s2, e2) =>
                             {
                                 e2?.Content?.Open();
                                 var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
@@ -124,6 +126,11 @@ namespace BookViewerApp.Helper
                                     {
                                         tab.OpenTabBook(sfi.Content);
                                     }
+                                    else if(fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                    {
+                                        var file = await hi.GetFile();
+                                        if (file != null) tab.OpenTabBook(file);
+                                    }
                                     else
                                     {
                                         var stream = fileitem?.OpenStreamForReadAsync();
@@ -133,7 +140,7 @@ namespace BookViewerApp.Helper
                                 }
                             };
 
-                            if(control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel fvm && fvm.Content!=null)
+                            if (control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel fvm && fvm.Content != null)
                             {
                                 void Content_PropertyChanged(object _, System.ComponentModel.PropertyChangedEventArgs e)
                                 {
@@ -157,10 +164,11 @@ namespace BookViewerApp.Helper
                                     }
                                 };
 
-                                if (SettingStorage.GetValue("ExplorerContentStyle") is kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles f) {
+                                if (SettingStorage.GetValue("ExplorerContentStyle") is kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles f)
+                                {
                                     fvm.Content.ContentStyle = f;
                                 }
-                                if(SettingStorage.GetValue("ExplorerIconSize") is double d)
+                                if (SettingStorage.GetValue("ExplorerIconSize") is double d)
                                 {
                                     fvm.Content.IconSize = d;
                                 }

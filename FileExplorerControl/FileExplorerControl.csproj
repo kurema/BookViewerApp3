@@ -129,6 +129,7 @@
     <Compile Include="Application\ResourceLoader.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
     <Compile Include="Models\FileItem\CombinedItem.cs" />
+    <Compile Include="Models\FileItem\ContainerDelegateItem.cs" />
     <Compile Include="Models\FileItem\ContainerItem.cs" />
     <Compile Include="Models\IconProviders\IconProviderDefault.cs" />
     <Compile Include="Models\IconProviders\IconProviderDelegate.cs" />

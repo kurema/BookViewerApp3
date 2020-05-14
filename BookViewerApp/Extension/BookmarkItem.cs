@@ -57,7 +57,6 @@ namespace kurema.FileExplorerControl.Models.FileItems
             return Task.FromResult<Stream>(null);
         }
     }
-
     public class StorageBookmarkItem : IFileItem
     {
         public libraryBookmarksContainerBookmark Content;
@@ -68,6 +67,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
         public object Tag { get; set; }
+
+        public bool IsReadOnly { get; set; } = false;
+
 
         public string Name { get => Content.title; set => Content.title = value; }
 
@@ -82,10 +84,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         private ICommand _DeleteCommand;
 
-        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => ActionDelete != null);
+        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => ActionDelete != null && !IsReadOnly);
 
         private ICommand _RenameCommand;
-        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString());
+        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
 
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
@@ -133,6 +135,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
             Content = content ?? throw new ArgumentNullException(nameof(content));
         }
 
+        public bool IsReadOnly { get; set; } = false;
+
         public object Tag { get; set; }
 
         public string Name { get => Content.title; set => Content.title = value; }
@@ -144,10 +148,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public bool IsFolder => true;
 
         private ICommand _DeleteCommand;
-        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => ActionDelete != null);
+        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => ActionDelete != null && !IsReadOnly);
 
         private ICommand _RenameCommand;
-        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString());
+        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
 
         public Action ActionDelete { get; set; }
         public Action<string> ActionOpen { get; set; }
@@ -172,6 +176,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                                 Content.Items = list.ToArray();
                             };
                             temp.MenuCommandsProvider = this.MenuCommandsProvider;
+                            temp.IsReadOnly = IsReadOnly;
                             result.Add(temp);
                         }
                         break;
@@ -186,6 +191,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                                 Content.Items = list.ToArray();
                             };
                             temp.MenuCommandsProvider = this.MenuCommandsProvider;
+                            temp.IsReadOnly = IsReadOnly;
                             result.Add(temp);
                         }
                         break;
