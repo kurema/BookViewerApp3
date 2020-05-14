@@ -525,11 +525,12 @@ namespace BookViewerApp.ViewModels
             SetImageNoWait(_Source);
         }
 
-        private async void SetImageNoWait(BitmapImage im)
+        public async void SetImageNoWait(BitmapImage im)
         {
             await Semaphore.WaitAsync();
             try
             {
+                if (im == null) throw new NullReferenceException();
                 await Page.SetBitmapAsync(im);
             }
             catch

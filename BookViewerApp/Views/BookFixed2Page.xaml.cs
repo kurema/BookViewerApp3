@@ -152,8 +152,27 @@ namespace BookViewerApp.Views
         {
             scrollViewer.ChangeView(0, 0, 1.0f);
 
-            (DataContext as ViewModels.PageViewModel)?.UpdateSource();
-            this.InvalidateArrange();
+            //void SetSource(ref ImageSource source,PageViewModel model )
+            //{
+            //    if (source is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) model.SetImageNoWait(bitmap);
+            //    else source = model.Source;
+            //}
+
+            //(DataContext as ViewModels.PageViewModel)?.UpdateSource();
+            if (DataContext is ViewModels.PageViewModel dc)
+            {
+                {
+                    if (spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) dc.SetImageNoWait(bitmap);
+                    else spreadPanel.Source1 = dc.Source;
+                }
+
+                if (dc.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread)
+                {
+                    if (dc.NextPage == null) spreadPanel.Source2 = null;
+                    else if (spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) dc.NextPage.SetImageNoWait(bitmap);
+                    else spreadPanel.Source2 = dc.NextPage.Source;
+                }
+            }
         }
 
         private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
