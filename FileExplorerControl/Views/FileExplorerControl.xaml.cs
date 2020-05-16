@@ -25,11 +25,12 @@ namespace kurema.FileExplorerControl.Views
         {
             this.InitializeComponent();
 
-            if(this.DataContext is ViewModels.FileExplorerViewModel fvm && this.content.DataContext is ViewModels.ContentViewModel vm)
+            if (this.DataContext is ViewModels.FileExplorerViewModel fvm && this.content.DataContext is ViewModels.ContentViewModel vm)
             {
                 fvm.Content = vm;
 
-                fvm.Content.PropertyChanged += async (s, e) => {
+                fvm.Content.PropertyChanged += async (s, e) =>
+                {
                     if (e.PropertyName == nameof(ViewModels.ContentViewModel.Item))
                     {
                         address.SetAddress(fvm.Content.Item);
@@ -172,9 +173,9 @@ namespace kurema.FileExplorerControl.Views
 
         private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
         {
-            if(sender is ToggleButton tb)
+            if (sender is ToggleButton tb)
             {
-                if(this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+                if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
                 {
                     fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() == "Ascending");
                 }
@@ -197,8 +198,8 @@ namespace kurema.FileExplorerControl.Views
             var option = new FlyoutShowOptions();
             if (args.TryGetPosition(sender, out Point p)) option.Position = p;
 
-            if(this.content.DataContext is ViewModels.ContentViewModel vm)
-            { 
+            if (this.content.DataContext is ViewModels.ContentViewModel vm)
+            {
                 var menu = new MenuFlyout();
                 foreach (var item in Models.MenuCommand.GetMenuFlyoutItems(vm.Item.MenuCommands)) menu.Items.Add(item);
                 {
@@ -257,6 +258,18 @@ namespace kurema.FileExplorerControl.Views
                 menu.ShowAt(sender, option);
             }
             args.Handled = true;
+        }
+
+
+        public System.Windows.Input.ICommand AddressRequesteCommand { get; set; }
+
+        private void address_text_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                if (AddressRequesteCommand?.CanExecute(address_text.Text) == true) AddressRequesteCommand.Execute(address_text.Text);
+                address_text.Text = (this.DataContext as ViewModels.FileExplorerViewModel)?.Content?.Item?.Path ?? address_text.Text;
+            }
         }
     }
 }

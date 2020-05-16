@@ -30,19 +30,21 @@ namespace BookViewerApp.Storages
 
         public static ContainerDelegateItem GetItemLibrary()
         {
-            return new ContainerDelegateItem(GetItem_GetWord("Libraries"), "/Libraries", async (_)=> {
+            return new ContainerDelegateItem(GetItem_GetWord("Libraries"), "/Libraries", async (_) =>
+            {
                 var library = await Content.GetContentAsync();
                 if (library?.libraries == null) return Array.Empty<IFileItem>();
                 return (await Task.WhenAll(library.libraries.Select(async a => await a?.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
+                Tag = "Root.Library",
             };
         }
 
-        public static ContainerDelegateItem GetItemHistory()
+        public static ContainerDelegateItem GetItemHistory(System.Windows.Input.ICommand PathRequestCommand)
         {
-            //if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
+            if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", async (_) =>
             {
                 var history = await HistoryStorage.Content.GetContentAsync();
@@ -50,7 +52,7 @@ namespace BookViewerApp.Storages
                 //一々ファイル取得してると重い…。
                 //特に、履歴から開く→履歴更新がファイルを開く処理と同時になったりする。
                 //一方、履歴の情報だけだとファイルが既に消えてる場合がある。
-                return history.Where(a => !a.CurrentlyInaccessible).Select(a => new HistoryItem(a));
+                return history.Where(a => !a.CurrentlyInaccessible).Select(a => new HistoryItem(a) { MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistory(PathRequestCommand) });
 
                 //return (await Task.WhenAll(history.Select(async a => (a, await a.GetFile()))))?.Where(a => a.Item2 != null)?.Select(a => new StorageFileItem(a.Item2)
                 //{
@@ -70,7 +72,8 @@ namespace BookViewerApp.Storages
                     HistoryStorage.Content.Content = Array.Empty<HistoryStorage.HistoryInfo>();
                     await HistoryStorage.Content.SaveAsync();
                     OnLibraryUpdateRequest(LibraryKind.History);
-                }),
+                }, a => !(a is bool b && b == true)),
+                Tag = "Root.History",
             };
         }
 
@@ -83,12 +86,16 @@ namespace BookViewerApp.Storages
                 foreach (var item in list) item.Parent = sender;
                 return list;
             })
-            { MenuCommandsProvider = UIHelper.ContextMenus.MenuFolders };
+            {
+                MenuCommandsProvider = UIHelper.ContextMenus.MenuFolders,
+                Tag = "Root.Folders",
+            };
         }
 
         public static ContainerDelegateItem GetItemBookmarks(Action<string> bookmarkAction)
         {
-            return new ContainerDelegateItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", async (parent)=> {
+            return new ContainerDelegateItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", async (parent) =>
+            {
                 var library = await Content.GetContentAsync();
                 var bookmark_local = await LocalBookmark.GetContentAsync();
 
@@ -136,18 +143,26 @@ namespace BookViewerApp.Storages
                 return list;
             })
             {
-                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png")))
+                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
+                Tag = "Root.Bookmarks",
             };
         }
 
-        public static async Task<ContainerItem> GetItem(Action<string> bookmarkAction)
+        public static async Task<ContainerItem> GetItem(Action<string> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand)
         {
-            var result = new List<IFileItem>();
+            var result = new ObservableCollection<IFileItem>();
 
             var itemFolder = GetItemFolders();
             var itemLibrary = GetItemLibrary();
-            var itemHistory = GetItemHistory();
+            var itemHistory = GetItemHistory(PathRequestCommand);
             var itemBookmark = GetItemBookmarks(bookmarkAction);
+
+            result.Add(itemFolder);
+            result.Add(itemLibrary);
+            result.Add(itemHistory);
+            result.Add(itemBookmark);
+
+            foreach (var item in result.ToArray()) { if (item == null) result.Remove(item); }
 
             LibraryUpdateRequest += async (s, e) =>
             {
@@ -161,6 +176,15 @@ namespace BookViewerApp.Storages
                         break;
                     case LibraryKind.History:
                         await itemHistory.GetChildren();
+                        var entryHistory = result.FirstOrDefault(a => a.Tag as string == "Root.History");
+                        if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
+                        {
+                            result.Remove(entryHistory);
+                        }
+                        else if ((bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory == null)
+                        {
+                            result.Insert(2, itemHistory);
+                        }
                         break;
                     case LibraryKind.Library:
                         await itemLibrary.GetChildren();
@@ -169,12 +193,8 @@ namespace BookViewerApp.Storages
                 }
             };
 
-            result.Add(itemFolder);
-            result.Add(itemLibrary);
-            result.Add(itemHistory);
-            result.Add(itemBookmark);
 
-            return new ContainerItem(GetItem_GetWord("PC"), "/PC", result.Where(a => a != null).ToArray());
+            return new ContainerItem(GetItem_GetWord("PC"), "/PC", result);
         }
 
         private static string GetItem_GetWord(string s) => Managers.ResourceManager.Loader.GetString("ExplorerContainer/" + s);
@@ -253,7 +273,7 @@ namespace BookViewerApp.Storages
 
         public partial class libraryBookmarks
         {
-            public IFileItem[] AsFileItem(Action<string> action,bool isReadOnly=false)
+            public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false)
             {
                 var list = new List<IFileItem>();
                 foreach (var item in this.Items)
@@ -276,7 +296,7 @@ namespace BookViewerApp.Storages
         {
             public StorageBookmarkContainer AsFileItem(Action<string> action, bool isReadOnly = false)
             {
-                return new StorageBookmarkContainer(this) { ActionOpen = action ,IsReadOnly=isReadOnly};
+                return new StorageBookmarkContainer(this) { ActionOpen = action, IsReadOnly = isReadOnly };
             }
         }
 

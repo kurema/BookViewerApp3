@@ -252,7 +252,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" x:Name="address_text" Text="{Binding Content.Item.Path}" Opacity="0" LostFocus="address_text_FocusDisengaged"  VerticalAlignment="Center"/>
+                <TextBox Grid.Column="0" x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged"  VerticalAlignment="Center" KeyDown="address_text_KeyDown"/>
                 <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="address_FocusLostRequested"/>
                 <Button Grid.Column="1" Command="{Binding Content.RefreshCommand}">
                     <SymbolIcon Symbol="Refresh"/>

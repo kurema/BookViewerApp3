@@ -67,9 +67,9 @@ namespace kurema.FileExplorerControl.Views
                               }
                           }
                       };
-                vm.DialogDelete = async (arg) =>
+                vm.DialogDelete = async (arg, canDeleteComplete) =>
                 {
-                    var dialog = new Views.DeleteContentDialog();
+                    var dialog = new Views.DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete };
                     dialog.DataContext = arg;
                     var result = await dialog.ShowAsync();
                     switch (result)

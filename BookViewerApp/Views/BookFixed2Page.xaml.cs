@@ -150,15 +150,8 @@ namespace BookViewerApp.Views
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            scrollViewer.ChangeView(0, 0, 1.0f);
+            scrollViewer.ChangeView(0, 0, 1.0f, true);
 
-            //void SetSource(ref ImageSource source,PageViewModel model )
-            //{
-            //    if (source is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) model.SetImageNoWait(bitmap);
-            //    else source = model.Source;
-            //}
-
-            //(DataContext as ViewModels.PageViewModel)?.UpdateSource();
             if (DataContext is ViewModels.PageViewModel dc)
             {
                 {

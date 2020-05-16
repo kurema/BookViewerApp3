@@ -22,8 +22,8 @@ Ver 2 failed.
 - - [ ] View/Management
 - [x] History
 - - [x] Storage
-- - [ ] Restore
-- - [ ] View/ViewModel
+- - [ ] ~~Restore~~ (起動時リストアは…とりあえず却下)
+- - [x] View/ViewModel (File Managerで)
 - [x] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
 - - [x] View/Tree
 - - [x] View/Main
@@ -46,13 +46,13 @@ Ver 2 failed.
 - [x] Password
 - - [x] UI
 - - [x] File
-- - [ ] Save password
+- - [x] Save password
 - [ ] Publish!
 - - [ ] Publish as beta.
 - - [ ] Publish as product.
 
 ## Issue
-- [ ] 高速スクロール時、SetBitmapAsyncの順序が前後する。対策方法が思いつかん。
+- [x] 高速スクロール時、SetBitmapAsyncの順序が前後する。対策方法が思いつかん。
 
 ## Thanks
 Italian translation is by Emanuele (https://github.com/Manu99it).

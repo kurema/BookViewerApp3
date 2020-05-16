@@ -35,8 +35,8 @@ namespace kurema.FileExplorerControl.ViewModels
 
         #region dialog
 
-        private Func<ViewModels.FileItemViewModel, Task<(bool delete, bool completeDelete)>> _DialogDelete;
-        public Func<ViewModels.FileItemViewModel, Task<(bool delete, bool completeDelete)>> DialogDelete { get => _DialogDelete; set => SetProperty(ref _DialogDelete, value); }
+        private Func<ViewModels.FileItemViewModel, bool, Task<(bool delete, bool completeDelete)>> _DialogDelete;
+        public Func<ViewModels.FileItemViewModel, bool, Task<(bool delete, bool completeDelete)>> DialogDelete { get => _DialogDelete; set => SetProperty(ref _DialogDelete, value); }
 
 
         private Func<FileItemViewModel, Task<string>> _DialogRename;
@@ -50,8 +50,10 @@ namespace kurema.FileExplorerControl.ViewModels
         #endregion
 
 
-        private ContentStyles _ContentStyle=ContentStyles.Icon;
-        public ContentStyles ContentStyle { get => _ContentStyle; set
+        private ContentStyles _ContentStyle = ContentStyles.Icon;
+        public ContentStyles ContentStyle
+        {
+            get => _ContentStyle; set
             {
                 SetProperty(ref _ContentStyle, value);
                 (SetContentStyleCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
@@ -62,7 +64,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public enum ContentStyles
         {
-            Detail, List, Icon ,IconWide
+            Detail, List, Icon, IconWide
         }
 
         public bool IsDataGrid
@@ -102,13 +104,15 @@ namespace kurema.FileExplorerControl.ViewModels
         }
 
 
-        private double _IconSize=75.0;
+        private double _IconSize = 75.0;
         public double IconSize { get => _IconSize; set => SetProperty(ref _IconSize, value); }
 
         public ObservableCollection<FileItemViewModel> History { get; } = new ObservableCollection<FileItemViewModel>();
 
         private int _SelectedHistory;
-        public int SelectedHistory { get => _SelectedHistory; set
+        public int SelectedHistory
+        {
+            get => _SelectedHistory; set
             {
                 if (!SelectedHistoryWithinRange(value))
                 {
@@ -136,7 +140,8 @@ namespace kurema.FileExplorerControl.ViewModels
 
         private System.Windows.Input.ICommand _HistoryShiftCommand;
         public System.Windows.Input.ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
-            (a) => {
+            (a) =>
+            {
                 this.SelectedHistory += int.Parse(a.ToString());
             },
             (a) =>
@@ -153,7 +158,8 @@ namespace kurema.FileExplorerControl.ViewModels
                 var atxt = a.ToString();
                 foreach (ContentStyles item in Enum.GetValues(typeof(ContentStyles)))
                 {
-                    if (atxt == Enum.GetName(typeof(ContentStyles), item)){
+                    if (atxt == Enum.GetName(typeof(ContentStyles), item))
+                    {
                         this.ContentStyle = item;
                         return;
                     }
@@ -192,7 +198,7 @@ namespace kurema.FileExplorerControl.ViewModels
         public System.Windows.Input.ICommand GoToCommand => _GoToCommand = _GoToCommand ?? new Helper.DelegateCommand(
             async a =>
             {
-                if(a is FileItemViewModel vm)
+                if (a is FileItemViewModel vm)
                 {
                     if (vm.Children == null) await vm.UpdateChildren();
                     Item = vm;
@@ -262,7 +268,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public ObservableCollection<OrderSelector> OrderSelectors { get => _OrderSelectors; set => SetProperty(ref _OrderSelectors, value); }
 
-        public class OrderSelector:INotifyPropertyChanged
+        public class OrderSelector : INotifyPropertyChanged
         {
 
             #region INotifyPropertyChanged
@@ -292,7 +298,9 @@ namespace kurema.FileExplorerControl.ViewModels
             private string _Title;
             public string Title { get => _Title; set => SetProperty(ref _Title, value); }
 
-            public ContentViewModel Parent { get => parent; set
+            public ContentViewModel Parent
+            {
+                get => parent; set
                 {
                     SetProperty(ref parent, value);
 
@@ -329,15 +337,18 @@ namespace kurema.FileExplorerControl.ViewModels
             private ContentViewModel parent;
 
             public ICommand ShiftCommand => _ShiftCommand = _ShiftCommand ?? new Helper.DelegateCommand(
-                a =>{
+                a =>
+                {
                     if (Parent?.Item?.Order == null) return;
                     Parent.Item.Order = Parent.Item.Order.GetShiftedBasicOrder(this.Key);
                 }
                 );
 
-            public string DirectionGlyph { get =>
-                    new Helper.ValueConverters.OrderToDirectionFontIconGlyphConverter().Convert(Parent.Item.Order, typeof(string), this.Key, null) as string;
-                    }
+            public string DirectionGlyph
+            {
+                get =>
+new Helper.ValueConverters.OrderToDirectionFontIconGlyphConverter().Convert(Parent.Item.Order, typeof(string), this.Key, null) as string;
+            }
 
 
             //private Windows.UI.Xaml.Data.Binding _GlyphBindig;

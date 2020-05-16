@@ -26,9 +26,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public bool IsFolder => false;
 
-        public ICommand DeleteCommand => new DelegateCommand(async (_)=> {
+        public ICommand DeleteCommand => new DelegateCommand(async (_) =>
+        {
             await HistoryStorage.DeleteHistory(Content.Id);
-        });
+        }, a => !(a is bool b && b == true));
 
         public ICommand RenameCommand => new InvalidCommand();
 
@@ -53,7 +54,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         private Windows.Storage.StorageFile StorageCache = null;
 
-        public async Task< Windows.Storage.StorageFile> GetFile()
+        public async Task<Windows.Storage.StorageFile> GetFile()
         {
             if (StorageCache != null) return StorageCache;
             StorageCache = await Content.GetFile();

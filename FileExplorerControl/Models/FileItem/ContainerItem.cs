@@ -14,8 +14,16 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             Name = fileName ?? throw new ArgumentNullException(nameof(fileName));
             Path = path ?? throw new ArgumentNullException(nameof(path));
-            Children = new ObservableCollection<IFileItem>(children) ?? throw new ArgumentNullException(nameof(children));
+            Children = new ObservableCollection<IFileItem>(children ?? throw new ArgumentNullException(nameof(children)));
         }
+
+        public ContainerItem(string fileName, string path, ObservableCollection<IFileItem> children)
+        {
+            Name = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            Path = path ?? throw new ArgumentNullException(nameof(path));
+            Children = children ?? throw new ArgumentNullException(nameof(children));
+        }
+
 
         /// <summary>
         /// Only use DefaultIconLarge/DefaultIconSmall.

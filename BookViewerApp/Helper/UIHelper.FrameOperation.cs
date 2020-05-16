@@ -68,80 +68,94 @@ namespace BookViewerApp.Helper
                     {
                         if (content.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                         {
-                            control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
-
-                            var library = await LibraryStorage.GetItem((a) =>
-                            {
-                                var tab = GetCurrentTabPage(content);
-                                if (tab == null) return;
-                                tab.OpenTabWeb(a);
-                            });
-
-                            //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
-                            var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
-                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) =>
-                            {
-                                if (a is kurema.FileExplorerControl.Models.FileItems.BookmarkItem || a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
-                                {
-                                    return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
-                                    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
-                                    );
-                                }
-                                if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
-                                {
-                                    string id = (a as kurema.FileExplorerControl.Models.FileItems.HistoryItem)?.Content?.Id ?? PathStorage.GetIdFromPath(a.Path);
-                                    if (!string.IsNullOrEmpty(id))
-                                    {
-                                        var image = await ThumbnailManager.GetImageSourceAsync(id);
-                                        if (image != null)
-                                        {
-                                            return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
-                                            () => image
-                                            );
-                                        }
-                                    }
-
-                                    return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
-                                    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
-                                    );
-                                }
-                                else { return (null, null); }
-                            }));
-                            await fv.UpdateChildren();
-                            control.SetTreeViewItem(fv.Folders);
-                            await control.ContentControl.SetFolder(fv);
-                            control.ContentControl.FileOpenedEventHandler += async (s2, e2) =>
-                            {
-                                e2?.Content?.Open();
-                                var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
-                                if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
-                                {
-                                    return;
-                                }
-
-                                var tab = UIHelper.GetCurrentTabPage(content);
-                                if (tab != null)
-                                {
-                                    if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
-                                    {
-                                        tab.OpenTabBook(sfi.Content);
-                                    }
-                                    else if(fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
-                                    {
-                                        var file = await hi.GetFile();
-                                        if (file != null) tab.OpenTabBook(file);
-                                    }
-                                    else
-                                    {
-                                        var stream = fileitem?.OpenStreamForReadAsync();
-                                        if (stream != null)
-                                            tab.OpenTabBook(stream);
-                                    }
-                                }
-                            };
-
                             if (control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel fvm && fvm.Content != null)
                             {
+                                control.AddressRequesteCommand = new DelegateCommand((address) =>
+                                {
+                                    Uri uriResult;
+                                    var tab = GetCurrentTabPage(content);
+                                    if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
+                                    {
+                                        if ((uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)) tab.OpenTabWeb(address?.ToString());
+                                        if (uriResult.IsFile)
+                                        {
+                                        }
+                                    }
+                                });
+
+                                control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
+
+                                var library = await LibraryStorage.GetItem((a) =>
+                                {
+                                    var tab = GetCurrentTabPage(content);
+                                    if (tab == null) return;
+                                    tab.OpenTabWeb(a);
+                                }, control.AddressRequesteCommand
+                                );
+
+                                //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
+                                var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
+                                fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) =>
+                                {
+                                    if (a is kurema.FileExplorerControl.Models.FileItems.BookmarkItem || a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
+                                    {
+                                        return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
+                                        () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
+                                        );
+                                    }
+                                    if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
+                                    {
+                                        string id = (a as kurema.FileExplorerControl.Models.FileItems.HistoryItem)?.Content?.Id ?? PathStorage.GetIdFromPath(a.Path);
+                                        if (!string.IsNullOrEmpty(id))
+                                        {
+                                            var image = await ThumbnailManager.GetImageSourceAsync(id);
+                                            if (image != null)
+                                            {
+                                                return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
+                                                () => image
+                                                );
+                                            }
+                                        }
+
+                                        return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
+                                        () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))
+                                        );
+                                    }
+                                    else { return (null, null); }
+                                }));
+                                await fv.UpdateChildren();
+                                control.SetTreeViewItem(fv.Folders);
+                                await control.ContentControl.SetFolder(fv);
+                                control.ContentControl.FileOpenedEventHandler += async (s2, e2) =>
+                                {
+                                    e2?.Content?.Open();
+                                    var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
+                                    if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
+                                    {
+                                        return;
+                                    }
+
+                                    var tab = UIHelper.GetCurrentTabPage(content);
+                                    if (tab != null)
+                                    {
+                                        if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
+                                        {
+                                            tab.OpenTabBook(sfi.Content);
+                                        }
+                                        else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                        {
+                                            var file = await hi.GetFile();
+                                            if (file != null) tab.OpenTabBook(file);
+                                        }
+                                        else
+                                        {
+                                            var stream = fileitem?.OpenStreamForReadAsync();
+                                            if (stream != null)
+                                                tab.OpenTabBook(stream);
+                                        }
+                                    }
+                                };
+
                                 void Content_PropertyChanged(object _, System.ComponentModel.PropertyChangedEventArgs e)
                                 {
                                     switch (e.PropertyName)

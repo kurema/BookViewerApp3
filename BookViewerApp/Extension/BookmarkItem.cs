@@ -77,14 +77,17 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string TargetUrl { get => Content.url; set => Content.url = value; }
 
-        public DateTimeOffset DateCreated { get => new DateTimeOffset(Content.created).ToLocalTime();
-            set => Content.created = value.UtcDateTime; }
+        public DateTimeOffset DateCreated
+        {
+            get => new DateTimeOffset(Content.created).ToLocalTime();
+            set => Content.created = value.UtcDateTime;
+        }
 
         public bool IsFolder => false;
 
         private ICommand _DeleteCommand;
 
-        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => ActionDelete != null && !IsReadOnly);
+        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => !(a is bool b && b == true) && ActionDelete != null && !IsReadOnly);
 
         private ICommand _RenameCommand;
         public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
@@ -148,7 +151,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public bool IsFolder => true;
 
         private ICommand _DeleteCommand;
-        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => ActionDelete != null && !IsReadOnly);
+        public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => !(a is bool b && b == true) && ActionDelete != null && !IsReadOnly);
 
         private ICommand _RenameCommand;
         public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
@@ -161,7 +164,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
             var result = new List<IFileItem>();
-            foreach(var item in Content.Items)
+            foreach (var item in Content.Items)
             {
                 switch (item)
                 {

@@ -91,11 +91,11 @@ namespace kurema.FileExplorerControl.ViewModels
         private Helper.DelegateCommand _DeleteCommand;
         public Helper.DelegateCommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(async (parameter) =>
         {
-            async Task<(bool, bool)> checkDelete()
+            async Task<(bool, bool)> checkDelete(bool canDeleteComplete)
             {
                 if (ParentContent?.DialogDelete != null)
                 {
-                    var result = await ParentContent?.DialogDelete(this);
+                    var result = await ParentContent?.DialogDelete(this, canDeleteComplete);
                     if (result.delete == false) return (false, false);
                     return (result.delete, result.completeDelete);
                 }
@@ -104,9 +104,9 @@ namespace kurema.FileExplorerControl.ViewModels
 
             if (Content?.DeleteCommand is Helper.DelegateAsyncCommand dc)
             {
-                if (dc.CanExecute(parameter))
+                if (dc.CanExecute(false))
                 {
-                    var checkResult = await checkDelete();
+                    var checkResult = await checkDelete(dc.CanExecute(true));
                     if (checkResult.Item1)
                     {
                         await dc.ExecuteAsync(checkResult.Item2);
@@ -116,9 +116,9 @@ namespace kurema.FileExplorerControl.ViewModels
             }
             else
             {
-                if (Content?.DeleteCommand?.CanExecute(parameter) == true)
+                if (Content?.DeleteCommand?.CanExecute(false) == true)
                 {
-                    var checkResult = await checkDelete();
+                    var checkResult = await checkDelete(Content.DeleteCommand.CanExecute(true));
                     if (checkResult.Item1)
                     {
                         Content.DeleteCommand.Execute(checkResult.Item2);

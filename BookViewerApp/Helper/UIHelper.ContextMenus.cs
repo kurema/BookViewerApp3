@@ -29,31 +29,24 @@ namespace BookViewerApp.Helper
             {
                 var list = new List<MenuCommand>();
 
-                if (item is ContainerItem container)
+                if (Storages.LibraryStorage.Content?.Content?.folders == null) return list.ToArray();
+
+                list.Add(new MenuCommand(GetResourceTitle("Folders/RegisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
                 {
-                    if (Storages.LibraryStorage.Content?.Content?.folders == null) return list.ToArray();
+                    var picker = new Windows.Storage.Pickers.FolderPicker();
+                    picker.FileTypeFilter.Add("*");
+                    var folder = await picker.PickSingleFolderAsync();
+                    if (folder == null) return;
 
-                    list.Add(new MenuCommand(GetResourceTitle("Folders/RegisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
-                    {
-                        var picker = new Windows.Storage.Pickers.FolderPicker();
-                        picker.FileTypeFilter.Add("*");
-                        var folder = await picker.PickSingleFolderAsync();
-                        if (folder == null) return;
+                    var foldersTemp = Storages.LibraryStorage.Content.Content.folders.ToList();
+                    var folderNew = new Storages.Library.libraryFolder(folder);
+                    foldersTemp.Add(folderNew);
+                    Storages.LibraryStorage.Content.Content.folders = foldersTemp.ToArray();
 
-                        var foldersTemp = Storages.LibraryStorage.Content.Content.folders.ToList();
-                        var folderNew = new Storages.Library.libraryFolder(folder);
-                        foldersTemp.Add(folderNew);
-                        Storages.LibraryStorage.Content.Content.folders = foldersTemp.ToArray();
+                    Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Folders);
 
-                        var token = await folderNew.AsTokenLibraryItem(MenuFolderToken,MenuStorage);
-                        container.Children.Add(token);
-                        token.Parent = container;
-
-                        await Storages.LibraryStorage.Content.SaveAsync();
-                    })));
-
-
-                }
+                    await Storages.LibraryStorage.Content.SaveAsync();
+                })));
 
                 return list.ToArray();
             }
@@ -171,7 +164,7 @@ namespace BookViewerApp.Helper
                     }
                     else
                     {
-
+                        //file
                     }
                 }
 
@@ -204,6 +197,29 @@ namespace BookViewerApp.Helper
                 //    Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.History);
                 //})));
                 return result.ToArray();
+            }
+
+            public static Func<IFileItem, MenuCommand[]> GetMenuHistory(System.Windows.Input.ICommand pathRequestCommand)
+            {
+                return (item) =>
+                {
+                    var result = new List<MenuCommand>();
+                    if (!string.IsNullOrWhiteSpace(item?.Path) && pathRequestCommand?.CanExecute(System.IO.Directory.GetParent(item.Path)) == true)
+                    {
+                        result.Add(new MenuCommand("Open parent", new Helper.DelegateCommand(a =>
+                         {
+                             var parent = System.IO.Directory.GetParent(item.Path);
+                             if (pathRequestCommand?.CanExecute(parent) == true) pathRequestCommand.Execute(parent);
+                         }, a =>
+                         {
+                             var parent = System.IO.Directory.GetParent(item.Path);
+                             return pathRequestCommand?.CanExecute(parent) == true;
+                         }
+                         )));
+                    }
+
+                    return result.ToArray();
+                };
             }
         }
     }

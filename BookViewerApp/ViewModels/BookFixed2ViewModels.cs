@@ -149,10 +149,7 @@ namespace BookViewerApp.ViewModels
             this._PageSelected = 0;
             ID = value.ID;
             Password = null;
-            if (value is Books.IPasswordPdovider pp)
-            {
-                if (pp.PasswordRemember) Password = pp.Password;
-            }
+            if (value is Books.IPasswordPdovider pp && pp.PasswordRemember) Password = pp.Password;
             this.Pages = pages;
             BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
             var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
@@ -527,10 +524,10 @@ namespace BookViewerApp.ViewModels
 
         public async void SetImageNoWait(BitmapImage im)
         {
+            if (im == null) return;
             await Semaphore.WaitAsync();
             try
             {
-                if (im == null) throw new NullReferenceException();
                 await Page.SetBitmapAsync(im);
             }
             catch
