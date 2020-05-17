@@ -38,7 +38,7 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ScrollAnimation",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("FolderNameToExclude",null,new TypeConverters.RegexConverter(),group:"Library"),
                         new SettingInstance("BookNameTrim",null,new TypeConverters.RegexConverter(),group:"Library"),
-                        new SettingInstance("SortNaturalOrder",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("SortNaturalOrder",true,new TypeConverters.BoolConverter(),group:"Viewer"),//PerfectViewerが対応したのでデフォルトをtrueにしておきます
                         new SettingInstance("SortCoverComesFirst",false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
                         new SettingInstance("CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},

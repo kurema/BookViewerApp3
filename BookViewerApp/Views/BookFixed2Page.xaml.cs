@@ -155,15 +155,19 @@ namespace BookViewerApp.Views
             if (args.NewValue is ViewModels.PageViewModel dc)
             {
                 {
-                    if (spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) dc.SetImageNoWait(bitmap);
-                    else spreadPanel.Source1 = dc.Source;
+                    //Note: dc.Sourceを使うと複数ページに同じBitmapSourceが適用されるバグがあった。
+                    if (!(spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                    dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
                 }
                 
                 if (dc.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread)
                 {
                     if (dc.NextPage == null) spreadPanel.Source2 = null;
-                    else if (spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) dc.NextPage.SetImageNoWait(bitmap);
-                    else spreadPanel.Source2 = dc.NextPage.Source;
+                    else
+                    {
+                        if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                        dc.NextPage.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
+                    }
                 }
             }
         }

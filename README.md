@@ -14,7 +14,14 @@ Ver 2 failed.
 - - [ ] ContextMenuに切り替えUI
 - [x] Epub対応
 - - [x] epub.js+WebView。~~Zip展開はUWP側で。~~
+- - [x] [bibi](https://github.com/satorumurmur/bibi)+WebView (Bibiの方が良い感じだった。)
 - [x] 追加機能分の多言語対応
+- [ ] ContextMenu
+- - [ ] Library/Items/Unregister
+- - [ ] Bookmarks/Preset/HidePreset
+- - [ ] Storages/Folder/Rename
+- [ ] Viewer
+- - [ ] Sibling view
 - [ ] Library
 - - [x] Storage
 - - [x] ViewModel

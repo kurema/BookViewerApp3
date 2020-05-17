@@ -136,6 +136,7 @@
     <Content Include="res\bibi\bibi\extensions\extractor\at-once.js" />
     <Content Include="res\bibi\bibi\extensions\extractor\on-the-fly.bibi-zip-loader.worker.js" />
     <Content Include="res\bibi\bibi\extensions\extractor\on-the-fly.js" />
+    <Content Include="res\bibi\bibi\extensions\sanitizer.js" />
     <Content Include="res\bibi\bibi\extensions\unaccessibilizer.js" />
     <Content Include="res\bibi\bibi\extensions\zine.js" />
     <Content Include="res\bibi\bibi\index.html" />
@@ -194,6 +195,7 @@
     <Content Include="res\reader\font\fontello.eot" />
     <Content Include="res\reader\font\fontello.ttf" />
     <Content Include="res\reader\font\fontello.woff" />
+    <PRIResource Include="Resource\it\Resources.resw" />
     <Content Include="res\bibi\bibi\presets\README.md" />
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.eot" />
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.ttf" />
@@ -201,7 +203,6 @@
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.woff2" />
     <Content Include="res\bibi\LICENSE" />
     <Content Include="res\bibi\README.md" />
-    <PRIResource Include="Resource\it\Resources.resw" />
     <None Include="res\reader\img\.gitignore" />
     <Content Include="res\reader\js\hooks.min.map" />
     <Content Include="res\reader\js\reader.js.map" />
