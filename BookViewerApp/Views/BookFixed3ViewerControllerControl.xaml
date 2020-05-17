@@ -325,7 +325,7 @@
 
             <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border" >
                 <Border.Background>
-                    <AcrylicBrush BackgroundSource="Backdrop" TintColor="{StaticResource SystemChromeAltHighColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2" FallbackColor="{StaticResource SystemChromeMediumColor}" />
+                    <AcrylicBrush BackgroundSource="{Binding IsControlPinned,Converter={StaticResource BoolToStringConverter},ConverterParameter=HostBackdrop:Backdrop}" TintColor="{StaticResource SystemChromeGrayColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2" FallbackColor="{StaticResource SystemChromeMediumColor}" />
                 </Border.Background>
                 <Border.RenderTransform>
                     <TranslateTransform x:Name="TranslateVertical" X="0" Y="0"/>

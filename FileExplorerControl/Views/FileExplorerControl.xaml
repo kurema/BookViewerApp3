@@ -266,7 +266,7 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle Grid.Column="0" Fill="{ThemeResource SystemControlAltHighAcrylicWindowBrush}"/>
+            <Rectangle Grid.Column="0" Fill="{ThemeResource SystemControlChromeMediumLowAcrylicWindowMediumBrush}"/>
             <Rectangle Grid.Column="1" Fill="{ThemeResource SystemControlAltHighAcrylicElementBrush}"/>
             <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0" Margin="0,0,8,0">
                 <ui:TreeView 
@@ -293,7 +293,8 @@
             ResizeDirection="Auto"
             ResizeBehavior="BasedOnAlignment"
             CursorBehavior="ChangeOnSplitterHover"
-            Width="16">
+            Width="16"
+                >
                 <controls:GridSplitter.RenderTransform>
                     <TranslateTransform X="-8" />
                 </controls:GridSplitter.RenderTransform>

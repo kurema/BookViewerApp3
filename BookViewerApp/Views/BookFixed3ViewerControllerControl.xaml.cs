@@ -43,6 +43,15 @@ namespace BookViewerApp.Views
                 }
                 catch { }
             };
+
+        }
+
+        public void SetBackgroundSource(AcrylicBackgroundSource source)
+        {
+            if( ControlPanel_ControlPanelVisibilityStates_Border.Background is AcrylicBrush brush)
+            {
+                brush.BackgroundSource = source;
+            }
         }
 
         private void BookFixed3ViewerControllerControl_LosingFocus(UIElement sender, LosingFocusEventArgs args)
