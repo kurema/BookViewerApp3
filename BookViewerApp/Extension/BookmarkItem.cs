@@ -32,6 +32,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
+        public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/BookmarkItem");
+
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
             return Task.FromResult(new ObservableCollection<IFileItem>());
@@ -70,6 +72,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public bool IsReadOnly { get; set; } = false;
 
+        public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/BookmarkItem");
 
         public string Name { get => Content.title; set => Content.title = value; }
 
@@ -143,6 +146,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public object Tag { get; set; }
 
         public string Name { get => Content.title; set => Content.title = value; }
+
+        public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/BookmarkContainer");
 
         public string Path { get; set; }
 

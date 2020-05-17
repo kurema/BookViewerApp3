@@ -22,6 +22,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string Path => Content.Path;
 
+        public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
+
         public DateTimeOffset DateCreated => Content.Date;
 
         public bool IsFolder => false;

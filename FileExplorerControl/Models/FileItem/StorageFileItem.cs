@@ -52,7 +52,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             if (Content is StorageFolder f)
             {
-                return new ObservableCollection<IFileItem>((await f.GetItemsAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade }));
+                return new ObservableCollection<IFileItem>((await f.GetItemsAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
             }
             else
             {
@@ -152,5 +152,18 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
         public object Tag { get; set; }
+
+        public string FileTypeDescription => FileTypeDescriptionProvider?.Invoke(this.Content) ?? (this.IsFolder ? Application.ResourceLoader.Loader.GetString("FileType/Folder") : GetGeneralFileType(this.Content?.Path));
+
+        public Func<IStorageItem, string> FileTypeDescriptionProvider { get; set; }
+
+        public static string GetGeneralFileType(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return "";
+            var ext = System.IO.Path.GetExtension(path);
+            if (string.IsNullOrEmpty(ext)) return Application.ResourceLoader.Loader.GetString("FileType/NoExtension");
+            if (ext.StartsWith('.')) ext = ext.Substring(1);
+            return String.Format(Application.ResourceLoader.Loader.GetString("FileType/General"), ext.ToUpper());
+        }
     }
 }

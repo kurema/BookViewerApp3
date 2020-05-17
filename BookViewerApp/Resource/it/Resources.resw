@@ -322,9 +322,6 @@ Annullare la registrazione?</value>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
     <value>Annulla la registrazione di una cartella</value>
   </data>
-  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
-    <value>Aggiungi elementi al Catalogo multimediale</value>
-  </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>Nuova libreria</value>
   </data>
@@ -363,5 +360,26 @@ Annullare la registrazione?</value>
   </data>
   <data name="Setting_ShowHistories.Title" xml:space="preserve">
     <value>Mostra cronologia</value>
+  </data>
+  <data name="ItemType.BookmarkContainer" xml:space="preserve">
+    <value>Cartella dei segnalibri</value>
+  </data>
+  <data name="ItemType.BookmarkItem" xml:space="preserve">
+    <value>Elemento segnalibro</value>
+  </data>
+  <data name="ItemType.HistoryItem" xml:space="preserve">
+    <value>Oggetto cronologia</value>
+  </data>
+  <data name="ItemType.PresetBookmark" xml:space="preserve">
+    <value>Segnalibri preimpostati</value>
+  </data>
+  <data name="ItemType.LibraryItem" xml:space="preserve">
+    <value>Libreria</value>
+  </data>
+  <data name="ItemType.SystemFolder" xml:space="preserve">
+    <value>Cartella di sistema</value>
+  </data>
+  <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
+    <value>Apri la cartella contenente</value>
   </data>
 </root>

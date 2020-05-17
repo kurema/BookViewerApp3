@@ -46,6 +46,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Name'}"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Title}"/>
@@ -53,6 +54,8 @@
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LastModified}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Size'}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Size,Mode=OneWay,Converter={StaticResource vc_u2hrs}}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/FileType'}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FileTypeDescription}"/>
             </Grid>
         </Grid>
     </StackPanel>

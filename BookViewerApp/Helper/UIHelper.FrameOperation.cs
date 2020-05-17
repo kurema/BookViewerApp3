@@ -85,7 +85,7 @@ namespace BookViewerApp.Helper
 
                                 control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
-                                var library = await LibraryStorage.GetItem((a) =>
+                                var library = LibraryStorage.GetItem((a) =>
                                 {
                                     var tab = GetCurrentTabPage(content);
                                     if (tab == null) return;

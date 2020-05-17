@@ -48,6 +48,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ICommand RenameCommand { get; set; } = null;
 
+        public string FileTypeDescription { get; set; } = "";
+
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
             return Task.FromResult(Children);

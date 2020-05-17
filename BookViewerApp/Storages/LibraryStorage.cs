@@ -39,6 +39,7 @@ namespace BookViewerApp.Storages
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
                 Tag = "Root.Library",
+                FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
 
@@ -74,6 +75,7 @@ namespace BookViewerApp.Storages
                     OnLibraryUpdateRequest(LibraryKind.History);
                 }, a => !(a is bool b && b == true)),
                 Tag = "Root.History",
+                FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
 
@@ -89,6 +91,7 @@ namespace BookViewerApp.Storages
             {
                 MenuCommandsProvider = UIHelper.ContextMenus.MenuFolders,
                 Tag = "Root.Folders",
+                FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
 
@@ -136,7 +139,10 @@ namespace BookViewerApp.Storages
                     {
                         var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
                         var local = bookmarksCulture?.AsFileItem(bookmarkAction, true);
-                        if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local));
+                        if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local)
+                        {
+                            FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/PresetBookmark"),
+                        });
                     }
                 }
                 if (list.Count == 0) return null;
@@ -145,10 +151,11 @@ namespace BookViewerApp.Storages
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
                 Tag = "Root.Bookmarks",
+                FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
 
-        public static async Task<ContainerItem> GetItem(Action<string> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand)
+        public static ContainerItem GetItem(Action<string> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand)
         {
             var result = new ObservableCollection<IFileItem>();
 
@@ -193,8 +200,9 @@ namespace BookViewerApp.Storages
                 }
             };
 
-
-            return new ContainerItem(GetItem_GetWord("PC"), "/PC", result);
+            return new ContainerItem(GetItem_GetWord("PC"), "/PC", result) {
+                FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
+            };
         }
 
         private static string GetItem_GetWord(string s) => Managers.ResourceManager.Loader.GetString("ExplorerContainer/" + s);
@@ -342,7 +350,8 @@ namespace BookViewerApp.Storages
         {
             public async Task<IFileItem> AsFileItem()
             {
-                if (this.Items == null || this.Items.Length == 0) return new CombinedItem(new IFileItem[0]) { Name = this.title };
+                string libraryFileType = Managers.ResourceManager.Loader.GetString("ItemType/LibraryItem");
+                if (this.Items == null || this.Items.Length == 0) return new CombinedItem(Array.Empty<IFileItem>()) { Name = this.title, FileTypeDescription = libraryFileType };
 
                 var result = new List<IFileItem>();
                 foreach (var item in this.Items)
@@ -365,6 +374,7 @@ namespace BookViewerApp.Storages
                 var returnValue = new CombinedItem(result.ToArray())
                 {
                     Name = this.title,
+                    FileTypeDescription = libraryFileType
                 };
                 returnValue.RenameCommand = new DelegateCommand(a =>
                 {

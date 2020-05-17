@@ -55,6 +55,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(nameof(Files));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(Path));
+                OnPropertyChanged(nameof(FileTypeDescription));
                 OnPropertyChanged(nameof(LastModified));
                 OnPropertyChanged(nameof(IsFolder));
                 OnPropertyChanged(nameof(Size));
@@ -260,6 +261,8 @@ namespace kurema.FileExplorerControl.ViewModels
         }
 
         public string Path => _Content?.Path ?? "";
+
+        public string FileTypeDescription => _Content?.FileTypeDescription ?? "";
 
         public DateTimeOffset LastModified => _Content?.DateCreated ?? new DateTimeOffset();
 

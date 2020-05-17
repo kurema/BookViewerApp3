@@ -206,16 +206,16 @@ namespace BookViewerApp.Helper
                     var result = new List<MenuCommand>();
                     if (!string.IsNullOrWhiteSpace(item?.Path) && pathRequestCommand?.CanExecute(System.IO.Directory.GetParent(item.Path)) == true)
                     {
-                        result.Add(new MenuCommand("Open parent", new Helper.DelegateCommand(a =>
-                         {
-                             var parent = System.IO.Directory.GetParent(item.Path);
-                             if (pathRequestCommand?.CanExecute(parent) == true) pathRequestCommand.Execute(parent);
-                         }, a =>
-                         {
-                             var parent = System.IO.Directory.GetParent(item.Path);
-                             return pathRequestCommand?.CanExecute(parent) == true;
-                         }
-                         )));
+                        //result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new Helper.DelegateCommand(a =>
+                        // {
+                        //     var parent = System.IO.Directory.GetParent(item.Path);
+                        //     if (pathRequestCommand?.CanExecute(parent) == true) pathRequestCommand.Execute(parent);
+                        // }, a =>
+                        // {
+                        //     var parent = System.IO.Directory.GetParent(item.Path);
+                        //     return pathRequestCommand?.CanExecute(parent) == true;
+                        // }
+                        // )));
                     }
 
                     return result.ToArray();

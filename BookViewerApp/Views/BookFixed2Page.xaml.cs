@@ -152,13 +152,13 @@ namespace BookViewerApp.Views
         {
             scrollViewer.ChangeView(0, 0, 1.0f, true);
 
-            if (DataContext is ViewModels.PageViewModel dc)
+            if (args.NewValue is ViewModels.PageViewModel dc)
             {
                 {
                     if (spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap) dc.SetImageNoWait(bitmap);
                     else spreadPanel.Source1 = dc.Source;
                 }
-
+                
                 if (dc.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread)
                 {
                     if (dc.NextPage == null) spreadPanel.Source2 = null;

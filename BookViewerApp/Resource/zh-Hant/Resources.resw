@@ -204,9 +204,6 @@
   <data name="ExplorerContainer.PC" xml:space="preserve">
     <value>電腦</value>
   </data>
-  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
-    <value>新增到媒體櫃</value>
-  </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>新增媒體櫃</value>
   </data>

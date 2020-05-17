@@ -50,6 +50,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public ICommand RenameCommand { get => renameCommand = renameCommand ?? new Helper.DelegateCommand(a => Content.title = a.ToString(), a => Content != null); set => renameCommand = value; }
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
+        public string FileTypeDescription => BookViewerApp.Helper.UIHelper.GetFileTypeDescription(ContentFileItem?.Content) ?? "";
+
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
             return await ContentFileItem?.GetChildren() ?? new ObservableCollection<IFileItem>();

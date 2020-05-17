@@ -322,9 +322,6 @@
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
     <value>取消注册文件夹</value>
   </data>
-  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
-    <value>添加到媒体库</value>
-  </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>新建库</value>
   </data>

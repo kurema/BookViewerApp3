@@ -12,6 +12,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         Task<ObservableCollection<IFileItem>> GetChildren();
         string Name { get; }
         string Path { get; }
+        string FileTypeDescription { get; }
         void Open();
 
         DateTimeOffset DateCreated { get; }

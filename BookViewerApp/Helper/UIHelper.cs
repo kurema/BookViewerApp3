@@ -67,5 +67,16 @@ namespace BookViewerApp.Helper
             //}
             return null;
         }
+
+        public static string GetFileTypeDescription(Windows.Storage.IStorageItem item)
+        {
+            if (item == null) return null;
+            var ext = System.IO.Path.GetExtension(item.Path);
+            if(item is Windows.Storage.StorageFolder f)
+            {
+                return kurema.FileExplorerControl.Application.ResourceLoader.Loader.GetString("FileType/Folder");
+            }
+            return kurema.FileExplorerControl.Models.FileItems.StorageFileItem.GetGeneralFileType(item.Path);
+        }
     }
 }

@@ -147,8 +147,23 @@
   <data name="Delete.Title" xml:space="preserve">
     <value>Delete Item</value>
   </data>
+  <data name="FileType.Combined" xml:space="preserve">
+    <value>Combined container</value>
+  </data>
+  <data name="FileType.Folder" xml:space="preserve">
+    <value>File folder</value>
+  </data>
+  <data name="FileType.General" xml:space="preserve">
+    <value>{0} File</value>
+  </data>
+  <data name="FileType.NoExtension" xml:space="preserve">
+    <value>File</value>
+  </data>
   <data name="Header.Date" xml:space="preserve">
     <value>Date</value>
+  </data>
+  <data name="Header.FileType" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="Header.Name" xml:space="preserve">
     <value>Name</value>
@@ -158,6 +173,9 @@
   </data>
   <data name="Table.Date" xml:space="preserve">
     <value>Date:</value>
+  </data>
+  <data name="Table.FileType" xml:space="preserve">
+    <value>Type:</value>
   </data>
   <data name="Table.Name" xml:space="preserve">
     <value>Name:</value>

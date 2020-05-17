@@ -42,6 +42,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ICommand RenameCommand { get; set; } = null;
 
+        public string FileTypeDescription { get; set; } = "";
+
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
             var result = await ChildrenProvider?.Invoke(this);

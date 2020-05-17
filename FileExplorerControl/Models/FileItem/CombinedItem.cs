@@ -16,7 +16,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             Contents = new ObservableCollection<IFileItem>(contents) ?? throw new ArgumentNullException(nameof(contents));
 
             string commonName = null;
-            foreach(var item in Contents)
+            foreach (var item in Contents)
             {
                 commonName = commonName ?? item.Name;
                 if (string.Compare(commonName, item.Name, true) != 0)
@@ -67,6 +67,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProviderCascade { get; set; }
 
+        public string FileTypeDescription { get; set; } = Application.ResourceLoader.Loader.GetString("FileType/Combined");
+
+        public string FileTypeDescriptionCascade { get; set; } = Application.ResourceLoader.Loader.GetString("FileType/Combined");
+
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
             if (Contents == null) return null;
@@ -90,14 +94,14 @@ namespace kurema.FileExplorerControl.Models.FileItems
              {
                  var b = a.ToArray();
                  if (b.Length == 1) return b[0];
-                 return new CombinedItem(b) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade };
+                 return new CombinedItem(b) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescription = FileTypeDescriptionCascade };
              }).OrderBy(a => !a.IsFolder).ThenBy(a => a.Name));
         }
 
         public async Task<ulong?> GetSizeAsync()
         {
             ulong? result = 0;
-            foreach(var item in Contents)
+            foreach (var item in Contents)
             {
                 var val = await item.GetSizeAsync();
                 if (val == null) return null;

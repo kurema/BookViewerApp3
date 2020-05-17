@@ -427,10 +427,6 @@ Are you sure to unregister?</source>
           <source>Unregister folder</source>
           <target state="translated">取消注册文件夹</target>
         </trans-unit>
-        <trans-unit id="ContextMenu.Storages.AddToLibrary.Title" translate="yes" xml:space="preserve">
-          <source>Add to library...</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">添加到媒体库</target>
-        </trans-unit>
         <trans-unit id="ContextMenu.Library.New.Title" translate="yes" xml:space="preserve">
           <source>New library</source>
           <target state="needs-review-translation" state-qualifier="tm-suggestion">新建库</target>
@@ -482,6 +478,34 @@ Are you sure to unregister?</source>
         <trans-unit id="Setting_ShowHistories.Title" translate="yes" xml:space="preserve">
           <source>Show histories</source>
           <target state="translated">显示历史</target>
+        </trans-unit>
+        <trans-unit id="ItemType.BookmarkContainer" translate="yes" xml:space="preserve">
+          <source>Bookmark folder</source>
+          <target state="new">Bookmark folder</target>
+        </trans-unit>
+        <trans-unit id="ItemType.BookmarkItem" translate="yes" xml:space="preserve">
+          <source>Bookmark item</source>
+          <target state="new">Bookmark item</target>
+        </trans-unit>
+        <trans-unit id="ItemType.HistoryItem" translate="yes" xml:space="preserve">
+          <source>History item</source>
+          <target state="new">History item</target>
+        </trans-unit>
+        <trans-unit id="ItemType.PresetBookmark" translate="yes" xml:space="preserve">
+          <source>Preset bookmarks</source>
+          <target state="new">Preset bookmarks</target>
+        </trans-unit>
+        <trans-unit id="ItemType.LibraryItem" translate="yes" xml:space="preserve">
+          <source>Library</source>
+          <target state="new">Library</target>
+        </trans-unit>
+        <trans-unit id="ItemType.SystemFolder" translate="yes" xml:space="preserve">
+          <source>System Folder</source>
+          <target state="new">System Folder</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Histories.OpenParent.Title" translate="yes" xml:space="preserve">
+          <source>Open containing folder</source>
+          <target state="new">Open containing folder</target>
         </trans-unit>
       </group>
     </body>

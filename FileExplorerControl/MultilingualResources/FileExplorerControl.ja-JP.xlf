@@ -74,6 +74,30 @@
           <source>Size:</source>
           <target state="translated">サイズ:</target>
         </trans-unit>
+        <trans-unit id="Header.FileType" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="translated">種類</target>
+        </trans-unit>
+        <trans-unit id="Table.FileType" translate="yes" xml:space="preserve">
+          <source>Type:</source>
+          <target state="translated">種類:</target>
+        </trans-unit>
+        <trans-unit id="FileType.General" translate="yes" xml:space="preserve">
+          <source>{0} File</source>
+          <target state="translated">{0} ファイル</target>
+        </trans-unit>
+        <trans-unit id="FileType.NoExtension" translate="yes" xml:space="preserve">
+          <source>File</source>
+          <target state="translated">ファイル</target>
+        </trans-unit>
+        <trans-unit id="FileType.Folder" translate="yes" xml:space="preserve">
+          <source>File folder</source>
+          <target state="translated">ファイル フォルダー</target>
+        </trans-unit>
+        <trans-unit id="FileType.Combined" translate="yes" xml:space="preserve">
+          <source>Combined container</source>
+          <target state="translated">統合フォルダ</target>
+        </trans-unit>
       </group>
     </body>
   </file>

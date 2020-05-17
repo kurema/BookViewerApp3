@@ -80,6 +80,30 @@
           <source>Size:</source>
           <target state="final">Dimensione:</target>
         </trans-unit>
+        <trans-unit id="Header.FileType" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="translated">Tipo</target>
+        </trans-unit>
+        <trans-unit id="Table.FileType" translate="yes" xml:space="preserve">
+          <source>Type:</source>
+          <target state="translated">Tipo:</target>
+        </trans-unit>
+        <trans-unit id="FileType.General" translate="yes" xml:space="preserve">
+          <source>{0} File</source>
+          <target state="translated">File {0}</target>
+        </trans-unit>
+        <trans-unit id="FileType.NoExtension" translate="yes" xml:space="preserve">
+          <source>File</source>
+          <target state="translated">File</target>
+        </trans-unit>
+        <trans-unit id="FileType.Folder" translate="yes" xml:space="preserve">
+          <source>File folder</source>
+          <target state="translated">Cartella di file</target>
+        </trans-unit>
+        <trans-unit id="FileType.Combined" translate="yes" xml:space="preserve">
+          <source>Combined container</source>
+          <target state="translated">Contenitore combinato</target>
+        </trans-unit>
       </group>
     </body>
   </file>

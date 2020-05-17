@@ -322,9 +322,6 @@
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
     <value>フォルダの解除</value>
   </data>
-  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
-    <value>ライブラリに追加...</value>
-  </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>新しいライブラリ</value>
   </data>
@@ -363,5 +360,26 @@
   </data>
   <data name="Setting_ShowHistories.Title" xml:space="preserve">
     <value>履歴の表示</value>
+  </data>
+  <data name="ItemType.BookmarkContainer" xml:space="preserve">
+    <value>ブックマーク フォルダー</value>
+  </data>
+  <data name="ItemType.BookmarkItem" xml:space="preserve">
+    <value>ブックマーク</value>
+  </data>
+  <data name="ItemType.HistoryItem" xml:space="preserve">
+    <value>履歴項目</value>
+  </data>
+  <data name="ItemType.PresetBookmark" xml:space="preserve">
+    <value>プリセットブックマーク</value>
+  </data>
+  <data name="ItemType.LibraryItem" xml:space="preserve">
+    <value>ライブラリ</value>
+  </data>
+  <data name="ItemType.SystemFolder" xml:space="preserve">
+    <value>システム フォルダー</value>
+  </data>
+  <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
+    <value>ファイルの場所を開く</value>
   </data>
 </root>

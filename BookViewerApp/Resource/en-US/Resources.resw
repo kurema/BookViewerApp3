@@ -427,9 +427,6 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
     <value>Unregister folder</value>
   </data>
-  <data name="ContextMenu.Storages.AddToLibrary.Title" xml:space="preserve">
-    <value>Add to library...</value>
-  </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>New library</value>
   </data>
@@ -468,5 +465,26 @@ Are you sure to unregister?</value>
   </data>
   <data name="Setting_ShowHistories.Title" xml:space="preserve">
     <value>Show histories</value>
+  </data>
+  <data name="ItemType.BookmarkContainer" xml:space="preserve">
+    <value>Bookmark folder</value>
+  </data>
+  <data name="ItemType.BookmarkItem" xml:space="preserve">
+    <value>Bookmark item</value>
+  </data>
+  <data name="ItemType.HistoryItem" xml:space="preserve">
+    <value>History item</value>
+  </data>
+  <data name="ItemType.PresetBookmark" xml:space="preserve">
+    <value>Preset bookmarks</value>
+  </data>
+  <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
+    <value>Open containing folder</value>
+  </data>
+  <data name="ItemType.LibraryItem" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="ItemType.SystemFolder" xml:space="preserve">
+    <value>System Folder</value>
   </data>
 </root>

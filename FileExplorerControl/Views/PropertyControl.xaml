@@ -32,6 +32,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.Resources>
             <Style TargetType="TextBlock">
@@ -50,6 +51,8 @@
         </TextBlock>
         <TextBlock Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/Date'}" Grid.Row="4"/>
         <TextBlock Text="{Binding LastModified}" Grid.Column="1" Grid.Row="4"/>
+        <TextBlock Text="{Binding Converter={StaticResource vc_local},ConverterParameter='Table/FileType'}" Grid.Row="5"/>
+        <TextBlock Text="{Binding FileTypeDescription}" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2"/>
 
         <Button Style="{ThemeResource ButtonRevealStyle}" Grid.Column="2" Grid.Row="2" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource vc_local},ConverterParameter='Command/Copy'}" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding Path}"/>
         <Button Style="{ThemeResource ButtonRevealStyle}" Grid.Column="2" Grid.Row="3" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource vc_local},ConverterParameter='Command/Copy'}" Click="Button_Click_Copy" VerticalAlignment="Center" DataContext="{Binding Size}"/>

@@ -63,4 +63,22 @@
   <data name="Table.Size" xml:space="preserve">
     <value>サイズ:</value>
   </data>
+  <data name="Header.FileType" xml:space="preserve">
+    <value>種類</value>
+  </data>
+  <data name="Table.FileType" xml:space="preserve">
+    <value>種類:</value>
+  </data>
+  <data name="FileType.General" xml:space="preserve">
+    <value>{0} ファイル</value>
+  </data>
+  <data name="FileType.NoExtension" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="FileType.Folder" xml:space="preserve">
+    <value>ファイル フォルダー</value>
+  </data>
+  <data name="FileType.Combined" xml:space="preserve">
+    <value>統合フォルダ</value>
+  </data>
 </root>
