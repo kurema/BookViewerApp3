@@ -233,6 +233,8 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
+        //private FileItemViewModel _RootItem;
+        //public FileItemViewModel RootItem { get => _RootItem; set => SetProperty(ref _RootItem, value); }
 
         public void SetDefaultOrderSelectors()
         {

@@ -89,6 +89,11 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
+        public IEnumerable<ViewModels.FileItemViewModel> GetTreeViewRoot()
+        {
+            return treeview.RootNodes?.Select(a => a.Content as ViewModels.FileItemViewModel);
+        }
+
         private async void TreeView_Expanding(winui.TreeView sender, winui.TreeViewExpandingEventArgs args)
         {
             if (!args.Node.HasUnrealizedChildren) return;
@@ -265,10 +270,14 @@ namespace kurema.FileExplorerControl.Views
 
         private void address_text_KeyDown(object sender, KeyRoutedEventArgs e)
         {
+            var address = address_text.Text;
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
-                if (AddressRequesteCommand?.CanExecute(address_text.Text) == true) AddressRequesteCommand.Execute(address_text.Text);
-                address_text.Text = (this.DataContext as ViewModels.FileExplorerViewModel)?.Content?.Item?.Path ?? address_text.Text;
+                if (AddressRequesteCommand?.CanExecute(address) == true) AddressRequesteCommand.Execute(address);
+                //address_text.Text = (this.DataContext as ViewModels.FileExplorerViewModel)?.Content?.Item?.Path ?? address;
+                var ex = address_text.GetBindingExpression(TextBox.TextProperty);
+                //address_text.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                address_text.SetBinding(TextBox.TextProperty, ex.ParentBinding);
             }
         }
     }

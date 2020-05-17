@@ -23,6 +23,10 @@ using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Views;
 
+using System;
+using System.Linq;
+using System.IO;
+
 namespace BookViewerApp.Helper
 {
     public static partial class UIHelper
@@ -37,7 +41,7 @@ namespace BookViewerApp.Helper
             {
                 item.Header = title;
             }
-            else if(targetElement is winui.Controls.TabViewItem item3)
+            else if (targetElement is winui.Controls.TabViewItem item3)
             {
                 item3.Header = title;
             }
@@ -72,11 +76,49 @@ namespace BookViewerApp.Helper
         {
             if (item == null) return null;
             var ext = System.IO.Path.GetExtension(item.Path);
-            if(item is Windows.Storage.StorageFolder f)
+            if (item is Windows.Storage.StorageFolder f)
             {
                 return kurema.FileExplorerControl.Application.ResourceLoader.Loader.GetString("FileType/Folder");
             }
             return kurema.FileExplorerControl.Models.FileItems.StorageFileItem.GetGeneralFileType(item.Path);
+        }
+
+        public async static Task<kurema.FileExplorerControl.ViewModels.FileItemViewModel> GetFileItemViewModelFromRoot(string address, IEnumerable<kurema.FileExplorerControl.ViewModels.FileItemViewModel> root)
+        {
+            if (root == null) return null;
+            var folders = root?.FirstOrDefault(a => a.Content.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Folders);
+            if (folders == null) return null;
+            if (folders.Children == null) await folders.UpdateChildren();
+            var currentDir = address;
+            kurema.FileExplorerControl.ViewModels.FileItemViewModel result = null;
+
+            var pathList = new Stack<string>();
+            while (true)
+            {
+                foreach (var item in folders.Children)
+                {
+                    var rel = Path.GetRelativePath(item.Path, currentDir.ToString());
+                    if (Path.GetRelativePath(item.Path, currentDir.ToString()) == ".")
+                    {
+                        result = item;
+                        goto outofwhile;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(Path.GetFileName(currentDir))) pathList.Push(Path.GetFileName(currentDir));
+
+                currentDir = Path.GetDirectoryName(currentDir);
+                if (string.IsNullOrEmpty(currentDir)) return null;
+            }
+        outofwhile:;
+
+            foreach (var item in pathList)
+            {
+                if (result.Children == null) await result.UpdateChildren();
+                result = result.Children.FirstOrDefault(a => a.Title == item);
+                if (result == null) return null;
+            }
+            return result;
         }
     }
 }

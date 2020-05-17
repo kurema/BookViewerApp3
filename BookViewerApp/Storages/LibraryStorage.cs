@@ -38,7 +38,7 @@ namespace BookViewerApp.Storages
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
-                Tag = "Root.Library",
+                Tag = LibraryKind.Library,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
@@ -74,7 +74,7 @@ namespace BookViewerApp.Storages
                     await HistoryStorage.Content.SaveAsync();
                     OnLibraryUpdateRequest(LibraryKind.History);
                 }, a => !(a is bool b && b == true)),
-                Tag = "Root.History",
+                Tag = LibraryKind.History,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
@@ -90,7 +90,7 @@ namespace BookViewerApp.Storages
             })
             {
                 MenuCommandsProvider = UIHelper.ContextMenus.MenuFolders,
-                Tag = "Root.Folders",
+                Tag = LibraryKind.Folders,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
@@ -116,7 +116,7 @@ namespace BookViewerApp.Storages
                                 library.bookmarks.Items = items.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
-                                LibraryStorage.OnLibraryUpdateRequest(LibraryKind.History);
+                                LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
                             break;
                         case StorageBookmarkItem item2:
@@ -127,7 +127,7 @@ namespace BookViewerApp.Storages
                                 library.bookmarks.Items = items.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
-                                LibraryStorage.OnLibraryUpdateRequest(LibraryKind.History);
+                                LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
                             break;
                     }
@@ -150,7 +150,7 @@ namespace BookViewerApp.Storages
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
-                Tag = "Root.Bookmarks",
+                Tag = LibraryKind.Bookmarks,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
@@ -183,7 +183,7 @@ namespace BookViewerApp.Storages
                         break;
                     case LibraryKind.History:
                         await itemHistory.GetChildren();
-                        var entryHistory = result.FirstOrDefault(a => a.Tag as string == "Root.History");
+                        var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryStorage.LibraryKind.History);
                         if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
                         {
                             result.Remove(entryHistory);

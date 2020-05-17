@@ -137,5 +137,17 @@ namespace BookViewerApp.Helper
                 semaphore.Release();
             }
         }
+
+        public static bool IsAncestorOf(string ancestor, string progeny)
+        {
+            var currentDir = progeny;
+
+            while (true)
+            {
+                if (Path.GetRelativePath(ancestor, currentDir.ToString()) == ".") return true;
+                currentDir = Path.GetDirectoryName(currentDir);
+                if (string.IsNullOrEmpty(currentDir)) return false;
+            }
+        }
     }
 }

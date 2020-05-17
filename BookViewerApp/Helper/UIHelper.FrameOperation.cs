@@ -70,8 +70,9 @@ namespace BookViewerApp.Helper
                         {
                             if (control.DataContext is kurema.FileExplorerControl.ViewModels.FileExplorerViewModel fvm && fvm.Content != null)
                             {
-                                control.AddressRequesteCommand = new DelegateCommand((address) =>
+                                control.AddressRequesteCommand = new DelegateCommand(async (address) =>
                                 {
+                                    if (string.IsNullOrWhiteSpace(address?.ToString())) return;
                                     Uri uriResult;
                                     var tab = GetCurrentTabPage(content);
                                     if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
@@ -79,9 +80,30 @@ namespace BookViewerApp.Helper
                                         if ((uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)) tab.OpenTabWeb(address?.ToString());
                                         if (uriResult.IsFile)
                                         {
+                                            var result = await GetFileItemViewModelFromRoot(address.ToString(), control.GetTreeViewRoot());
+                                            if (result != null) fvm.Content.Item = result;
                                         }
                                     }
-                                });
+                                }, address =>
+                                {
+                                    if (string.IsNullOrWhiteSpace(address?.ToString())) return false;
+                                    Uri uriResult;
+                                    var tab = GetCurrentTabPage(content);
+                                    if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
+                                    {
+                                        if ((uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)) return true;
+                                        if (uriResult.IsFile)
+                                        {
+                                            var folder = control.GetTreeViewRoot()?.FirstOrDefault(a => a.Content.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Folders);
+                                            if (folder == null) return false;
+                                            return folder.Children?.Any(item => Functions.IsAncestorOf(item.Path, address.ToString())) ?? true;
+                                        }
+                                        return false;
+                                    }
+                                    else return false;
+
+                                }
+                                );
 
                                 control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
