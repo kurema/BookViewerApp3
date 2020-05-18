@@ -70,7 +70,8 @@ namespace BookViewerApp.Views
                         {
                             //移動量は表示範囲に対する割合で。
                             //offset is rate of viewport.
-                            scrollViewer.ChangeView(scrollViewer.HorizontalOffset - scrollViewer.ViewportWidth * e2.MoveHorizontal, scrollViewer.VerticalOffset - scrollViewer.ViewportHeight * e2.MoveVertical, null, true);
+                            var viewportMin = Math.Min(scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
+                            scrollViewer.ChangeView(scrollViewer.HorizontalOffset - viewportMin * e2.MoveHorizontal, scrollViewer.VerticalOffset - viewportMin * e2.MoveVertical, null, true);
                         }
                     };
                     pv.PropertyChanged += (s2, e2) =>
@@ -160,7 +161,7 @@ namespace BookViewerApp.Views
                     dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
                 }
                 
-                if (dc.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread)
+                if (spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     if (dc.NextPage == null) spreadPanel.Source2 = null;
                     else

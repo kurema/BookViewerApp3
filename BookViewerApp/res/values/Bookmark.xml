@@ -5,10 +5,25 @@
       <container title="Search">
         <bookmark url="https://www.google.com/" title="Google" />
       </container>
+      <container title="Free books">
+        <bookmark url="https://www.gutenberg.org/" title="Project Gutenberg" />
+        <bookmark url="https://archive.org/" title="Internet Archive" />
+      </container>
+      <container title="Bookshelves">
+        <bookmark url="https://play.google.com/books" title="Google Play" />
+      </container>
+      <container title="About BookViewer 3">
+        <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
+      </container>
+      <container title="About kurema">
+        <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
+        <bookmark url="https://github.com/kurema" title="GitHub" />
+        <bookmark url="https://www.patreon.com/kurema" title="Patreon" />
+      </container>
     </bookmarks>
     <bookmarks language="ja" title="おすすめ">
       <container title="検索エンジン">
-        <bookmark url="https://www.google.com/" title="Google" />
+        <bookmark url="https://www.google.co.jp/" title="Google" />
         <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
       </container>
       <container title="無料書籍">
@@ -28,6 +43,7 @@
         <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
         <bookmark url="https://github.com/kurema" title="GitHub" />
         <bookmark url="https://www.amazon.co.jp/-/e/B077X71C4C/tag=kurema05-22" title="Kindle" />
+        <bookmark url="https://www.patreon.com/kurema" title="Patreon" />
       </container>
     </bookmarks>
   </multilingual>

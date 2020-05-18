@@ -30,7 +30,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ICommand DeleteCommand => new DelegateCommand(async (_) =>
         {
-            await HistoryStorage.DeleteHistory(Content.Id);
+            if (!string.IsNullOrWhiteSpace(Content.Id)) await HistoryStorage.DeleteHistoryById(Content.Id);
+            else if (!string.IsNullOrWhiteSpace(Content.Path)) await HistoryStorage.DeleteHistoryByPath(Content.Path);
+            await HistoryStorage.Content.SaveAsync();
+            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
         }, a => !(a is bool b && b == true));
 
         public ICommand RenameCommand => new InvalidCommand();
@@ -63,8 +66,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
             if (StorageCache == null)
             {
                 //Content.CurrentlyInaccessible = true;
-                await HistoryStorage.DeleteHistory(Content.Id);
+                if (!string.IsNullOrWhiteSpace(Content.Id)) await HistoryStorage.DeleteHistoryById(Content.Id);
+                else if (!string.IsNullOrWhiteSpace(Content.Path)) await HistoryStorage.DeleteHistoryByPath(Content.Path);
                 LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+                await HistoryStorage.Content.SaveAsync();
             }
             return StorageCache;
         }

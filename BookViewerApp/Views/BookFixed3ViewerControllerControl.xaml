@@ -148,6 +148,9 @@
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="ControlPanelVisibilityStates">
                 <VisualState x:Name="ControlPanelFadeIn">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsControlPinned,Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <Storyboard>
                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ControlPanel_ControlPanelVisibilityStates_Border">
                             <EasingDoubleKeyFrame KeyTime="0" Value="0" />
@@ -428,6 +431,10 @@
                                           CommandParameter="-1"
                                           ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageLeft.Label, Mode=OneTime}"
                                           >
+                                    <RepeatButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Left" Modifiers="None"/>
+                                        <!--<KeyboardAccelerator Key="GamepadDPadLeft" Modifiers="None"/>-->
+                                    </RepeatButton.KeyboardAccelerators>
                                     <SymbolIcon Symbol="Previous" />
                                 </RepeatButton>
                                 <RepeatButton Template="{StaticResource RepeatButtonTemplate1}" Style="{StaticResource RepeatButtonStyle}"
@@ -436,6 +443,10 @@
                                           CommandParameter="1"
                                           ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageRight.Label, Mode=OneTime}"
                                 >
+                                    <RepeatButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Right" Modifiers="None"/>
+                                        <!--<KeyboardAccelerator Key="GamepadDPadRight" Modifiers="None"/>-->
+                                    </RepeatButton.KeyboardAccelerators>
                                     <SymbolIcon Symbol="Next" />
                                 </RepeatButton>
                                 <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualMaxCommand}" x:Name="ButtonRightmost"
@@ -453,6 +464,9 @@
                                               Style='{StaticResource AppBarToggleButtonStyle}'
                                               IsChecked="{Binding IsControlPinned,Mode=TwoWay}"
                                               >
+                                    <!--<AppBarToggleButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="P" Modifiers="None"/>
+                                    </AppBarToggleButton.KeyboardAccelerators>-->
                                     <SymbolIcon Symbol="Pin"/>
                                 </AppBarToggleButton>
                                 <Button 
@@ -460,6 +474,9 @@
                                               Style='{StaticResource ButtonStyle}'
                                               AllowFocusOnInteraction="True"
                                                   >
+                                    <Button.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Z" Modifiers="None"/>
+                                    </Button.KeyboardAccelerators>
                                     <Viewbox MaxHeight="16" MinWidth="16">
                                         <SymbolIcon Symbol="Zoom"  />
                                     </Viewbox>
@@ -477,21 +494,51 @@
                                                     <ColumnDefinition Width="1*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <RepeatButton Grid.Row="0" Grid.Column="1" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0,0.1" HorizontalAlignment="Center">
+                                                    <RepeatButton.KeyboardAccelerators>
+                                                        <KeyboardAccelerator Key="W" Modifiers="None"/>
+                                                        <KeyboardAccelerator Key="NumberPad8" Modifiers="None"/>
+                                                        <!--<KeyboardAccelerator Key="GamepadLeftThumbstickUp" Modifiers="None"/>-->
+                                                    </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AD;"/>
                                                 </RepeatButton>
                                                 <RepeatButton Grid.Row="1" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="-0.1,0" HorizontalAlignment="Center">
+                                                    <RepeatButton.KeyboardAccelerators>
+                                                        <KeyboardAccelerator Key="A" Modifiers="None"/>
+                                                        <KeyboardAccelerator Key="NumberPad4" Modifiers="None"/>
+                                                        <!--<KeyboardAccelerator Key="GamepadLeftThumbstickLeft" Modifiers="None"/>-->
+                                                    </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0B0;"/>
                                                 </RepeatButton>
                                                 <RepeatButton Grid.Row="1" Grid.Column="1" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0,-0.1" HorizontalAlignment="Center">
+                                                    <RepeatButton.KeyboardAccelerators>
+                                                        <KeyboardAccelerator Key="S" Modifiers="None"/>
+                                                        <KeyboardAccelerator Key="NumberPad2" Modifiers="None"/>
+                                                        <!--<KeyboardAccelerator Key="GamepadLeftThumbstickDown" Modifiers="None"/>-->
+                                                    </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AE;"/>
                                                 </RepeatButton>
                                                 <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0.1,0" HorizontalAlignment="Center">
+                                                    <RepeatButton.KeyboardAccelerators>
+                                                        <KeyboardAccelerator Key="D" Modifiers="None"/>
+                                                        <KeyboardAccelerator Key="NumberPad6" Modifiers="None"/>                                                        
+                                                        <!--<KeyboardAccelerator Key="GamepadLeftThumbstickRight" Modifiers="None"/>-->
+                                                    </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AF;"/>
                                                 </RepeatButton>
                                                 <RepeatButton Grid.Row="2" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="0.83">
+                                                    <RepeatButton.KeyboardAccelerators>
+                                                        <KeyboardAccelerator Key="Subtract" Modifiers="None"/>
+                                                        <KeyboardAccelerator Key="Q" Modifiers="None"/>
+                                                        <!--<KeyboardAccelerator Key="GamepadRightShoulder" Modifiers="None"/>-->
+                                                    </RepeatButton.KeyboardAccelerators>
                                                     <SymbolIcon Symbol="ZoomOut"/>
                                                 </RepeatButton>
                                                 <RepeatButton Grid.Row="2" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.ZoomFactorMultiplyCommand}" CommandParameter="1.2">
+                                                    <RepeatButton.KeyboardAccelerators>
+                                                        <KeyboardAccelerator Key="Add" Modifiers="None"/>
+                                                        <KeyboardAccelerator Key="E" Modifiers="None"/>
+                                                        <!--<KeyboardAccelerator Key="GamepadRightTrigger" Modifiers="None"/>-->
+                                                    </RepeatButton.KeyboardAccelerators>
                                                     <SymbolIcon Symbol="ZoomIn"/>
                                                 </RepeatButton>
                                                 <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" xmlns:system="using:System" Tapped="InitializeZoomFactor">
@@ -511,6 +558,10 @@
                                               AllowFocusOnInteraction="True"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Bookmarks.Label, Mode=OneTime}"
                                               >
+                                    <Button.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="B" Modifiers="None"/>
+                                    </Button.KeyboardAccelerators>
+
                                     <SymbolIcon Symbol="Bookmarks"/>
 
                                     <!--Note: This looks ugly and it's not my fault! 
@@ -566,6 +617,9 @@
                                               Command="{Binding SwapReverseCommand}"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageReverse.Label, Mode=OneTime}"
                                               >
+                                    <AppBarButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="R" Modifiers="None"/>
+                                    </AppBarButton.KeyboardAccelerators>
                                     <SymbolIcon Symbol="Rotate"/>
                                 </AppBarButton>
                                 <AppBarButton
@@ -573,6 +627,9 @@
                                               Command="{Binding ToggleFullScreenCommand}"
                                               ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ToggleFullScreen.Label, Mode=OneTime}"
                                               >
+                                    <AppBarButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="F11" Modifiers="None"/>
+                                    </AppBarButton.KeyboardAccelerators>
                                     <SymbolIcon Symbol="FullScreen"/>
                                 </AppBarButton>
                                 <!--</CommandBar.PrimaryCommands>-->

@@ -17,9 +17,10 @@ namespace BookViewerApp.Helper
     {
         public static class FrameOperation
         {
-            public static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, TabPage tabPage = null)
+            public async static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, TabPage tabPage = null)
             {
                 if (file == null) return;
+
                 var resolver = EpubResolver.GetResolverBibi(file);
                 frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
 
@@ -35,6 +36,12 @@ namespace BookViewerApp.Helper
                             e.Handled = true;
                         };
                     }
+                }
+
+                {
+                    await HistoryStorage.Content.GetContentAsync();
+                    var lib = await BookManager.GetTokenFromPathOrRegister(file);
+                    await HistoryStorage.AddHistory(new HistoryStorage.HistoryInfo() { Date = DateTime.Now, Id = null, Name = file.Name, Path = file.Path, Token = lib.token, PathRelative = lib.path });
                 }
             }
 

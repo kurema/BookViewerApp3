@@ -107,7 +107,7 @@ namespace kurema.FileExplorerControl.Views
 
         private async void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(e.AddedItems.Count>0 && e.AddedItems[0] is ViewModels.FileItemViewModel vm1)
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is ViewModels.FileItemViewModel vm1)
             {
                 if (vm1.IsFolder)
                 {
@@ -168,7 +168,7 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        private async void MenuFlyoutItem_Click_Open(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void MenuFlyoutItem_Click_Open(object sender, object e)
         {
             if ((sender as MenuFlyoutItem)?.DataContext is ViewModels.FileItemViewModel vm1)
             {
@@ -201,7 +201,7 @@ namespace kurema.FileExplorerControl.Views
 
         private void StackPanel_LostFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if(((sender as StackPanel).Parent as FlyoutPresenter).Parent is Popup f)
+            if (((sender as StackPanel).Parent as FlyoutPresenter).Parent is Popup f)
             {
                 f.IsOpen = false;
             }
@@ -209,17 +209,21 @@ namespace kurema.FileExplorerControl.Views
 
         private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
         {
-            
-            if( sender is FrameworkElement f && f.DataContext is ViewModels.FileItemViewModel vm)
+
+            if (sender is FrameworkElement f && f.DataContext is ViewModels.FileItemViewModel vm)
             {
                 var menu = new MenuFlyout();
                 {
+                    var openCommand = new StandardUICommand(StandardUICommandKind.Open);
+                    openCommand.ExecuteRequested += async (s, e) => {
+                        await Open(vm);
+                    };
                     var item = new MenuFlyoutItem()
                     {
-                        Text = Application.ResourceLoader.Loader.GetString("Command/Open")
-
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Open"),
+                        Command= openCommand
                     };
-                    item.Click += MenuFlyoutItem_Click_Open;
+                    //item.Click += MenuFlyoutItem_Click_Open;
                     menu.Items.Add(item);
                 }
                 foreach (var item in Models.MenuCommand.GetMenuFlyoutItems(vm.MenuCommands))
@@ -234,8 +238,8 @@ namespace kurema.FileExplorerControl.Views
                     var item = new MenuFlyoutItem()
                     {
                         Text = Application.ResourceLoader.Loader.GetString("Command/Delete"),
-                        Command=vm.DeleteCommand,
-                        Icon=new SymbolIcon(Symbol.Delete),
+                        Command = new StandardUICommand(StandardUICommandKind.Delete) { Command = vm.DeleteCommand },
+                        Icon = new SymbolIcon(Symbol.Delete),
                     };
                     menu.Items.Add(item);
                 }

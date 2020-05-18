@@ -15,7 +15,7 @@ namespace BookViewerApp.Storages
         public async static Task AddHistory(HistoryInfo info)
         {
             await Content.GetContentAsync();
-            var result = Content.Content.Where(b => b.Id != info.Id).OrderByDescending(b => b.Date).Take(MaximumHistoryCount).ToList();
+            var result = Content.Content.Where(b => string.IsNullOrWhiteSpace(info.Id) || b.Id != info.Id).OrderByDescending(b => b.Date).Take(MaximumHistoryCount).ToList();
             result.Insert(0, info);
             Content.Content = result.ToArray();
 
@@ -23,10 +23,20 @@ namespace BookViewerApp.Storages
             await Content.SaveAsync();
         }
 
-        public async static Task DeleteHistory(string Id)
+        public async static Task DeleteHistoryById(string Id)
         {
             await Content.GetContentAsync();
             var result = Content.Content.Where(b => b.Id != Id).ToList();
+            Content.Content = result.ToArray();
+
+            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+            await Content.SaveAsync();
+        }
+
+        public async static Task DeleteHistoryByPath(string path)
+        {
+            await Content.GetContentAsync();
+            var result = Content.Content.Where(b => b.Path != path).ToList();
             Content.Content = result.ToArray();
 
             LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
