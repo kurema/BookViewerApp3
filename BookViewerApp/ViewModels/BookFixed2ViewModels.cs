@@ -22,7 +22,7 @@ using BookViewerApp.Views;
 
 namespace BookViewerApp.ViewModels
 {
-    public class BookViewModel : INotifyPropertyChanged, IBookViewModel
+    public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
     {
         public BookViewModel()
         {
@@ -122,11 +122,17 @@ namespace BookViewerApp.ViewModels
 
         private string Password = null;
 
+        //To Dispose
+        private Books.IBookFixed Content;
+
         public async void Initialize(Books.IBookFixed value, Control target = null)
         {
             this.Loading = true;
             if (BookInfo != null) SaveInfo();
+            this.Dispose();//変なタイミングだがこれだ正しい。
             this.Title = "";
+
+            Content = value;
 
             var pages = new ObservableCollection<PageViewModel>();
             var option = OptionCache = target == null ? OptionCache : new Books.PageOptionsControl(target);
@@ -386,6 +392,16 @@ namespace BookViewerApp.ViewModels
         {
             return this.PagesCount > page && page >= 0;
         }
+
+        public void Dispose()
+        {
+            if (Pages != null)
+                foreach (var item in this.Pages)
+                {
+                    (item.Content as IDisposable)?.Dispose();
+                }
+            (this.Content as IDisposable)?.Dispose();
+        }
     }
 
     public class PageViewModel : INotifyPropertyChanged, IPageViewModel
@@ -398,10 +414,10 @@ namespace BookViewerApp.ViewModels
 
         public PageViewModel(Books.IPageFixed page)
         {
-            this.Page = page;
+            this.Content = page;
         }
 
-        private Books.IPageFixed Page;
+        public Books.IPageFixed Content { get; set; }
 
 
         private System.Windows.Input.ICommand _MoveCommand;
@@ -503,7 +519,7 @@ namespace BookViewerApp.ViewModels
 
         private float _ZoomFactor = 1.0f;
 
-        public ImageSource Source
+        private ImageSource Source
         {
             get
             {
@@ -515,7 +531,7 @@ namespace BookViewerApp.ViewModels
         }
 
 
-        public BitmapImage _Source;
+        private BitmapImage _Source;
 
         public void UpdateSource()
         {
@@ -528,7 +544,7 @@ namespace BookViewerApp.ViewModels
             await Semaphore.WaitAsync();
             try
             {
-                await Page.SetBitmapAsync(im);
+                await Content.SetBitmapAsync(im);
             }
             catch
             {

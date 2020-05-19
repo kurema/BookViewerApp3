@@ -177,9 +177,10 @@ namespace BookViewerApp.Views
             }
         }
 
-        public void SaveInfo()
+        public void CloseOperation()
         {
             Binding?.SaveInfo();
+            Binding?.Dispose();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -194,6 +195,8 @@ namespace BookViewerApp.Views
             TrySetFullScreenMode(false);
 
             SetTitle(this.OriginalTitle);
+
+            Binding?.Dispose();
 
             base.OnNavigatedFrom(e);
         }
@@ -292,7 +295,20 @@ namespace BookViewerApp.Views
         private async void MenuFlyoutItem_Click_OpenFile(object sender, RoutedEventArgs e)
         {
             var file = await BookManager.PickFile();
-            if (file != null) Binding?.Initialize(file, this.flipView);
+            if (file != null)
+            {
+                if (BookManager.GetBookTypeByPath(file.Path) == BookManager.BookType.Epub)
+                {
+                    var tab = UIHelper.GetCurrentTabPage(this);
+                    if (tab == null) return;
+                    var (frame, newTab) = tab.OpenTab("BookViewer");
+                    UIHelper.FrameOperation.OpenEpub(frame, file, newTab);
+                }
+                else
+                {
+                    Binding?.Initialize(file, this.flipView);
+                }
+            }
         }
 
         private void flipView_ContextRequested(UIElement sender, ContextRequestedEventArgs args)

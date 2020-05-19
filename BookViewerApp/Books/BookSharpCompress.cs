@@ -15,7 +15,7 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.Books
 {
-    public class CompressedBook : IBookFixed, ITocProvider
+    public class CompressedBook : IBookFixed, ITocProvider,IDisposable
     {
         public string ID
         {
@@ -49,6 +49,9 @@ namespace BookViewerApp.Books
         //private SharpCompress.Archive.IArchiveEntry Target;
         private SharpCompress.Archives.IArchiveEntry[] Entries;
 
+        private SharpCompress.Archives.IArchive DisposableContent;//To Dispose
+        private Stream DisposableStream;
+
         public async Task LoadAsync(Stream sr)
         {
             SharpCompress.Archives.IArchive archive;
@@ -56,7 +59,8 @@ namespace BookViewerApp.Books
             {
                 try
                 {
-                    archive = SharpCompress.Archives.ArchiveFactory.Open(sr);
+                    DisposableContent = archive = SharpCompress.Archives.ArchiveFactory.Open(sr);
+                    DisposableStream = sr;
                     var entries = new List<SharpCompress.Archives.IArchiveEntry>();
                     foreach (var entry in archive.Entries)
                     {
@@ -121,6 +125,15 @@ namespace BookViewerApp.Books
         public IPageFixed GetPage(uint i)
         {
             return new CompressedPage(Entries[i]);
+        }
+
+        public void Dispose()
+        {
+            DisposableContent?.Dispose();
+            DisposableContent = null;
+            DisposableStream?.Close();
+            DisposableStream?.Dispose();
+            DisposableStream = null;
         }
     }
 }

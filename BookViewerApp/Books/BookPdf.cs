@@ -26,14 +26,7 @@ namespace BookViewerApp.Books
 
         public event EventHandler Loaded;
 
-        public uint PageCount
-        {
-            get
-            {
-                if (PageLoaded) return Content.PageCount;
-                else return 0;
-            }
-        }
+        public uint PageCount => PageLoaded ? Content?.PageCount ?? 0 : 0;
 
         public string ID
         {
@@ -48,7 +41,8 @@ namespace BookViewerApp.Books
 
         public IPageFixed GetPage(uint i)
         {
-            if (i < PageCount) return new PdfPage(Content.GetPage(i));
+            if (Content == null) return null;
+            if (i < PageCount) return new PdfPage(Content?.GetPage(i));
             else throw new Exception("Incorrect page.");
         }
 
@@ -159,7 +153,7 @@ namespace BookViewerApp.Books
         }
 
 
-        public async Task Load(IStorageFile file, Func<int, Task<(string password,bool remember)>> passwordRequestedCallback, string[] defaultPassword = null)
+        public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[] defaultPassword = null)
         {
             using (var stream = await file.OpenReadAsync())
             {
@@ -329,7 +323,7 @@ namespace BookViewerApp.Books
 
         public Task<bool> UpdateRequiredAsync()
         {
-            if (LastOption != null && Option != null && LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth)
+            if (LastOption != null && Option != null && (LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth))
             //if (LastOption != null && Option != null)
             { return Task.FromResult(true); }
             else { return Task.FromResult(false); }

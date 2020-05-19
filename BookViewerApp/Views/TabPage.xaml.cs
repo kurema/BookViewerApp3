@@ -193,7 +193,7 @@ namespace BookViewerApp.Views
         public async void CloseTab(winui.Controls.TabViewItem tab)
         {
             if (tab == null) return;
-            ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.SaveInfo();
+            ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
 
             if (tab.IsClosable)
             {

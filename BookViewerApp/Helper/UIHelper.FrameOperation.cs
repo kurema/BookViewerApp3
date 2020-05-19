@@ -17,9 +17,13 @@ namespace BookViewerApp.Helper
     {
         public static class FrameOperation
         {
-            public async static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, TabPage tabPage = null)
+            public async static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
             {
                 if (file == null) return;
+                if (sender == null) return;
+                SetTitleByResource(sender, "Epub");
+                var tabPage = GetCurrentTabPage(sender);
+
 
                 var resolver = EpubResolver.GetResolverBibi(file);
                 frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserPage), null);
@@ -57,8 +61,7 @@ namespace BookViewerApp.Helper
 
                 if (file.ContentType == "application/epub+zip" || file.FileType.ToLower() == ".epub")
                 {
-                    if (sender != null) SetTitleByResource(sender, "Epub");
-                    OpenEpub(frame, file, GetCurrentTabPage(sender));
+                    OpenEpub(frame, file, sender);
                 }
                 else
                 {

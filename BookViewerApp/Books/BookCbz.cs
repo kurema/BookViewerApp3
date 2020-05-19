@@ -16,7 +16,7 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.Books
 {
-    public class CbzBook : IBookFixed, ITocProvider
+    public class CbzBook : IBookFixed, ITocProvider,IDisposable
     {
         public ZipArchive Content { get; private set; }
         public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
@@ -61,6 +61,8 @@ namespace BookViewerApp.Books
             return new CbzPage(AvailableEntries[i]);
         }
 
+        private Stream DisposableStream;
+
         public async Task LoadAsync(Stream stream)
         {
             await Task.Run(() =>
@@ -71,6 +73,7 @@ namespace BookViewerApp.Books
                     Content = new ZipArchive(stream, ZipArchiveMode.Read, false,
                         System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ?
                         Encoding.GetEncoding(932) : Encoding.UTF8);
+                    DisposableStream = stream;
                     OnLoaded(new EventArgs());
                 }
                 catch { }
@@ -140,12 +143,21 @@ namespace BookViewerApp.Books
 
             AvailableEntries = entries.ToArray();
         }
+
+        public void Dispose()
+        {
+            Content?.Dispose();
+            Content = null;
+            DisposableStream?.Close();
+            DisposableStream?.Dispose();
+            DisposableStream = null;
+        }
     }
 }
 
 namespace BookViewerApp.Books
 {
-    public class CbzPage : IPageFixed
+    public class CbzPage : IPageFixed, IDisposable
     {
         private ZipArchiveEntry Content;
 
@@ -209,6 +221,12 @@ namespace BookViewerApp.Books
             {
                 // ignored
             }
+        }
+
+        public void Dispose()
+        {
+            Cache?.Dispose();
+            Cache = null;
         }
     }
 

@@ -96,7 +96,7 @@ namespace BookViewerApp.Managers
                 var book = new CbzBook();
                 try
                 {
-                    await book.LoadAsync((await file.OpenReadAsync()).AsStream());
+                        await book.LoadAsync((await file.OpenReadAsync()).AsStream());
                 }
                 catch
                 {

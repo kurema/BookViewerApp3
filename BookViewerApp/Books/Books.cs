@@ -102,7 +102,7 @@ namespace BookViewerApp.Books
         }
     }
 
-    public class VirtualPage : IPageFixed
+    public class VirtualPage : IPageFixed,IDisposable
     {
         private Func<IPageFixed> accessor;
 
@@ -148,6 +148,11 @@ namespace BookViewerApp.Books
         {
             var body = await GetPage();
             await body.SetBitmapAsync(image);
+        }
+
+        public void Dispose()
+        {
+            (PageCache as IDisposable)?.Dispose();
         }
     }
 

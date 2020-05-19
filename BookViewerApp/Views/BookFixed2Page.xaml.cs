@@ -136,7 +136,7 @@ namespace BookViewerApp.Views
         }
 
 
-        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        private async void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
@@ -146,7 +146,20 @@ namespace BookViewerApp.Views
             //stack.Height = this.ActualHeight;
             //stack.MaxWidth = this.ActualWidth;
 
-            (DataContext as ViewModels.PageViewModel)?.UpdateSource();
+
+            if (await (DataContext as PageViewModel)?.Content?.UpdateRequiredAsync() == true)
+            {
+                (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
+                if (spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread) (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
+
+                //if (spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage bmp) (DataContext as PageViewModel)?.SetImageNoWait(bmp);
+                //else
+                //{
+                //    spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                //    (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
+                //}
+            }
+
         }
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -160,7 +173,7 @@ namespace BookViewerApp.Views
                     if (!(spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
                     dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
                 }
-                
+
                 if (spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     if (dc.NextPage == null) spreadPanel.Source2 = null;

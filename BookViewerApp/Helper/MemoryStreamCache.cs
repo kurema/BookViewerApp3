@@ -8,7 +8,7 @@ using System.IO;
 
 namespace BookViewerApp.Helper
 {
-    public class MemoryStreamCache
+    public class MemoryStreamCache : IDisposable
     {
         private System.Threading.SemaphoreSlim Semaphore = new System.Threading.SemaphoreSlim(1, 1);
         private System.Threading.SemaphoreSlim SemaphoreProvider = new System.Threading.SemaphoreSlim(1, 1);
@@ -53,6 +53,12 @@ namespace BookViewerApp.Helper
             {
                 Semaphore.Release();
             }
+        }
+
+        public void Dispose()
+        {
+            ContentCache?.Dispose();
+            ContentCache = null;
         }
     }
 }
