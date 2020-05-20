@@ -11,11 +11,11 @@ namespace BookViewerApp.Storages
         public static StorageContent<HistoryInfo[]> Content = new StorageContent<HistoryInfo[]>(StorageContent<HistoryInfo[]>.SavePlaces.Local, "Histories.xml", () => new HistoryInfo[0]);
 
         public static readonly int MaximumHistoryCount = 100;
-        
+
         public async static Task AddHistory(HistoryInfo info)
         {
             await Content.GetContentAsync();
-            var result = Content.Content.Where(b => string.IsNullOrWhiteSpace(info.Id) || b.Id != info.Id).OrderByDescending(b => b.Date).Take(MaximumHistoryCount).ToList();
+            var result = Content.Content.Where(b => (string.IsNullOrWhiteSpace(info.Id) && (string.IsNullOrWhiteSpace(info.Path) || b.Path != info.Path)) || b.Id != info.Id).OrderByDescending(b => b.Date).Take(MaximumHistoryCount).ToList();
             result.Insert(0, info);
             Content.Content = result.ToArray();
 

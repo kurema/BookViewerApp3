@@ -519,31 +519,32 @@ namespace BookViewerApp.ViewModels
 
         private float _ZoomFactor = 1.0f;
 
-        private ImageSource Source
-        {
-            get
-            {
-                if (_Source != null) return _Source;
-                _Source = new BitmapImage();
-                SetImageNoWait(_Source);
-                return _Source;
-            }
-        }
+        //private ImageSource Source
+        //{
+        //    get
+        //    {
+        //        if (_Source != null) return _Source;
+        //        _Source = new BitmapImage();
+        //        SetImageNoWait(_Source);
+        //        return _Source;
+        //    }
+        //}
 
 
-        private BitmapImage _Source;
+        //private BitmapImage _Source;
 
-        public void UpdateSource()
-        {
-            SetImageNoWait(_Source);
-        }
+        //public void UpdateSource()
+        //{
+        //    SetImageNoWait(_Source);
+        //}
 
-        public async void SetImageNoWait(BitmapImage im)
+        public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token)
         {
             if (im == null) return;
             await Semaphore.WaitAsync();
             try
             {
+                token.ThrowIfCancellationRequested();
                 await Content.SetBitmapAsync(im);
             }
             catch
