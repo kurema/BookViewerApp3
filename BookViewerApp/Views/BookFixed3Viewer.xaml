@@ -13,6 +13,7 @@
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     
     SizeChanged="Page_SizeChanged"
+    KeyDown="Page_KeyDown"
     >
     <Page.DataContext>
         <BookFixed2ViewModel:BookViewModel/>

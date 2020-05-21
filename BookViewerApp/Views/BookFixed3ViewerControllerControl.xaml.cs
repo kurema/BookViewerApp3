@@ -43,12 +43,11 @@ namespace BookViewerApp.Views
                 }
                 catch { }
             };
-
         }
 
         public void SetBackgroundSource(AcrylicBackgroundSource source)
         {
-            if( ControlPanel_ControlPanelVisibilityStates_Border.Background is AcrylicBrush brush)
+            if (ControlPanel_ControlPanelVisibilityStates_Border.Background is AcrylicBrush brush)
             {
                 brush.BackgroundSource = source;
             }
@@ -147,7 +146,7 @@ namespace BookViewerApp.Views
 
         private void InitializeZoomFactor(object sender, TappedRoutedEventArgs e)
         {
-            if(Binding?.PageSelectedViewModel?.ZoomFactor != null)
+            if (Binding?.PageSelectedViewModel?.ZoomFactor != null)
             {
                 Binding.PageSelectedViewModel.ZoomFactor = 1.0f;
             }
@@ -155,7 +154,7 @@ namespace BookViewerApp.Views
 
         private void TreeView_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
-            if(args.InvokedItem is ViewModels.TocEntryViewModes toc)
+            if (args.InvokedItem is ViewModels.TocEntryViewModes toc)
             {
                 Binding.PageSelected = toc.Page;
             }

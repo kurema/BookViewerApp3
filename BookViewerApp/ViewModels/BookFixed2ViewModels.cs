@@ -538,7 +538,7 @@ namespace BookViewerApp.ViewModels
         //    SetImageNoWait(_Source);
         //}
 
-        public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token)
+        public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token, System.Threading.SemaphoreSlim Semaphore)
         {
             if (im == null) return;
             await Semaphore.WaitAsync();
@@ -556,9 +556,6 @@ namespace BookViewerApp.ViewModels
                 Semaphore.Release();
             }
         }
-
-        public static System.Threading.SemaphoreSlim Semaphore = new System.Threading.SemaphoreSlim(1, 1);
-
     }
 
 

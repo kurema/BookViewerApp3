@@ -473,6 +473,7 @@
                                     Template="{StaticResource ButtonTemplate}"
                                               Style='{StaticResource ButtonStyle}'
                                               AllowFocusOnInteraction="True"
+                                    Name="zoomButton"
                                                   >
                                     <Button.KeyboardAccelerators>
                                         <KeyboardAccelerator Key="Z" Modifiers="None"/>

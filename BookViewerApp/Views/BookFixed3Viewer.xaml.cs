@@ -152,7 +152,8 @@ namespace BookViewerApp.Views
                 //SetBookShelfModel(param.BookShelfModel);
                 if (Binding != null)
                     Binding.Title = param.Title;
-            }else if(e.Parameter is Stream stream)
+            }
+            else if (e.Parameter is Stream stream)
             {
                 throw new NotImplementedException();
             }
@@ -320,6 +321,66 @@ namespace BookViewerApp.Views
                 menuFlyout.ShowAt(this, option);
             }
             args.Handled = true;
+
+        }
+
+        private void Page_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            //See zoomButton in BookFixed3ViewerControllerControl.xaml
+            //Flyoutが一度開くまでKeyboardAcceleratorが機能しないので、無理やりこっちでやった。
+            //本来はXAML側でやるべき。
+            switch (e.Key)
+            {
+                case Windows.System.VirtualKey.W:
+                case Windows.System.VirtualKey.NumberPad8:
+                case Windows.System.VirtualKey.GamepadLeftThumbstickUp:
+                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("0,0.1");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.A:
+                case Windows.System.VirtualKey.NumberPad4:
+                case Windows.System.VirtualKey.GamepadLeftThumbstickLeft:
+                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("-0.1,0");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.S:
+                case Windows.System.VirtualKey.NumberPad2:
+                case Windows.System.VirtualKey.GamepadLeftThumbstickDown:
+                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("0,-0.1");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.D:
+                case Windows.System.VirtualKey.NumberPad6:
+                case Windows.System.VirtualKey.GamepadLeftThumbstickRight:
+                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("0.1,0");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.Subtract:
+                case Windows.System.VirtualKey.Q:
+                    Binding?.PageSelectedViewModel?.ZoomFactorMultiplyCommand?.Execute("0.83");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.Add:
+                case Windows.System.VirtualKey.E:
+                case Windows.System.VirtualKey.GamepadRightShoulder:
+                    Binding?.PageSelectedViewModel?.ZoomFactorMultiplyCommand?.Execute("1.2");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.NumberPad5:
+                case Windows.System.VirtualKey.Z:
+                case Windows.System.VirtualKey.GamepadRightTrigger:
+                    if (Binding?.PageSelectedViewModel?.ZoomFactor != null) Binding.PageSelectedViewModel.ZoomFactor = 1.0f;
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.GamepadDPadLeft:
+                    if (Binding?.PageVisualAddCommand?.CanExecute("-1") == true) Binding?.PageVisualAddCommand?.Execute("-1");
+                    e.Handled = true;
+                    break;
+                case Windows.System.VirtualKey.GamepadDPadRight:
+                    if (Binding?.PageVisualAddCommand?.CanExecute("1") == true) Binding?.PageVisualAddCommand?.Execute("1");
+                    e.Handled = true;
+                    break;
+            }
 
         }
     }
