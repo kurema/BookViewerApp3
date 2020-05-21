@@ -199,6 +199,41 @@ namespace BookViewerApp.Helper
                 return result.ToArray();
             }
 
+            public static MenuCommand[] MenuBookmarks(IFileItem item)
+            {
+                var result = new List<MenuCommand>();
+                result.Add(GetMenuBookmarkShowPreset());
+                return result.ToArray();
+            }
+
+            public static MenuCommand[] MenuBookmarkPreset(IFileItem item)
+            {
+                var result = new List<MenuCommand>();
+                result.Add(GetMenuBookmarkShowPreset());
+                return result.ToArray();
+            }
+
+            public static MenuCommand GetMenuBookmarkShowPreset()
+            {
+                if ((bool)Storages.SettingStorage.GetValue("ShowPresetBookmarks"))
+                {
+                    return new MenuCommand(GetResourceTitle("Bookmarks/HidePreset"), new Helper.DelegateCommand(a =>
+                    {
+                        Storages.SettingStorage.SetValue("ShowPresetBookmarks", false);
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Bookmarks);
+                    }));
+                }
+                else
+                {
+                    return new MenuCommand(GetResourceTitle("Bookmarks/ShowPreset"), new Helper.DelegateCommand(a =>
+                    {
+                        Storages.SettingStorage.SetValue("ShowPresetBookmarks", true);
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Bookmarks);
+                    }));
+                }
+
+            }
+
             public static Func<IFileItem, MenuCommand[]> GetMenuHistory(System.Windows.Input.ICommand pathRequestCommand)
             {
                 return (item) =>
@@ -218,6 +253,35 @@ namespace BookViewerApp.Helper
                          )));
                     }
 
+                    return result.ToArray();
+                };
+            }
+
+            public static Func<IFileItem, MenuCommand[]> GetMenuLibrary(Storages.Library.libraryLibrary library)
+            {
+                return (item) =>
+                {
+                    var result = new List<MenuCommand>();
+                    result.Add(new MenuCommand(GetResourceTitle("Library/Unregister"), new DelegateCommand(async a =>
+                    {
+                        var libs = Storages.LibraryStorage.Content?.Content?.libraries?.ToList();
+                        if (libs == null) return;
+                        libs.Remove(library);
+                        Storages.LibraryStorage.Content.Content.libraries = libs.ToArray();
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+
+                        foreach (Storages.Library.libraryLibraryFolder itemFolder in library.Items)
+                        {
+                            var used1 = Storages.LibraryStorage.GetTokenUsedByLibrary(itemFolder.token);
+                            var used2 = Storages.LibraryStorage.GetTokenUsedByFolders(itemFolder.token);
+                            if (used1.Length + used2.Length == 0)
+                            {
+                                Managers.BookManager.StorageItemUnregister(itemFolder.token);
+                                await Storages.HistoryStorage.DeleteHistoryByToken(itemFolder.token);
+                            }
+                        }
+                        await Storages.LibraryStorage.Content.SaveAsync();
+                    }, a => Storages.LibraryStorage.Content?.Content?.libraries != null && Storages.LibraryStorage.Content.Content.libraries.Contains(library))));
                     return result.ToArray();
                 };
             }

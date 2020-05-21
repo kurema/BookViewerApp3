@@ -17,8 +17,8 @@ Ver 2 failed.
 - - [x] [bibi](https://github.com/satorumurmur/bibi)+WebView (Bibiの方が良い感じだった。)
 - [x] 追加機能分の多言語対応
 - [ ] ContextMenu
-- - [ ] Library/Items/Unregister
-- - [ ] Bookmarks/Preset/HidePreset
+- - [x] Library/Items/Unregister
+- - [x] Bookmarks/Preset/HidePreset
 - - [ ] Storages/Folder/Rename
 - [ ] Viewer
 - - [ ] Sibling view

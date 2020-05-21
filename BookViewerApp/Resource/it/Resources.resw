@@ -307,7 +307,7 @@
     <value>Librerie</value>
   </data>
   <data name="ExplorerContainer.PC" xml:space="preserve">
-    <value>PC</value>
+    <value>Questo PC</value>
   </data>
   <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
     <value>Registra una cartella</value>
@@ -381,5 +381,14 @@ Annullare la registrazione?</value>
   </data>
   <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
     <value>Apri la cartella contenente</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
+    <value>Nascondi i segnalibri predefiniti</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
+    <value>Mostra segnalibri predefiniti</value>
+  </data>
+  <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
+    <value>Annulla la registrazione di questa libreria</value>
   </data>
 </root>

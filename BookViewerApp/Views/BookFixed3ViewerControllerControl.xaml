@@ -546,7 +546,6 @@
                                                         <Run Text="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageIntConverter},Mode=OneWay}"/>
                                                         <Run Text="%"/>
                                                 </TextBlock>
-
                                                 <!--<Slider Minimum="100" Maximum="500" Value="{Binding PageSelectedViewModel.ZoomFactor, Converter={StaticResource RateToPersantageConverter}, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" />-->
                                             </Grid>
                                         </Flyout>

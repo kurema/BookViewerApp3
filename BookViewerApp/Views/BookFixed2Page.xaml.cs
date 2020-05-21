@@ -136,9 +136,6 @@ namespace BookViewerApp.Views
 
             spreadPanel.Width = this.ActualWidth;
             spreadPanel.Height = this.ActualHeight;
-            //stack.Height = this.ActualHeight;
-            //stack.MaxWidth = this.ActualWidth;
-
 
             if (await (DataContext as PageViewModel)?.Content?.UpdateRequiredAsync() == true)
             {
@@ -149,15 +146,7 @@ namespace BookViewerApp.Views
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
                     (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
                 }
-
-                //if (spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage bmp) (DataContext as PageViewModel)?.SetImageNoWait(bmp);
-                //else
-                //{
-                //    spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-                //    (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage);
-                //}
             }
-
         }
 
         private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -198,12 +187,6 @@ namespace BookViewerApp.Views
             tokenSource?.Dispose();
             tokenSource = new System.Threading.CancellationTokenSource();
         }
-
-
-        //private void scrollViewer_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-        //{
-        //    (DataContext as ViewModels.PageViewModel)?.UpdateSource();
-        //}
 
         private double _initialHorizontalOffset;
         private double _initialVerticalOffset;

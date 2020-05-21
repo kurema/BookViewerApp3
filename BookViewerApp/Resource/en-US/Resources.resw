@@ -412,7 +412,7 @@
     <value>Libraries</value>
   </data>
   <data name="ExplorerContainer.PC" xml:space="preserve">
-    <value>PC</value>
+    <value>This PC</value>
   </data>
   <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
     <value>Register a folder</value>
@@ -486,5 +486,14 @@ Are you sure to unregister?</value>
   </data>
   <data name="ItemType.SystemFolder" xml:space="preserve">
     <value>System Folder</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
+    <value>Hide preset bookmarks</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
+    <value>Show preset bookmarks</value>
+  </data>
+  <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
+    <value>Unregister this library</value>
   </data>
 </root>

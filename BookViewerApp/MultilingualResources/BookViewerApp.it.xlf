@@ -414,8 +414,9 @@
           <target state="needs-review-translation" state-qualifier="tm-suggestion">Librerie</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
-          <source>PC</source>
-          <target state="translated">PC</target>
+          <source>This PC</source>
+          <target state="needs-review-translation">Questo PC</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Register a folder</source>
@@ -518,6 +519,18 @@ Annullare la registrazione?</target>
         <trans-unit id="ContextMenu.Histories.OpenParent.Title" translate="yes" xml:space="preserve">
           <source>Open containing folder</source>
           <target state="translated">Apri la cartella contenente</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Bookmarks.HidePreset.Title" translate="yes" xml:space="preserve">
+          <source>Hide preset bookmarks</source>
+          <target state="translated">Nascondi i segnalibri predefiniti</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Bookmarks.ShowPreset.Title" translate="yes" xml:space="preserve">
+          <source>Show preset bookmarks</source>
+          <target state="translated">Mostra segnalibri predefiniti</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Library.Unregister.Title" translate="yes" xml:space="preserve">
+          <source>Unregister this library</source>
+          <target state="translated">Annulla la registrazione di questa libreria</target>
         </trans-unit>
       </group>
     </body>

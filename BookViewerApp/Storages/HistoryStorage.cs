@@ -43,6 +43,17 @@ namespace BookViewerApp.Storages
             await Content.SaveAsync();
         }
 
+        public async static Task DeleteHistoryByToken(string token)
+        {
+            await Content.GetContentAsync();
+            var result = Content.Content.Where(b => b.Token == token).ToList();
+            Content.Content = result.ToArray();
+
+            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+            await Content.SaveAsync();
+        }
+
+
         public class HistoryInfo
         {
             public string Token { get; set; }

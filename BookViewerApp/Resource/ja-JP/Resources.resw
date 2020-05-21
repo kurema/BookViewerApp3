@@ -382,4 +382,13 @@
   <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
     <value>ファイルの場所を開く</value>
   </data>
+  <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
+    <value>プリセットブックマークを表示しない</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
+    <value>プリセットブックマークを表示する</value>
+  </data>
+  <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
+    <value>ライブラリを登録解除</value>
+  </data>
 </root>

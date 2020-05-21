@@ -50,12 +50,12 @@ namespace kurema.FileExplorerControl.Models.FileItems
             if (ChildrenProvided != null)
             {
                 ChildrenProvided.Clear();
-                foreach (var item in result) ChildrenProvided.Add(item);
+                if (result != null) foreach (var item in result) ChildrenProvided.Add(item);
                 return ChildrenProvided;
             }
             else if (result == null)
             {
-                return new ObservableCollection<IFileItem>(result);
+                return ChildrenProvided = new ObservableCollection<IFileItem>();
             }
             else
             {

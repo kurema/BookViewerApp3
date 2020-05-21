@@ -34,7 +34,11 @@ namespace BookViewerApp.Storages
             {
                 var library = await Content.GetContentAsync();
                 if (library?.libraries == null) return Array.Empty<IFileItem>();
-                return (await Task.WhenAll(library.libraries.Select(async a => await a?.AsFileItem())))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
+                return (await Task.WhenAll(library.libraries.Select(async a => {
+                    var result = await a?.AsFileItem();
+                    result.MenuCommandsProvider = UIHelper.ContextMenus.GetMenuLibrary(a);
+                    return result;
+                })))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
@@ -142,6 +146,7 @@ namespace BookViewerApp.Storages
                         if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local)
                         {
                             FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/PresetBookmark"),
+                            MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarkPreset,
                         });
                     }
                 }
@@ -152,6 +157,7 @@ namespace BookViewerApp.Storages
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
                 Tag = LibraryKind.Bookmarks,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
+                MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks,
             };
         }
 
@@ -200,7 +206,8 @@ namespace BookViewerApp.Storages
                 }
             };
 
-            return new ContainerItem(GetItem_GetWord("PC"), "/PC", result) {
+            return new ContainerItem(GetItem_GetWord("PC"), "/PC", result)
+            {
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
         }
@@ -348,7 +355,7 @@ namespace BookViewerApp.Storages
 
         public partial class libraryLibrary
         {
-            public async Task<IFileItem> AsFileItem()
+            public async Task<CombinedItem> AsFileItem()
             {
                 string libraryFileType = Managers.ResourceManager.Loader.GetString("ItemType/LibraryItem");
                 if (this.Items == null || this.Items.Length == 0) return new CombinedItem(Array.Empty<IFileItem>()) { Name = this.title, FileTypeDescription = libraryFileType };
