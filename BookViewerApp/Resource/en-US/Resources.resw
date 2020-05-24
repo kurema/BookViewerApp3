@@ -496,4 +496,19 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
     <value>Unregister this library</value>
   </data>
+  <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
+    <value>Maximum number of histories to be saved.</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
+    <value>Number of histories</value>
+  </data>
+  <data name="LibraryManager.Kind.Archive.Title" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="LibraryManager.Kind.Folder.Title" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="LibraryManager.Kind.Network.Title" xml:space="preserve">
+    <value>Network item</value>
+  </data>
 </root>

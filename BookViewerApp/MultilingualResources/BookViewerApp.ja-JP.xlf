@@ -520,6 +520,26 @@ Are you sure to unregister?</source>
           <source>Unregister this library</source>
           <target state="translated">ライブラリを登録解除</target>
         </trans-unit>
+        <trans-unit id="Setting_MaximumHistoryCount.Description" translate="yes" xml:space="preserve">
+          <source>Maximum number of histories to be saved.</source>
+          <target state="new">Maximum number of histories to be saved.</target>
+        </trans-unit>
+        <trans-unit id="Setting_MaximumHistoryCount.Title" translate="yes" xml:space="preserve">
+          <source>Number of histories</source>
+          <target state="new">Number of histories</target>
+        </trans-unit>
+        <trans-unit id="LibraryManager.Kind.Archive.Title" translate="yes" xml:space="preserve">
+          <source>Archive</source>
+          <target state="new">Archive</target>
+        </trans-unit>
+        <trans-unit id="LibraryManager.Kind.Folder.Title" translate="yes" xml:space="preserve">
+          <source>Folder</source>
+          <target state="new">Folder</target>
+        </trans-unit>
+        <trans-unit id="LibraryManager.Kind.Network.Title" translate="yes" xml:space="preserve">
+          <source>Network item</source>
+          <target state="new">Network item</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -280,6 +280,10 @@ namespace BookViewerApp.Storages.Library {
         
         private string pathField;
         
+        private string auth_idField;
+        
+        private string auth_pass_encodedField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string protocol {
@@ -301,6 +305,30 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.pathField = value;
                 this.RaisePropertyChanged("path");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string auth_id {
+            get {
+                return this.auth_idField;
+            }
+            set {
+                this.auth_idField = value;
+                this.RaisePropertyChanged("auth_id");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string auth_pass_encoded {
+            get {
+                return this.auth_pass_encodedField;
+            }
+            set {
+                this.auth_pass_encodedField = value;
+                this.RaisePropertyChanged("auth_pass_encoded");
             }
         }
         

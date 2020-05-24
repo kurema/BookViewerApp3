@@ -394,6 +394,15 @@ namespace BookViewerApp.Storages
         }
 
 
+        public interface IlibraryLibraryItem
+        {
+            string path { get; }
+        }
+
+        public partial class libraryLibraryArchive: IlibraryLibraryItem { }
+        public partial class libraryLibraryFolder : IlibraryLibraryItem { }
+        public partial class libraryLibraryNetwork : IlibraryLibraryItem { }
+
         public partial class libraryFolder
         {
             public libraryFolder()

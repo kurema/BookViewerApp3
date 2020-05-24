@@ -45,6 +45,8 @@
                       <xs:complexType>
                         <xs:attribute name="protocol" type="xs:string"/>
                         <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="auth_id" type="xs:string"/>
+                        <xs:attribute name="auth_pass_encoded" type="xs:string"/>
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="archive">

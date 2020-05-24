@@ -239,6 +239,7 @@
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LibraryMemberViewModel.cs" />
     <Compile Include="Views\AcrylicButtonControl.xaml.cs">
       <DependentUpon>AcrylicButtonControl.xaml</DependentUpon>
     </Compile>
@@ -287,6 +288,9 @@
     <Compile Include="ViewModels\InfoPageViewModel.cs" />
     <Compile Include="Storages\LicenseStorage.cs" />
     <Compile Include="Helper\NaturalSort.cs" />
+    <Compile Include="Views\LibraryManagerControl.xaml.cs">
+      <DependentUpon>LibraryManagerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PasswordRequestContentDialog.xaml.cs">
       <DependentUpon>PasswordRequestContentDialog.xaml</DependentUpon>
     </Compile>
@@ -368,6 +372,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibraryManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

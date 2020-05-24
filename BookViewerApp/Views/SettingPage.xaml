@@ -91,6 +91,21 @@
                             </Border>
                         </DataTemplate>
                     </template:SettingTemplateSelector.TemplateString>
+                    <template:SettingTemplateSelector.TemplateInt>
+                        <DataTemplate>
+                            <Border Style="{StaticResource ItemBorder}">
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Description}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox InputScope="Number"  Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
+                                        <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+
+                    </template:SettingTemplateSelector.TemplateInt>
                 </template:SettingTemplateSelector>
             </ItemsControl.ItemTemplateSelector>
         </ItemsControl>

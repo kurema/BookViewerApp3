@@ -121,7 +121,7 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        private async void Button_Tapped_Open(object sender, TappedRoutedEventArgs e)
+        private async void Button_Tapped_Open(object sender, object e)
         {
             if ((sender as Button)?.DataContext is ViewModels.FileItemViewModel vm1)
             {
@@ -306,5 +306,6 @@ namespace kurema.FileExplorerControl.Views
             //    }
             //};
         }
+
     }
 }

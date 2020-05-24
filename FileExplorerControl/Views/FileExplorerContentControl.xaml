@@ -16,7 +16,7 @@
     xmlns:vc="using:kurema.FileExplorerControl.Helper.ValueConverters"
     
     DataContextChanged="UserControl_DataContextChanged"
-    
+    XYFocusKeyboardNavigation="Enabled"
     
     x:Name="root"
     >
@@ -96,7 +96,7 @@
                     <local:FileExplorerContentDataSelector ContentStyle="Icon">
                         <local:FileExplorerContentDataSelector.TemplateIcon>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped_Open" HorizontalAlignment="Stretch" VerticalAlignment="Top"  ContextRequested="Button_ContextRequested">
+                                <Button Margin="5" Click="Button_Tapped_Open" HorizontalAlignment="Stretch" VerticalAlignment="Top"  ContextRequested="Button_ContextRequested">
                                     <StackPanel MaxWidth="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" MinWidth="100">
                                         <Image Height="{Binding DataContext.IconSize, ElementName=root, Mode=OneWay}" Grid.Row="0" Source="{Binding IconLarge}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
                                         <TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center" TextWrapping="Wrap" />
@@ -106,7 +106,7 @@
                         </local:FileExplorerContentDataSelector.TemplateIcon>
                         <local:FileExplorerContentDataSelector.TemplateIconWide>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped_Open"  ContextRequested="Button_ContextRequested">
+                                <Button Margin="5" Click="Button_Tapped_Open"  ContextRequested="Button_ContextRequested">
                                     <Grid HorizontalAlignment="Left" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -120,7 +120,7 @@
                         </local:FileExplorerContentDataSelector.TemplateIconWide>
                         <local:FileExplorerContentDataSelector.TemplateList>
                             <DataTemplate>
-                                <Button Margin="5" Tapped="Button_Tapped_Open" ContextRequested="Button_ContextRequested">
+                                <Button Margin="5" Click="Button_Tapped_Open" ContextRequested="Button_ContextRequested">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{Binding IconSmall}" Margin="0,0,4,0" Height="25"/>
                                         <TextBlock Text="{Binding Title}" />

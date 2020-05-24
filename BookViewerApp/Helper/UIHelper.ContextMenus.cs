@@ -121,6 +121,7 @@ namespace BookViewerApp.Helper
                             var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new Helper.DelegateCommand(async b =>
                              {
                                  var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
+                                 if (a.Items == null) a.Items = new object[0];
                                  if (tokenLf != null && a.Items.Any(c => (c as Storages.Library.libraryLibraryFolder)?.Compare(tokenLf) == true))
                                  {
                                      var message = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Message");
@@ -282,6 +283,18 @@ namespace BookViewerApp.Helper
                         }
                         await Storages.LibraryStorage.Content.SaveAsync();
                     }, a => Storages.LibraryStorage.Content?.Content?.libraries != null && Storages.LibraryStorage.Content.Content.libraries.Contains(library))));
+
+                    result.Add(new MenuCommand("Manage",new DelegateCommand(async a=> {
+                        var dialog = new ContentDialog() { 
+                            PrimaryButtonText="OK",
+                        };
+                        dialog.Content = new Views.LibraryManagerControl()
+                        {
+                            DataContext = new ViewModels.LibraryMemberViewModel(library),
+                        };
+                        await dialog.ShowAsync();
+                    })));
+
                     return result.ToArray();
                 };
             }

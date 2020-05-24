@@ -49,6 +49,7 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ExplorerContentStyle",kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
                         new SettingInstance("ExplorerIconSize",75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),
                         new SettingInstance("ShowHistories",true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance("MaximumHistoryCount",100,new TypeConverters.IntConverter(),group:"Explorer"){Minimum = 0,Maximum = 500},
                     };
             }
         }
