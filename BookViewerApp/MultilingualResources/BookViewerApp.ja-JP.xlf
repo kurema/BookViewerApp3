@@ -522,23 +522,15 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="Setting_MaximumHistoryCount.Description" translate="yes" xml:space="preserve">
           <source>Maximum number of histories to be saved.</source>
-          <target state="new">Maximum number of histories to be saved.</target>
+          <target state="translated">履歴の保存件数。</target>
         </trans-unit>
         <trans-unit id="Setting_MaximumHistoryCount.Title" translate="yes" xml:space="preserve">
           <source>Number of histories</source>
-          <target state="new">Number of histories</target>
+          <target state="translated">履歴件数</target>
         </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Archive.Title" translate="yes" xml:space="preserve">
-          <source>Archive</source>
-          <target state="new">Archive</target>
-        </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Folder.Title" translate="yes" xml:space="preserve">
-          <source>Folder</source>
-          <target state="new">Folder</target>
-        </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Network.Title" translate="yes" xml:space="preserve">
-          <source>Network item</source>
-          <target state="new">Network item</target>
+        <trans-unit id="ContextMenu.Library.Manage.Title" translate="yes" xml:space="preserve">
+          <source>Manage this library</source>
+          <target state="translated">ライブラリを管理</target>
         </trans-unit>
       </group>
     </body>

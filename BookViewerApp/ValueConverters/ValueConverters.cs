@@ -219,4 +219,21 @@ namespace BookViewerApp.ValueConverters
             throw new NotSupportedException();
         }
     }
+
+    public sealed class StringChangeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var word = value.ToString();
+            var dic= parameter.ToString().Split("::").Select(a => a.Split(":")).Where(a => a.Length >= 2).ToDictionary(a => a[0], a => a[1]);
+            if (dic.ContainsKey(word)) return dic[word];
+            if (dic.ContainsKey("default")) return dic["default"];
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

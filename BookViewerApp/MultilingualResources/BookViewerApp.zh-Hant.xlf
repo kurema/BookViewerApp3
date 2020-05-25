@@ -522,17 +522,9 @@ Are you sure to unregister?</target>
           <source>Number of histories</source>
           <target state="new">Number of histories</target>
         </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Archive.Title" translate="yes" xml:space="preserve">
-          <source>Archive</source>
-          <target state="new">Archive</target>
-        </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Folder.Title" translate="yes" xml:space="preserve">
-          <source>Folder</source>
-          <target state="new">Folder</target>
-        </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Network.Title" translate="yes" xml:space="preserve">
-          <source>Network item</source>
-          <target state="new">Network item</target>
+        <trans-unit id="ContextMenu.Library.Manage.Title" translate="yes" xml:space="preserve">
+          <source>Manage this library</source>
+          <target state="new">Manage this library</target>
         </trans-unit>
       </group>
     </body>

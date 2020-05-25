@@ -8,25 +8,43 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    xmlns:vc="using:BookViewerApp.ViewModels"
-    d:DataContext="{d:DesignInstance vc:LibraryMemberViewModel,IsDesignTimeCreatable=True}"
+    xmlns:vm="using:BookViewerApp.ViewModels"
+    d:DataContext="{d:DesignInstance vm:LibraryMemberViewModel,IsDesignTimeCreatable=True}"
+    xmlns:vc="using:BookViewerApp.ValueConverters"
     >
+    <UserControl.Resources>
+        <vc:StringChangeConverter x:Key="scvc"/>
+    </UserControl.Resources>
     <UserControl.DataContext>
-        <vc:LibraryMemberViewModel />
+        <vm:LibraryMemberViewModel />
     </UserControl.DataContext>
-    <Grid>
+    <StackPanel>
+        <TextBox Text="{Binding Title,Mode=TwoWay}" FontSize="{ThemeResource ListViewHeaderItemThemeFontSize}"/>
         <ListView ItemsSource="{Binding Items,Mode=TwoWay}" ReorderMode="Enabled" CanReorderItems="True" CanDragItems="True" AllowDrop="True" IsSwipeEnabled="True" DragItemsStarting="ListView_DragItemsStarting" SelectionMode="None">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"  Value="Stretch" />
+                    <Setter Property="HorizontalAlignment"  Value="Stretch" />
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding KindTitle}"  Style="{ThemeResource HeaderTextBlockStyle}"/>
-                        <TextBlock Text="{Binding Path}"/>
-                        <Button Command="{Binding RemoveCommand}" >
-                            <SymbolIcon Symbol="Delete"/>
-                        </Button>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Grid.Column="0" VerticalAlignment="Center" Margin="10,0,0,0"
+                            FontFamily="Segoe MDL2 Assets" Glyph="{Binding Kind,Converter={StaticResource scvc},ConverterParameter=Folder:&#xF12B;::Archive:&#xE8D5;::Network:&#xE968;}"
+                                  ToolTipService.ToolTip="{Binding KindTitle}"
+                                  />
+                        <TextBlock Text="{Binding Title}" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" ToolTipService.ToolTip="{Binding Path}"/>
+                        <local:AcrylicButtonControl Grid.Column="2" Command="{Binding RemoveCommand}" Icon="Delete" Margin="0"/>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </Grid>
+    </StackPanel>
 </UserControl>

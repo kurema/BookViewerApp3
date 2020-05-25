@@ -502,13 +502,7 @@ Are you sure to unregister?</value>
   <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
     <value>Number of histories</value>
   </data>
-  <data name="LibraryManager.Kind.Archive.Title" xml:space="preserve">
-    <value>Archive</value>
-  </data>
-  <data name="LibraryManager.Kind.Folder.Title" xml:space="preserve">
-    <value>Folder</value>
-  </data>
-  <data name="LibraryManager.Kind.Network.Title" xml:space="preserve">
-    <value>Network item</value>
+  <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
+    <value>Manage this library</value>
   </data>
 </root>

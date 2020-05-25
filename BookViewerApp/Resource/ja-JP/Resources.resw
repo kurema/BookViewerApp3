@@ -391,4 +391,13 @@
   <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
     <value>ライブラリを登録解除</value>
   </data>
+  <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
+    <value>履歴の保存件数。</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
+    <value>履歴件数</value>
+  </data>
+  <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
+    <value>ライブラリを管理</value>
+  </data>
 </root>

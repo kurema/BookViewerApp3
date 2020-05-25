@@ -406,7 +406,7 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
           <source>Histories</source>
-          <target state="translated">Cronologia</target>
+          <target state="translated">Cronologi</target>
           <note from="MultilingualEditor" annotates="source" priority="4">History in this case should be translated to "Cronologia" not "Storie". I think.</note>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
@@ -415,8 +415,7 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
           <source>This PC</source>
-          <target state="needs-review-translation">Questo PC</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Questo PC</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Register a folder</source>
@@ -534,23 +533,15 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="Setting_MaximumHistoryCount.Description" translate="yes" xml:space="preserve">
           <source>Maximum number of histories to be saved.</source>
-          <target state="new">Maximum number of histories to be saved.</target>
+          <target state="translated">Numero massimo di cronologi da salvare.</target>
         </trans-unit>
         <trans-unit id="Setting_MaximumHistoryCount.Title" translate="yes" xml:space="preserve">
           <source>Number of histories</source>
-          <target state="new">Number of histories</target>
+          <target state="translated">Numero di cronologi</target>
         </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Archive.Title" translate="yes" xml:space="preserve">
-          <source>Archive</source>
-          <target state="new">Archive</target>
-        </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Folder.Title" translate="yes" xml:space="preserve">
-          <source>Folder</source>
-          <target state="new">Folder</target>
-        </trans-unit>
-        <trans-unit id="LibraryManager.Kind.Network.Title" translate="yes" xml:space="preserve">
-          <source>Network item</source>
-          <target state="new">Network item</target>
+        <trans-unit id="ContextMenu.Library.Manage.Title" translate="yes" xml:space="preserve">
+          <source>Manage this library</source>
+          <target state="translated">Gestisci questa libreria</target>
         </trans-unit>
       </group>
     </body>

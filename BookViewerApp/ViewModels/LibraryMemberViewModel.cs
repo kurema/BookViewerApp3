@@ -26,7 +26,7 @@ namespace BookViewerApp.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
@@ -50,16 +50,33 @@ namespace BookViewerApp.ViewModels
             get => _Content;
             set
             {
+                if (_Content != null) value.PropertyChanged -= Value_PropertyChanged;
+
                 SetProperty(ref _Content, value);
-                if (value != null)
-                    value.PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName == nameof(Content.Items))
-                        {
-                            OnPropertyChanged(nameof(Items));
-                        }
-                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
-                    };
+                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(Items));
+
+                if (value != null) value.PropertyChanged += Value_PropertyChanged;
+            }
+        }
+
+        private void Value_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Content.Items))
+            {
+                OnPropertyChanged(nameof(Items));
+            }
+            Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+        }
+
+        public string Title
+        {
+            get => Content?.title ?? "";
+            set
+            {
+                if (Content == null) return;
+                Content.title = value;
+                OnPropertyChanged(nameof(Title));
             }
         }
 
@@ -96,7 +113,7 @@ namespace BookViewerApp.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
@@ -107,7 +124,7 @@ namespace BookViewerApp.ViewModels
         private LibraryMemberViewModel _Parent;
         public LibraryMemberViewModel Parent { get => _Parent; private set => SetProperty(ref _Parent, value); }
 
-        private IlibraryLibraryItem _Member;
+        private IlibraryLibraryItem _Content;
 
         public LibraryMemberItemViewModel(IlibraryLibraryItem member, LibraryMemberViewModel parent)
         {
@@ -117,27 +134,54 @@ namespace BookViewerApp.ViewModels
 
         public IlibraryLibraryItem Content
         {
-            get => _Member; set
+            get => _Content; set
             {
-                SetProperty(ref _Member, value);
+                SetProperty(ref _Content, value);
                 OnPropertyChanged(nameof(Path));
+                OnPropertyChanged(nameof(Kind));
+                if (value is libraryLibraryFolder f)
+                {
+                    Task.Run(async () =>
+                    {
+                        StorageItem = await f.GetStorageFolderAsync();
+                        OnPropertyChanged(nameof(Title));
+                        OnPropertyChanged(nameof(Path));
+                    });
+                }
+                else StorageItem = null;
             }
         }
 
-        public string Path => Content?.path ?? "";
+        public string Path => StorageItem?.Path ?? Content?.path;
 
-        public string Title => Path == null ? "" : System.IO.Path.GetFileNameWithoutExtension(Path);
 
-        public string KindTitle
+        public string Kind
         {
             get
             {
                 if (Content == null) return "";
                 switch (Content)
                 {
-                    case Storages.Library.libraryLibraryFolder _: return Managers.ResourceManager.Loader.GetString("LibraryManager/Kind/Folder/Title");
-                    case Storages.Library.libraryLibraryArchive _: return Managers.ResourceManager.Loader.GetString("LibraryManager/Kind/Archive/Title");
-                    case Storages.Library.libraryLibraryNetwork _: return Managers.ResourceManager.Loader.GetString("LibraryManager/Kind/Network/Title");
+                    case libraryLibraryFolder _: return "Folder";
+                    case libraryLibraryArchive _: return "Archive";
+                    case libraryLibraryNetwork _: return "Network";
+                    default: return "";
+                }
+            }
+        }
+
+        private Windows.Storage.IStorageItem StorageItem;
+
+        public string Title
+        {
+            get
+            {
+                if (Content == null) return "";
+                switch (Content)
+                {
+                    case libraryLibraryFolder _: return StorageItem?.Name;
+                    case libraryLibraryArchive a: return System.IO.Path.GetFileNameWithoutExtension(a.path);
+                    case libraryLibraryNetwork n: return System.IO.Path.GetFileNameWithoutExtension(n.path);
                     default: return "";
                 }
             }
@@ -150,20 +194,19 @@ namespace BookViewerApp.ViewModels
             get
             {
                 if (_RemoveCommand != null) return _RemoveCommand;
-                var result=new Helper.DelegateCommand(async (parameter) =>
-                {
-                    var list = Parent?.Content?.Items?.ToList();
-                    if (list == null) return;
-                    list.Remove(Content);
-                    Parent.Content.Items = list.ToArray();
-                }, parameter =>
-                {
-                    return Parent?.Items?.Count > 1;
-                });
+                var result = new Helper.DelegateCommand(async (parameter) =>
+                  {
+                      var list = Parent?.Content?.Items?.ToList();
+                      if (list == null) return;
+                      list.Remove(Content);
+                      Parent.Content.Items = list.ToArray();
+                  }, parameter =>
+                  {
+                      return Parent?.Items?.Count > 1;
+                  });
                 if (Parent?.Content != null) Parent.Content.PropertyChanged += (s, e) => result.OnCanExecuteChanged();
                 return _RemoveCommand = result;
             }
         }
-
     }
 }

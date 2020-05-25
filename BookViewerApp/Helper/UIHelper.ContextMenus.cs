@@ -284,9 +284,9 @@ namespace BookViewerApp.Helper
                         await Storages.LibraryStorage.Content.SaveAsync();
                     }, a => Storages.LibraryStorage.Content?.Content?.libraries != null && Storages.LibraryStorage.Content.Content.libraries.Contains(library))));
 
-                    result.Add(new MenuCommand("Manage",new DelegateCommand(async a=> {
+                    result.Add(new MenuCommand(GetResourceTitle("Library/Manage"), new DelegateCommand(async a=> {
                         var dialog = new ContentDialog() { 
-                            PrimaryButtonText="OK",
+                            PrimaryButtonText=Managers.ResourceManager.Loader.GetString("Word/OK"),
                         };
                         dialog.Content = new Views.LibraryManagerControl()
                         {

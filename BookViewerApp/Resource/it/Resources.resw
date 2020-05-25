@@ -301,7 +301,7 @@
     <value>Cartelle</value>
   </data>
   <data name="ExplorerContainer.Histories" xml:space="preserve">
-    <value>Cronologia</value>
+    <value>Cronologi</value>
   </data>
   <data name="ExplorerContainer.Libraries" xml:space="preserve">
     <value>Librerie</value>
@@ -390,5 +390,14 @@ Annullare la registrazione?</value>
   </data>
   <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
     <value>Annulla la registrazione di questa libreria</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
+    <value>Numero massimo di cronologi da salvare.</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
+    <value>Numero di cronologi</value>
+  </data>
+  <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
+    <value>Gestisci questa libreria</value>
   </data>
 </root>
