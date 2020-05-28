@@ -41,12 +41,7 @@ namespace BookViewerApp.Helper
                         };
                     }
                 }
-
-                {
-                    await HistoryStorage.Content.GetContentAsync();
-                    var lib = await BookManager.GetTokenFromPathOrRegister(file);
-                    await HistoryStorage.AddHistory(new HistoryStorage.HistoryInfo() { Date = DateTime.Now, Id = null, Name = file.Name, Path = file.Path, Token = lib.token, PathRelative = lib.path });
-                }
+                await HistoryStorage.AddHistory(file, null);
             }
 
             public static async void OpenBookPicked(Frame frame, FrameworkElement sender)

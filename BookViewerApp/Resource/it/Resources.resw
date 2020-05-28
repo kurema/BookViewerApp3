@@ -400,4 +400,16 @@ Annullare la registrazione?</value>
   <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
     <value>Gestisci questa libreria</value>
   </data>
+  <data name="ContextMenu.Word.New.Title" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="Word.Bookmark" xml:space="preserve">
+    <value>Segnalibro</value>
+  </data>
+  <data name="Word.Folder" xml:space="preserve">
+    <value>Cartella</value>
+  </data>
+  <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
+    <value>Nuova cartella</value>
+  </data>
 </root>

@@ -108,12 +108,7 @@ namespace BookViewerApp.ViewModels
                     PathStorage.AddOrReplace(value.Path, bookf.ID);
                     await PathStorage.Content.SaveAsync();
                 }
-                {
-                    await HistoryStorage.Content.GetContentAsync();
-                    var lib = await BookManager.GetTokenFromPathOrRegister(value);
-                    await HistoryStorage.AddHistory(new HistoryStorage.HistoryInfo() { Date = DateTime.Now, Id = bookf.ID, Name = value.Name, Path = value.Path, Token = lib.token, PathRelative = lib.path });
-                }
-
+                await HistoryStorage.AddHistory(value, bookf.ID);
             }
             this.Loading = false;
         }

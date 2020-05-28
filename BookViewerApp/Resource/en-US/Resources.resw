@@ -505,4 +505,16 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
     <value>Manage this library</value>
   </data>
+  <data name="ContextMenu.Word.New.Title" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
+    <value>New folder</value>
+  </data>
+  <data name="Word.Bookmark" xml:space="preserve">
+    <value>Bookmark</value>
+  </data>
+  <data name="Word.Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
 </root>

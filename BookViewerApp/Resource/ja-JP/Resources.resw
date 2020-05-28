@@ -400,4 +400,16 @@
   <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
     <value>ライブラリを管理</value>
   </data>
+  <data name="ContextMenu.Word.New.Title" xml:space="preserve">
+    <value>新規作成</value>
+  </data>
+  <data name="Word.Bookmark" xml:space="preserve">
+    <value>インターネットショートカット</value>
+  </data>
+  <data name="Word.Folder" xml:space="preserve">
+    <value>フォルダー</value>
+  </data>
+  <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
+    <value>新しいフォルダー</value>
+  </data>
 </root>

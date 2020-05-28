@@ -204,6 +204,23 @@ namespace BookViewerApp.Helper
             {
                 var result = new List<MenuCommand>();
                 result.Add(GetMenuBookmarkShowPreset());
+                result.Add(new MenuCommand(GetResourceTitle("Word/New"),
+                    new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
+                    {
+                        var library = await Storages.LibraryStorage.Content.GetContentAsync();
+                        if (library == null) return;
+                        library.bookmarks = library.bookmarks ?? new Storages.Library.libraryBookmarks();
+                        var bookmarks = (library.bookmarks.Items ?? new object[0]).ToList();
+                        bookmarks.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
+                        library.bookmarks.Items = bookmarks.ToArray();
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Bookmarks);
+                    })),
+                    new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Bookmark"), new DelegateCommand(a =>
+                    {
+                    })
+                    ))
+                    );
+
                 return result.ToArray();
             }
 

@@ -10,12 +10,33 @@ namespace BookViewerApp.Storages
     {
         public static StorageContent<HistoryInfo[]> Content = new StorageContent<HistoryInfo[]>(StorageContent<HistoryInfo[]>.SavePlaces.Local, "Histories.xml", () => new HistoryInfo[0]);
 
+        public static int FutureAccessListMargin = 50;
+
+        public async static Task AddHistory(Windows.Storage.IStorageFile file, string id)
+        {
+            await Content.GetContentAsync();
+            var lib = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Entries.Count + FutureAccessListMargin < Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.MaximumItemsAllowed ?
+                await Managers.BookManager.GetTokenFromPathOrRegister(file) : await Managers.BookManager.GetTokenFromPath(file.Path);
+            if (lib != null) await AddHistory(new HistoryInfo() { Date = DateTime.Now, Id = id, Name = file.Name, Path = file.Path, Token = lib.token, PathRelative = lib.path });
+        }
+
         public async static Task AddHistory(HistoryInfo info)
         {
             int MaximumHistoryCount = (int)SettingStorage.GetValue("MaximumHistoryCount");
 
             await Content.GetContentAsync();
-            var result = Content.Content.Where(b => (string.IsNullOrWhiteSpace(info.Id) && (string.IsNullOrWhiteSpace(info.Path) || b.Path != info.Path)) || b.Id != info.Id).OrderByDescending(b => b.Date).Take(MaximumHistoryCount).ToList();
+            var result = Content.Content.Where(b => (string.IsNullOrWhiteSpace(info.Id) && (string.IsNullOrWhiteSpace(info.Path) || b.Path != info.Path)) || b.Id != info.Id).OrderByDescending(b => b.Date).ToList();
+            {
+                while (result.Count > MaximumHistoryCount)
+                {
+                    var last = result.Last();
+                    if (!string.IsNullOrWhiteSpace(last.Token) && result.Count(a => a.Token == last.Token) == 1 && LibraryStorage.GetTokenUsedByFolders(last.Token).Length == 0 && LibraryStorage.GetTokenUsedByLibrary(last.Token).Length == 0)
+                    {
+                        Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Remove(last.Token);
+                    }
+                    result.Remove(last);
+                }
+            }
             result.Insert(0, info);
             Content.Content = result.ToArray();
 

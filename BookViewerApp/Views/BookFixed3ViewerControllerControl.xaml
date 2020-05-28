@@ -212,34 +212,28 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{ThemeResource MTCMediaButtonHeight}"/>
+                    <ColumnDefinition Width="{ThemeResource MTCMediaButtonHeight}"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{ThemeResource MTCMediaButtonHeight}"/>
+                    <ColumnDefinition Width="{ThemeResource MTCMediaButtonHeight}"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-                <Grid Grid.Column="0" Grid.RowSpan="2" Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <RepeatButton Grid.Row="0" Command="{Binding PageVisualAddCommand}" CommandParameter="-1" >
-                        <SymbolIcon Symbol="Previous"/>
-                    </RepeatButton>
-                    <RepeatButton Grid.Row="1" Command="{Binding PageVisualAddCommand}" CommandParameter="1" >
-                        <SymbolIcon Symbol="Next"/>
-                    </RepeatButton>
-                </Grid>
-                <Grid Grid.Column="2" Grid.RowSpan="2" Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <RepeatButton Grid.Row="0" Command="{Binding PageVisualAddCommand}" CommandParameter="1" >
-                        <SymbolIcon Symbol="Next"/>
-                    </RepeatButton>
-                    <RepeatButton Grid.Row="1" Command="{Binding PageVisualAddCommand}" CommandParameter="-1" >
-                        <SymbolIcon Symbol="Previous"/>
-                    </RepeatButton>
-                </Grid>
+                <RepeatButton Grid.Row="0" Grid.Column="0" Command="{Binding PageVisualAddCommand}" CommandParameter="-1" >
+                    <SymbolIcon Symbol="Previous"/>
+                </RepeatButton>
+                <RepeatButton Grid.Row="0" Grid.Column="1" Command="{Binding PageVisualAddCommand}" CommandParameter="1" >
+                    <SymbolIcon Symbol="Next"/>
+                </RepeatButton>
+                <RepeatButton Grid.Row="0" Grid.Column="3" Command="{Binding PageVisualAddCommand}" CommandParameter="-1" >
+                    <SymbolIcon Symbol="Previous"/>
+                </RepeatButton>
+                <RepeatButton Grid.Row="0" Grid.Column="4" Command="{Binding PageVisualAddCommand}" CommandParameter="1" >
+                    <SymbolIcon Symbol="Next"/>
+                </RepeatButton>
             </Grid>
         </Grid>
 

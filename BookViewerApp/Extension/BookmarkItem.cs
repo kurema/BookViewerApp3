@@ -59,7 +59,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             return Task.FromResult<Stream>(null);
         }
     }
-    public class StorageBookmarkItem : IFileItem
+    public class StorageBookmarkItem : IFileItem, IStorageBookmark
     {
         public libraryBookmarksContainerBookmark Content;
 
@@ -132,7 +132,15 @@ namespace kurema.FileExplorerControl.Models.FileItems
         private Byte[] GetBytes() => Encoding.ASCII.GetBytes("[InternetShortcut]\nURL=" + System.Web.HttpUtility.UrlEncode(Path));
     }
 
-    public class StorageBookmarkContainer : IFileItem
+    public interface IStorageBookmark : IFileItem
+    {
+        bool IsReadOnly { get; set; }
+        Action<string> ActionOpen { get; set; }
+        Action ActionDelete { get; set; }
+        Func<IFileItem, MenuCommand[]> MenuCommandsProvider { set; }
+    }
+
+    public class StorageBookmarkContainer : IFileItem, IStorageBookmark
     {
         public libraryBookmarksContainer Content;
 
@@ -169,41 +177,29 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
             var result = new List<IFileItem>();
+            if (Content.Items == null) return Task.FromResult(new ObservableCollection<IFileItem>(result));
             foreach (var item in Content.Items)
             {
+                IStorageBookmark bookmark = null;
                 switch (item)
                 {
                     case libraryBookmarksContainer bc:
-                        {
-                            var temp = new StorageBookmarkContainer(bc);
-                            temp.ActionOpen = this.ActionOpen;
-                            temp.ActionDelete = () =>
-                            {
-                                var list = Content.Items.ToList();
-                                list.Remove(bc);
-                                Content.Items = list.ToArray();
-                            };
-                            temp.MenuCommandsProvider = this.MenuCommandsProvider;
-                            temp.IsReadOnly = IsReadOnly;
-                            result.Add(temp);
-                        }
+                        bookmark = new StorageBookmarkContainer(bc);
                         break;
                     case libraryBookmarksContainerBookmark bcb:
-                        {
-                            var temp = new StorageBookmarkItem(bcb);
-                            temp.ActionOpen = this.ActionOpen;
-                            temp.ActionDelete = () =>
-                            {
-                                var list = Content.Items.ToList();
-                                list.Remove(bcb);
-                                Content.Items = list.ToArray();
-                            };
-                            temp.MenuCommandsProvider = this.MenuCommandsProvider;
-                            temp.IsReadOnly = IsReadOnly;
-                            result.Add(temp);
-                        }
+                        bookmark = new StorageBookmarkItem(bcb);
                         break;
                 }
+                bookmark.ActionOpen = this.ActionOpen;
+                bookmark.ActionDelete = () =>
+                {
+                    var list = Content.Items.ToList();
+                    list.Remove(item);
+                    Content.Items = list.ToArray();
+                };
+                bookmark.MenuCommandsProvider = this.MenuCommandsProvider;
+                bookmark.IsReadOnly = IsReadOnly;
+                result.Add(bookmark);
             }
             return Task.FromResult(new ObservableCollection<IFileItem>(result));
         }

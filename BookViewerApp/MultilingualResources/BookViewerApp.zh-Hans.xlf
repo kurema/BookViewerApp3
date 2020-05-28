@@ -532,6 +532,22 @@ Are you sure to unregister?</source>
           <source>Manage this library</source>
           <target state="new">Manage this library</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Word.New.Title" translate="yes" xml:space="preserve">
+          <source>New</source>
+          <target state="new">New</target>
+        </trans-unit>
+        <trans-unit id="Word.Bookmark" translate="yes" xml:space="preserve">
+          <source>Bookmark</source>
+          <target state="new">Bookmark</target>
+        </trans-unit>
+        <trans-unit id="Word.Folder" translate="yes" xml:space="preserve">
+          <source>Folder</source>
+          <target state="new">Folder</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Word.NewContaiener.Title" translate="yes" xml:space="preserve">
+          <source>New folder</source>
+          <target state="new">New folder</target>
+        </trans-unit>
       </group>
     </body>
   </file>
