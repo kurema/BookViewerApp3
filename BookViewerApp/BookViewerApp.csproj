@@ -262,6 +262,9 @@
     <Compile Include="Views\BookFixed3ViewerControllerControl.xaml.cs">
       <DependentUpon>BookFixed3ViewerControllerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BookmarkContentDialog.xaml.cs">
+      <DependentUpon>BookmarkContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EpubResolver.cs" />
     <Compile Include="Views\ExplorerMenuControl.xaml.cs">
       <DependentUpon>ExplorerMenuControl.xaml</DependentUpon>
@@ -344,6 +347,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BookFixed3ViewerControllerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BookmarkContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

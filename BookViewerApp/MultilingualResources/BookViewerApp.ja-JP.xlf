@@ -536,10 +536,6 @@ Are you sure to unregister?</source>
           <source>New</source>
           <target state="translated">新規作成</target>
         </trans-unit>
-        <trans-unit id="Word.Bookmark" translate="yes" xml:space="preserve">
-          <source>Bookmark</source>
-          <target state="translated">インターネットショートカット</target>
-        </trans-unit>
         <trans-unit id="Word.Folder" translate="yes" xml:space="preserve">
           <source>Folder</source>
           <target state="translated">フォルダー</target>
@@ -547,6 +543,10 @@ Are you sure to unregister?</source>
         <trans-unit id="ContextMenu.Word.NewContaiener.Title" translate="yes" xml:space="preserve">
           <source>New folder</source>
           <target state="translated">新しいフォルダー</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Word.New.Bookmark.Title" translate="yes" xml:space="preserve">
+          <source>Bookmark</source>
+          <target state="new">インターネットショートカット</target>
         </trans-unit>
       </group>
     </body>

@@ -10,55 +10,6 @@ using System.Windows.Input;
 
 namespace kurema.FileExplorerControl.Models.FileItems
 {
-    //Not used
-    public class BookmarkItem : IFileItem
-    {
-        public string Name { get; set; }
-
-        public string Path { get; set; }
-
-        public DateTimeOffset DateCreated { get; set; }
-
-        public bool IsFolder => false;
-
-        public ICommand DeleteCommand { get; set; } = null;
-
-        public object Tag { get; set; }
-
-        private ICommand _RenameCommand;
-        public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((parameter) => { Name = parameter?.ToString() ?? Name; });
-
-        public event Windows.Foundation.TypedEventHandler<BookmarkItem, string> Opened;
-
-        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
-
-        public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/BookmarkItem");
-
-        public Task<ObservableCollection<IFileItem>> GetChildren()
-        {
-            return Task.FromResult(new ObservableCollection<IFileItem>());
-        }
-
-        public Task<ulong?> GetSizeAsync()
-        {
-            return Task.FromResult<ulong?>((ulong?)Path?.Length ?? 0);
-        }
-
-        public void Open()
-        {
-            Opened?.Invoke(this, Path);
-        }
-
-        public Task<Stream> OpenStreamForReadAsync()
-        {
-            return Task.FromResult<Stream>(null);
-        }
-
-        public Task<Stream> OpenStreamForWriteAsync()
-        {
-            return Task.FromResult<Stream>(null);
-        }
-    }
     public class StorageBookmarkItem : IFileItem, IStorageBookmark
     {
         public libraryBookmarksContainerBookmark Content;
@@ -174,10 +125,13 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
+        private ObservableCollection<IFileItem> ResultCache = null;
+
         public Task<ObservableCollection<IFileItem>> GetChildren()
         {
-            var result = new List<IFileItem>();
-            if (Content.Items == null) return Task.FromResult(new ObservableCollection<IFileItem>(result));
+            ResultCache = this.ResultCache?? new ObservableCollection<IFileItem>();
+            ResultCache.Clear();
+            if (Content.Items == null) return Task.FromResult(ResultCache);
             foreach (var item in Content.Items)
             {
                 IStorageBookmark bookmark = null;
@@ -199,9 +153,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
                 };
                 bookmark.MenuCommandsProvider = this.MenuCommandsProvider;
                 bookmark.IsReadOnly = IsReadOnly;
-                result.Add(bookmark);
+                ResultCache.Add(bookmark);
             }
-            return Task.FromResult(new ObservableCollection<IFileItem>(result));
+            return Task.FromResult(ResultCache);
         }
 
         public Task<ulong?> GetSizeAsync()

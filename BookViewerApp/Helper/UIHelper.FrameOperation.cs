@@ -124,7 +124,7 @@ namespace BookViewerApp.Helper
                                 var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
                                 fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) =>
                                 {
-                                    if (a is kurema.FileExplorerControl.Models.FileItems.BookmarkItem || a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
+                                    if (a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
                                     {
                                         return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
                                         () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))

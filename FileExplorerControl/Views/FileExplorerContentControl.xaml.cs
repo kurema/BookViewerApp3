@@ -306,6 +306,5 @@ namespace kurema.FileExplorerControl.Views
             //    }
             //};
         }
-
     }
 }

@@ -122,6 +122,7 @@ namespace BookViewerApp.Storages
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
+                            item1.MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks;
                             break;
                         case StorageBookmarkItem item2:
                             item2.ActionDelete = () =>
@@ -133,6 +134,7 @@ namespace BookViewerApp.Storages
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
+                            item2.MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks;
                             break;
                     }
 
@@ -291,6 +293,7 @@ namespace BookViewerApp.Storages
             public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false)
             {
                 var list = new List<IFileItem>();
+                if (Items == null) return new IFileItem[0];
                 foreach (var item in this.Items)
                 {
                     switch (item)

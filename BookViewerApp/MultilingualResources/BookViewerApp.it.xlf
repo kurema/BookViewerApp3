@@ -547,10 +547,6 @@ Annullare la registrazione?</target>
           <source>New</source>
           <target state="translated">Nuova</target>
         </trans-unit>
-        <trans-unit id="Word.Bookmark" translate="yes" xml:space="preserve">
-          <source>Bookmark</source>
-          <target state="translated">Segnalibro</target>
-        </trans-unit>
         <trans-unit id="Word.Folder" translate="yes" xml:space="preserve">
           <source>Folder</source>
           <target state="translated">Cartella</target>
@@ -558,6 +554,10 @@ Annullare la registrazione?</target>
         <trans-unit id="ContextMenu.Word.NewContaiener.Title" translate="yes" xml:space="preserve">
           <source>New folder</source>
           <target state="translated">Nuova cartella</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Word.New.Bookmark.Title" translate="yes" xml:space="preserve">
+          <source>Bookmark</source>
+          <target state="new">Segnalibro</target>
         </trans-unit>
       </group>
     </body>

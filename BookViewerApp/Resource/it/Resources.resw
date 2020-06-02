@@ -403,9 +403,6 @@ Annullare la registrazione?</value>
   <data name="ContextMenu.Word.New.Title" xml:space="preserve">
     <value>Nuova</value>
   </data>
-  <data name="Word.Bookmark" xml:space="preserve">
-    <value>Segnalibro</value>
-  </data>
   <data name="Word.Folder" xml:space="preserve">
     <value>Cartella</value>
   </data>

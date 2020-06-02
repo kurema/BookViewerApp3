@@ -10,6 +10,12 @@ namespace kurema.FileExplorerControl.Models
 {
     public class MenuCommand
     {
+        public MenuCommand(string title, Action<object> action, Func<object, bool> canExecute = null)
+        {
+            Title = title ?? throw new ArgumentNullException(nameof(title));
+            Command = new Helper.DelegateCommand(action ?? throw new ArgumentNullException(nameof(action)), canExecute);
+        }
+
         public MenuCommand(string title, ICommand command)
         {
             Title = title ?? throw new ArgumentNullException(nameof(title));

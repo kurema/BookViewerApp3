@@ -96,7 +96,7 @@ namespace BookViewerApp.Managers
                 var book = new CbzBook();
                 try
                 {
-                        await book.LoadAsync((await file.OpenReadAsync()).AsStream());
+                    await book.LoadAsync((await file.OpenReadAsync()).AsStream());
                 }
                 catch
                 {
@@ -163,7 +163,8 @@ namespace BookViewerApp.Managers
             var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
             try
             {
-                return await acl.GetItemAsync(token);
+                if (acl.ContainsItem(token)) return await acl.GetItemAsync(token);
+                else return null;
             }
             catch (FileNotFoundException)
             {
