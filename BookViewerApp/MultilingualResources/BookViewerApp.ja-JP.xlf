@@ -546,7 +546,15 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="ContextMenu.Word.New.Bookmark.Title" translate="yes" xml:space="preserve">
           <source>Bookmark</source>
-          <target state="new">インターネットショートカット</target>
+          <target state="translated">インターネットショートカット</target>
+        </trans-unit>
+        <trans-unit id="Word.Title" translate="yes" xml:space="preserve">
+          <source>Title</source>
+          <target state="translated">タイトル</target>
+        </trans-unit>
+        <trans-unit id="Word.URL" translate="yes" xml:space="preserve">
+          <source>URL</source>
+          <target state="translated">URL</target>
         </trans-unit>
       </group>
     </body>

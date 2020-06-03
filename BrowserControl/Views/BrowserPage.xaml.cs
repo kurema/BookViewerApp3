@@ -20,7 +20,7 @@ namespace kurema.BrowserControl.Views
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class BrowserPage : Page
+    public sealed partial class BrowserPage : Page, IDisposable
     {
         public BrowserPage()
         {
@@ -29,12 +29,18 @@ namespace kurema.BrowserControl.Views
 
         public BrowserControl Control => this.control;
 
+        public void Dispose()
+        {
+            this.control.Dispose();
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) return;
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs arg)
             {
-            }else if(e.Parameter is string s)
+            }
+            else if (e.Parameter is string s)
             {
                 if (control.DataContext is ViewModels.BrowserControlViewModel vm && vm != null)
                 {

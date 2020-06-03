@@ -557,7 +557,15 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Word.New.Bookmark.Title" translate="yes" xml:space="preserve">
           <source>Bookmark</source>
-          <target state="new">Segnalibro</target>
+          <target state="translated">Segnalibro</target>
+        </trans-unit>
+        <trans-unit id="Word.Title" translate="yes" xml:space="preserve">
+          <source>Title</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Titolo</target>
+        </trans-unit>
+        <trans-unit id="Word.URL" translate="yes" xml:space="preserve">
+          <source>URL</source>
+          <target state="translated" state-qualifier="tm-suggestion">URL</target>
         </trans-unit>
       </group>
     </body>

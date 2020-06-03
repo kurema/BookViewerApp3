@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace kurema.BrowserControl.Views
 {
-    public sealed partial class BrowserControl : UserControl
+    public sealed partial class BrowserControl : UserControl, IDisposable
     {
         public WebView Control => this.webView;
 
@@ -61,15 +61,23 @@ namespace kurema.BrowserControl.Views
         {
             var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
-            if (sender?.ContainsFullScreenElement == true && ! v.IsFullScreenMode)
+            if (sender?.ContainsFullScreenElement == true && !v.IsFullScreenMode)
             {
                 if (v.TryEnterFullScreenMode())
                 {
                 }
-            }else if(sender?.ContainsFullScreenElement == false && v.IsFullScreenMode)
+            }
+            else if (sender?.ContainsFullScreenElement == false && v.IsFullScreenMode)
             {
                 v.ExitFullScreenMode();
             }
+        }
+
+        public void Dispose()
+        {
+            //To stop audio in background.
+            //There should be the better way.
+            webView.NavigateToString("");
         }
     }
 }

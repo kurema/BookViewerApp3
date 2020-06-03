@@ -249,6 +249,21 @@ namespace BookViewerApp.Storages
         }
 
         public static Library.libraryFolder[] GetTokenUsedByFolders(string token) => Content?.Content?.folders.Where(a => a.token == token).ToArray() ?? Array.Empty<Library.libraryFolder>();
+
+        public static async void OperateBookmark(Func<List<object>,Task> action)
+        {
+            var library = await Content.GetContentAsync();
+            if (library == null)
+            {
+                await action(null);
+                return;
+            }
+            library.bookmarks = library.bookmarks ?? new Library.libraryBookmarks();
+            var bookmarks = (library.bookmarks.Items ?? new object[0]).ToList();
+            await action(bookmarks);
+            library.bookmarks.Items = bookmarks.ToArray();
+            OnLibraryUpdateRequest(LibraryKind.Bookmarks);
+        }
     }
 
     namespace Library

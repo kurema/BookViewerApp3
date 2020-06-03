@@ -517,4 +517,10 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Word.New.Bookmark.Title" xml:space="preserve">
     <value>Bookmark</value>
   </data>
+  <data name="Word.Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Word.URL" xml:space="preserve">
+    <value>URL</value>
+  </data>
 </root>

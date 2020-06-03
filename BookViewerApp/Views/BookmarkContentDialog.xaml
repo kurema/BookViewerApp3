@@ -13,27 +13,23 @@
     
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <Grid>
-        <Grid.Resources>
-            <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+    <ContentDialog.Resources>
+        <ValueConverter:LocalizeConverter x:Name="localizeVC"/>
+    </ContentDialog.Resources>
 
-            <Style TargetType="TextBlock">
-                <Setter Property="VerticalAlignment" Value="Center"/>
+    <StackPanel>
+        <StackPanel.Resources>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="0,5" />
             </Style>
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="hello"/>
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Title"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=contentDialog, Path=TitleBookmark, Mode=TwoWay}" />
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Address"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ElementName=contentDialog, Path=Address, Mode=TwoWay}" InputScope="Url" />
-    </Grid>
+        </StackPanel.Resources>
+        <StackPanel>
+            <TextBlock FontWeight="Bold" Text="{Binding ElementName=contentDialog,Converter={StaticResource localizeVC}, ConverterParameter=Word.URL}" MinWidth="400" />
+            <TextBox Text="{Binding ElementName=contentDialog, Path=AddressBookmark, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" InputScope="Url" />
+        </StackPanel>
+        <StackPanel>
+            <TextBlock FontWeight="Bold" Text="{Binding ElementName=contentDialog,Converter={StaticResource localizeVC}, ConverterParameter=Word.Title}" />
+            <TextBox Text="{Binding ElementName=contentDialog, Path=TitleBookmark, Mode=TwoWay}" />
+        </StackPanel>
+    </StackPanel>
 </ContentDialog>

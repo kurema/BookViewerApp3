@@ -213,9 +213,16 @@ namespace BookViewerApp.Helper
                             container.Content.Items = items.ToArray();
                             await container.GetChildren();
                         })),
-                        new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(a =>
+                        new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
                         {
-
+                            var dialog = new Views.BookmarkContentDialog();
+                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                            {
+                                var items = container?.Content?.Items?.ToList() ?? new List<object>();
+                                items.Add(dialog.GetLibraryBookmark());
+                                container.Content.Items = items.ToArray();
+                                await container.GetChildren();
+                            }
                         })
                         ))
                         );
@@ -226,18 +233,23 @@ namespace BookViewerApp.Helper
                     result.Add(new MenuCommand(GetResourceTitle("Word/New"),
                         new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
                         {
-                            var library = await Storages.LibraryStorage.Content.GetContentAsync();
-                            if (library == null) return;
-                            library.bookmarks = library.bookmarks ?? new Storages.Library.libraryBookmarks();
-                            var bookmarks = (library.bookmarks.Items ?? new object[0]).ToList();
-                            bookmarks.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
-                            library.bookmarks.Items = bookmarks.ToArray();
-                            Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Bookmarks);
+                            Storages.LibraryStorage.OperateBookmark(b =>
+                            {
+                                b?.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
+                                return Task.CompletedTask;
+                            });
                         })),
                         new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
                         {
                             var dialog = new Views.BookmarkContentDialog();
-                            await dialog.ShowAsync();
+                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                            {
+                                Storages.LibraryStorage.OperateBookmark(b =>
+                                {
+                                    b?.Add(dialog.GetLibraryBookmark());
+                                    return Task.CompletedTask;
+                                });
+                            }
                         })
                         ))
                         );

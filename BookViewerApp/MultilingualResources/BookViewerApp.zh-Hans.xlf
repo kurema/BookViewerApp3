@@ -548,6 +548,14 @@ Are you sure to unregister?</source>
           <source>Bookmark</source>
           <target state="new">Bookmark</target>
         </trans-unit>
+        <trans-unit id="Word.Title" translate="yes" xml:space="preserve">
+          <source>Title</source>
+          <target state="new">Title</target>
+        </trans-unit>
+        <trans-unit id="Word.URL" translate="yes" xml:space="preserve">
+          <source>URL</source>
+          <target state="new">URL</target>
+        </trans-unit>
       </group>
     </body>
   </file>
