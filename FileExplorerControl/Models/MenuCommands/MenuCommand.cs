@@ -56,7 +56,7 @@ namespace kurema.FileExplorerControl.Models
                 return new MenuFlyoutItem()
                 {
                     Text = menu.Title,
-                    Command = menu.Command
+                    Command = menu.Command,
                 };
             }
         }

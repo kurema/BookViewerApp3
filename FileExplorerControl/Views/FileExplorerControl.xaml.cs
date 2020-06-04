@@ -249,7 +249,10 @@ namespace kurema.FileExplorerControl.Views
             if (((sender as FrameworkElement)?.DataContext as winui.TreeViewNode)?.Content is ViewModels.FileItemViewModel vm)
             {
                 var menu = new MenuFlyout();
-                foreach (var item in Models.MenuCommand.GetMenuFlyoutItems(vm.MenuCommands)) menu.Items.Add(item);
+                foreach (var item in Models.MenuCommand.GetMenuFlyoutItems(vm.MenuCommands))
+                {
+                    menu.Items.Add(item);
+                }
                 {
                     var item = new MenuFlyoutItem()
                     {

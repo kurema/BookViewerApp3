@@ -567,6 +567,10 @@ Annullare la registrazione?</target>
           <source>URL</source>
           <target state="translated" state-qualifier="tm-suggestion">URL</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Bookmarks.Edit.Title" translate="yes" xml:space="preserve">
+          <source>Edit</source>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Modifica</target>
+        </trans-unit>
       </group>
     </body>
   </file>

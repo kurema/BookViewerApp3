@@ -9,6 +9,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
 {
     public interface IFileItem
     {
+        event EventHandler Updated;
+        void OnUpdate();
+
         Task<ObservableCollection<IFileItem>> GetChildren();
         string Name { get; }
         string Path { get; }

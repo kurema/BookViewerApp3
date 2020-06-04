@@ -76,5 +76,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             return await ContentFileItem?.OpenStreamForWriteAsync();
         }
+
+        public event EventHandler Updated;
+
+        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
     }
 }

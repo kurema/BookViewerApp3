@@ -556,6 +556,10 @@ Are you sure to unregister?</source>
           <source>URL</source>
           <target state="translated">URL</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Bookmarks.Edit.Title" translate="yes" xml:space="preserve">
+          <source>Edit</source>
+          <target state="translated">編集</target>
+        </trans-unit>
       </group>
     </body>
   </file>

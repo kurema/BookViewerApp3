@@ -75,5 +75,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
             return Task.FromResult<Stream>(null);
         }
 
+        public event EventHandler Updated;
+
+        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
     }
 }

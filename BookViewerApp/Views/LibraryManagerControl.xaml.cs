@@ -28,5 +28,21 @@ namespace BookViewerApp.Views
         {
             e.Cancel = e.Items.Count == 0;
         }
+
+        private async void ButtonAddFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new Windows.Storage.Pickers.FolderPicker();
+            picker.FileTypeFilter.Add("*");
+            var folder = await picker.PickSingleFolderAsync();
+            if (folder == null) return;
+            
+            if (DataContext is ViewModels.LibraryMemberViewModel vm && vm.Content!=null)
+            {
+                var items = vm.Content?.Items?.ToList() ?? new List<object>();
+                items.Add(await Managers.BookManager.GetTokenFromPathOrRegister(folder));
+                vm.Content.Items = items.ToArray();
+                //vm.OnPropertyChanged(nameof(vm.Items));
+            }
+        }
     }
 }

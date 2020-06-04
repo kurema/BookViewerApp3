@@ -84,7 +84,7 @@ namespace BookViewerApp.ViewModels
         {
             get
             {
-                var result = new ObservableCollection<LibraryMemberItemViewModel>(Content?.Items.Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
+                var result = new ObservableCollection<LibraryMemberItemViewModel>(Content?.Items.Where(a => a is IlibraryLibraryItem).Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
                 result.CollectionChanged += Result_CollectionChanged;
                 return result;
             }

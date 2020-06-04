@@ -41,29 +41,34 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             get => _Content; set
             {
-                //void Value_ChildrenUpdated(object sender, EventArgs e)
-                //{
-                //    OnPropertyChanged(nameof(Children));
-                //    OnPropertyChanged(nameof(Folders));
-                //    OnPropertyChanged(nameof(Files));
-                //}
+                if (_Content != null) _Content.Updated -= _Content_Updated;
 
                 SetProperty(ref _Content, value);
                 _Children = null;
-                OnPropertyChanged(nameof(Children));
-                OnPropertyChanged(nameof(Folders));
-                OnPropertyChanged(nameof(Files));
-                OnPropertyChanged(nameof(Title));
-                OnPropertyChanged(nameof(Path));
-                OnPropertyChanged(nameof(FileTypeDescription));
-                OnPropertyChanged(nameof(LastModified));
-                OnPropertyChanged(nameof(IsFolder));
-                OnPropertyChanged(nameof(Size));
-                OnPropertyChanged(nameof(MenuCommands));
+                Content_Updated();
+                if (_Content != null) _Content.Updated += _Content_Updated;
 
                 DeleteCommand?.OnCanExecuteChanged();
-                //RenameCommand?.OnCanExecuteChanged();
             }
+        }
+
+        private void _Content_Updated(object sender, EventArgs e)
+        {
+            Content_Updated();
+        }
+
+        private void Content_Updated()
+        {
+            OnPropertyChanged(nameof(Children));
+            OnPropertyChanged(nameof(Folders));
+            OnPropertyChanged(nameof(Files));
+            OnPropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(Path));
+            OnPropertyChanged(nameof(FileTypeDescription));
+            OnPropertyChanged(nameof(LastModified));
+            OnPropertyChanged(nameof(IsFolder));
+            OnPropertyChanged(nameof(Size));
+            OnPropertyChanged(nameof(MenuCommands));
         }
 
         public FileItemViewModel(IFileItem content)

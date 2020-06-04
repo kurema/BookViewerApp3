@@ -454,5 +454,23 @@ namespace BookViewerApp.Views
             args.Data.Properties.Add(DataIdentifier, firstItem);
             args.Data.RequestedOperation = DataPackageOperation.Move;
         }
+
+        private void AddButtonMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MenuFlyoutItem GetMenu(string title,Action action)
+            {
+                var menuItem = new MenuFlyoutItem();
+                menuItem.Text = title;
+                menuItem.Click += (s2, e2) => action?.Invoke();
+                return menuItem;
+            }
+
+            if(sender is Button button)
+            {
+                var menu = new MenuFlyout() { Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft };
+                menu.Items.Add(GetMenu("Explorer", () => OpenTabExplorer()));
+                button.Flyout = menu;
+            }
+        }
     }
 }

@@ -165,5 +165,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
             if (ext.StartsWith('.')) ext = ext.Substring(1);
             return String.Format(Application.ResourceLoader.Loader.GetString("FileType/General"), ext.ToUpper());
         }
+
+        public event EventHandler Updated;
+
+        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
     }
 }

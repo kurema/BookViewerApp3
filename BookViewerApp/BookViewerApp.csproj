@@ -415,13 +415,13 @@
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.4.0</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="SharpCifs.Std">
       <Version>0.2.13</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
-      <Version>0.25.0</Version>
+      <Version>0.25.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

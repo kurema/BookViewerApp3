@@ -110,6 +110,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
             return result;
         }
 
+        public event EventHandler Updated;
+
+        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
         public void Open()
         {
         }

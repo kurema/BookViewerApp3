@@ -409,4 +409,16 @@
   <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
     <value>新しいフォルダー</value>
   </data>
+  <data name="ContextMenu.Word.New.Bookmark.Title" xml:space="preserve">
+    <value>インターネットショートカット</value>
+  </data>
+  <data name="Word.Title" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="Word.URL" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
+    <value>編集</value>
+  </data>
 </root>

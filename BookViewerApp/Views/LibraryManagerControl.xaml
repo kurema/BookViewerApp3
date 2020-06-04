@@ -46,5 +46,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <StackPanel Orientation="Horizontal">
+            <local:AcrylicButtonControl Icon="NewFolder" Margin="0" Click="ButtonAddFolder_Click"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

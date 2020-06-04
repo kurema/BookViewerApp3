@@ -227,11 +227,32 @@ namespace BookViewerApp.Helper
                         ))
                         );
                 }
+                else if (item is StorageBookmarkItem bookmarkItem)
+                {
+                    if (bookmarkItem.Content != null)
+                    {
+                        result.Add(new MenuCommand(GetResourceTitle("Bookmarks/Edit"), async a =>
+                        {
+                            var dialog = new Views.BookmarkContentDialog()
+                            {
+                                AddressBookmark = bookmarkItem.Content.url,
+                                TitleBookmark = bookmarkItem.Content.title,
+                            };
+                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                            {
+                                bookmarkItem.Content.url = dialog.AddressBookmark;
+                                bookmarkItem.Content.title = dialog.TitleBookmark;
+
+                                bookmarkItem.OnUpdate();
+                            }
+                        }));
+                    }
+                }
                 else if (item.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Bookmarks)
                 {
                     result.Add(GetMenuBookmarkShowPreset());
                     result.Add(new MenuCommand(GetResourceTitle("Word/New"),
-                        new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
+                        new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(a =>
                         {
                             Storages.LibraryStorage.OperateBookmark(b =>
                             {

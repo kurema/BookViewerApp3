@@ -81,6 +81,11 @@ namespace kurema.FileExplorerControl.Models.FileItems
         }
 
         private Byte[] GetBytes() => Encoding.ASCII.GetBytes("[InternetShortcut]\nURL=" + System.Web.HttpUtility.UrlEncode(Path));
+
+        public event EventHandler Updated;
+
+        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
     }
 
     public interface IStorageBookmark : IFileItem
@@ -176,5 +181,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             return Task.FromResult<Stream>(null);
         }
+
+        public event EventHandler Updated;
+
+        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
     }
 }
