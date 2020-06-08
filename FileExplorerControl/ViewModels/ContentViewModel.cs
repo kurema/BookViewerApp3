@@ -123,6 +123,8 @@ namespace kurema.FileExplorerControl.ViewModels
 
                 (HistoryShiftCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
                 (GoUpCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
+                (LaunchCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
+                (RefreshCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
             }
         }
 
@@ -137,6 +139,17 @@ namespace kurema.FileExplorerControl.ViewModels
             (a) => Item != null
             );
 
+
+        private System.Windows.Input.ICommand _LaunchCommand;
+        public System.Windows.Input.ICommand LaunchCommand { get => _LaunchCommand = _LaunchCommand ?? new Helper.DelegateCommand(async (parameter) =>
+        {
+            if (Item?.Content is Models.FileItems.StorageFileItem storage && storage.Content is Windows.Storage.IStorageFolder folder)
+            {
+                await Windows.System.Launcher.LaunchFolderAsync(folder);
+            }
+        }, (_) => Item?.Content is Models.FileItems.StorageFileItem); 
+            set => _LaunchCommand = value;
+        }
 
         private System.Windows.Input.ICommand _HistoryShiftCommand;
         public System.Windows.Input.ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
@@ -217,8 +230,6 @@ namespace kurema.FileExplorerControl.ViewModels
                 }
                 History.Add(value);
                 SelectedHistory = History.Count - 1;
-
-                (RefreshCommand as Helper.DelegateCommand)?.OnCanExecuteChanged();
 
                 if (value.Children == null)
                 {

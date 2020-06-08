@@ -99,6 +99,15 @@ namespace BookViewerApp.Views
             CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
         }
 
+        public async void OpenTabBookPicked()
+        {
+            var (frame, newTab) = OpenTab("BookViewer");
+            if (!await UIHelper.FrameOperation.OpenBookPicked(frame, newTab))
+            {
+                CloseTab(newTab);
+            }
+        }
+
         public void OpenTabBook(IEnumerable<Windows.Storage.IStorageItem> files)
         {
             if (files == null) return;
@@ -313,7 +322,8 @@ namespace BookViewerApp.Views
                         OpenTabBook(item);
                     }
                 }
-            }else if(e.Parameter is Windows.Storage.IStorageItem f)
+            }
+            else if (e.Parameter is Windows.Storage.IStorageItem f)
             {
                 OpenTabBook(f);
             }
@@ -455,22 +465,36 @@ namespace BookViewerApp.Views
             args.Data.RequestedOperation = DataPackageOperation.Move;
         }
 
-        private void AddButtonMenu_Click(object sender, RoutedEventArgs e)
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-            MenuFlyoutItem GetMenu(string title,Action action)
+            if (sender is FrameworkElement elem && elem.Tag != null)
             {
-                var menuItem = new MenuFlyoutItem();
-                menuItem.Text = title;
-                menuItem.Click += (s2, e2) => action?.Invoke();
-                return menuItem;
-            }
-
-            if(sender is Button button)
-            {
-                var menu = new MenuFlyout() { Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft };
-                menu.Items.Add(GetMenu("Explorer", () => OpenTabExplorer()));
-                button.Flyout = menu;
+                switch (elem.Tag.ToString())
+                {
+                    case "Explorer": this.OpenTabExplorer(); break;
+                    case "Browser": this.OpenTabWeb(); break;
+                    case "Setting": this.OpenTabSetting(); break;
+                    case "Picker": this.OpenTabBookPicked(); break;
+                }
             }
         }
+
+        //private void AddButtonMenu_Click(object sender, RoutedEventArgs e)
+        //{
+        //    MenuFlyoutItem GetMenu(string title,Action action)
+        //    {
+        //        var menuItem = new MenuFlyoutItem();
+        //        menuItem.Text = title;
+        //        menuItem.Click += (s2, e2) => action?.Invoke();
+        //        return menuItem;
+        //    }
+
+        //    if(sender is Button button)
+        //    {
+        //        var menu = new MenuFlyout() { Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft };
+        //        menu.Items.Add(GetMenu("Explorer", () => OpenTabExplorer()));
+        //        button.Flyout = menu;
+        //    }
+        //}
     }
 }

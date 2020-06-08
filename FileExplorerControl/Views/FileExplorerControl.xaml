@@ -119,7 +119,7 @@
             </Button>
 
             <Button Grid.Column="4">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDE3;"/>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE700;"/>
                 <Button.Flyout>
                     <Flyout>
                         <StackPanel>
@@ -251,10 +251,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged"  VerticalAlignment="Center" KeyDown="address_text_KeyDown"/>
                 <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="address_FocusLostRequested"/>
-                <Button Grid.Column="1" Command="{Binding Content.RefreshCommand}">
+                <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}">
+                    <SymbolIcon Symbol="Share"/>
+                </Button>
+                <Button Grid.Column="2" Command="{Binding Content.RefreshCommand}">
                     <SymbolIcon Symbol="Refresh"/>
                 </Button>
             </Grid>

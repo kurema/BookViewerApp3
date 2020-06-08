@@ -44,10 +44,12 @@ namespace BookViewerApp.Helper
                 await HistoryStorage.AddHistory(file, null);
             }
 
-            public static async void OpenBookPicked(Frame frame, FrameworkElement sender)
+            public static async Task<bool> OpenBookPicked(Frame frame, FrameworkElement sender)
             {
                 var file = await BookManager.PickFile();
+                if (file == null) return false;
                 OpenBook(file, frame, sender);
+                return true;
             }
 
             public static void OpenBook(Windows.Storage.IStorageFile file, Frame frame, FrameworkElement sender = null)
@@ -110,7 +112,7 @@ namespace BookViewerApp.Helper
                                 }
                                 );
 
-                                control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
+                                //control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
                                 var library = LibraryStorage.GetItem((a) =>
                                 {
@@ -156,7 +158,7 @@ namespace BookViewerApp.Helper
                                 control.ContentControl.FileOpenedEventHandler += async (s2, e2) =>
                                 {
                                     e2?.Content?.Open();
-                                    var fileitem = (e2 as kurema.FileExplorerControl.ViewModels.FileItemViewModel)?.Content;
+                                    var fileitem = e2?.Content;
                                     if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
                                     {
                                         return;

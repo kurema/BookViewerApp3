@@ -37,8 +37,7 @@ namespace BookViewerApp.Views
                     var tab=GetTabPage();
                     if(tab==null) return;
                     var (frame, newTab)= tab.OpenTab("BookViewer");
-                    UIHelper.FrameOperation.OpenBookPicked(frame,newTab);
-
+                    System.Threading.Tasks.Task.Run(async()=>{await UIHelper.FrameOperation.OpenBookPicked(frame,newTab);});
                 }),
                 new MenuItem(Symbol.Setting,"Setting",()=>{
                     var tab=GetTabPage();
@@ -69,12 +68,12 @@ namespace BookViewerApp.Views
 
             public Symbol Icon { get; set; }
             public string Title { get; set; }
-            public Action Action { get; set; } 
+            public Action Action { get; set; }
         }
 
         private void listView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if(e.ClickedItem is MenuItem item)
+            if (e.ClickedItem is MenuItem item)
             {
                 item?.Action?.Invoke();
             }

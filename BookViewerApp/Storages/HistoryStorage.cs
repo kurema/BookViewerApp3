@@ -32,7 +32,8 @@ namespace BookViewerApp.Storages
                     var last = result.Last();
                     if (!string.IsNullOrWhiteSpace(last.Token) && result.Count(a => a.Token == last.Token) == 1 && LibraryStorage.GetTokenUsedByFolders(last.Token).Length == 0 && LibraryStorage.GetTokenUsedByLibrary(last.Token).Length == 0)
                     {
-                        Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Remove(last.Token);
+                        var fal = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+                        if (fal.ContainsItem(last.Token)) fal.Remove(last.Token);
                     }
                     result.Remove(last);
                 }
