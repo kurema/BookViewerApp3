@@ -526,4 +526,43 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+    <value>Copy FutureAccessList info.</value>
+  </data>
+  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+    <value>Open data folder.</value>
+  </data>
+  <data name="Info.Debug.Title" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Info.Info.BeSponsor" xml:space="preserve">
+    <value>Be a sponsor!</value>
+  </data>
+  <data name="Info.Info.Contributors" xml:space="preserve">
+    <value>Contributors</value>
+  </data>
+  <data name="Info.Info.Privacy.Description" xml:space="preserve">
+    <value>Show Privacy Policy</value>
+  </data>
+  <data name="Info.Info.Privacy.Title" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+  <data name="Info.Info.Sponsor" xml:space="preserve">
+    <value>Sponsor</value>
+  </data>
+  <data name="Info.Info.ThirdParty.License" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
+    <value>License Terms</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
+    <value>Third-Party Notification</value>
+  </data>
+  <data name="Info.Info.Title" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Info.Info.Translation" xml:space="preserve">
+    <value>Translation</value>
+  </data>
 </root>

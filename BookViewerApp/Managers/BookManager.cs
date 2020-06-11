@@ -251,7 +251,7 @@ namespace BookViewerApp.Managers
             {
                 foreach (var item in tokens)
                 {
-                    if (string.Compare(item.Item2.Path, currentPath, StringComparison.OrdinalIgnoreCase) == 0) return new Storages.Library.libraryLibraryFolder()
+                    if (Path.GetRelativePath(item.Item2.Path, currentPath) == ".") return new Storages.Library.libraryLibraryFolder()
                     {
                         token = item.Token,
                         path = Path.GetRelativePath(item.Item2.Path, path)

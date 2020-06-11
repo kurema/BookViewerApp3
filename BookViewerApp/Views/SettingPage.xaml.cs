@@ -41,7 +41,66 @@ namespace BookViewerApp.Views
             }
             //this.SettingPanel.ItemsSource = src;
             settingSource.Source = src.GroupBy(a => a.Group);
+
+
+            this.Loaded += SettingPage_Loaded;
         }
+
+        private void SettingPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            listView.Source = GetOptionalItems().GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
+        }
+
+        public ViewModels.ListItemViewModel[] GetOptionalItems()
+        {
+            var tabpage = UIHelper.GetCurrentTabPage(this);
+            var loader = Managers.ResourceManager.Loader;
+
+            return new[] {
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Privacy/Title"), loader.GetString("Info/Info/Privacy/Description"),new OpenWebCommand(tabpage,"https://github.com/kurema/BookViewerApp3/blob/master/PrivacyPolicy.md")){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), ""){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor"), "",new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData"), "",new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "",new DelegateCommand(async _=>{
+                    var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+                    var builder=new System.Text.StringBuilder();
+                    foreach(var item in acl.Entries)
+                    {
+                        builder.Append("Token:");
+                        builder.Append(item.Token);
+                        builder.AppendLine();
+
+                        builder.Append("Metadata:");
+                        builder.Append(item.Metadata);
+                        builder.AppendLine();
+
+
+                        try{
+                            builder.Append("Path:");
+                            builder.Append((await acl.GetItemAsync(item.Token))?.Path);
+                        }
+                        catch(Exception e)
+                        {
+                            builder.Append("Error:");
+                            builder.Append(e.Message);
+                        }
+                        builder.AppendLine();
+
+                        builder.AppendLine();
+
+                        try{
+                            var data=new Windows.ApplicationModel.DataTransfer.DataPackage();
+                            data.SetText(builder.ToString());
+                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(data);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                    }) ){ GroupTag="Info/Debug/Title"},
+            };
+        }
+
 
         public class SettingViewModel : INotifyPropertyChanged
         {

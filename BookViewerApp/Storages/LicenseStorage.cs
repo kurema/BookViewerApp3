@@ -11,8 +11,7 @@ namespace BookViewerApp.Storages
 {
     public class LicenseStorage
     {
-        public static string CurrentLicense => _CurrentLicense;
-        private static string _CurrentLicense;
+        public static string CurrentLicense { get; private set; }
 
         public static string GetLicense(string Key)
         {
@@ -51,7 +50,7 @@ namespace BookViewerApp.Storages
                 {
                     if (f.Name == "LICENSE")
                     {
-                        _CurrentLicense = await rd.ReadToEndAsync();
+                        CurrentLicense = await rd.ReadToEndAsync();
                     }
                     else {
                         result.Add(f.Name, await rd.ReadToEndAsync());

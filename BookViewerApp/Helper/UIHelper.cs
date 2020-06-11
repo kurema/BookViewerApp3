@@ -57,11 +57,11 @@ namespace BookViewerApp.Helper
 
         public static Views.TabPage GetCurrentTabPage(UIElement ui)
         {
-            if ((ui?.XamlRoot?.Content as Frame).Content is TabPage tab)
+            if ((ui?.XamlRoot?.Content as Frame)?.Content is TabPage tab)
             {
                 return tab;
             }
-            else if (ui?.XamlRoot.Content is TabPage tab3)
+            else if (ui?.XamlRoot?.Content is TabPage tab3)
             {
                 return tab3;
             }

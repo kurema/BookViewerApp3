@@ -206,12 +206,12 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public sealed class LocalizeGroupNameConverter : IValueConverter
+    public sealed class LocalizeFormatConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string resourceId = value?.ToString();
-            return !string.IsNullOrEmpty(resourceId) ? Managers.ResourceManager.Loader.GetString("Setting/Group/" + resourceId) : DependencyProperty.UnsetValue;
+            return !string.IsNullOrEmpty(resourceId) ? Managers.ResourceManager.Loader.GetString(String.Format(parameter?.ToString() ?? "{0}", resourceId)) : DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -219,6 +219,7 @@ namespace BookViewerApp.ValueConverters
             throw new NotSupportedException();
         }
     }
+
 
     public sealed class StringChangeConverter : IValueConverter
     {
@@ -229,6 +230,21 @@ namespace BookViewerApp.ValueConverters
             if (dic.ContainsKey(word)) return dic[word];
             if (dic.ContainsKey("default")) return dic["default"];
             return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public sealed class StringNullOrEmptyConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var list = parameter?.ToString()?.Split(":");
+            if (list == null || list.Length < 2) return "";
+            return string.IsNullOrEmpty(value?.ToString()) ? list[0] : list[1];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <bookmarks_library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd">
   <multilingual>
-    <bookmarks default="true" title="App bookmark">
+    <bookmarks default="true" title="BookViewer3">
       <container title="Search">
         <bookmark url="https://www.google.com/" title="Google" />
       </container>
@@ -12,7 +12,7 @@
       <container title="Bookshelves">
         <bookmark url="https://play.google.com/books" title="Google Play" />
       </container>
-      <container title="About BookViewer 3">
+      <container title="About BookViewer3">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
       </container>
       <container title="About kurema">
@@ -21,7 +21,7 @@
         <bookmark url="https://www.patreon.com/kurema" title="Patreon" />
       </container>
     </bookmarks>
-    <bookmarks language="ja" title="おすすめ">
+    <bookmarks language="ja" title="BookViewer3">
       <container title="検索エンジン">
         <bookmark url="https://www.google.co.jp/" title="Google" />
         <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />

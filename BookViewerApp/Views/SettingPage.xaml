@@ -17,10 +17,11 @@
             <Setter Property="Padding" Value="3"/>
         </Style>
         <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
-        <ValueConverter:LocalizeGroupNameConverter x:Key="vc_lgnc"/>
+        <ValueConverter:LocalizeFormatConverter x:Key="vc_lf"/>
         <ValueConverter:LocalizeConverter x:Key="vc_local"/>
 
         <CollectionViewSource x:Name="settingSource" IsSourceGrouped="True"/>
+        
     </Page.Resources>
     <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
         <StackPanel>
@@ -35,7 +36,7 @@
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Key,Converter={StaticResource vc_lgnc},Mode=OneTime}" Style="{ThemeResource TitleTextBlockStyle}" Margin="10"/>
+                                <TextBlock Text="{Binding Key,Converter={StaticResource vc_lf},ConverterParameter='Setting/Group/{0}',Mode=OneTime}" Style="{ThemeResource TitleTextBlockStyle}" Margin="10"/>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                         <GroupStyle.Panel>
@@ -112,8 +113,8 @@
                     </template:SettingTemplateSelector>
                 </ItemsControl.ItemTemplateSelector>
             </ItemsControl>
-            
-            
+            <local:SimpleListViewControl x:Name="listView"/>
+
         </StackPanel>
     </ScrollViewer>
 </Page>
