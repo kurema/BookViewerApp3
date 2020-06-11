@@ -421,4 +421,43 @@ Annullare la registrazione?</value>
   <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
     <value>Modifica</value>
   </data>
+  <data name="Info.Info.Contributors" xml:space="preserve">
+    <value>Collaboratori</value>
+  </data>
+  <data name="Info.Info.Sponsor" xml:space="preserve">
+    <value>Sponsor.</value>
+  </data>
+  <data name="Info.Info.ThirdParty.License" xml:space="preserve">
+    <value>Contratto Microsoft</value>
+  </data>
+  <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
+    <value>Condizioni di licenza</value>
+  </data>
+  <data name="Info.Info.Title" xml:space="preserve">
+    <value>Informazioni</value>
+  </data>
+  <data name="Info.Info.Translation" xml:space="preserve">
+    <value>Traduzione</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
+    <value>Notifica di terze parti</value>
+  </data>
+  <data name="Info.Info.BeSponsor" xml:space="preserve">
+    <value>Diventa uno sponsor!</value>
+  </data>
+  <data name="Info.Info.Privacy.Description" xml:space="preserve">
+    <value>Mostra Informativa sulla privacy (inglese)</value>
+  </data>
+  <data name="Info.Info.Privacy.Title" xml:space="preserve">
+    <value>Riservatezza</value>
+  </data>
+  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+    <value>Apre la cartella dei dati.</value>
+  </data>
+  <data name="Info.Debug.Title" xml:space="preserve">
+    <value>Esegui debug</value>
+  </data>
+  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+    <value>Copia le informazioni di FutureAccessList.</value>
+  </data>
 </root>

@@ -562,55 +562,55 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="Info.Info.Contributors" translate="yes" xml:space="preserve">
           <source>Contributors</source>
-          <target state="new">Contributors</target>
+          <target state="translated">貢献者</target>
         </trans-unit>
         <trans-unit id="Info.Info.Sponsor" translate="yes" xml:space="preserve">
           <source>Sponsor</source>
-          <target state="new">Sponsor</target>
+          <target state="translated">スポンサー</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.License" translate="yes" xml:space="preserve">
           <source>License</source>
-          <target state="new">License</target>
+          <target state="translated">ライセンス</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.LicenseTerms" translate="yes" xml:space="preserve">
           <source>License Terms</source>
-          <target state="new">License Terms</target>
+          <target state="translated">ライセンス条項</target>
         </trans-unit>
         <trans-unit id="Info.Info.Title" translate="yes" xml:space="preserve">
           <source>Info</source>
-          <target state="new">Info</target>
+          <target state="translated">情報</target>
         </trans-unit>
         <trans-unit id="Info.Info.Translation" translate="yes" xml:space="preserve">
           <source>Translation</source>
-          <target state="new">Translation</target>
+          <target state="translated">翻訳</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.Title" translate="yes" xml:space="preserve">
           <source>Third-Party Notification</source>
-          <target state="new">Third-Party Notification</target>
+          <target state="translated">サードパーティー情報</target>
         </trans-unit>
         <trans-unit id="Info.Info.BeSponsor" translate="yes" xml:space="preserve">
           <source>Be a sponsor!</source>
-          <target state="new">Be a sponsor!</target>
+          <target state="translated">財政的支援をする</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Description" translate="yes" xml:space="preserve">
           <source>Show Privacy Policy</source>
-          <target state="new">Show Privacy Policy</target>
+          <target state="translated">プライバシーポリシーを表示 (英語)</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Title" translate="yes" xml:space="preserve">
           <source>Privacy</source>
-          <target state="new">Privacy</target>
+          <target state="translated">プライバシー</target>
         </trans-unit>
         <trans-unit id="Info.Debug.OpenAppData" translate="yes" xml:space="preserve">
           <source>Open data folder.</source>
-          <target state="new">Open data folder.</target>
+          <target state="translated">データフォルダーを開く。</target>
         </trans-unit>
         <trans-unit id="Info.Debug.Title" translate="yes" xml:space="preserve">
           <source>Debug</source>
-          <target state="new">Debug</target>
+          <target state="translated">デバッグ</target>
         </trans-unit>
         <trans-unit id="Info.Debug.CopyFAL" translate="yes" xml:space="preserve">
           <source>Copy FutureAccessList info.</source>
-          <target state="new">Copy FutureAccessList info.</target>
+          <target state="translated">FutureAccessList情報をクリップボードにコピー。</target>
         </trans-unit>
       </group>
     </body>

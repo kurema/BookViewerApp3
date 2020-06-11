@@ -573,55 +573,55 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="Info.Info.Contributors" translate="yes" xml:space="preserve">
           <source>Contributors</source>
-          <target state="new">Contributors</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Collaboratori</target>
         </trans-unit>
         <trans-unit id="Info.Info.Sponsor" translate="yes" xml:space="preserve">
           <source>Sponsor</source>
-          <target state="new">Sponsor</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Sponsor.</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.License" translate="yes" xml:space="preserve">
           <source>License</source>
-          <target state="new">License</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Contratto Microsoft</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.LicenseTerms" translate="yes" xml:space="preserve">
           <source>License Terms</source>
-          <target state="new">License Terms</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Condizioni di licenza</target>
         </trans-unit>
         <trans-unit id="Info.Info.Title" translate="yes" xml:space="preserve">
           <source>Info</source>
-          <target state="new">Info</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Informazioni</target>
         </trans-unit>
         <trans-unit id="Info.Info.Translation" translate="yes" xml:space="preserve">
           <source>Translation</source>
-          <target state="new">Translation</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Traduzione</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.Title" translate="yes" xml:space="preserve">
           <source>Third-Party Notification</source>
-          <target state="new">Third-Party Notification</target>
+          <target state="translated">Notifica di terze parti</target>
         </trans-unit>
         <trans-unit id="Info.Info.BeSponsor" translate="yes" xml:space="preserve">
           <source>Be a sponsor!</source>
-          <target state="new">Be a sponsor!</target>
+          <target state="translated">Diventa uno sponsor!</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Description" translate="yes" xml:space="preserve">
           <source>Show Privacy Policy</source>
-          <target state="new">Show Privacy Policy</target>
+          <target state="translated">Mostra Informativa sulla privacy (inglese)</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Title" translate="yes" xml:space="preserve">
           <source>Privacy</source>
-          <target state="new">Privacy</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Riservatezza</target>
         </trans-unit>
         <trans-unit id="Info.Debug.OpenAppData" translate="yes" xml:space="preserve">
           <source>Open data folder.</source>
-          <target state="new">Open data folder.</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Apre la cartella dei dati.</target>
         </trans-unit>
         <trans-unit id="Info.Debug.Title" translate="yes" xml:space="preserve">
           <source>Debug</source>
-          <target state="new">Debug</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">Esegui debug</target>
         </trans-unit>
         <trans-unit id="Info.Debug.CopyFAL" translate="yes" xml:space="preserve">
           <source>Copy FutureAccessList info.</source>
-          <target state="new">Copy FutureAccessList info.</target>
+          <target state="translated">Copia le informazioni di FutureAccessList.</target>
         </trans-unit>
       </group>
     </body>

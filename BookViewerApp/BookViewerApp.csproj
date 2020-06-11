@@ -191,10 +191,14 @@
     <Content Include="res\reader\js\reader.min.js" />
     <Content Include="res\reader\robots.txt" />
     <Content Include="res\values\Bookmark.xml" />
+    <Content Include="res\values\Licenses.xml" />
     <None Include="BookViewerApp_StoreKey.pfx" />
     <Content Include="res\reader\font\fontello.eot" />
     <Content Include="res\reader\font\fontello.ttf" />
     <Content Include="res\reader\font\fontello.woff" />
+    <None Include="Storages\Licenses.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <PRIResource Include="Resource\it\Resources.resw" />
     <Content Include="res\bibi\bibi\presets\README.md" />
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.eot" />
@@ -237,6 +241,9 @@
       <DependentUpon>Library.xsd</DependentUpon>
     </Compile>
     <Compile Include="Storages\LibraryStorage.cs" />
+    <Compile Include="Storages\Licenses.cs">
+      <DependentUpon>Licenses.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -425,9 +432,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.2</Version>
-    </PackageReference>
-    <PackageReference Include="SharpCifs.Std">
-      <Version>0.2.13</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
       <Version>0.25.1</Version>

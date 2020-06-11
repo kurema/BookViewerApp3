@@ -11,6 +11,9 @@ namespace BookViewerApp.Storages
 {
     public class LicenseStorage
     {
+        public static StorageContent<Licenses.licenses> LocalLicense = new StorageContent<Licenses.licenses>(StorageContent<Licenses.licenses>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Licenses.xml", () => new Licenses.licenses());
+
+
         public static string CurrentLicense { get; private set; }
 
         public static string GetLicense(string Key)

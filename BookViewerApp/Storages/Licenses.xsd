@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="License"
+    targetNamespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/License.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/License.xsd"
+    xmlns:mstns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/License.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <!--
+  How to compile
+  1. Tools→Command Line→Developer Command Prompt
+  2.
+``
+cd BookViewerApp\Storages
+xsd.exe Licenses.xsd /c /edb /e:licenses /l:CS /n:BookViewerApp.Storages.Licenses
+``
+  -->
+  <xs:element name="licenses">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="first-party">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="package" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="third-party">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="package" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="license-terms">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="license" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="contributors">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="person" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="translations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="translation" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="person" minOccurs="0" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                  <xs:attribute name="lang" type="xs:language"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="package">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="license" />
+      </xs:sequence>
+      <xs:attribute name="title" type="xs:string" />
+      <xs:attribute name="href" type="xs:anyURI" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="person">
+    <xs:complexType>
+      <xs:sequence>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" />
+      <xs:attribute name="href" type="xs:anyURI" />
+      <xs:attribute name="role" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="license">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="summary" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="term" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="title" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -421,4 +421,43 @@
   <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
     <value>編集</value>
   </data>
+  <data name="Info.Info.Contributors" xml:space="preserve">
+    <value>貢献者</value>
+  </data>
+  <data name="Info.Info.Sponsor" xml:space="preserve">
+    <value>スポンサー</value>
+  </data>
+  <data name="Info.Info.ThirdParty.License" xml:space="preserve">
+    <value>ライセンス</value>
+  </data>
+  <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
+    <value>ライセンス条項</value>
+  </data>
+  <data name="Info.Info.Title" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="Info.Info.Translation" xml:space="preserve">
+    <value>翻訳</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
+    <value>サードパーティー情報</value>
+  </data>
+  <data name="Info.Info.BeSponsor" xml:space="preserve">
+    <value>財政的支援をする</value>
+  </data>
+  <data name="Info.Info.Privacy.Description" xml:space="preserve">
+    <value>プライバシーポリシーを表示 (英語)</value>
+  </data>
+  <data name="Info.Info.Privacy.Title" xml:space="preserve">
+    <value>プライバシー</value>
+  </data>
+  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+    <value>データフォルダーを開く。</value>
+  </data>
+  <data name="Info.Debug.Title" xml:space="preserve">
+    <value>デバッグ</value>
+  </data>
+  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+    <value>FutureAccessList情報をクリップボードにコピー。</value>
+  </data>
 </root>
