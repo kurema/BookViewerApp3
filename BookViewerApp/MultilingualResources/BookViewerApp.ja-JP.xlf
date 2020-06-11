@@ -590,7 +590,7 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="Info.Info.BeSponsor" translate="yes" xml:space="preserve">
           <source>Be a sponsor!</source>
-          <target state="translated">財政的支援をする</target>
+          <target state="translated">支援する</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Description" translate="yes" xml:space="preserve">
           <source>Show Privacy Policy</source>
@@ -602,7 +602,7 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="Info.Debug.OpenAppData" translate="yes" xml:space="preserve">
           <source>Open data folder.</source>
-          <target state="translated">データフォルダーを開く。</target>
+          <target state="translated">データフォルダーを開く</target>
         </trans-unit>
         <trans-unit id="Info.Debug.Title" translate="yes" xml:space="preserve">
           <source>Debug</source>
@@ -610,7 +610,7 @@ Are you sure to unregister?</source>
         </trans-unit>
         <trans-unit id="Info.Debug.CopyFAL" translate="yes" xml:space="preserve">
           <source>Copy FutureAccessList info.</source>
-          <target state="translated">FutureAccessList情報をクリップボードにコピー。</target>
+          <target state="translated">FutureAccessList情報をクリップボードにコピー</target>
         </trans-unit>
       </group>
     </body>

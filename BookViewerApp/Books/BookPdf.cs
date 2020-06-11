@@ -69,7 +69,7 @@ namespace BookViewerApp.Books
             }
         }
 
-        public static TocItem[] GetTocs(Array list, Hashtable nd, List<iTextSharp.text.pdf.PRIndirectReference> pageRefs)
+        public static TocItem[] GetTocs(Array list, Hashtable nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
         {
             int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
             {
@@ -206,9 +206,9 @@ namespace BookViewerApp.Books
 
                         Direction = Direction.Default;
 
-                        if (vp.Contains(iTextSharp.text.pdf.PdfName.DIRECTION))
+                        if (vp.Contains(iTextSharp.text.pdf.PdfName.Direction))
                         {
-                            var name = vp.GetAsName(iTextSharp.text.pdf.PdfName.DIRECTION);
+                            var name = vp.GetAsName(iTextSharp.text.pdf.PdfName.Direction);
 
                             if (name == iTextSharp.text.pdf.PdfName.R2L)
                             {
@@ -226,7 +226,7 @@ namespace BookViewerApp.Books
                     var nd = pr.GetNamedDestination(false);
 
                     //Pdf's page start from 1 somehow.
-                    var pageRefs = new List<iTextSharp.text.pdf.PRIndirectReference>();
+                    var pageRefs = new List<iTextSharp.text.pdf.PrIndirectReference>();
                     for (int i = 1; i <= pr.NumberOfPages; i++)
                     {
                         var oref = pr.GetPageOrigRef(i);

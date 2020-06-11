@@ -25,6 +25,11 @@ namespace BookViewerApp.Views
         public InfoPage()
         {
             this.InitializeComponent();
+
+            System.Threading.Tasks.Task.Run(async () => {
+                await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+                this.DataContext = new ViewModels.InfoPageViewModel();
+            });
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

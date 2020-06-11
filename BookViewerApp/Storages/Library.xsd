@@ -10,8 +10,8 @@
   How to compile
   1. Tools→Command Line→Developer Command Prompt
   2.
-  > cd BookViewerApp\Storages
-  > xsd.exe Library.xsd /c /edb /e:library /l:CS /n:BookViewerApp.Storages.Library
+cd BookViewerApp\Storages
+xsd.exe Library.xsd /c /edb /e:library /l:CS /n:BookViewerApp.Storages.Library
   -->
   
   <xs:element name="library" >
@@ -24,6 +24,7 @@
                 <xs:complexType>
                   <xs:attribute name="token" type="xs:string" />
                   <xs:attribute name ="title" type="xs:string" />
+                  <xs:attribute name="path" type="xs:string"/>
                 </xs:complexType>
               </xs:element>
             </xs:choice>

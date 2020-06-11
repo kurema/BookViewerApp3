@@ -62,6 +62,8 @@ namespace BookViewerApp.Views
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor"), "",new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData"), "",new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "",new DelegateCommand(async _=>{
+                    var statistics=LibraryStorage.GetTokenUsedCount();
+
                     var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
                     var builder=new System.Text.StringBuilder();
                     foreach(var item in acl.Entries)
@@ -74,10 +76,17 @@ namespace BookViewerApp.Views
                         builder.Append(item.Metadata);
                         builder.AppendLine();
 
+                        if (statistics.ContainsKey(item.Token))
+                        {
+                            builder.Append("Count:");
+                            builder.Append(statistics[item.Token]);
+                            builder.AppendLine();
+                        }
 
                         try{
+                            var storageItem=(await acl.GetItemAsync(item.Token));
                             builder.Append("Path:");
-                            builder.Append((await acl.GetItemAsync(item.Token))?.Path);
+                            builder.Append(storageItem?.Path);
                         }
                         catch(Exception e)
                         {

@@ -56,7 +56,7 @@ namespace BookViewerApp.Storages
                 case SavePlaces.LocalCache:
                     return await Functions.DeserializeAsync<T>(this.DataFolder, this.FileName, this.Semaphore);
                 case SavePlaces.InstalledLocation:
-                    return await Functions.DeserializeAsync<T>(await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName)),this.Semaphore);
+                    return await Functions.DeserializeAsync<T>(await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName)), this.Semaphore);
                 default:
                     return null;
             }
@@ -72,13 +72,35 @@ namespace BookViewerApp.Storages
 
         internal async Task SaveAsync()
         {
-            try
+            if (Content != null && this.SavePlace != SavePlaces.InstalledLocation)
             {
-                if (Content != null && this.SavePlace != SavePlaces.InstalledLocation) await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
-            }
-            catch
-            {
-                //Restore?
+                if (this.SavePlace != SavePlaces.Roaming)
+                {
+                    try
+                    {
+                        var folder = await this.DataFolder.CreateFolderAsync("backup", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                        var itemTarget = await folder.TryGetItemAsync(FileName);
+                        if (itemTarget is Windows.Storage.StorageFolder f) await f.RenameAsync(System.IO.Path.GetRandomFileName(),Windows.Storage.NameCollisionOption.GenerateUniqueName);
+
+                        if (itemTarget == null || itemTarget is Windows.Storage.StorageFolder || (itemTarget is Windows.Storage.StorageFile fileTarget && itemTarget.DateCreated < DateTimeOffset.Now.AddDays(-1)))
+                        {
+                            var fileOrigin = await DataFolder.GetFileAsync(this.FileName);
+                            var prop = await fileOrigin.GetBasicPropertiesAsync();
+                            if (fileOrigin != null && prop.Size > 0) { await fileOrigin.CopyAsync(folder, FileName, Windows.Storage.NameCollisionOption.ReplaceExisting); }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+                try
+                {
+                    await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
+                }
+                catch
+                {
+                    //Restore?
+                }
             }
         }
 
@@ -95,7 +117,7 @@ namespace BookViewerApp.Storages
         public bool TryOperate<T2>(Action<List<T2>> action)
         {
             if (action == null) return false;
-            if(Content is IEnumerable<T2> contentEnum)
+            if (Content is IEnumerable<T2> contentEnum)
             {
                 var itemList = contentEnum.ToList();
                 action(itemList);

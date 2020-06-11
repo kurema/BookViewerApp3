@@ -34,7 +34,8 @@ namespace BookViewerApp.Storages
             {
                 var library = await Content.GetContentAsync();
                 if (library?.libraries == null) return Array.Empty<IFileItem>();
-                return (await Task.WhenAll(library.libraries.Select(async a => {
+                return (await Task.WhenAll(library.libraries.Select(async a =>
+                {
                     var result = await a?.AsFileItem();
                     result.MenuCommandsProvider = UIHelper.ContextMenus.GetMenuLibrary(a);
                     return result;
@@ -250,7 +251,7 @@ namespace BookViewerApp.Storages
 
         public static Library.libraryFolder[] GetTokenUsedByFolders(string token) => Content?.Content?.folders.Where(a => a.token == token).ToArray() ?? Array.Empty<Library.libraryFolder>();
 
-        public static async void OperateBookmark(Func<List<object>,Task> action)
+        public static async void OperateBookmark(Func<List<object>, Task> action)
         {
             var library = await Content.GetContentAsync();
             if (library == null)
@@ -263,6 +264,53 @@ namespace BookViewerApp.Storages
             await action(bookmarks);
             library.bookmarks.Items = bookmarks.ToArray();
             OnLibraryUpdateRequest(LibraryKind.Bookmarks);
+        }
+
+        public static Dictionary<string, int> GetTokenUsedCount(bool includeHistory = true)
+        {
+            var result = new Dictionary<string, int>();
+
+            void CountUp(string token)
+            {
+                if (result.ContainsKey(token)) result[token]++;
+                else result[token] = 1;
+            }
+
+            if (Content?.Content == null) return null;
+            if (includeHistory && HistoryStorage.Content?.Content == null) return null;
+
+            foreach (var item in Content?.Content?.folders ?? new Library.libraryFolder[0])
+            {
+                CountUp(item.token);
+            }
+            foreach (var item in Content?.Content?.libraries ?? new Library.libraryLibrary[0])
+            {
+                foreach (Library.libraryLibraryFolder itemFolder in item.Items)
+                {
+                    CountUp(itemFolder.token);
+                }
+            }
+            if (!includeHistory) return result;
+            foreach (var item in HistoryStorage.Content?.Content)
+            {
+                CountUp(item.Token);
+            }
+            return result;
+        }
+
+        public static void GarbageCollectToken()
+        {
+            var stats = GetTokenUsedCount();
+
+            var fal = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            if (fal == null || fal.Entries == null) return;
+            foreach(var item in fal.Entries)
+            {
+                if (!stats.ContainsKey(item.Token))
+                {
+                    fal.Remove(item.Token);
+                }
+            }
         }
     }
 
@@ -417,7 +465,7 @@ namespace BookViewerApp.Storages
             string path { get; }
         }
 
-        public partial class libraryLibraryArchive: IlibraryLibraryItem { }
+        public partial class libraryLibraryArchive : IlibraryLibraryItem { }
         public partial class libraryLibraryFolder : IlibraryLibraryItem { }
         public partial class libraryLibraryNetwork : IlibraryLibraryItem { }
 
@@ -427,14 +475,19 @@ namespace BookViewerApp.Storages
             {
             }
 
-            public libraryFolder(Windows.Storage.StorageFolder folder)
+            public async static Task<libraryFolder> GetLibraryFolderFromStorageAsync(Windows.Storage.StorageFolder folder)
             {
-                this.token = Managers.BookManager.StorageItemRegister(folder);
-            }
+                //仕様変更:2020/06/12
+                //これ以前はフォルダを登録すると無条件でFutureAccessListに登録していました。
+                //これ以降は既に親または同一フォルダが登録済みの場合、相対パスで記録するようにしました。
+                //その結果、子フォルダの側を移動などさせると追従できません。
+                //最初は新規にトークンを発行するのが良いと思いましたが、確認すると結構汚くなったのでやめました。
 
-            public void Remove()
-            {
-                Managers.BookManager.StorageItemUnregister(this.token);
+                var result = new libraryFolder();
+                var registered = await Managers.BookManager.GetTokenFromPathOrRegister(folder);
+                result.token = registered.token;
+                result.path = registered.path;
+                return result;
             }
 
             public async Task<StorageFileItem> AsStorageFileItem()
@@ -458,7 +511,7 @@ namespace BookViewerApp.Storages
 
             public async Task<Windows.Storage.StorageFolder> GetStorageFolderAsync()
             {
-                var item = await Managers.BookManager.StorageItemGet(this.token);
+                var item = await Managers.BookManager.StorageItemGet(this.token, this.path);
                 if (item is Windows.Storage.StorageFolder f) { return f; }
                 else { return null; }
             }

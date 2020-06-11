@@ -24,7 +24,7 @@
         
     </Page.Resources>
     <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel>
+        <StackPanel MaxWidth="800" VerticalAlignment="Center">
             <TextBlock Text="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource vc_local},ConverterParameter=Setting/Label}" Style="{ThemeResource HeaderTextBlockStyle}"/>
             <ItemsControl x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ItemsSource="{Binding Source={StaticResource settingSource}}" >
                 <ItemsControl.ItemsPanel>

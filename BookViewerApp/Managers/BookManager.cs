@@ -187,7 +187,7 @@ namespace BookViewerApp.Managers
 
         public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string Path)
         {
-            return await StorageItemGet(token, PathSplit(Path));
+            return await StorageItemGet(token, PathSplit(String.IsNullOrWhiteSpace(Path) ? "." : Path));
         }
 
         public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string[] Path)

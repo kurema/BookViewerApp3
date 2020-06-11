@@ -443,7 +443,7 @@
     <value>サードパーティー情報</value>
   </data>
   <data name="Info.Info.BeSponsor" xml:space="preserve">
-    <value>財政的支援をする</value>
+    <value>支援する</value>
   </data>
   <data name="Info.Info.Privacy.Description" xml:space="preserve">
     <value>プライバシーポリシーを表示 (英語)</value>
@@ -452,12 +452,12 @@
     <value>プライバシー</value>
   </data>
   <data name="Info.Debug.OpenAppData" xml:space="preserve">
-    <value>データフォルダーを開く。</value>
+    <value>データフォルダーを開く</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
     <value>デバッグ</value>
   </data>
   <data name="Info.Debug.CopyFAL" xml:space="preserve">
-    <value>FutureAccessList情報をクリップボードにコピー。</value>
+    <value>FutureAccessList情報をクリップボードにコピー</value>
   </data>
 </root>

@@ -39,7 +39,7 @@ namespace BookViewerApp.Helper
                     if (folder == null) return;
 
                     var foldersTemp = Storages.LibraryStorage.Content.Content.folders.ToList();
-                    var folderNew = new Storages.Library.libraryFolder(folder);
+                    var folderNew = await Storages.Library.libraryFolder.GetLibraryFolderFromStorageAsync(folder);
                     foldersTemp.Add(folderNew);
                     Storages.LibraryStorage.Content.Content.folders = foldersTemp.ToArray();
 
@@ -80,14 +80,7 @@ namespace BookViewerApp.Helper
                     if (token.Content == null) return list.ToArray();
                     list.Add(new MenuCommand(GetResourceTitle("Folders/UnregisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
                     {
-                        var used = Storages.LibraryStorage.GetTokenUsedByLibrary(token.Content.token);
-                        //参照元が0になってからトークンを削除するように変更したのでダイアログが不要になりました。
-                        //if (used.Count() == 0) goto remove;
-                        //else
-                        //{
-                        //    if (! await FolderToken_ShowDialog(used)) return;
-                        //}
-
+                        await Storages.LibraryStorage.Content.GetContentAsync();
                         if (Storages.LibraryStorage.Content?.Content?.folders == null) return;
 
                         {
@@ -95,11 +88,12 @@ namespace BookViewerApp.Helper
                             temp.Remove(token.Content);
                             Storages.LibraryStorage.Content.Content.folders = temp.ToArray();
                         }
-                        if (used?.Length == 0) token.Content.Remove();
+
                         var brothers = await token.Parent.GetChildren();
                         brothers.Remove(token);
 
                         await Storages.LibraryStorage.Content.SaveAsync();
+                        Storages.LibraryStorage.GarbageCollectToken();
                     }
                     )));
                 }
