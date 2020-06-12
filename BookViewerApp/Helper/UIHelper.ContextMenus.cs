@@ -51,26 +51,6 @@ namespace BookViewerApp.Helper
                 return list.ToArray();
             }
 
-            private async static Task<bool> MenuFolderToken_ShowDialog(Storages.Library.libraryLibrary[] used)
-            {
-                //Not used.
-
-                var message = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Message");
-                var title = Managers.ResourceManager.Loader.GetString("ContextMenu/Folders/UnregisterFolder/MessageDialog/Title");
-                var dlg = new Windows.UI.Popups.MessageDialog($"{message}\n{used.Aggregate("", (a, b) => a + "\n" + b.title)}", title);
-                dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
-                dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/Cancel"), null, "cancel"));
-                dlg.CancelCommandIndex = 1;
-                dlg.DefaultCommandIndex = 0;
-                var res = await dlg.ShowAsync();
-                if (res.Id as string == "ok")
-                {
-                    return true;
-                }
-                return false;
-
-            }
-
             public static MenuCommand[] MenuFolderToken(IFileItem item)
             {
                 var list = new List<MenuCommand>();

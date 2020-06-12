@@ -60,6 +60,13 @@ xsd.exe Licenses.xsd /c /edb /e:licenses /l:CS /n:BookViewerApp.Storages.License
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="sponsors">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="person" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -67,6 +74,13 @@ xsd.exe Licenses.xsd /c /edb /e:licenses /l:CS /n:BookViewerApp.Storages.License
   <xs:element name="package">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="developer" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="person" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
         <xs:element ref="license" />
       </xs:sequence>
       <xs:attribute name="title" type="xs:string" />

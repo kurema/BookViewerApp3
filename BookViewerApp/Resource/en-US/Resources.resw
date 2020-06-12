@@ -124,7 +124,7 @@
     <value>Add a directory</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>Book Viewer 3</value>
+    <value>BookViewer3</value>
   </data>
   <data name="BookmarkBasic.Title" xml:space="preserve">
     <value>Bookmark</value>
@@ -547,8 +547,8 @@ Are you sure to unregister?</value>
   <data name="Info.Info.Privacy.Title" xml:space="preserve">
     <value>Privacy</value>
   </data>
-  <data name="Info.Info.Sponsor" xml:space="preserve">
-    <value>Sponsor</value>
+  <data name="Info.Info.Sponsors" xml:space="preserve">
+    <value>Sponsors</value>
   </data>
   <data name="Info.Info.ThirdParty.License" xml:space="preserve">
     <value>License</value>
@@ -564,5 +564,11 @@ Are you sure to unregister?</value>
   </data>
   <data name="Info.Info.Translation" xml:space="preserve">
     <value>Translation</value>
+  </data>
+  <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
+    <value>Third-Party</value>
+  </data>
+  <data name="Info.Info.Developers" xml:space="preserve">
+    <value>Developers</value>
   </data>
 </root>

@@ -55,61 +55,120 @@ namespace BookViewerApp.Views
         {
             var tabpage = UIHelper.GetCurrentTabPage(this);
             var loader = Managers.ResourceManager.Loader;
-
+            //Info.Info.Translation
             return new[] {
+                new ViewModels.ListItemViewModel(loader.GetString("AppName"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogAboutThisApp())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Privacy/Title"), loader.GetString("Info/Info/Privacy/Description"),new OpenWebCommand(tabpage,"https://github.com/kurema/BookViewerApp3/blob/master/PrivacyPolicy.md")){ GroupTag="Info/Info/Title"},
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), ""){ GroupTag="Info/Info/Title"},
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor"), "",new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogThirdParty())){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogContributors())){ GroupTag="Info/Info/Title"},
+
+                //new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor"), "",new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData"), "",new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "",new DelegateCommand(async _=>{
-                    var statistics=LibraryStorage.GetTokenUsedCount();
-
-                    var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
-                    var builder=new System.Text.StringBuilder();
-                    foreach(var item in acl.Entries)
-                    {
-                        builder.Append("Token:");
-                        builder.Append(item.Token);
-                        builder.AppendLine();
-
-                        builder.Append("Metadata:");
-                        builder.Append(item.Metadata);
-                        builder.AppendLine();
-
-                        if (statistics.ContainsKey(item.Token))
-                        {
-                            builder.Append("Count:");
-                            builder.Append(statistics[item.Token]);
-                            builder.AppendLine();
-                        }
-
-                        try{
-                            var storageItem=(await acl.GetItemAsync(item.Token));
-                            builder.Append("Path:");
-                            builder.Append(storageItem?.Path);
-                        }
-                        catch(Exception e)
-                        {
-                            builder.Append("Error:");
-                            builder.Append(e.Message);
-                        }
-                        builder.AppendLine();
-
-                        builder.AppendLine();
-
-                        try{
-                            var data=new Windows.ApplicationModel.DataTransfer.DataPackage();
-                            data.SetText(builder.ToString());
-                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(data);
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    }) ){ GroupTag="Info/Debug/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "",new DelegateCommand(async _=> await CopyFutureAccessListToClipboard()) ){ GroupTag="Info/Debug/Title"},
             };
         }
 
+        public async System.Threading.Tasks.Task CopyFutureAccessListToClipboard()
+        {
+            var statistics = LibraryStorage.GetTokenUsedCount();
+
+            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            var builder = new System.Text.StringBuilder();
+            foreach (var item in acl.Entries)
+            {
+                builder.Append("Token:");
+                builder.Append(item.Token);
+                builder.AppendLine();
+
+                builder.Append("Metadata:");
+                builder.Append(item.Metadata);
+                builder.AppendLine();
+
+                if (statistics.ContainsKey(item.Token))
+                {
+                    builder.Append("Count:");
+                    builder.Append(statistics[item.Token]);
+                    builder.AppendLine();
+                }
+
+                try
+                {
+                    var storageItem = (await acl.GetItemAsync(item.Token));
+                    builder.Append("Path:");
+                    builder.Append(storageItem?.Path);
+                }
+                catch (Exception e)
+                {
+                    builder.Append("Error:");
+                    builder.Append(e.Message);
+                }
+                builder.AppendLine();
+
+                builder.AppendLine();
+
+                try
+                {
+                    var data = new Windows.ApplicationModel.DataTransfer.DataPackage();
+                    data.SetText(builder.ToString());
+                    Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(data);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        public async System.Threading.Tasks.Task OpenLicenseContentDialogThirdParty()
+        {
+            var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+            await OpenLicenseContentDialog(license.thirdparty.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/ThirdParty/ThirdParty")));
+        }
+
+        public async System.Threading.Tasks.Task OpenLicenseContentDialogContributors()
+        {
+            var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+
+            var groups = new List<IGrouping<string, object>>();
+            void Add(IEnumerable<IGrouping<string, object>> item)
+            {
+                if (item == null || item.Count() == 0) return;
+                groups.AddRange(item);
+            }
+
+            Add(license?.contributors?.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/Contributors")));
+            Add(license?.translations?.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/Translation")));
+            Add(license?.sponsors?.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/Sponsors")));
+            await OpenLicenseContentDialog(groups);
+        }
+
+        public async System.Threading.Tasks.Task OpenLicenseContentDialogAboutThisApp()
+        {
+            var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+
+            var groups = new List<IGrouping<string, object>>();
+            void Add(IEnumerable<IGrouping<string, object>> item)
+            {
+                if (item == null || item.Count() == 0) return;
+                groups.AddRange(item);
+            }
+
+            Add(license?.firstparty?.GroupBy(a => Managers.ResourceManager.Loader.GetString("AppName")));
+            Add(license?.firstparty?.FirstOrDefault()?.developer?.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/Developers")));
+            await OpenLicenseContentDialog(groups);
+        }
+
+        public async System.Threading.Tasks.Task OpenLicenseContentDialog(object source)
+        {
+            if (source == null) return;
+
+            var dialog = new ContentDialog();
+            dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK");
+            var control = new Views.LicenseControl();
+            control.Source = source;
+            control.OpenWebCommand = new DelegateCommand(address => UIHelper.GetCurrentTabPage(this)?.OpenTabWeb(address?.ToString()));
+            dialog.Content = control;
+            await dialog.ShowAsync();
+        }
 
         public class SettingViewModel : INotifyPropertyChanged
         {

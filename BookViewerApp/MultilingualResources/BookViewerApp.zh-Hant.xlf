@@ -15,7 +15,7 @@
           <target state="translated">添加目錄到書架</target>
         </trans-unit>
         <trans-unit id="AppName" translate="yes" xml:space="preserve">
-          <source>Book Viewer 3</source>
+          <source>BookViewer3</source>
           <target state="needs-review-translation">Book Viewer 3</target>
           <note from="MultilingualUpdate" priority="2">Resource is marked as 'Needs review' since the Source and target were the same value.</note>
         </trans-unit>
@@ -558,10 +558,6 @@ Are you sure to unregister?</target>
           <source>Contributors</source>
           <target state="new">Contributors</target>
         </trans-unit>
-        <trans-unit id="Info.Info.Sponsor" translate="yes" xml:space="preserve">
-          <source>Sponsor</source>
-          <target state="new">Sponsor</target>
-        </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.License" translate="yes" xml:space="preserve">
           <source>License</source>
           <target state="new">License</target>
@@ -605,6 +601,18 @@ Are you sure to unregister?</target>
         <trans-unit id="Info.Debug.CopyFAL" translate="yes" xml:space="preserve">
           <source>Copy FutureAccessList info.</source>
           <target state="new">Copy FutureAccessList info.</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.ThirdParty.ThirdParty" translate="yes" xml:space="preserve">
+          <source>Third-Party</source>
+          <target state="new">Third-Party</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.Sponsors" translate="yes" xml:space="preserve">
+          <source>Sponsors</source>
+          <target state="new">Sponsors</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.Developers" translate="yes" xml:space="preserve">
+          <source>Developers</source>
+          <target state="new">Developers</target>
         </trans-unit>
       </group>
     </body>

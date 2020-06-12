@@ -8,7 +8,7 @@
     xmlns:vm="using:BookViewerApp.ViewModels"
     mc:Ignorable="d"
     Background="#FF303030"
-    d:DataContext="{d:DesignData Type=vm:InfoPageViewModel}"
+    d:DataContext="{d:DesignInstance Type=vm:InfoPageViewModel}"
     >
     <Page.Resources>
         <x:Double x:Key="TileSize">100</x:Double>

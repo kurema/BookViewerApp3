@@ -1,0 +1,178 @@
+﻿<UserControl
+    x:Class="BookViewerApp.Views.LicenseControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookViewerApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    
+    xmlns:license="using:BookViewerApp.Storages.Licenses"
+    xmlns:template="using:BookViewerApp.Views.TemplateSelectors"
+    
+    x:Name="root"
+    
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Name="itemsSource" IsSourceGrouped="True"/>
+        <ValueConverter:StringNullOrEmptyConverter x:Name="vc_sne"/>
+        <ValueConverter:IsValidUriIValueConverter x:Name="vc_validuri"/>
+        <ValueConverter:BoolToStringConverter x:Name="vc_b2s" />
+        <ValueConverter:LanguageCodeToNameConverter x:Name="vc_l2nn"/>
+
+        <DataTemplate x:DataType="license:person" x:Key="templatePerson">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock Grid.Row="1" Text="{Binding role}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding role,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
+
+                <!-- Command is better than Tapped but I don't know how to bind root which is outside of DataTemplate... -->
+                <local:AcrylicButtonControl x:Name="buttonOpenWeb" Margin="0" Grid.RowSpan="2" Grid.Column="1" Icon="World" Tapped="AcrylicButtonControl_Tapped" CommandParameter="{Binding href}" IsEnabled="{Binding href,Converter={StaticResource vc_validuri}}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding Source={StaticResource itemsSource}}" >
+            <ItemsControl.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Key}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </ItemsControl.GroupStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplateSelector>
+                <template:LicenseControlTemplateSelector TemplatePerson="{StaticResource templatePerson}">
+                    <template:LicenseControlTemplateSelector.TemplateLicense>
+                        <DataTemplate>
+                            <Grid d:DataContext="{d:DesignInstance Type=license:license}" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Grid.Row="1" Text="{Binding summary}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding summary,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
+
+                                <ToggleButton x:Name="toggle"  Margin="0" Grid.RowSpan="2" Grid.Column="1"
+                                              BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
+                                              Height="60" Width="60"
+                                              CornerRadius="0"
+                                              >
+                                    <ToggleButton.Background>
+                                        <RevealBackgroundBrush/>
+                                    </ToggleButton.Background>
+                                    <SymbolIcon Symbol="Document" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                </ToggleButton>
+                                <TextBlock TextWrapping="WrapWholeWords" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding license.term}" Visibility="{Binding ElementName=toggle,Path=IsChecked,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </template:LicenseControlTemplateSelector.TemplateLicense>
+                    <template:LicenseControlTemplateSelector.TemplatePackage>
+                        <DataTemplate x:DataType="license:package">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Grid.Row="1" Text="{Binding license.summary}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding license.summary,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
+
+                                <!-- Command is better than Tapped but I don't know how to bind root which is outside of DataTemplate... -->
+                                <local:AcrylicButtonControl x:Name="buttonOpenWeb" Margin="0" Grid.RowSpan="2" Grid.Column="1" Icon="World" Tapped="AcrylicButtonControl_Tapped" CommandParameter="{Binding href}" IsEnabled="{Binding href,Converter={StaticResource vc_validuri}}"/>
+                                <!--<local:AcrylicButtonControl Margin="0" Grid.RowSpan="2" Grid.Column="2" Icon="Document" Tapped="AcrylicButtonControl_Tapped_1"  CommandParameter="{Binding license.term}"/>-->
+                                <ToggleButton x:Name="toggleLicense"  Margin="0" Grid.RowSpan="2" Grid.Column="2"
+                                              BorderBrush="{Binding ElementName=buttonOpenWeb,Path=BorderBrush}"
+                                              Background="{Binding ElementName=buttonOpenWeb,Path=Background}"
+                                              Height="{Binding ElementName=buttonOpenWeb,Path=Height}" Width="{Binding ElementName=buttonOpenWeb,Path=Width}"
+                                              CornerRadius="{Binding ElementName=buttonOpenWeb,Path=CornerRadius}"
+                                              >
+                                    <SymbolIcon Symbol="Document" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                </ToggleButton>
+                                <TextBlock TextWrapping="WrapWholeWords" Grid.ColumnSpan="3" Grid.Row="2" Text="{Binding license.term}" Visibility="{Binding ElementName=toggleLicense,Path=IsChecked,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </template:LicenseControlTemplateSelector.TemplatePackage>
+                    <template:LicenseControlTemplateSelector.TemplateTranslation>
+                        <DataTemplate x:DataType="license:licensesTranslation">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Text="{Binding lang,Converter={StaticResource vc_l2nn},ConverterParameter=NativeName}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding person}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="license:person">
+                                            <TextBlock Text="{Binding name}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding name,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"
+                                                       Margin="0,0,5,0"
+                                                       />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <ToggleButton x:Name="toggle"  Margin="0" Grid.RowSpan="2" Grid.Column="1"
+                                              BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
+                                              Height="60" Width="60"
+                                              CornerRadius="0"
+                                              IsChecked="True"
+                                              >
+                                    <ToggleButton.Background>
+                                        <RevealBackgroundBrush/>
+                                    </ToggleButton.Background>
+
+                                    <SymbolIcon Symbol="More" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                </ToggleButton>
+                                <ItemsControl Margin="10,0,0,0" Grid.Row="2" Grid.ColumnSpan="2"  ItemTemplate="{StaticResource templatePerson}" ItemsSource="{Binding person}"  Visibility="{Binding ElementName=toggle,Path=IsChecked,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </template:LicenseControlTemplateSelector.TemplateTranslation>
+                </template:LicenseControlTemplateSelector>
+            </ItemsControl.ItemTemplateSelector>
+        </ItemsControl>
+    </ScrollViewer>
+
+</UserControl>

@@ -36,6 +36,8 @@ namespace BookViewerApp.Storages.Licenses {
         
         private licensesTranslation[] translationsField;
         
+        private person[] sponsorsField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute("first-party")]
         [System.Xml.Serialization.XmlArrayItemAttribute("package", IsNullable=false)]
@@ -99,6 +101,18 @@ namespace BookViewerApp.Storages.Licenses {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("person", IsNullable=false)]
+        public person[] sponsors {
+            get {
+                return this.sponsorsField;
+            }
+            set {
+                this.sponsorsField = value;
+                this.RaisePropertyChanged("sponsors");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -118,11 +132,25 @@ namespace BookViewerApp.Storages.Licenses {
         "se.xsd")]
     public partial class package : object, System.ComponentModel.INotifyPropertyChanged {
         
+        private person[] developerField;
+        
         private license licenseField;
         
         private string titleField;
         
         private string hrefField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("person", IsNullable=false)]
+        public person[] developer {
+            get {
+                return this.developerField;
+            }
+            set {
+                this.developerField = value;
+                this.RaisePropertyChanged("developer");
+            }
+        }
         
         /// <remarks/>
         public license license {
@@ -156,65 +184,6 @@ namespace BookViewerApp.Storages.Licenses {
             set {
                 this.hrefField = value;
                 this.RaisePropertyChanged("href");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Licen" +
-        "se.xsd")]
-    public partial class license : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string summaryField;
-        
-        private string termField;
-        
-        private string titleField;
-        
-        /// <remarks/>
-        public string summary {
-            get {
-                return this.summaryField;
-            }
-            set {
-                this.summaryField = value;
-                this.RaisePropertyChanged("summary");
-            }
-        }
-        
-        /// <remarks/>
-        public string term {
-            get {
-                return this.termField;
-            }
-            set {
-                this.termField = value;
-                this.RaisePropertyChanged("term");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string title {
-            get {
-                return this.titleField;
-            }
-            set {
-                this.titleField = value;
-                this.RaisePropertyChanged("title");
             }
         }
         
@@ -276,6 +245,65 @@ namespace BookViewerApp.Storages.Licenses {
             set {
                 this.roleField = value;
                 this.RaisePropertyChanged("role");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Licen" +
+        "se.xsd")]
+    public partial class license : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string summaryField;
+        
+        private string termField;
+        
+        private string titleField;
+        
+        /// <remarks/>
+        public string summary {
+            get {
+                return this.summaryField;
+            }
+            set {
+                this.summaryField = value;
+                this.RaisePropertyChanged("summary");
+            }
+        }
+        
+        /// <remarks/>
+        public string term {
+            get {
+                return this.termField;
+            }
+            set {
+                this.termField = value;
+                this.RaisePropertyChanged("term");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
             }
         }
         

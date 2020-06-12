@@ -2,6 +2,9 @@
 <licenses xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/License.xsd">
   <first-party>
     <package title="BookViewer3" href="https://github.com/kurema/BookViewerApp3">
+      <developer>
+        <person href="https://github.com/kurema/" name="kurema" role="Program / Design"/>
+      </developer>
       <license>
         <summary>MIT License (c) kurema</summary>
         <term>
@@ -527,10 +530,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </term>
     </license>
   </license-terms>
-  <contributors/>
+  <contributors>
+    <!--<person href="https://github.com/kurema/" name="kurema" role="Programmer / Designer / Basic Translation"/>-->
+  </contributors>
   <translations>
     <translation lang="it">
-      <person role="translation" href="https://github.com/Manu99it" name="Emanuele"/>
+      <person role="English-Italian translation" href="https://github.com/Manu99it" name="Emanuele"/>
     </translation>
   </translations>
+  <sponsors/>
 </licenses>

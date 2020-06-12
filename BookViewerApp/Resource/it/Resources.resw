@@ -19,7 +19,7 @@
     <value>Seleziona cartella</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>Book Viewer 3</value>
+    <value>BookViewer3</value>
   </data>
   <data name="BookmarkBasic.Title" xml:space="preserve">
     <value>Segnalibro</value>
@@ -424,8 +424,8 @@ Annullare la registrazione?</value>
   <data name="Info.Info.Contributors" xml:space="preserve">
     <value>Collaboratori</value>
   </data>
-  <data name="Info.Info.Sponsor" xml:space="preserve">
-    <value>Sponsor.</value>
+  <data name="Info.Info.Sponsors" xml:space="preserve">
+    <value>sponsor</value>
   </data>
   <data name="Info.Info.ThirdParty.License" xml:space="preserve">
     <value>Contratto Microsoft</value>
@@ -459,5 +459,11 @@ Annullare la registrazione?</value>
   </data>
   <data name="Info.Debug.CopyFAL" xml:space="preserve">
     <value>Copia le informazioni di FutureAccessList.</value>
+  </data>
+  <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
+    <value>Terze parti</value>
+  </data>
+  <data name="Info.Info.Developers" xml:space="preserve">
+    <value>Sviluppatori</value>
   </data>
 </root>

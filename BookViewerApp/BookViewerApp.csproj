@@ -303,6 +303,10 @@
     <Compile Include="Views\LibraryManagerControl.xaml.cs">
       <DependentUpon>LibraryManagerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LicenseControl.xaml.cs">
+      <DependentUpon>LicenseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LicenseControlTemplateSelector.cs" />
     <Compile Include="Views\PasswordRequestContentDialog.xaml.cs">
       <DependentUpon>PasswordRequestContentDialog.xaml</DependentUpon>
     </Compile>
@@ -395,6 +399,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LibraryManagerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LicenseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

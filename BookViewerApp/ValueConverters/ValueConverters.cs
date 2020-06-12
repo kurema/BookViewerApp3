@@ -10,7 +10,7 @@ using BookViewerApp.ViewModels;
 
 namespace BookViewerApp.ValueConverters
 {
-    public class RateToPersantageValueConverter : IValueConverter
+    public sealed class RateToPersantageValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -29,7 +29,7 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class RateToPersantageIntValueConverter : IValueConverter
+    public sealed class RateToPersantageIntValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -49,7 +49,7 @@ namespace BookViewerApp.ValueConverters
     }
 
 
-    public class TextToDoubleConverter : IValueConverter
+    public sealed class TextToDoubleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -72,7 +72,7 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class BookIdToImageSource : IValueConverter
+    public sealed class BookIdToImageSource : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -88,7 +88,7 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class FloatEqualOneToVisibilityConverter : IValueConverter
+    public sealed class FloatEqualOneToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -105,7 +105,7 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class BoolToDoubleValueConverter : IValueConverter
+    public sealed class BoolToDoubleValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -134,7 +134,7 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class BoolToFlowDirectionConverter : IValueConverter
+    public sealed class BoolToFlowDirectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -169,7 +169,7 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
-    public class BoolToStringConverter : IValueConverter
+    public sealed class BoolToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -245,6 +245,47 @@ namespace BookViewerApp.ValueConverters
             var list = parameter?.ToString()?.Split(":");
             if (list == null || list.Length < 2) return "";
             return string.IsNullOrEmpty(value?.ToString()) ? list[0] : list[1];
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public sealed class IsValidUriIValueConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return Uri.TryCreate(value?.ToString(), UriKind.Absolute, out _);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public sealed class LanguageCodeToNameConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            try
+            {
+                var culture = new System.Globalization.CultureInfo(value?.ToString(), false);
+                switch (parameter)
+                {
+                    case nameof(culture.DisplayName):
+                    case null:return culture?.DisplayName;
+                    case nameof(culture.EnglishName):return culture?.EnglishName;
+                    case nameof(culture.NativeName):return culture?.NativeName;
+                }
+                return culture?.DisplayName;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

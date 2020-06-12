@@ -18,6 +18,5 @@ namespace BookViewerApp.Storages
 
         [Obsolete]
         public static Dictionary<String, String> Licenses { get => LocalLicense?.Content?.thirdparty?.ToDictionary(a => a.title, a => a.license?.term); }
-
     }
 }
