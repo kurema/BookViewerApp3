@@ -14,6 +14,7 @@ using System.IO;
 using System.Collections;
 
 using BookViewerApp.Helper;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace BookViewerApp.Books
 {
@@ -160,13 +161,14 @@ namespace BookViewerApp.Books
                 string password = null;
                 bool passSave = false;
 
+                string id = null;
+
                 try
                 {
                     iTextSharp.text.pdf.PdfReader pr = null;
                     var streamClassic = stream.AsStream();
 
                     #region Password
-
                     pr = GetPdfReader(streamClassic, null);
                     if (pr != null) goto PasswordSuccess;
 
@@ -204,7 +206,10 @@ namespace BookViewerApp.Books
                         //https://qiita.com/kurema/items/3f274507aa5cf9e845a8
                         var vp = iTextSharp.text.pdf.intern.PdfViewerPreferencesImp.GetViewerPreferences(pr.Catalog).GetViewerPreferences();
 
-                        Direction = Direction.Default;
+                        //L2R document often don't have Direction information.
+                        //But it look like "L2R" in Acrobat Reader.
+                        //Direction = Direction.Default
+                        Direction = Direction.L2R;
 
                         if (vp.Contains(iTextSharp.text.pdf.PdfName.Direction))
                         {
@@ -221,6 +226,46 @@ namespace BookViewerApp.Books
                         }
                     }
                     catch { }
+
+                    try
+                    {
+                        //https://github.com/VahidN/iTextSharp.LGPLv2.Core/blob/73605fa82fb00e9e8670991c9e410c684731f9f8/src/iTextSharp.LGPLv2.Core/iTextSharp/text/pdf/PdfReader.cs#L3366
+                        //It seems to be...
+                        //documentIDs[0] doesn't change when you edit.
+                        //documentIDs[1] does. documentIDs[1] does not always exist.
+                        var documentIDs = pr.Trailer.GetAsArray(iTextSharp.text.pdf.PdfName.Id);
+                        if (documentIDs != null && documentIDs.Size > 0)
+                        {
+                            id = Functions.GetHash(documentIDs[0].GetBytes().AsBuffer());
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    if (id == null)
+                    {
+                        try
+                        {
+                            //When PDF ID is unavailable, Hash(Hash([first 2048 bytes of the file])+"\nSize:"+file size) is used.
+                            //Problems are
+                            //・Some books may have the same first 2048 bytes.
+                            //・You may edit PDF file with same file size.
+                            //But it's much better than just fileName+pageCount.
+
+                            uint length = 2048;
+                            var buffer = new Windows.Storage.Streams.Buffer(length);
+                            stream.Seek(0);
+                            await stream.ReadAsync(buffer, length, Windows.Storage.Streams.InputStreamOptions.Partial);
+                            id = Functions.GetHash(Functions.GetHash(buffer) + "\nSize:" + stream.Size);
+
+                            stream.Seek(0);
+                        }
+                        catch
+                        {
+                            id = null;
+                        }
+                    }
 
                     var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr)?.ToArray();
                     var nd = pr.GetNamedDestination(false);
@@ -250,7 +295,7 @@ namespace BookViewerApp.Books
                 }
                 OnLoaded(new EventArgs());
                 PageLoaded = true;
-                ID = Functions.CombineStringAndDouble(file.Name, Content.PageCount);
+                ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(file.Name, Content.PageCount));
             }
         }
 

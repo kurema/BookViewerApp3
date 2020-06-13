@@ -14,8 +14,12 @@ namespace BookViewerApp.Helper
     {
         public static string GetHash(string s)
         {
+            return GetHash(Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(s, Windows.Security.Cryptography.BinaryStringEncoding.Utf8));
+        }
+
+        public static string GetHash(Windows.Storage.Streams.IBuffer buffer)
+        {
             var algorithm = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm("SHA1");
-            var buffer = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(s, Windows.Security.Cryptography.BinaryStringEncoding.Utf8);
             var hash = algorithm.HashData(buffer);
             return Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(hash);
         }
