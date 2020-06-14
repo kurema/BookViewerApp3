@@ -34,6 +34,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             else if (!string.IsNullOrWhiteSpace(Content.Path)) await HistoryStorage.DeleteHistoryByPath(Content.Path);
             await HistoryStorage.Content.SaveAsync();
             LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+            LibraryStorage.GarbageCollectToken();
         }, a => !(a is bool b && b == true));
 
         public ICommand RenameCommand => new InvalidCommand();

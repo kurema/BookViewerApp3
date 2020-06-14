@@ -276,14 +276,14 @@ namespace BookViewerApp.Helper
                             dlitem.OpenCommand = new DelegateCommand((a) => OpenTabBook?.Invoke(item));
 
                             OpenTabBook?.Invoke(item);
-                            BookViewerApp.App.Current.Suspending += async (s2, e2) =>
-                            {
-                                try
-                                {
-                                    await item.DeleteAsync();
-                                }
-                                catch { }
-                            };
+                            //BookViewerApp.App.Current.Suspending += async (s2, e2) =>
+                            //{
+                            //    try
+                            //    {
+                            //        await item.DeleteAsync();
+                            //    }
+                            //    catch { }
+                            //};
                         }
                         catch { }
                         return;
@@ -292,6 +292,11 @@ namespace BookViewerApp.Helper
 
                 if ((frame.Content as kurema.BrowserControl.Views.BrowserPage)?.Control.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
                 {
+                    vm.OpenDownloadDirectoryCommand = new Helper.DelegateCommand(async (_) => {
+                        var folder = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Download", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                        await Windows.System.Launcher.LaunchFolderAsync(folder); 
+                    });
+
                     if (SettingStorage.GetValue("WebHomePage") is string homepage)
                     {
                         vm.HomePage = homepage;

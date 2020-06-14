@@ -79,5 +79,11 @@ namespace kurema.BrowserControl.Views
             //There should be the better way.
             webView.NavigateToString("");
         }
+
+        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var command = ((sender as FrameworkElement)?.DataContext as ViewModels.BrowserControlViewModel)?.OpenDownloadDirectoryCommand;
+            if (command?.CanExecute(null) == true) command.Execute(null);
+        }
     }
 }

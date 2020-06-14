@@ -12,9 +12,6 @@ Ver 2 failed.
 - - [ ] 強制1ページ表示
 - - [ ] Controlに切り替えUI
 - - [ ] ContextMenuに切り替えUI
-- [x] Epub対応
-- - [x] epub.js+WebView。~~Zip展開はUWP側で。~~
-- - [x] [bibi](https://github.com/satorumurmur/bibi)+WebView (Bibiの方が良い感じだった。)
 - [x] 追加機能分の多言語対応
 - [ ] ContextMenu
 - - [x] Library/Items/Unregister
@@ -31,12 +28,8 @@ Ver 2 failed.
 - - [x] Storage
 - - [ ] ~~Restore~~ (起動時リストアは…とりあえず却下)
 - - [x] View/ViewModel (File Managerで)
-- [x] File Manager (Libraryと分ける必要ある？ 全フォルダアクセス権は与えたくない。)
-- - [x] View/Tree
-- - [x] View/Main
-- - [x] Detail
 - [ ] Monetize (以前は1円も収入がなかった。やる気出なかった理由)
-- - [ ] ~~UWP ad~~ サードパーティーもサポートされてるMicrosoft Advertising SDKがキャンセルされるのかは良く分からない。新しいタブのページ。
+- - [ ] ~~UWP ad サードパーティーもサポートされてるMicrosoft Advertising SDKがキャンセルされるのかは良く分からない。新しいタブのページ。~~
 - - [ ] ~~Amazon Affiliate。正直微妙。このアプリに合わない。~~
 - - [ ] Donation. 幅広いチャンネルから。
 - - [ ] Original ad. Kindle本・招待コード・YouTubeチャンネル(今後)。
@@ -44,22 +37,10 @@ Ver 2 failed.
 - - [ ] Samba. (Windows 10 Mobileが死んだ今は意味がないけど、独自でやりたい。)
 - - [ ] SFTP? (面倒。不要。)
 - - [ ] Cloud storage. (PDFをクラウドに上げる人ならいるかもね。)
-- [x] toc
-- - [x] CBZ (フォルダ構造から)
-- - [x] PDF (iText的なもので解析)
-- - [x] ViewModels / Views
-- [x] iText
-- - [x] 右綴じ確認
-- [x] Password
-- - [x] UI
-- - [x] File
-- - [x] Save password
+- - [ ] OPDS
 - [ ] Publish!
 - - [ ] Publish as beta.
 - - [ ] Publish as product.
-
-## Issue
-- [x] 高速スクロール時、SetBitmapAsyncの順序が前後する。対策方法が思いつかん。
 
 ## Thanks
 Italian translation is by Emanuele (https://github.com/Manu99it).

@@ -200,9 +200,12 @@ namespace BookViewerApp.ViewModels
                       if (list == null) return;
                       list.Remove(Content);
                       Parent.Content.Items = list.ToArray();
+                      Storages.LibraryStorage.GarbageCollectToken();
+                      //Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+                      await Storages.LibraryStorage.Content.SaveAsync();
                   }, parameter =>
                   {
-                      return Parent?.Items?.Count > 1;
+                      return Parent?.Content?.Items?.Contains(Content) == true;
                   });
                 if (Parent?.Content != null) Parent.Content.PropertyChanged += (s, e) => result.OnCanExecuteChanged();
                 return _RemoveCommand = result;

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using System.IO;
 using BookViewerApp.Books;
+using Windows.Storage;
+using Windows.Storage.AccessCache;
 
 namespace BookViewerApp.Managers
 {
@@ -134,33 +136,51 @@ namespace BookViewerApp.Managers
 
         public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr" }; } }
 
-        public static bool IsEpub(Windows.Storage.IStorageFile file)
+        public static bool IsEpub(IStorageFile file)
         {
             if (file.FileType.ToLower() == ".epub") { return true; }
             return false;
         }
 
 
-        public static bool IsFileAvailabe(Windows.Storage.IStorageFile file)
+        public static bool IsFileAvailabe(IStorageFile file)
         {
             return AvailableExtensionsArchive.Contains(Path.GetExtension(file.Path).ToLower());
         }
 
         public static void StorageItemUnregister(string token)
         {
-            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            var acl = StorageApplicationPermissions.FutureAccessList;
             acl.Remove(token);
         }
 
-        public static string StorageItemRegister(Windows.Storage.IStorageItem file)
+        public static string StorageItemRegister(IStorageItem file)
         {
-            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            var acl = StorageApplicationPermissions.FutureAccessList;
             return acl.Add(file);
         }
 
-        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token)
+        public static Dictionary<string, StorageFolder> GetApplicationFolders()
         {
-            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
+            var current = ApplicationData.Current;
+            return new Dictionary<string, StorageFolder>()
+            {
+                { "{Special:" + nameof(current.LocalFolder) + "}",  current.LocalFolder },
+                { "{Special:" + nameof(current.LocalCacheFolder) + "}", current.LocalCacheFolder},
+                { "{Special:" + nameof(current.RoamingFolder) + "}", current.RoamingFolder },
+                { "{Special:" + nameof(current.TemporaryFolder) + "}", current.TemporaryFolder},
+                //{ "{Special:" + nameof(current.SharedLocalFolder) + "}", current.SharedLocalFolder },
+            };
+        }
+
+        public static async Task<IStorageItem> StorageItemGet(string token)
+        {
+            {
+                var dic = GetApplicationFolders();
+                if (dic.ContainsKey(token)) return dic[token];
+            }
+
+            var acl = StorageApplicationPermissions.FutureAccessList;
             try
             {
                 if (acl.ContainsItem(token)) return await acl.GetItemAsync(token);
@@ -230,9 +250,9 @@ namespace BookViewerApp.Managers
         public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(Windows.Storage.IStorageItem file)
         {
             if (file == null) return null;
-            return await Managers.BookManager.GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()
+            return await GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()
             {
-                token = Managers.BookManager.StorageItemRegister(file),
+                token = StorageItemRegister(file),
                 path = ""
             };
         }
@@ -243,15 +263,16 @@ namespace BookViewerApp.Managers
 
             path = Path.GetFullPath(path);
             //var tokens = (await Task.WhenAll(Content.Content.folders.Select(async a => KeyValuePair.Create(a, await a.GetStorageFolderAsync()))));//.ToDictionary(a => a.Key, a => a.Value);
-            var acl = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
-            var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await StorageItemGet(a.Token))))).Where(a => a.Item2 != null);
+            var acl = StorageApplicationPermissions.FutureAccessList;
+            var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await StorageItemGet(a.Token))))).Where(a => a.Item2 != null).ToList();
+            tokens.AddRange(GetApplicationFolders().Select(a => (a.Key, a.Value as IStorageItem)));
 
             string currentPath = path;
             while (true)
             {
                 foreach (var item in tokens)
                 {
-                    if (Path.GetRelativePath(item.Item2.Path, currentPath) == ".") return new Storages.Library.libraryLibraryFolder()
+                    if (item.Item2 != null && Path.GetRelativePath(item.Item2.Path, currentPath) == ".") return new Storages.Library.libraryLibraryFolder()
                     {
                         token = item.Token,
                         path = Path.GetRelativePath(item.Item2.Path, path)

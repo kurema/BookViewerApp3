@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
 
+using System.Windows.Input;
+
 namespace kurema.BrowserControl.ViewModels
 {
     public class BrowserControlViewModel : INotifyPropertyChanged
@@ -73,6 +75,9 @@ namespace kurema.BrowserControl.ViewModels
 
         private ObservableCollection<DownloadItemViewModel> _Downloads = new ObservableCollection<DownloadItemViewModel>();
         public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }
+
+
+        public System.Windows.Input.ICommand OpenDownloadDirectoryCommand { get; set; }
 
 
         private string _HomePage;

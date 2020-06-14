@@ -316,17 +316,7 @@ namespace BookViewerApp.Helper
                         libs.Remove(library);
                         Storages.LibraryStorage.Content.Content.libraries = libs.ToArray();
                         Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
-
-                        foreach (Storages.Library.libraryLibraryFolder itemFolder in library.Items)
-                        {
-                            var used1 = Storages.LibraryStorage.GetTokenUsedByLibrary(itemFolder.token);
-                            var used2 = Storages.LibraryStorage.GetTokenUsedByFolders(itemFolder.token);
-                            if (used1.Length + used2.Length == 0)
-                            {
-                                Managers.BookManager.StorageItemUnregister(itemFolder.token);
-                                await Storages.HistoryStorage.DeleteHistoryByToken(itemFolder.token);
-                            }
-                        }
+                        Storages.LibraryStorage.GarbageCollectToken();
                         await Storages.LibraryStorage.Content.SaveAsync();
                     }, a => Storages.LibraryStorage.Content?.Content?.libraries != null && Storages.LibraryStorage.Content.Content.libraries.Contains(library))));
 

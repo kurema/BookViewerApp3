@@ -78,6 +78,7 @@ namespace BookViewerApp.Storages
                     HistoryStorage.Content.Content = Array.Empty<HistoryStorage.HistoryInfo>();
                     await HistoryStorage.Content.SaveAsync();
                     OnLibraryUpdateRequest(LibraryKind.History);
+                    LibraryStorage.GarbageCollectToken();
                 }, a => !(a is bool b && b == true)),
                 Tag = LibraryKind.History,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
