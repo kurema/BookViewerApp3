@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<Page
     x:Class="kurema.BrowserControl.Views.BrowserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,10 +10,13 @@
     xmlns:vc="using:kurema.BrowserControl.Helper.ValueConverters"
     mc:Ignorable="d"
     d:DesignHeight="696.5"
-    d:DesignWidth="839">
-    <UserControl.DataContext>
+    d:DesignWidth="839"
+    
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+    <Page.DataContext>
         <vm:BrowserControlViewModel />
-    </UserControl.DataContext>
+    </Page.DataContext>
 
     <UserControl.Resources>
         <Style TargetType="AppBarButton">
@@ -129,8 +132,8 @@
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding FileName}" VerticalAlignment="Center" FontWeight="Bold" Margin="10" />
-                                                <Button Grid.Column="1"  Command="{Binding OpenCommand}"  VerticalContentAlignment="Center" Background="Transparent">
+                                                <TextBlock Grid.Column="0" Text="{Binding File.DisplayName}" VerticalAlignment="Center" FontWeight="Bold" Margin="10" />
+                                                <Button Grid.Column="1" Tapped="Button_Tapped" VerticalContentAlignment="Center" Background="Transparent">
                                                     <SymbolIcon Symbol="OpenFile"/>
                                                 </Button>
                                                 <ProgressBar Value="{Binding DownloadedRate}" Grid.Row="1" Grid.ColumnSpan="2" Maximum="1.0" Background="{ThemeResource SystemControlAltHighAcrylicElementBrush}">
@@ -152,8 +155,9 @@
                  
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
+                 UnviewableContentIdentified="webView_UnviewableContentIdentified"
                  
                  ContainsFullScreenElementChanged="webView_ContainsFullScreenElementChanged"
                  />
     </Grid>
-</UserControl>
+</Page>

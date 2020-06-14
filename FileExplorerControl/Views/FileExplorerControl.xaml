@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<Page
     x:Class="kurema.FileExplorerControl.Views.FileExplorerControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,17 +15,16 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     
-    
-    >
-    <UserControl.DataContext>
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
         <vm:FileExplorerViewModel/>
-    </UserControl.DataContext>
+    </Page.DataContext>
 
-    <UserControl.Resources>
+    <Page.Resources>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:EqualConverter x:Key="vc_eq"/>
         <vc:OrderToDirectionFontIconGlyphConverter x:Key="vc_o2g"/>
-    </UserControl.Resources>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -305,4 +304,4 @@
             </controls:GridSplitter>
         </Grid>
     </Grid>
-</UserControl>
+</Page>

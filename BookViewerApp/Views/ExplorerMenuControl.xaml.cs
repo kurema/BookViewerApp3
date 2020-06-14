@@ -36,8 +36,7 @@ namespace BookViewerApp.Views
                 new MenuItem(Symbol.OpenFile,"PickBook",()=>{
                     var tab=GetTabPage();
                     if(tab==null) return;
-                    var (frame, newTab)= tab.OpenTab("BookViewer");
-                    System.Threading.Tasks.Task.Run(async()=>{await UIHelper.FrameOperation.OpenBookPicked(frame,newTab);});
+                    System.Threading.Tasks.Task.Run(async()=>{await UIHelper.FrameOperation.OpenBookPicked(()=>tab.OpenTab("BookViewer"));});
                 }),
                 new MenuItem(Symbol.Setting,"Setting",()=>{
                     var tab=GetTabPage();

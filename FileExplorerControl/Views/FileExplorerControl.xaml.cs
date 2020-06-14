@@ -19,7 +19,7 @@ using winui = Microsoft.UI.Xaml.Controls;
 
 namespace kurema.FileExplorerControl.Views
 {
-    public sealed partial class FileExplorerControl : UserControl
+    public sealed partial class FileExplorerControl : Page
     {
         public FileExplorerControl()
         {

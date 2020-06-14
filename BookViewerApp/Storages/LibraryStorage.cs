@@ -483,6 +483,7 @@ namespace BookViewerApp.Storages
                 //これ以降は既に親または同一フォルダが登録済みの場合、相対パスで記録するようにしました。
                 //その結果、子フォルダの側を移動などさせると追従できません。
                 //最初は新規にトークンを発行するのが良いと思いましたが、確認すると結構汚くなったのでやめました。
+                //補足：Storeリリース前なので仕様変更は大した問題になりません。保存データにも影響ないし。
 
                 var result = new libraryFolder();
                 var registered = await Managers.BookManager.GetTokenFromPathOrRegister(folder);

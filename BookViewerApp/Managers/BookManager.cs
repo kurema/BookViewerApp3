@@ -34,6 +34,7 @@ namespace BookViewerApp.Managers
             var buffer = new byte[64];
             stream.Read(buffer, 0, stream.Length < 64 ? (int)stream.Length : 64);
             stream.Close();
+            stream.Dispose();
 
             if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d })) return BookType.Pdf;
             else if (buffer.Take(6).SequenceEqual(new byte[] { 0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C })) return BookType.SevenZip;
@@ -54,10 +55,22 @@ namespace BookViewerApp.Managers
             return null;
         }
 
-        public static async Task<IBook> GetBookFromFile(Windows.Storage.IStorageFile file)
+        public async static Task<BookType?> GetBookTypeByStorageFile(IStorageFile file)
         {
             if (file == null) return null;
-            var type = GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
+            return GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
+        }
+
+        public static async Task<IBook> GetBookFromFile(IStorageFile file)
+        {
+            var type = await GetBookTypeByStorageFile(file);
+            if (type == null) return null;
+            return await GetBookFromFile(file, (BookType)type);
+        }
+
+
+        public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type)
+        {
             switch (type)
             {
                 case BookType.Epub: goto Epub;
@@ -65,7 +78,6 @@ namespace BookViewerApp.Managers
                 case BookType.Rar: goto SharpCompress;
                 case BookType.SevenZip: goto SharpCompress;
                 case BookType.Pdf: goto Pdf;
-                default: return null;
             }
 
 

@@ -20,7 +20,7 @@ namespace kurema.BrowserControl.ViewModels
     {
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
+            [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
             System.Action onChanged = null)
         {
             if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
@@ -77,7 +77,23 @@ namespace kurema.BrowserControl.ViewModels
         public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }
 
 
-        public System.Windows.Input.ICommand OpenDownloadDirectoryCommand { get; set; }
+        private ICommand _OpenDownloadDirectoryCommand;
+        public ICommand OpenDownloadDirectoryCommand
+        {
+            get
+            {
+                return _OpenDownloadDirectoryCommand = _OpenDownloadDirectoryCommand ?? new Helper.DelegateCommand(async (_) =>
+                {
+                    var folder = await FolderProvider?.Invoke();
+                    await Windows.System.Launcher.LaunchFolderAsync(folder);
+                });
+            }
+            set { _OpenDownloadDirectoryCommand = value; }
+        }
+
+
+        private Func<Task<Windows.Storage.StorageFolder>> _FolderProvider = async () => await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Download", Windows.Storage.CreationCollisionOption.OpenIfExists);
+        public Func<Task<Windows.Storage.StorageFolder>> FolderProvider { get => _FolderProvider; set => SetProperty(ref _FolderProvider, value); }
 
 
         private string _HomePage;

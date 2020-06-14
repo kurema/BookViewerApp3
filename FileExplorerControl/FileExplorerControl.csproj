@@ -157,9 +157,6 @@
     <Compile Include="Views\FileExplorerControl.xaml.cs">
       <DependentUpon>FileExplorerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FileExplorerPage.xaml.cs">
-      <DependentUpon>FileExplorerPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MenuMenuCommand.xaml.cs">
       <DependentUpon>MenuMenuCommand.xaml</DependentUpon>
     </Compile>
@@ -205,10 +202,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FileExplorerControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FileExplorerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

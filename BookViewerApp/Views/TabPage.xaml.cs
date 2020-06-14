@@ -101,11 +101,7 @@ namespace BookViewerApp.Views
 
         public async void OpenTabBookPicked()
         {
-            var (frame, newTab) = OpenTab("BookViewer");
-            if (!await UIHelper.FrameOperation.OpenBookPicked(frame, newTab))
-            {
-                CloseTab(newTab);
-            }
+            await UIHelper.FrameOperation.OpenBookPicked(() => OpenTab("BookViewer"));
         }
 
         public void OpenTabBook(IEnumerable<Windows.Storage.IStorageItem> files)
@@ -117,10 +113,14 @@ namespace BookViewerApp.Views
 
         public void OpenTabBook(Windows.Storage.IStorageItem file)
         {
-            var (frame, newTab) = OpenTab("BookViewer");
             if (file is Windows.Storage.IStorageFile item)
             {
-                UIHelper.FrameOperation.OpenBook(item, frame, newTab);
+                UIHelper.FrameOperation.OpenBook(item, () => OpenTab("BookViewer"),()=>
+                {
+                    //Dialog:Open dangerous file?
+                    //Open.
+                    //Or just ignore.
+                });
             }
         }
 
