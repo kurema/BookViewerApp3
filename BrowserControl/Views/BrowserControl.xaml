@@ -100,13 +100,37 @@
                                         <Setter Property="CornerRadius" Value="0"/>
                                     </Style>
                                 </Grid.Resources>
-                                <RadioButton Grid.Column="0" GroupName="tabGroup" x:Name="TabButtonDownload" IsChecked="True">
+                                <RadioButton Grid.Column="1" GroupName="tabGroup" x:Name="TabButtonDownload" >
                                     <SymbolIcon Symbol="Download"/>
                                 </RadioButton>
-                                <RadioButton Grid.Column="1" GroupName="tabGroup">
+                                <RadioButton Grid.Column="0" GroupName="tabGroup"  x:Name="TabButtonBookmark" IsChecked="True" Tapped="ListViewItem_Tapped_1">
                                     <SymbolIcon Symbol="Bookmarks"/>
                                 </RadioButton>
                             </Grid>
+                            <StackPanel Visibility="{Binding IsChecked ,ElementName=TabButtonBookmark,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}">
+                                <ListView ItemsSource="{Binding BookmarkCurrent}" ItemClick="listViewBookmarks_ItemClick" SelectionMode="None" IsItemClickEnabled="True" x:Name="listViewBookmarks">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <SymbolIcon Margin="0,0,5,0" Symbol="{Binding IsFolder,Converter={StaticResource vc_b2s},ConverterParameter=Folder:World,TargetNullValue=False}" Grid.Column="0"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <!--<ListViewItem HorizontalContentAlignment="Center" Tapped="ListViewItem_Tapped_1">
+                                    <SymbolIcon Symbol="Up"/>
+                                </ListViewItem>-->
+                            </StackPanel>
                             <StackPanel Visibility="{Binding IsChecked ,ElementName=TabButtonDownload,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}">
                                 <ListView ItemsSource="{Binding Downloads}" SelectionMode="None" Margin="0">
                                     <ListView.ItemContainerStyle>

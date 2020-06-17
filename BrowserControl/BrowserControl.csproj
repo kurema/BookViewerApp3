@@ -124,6 +124,7 @@
     <Compile Include="Helper\ValueConverters.cs" />
     <Compile Include="ViewModels\BrowserControlViewModel.cs" />
     <Compile Include="ViewModels\DownloadItemViewModel.cs" />
+    <Compile Include="ViewModels\IBookmarkItem.cs" />
     <Compile Include="Views\BrowserControl.xaml.cs">
       <DependentUpon>BrowserControl.xaml</DependentUpon>
     </Compile>

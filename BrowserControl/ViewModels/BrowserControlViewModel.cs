@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 
 using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace kurema.BrowserControl.ViewModels
 {
@@ -75,6 +75,22 @@ namespace kurema.BrowserControl.ViewModels
 
         private ObservableCollection<DownloadItemViewModel> _Downloads = new ObservableCollection<DownloadItemViewModel>();
         public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }
+
+        public ObservableCollection<IBookmarkItem> BookmarkCurrent { get; } = new ObservableCollection<IBookmarkItem>();
+
+
+        private Func< Task<IEnumerable<IBookmarkItem>>> _BookmarkProvider;
+        public Func<Task<IEnumerable<IBookmarkItem>>> BookmarkProvider { get => _BookmarkProvider; set
+            {
+                SetProperty(ref _BookmarkProvider, value);
+                if (value == null) return;
+                Task.Run(async () =>
+                {
+                    BookmarkCurrent.Clear();
+                    foreach (var item in await value.Invoke()) BookmarkCurrent.Add(item);
+                });
+            }
+        }
 
 
         private ICommand _OpenDownloadDirectoryCommand;

@@ -164,5 +164,34 @@ namespace kurema.BrowserControl.Views
                 }
             }
         }
+
+        private async void listViewBookmarks_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (sender is ItemsControl list && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem && DataContext is ViewModels.BrowserControlViewModel vm)
+            {
+                if (bookmarkItem.IsFolder)
+                {
+                    vm.BookmarkCurrent.Clear();
+                    foreach (var item in await bookmarkItem.GetChilderen()) vm.BookmarkCurrent.Add(item);
+                }
+                else
+                {
+                    Uri uri;
+                    if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out uri))
+                    {
+                        webView.Navigate(uri);
+                    }
+                }
+            }
+        }
+
+        private async void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkProvider != null && vm.BookmarkCurrent != null)
+            {
+                vm.BookmarkCurrent.Clear();
+                foreach (var item in await vm.BookmarkProvider.Invoke()) vm.BookmarkCurrent.Add(item);
+            }
+        }
     }
 }

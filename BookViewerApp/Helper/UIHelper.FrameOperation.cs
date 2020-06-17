@@ -78,6 +78,7 @@ namespace BookViewerApp.Helper
             public static async void OpenExplorer(Frame frame, FrameworkElement sender = null)
             {
                 {
+                    //Too long! Split!
                     UIHelper.SetTitleByResource(sender, "Explorer");
                     frame.Navigate(typeof(kurema.FileExplorerControl.Views.FileExplorerControl), null);
                     if (frame.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
@@ -245,6 +246,23 @@ namespace BookViewerApp.Helper
 
                 if ((frame.Content as kurema.BrowserControl.Views.BrowserControl)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
                 {
+                    {
+                        var bookmark = LibraryStorage.GetItemBookmarks((_) => { });
+                        vm.BookmarkProvider = async () =>
+                        {
+                            return (await bookmark.GetChildren())?.Select<kurema.FileExplorerControl.Models.FileItems.IFileItem, kurema.BrowserControl.ViewModels.IBookmarkItem>(a =>
+                            {
+                                if (a is kurema.FileExplorerControl.Models.FileItems.IStorageBookmark bm) { return bm.GetBrowserBookmarkItem(); }
+                                else if (a is kurema.FileExplorerControl.Models.FileItems.ContainerItem container)
+                                {
+                                    return new kurema.BrowserControl.ViewModels.BookmarkItem(container.Name, (_) => { }
+                                    , async () => container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem()));
+                                }
+                                else return null;
+                            })?.Where(a => a != null);
+                        };
+                    }
+
                     vm.OpenDownloadDirectoryCommand = new Helper.DelegateCommand(async (_) =>
                     {
                         var folder = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Download", Windows.Storage.CreationCollisionOption.OpenIfExists);

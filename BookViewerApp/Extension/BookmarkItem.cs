@@ -1,4 +1,5 @@
 ﻿using BookViewerApp.Storages.Library;
+using kurema.BrowserControl.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -57,7 +58,6 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
-
         public Task<ulong?> GetSizeAsync()
         {
             return Task.FromResult((ulong?)GetBytes().Length);
@@ -86,6 +86,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
 
+        public IBookmarkItem GetBrowserBookmarkItem()
+        {
+            return new BookmarkItem(Content.title, Content.url);
+        }
     }
 
     public interface IStorageBookmark : IFileItem
@@ -94,6 +98,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         Action<string> ActionOpen { get; set; }
         Action ActionDelete { get; set; }
         Func<IFileItem, MenuCommand[]> MenuCommandsProvider { set; }
+        IBookmarkItem GetBrowserBookmarkItem();
     }
 
     public class StorageBookmarkContainer : IFileItem, IStorageBookmark
@@ -137,6 +142,13 @@ namespace kurema.FileExplorerControl.Models.FileItems
             ResultCache = this.ResultCache?? new ObservableCollection<IFileItem>();
             ResultCache.Clear();
             if (Content.Items == null) return Task.FromResult(ResultCache);
+            foreach (var item in GetChildrenStorageBookmark()) ResultCache.Add(item);
+            return Task.FromResult(ResultCache);
+        }
+
+        protected List<IStorageBookmark> GetChildrenStorageBookmark()
+        {
+            var result = new List<IStorageBookmark>();
             foreach (var item in Content.Items)
             {
                 IStorageBookmark bookmark = null;
@@ -158,9 +170,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
                 };
                 bookmark.MenuCommandsProvider = this.MenuCommandsProvider;
                 bookmark.IsReadOnly = IsReadOnly;
-                ResultCache.Add(bookmark);
+                result.Add(bookmark);
             }
-            return Task.FromResult(ResultCache);
+            return result;
         }
 
         public Task<ulong?> GetSizeAsync()
@@ -185,6 +197,37 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public event EventHandler Updated;
 
         public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
+        private Task<IEnumerable<IBookmarkItem>> IBookmarkItemGetChilderen()
+        {
+            return Task.FromResult(GetChildrenStorageBookmark()?.Select(a => a.GetBrowserBookmarkItem()));
+        }
+
+        private void IBookmarkItemAddItem(IBookmarkItem content)
+        {
+            if (Content == null) return;
+            if (content == null) return;
+            var items = Content.Items.ToList() ?? new List<object>();
+            if (!content.IsFolder)
+            {
+                items.Add(new libraryBookmarksContainerBookmark()
+                {
+                    created=DateTime.Now,
+                    title=content.Title,
+                    url=content.Address,
+                });
+            }
+            else
+            {
+                //まぁ追加するのは自然だけど実装が面倒だし、今のところは使わない。
+                throw new NotImplementedException();
+            }
+        }
+
+        public IBookmarkItem GetBrowserBookmarkItem()
+        {
+            return new BookmarkItem(Content.title, IBookmarkItemAddItem, IBookmarkItemGetChilderen);
+        }
 
     }
 }
