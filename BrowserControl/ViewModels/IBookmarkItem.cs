@@ -8,8 +8,9 @@ namespace kurema.BrowserControl.ViewModels
     {
         string Title { get; }
         bool IsFolder { get; }
+        bool IsReadOnly { get; }
         string Address { get; }
-        Task<IEnumerable<IBookmarkItem>> GetChilderen();
+        Task<IEnumerable<IBookmarkItem>> GetChilderenAsync();
 
         void AddItem(IBookmarkItem content);
     }
@@ -50,7 +51,9 @@ namespace kurema.BrowserControl.ViewModels
 
         public Func<Task<IEnumerable<IBookmarkItem>>> GetChilderenDelegate { get; set; }
 
-        public Task<IEnumerable<IBookmarkItem>> GetChilderen()
+        public bool IsReadOnly { get; set; }
+
+        public Task<IEnumerable<IBookmarkItem>> GetChilderenAsync()
         {
             return GetChilderenDelegate?.Invoke() ?? Task.FromResult<IEnumerable<IBookmarkItem>>(null);
         }

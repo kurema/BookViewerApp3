@@ -80,6 +80,7 @@ namespace kurema.BrowserControl.Views
             //To stop audio in background.
             //There should be the better way.
             webView.NavigateToString("");
+            this.Content = new Grid();
         }
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -172,7 +173,7 @@ namespace kurema.BrowserControl.Views
                 if (bookmarkItem.IsFolder)
                 {
                     vm.BookmarkCurrent.Clear();
-                    foreach (var item in await bookmarkItem.GetChilderen()) vm.BookmarkCurrent.Add(item);
+                    foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
                 }
                 else
                 {
@@ -187,11 +188,82 @@ namespace kurema.BrowserControl.Views
 
         private async void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
-            if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkProvider != null && vm.BookmarkCurrent != null)
+            if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null && vm.BookmarkCurrent != null)
             {
                 vm.BookmarkCurrent.Clear();
-                foreach (var item in await vm.BookmarkProvider.Invoke()) vm.BookmarkCurrent.Add(item);
+                foreach (var item in await vm.BookmarkRoot.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var node = treeView_BookMarkAdd.SelectedNode;
+            if (node == null || node.Content == null)
+            {
+                if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null)
+                {
+                    vm.BookmarkRoot.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
+                    button_favorite.Flyout.Hide();
+                }
+                return;
+            }
+            if (node.Content is ViewModels.IBookmarkItem bm)
+            {
+                bm.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
+                button_favorite.Flyout.Hide();
+            }
+            else
+            {
+                ////Delete on next commit
+                //var current = sender as FrameworkElement;
+                //while (true)
+                //{
+                //    if(current is FlyoutPresenter flyoutPresenter)
+                //    {
+                //    }
+                //    current = current.Parent as FrameworkElement;
+                //    if (current == null) return;
+                //}
+            }
+        }
+
+        private async void TreeView_Expanding(Microsoft.UI.Xaml.Controls.TreeView sender, Microsoft.UI.Xaml.Controls.TreeViewExpandingEventArgs args)
+        {
+            if (!args.Node.HasUnrealizedChildren) return;
+
+            sender.IsEnabled = false;
+
+            try
+            {
+                if (args.Item is ViewModels.IBookmarkItem vm)
+                {
+                    var container = sender.ContainerFromItem(args.Item);
+
+                    if (!vm.IsFolder) return;
+                    var child = (await vm.GetChilderenAsync())?.Where(a => a.IsFolder && !a.IsReadOnly);
+                    if (child == null) return;
+                    if (container is Microsoft.UI.Xaml.Controls.TreeViewItem tvi)
+                    {
+                        tvi.ItemsSource = child;
+                    }
+                    //args.Node.Children.Clear();
+                    //foreach (var item in child)
+                    //{
+                    //    args.Node.Children.Add(new TreeViewNode()
+                    //    {
+                    //        IsExpanded = false,
+                    //        Content = item,
+                    //        HasUnrealizedChildren = item.IsFolder,
+                    //    });
+                    //}
+                }
+            }
+            finally
+            {
+                args.Node.HasUnrealizedChildren = false;
+                sender.IsEnabled = true;
+            }
+
         }
     }
 }

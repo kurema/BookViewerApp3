@@ -77,17 +77,21 @@ namespace kurema.BrowserControl.ViewModels
         public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }
 
         public ObservableCollection<IBookmarkItem> BookmarkCurrent { get; } = new ObservableCollection<IBookmarkItem>();
+        public ObservableCollection<IBookmarkItem> BookmarkAddFolders { get; } = new ObservableCollection<IBookmarkItem>();
 
-
-        private Func< Task<IEnumerable<IBookmarkItem>>> _BookmarkProvider;
-        public Func<Task<IEnumerable<IBookmarkItem>>> BookmarkProvider { get => _BookmarkProvider; set
+        private IBookmarkItem _BookmarkProvider;
+        public IBookmarkItem BookmarkRoot { get => _BookmarkProvider; set
             {
                 SetProperty(ref _BookmarkProvider, value);
                 if (value == null) return;
                 Task.Run(async () =>
                 {
                     BookmarkCurrent.Clear();
-                    foreach (var item in await value.Invoke()) BookmarkCurrent.Add(item);
+                    BookmarkAddFolders.Clear();
+                    var bookmarkResult = await value.GetChilderenAsync();
+                    if (bookmarkResult == null) return;
+                    foreach (var item in bookmarkResult) BookmarkCurrent.Add(item);
+                    foreach (var item in bookmarkResult?.Where(a => !a.IsReadOnly && a.IsFolder)) BookmarkAddFolders.Add(item);
                 });
             }
         }

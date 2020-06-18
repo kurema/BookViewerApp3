@@ -248,19 +248,28 @@ namespace BookViewerApp.Helper
                 {
                     {
                         var bookmark = LibraryStorage.GetItemBookmarks((_) => { });
-                        vm.BookmarkProvider = async () =>
+                        vm.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", async (bmNew) =>
                         {
-                            return (await bookmark.GetChildren())?.Select<kurema.FileExplorerControl.Models.FileItems.IFileItem, kurema.BrowserControl.ViewModels.IBookmarkItem>(a =>
+                            var contentLib = (await LibraryStorage.Content.GetContentAsync());
+                            if (contentLib?.bookmarks == null) return;
+                            var bookmarksLib = contentLib.bookmarks?.Items?.ToList() ?? new System.Collections.Generic.List<object>();
+                            bookmarksLib.Add(new Storages.Library.libraryBookmarksContainerBookmark() { created = DateTime.Now, title = bmNew.Title, url = bmNew.Address });
+                            contentLib.bookmarks.Items = bookmarksLib.ToArray();
+                            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.Bookmarks);
+                        }, async () =>
+                        {
+                            return (await bookmark.GetChildren())?.Select(a =>
                             {
                                 if (a is kurema.FileExplorerControl.Models.FileItems.IStorageBookmark bm) { return bm.GetBrowserBookmarkItem(); }
                                 else if (a is kurema.FileExplorerControl.Models.FileItems.ContainerItem container)
                                 {
                                     return new kurema.BrowserControl.ViewModels.BookmarkItem(container.Name, (_) => { }
-                                    , async () => container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem()));
+                                    , async () => container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem()))
+                                    { IsReadOnly = true };
                                 }
                                 else return null;
                             })?.Where(a => a != null);
-                        };
+                        });
                     }
 
                     vm.OpenDownloadDirectoryCommand = new Helper.DelegateCommand(async (_) =>

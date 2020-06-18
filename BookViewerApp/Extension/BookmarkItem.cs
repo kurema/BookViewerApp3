@@ -88,7 +88,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public IBookmarkItem GetBrowserBookmarkItem()
         {
-            return new BookmarkItem(Content.title, Content.url);
+            return new BookmarkItem(Content.title, Content.url) { IsReadOnly = this.IsReadOnly };
         }
     }
 
@@ -149,6 +149,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         protected List<IStorageBookmark> GetChildrenStorageBookmark()
         {
             var result = new List<IStorageBookmark>();
+            if (Content?.Items == null) return result;
             foreach (var item in Content.Items)
             {
                 IStorageBookmark bookmark = null;
@@ -205,9 +206,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         private void IBookmarkItemAddItem(IBookmarkItem content)
         {
+            if (IsReadOnly) return;
             if (Content == null) return;
             if (content == null) return;
-            var items = Content.Items.ToList() ?? new List<object>();
+            var items = Content.Items?.ToList() ?? new List<object>();
             if (!content.IsFolder)
             {
                 items.Add(new libraryBookmarksContainerBookmark()
@@ -216,6 +218,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                     title=content.Title,
                     url=content.Address,
                 });
+                Content.Items = items.ToArray();
             }
             else
             {
@@ -226,7 +229,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public IBookmarkItem GetBrowserBookmarkItem()
         {
-            return new BookmarkItem(Content.title, IBookmarkItemAddItem, IBookmarkItemGetChilderen);
+            return new BookmarkItem(Content.title, IBookmarkItemAddItem, IBookmarkItemGetChilderen) { IsReadOnly = this.IsReadOnly };
         }
 
     }

@@ -12,6 +12,8 @@
     d:DesignHeight="696.5"
     d:DesignWidth="839"
     
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     >
     <Page.DataContext>
@@ -32,6 +34,7 @@
         </Style>
         <vc:IsZeroValueConveter x:Key="IsZero"/>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
+        <vc:ObjectToTreeViewItemConverter x:Key="vc_tvi"/>
     </UserControl.Resources>
     <Grid
         HorizontalAlignment="Stretch"
@@ -70,11 +73,67 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
                     <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" 
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"/>
-                    <Button Click="Button_Click_OpenBrowser" Grid.Column="2">
+                    <Button Grid.Column="2" x:Name="button_favorite">
+                        <SymbolIcon Symbol="Favorite" />
+                        <Button.Flyout>
+                            <Flyout Placement="TopEdgeAlignedRight">
+                                <StackPanel MinWidth="200">
+                                    <TextBox Text="{Binding Title,Mode=OneWay}" Name="textBox_BookmarkAdd" VerticalAlignment="Stretch"/>
+                                    <winui:TreeView x:Name="treeView_BookMarkAdd" SelectionMode="Single" ItemsSource="{Binding BookmarkAddFolders}" CanReorderItems="False" CanDragItems="False"  Expanding="TreeView_Expanding">
+                                        <winui:TreeView.ItemTemplate>
+                                            <DataTemplate>
+                                                <winui:TreeViewItem HasUnrealizedChildren="True">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <SymbolIcon Margin="0,0,5,0" Symbol="Folder" Grid.Column="0"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </winui:TreeViewItem>
+                                            </DataTemplate>
+                                        </winui:TreeView.ItemTemplate>
+                                    </winui:TreeView>
+                                    
+                                    <!--<ListView ItemsSource="{Binding BookmarkAddFolders}" SelectionMode="Single" IsItemClickEnabled="True" x:Name="listViewBookmarksAddFolder">
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <SymbolIcon Margin="0,0,5,0" Symbol="Folder" Grid.Column="0"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="Button_Click">
+                                            <SymbolIcon Symbol="Add"/>
+                                        </Button>
+                                    </Grid>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Click="Button_Click_OpenBrowser" Grid.Column="3">
                         <SymbolIcon Symbol="Share" />
                     </Button>
                     <Grid Grid.ColumnSpan="2" IsHitTestVisible="False"  x:Name="errorText" Background="{ThemeResource TextBoxBackgroundThemeBrush}" Opacity="0">

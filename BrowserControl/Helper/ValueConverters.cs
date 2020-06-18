@@ -49,4 +49,26 @@ namespace kurema.BrowserControl.Helper.ValueConverters
             return text[0] == value.ToString() ? 0 : 1;
         }
     }
+
+    public class ObjectToTreeViewItemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is IEnumerable<object> obj)
+            {
+                return obj.Select(a => new Windows.UI.Xaml.Controls.TreeViewNode()
+                {
+                    HasUnrealizedChildren = true,
+                    Content = a,
+                    IsExpanded = false,
+                }).ToArray();
+            }
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
