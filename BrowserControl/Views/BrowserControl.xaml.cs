@@ -212,19 +212,6 @@ namespace kurema.BrowserControl.Views
                 bm.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
                 button_favorite.Flyout.Hide();
             }
-            else
-            {
-                ////Delete on next commit
-                //var current = sender as FrameworkElement;
-                //while (true)
-                //{
-                //    if(current is FlyoutPresenter flyoutPresenter)
-                //    {
-                //    }
-                //    current = current.Parent as FrameworkElement;
-                //    if (current == null) return;
-                //}
-            }
         }
 
         private async void TreeView_Expanding(Microsoft.UI.Xaml.Controls.TreeView sender, Microsoft.UI.Xaml.Controls.TreeViewExpandingEventArgs args)
@@ -246,16 +233,6 @@ namespace kurema.BrowserControl.Views
                     {
                         tvi.ItemsSource = child;
                     }
-                    //args.Node.Children.Clear();
-                    //foreach (var item in child)
-                    //{
-                    //    args.Node.Children.Add(new TreeViewNode()
-                    //    {
-                    //        IsExpanded = false,
-                    //        Content = item,
-                    //        HasUnrealizedChildren = item.IsFolder,
-                    //    });
-                    //}
                 }
             }
             finally

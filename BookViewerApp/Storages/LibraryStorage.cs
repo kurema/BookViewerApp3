@@ -22,6 +22,9 @@ namespace BookViewerApp.Storages
 
         public static StorageContent<Library.bookmarks_library> LocalBookmark = new StorageContent<Library.bookmarks_library>(StorageContent<Library.bookmarks_library>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
 
+        
+        public static StorageContent<Library.libraryBookmarks> RoamingBookmarks = new StorageContent<Library.libraryBookmarks>(StorageContent<Library.libraryBookmarks>.SavePlaces.Roaming, "Bookmarks.xml", () => new Library.libraryBookmarks());
+
         public enum LibraryKind
         {
             Library, History, Folders, Bookmarks
@@ -107,19 +110,20 @@ namespace BookViewerApp.Storages
             {
                 var library = await Content.GetContentAsync();
                 var bookmark_local = await LocalBookmark.GetContentAsync();
+                var bookmark_roaming = await RoamingBookmarks.GetContentAsync();
 
                 var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
+                list.AddRange(bookmark_roaming?.AsFileItem(bookmarkAction)?.Where(a => a != null) ?? new IFileItem[0]);
 
-                foreach (var item in list)
+                foreach (var item in list.OrderBy(a=>a.IsFolder))
                 {
                     switch (item)
                     {
                         case StorageBookmarkContainer item1:
                             item1.ActionDelete = () =>
                             {
-                                var items = library.bookmarks.Items.ToList();
-                                items.Remove(item1.Content);
-                                library.bookmarks.Items = items.ToArray();
+                                library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item1.Content).ToArray();
+                                bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item1.Content).ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
@@ -129,9 +133,8 @@ namespace BookViewerApp.Storages
                         case StorageBookmarkItem item2:
                             item2.ActionDelete = () =>
                             {
-                                var items = library.bookmarks.Items.ToList();
-                                items.Remove(item2.Content);
-                                library.bookmarks.Items = items.ToArray();
+                                library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item2.Content).ToArray();
+                                bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item2.Content).ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
@@ -254,17 +257,18 @@ namespace BookViewerApp.Storages
 
         public static async void OperateBookmark(Func<List<object>, Task> action)
         {
-            var library = await Content.GetContentAsync();
-            if (library == null)
+            var bookmarksRoaming = await RoamingBookmarks.GetContentAsync();
+            if (bookmarksRoaming == null)
             {
                 await action(null);
                 return;
             }
-            library.bookmarks = library.bookmarks ?? new Library.libraryBookmarks();
-            var bookmarks = (library.bookmarks.Items ?? new object[0]).ToList();
+            bookmarksRoaming = bookmarksRoaming ?? new Library.libraryBookmarks();
+            var bookmarks = (bookmarksRoaming.Items ?? new object[0]).ToList();
             await action(bookmarks);
-            library.bookmarks.Items = bookmarks.ToArray();
+            bookmarksRoaming.Items = bookmarks.ToArray();
             OnLibraryUpdateRequest(LibraryKind.Bookmarks);
+            await RoamingBookmarks.SaveAsync();
         }
 
         public static Dictionary<string, int> GetTokenUsedCount(bool includeHistory = true)
@@ -352,6 +356,8 @@ namespace BookViewerApp.Storages
             }
         }
 
+        [System.Xml.Serialization.XmlRoot(ElementName ="bookmarks", Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+            "ry.xsd", IsNullable = false)]
         public partial class libraryBookmarks
         {
             public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false)

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BookViewerApp")]
-[assembly: AssemblyCopyright("Copyright © kurema  2015-2017")]
+[assembly: AssemblyCopyright("Copyright © kurema")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

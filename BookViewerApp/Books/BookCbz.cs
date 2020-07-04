@@ -96,24 +96,7 @@ namespace BookViewerApp.Books
                 }
             }
 
-            IOrderedEnumerable<ZipArchiveEntry> tempOrder;
-            if ((bool)SettingStorage.GetValue("SortNaturalOrder"))
-            {
-                tempOrder = entries.OrderBy((a) => new NaturalSort.NaturalList(a.FullName));
-                //entries.Sort((a, b) => NaturalSort.NaturalCompare(a.FullName, b.FullName));
-            }
-            else
-            {
-                tempOrder = entries.OrderBy((a) => a.FullName);
-                //entries.Sort((a, b) => a.FullName.CompareTo(b.FullName));
-            }
-
-            if ((bool)SettingStorage.GetValue("SortCoverComesFirst"))
-            {
-                tempOrder = tempOrder.ThenBy((a) => a.FullName.ToLower().Contains("cover"));
-                //entries.Sort((a, b) => b.FullName.ToLower().Contains("cover").CompareTo(a.FullName.ToLower().Contains("cover")));
-            }
-            entries = tempOrder.ToList();
+            entries = Functions.SortByArchiveEntry(entries, (a) => a.FullName).ToList();
 
             {
                 //toc関係

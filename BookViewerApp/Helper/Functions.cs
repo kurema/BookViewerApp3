@@ -153,5 +153,69 @@ namespace BookViewerApp.Helper
                 if (string.IsNullOrEmpty(currentDir)) return false;
             }
         }
+
+        public static void ArrayAdd<T>(ref T[] ts, T t)
+        {
+            ArrayOperate<T>(ref ts, (list) => list.Add(t));
+        }
+
+        public static void ArrayRemove<T>(ref T[] ts, T t)
+        {
+            ArrayOperate<T>(ref ts, (list) => { if (list.Contains(t)) list.Remove(t); });
+        }
+
+        public static void ArrayOperate<T>(ref T[] ts, Action<List<T>> action)
+        {
+            var list = ts.ToList();
+            action?.Invoke(list);
+            ts = list.ToArray();
+        }
+
+        public static List<T> GetArrayAdded<T>(IEnumerable<T> ts, T t)
+        {
+            return GetArrayOperated(ts, list => list.Add(t));
+        }
+
+        public static List<T> GetArrayRemoved<T>(IEnumerable<T> ts, T t)
+        {
+            return GetArrayOperated(ts, list => { if (list.Contains(t)) { list.Remove(t); } });
+        }
+
+
+        public static List<T> GetArrayOperated<T>(IEnumerable<T> ts, Action<List<T>> action)
+        {
+            var list = ts.ToList();
+            action?.Invoke(list);
+            return list;
+        }
+
+        public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T,string> titleProvider)
+        {
+            Func<T, bool> SortCover = (a) => !titleProvider(a).ToLower().Contains("cover");
+            Func<T, NaturalSort.NaturalList> SortNatural = (a) => new NaturalSort.NaturalList(titleProvider(a));
+
+            if ((bool)Storages.SettingStorage.GetValue("SortNaturalOrder"))
+            {
+                if ((bool)Storages.SettingStorage.GetValue("SortCoverComesFirst"))
+                {
+                    return entries.OrderBy(SortCover).ThenBy(SortNatural);
+                }
+                else
+                {
+                    return entries.OrderBy(SortNatural);
+                }
+            }
+            else
+            {
+                if ((bool)Storages.SettingStorage.GetValue("SortCoverComesFirst"))
+                {
+                    return entries.OrderBy(SortCover).ThenBy(titleProvider);
+                }
+                else
+                {
+                    return entries.OrderBy(titleProvider);
+                }
+            }
+        }
     }
 }

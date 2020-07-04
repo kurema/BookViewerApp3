@@ -114,6 +114,7 @@ namespace BookViewerApp
 
             await BookInfoStorage.SaveAsync();
             await LibraryStorage.Content.SaveAsync();
+            await LibraryStorage.RoamingBookmarks.SaveAsync();
 
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();

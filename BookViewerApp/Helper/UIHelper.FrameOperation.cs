@@ -250,12 +250,11 @@ namespace BookViewerApp.Helper
                         var bookmark = LibraryStorage.GetItemBookmarks((_) => { });
                         vm.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", async (bmNew) =>
                         {
-                            var contentLib = (await LibraryStorage.Content.GetContentAsync());
-                            if (contentLib?.bookmarks == null) return;
-                            var bookmarksLib = contentLib.bookmarks?.Items?.ToList() ?? new System.Collections.Generic.List<object>();
-                            bookmarksLib.Add(new Storages.Library.libraryBookmarksContainerBookmark() { created = DateTime.Now, title = bmNew.Title, url = bmNew.Address });
-                            contentLib.bookmarks.Items = bookmarksLib.ToArray();
-                            LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.Bookmarks);
+                            LibraryStorage.OperateBookmark(a =>
+                            {
+                                a?.Add(new Storages.Library.libraryBookmarksContainerBookmark() { created = DateTime.Now, title = bmNew.Title, url = bmNew.Address });
+                                return Task.CompletedTask;
+                            });
                         }, async () =>
                         {
                             return (await bookmark.GetChildren())?.Select(a =>
