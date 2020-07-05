@@ -25,6 +25,7 @@
       <container title="検索エンジン">
         <bookmark url="https://www.google.co.jp/" title="Google" />
         <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
+        <bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
       </container>
       <container title="無料書籍">
         <bookmark url="https://www.aozora.gr.jp/" title="青空文庫" />

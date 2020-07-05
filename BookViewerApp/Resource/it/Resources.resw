@@ -428,7 +428,7 @@ Annullare la registrazione?</value>
     <value>sponsor</value>
   </data>
   <data name="Info.Info.ThirdParty.License" xml:space="preserve">
-    <value>Contratto Microsoft</value>
+    <value>Licenza</value>
   </data>
   <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
     <value>Condizioni di licenza</value>
@@ -455,7 +455,7 @@ Annullare la registrazione?</value>
     <value>Apre la cartella dei dati.</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
-    <value>Esegui debug</value>
+    <value>Debug</value>
   </data>
   <data name="Info.Debug.CopyFAL" xml:space="preserve">
     <value>Copia le informazioni di FutureAccessList.</value>

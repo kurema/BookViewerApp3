@@ -361,4 +361,109 @@
   <data name="Setting_ShowHistories.Title" xml:space="preserve">
     <value>显示历史</value>
   </data>
+  <data name="ItemType.BookmarkContainer" xml:space="preserve">
+    <value>书签文件夹</value>
+  </data>
+  <data name="ItemType.BookmarkItem" xml:space="preserve">
+    <value>书签项</value>
+  </data>
+  <data name="ItemType.HistoryItem" xml:space="preserve">
+    <value>浏览记录</value>
+  </data>
+  <data name="ItemType.PresetBookmark" xml:space="preserve">
+    <value>预设书签</value>
+  </data>
+  <data name="ItemType.LibraryItem" xml:space="preserve">
+    <value>库</value>
+  </data>
+  <data name="ItemType.SystemFolder" xml:space="preserve">
+    <value>系统文件夹</value>
+  </data>
+  <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
+    <value>打开所在文件夹</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
+    <value>隐藏预设书签</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
+    <value>显示预设书签</value>
+  </data>
+  <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
+    <value>取消注册该库</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
+    <value>要保存的最大履历记录数。</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
+    <value>履历记录数</value>
+  </data>
+  <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
+    <value>管理图书馆</value>
+  </data>
+  <data name="ContextMenu.Word.New.Title" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="Word.Folder" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
+    <value>新建文件夹</value>
+  </data>
+  <data name="ContextMenu.Word.New.Bookmark.Title" xml:space="preserve">
+    <value>书签</value>
+  </data>
+  <data name="Word.Title" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="Word.URL" xml:space="preserve">
+    <value>网站地址(URL)</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Info.Info.Contributors" xml:space="preserve">
+    <value>参与者</value>
+  </data>
+  <data name="Info.Info.ThirdParty.License" xml:space="preserve">
+    <value>许可证</value>
+  </data>
+  <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
+    <value>许可条款</value>
+  </data>
+  <data name="Info.Info.Title" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="Info.Info.Translation" xml:space="preserve">
+    <value>译文</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
+    <value>第三方通知</value>
+  </data>
+  <data name="Info.Info.BeSponsor" xml:space="preserve">
+    <value>成为赞助商！</value>
+  </data>
+  <data name="Info.Info.Privacy.Description" xml:space="preserve">
+    <value>显示隐私权政策</value>
+  </data>
+  <data name="Info.Info.Privacy.Title" xml:space="preserve">
+    <value>隐私</value>
+  </data>
+  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+    <value>打开数据文件夹。</value>
+  </data>
+  <data name="Info.Debug.Title" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+    <value>复制FutureAccessList信息。</value>
+  </data>
+  <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
+    <value>第三方</value>
+  </data>
+  <data name="Info.Info.Sponsors" xml:space="preserve">
+    <value>发起人</value>
+  </data>
+  <data name="Info.Info.Developers" xml:space="preserve">
+    <value>开发人员</value>
+  </data>
 </root>

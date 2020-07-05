@@ -220,10 +220,10 @@
     <value>Show go to rightmost /leftmost button</value>
   </data>
   <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
-    <value>Sync bookmarks over the cloud.</value>
+    <value>Sync bookmarks of books over the cloud.</value>
   </data>
   <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
-    <value>Sync bookmarks</value>
+    <value>Sync bookmarks of books</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>

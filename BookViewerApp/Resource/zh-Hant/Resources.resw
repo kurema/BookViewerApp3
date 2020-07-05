@@ -19,7 +19,7 @@
     <value>添加目錄到書架</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>Book Viewer 3</value>
+    <value>BookViewer3</value>
   </data>
   <data name="BookmarkLast.Title" xml:space="preserve">
     <value>[最後頁]</value>
@@ -120,11 +120,110 @@
   <data name="Welcome_OpenMenu" xml:space="preserve">
     <value>打開其他功能</value>
   </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>打開書本時將全屏模式設置為打開。</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>將全屏設置為默認</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>當您打開一本新書時，默認情況下為反向頁面。</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>默認為反向頁面</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
+    <value>自動打開您上次閱讀的頁面。</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
+    <value>自動打開最後閱讀的頁面</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
+    <value>在書籍查看器中顯示轉到最右/最左按鈕。</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
+    <value>顯示轉到最右邊/最左邊的按鈕</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
+    <value>使用OneDrive同步書籍的書籤。</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
+    <value>同步書籍的書籤</value>
+  </data>
+  <data name="Setting_TileHeight.Description" xml:space="preserve">
+    <value>書架中的書瓦高度。</value>
+  </data>
+  <data name="Setting_TileHeight.Title" xml:space="preserve">
+    <value>書瓦高度</value>
+  </data>
+  <data name="Setting_TileWidth.Description" xml:space="preserve">
+    <value>書架中書瓦的寬度。</value>
+  </data>
+  <data name="Setting_TileWidth.Title" xml:space="preserve">
+    <value>書瓦寬度</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
+    <value>背景的亮度。 100：白色，0：黑色。 (與黑暗主題相反)</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
+    <value>背景亮度</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
+    <value>在圖書查看器上使用滾動動畫。</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
+    <value>滾動動畫</value>
+  </data>
+  <data name="Setting_BookNameTrim.Description" xml:space="preserve">
+    <value>匹配的部分隱藏在書名中。以正則表達式輸入。 （例如：\(.*\)）</value>
+  </data>
+  <data name="Setting_BookNameTrim.Title" xml:space="preserve">
+    <value>要修剪的書名</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
+    <value>如果正則表達式匹配，則在書架視圖中排除文件夾。</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
+    <value>排除的文件夾名稱</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
+    <value>假定在文件名中具有“cover”的圖片是CBZ / CBR中的第一個文件。</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
+    <value>在CBZ / CBR中按文件名假定封面圖片</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
+    <value>在CBZ / CBR中按自然順序排序（例如：01.jpg→2.jpg→003.jpg）</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
+    <value>CBZ / CBR中的自然排序</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
+    <value>觸摸屏幕時顯示縮放按鈕的秒數（0：禁用）。</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
+    <value>變焦按鈕顯示時間</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
+    <value>當您在書本查看器頁面上觸摸屏幕時，以秒為單位顯示菜單（0：始終）。</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
+    <value>書籍查看器中的菜單顯示時間</value>
+  </data>
   <data name="Setting_WebHomePage.Description" xml:space="preserve">
     <value>首頁</value>
   </data>
   <data name="Setting_WebHomePage.Title" xml:space="preserve">
     <value>首頁</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
+    <value>遵守PDF的方向信息（R2L / L2R）。</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
+    <value>尊重方向信息</value>
+  </data>
+  <data name="Password.Message" xml:space="preserve">
+    <value>輸入密碼以打開。</value>
   </data>
   <data name="Password.Save.Message" xml:space="preserve">
     <value>儲存密碼</value>
@@ -198,19 +297,170 @@
   <data name="ExplorerContainer.Folders" xml:space="preserve">
     <value>資料夾</value>
   </data>
+  <data name="ExplorerContainer.Histories" xml:space="preserve">
+    <value>歷史</value>
+  </data>
   <data name="ExplorerContainer.Libraries" xml:space="preserve">
     <value>文件庫</value>
   </data>
   <data name="ExplorerContainer.PC" xml:space="preserve">
     <value>電腦</value>
   </data>
+  <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
+    <value>註冊文件夾</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.Title" xml:space="preserve">
+    <value>取消註冊文件夾</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
+    <value>該文件夾由以下庫引用。
+您確定要註銷嗎？</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
+    <value>取消註冊文件夾</value>
+  </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>新增媒體櫃</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
+    <value>添加到圖書館</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
+    <value>該文件夾已被註冊。</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
+    <value>無法註冊</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
+    <value>顯示預設書籤。</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
+    <value>顯示預設書籤</value>
   </data>
   <data name="Setting.Group.Explorer" xml:space="preserve">
     <value>檔案總管</value>
   </data>
+  <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
+    <value>設置從地址欄搜索時使用的搜索引擎URL（以％s代替查詢）。</value>
+  </data>
   <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
     <value>搜尋</value>
+  </data>
+  <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
+    <value>不顯示歷史</value>
+  </data>
+  <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
+    <value>顯示歷史</value>
+  </data>
+  <data name="Setting_ShowHistories.Description" xml:space="preserve">
+    <value>顯示歷史。</value>
+  </data>
+  <data name="Setting_ShowHistories.Title" xml:space="preserve">
+    <value>顯示歷史</value>
+  </data>
+  <data name="ItemType.BookmarkContainer" xml:space="preserve">
+    <value>書籤文件夾</value>
+  </data>
+  <data name="ItemType.BookmarkItem" xml:space="preserve">
+    <value>書籤項</value>
+  </data>
+  <data name="ItemType.HistoryItem" xml:space="preserve">
+    <value>歷史項目</value>
+  </data>
+  <data name="ItemType.PresetBookmark" xml:space="preserve">
+    <value>預設書籤</value>
+  </data>
+  <data name="ItemType.LibraryItem" xml:space="preserve">
+    <value>程式庫</value>
+  </data>
+  <data name="ItemType.SystemFolder" xml:space="preserve">
+    <value>系統資料夾</value>
+  </data>
+  <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
+    <value>開啟所屬資料夾</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
+    <value>隱藏預設書籤</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
+    <value>顯示預設書籤</value>
+  </data>
+  <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
+    <value>取消註冊該庫</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
+    <value>要保存的最大歷史記錄數。</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
+    <value>歷史數</value>
+  </data>
+  <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
+    <value>管理這個圖書館</value>
+  </data>
+  <data name="ContextMenu.Word.New.Title" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="Word.Folder" xml:space="preserve">
+    <value>資料夾</value>
+  </data>
+  <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
+    <value>新增資料夾</value>
+  </data>
+  <data name="ContextMenu.Word.New.Bookmark.Title" xml:space="preserve">
+    <value>書籤</value>
+  </data>
+  <data name="Word.Title" xml:space="preserve">
+    <value>標題</value>
+  </data>
+  <data name="Word.URL" xml:space="preserve">
+    <value>網址</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
+    <value>編輯</value>
+  </data>
+  <data name="Info.Info.Contributors" xml:space="preserve">
+    <value>參與者</value>
+  </data>
+  <data name="Info.Info.ThirdParty.License" xml:space="preserve">
+    <value>授權</value>
+  </data>
+  <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
+    <value>授權條款</value>
+  </data>
+  <data name="Info.Info.Title" xml:space="preserve">
+    <value>資訊</value>
+  </data>
+  <data name="Info.Info.Translation" xml:space="preserve">
+    <value>翻譯</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
+    <value>第三方通知</value>
+  </data>
+  <data name="Info.Info.BeSponsor" xml:space="preserve">
+    <value>成為贊助商！</value>
+  </data>
+  <data name="Info.Info.Privacy.Description" xml:space="preserve">
+    <value>顯示隱私權政策</value>
+  </data>
+  <data name="Info.Info.Privacy.Title" xml:space="preserve">
+    <value>隱私權</value>
+  </data>
+  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+    <value>開啟數據資料夾。</value>
+  </data>
+  <data name="Info.Debug.Title" xml:space="preserve">
+    <value>除錯</value>
+  </data>
+  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+    <value>複製FutureAccessList信息。</value>
+  </data>
+  <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
+    <value>協力廠商</value>
+  </data>
+  <data name="Info.Info.Sponsors" xml:space="preserve">
+    <value>贊助者</value>
+  </data>
+  <data name="Info.Info.Developers" xml:space="preserve">
+    <value>開發人員</value>
   </data>
 </root>
