@@ -7,133 +7,133 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:export-ydpi="600"
-   inkscape:export-xdpi="600"
-   inkscape:export-filename="D:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3\res\Icon 3\icon_small.png"
-   id="SVGRoot"
-   version="1.1"
-   viewBox="0 0 64.0 64.0"
-   height="64.0px"
-   width="64.0px"
+   sodipodi:docname="BookOnly.svg"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="Icon_Small.svg">
+   width="64.0px"
+   height="64.0px"
+   viewBox="0 0 64.0 64.0"
+   version="1.1"
+   id="SVGRoot"
+   inkscape:export-filename="D:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3\res\Icon 3\icon_small.png"
+   inkscape:export-xdpi="600"
+   inkscape:export-ydpi="600">
   <defs
      id="defs18">
     <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter972"
-       x="-5.2147366e-05"
-       width="1.0001043"
+       height="1.0000737"
        y="-3.687333e-05"
-       height="1.0000737">
+       width="1.0001043"
+       x="-5.2147366e-05"
+       id="filter972"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
       <feGaussianBlur
-         inkscape:collect="always"
+         id="feGaussianBlur974"
          stdDeviation="0.00076048242"
-         id="feGaussianBlur974" />
+         inkscape:collect="always" />
     </filter>
     <filter
-       style="color-interpolation-filters:sRGB;"
-       inkscape:label="Drop Shadow"
-       id="filter1662"
-       x="-0.5"
-       y="0"
+       height="1.5"
        width="2"
-       height="1.5">
+       y="0"
+       x="-0.5"
+       id="filter1662"
+       inkscape:label="Drop Shadow"
+       style="color-interpolation-filters:sRGB;">
       <feFlood
-         flood-opacity="0.25098"
-         flood-color="rgb(0,0,0)"
+         id="feFlood1652"
          result="flood"
-         id="feFlood1652" />
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.25098" />
       <feComposite
-         in="flood"
-         in2="SourceGraphic"
-         operator="in"
+         id="feComposite1654"
          result="composite1"
-         id="feComposite1654" />
+         operator="in"
+         in2="SourceGraphic"
+         in="flood" />
       <feGaussianBlur
-         in="composite1"
-         stdDeviation="2"
+         id="feGaussianBlur1656"
          result="blur"
-         id="feGaussianBlur1656" />
+         stdDeviation="2"
+         in="composite1" />
       <feOffset
-         dx="2.77556e-17"
-         dy="0"
+         id="feOffset1658"
          result="offset"
-         id="feOffset1658" />
+         dy="0"
+         dx="2.77556e-17" />
       <feComposite
-         in="SourceGraphic"
-         in2="offset"
-         operator="over"
+         id="feComposite1660"
          result="composite2"
-         id="feComposite1660" />
+         operator="over"
+         in2="offset"
+         in="SourceGraphic" />
     </filter>
     <filter
-       style="color-interpolation-filters:sRGB;"
-       inkscape:label="Drop Shadow"
-       id="filter2047"
-       x="-0.29999999999999999"
-       y="-0.29999999999999999"
+       height="1.6000000000000001"
        width="1.6000000000000001"
-       height="1.6000000000000001">
+       y="-0.29999999999999999"
+       x="-0.29999999999999999"
+       id="filter2047"
+       inkscape:label="Drop Shadow"
+       style="color-interpolation-filters:sRGB;">
       <feFlood
-         flood-opacity="0.80000000000000004"
-         flood-color="rgb(0,0,0)"
+         id="feFlood2037"
          result="flood"
-         id="feFlood2037" />
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.80000000000000004" />
       <feComposite
-         in="flood"
-         in2="SourceGraphic"
-         operator="in"
+         id="feComposite2039"
          result="composite1"
-         id="feComposite2039" />
+         operator="in"
+         in2="SourceGraphic"
+         in="flood" />
       <feGaussianBlur
-         in="composite1"
-         stdDeviation="2"
+         id="feGaussianBlur2041"
          result="blur"
-         id="feGaussianBlur2041" />
+         stdDeviation="2"
+         in="composite1" />
       <feOffset
-         dx="2.77556e-17"
-         dy="0"
+         id="feOffset2043"
          result="offset"
-         id="feOffset2043" />
+         dy="0"
+         dx="2.77556e-17" />
       <feComposite
-         in="SourceGraphic"
-         in2="offset"
-         operator="over"
+         id="feComposite2045"
          result="composite2"
-         id="feComposite2045" />
+         operator="over"
+         in2="offset"
+         in="SourceGraphic" />
     </filter>
   </defs>
   <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="48.414925"
-     inkscape:cy="44.922872"
-     inkscape:document-units="px"
-     inkscape:current-layer="g909"
-     inkscape:document-rotation="0"
-     showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1192"
-     inkscape:window-y="113"
-     inkscape:window-maximized="1"
-     inkscape:snap-global="true"
-     showguides="true"
-     inkscape:snap-bbox="false"
-     inkscape:snap-grids="false"
-     inkscape:snap-to-guides="true"
+     inkscape:object-paths="true"
      inkscape:snap-intersection-paths="true"
-     inkscape:object-paths="true">
+     inkscape:snap-to-guides="true"
+     inkscape:snap-grids="false"
+     inkscape:snap-bbox="false"
+     showguides="true"
+     inkscape:snap-global="true"
+     inkscape:window-maximized="1"
+     inkscape:window-y="113"
+     inkscape:window-x="1192"
+     inkscape:window-height="1017"
+     inkscape:window-width="1920"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="g909"
+     inkscape:document-units="px"
+     inkscape:cy="44.922872"
+     inkscape:cx="48.414925"
+     inkscape:zoom="7.7885057"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base">
     <inkscape:grid
-       id="grid27"
-       type="xygrid" />
+       type="xygrid"
+       id="grid27" />
   </sodipodi:namedview>
   <metadata
      id="metadata21">
@@ -143,44 +143,44 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="レイヤー 1"
+     id="layer1"
      inkscape:groupmode="layer"
-     id="layer1">
+     inkscape:label="レイヤー 1">
     <g
-       transform="translate(-2.0499992)"
-       id="g909">
+       id="g909"
+       transform="translate(-2.0499992)">
       <g
-         transform="matrix(1.1,0,0,1.1,-5.0616305,-2.2345197)"
+         id="g1696"
          style="filter:url(#filter2047)"
-         id="g1696">
+         transform="matrix(1.1,0,0,1.1,-5.0616305,-2.2345197)">
         <path
-           id="rect873"
-           style="opacity:0.991;fill:#00d760;fill-opacity:1;stroke:none;stroke-width:5.061;filter:url(#filter972)"
-           d="M 18.056027,6.3732673 V 55.871314 h 30 a 5,5 0 0 0 5,-5 V 11.373267 a 5,5 0 0 0 -5,-4.9999997 z" />
+           d="M 18.056027,6.3732673 V 55.871314 h 30 a 5,5 0 0 0 5,-5 V 11.373267 a 5,5 0 0 0 -5,-4.9999997 z"
+           style="opacity:0.991;fill:#60ad5e;fill-opacity:1;stroke:none;stroke-width:5.061;filter:url(#filter972)"
+           id="rect873" />
         <rect
-           style="opacity:0.991;fill:#007d37;fill-opacity:1;stroke:none;stroke-width:0.954166;filter:url(#filter972)"
-           id="rect912"
-           width="6"
-           height="49.498047"
+           y="6.3732672"
            x="18.056028"
-           y="6.3732672" />
+           height="49.498047"
+           width="6"
+           id="rect912"
+           style="opacity:0.991;fill:#2e7d32;fill-opacity:1;stroke:none;stroke-width:0.954166;filter:url(#filter972)" />
         <path
-           style="opacity:1;fill:#ededed;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.811644;filter:url(#filter1662)"
+           id="path950"
            d="M 39.056028,6.3732673 V 19.373268 l 3.5,-2.5 3.5,2.5 V 6.3732673 Z"
-           id="path950" />
+           style="opacity:1;fill:#ededed;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.811644;filter:url(#filter1662)" />
       </g>
       <g
-         transform="matrix(1.1,0,0,1.1,3.7607675,-12.248547)"
+         id="g1679"
          style="filter:url(#filter2059)"
-         id="g1679">
+         transform="matrix(1.1,0,0,1.1,3.7607675,-12.248547)">
         <g
-           transform="translate(-0.08838835,3.3587572)"
-           id="g2064" />
+           id="g2064"
+           transform="translate(-0.08838835,3.3587572)" />
       </g>
     </g>
   </g>

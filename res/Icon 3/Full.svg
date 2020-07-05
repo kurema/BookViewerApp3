@@ -7,14 +7,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="Orig.svg"
+   sodipodi:docname="Full.svg"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
    width="64.0px"
    height="64.0px"
    viewBox="0 0 64.0 64.0"
    version="1.1"
    id="SVGRoot"
-   inkscape:export-filename="D:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3\res\Icon 3\bitmap.png"
+   inkscape:export-filename="D:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3\res\Icon 3\Full.png"
    inkscape:export-xdpi="600"
    inkscape:export-ydpi="600">
   <defs
@@ -160,7 +160,7 @@
      inkscape:document-units="px"
      inkscape:cy="40.735477"
      inkscape:cx="41.854239"
-     inkscape:zoom="7.7885057"
+     inkscape:zoom="7.3821431"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -193,10 +193,10 @@
        id="g1696">
       <path
          id="rect873"
-         style="opacity:0.991;fill:#00d760;fill-opacity:1;stroke:none;stroke-width:5.061;filter:url(#filter972)"
+         style="opacity:0.991;fill:#60ad5e;fill-opacity:1;stroke:none;stroke-width:5.061;filter:url(#filter972)"
          d="M 18.056027,6.3732673 V 55.871314 h 30 a 5,5 0 0 0 5,-5 V 11.373267 a 5,5 0 0 0 -5,-4.9999997 z" />
       <rect
-         style="opacity:0.991;fill:#007d37;fill-opacity:1;stroke:none;stroke-width:0.954166;filter:url(#filter972)"
+         style="opacity:0.991;fill:#2e7d32;fill-opacity:1;stroke:none;stroke-width:0.954166;filter:url(#filter972)"
          id="rect912"
          width="6"
          height="49.498047"
@@ -208,7 +208,7 @@
          id="path950" />
     </g>
     <g
-       transform="translate(-1.485666,-0.97595143)"
+       transform="translate(-1.485666,-0.975951)"
        style="filter:url(#filter2059)"
        id="g1679">
       <g
@@ -217,7 +217,7 @@
         <g
            id="g2069">
           <rect
-             style="opacity:1;fill:#00af4c;fill-opacity:1;stroke:none;stroke-width:1.76733;stroke-opacity:0.811644"
+             style="opacity:1;fill:#005005;fill-opacity:1;stroke:none;stroke-width:1.76733;stroke-opacity:0.811644"
              id="rect1664"
              width="22"
              height="22"

@@ -7,18 +7,31 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="TitleOnly.svg"
+   sodipodi:docname="FullFix.svg"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
    width="64.0px"
    height="64.0px"
    viewBox="0 0 64.0 64.0"
    version="1.1"
    id="SVGRoot"
-   inkscape:export-filename="D:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3\res\Icon 3\bitmap_char.png"
+   inkscape:export-filename="D:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3\res\Icon 3\FullFix.png"
    inkscape:export-xdpi="600"
    inkscape:export-ydpi="600">
   <defs
      id="defs18">
+    <filter
+       height="1.0000737"
+       y="-3.687333e-05"
+       width="1.0001043"
+       x="-5.2147366e-05"
+       id="filter972"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur974"
+         stdDeviation="0.00076048242"
+         inkscape:collect="always" />
+    </filter>
     <filter
        height="1.5"
        width="2"
@@ -143,10 +156,10 @@
      inkscape:window-width="1920"
      showgrid="false"
      inkscape:document-rotation="0"
-     inkscape:current-layer="g2069"
+     inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="40.735477"
-     inkscape:cx="41.854239"
+     inkscape:cy="46.061518"
+     inkscape:cx="36.132927"
      inkscape:zoom="7.3821431"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -175,37 +188,65 @@
      inkscape:groupmode="layer"
      inkscape:label="レイヤー 1">
     <g
-       transform="matrix(2.2,0,0,2.2,-14.278466,-58.463973)"
-       style="filter:url(#filter2059)"
-       id="g1679">
+       transform="translate(-1.6782502)"
+       id="g3486">
       <g
-         transform="translate(-0.08838835,3.3587572)"
-         id="g2064">
+         id="g1696"
+         style="filter:url(#filter2047)"
+         transform="translate(-5.9039955,0.87770939)">
+        <path
+           d="M 18.056027,6.3732673 V 55.871314 h 30 a 5,5 0 0 0 5,-5 V 11.373267 a 5,5 0 0 0 -5,-4.9999997 z"
+           style="opacity:0.991;fill:#60ad5e;fill-opacity:1;stroke:none;stroke-width:5.061;filter:url(#filter972)"
+           id="rect873" />
+        <rect
+           y="6.3732672"
+           x="18.056028"
+           height="49.498047"
+           width="6"
+           id="rect912"
+           style="opacity:0.991;fill:#2e7d32;fill-opacity:1;stroke:none;stroke-width:0.954166;filter:url(#filter972)" />
+        <path
+           id="path950"
+           d="M 39.056028,6.3732673 V 19.373268 l 3.5,-2.5 3.5,2.5 V 6.3732673 Z"
+           style="opacity:1;fill:#ededed;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.811644;filter:url(#filter1662)" />
+      </g>
+      <g
+         id="g1679"
+         style="filter:url(#filter2059)"
+         transform="matrix(1.25,0,0,1.25,20.149175,-12.74603)">
         <g
-           id="g2069">
-          <rect
-             style="opacity:1;fill:#005005;fill-opacity:1;stroke:none;stroke-width:1.76733;stroke-opacity:0.811644"
-             id="rect1664"
-             width="22"
-             height="22"
-             x="10.124055"
-             y="26.76123"
-             ry="2.8087854" />
-          <text
-             xml:space="preserve"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:125%;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-             x="20.348665"
-             y="43.948067"
-             id="text1668"><tspan
-               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans Bold';text-align:center;text-anchor:middle"
-               sodipodi:role="line"
-               id="tspan1666"
-               x="20.348665"
-               y="43.948067"><tspan
-                 id="tspan2095"
-                 style="font-size:17.3333px">B</tspan><tspan
-                 id="tspan2093"
-                 style="font-size:13.3333px">v</tspan></tspan></text>
+           id="g2064"
+           transform="translate(-0.08838835,3.3587572)">
+          <g
+             id="g2069">
+            <g
+               id="g2846"
+               transform="translate(-2.1914314,-0.37544285)">
+              <rect
+                 style="opacity:1;fill:#005005;fill-opacity:1;stroke:none;stroke-width:1.76733;stroke-opacity:0.811644"
+                 id="rect1664"
+                 width="22"
+                 height="22"
+                 x="10.124055"
+                 y="26.76123"
+                 ry="2.8087854" />
+              <text
+                 xml:space="preserve"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:125%;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                 x="20.342155"
+                 y="43.948067"
+                 id="text1668"><tspan
+                   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans Bold';text-align:center;text-anchor:middle"
+                   sodipodi:role="line"
+                   id="tspan1666"
+                   x="20.342155"
+                   y="43.948067"><tspan
+                     id="tspan2095"
+                     style="font-size:17.3333px">B</tspan><tspan
+                     id="tspan2093"
+                     style="font-size:13.3333px">v</tspan></tspan></text>
+            </g>
+          </g>
         </g>
       </g>
     </g>
