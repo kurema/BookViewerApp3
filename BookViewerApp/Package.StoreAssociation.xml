@@ -241,6 +241,8 @@
     <Language Code="no-no" InMinimumRequirementSet="true" />
     <Language Code="nso" InMinimumRequirementSet="true" />
     <Language Code="nso-za" InMinimumRequirementSet="true" />
+    <Language Code="om" InMinimumRequirementSet="false" />
+    <Language Code="om-et" InMinimumRequirementSet="false" />
     <Language Code="or" InMinimumRequirementSet="true" />
     <Language Code="or-in" InMinimumRequirementSet="true" />
     <Language Code="pa" InMinimumRequirementSet="true" />
@@ -359,11 +361,14 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>6269kurema.BookViewer</MainPackageIdentityName>
+    <MainPackageIdentityName>6269kurema.BookViewer3</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>BookViewer</ReservedName>
+      <ReservedName>BookViewer3</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
-  <AccountPackageIdentityNames />
-  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NBLGGH5N200" />
+  <AccountPackageIdentityNames>
+    <MainPackageIdentityName>6269kurema.BookViewer</MainPackageIdentityName>
+    <MainPackageIdentityName>6269kurema.NicochClient</MainPackageIdentityName>
+  </AccountPackageIdentityNames>
+  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9N607JHLBCZB" />
 </StoreAssociation>
