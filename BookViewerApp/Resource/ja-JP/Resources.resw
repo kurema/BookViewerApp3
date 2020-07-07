@@ -19,7 +19,7 @@
     <value>フォルダを追加</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>BookViewer3</value>
+    <value>BookViewer 3</value>
   </data>
   <data name="BookmarkBasic.Title" xml:space="preserve">
     <value>栞</value>
@@ -465,5 +465,27 @@
   </data>
   <data name="Info.Info.Developers" xml:space="preserve">
     <value>開発者</value>
+  </data>
+  <data name="AppName_Classic" xml:space="preserve">
+    <value>BookViewer Classic</value>
+  </data>
+  <data name="Migration.Dialog.Description" xml:space="preserve">
+    <value>このアプリは古いバージョンです。
+様々な機能が追加された新バージョンをお試しください。</value>
+  </data>
+  <data name="Migration.Dialog.Title" xml:space="preserve">
+    <value>アプリ更新のお知らせ</value>
+  </data>
+  <data name="Migration.General.Title" xml:space="preserve">
+    <value>BookViewer3を取得する</value>
+  </data>
+  <data name="Setting_HideMigration.Description" xml:space="preserve">
+    <value>BookViewer3のお知らせを表示しない</value>
+  </data>
+  <data name="Setting_HideMigration.Title" xml:space="preserve">
+    <value>BookViewer3のお知らせ</value>
+  </data>
+  <data name="Word.NeverShowAgain" xml:space="preserve">
+    <value>再度表示しない</value>
   </data>
 </root>

@@ -124,7 +124,7 @@
     <value>Add a directory</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>BookViewer3</value>
+    <value>BookViewer 3</value>
   </data>
   <data name="BookmarkBasic.Title" xml:space="preserve">
     <value>Bookmark</value>
@@ -570,5 +570,27 @@ Are you sure to unregister?</value>
   </data>
   <data name="Info.Info.Developers" xml:space="preserve">
     <value>Developers</value>
+  </data>
+  <data name="AppName_Classic" xml:space="preserve">
+    <value>BookViewer Classic</value>
+  </data>
+  <data name="Migration.Dialog.Description" xml:space="preserve">
+    <value>New version of BookViewer is released.
+This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</value>
+  </data>
+  <data name="Migration.Dialog.Title" xml:space="preserve">
+    <value>The new app is released!</value>
+  </data>
+  <data name="Migration.General.Title" xml:space="preserve">
+    <value>Update to BookViewer3</value>
+  </data>
+  <data name="Setting_HideMigration.Description" xml:space="preserve">
+    <value>Hide update notice button.</value>
+  </data>
+  <data name="Setting_HideMigration.Title" xml:space="preserve">
+    <value>Hide update notice</value>
+  </data>
+  <data name="Word.NeverShowAgain" xml:space="preserve">
+    <value>Never show this again.</value>
   </data>
 </root>
