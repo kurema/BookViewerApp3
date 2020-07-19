@@ -62,7 +62,7 @@ namespace BookViewerApp.Managers
 
         public static async Task<Windows.Storage.StorageFile> CreateImageFileAsync(string ID)
         {
-            return await (await GetDataFolder()).CreateFileAsync(GetFileNameFromID(ID));
+            return await (await GetDataFolder()).CreateFileAsync(GetFileNameFromID(ID), Windows.Storage.CreationCollisionOption.ReplaceExisting);
         }
 
         public static async Task<Windows.Storage.StorageFile> GetImageFileAsync(string ID)

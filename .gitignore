@@ -195,7 +195,7 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
-Screenshot/old/
+/res/Screenshots/Books/
 BundleArtifacts/
 *.appx
 _pkginfo.txt
