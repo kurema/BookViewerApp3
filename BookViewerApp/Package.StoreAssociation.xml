@@ -369,7 +369,6 @@
   <AccountPackageIdentityNames>
     <MainPackageIdentityName>6269kurema.BookViewer</MainPackageIdentityName>
     <MainPackageIdentityName>6269kurema.NicochClient</MainPackageIdentityName>
-    <MainPackageIdentityName>6269kurema.NicoView</MainPackageIdentityName>
   </AccountPackageIdentityNames>
   <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9N607JHLBCZB" />
 </StoreAssociation>
