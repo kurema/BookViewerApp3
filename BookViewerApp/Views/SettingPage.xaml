@@ -23,7 +23,7 @@
         <CollectionViewSource x:Name="settingSource" IsSourceGrouped="True"/>
     </Page.Resources>
     <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel MaxWidth="800" VerticalAlignment="Center">
+        <StackPanel MaxWidth="800" HorizontalAlignment="Center">
             <TextBlock Text="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource vc_local},ConverterParameter=Setting/Label}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
             <ItemsControl x:Name="SettingPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ItemsSource="{Binding Source={StaticResource settingSource}}" >
                 <ItemsControl.ItemsPanel>
