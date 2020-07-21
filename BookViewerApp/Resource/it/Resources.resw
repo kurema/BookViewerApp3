@@ -52,7 +52,7 @@
     <value>Caricamento completato.</value>
   </data>
   <data name="LoadingFolder.Started.Message" xml:space="preserve">
-    <value>Ci vorrà un po\'. Non chiudere l\'app</value>
+    <value>Ci vorrà un po'. Non chiudere l'app</value>
   </data>
   <data name="LoadingFolder.Title" xml:space="preserve">
     <value>Caricamento cartelle</value>
@@ -76,7 +76,7 @@
     <value>Precedente</value>
   </data>
   <data name="PageReverse.Label" xml:space="preserve">
-    <value>Inverti l\'ordine delle pagine</value>
+    <value>Inverti l'ordine delle pagine</value>
   </data>
   <data name="PageRight.Label" xml:space="preserve">
     <value>Avanti</value>
@@ -91,13 +91,13 @@
     <value>Impostazioni</value>
   </data>
   <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
-    <value>Avvia l\'app a schermo intero quando apri un libro.</value>
+    <value>Avvia l'app a schermo intero quando apri un libro.</value>
   </data>
   <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
     <value>Imposta lo schermo intero come predefinito</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
-    <value>Inverte l\'ordine delle pagine quando apri un libro.</value>
+    <value>Inverte l'ordine delle pagine quando apri un libro.</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
     <value>Pagine invertite come predefinito</value>
@@ -157,7 +157,7 @@
     <value>Luminosità sfondo.</value>
   </data>
   <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
-    <value>Utilizza l\'animazione a scorrimento quando leggi.</value>
+    <value>Utilizza l'animazione a scorrimento quando leggi.</value>
   </data>
   <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
     <value>Animazione a scorrimento</value>

@@ -68,7 +68,7 @@
         </trans-unit>
         <trans-unit id="LoadingFolder.Started.Message" translate="yes" xml:space="preserve">
           <source>It will take a while. Do not close this app while loading.</source>
-          <target state="final">Ci vorrà un po\'. Non chiudere l\'app</target>
+          <target state="final">Ci vorrà un po'. Non chiudere l'app</target>
         </trans-unit>
         <trans-unit id="LoadingFolder.Title" translate="yes" xml:space="preserve">
           <source>Loading folders</source>
@@ -100,7 +100,7 @@
         </trans-unit>
         <trans-unit id="PageReverse.Label" translate="yes" xml:space="preserve">
           <source>Reverse page direction</source>
-          <target state="final">Inverti l\'ordine delle pagine</target>
+          <target state="final">Inverti l'ordine delle pagine</target>
         </trans-unit>
         <trans-unit id="PageRight.Label" translate="yes" xml:space="preserve">
           <source>Right</source>
@@ -120,7 +120,7 @@
         </trans-unit>
         <trans-unit id="Setting_DefaultFullScreen.Description" translate="yes" xml:space="preserve">
           <source>Set full screen mode on when you open a book.</source>
-          <target state="final">Avvia l\'app a schermo intero quando apri un libro.</target>
+          <target state="final">Avvia l'app a schermo intero quando apri un libro.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultFullScreen.Title" translate="yes" xml:space="preserve">
           <source>Set full screen as default</source>
@@ -129,7 +129,7 @@
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
           <source>Reverse page as default when you open a new book.</source>
-          <target state="final">Inverte l\'ordine delle pagine quando apri un libro.</target>
+          <target state="final">Inverte l'ordine delle pagine quando apri un libro.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
           <source>Reverse page as default</source>
@@ -215,7 +215,7 @@
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
           <source>Use scroll animation on book viewer.</source>
-          <target state="final">Utilizza l\'animazione a scorrimento quando leggi.</target>
+          <target state="final">Utilizza l'animazione a scorrimento quando leggi.</target>
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Title" translate="yes" xml:space="preserve">
           <source>Scroll animation</source>
