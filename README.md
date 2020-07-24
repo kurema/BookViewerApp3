@@ -6,8 +6,8 @@ Get it on [Windows Store](https://www.microsoft.com/store/apps/9N607JHLBCZB).
 
 ## Screenshot
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171048.png)  
-![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171315.png)  
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171351.png)  
+![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171315.png)  
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171428.png)  
 
 ## Thanks
