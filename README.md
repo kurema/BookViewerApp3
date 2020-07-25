@@ -16,3 +16,7 @@ Get it from [Windows Store](https://www.microsoft.com/store/apps/9N607JHLBCZB).
 Italian translation is by Emanuele (https://github.com/Manu99it).
 Thank you!
 
+## Sponsors
+We do not have any suponsor yet. [Be the first!](https://github.com/sponsors/kurema/dashboard)
+
+Sponsors above $10/month will be here.
