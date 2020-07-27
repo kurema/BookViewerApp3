@@ -17,6 +17,6 @@ Italian translation is by Emanuele (https://github.com/Manu99it).
 Thank you!
 
 ## Sponsors
-We do not have any suponsor yet. [Be the first!](https://github.com/sponsors/kurema/dashboard)
+We do not have any suponsor yet. [Be the first!](https://github.com/sponsors/kurema/)
 
 Sponsors above $10/month will be here.
