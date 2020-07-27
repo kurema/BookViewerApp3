@@ -178,6 +178,7 @@ namespace BookViewerApp.Helper
 
         public static List<T> GetArrayRemoved<T>(IEnumerable<T> ts, T t)
         {
+            if (ts is null) return null;
             return GetArrayOperated(ts, list => { if (list.Contains(t)) { list.Remove(t); } });
         }
 

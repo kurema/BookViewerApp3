@@ -22,7 +22,7 @@ namespace BookViewerApp.Storages
 
         public static StorageContent<Library.bookmarks_library> LocalBookmark = new StorageContent<Library.bookmarks_library>(StorageContent<Library.bookmarks_library>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
 
-        
+
         public static StorageContent<Library.libraryBookmarks> RoamingBookmarks = new StorageContent<Library.libraryBookmarks>(StorageContent<Library.libraryBookmarks>.SavePlaces.Roaming, "Bookmarks.xml", () => new Library.libraryBookmarks());
 
         public enum LibraryKind
@@ -115,15 +115,15 @@ namespace BookViewerApp.Storages
                 var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
                 list.AddRange(bookmark_roaming?.AsFileItem(bookmarkAction)?.Where(a => a != null) ?? new IFileItem[0]);
 
-                foreach (var item in list.OrderBy(a=>a.IsFolder))
+                foreach (var item in list.OrderBy(a => a.IsFolder))
                 {
                     switch (item)
                     {
                         case StorageBookmarkContainer item1:
                             item1.ActionDelete = () =>
                             {
-                                library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item1.Content).ToArray();
-                                bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item1.Content).ToArray();
+                                if (library.bookmarks != null) library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item1.Content)?.ToArray();
+                                if (bookmark_roaming != null) bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item1.Content)?.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
@@ -133,8 +133,8 @@ namespace BookViewerApp.Storages
                         case StorageBookmarkItem item2:
                             item2.ActionDelete = () =>
                             {
-                                library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item2.Content).ToArray();
-                                bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item2.Content).ToArray();
+                                if (library?.bookmarks != null) library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks?.Items, item2.Content)?.ToArray();
+                                if (bookmark_roaming != null) bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming?.Items, item2.Content)?.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
@@ -309,7 +309,7 @@ namespace BookViewerApp.Storages
 
             var fal = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
             if (fal == null || fal.Entries == null) return;
-            foreach(var item in fal.Entries)
+            foreach (var item in fal.Entries)
             {
                 if (!stats.ContainsKey(item.Token))
                 {
@@ -356,7 +356,7 @@ namespace BookViewerApp.Storages
             }
         }
 
-        [System.Xml.Serialization.XmlRoot(ElementName ="bookmarks", Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        [System.Xml.Serialization.XmlRoot(ElementName = "bookmarks", Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
             "ry.xsd", IsNullable = false)]
         public partial class libraryBookmarks
         {

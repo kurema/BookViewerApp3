@@ -496,7 +496,7 @@
                                                     </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AD;"/>
                                                 </RepeatButton>
-                                                <RepeatButton Grid.Row="1" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="-0.1,0" HorizontalAlignment="Center">
+                                                <RepeatButton Grid.Row="1" Grid.Column="0" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0.1,0" HorizontalAlignment="Center">
                                                     <RepeatButton.KeyboardAccelerators>
                                                         <KeyboardAccelerator Key="A" Modifiers="None"/>
                                                         <KeyboardAccelerator Key="NumberPad4" Modifiers="None"/>
@@ -512,7 +512,7 @@
                                                     </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AE;"/>
                                                 </RepeatButton>
-                                                <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="0.1,0" HorizontalAlignment="Center">
+                                                <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="-0.1,0" HorizontalAlignment="Center">
                                                     <RepeatButton.KeyboardAccelerators>
                                                         <KeyboardAccelerator Key="D" Modifiers="None"/>
                                                         <KeyboardAccelerator Key="NumberPad6" Modifiers="None"/>                                                        
