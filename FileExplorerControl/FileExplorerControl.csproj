@@ -185,8 +185,8 @@
     <Content Include="res\Icons\folder_s.png" />
     <Content Include="res\Icons\unknown_l.png" />
     <Content Include="res\Icons\folder_l.png" />
-    <Content Include="res\UI\Layout_Contents.svg" />
-    <Content Include="res\UI\Layout_Detail.svg" />
+    <None Include="res\UI\Layout_Contents.svg" />
+    <None Include="res\UI\Layout_Detail.svg" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\DeleteContentDialog.xaml">

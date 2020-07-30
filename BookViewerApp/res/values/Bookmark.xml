@@ -4,6 +4,7 @@
     <bookmarks default="true" title="BookViewer3">
       <container title="Search">
         <bookmark url="https://www.google.com/" title="Google" />
+        <bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
       </container>
       <container title="Free books">
         <bookmark url="https://www.gutenberg.org/" title="Project Gutenberg" />
