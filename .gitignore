@@ -203,3 +203,8 @@ Package.StoreAssociation.xml
 
 project.lock.json
 *.bak
+
+*.dwg
+*.3dm
+*.3dmbak
+acad.err
