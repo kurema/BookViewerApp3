@@ -208,3 +208,5 @@ project.lock.json
 *.3dm
 *.3dmbak
 acad.err
+*.dwl
+*.dwl2
