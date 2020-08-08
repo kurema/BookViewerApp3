@@ -18,6 +18,7 @@ using System.Collections;
 
 using BookViewerApp.Helper;
 using BookViewerApp.Storages;
+using System.Threading.Tasks;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -46,26 +47,54 @@ namespace BookViewerApp.Views
             this.Loaded += SettingPage_Loaded;
         }
 
-        private void SettingPage_Loaded(object sender, RoutedEventArgs e)
+        private async void SettingPage_Loaded(object sender, RoutedEventArgs e)
         {
-            listView.Source = GetOptionalItems().GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
+            listView.Source = (await GetOptionalItems()).GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
         }
 
-        public ViewModels.ListItemViewModel[] GetOptionalItems()
+        public async Task<ViewModels.ListItemViewModel[]> GetOptionalItems()
         {
+
             var tabpage = UIHelper.GetCurrentTabPage(this);
             var loader = Managers.ResourceManager.Loader;
             //Info.Info.Translation
-            return new[] {
+
+            var result = new ViewModels.ListItemViewModel[] {
                 new ViewModels.ListItemViewModel(loader.GetString("AppName"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogAboutThisApp())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Privacy/Title"), loader.GetString("Info/Info/Privacy/Description"),new OpenWebCommand(tabpage,"https://github.com/kurema/BookViewerApp3/blob/master/PrivacyPolicy.md")){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogThirdParty())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogContributors())){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor/Title"), loader.GetString("Info/Info/BeSponsor/Description"),new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
+            }.ToList();
 
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor"), "",new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
+            try
+            {
+                await Managers.LicenseManager.Initialize();
+                var listingInformation = await Managers.LicenseManager.GetListingAsync();
+
+                result.AddRange(listingInformation.ProductListings
+                    .Select(a => new ViewModels.ListItemViewModel(
+                    a.Value.Name ?? "", a.Value.FormattedPrice ?? "" + " " + a.Value.Description ?? "", new DelegateCommand(async _ =>
+                          {
+                              try { await Managers.LicenseManager.RequestPurchaseAsync(a.Value); } catch { }
+                          }, _ =>
+                          {
+                              Managers.LicenseManager.CurrentLicenseInformation.ProductLicenses.TryGetValue(a.Value.ProductId, out var license);
+                              return !(license?.IsActive == true);
+                          }
+                          )
+                    )
+                { GroupTag="Info/Purchase/Title"}));
+            }
+            catch { }
+
+            result.AddRange(new[] {
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData"), "",new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "",new DelegateCommand(async _=> await CopyFutureAccessListToClipboard()) ){ GroupTag="Info/Debug/Title"},
-            };
+            });
+#if DEBUG
+            result.Add(new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "", new DelegateCommand(async _ => await CopyFutureAccessListToClipboard())) { GroupTag = "Info/Debug/Title" });
+#endif
+            return result.ToArray();
         }
 
         public async System.Threading.Tasks.Task CopyFutureAccessListToClipboard()

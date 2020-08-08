@@ -586,7 +586,7 @@ Are you sure to unregister?</source>
           <source>Third-Party Notification</source>
           <target state="translated">第三方通知</target>
         </trans-unit>
-        <trans-unit id="Info.Info.BeSponsor" translate="yes" xml:space="preserve">
+        <trans-unit id="Info.Info.BeSponsor.Title" translate="yes" xml:space="preserve">
           <source>Be a sponsor!</source>
           <target state="translated">成为赞助商！</target>
         </trans-unit>
@@ -651,6 +651,14 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</sou
         <trans-unit id="Word.NeverShowAgain" translate="yes" xml:space="preserve">
           <source>Never show this again.</source>
           <target state="translated">不要再显示这个。</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.BeSponsor.Description" translate="yes" xml:space="preserve">
+          <source>on GitHub Sponsors</source>
+          <target state="new">on GitHub Sponsors</target>
+        </trans-unit>
+        <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
+          <source>Purchase</source>
+          <target state="new">Purchase</target>
         </trans-unit>
       </group>
     </body>

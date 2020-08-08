@@ -535,7 +535,7 @@ Are you sure to unregister?</value>
   <data name="Info.Debug.Title" xml:space="preserve">
     <value>Debug</value>
   </data>
-  <data name="Info.Info.BeSponsor" xml:space="preserve">
+  <data name="Info.Info.BeSponsor.Title" xml:space="preserve">
     <value>Be a sponsor!</value>
   </data>
   <data name="Info.Info.Contributors" xml:space="preserve">
@@ -592,5 +592,11 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</val
   </data>
   <data name="Word.NeverShowAgain" xml:space="preserve">
     <value>Never show this again.</value>
+  </data>
+  <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
+    <value>on GitHub Sponsors</value>
+  </data>
+  <data name="Info.Purchase.Title" xml:space="preserve">
+    <value>Purchase</value>
   </data>
 </root>

@@ -436,7 +436,7 @@
   <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
     <value>第三方通知</value>
   </data>
-  <data name="Info.Info.BeSponsor" xml:space="preserve">
+  <data name="Info.Info.BeSponsor.Title" xml:space="preserve">
     <value>成為贊助商！</value>
   </data>
   <data name="Info.Info.Privacy.Description" xml:space="preserve">

@@ -601,7 +601,7 @@ Annullare la registrazione?</target>
           <source>Third-Party Notification</source>
           <target state="translated">Notifica di terze parti</target>
         </trans-unit>
-        <trans-unit id="Info.Info.BeSponsor" translate="yes" xml:space="preserve">
+        <trans-unit id="Info.Info.BeSponsor.Title" translate="yes" xml:space="preserve">
           <source>Be a sponsor!</source>
           <target state="translated">Diventa uno sponsor!</target>
         </trans-unit>
@@ -663,6 +663,14 @@ Questo include schede, Fluent Design, filer integrato e numerose correzioni di b
         <trans-unit id="Word.NeverShowAgain" translate="yes" xml:space="preserve">
           <source>Never show this again.</source>
           <target state="translated">Non mostrarlo mai più.</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.BeSponsor.Description" translate="yes" xml:space="preserve">
+          <source>on GitHub Sponsors</source>
+          <target state="new">on GitHub Sponsors</target>
+        </trans-unit>
+        <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
+          <source>Purchase</source>
+          <target state="new">Purchase</target>
         </trans-unit>
       </group>
     </body>

@@ -583,9 +583,13 @@ Are you sure to unregister?</source>
           <source>Third-Party Notification</source>
           <target state="translated">サードパーティー情報</target>
         </trans-unit>
-        <trans-unit id="Info.Info.BeSponsor" translate="yes" xml:space="preserve">
+        <trans-unit id="Info.Info.BeSponsor.Title" translate="yes" xml:space="preserve">
           <source>Be a sponsor!</source>
           <target state="translated">支援する</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.BeSponsor.Description" translate="yes" xml:space="preserve">
+          <source>on GitHub Sponsors</source>
+          <target state="translated">GitHub Sponsorsを開く</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Description" translate="yes" xml:space="preserve">
           <source>Show Privacy Policy</source>
@@ -644,6 +648,10 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</sou
         <trans-unit id="Word.NeverShowAgain" translate="yes" xml:space="preserve">
           <source>Never show this again.</source>
           <target state="translated">再度表示しない</target>
+        </trans-unit>
+        <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
+          <source>Purchase</source>
+          <target state="new">Purchase</target>
         </trans-unit>
       </group>
     </body>
