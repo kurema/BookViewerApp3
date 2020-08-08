@@ -9,6 +9,8 @@ It support CBR, CBZ, PDF and Epub books.
 
 [![YouTube](http://img.youtube.com/vi/rKCw_OlOKb8/0.jpg)](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 
+[Discord](https://discord.gg/tKwuhcc)
+
 ## Screenshot
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171048.png)  
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171351.png)  
