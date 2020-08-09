@@ -270,6 +270,9 @@
   <data name="TabHeader.Setting" xml:space="preserve">
     <value>設定</value>
   </data>
+  <data name="TabHeader.Epub" xml:space="preserve">
+    <value>Epub</value>
+  </data>
   <data name="TabHeader.Main" xml:space="preserve">
     <value>主群組</value>
   </data>
@@ -484,5 +487,29 @@
   </data>
   <data name="Word.NeverShowAgain" xml:space="preserve">
     <value>不要再顯示這個。</value>
+  </data>
+  <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
+    <value>訪問GitHub Sponsors</value>
+  </data>
+  <data name="Info.Purchase.Title" xml:space="preserve">
+    <value>捐</value>
+  </data>
+  <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
+    <value>已購買</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
+    <value>謝謝！
+您提供的資金使作者得以繼續工作！如果您想支持更多，請考慮使用GitHub Sponsors。
+祝你好運。</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
+    <value>謝謝您的支持！</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
+    <value>您提供的資金使kurema可以繼續工作！它使我有能力繼續前進。
+祝你好運。</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
+    <value>感謝您的購買！</value>
   </data>
 </root>

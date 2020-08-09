@@ -307,9 +307,6 @@
     <Compile Include="Views\BookFixed3ViewerControllerControl.xaml.cs">
       <DependentUpon>BookFixed3ViewerControllerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PurchaseContentDialog.xaml.cs">
-      <DependentUpon>PurchaseContentDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\BookmarkContentDialog.xaml.cs">
       <DependentUpon>BookmarkContentDialog.xaml</DependentUpon>
     </Compile>
@@ -404,10 +401,6 @@
     <Page Include="Views\BookFixed3ViewerControllerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PurchaseContentDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\BookmarkContentDialog.xaml">
       <SubType>Designer</SubType>

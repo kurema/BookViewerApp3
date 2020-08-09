@@ -596,7 +596,25 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</val
   <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
     <value>on GitHub Sponsors</value>
   </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
+    <value>Thank you!
+The funds you provided made it possible for the author to continue the work! If you want to support more, consider using GitHub Sponsors.
+I wish you good luck.</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
+    <value>Thank you for supporting me!</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
+    <value>The funds you provide make it possible for kurema to continue the work! It gives me power to keep going.
+I wish you good luck.</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
+    <value>Thank you for your purchase!</value>
+  </data>
   <data name="Info.Purchase.Title" xml:space="preserve">
-    <value>Purchase</value>
+    <value>Donate</value>
+  </data>
+  <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
+    <value>Purchased</value>
   </data>
 </root>

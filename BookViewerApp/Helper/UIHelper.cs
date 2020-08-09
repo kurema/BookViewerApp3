@@ -83,6 +83,47 @@ namespace BookViewerApp.Helper
             return kurema.FileExplorerControl.Models.FileItems.StorageFileItem.GetGeneralFileType(item.Path);
         }
 
+        public async static Task RequestPurchaseAsync(Windows.ApplicationModel.Store.ProductListing product)
+        {
+            var loader = Managers.ResourceManager.Loader;
+
+            var owned = LicenseManager.IsActive(product);
+            if (owned)
+            {
+                await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/AlreadyPurchased/Message"), loader.GetString("Info/Purchase/Message/AlreadyPurchased/Title"))).ShowAsync();
+            }
+            else
+            {
+                try
+                {
+                    //https://docs.microsoft.com/en-us/answers/questions/3971/windowsapplicationmodelstorecurrentappsimulatorreq.html
+                    //It always return NotPurchased
+                    var result = await LicenseManager.RequestPurchaseAsync(product);
+                    switch (result.Status)
+                    {
+                        case Windows.ApplicationModel.Store.ProductPurchaseStatus.Succeeded:
+                            await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/Purchased/Message"), loader.GetString("Info/Purchase/Message/Purchased/Title"))).ShowAsync();
+                            break;
+                        case Windows.ApplicationModel.Store.ProductPurchaseStatus.AlreadyPurchased:
+                            await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/AlreadyPurchased/Message"), loader.GetString("Info/Purchase/Message/AlreadyPurchased/Title"))).ShowAsync();
+                            break;
+                        case Windows.ApplicationModel.Store.ProductPurchaseStatus.NotFulfilled:
+                            break;
+                        case Windows.ApplicationModel.Store.ProductPurchaseStatus.NotPurchased:
+//#if DEBUG
+//                            await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/Purchased/Message"), loader.GetString("Info/Purchase/Message/Purchased/Title"))).ShowAsync();
+//#endif
+                            return;
+                        default:
+                            break;
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+
         public async static Task<kurema.FileExplorerControl.ViewModels.FileItemViewModel> GetFileItemViewModelFromRoot(string address, IEnumerable<kurema.FileExplorerControl.ViewModels.FileItemViewModel> root)
         {
             if (root == null) return null;

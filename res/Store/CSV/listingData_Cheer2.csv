@@ -1,0 +1,4 @@
+﻿Field,ID,Type (種類),default,en,ja,it,zh,zh-hant
+Description,2,テキスト,,Please support my open source activities.,私のオープンソース活動を応援してください。,Supporta le mie attività open source.,请支持我的开源活动。,請支持我的開源活動。
+Title,4,テキスト,,Buy me a potato chip,応援,Comprami una patatina fritta,中度感谢,中度感謝
+StoreLogo300x300,602,相対パス (またはパートナー センターにあるファイルへの URL),,,,,,

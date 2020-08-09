@@ -488,4 +488,28 @@ Questo include schede, Fluent Design, filer integrato e numerose correzioni di b
   <data name="Word.NeverShowAgain" xml:space="preserve">
     <value>Non mostrarlo mai più.</value>
   </data>
+  <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
+    <value>su GitHub Sponsor.</value>
+  </data>
+  <data name="Info.Purchase.Title" xml:space="preserve">
+    <value>Dnate</value>
+  </data>
+  <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
+    <value>Acquistato</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
+    <value>Grazie!
+I fondi che hai fornito hanno permesso all'autore di continuare il lavoro! Se vuoi supportare di più, considera l'utilizzo degli sponsor GitHub.
+Ti auguro buona fortuna.</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
+    <value>Grazie per avermi supportato!</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
+    <value>I fondi che fornisci consentono a kurema di continuare il lavoro! Mi dà il potere di andare avanti.
+Ti auguro buona fortuna.</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
+    <value>Grazie per il vostro acquisto!</value>
+  </data>
 </root>

@@ -26,6 +26,12 @@ namespace BookViewerApp.Managers
             }
         }
 
+        public static bool IsActive(ProductListing product)
+        {
+            CurrentLicenseInformation.ProductLicenses.TryGetValue(product.ProductId, out var license);
+            return license?.IsActive == true;
+        }
+
         static LicenseManager()
         {
             Initialize().ConfigureAwait(false);

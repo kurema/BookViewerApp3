@@ -488,4 +488,28 @@
   <data name="Word.NeverShowAgain" xml:space="preserve">
     <value>不要再显示这个。</value>
   </data>
+  <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
+    <value>访问GitHub Sponsors</value>
+  </data>
+  <data name="Info.Purchase.Title" xml:space="preserve">
+    <value>捐</value>
+  </data>
+  <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
+    <value>已购买</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
+    <value>谢谢！
+您提供的资金使作者得以继续工作！如果您想支持更多，请考虑使用GitHub Sponsors。
+祝你好运。</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
+    <value>谢谢您的支持！</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
+    <value>您提供的资金使kurema可以继续工作！它使我有能力继续前进。
+祝你好运。</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
+    <value>感谢您的购买！</value>
+  </data>
 </root>

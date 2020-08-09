@@ -491,4 +491,29 @@
   <data name="Word.NeverShowAgain" xml:space="preserve">
     <value>再度表示しない</value>
   </data>
+  <data name="Info.Purchase.Title" xml:space="preserve">
+    <value>寄付</value>
+  </data>
+  <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
+    <value>購入済み</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
+    <value>ご支援ありがとうございました。
+深く感謝いたします。
+私のオープンソース活動の励みになりました。
+
+ストアを通じた支援は各アイテムで一度きりに設定しています。
+更なるご支援はGitHub Sponsorsから可能です。</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
+    <value>ご支援ありがとうございました。</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
+    <value>このアプリは完全なオープンソースであなたのご支援に支えられています。
+支援に感謝いたします。
+大変励みになります。</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
+    <value>ご支援ありがとうございます。</value>
+  </data>
 </root>

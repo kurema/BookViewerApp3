@@ -49,10 +49,35 @@ namespace BookViewerApp.Views
 
         private async void SettingPage_Loaded(object sender, RoutedEventArgs e)
         {
-            listView.Source = (await GetOptionalItems()).GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
+            var collection = new System.Collections.ObjectModel.ObservableCollection<IGrouping<string, ViewModels.ListItemViewModel>>(GetOptionalItems().GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag)));
+            listView.Source = collection;
+            var purchased = (await GetPurchaseItems()).GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
+            if (purchased.Count() >= 1) collection.Insert(Math.Max(collection.Count - 1, 0), purchased.First());
         }
 
-        public async Task<ViewModels.ListItemViewModel[]> GetOptionalItems()
+        public async Task<IEnumerable<ViewModels.ListItemViewModel>> GetPurchaseItems()
+        {
+            var loader = Managers.ResourceManager.Loader;
+            try
+            {
+                await Managers.LicenseManager.Initialize();
+                var listingInformation = await Managers.LicenseManager.GetListingAsync();
+
+                return listingInformation.ProductListings
+                    .Select(a => new ViewModels.ListItemViewModel(
+                    a.Value.Name ?? "", $" {a.Value.FormattedPrice ?? ""} {(Managers.LicenseManager.IsActive(a.Value) ? loader.GetString("Info/Purchase/Word/Purchased") : "")}"
+                    , new DelegateCommand(async _ => await UIHelper.RequestPurchaseAsync(a.Value)
+                          )
+                    )
+                    { GroupTag = "Info/Purchase/Title" });
+            }
+            catch
+            {
+                return new ViewModels.ListItemViewModel[0];
+            }
+        }
+
+        public ViewModels.ListItemViewModel[] GetOptionalItems()
         {
 
             var tabpage = UIHelper.GetCurrentTabPage(this);
@@ -66,27 +91,6 @@ namespace BookViewerApp.Views
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogContributors())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor/Title"), loader.GetString("Info/Info/BeSponsor/Description"),new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
             }.ToList();
-
-            try
-            {
-                await Managers.LicenseManager.Initialize();
-                var listingInformation = await Managers.LicenseManager.GetListingAsync();
-
-                result.AddRange(listingInformation.ProductListings
-                    .Select(a => new ViewModels.ListItemViewModel(
-                    a.Value.Name ?? "", a.Value.FormattedPrice ?? "" + " " + a.Value.Description ?? "", new DelegateCommand(async _ =>
-                          {
-                              try { await Managers.LicenseManager.RequestPurchaseAsync(a.Value); } catch { }
-                          }, _ =>
-                          {
-                              Managers.LicenseManager.CurrentLicenseInformation.ProductLicenses.TryGetValue(a.Value.ProductId, out var license);
-                              return !(license?.IsActive == true);
-                          }
-                          )
-                    )
-                { GroupTag="Info/Purchase/Title"}));
-            }
-            catch { }
 
             result.AddRange(new[] {
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData"), "",new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
