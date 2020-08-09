@@ -454,13 +454,13 @@
   <data name="Info.Info.Privacy.Title" xml:space="preserve">
     <value>プライバシー</value>
   </data>
-  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+  <data name="Info.Debug.OpenAppData.Title" xml:space="preserve">
     <value>データフォルダーを開く</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
     <value>デバッグ</value>
   </data>
-  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+  <data name="Info.Debug.CopyFAL.Title" xml:space="preserve">
     <value>FutureAccessList情報をクリップボードにコピー</value>
   </data>
   <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
@@ -515,5 +515,23 @@
   </data>
   <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
     <value>ご支援ありがとうございます。</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenExternal.Title" xml:space="preserve">
+    <value>外部ブラウザで開く</value>
+  </data>
+  <data name="Info.Info.AboutThisApp.Description" xml:space="preserve">
+    <value>このアプリについて</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Description" xml:space="preserve">
+    <value>サードパーティー情報を表示する</value>
+  </data>
+  <data name="Info.Debug.CopyFAL.Description" xml:space="preserve">
+    <value>StorageApplicationPermissions.FutureAccessList</value>
+  </data>
+  <data name="Info.Debug.OpenAppData.Description" xml:space="preserve">
+    <value>Windows.Storage.ApplicationData.Current.LocalFolder</value>
+  </data>
+  <data name="Info.Info.ShowContributors.Description" xml:space="preserve">
+    <value>貢献者・翻訳者・スポンサーを表示する</value>
   </data>
 </root>

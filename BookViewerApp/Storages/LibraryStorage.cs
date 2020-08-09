@@ -149,7 +149,7 @@ namespace BookViewerApp.Storages
                     if ((bool)SettingStorage.GetValue("ShowPresetBookmarks"))
                     {
                         var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
-                        var local = bookmarksCulture?.AsFileItem(bookmarkAction, true);
+                        var local = bookmarksCulture?.AsFileItem(bookmarkAction, true, UIHelper.ContextMenus.MenuBookmarks);
                         if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local)
                         {
                             FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/PresetBookmark"),
@@ -360,7 +360,7 @@ namespace BookViewerApp.Storages
             "ry.xsd", IsNullable = false)]
         public partial class libraryBookmarks
         {
-            public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false)
+            public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
                 var list = new List<IFileItem>();
                 if (Items == null) return new IFileItem[0];
@@ -369,10 +369,10 @@ namespace BookViewerApp.Storages
                     switch (item)
                     {
                         case libraryBookmarksContainer container:
-                            list.Add(container.AsFileItem(action, isReadOnly));
+                            list.Add(container.AsFileItem(action, isReadOnly,menuCommandProvider));
                             break;
                         case libraryBookmarksContainerBookmark bookmark:
-                            list.Add(bookmark.AsFileItem(action, isReadOnly));
+                            list.Add(bookmark.AsFileItem(action, isReadOnly, menuCommandProvider));
                             break;
                     }
                 }
@@ -382,20 +382,21 @@ namespace BookViewerApp.Storages
 
         public partial class libraryBookmarksContainer
         {
-            public StorageBookmarkContainer AsFileItem(Action<string> action, bool isReadOnly = false)
+            public StorageBookmarkContainer AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
-                return new StorageBookmarkContainer(this) { ActionOpen = action, IsReadOnly = isReadOnly };
+                return new StorageBookmarkContainer(this) { ActionOpen = action, IsReadOnly = isReadOnly, MenuCommandsProvider = menuCommandProvider };
             }
         }
 
         public partial class libraryBookmarksContainerBookmark
         {
-            public StorageBookmarkItem AsFileItem(Action<string> action, bool isReadOnly = false)
+            public StorageBookmarkItem AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
                 return new StorageBookmarkItem(this)
                 {
                     ActionOpen = action,
-                    IsReadOnly = isReadOnly
+                    IsReadOnly = isReadOnly,
+                    MenuCommandsProvider = menuCommandProvider,
                 };
             }
         }

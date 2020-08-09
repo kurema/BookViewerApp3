@@ -591,7 +591,7 @@ Are you sure to unregister?</source>
           <source>Privacy</source>
           <target state="needs-review-translation" state-qualifier="tm-suggestion">隱私權</target>
         </trans-unit>
-        <trans-unit id="Info.Debug.OpenAppData" translate="yes" xml:space="preserve">
+        <trans-unit id="Info.Debug.OpenAppData.Title" translate="yes" xml:space="preserve">
           <source>Open data folder.</source>
           <target state="needs-review-translation" state-qualifier="tm-suggestion">開啟數據資料夾。</target>
         </trans-unit>
@@ -599,7 +599,7 @@ Are you sure to unregister?</source>
           <source>Debug</source>
           <target state="needs-review-translation" state-qualifier="tm-suggestion">除錯</target>
         </trans-unit>
-        <trans-unit id="Info.Debug.CopyFAL" translate="yes" xml:space="preserve">
+        <trans-unit id="Info.Debug.CopyFAL.Title" translate="yes" xml:space="preserve">
           <source>Copy FutureAccessList info.</source>
           <target state="translated">複製FutureAccessList信息。</target>
         </trans-unit>
@@ -679,6 +679,30 @@ I wish you good luck.</source>
         <trans-unit id="Info.Purchase.Message.Purchased.Title" translate="yes" xml:space="preserve">
           <source>Thank you for your purchase!</source>
           <target state="translated">感謝您的購買！</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.Bookmarks.OpenExternal.Title" translate="yes" xml:space="preserve">
+          <source>Open in external browser</source>
+          <target state="translated">在外部瀏覽器中打開</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.AboutThisApp.Description" translate="yes" xml:space="preserve">
+          <source>About this app</source>
+          <target state="translated">關於這個程序</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.ThirdParty.Description" translate="yes" xml:space="preserve">
+          <source>View Third-Party Notification</source>
+          <target state="translated">查看第三方通知</target>
+        </trans-unit>
+        <trans-unit id="Info.Debug.CopyFAL.Description" translate="yes" xml:space="preserve">
+          <source>StorageApplicationPermissions.FutureAccessList</source>
+          <target state="translated">StorageApplicationPermissions.FutureAccessList</target>
+        </trans-unit>
+        <trans-unit id="Info.Debug.OpenAppData.Description" translate="yes" xml:space="preserve">
+          <source>Windows.Storage.ApplicationData.Current.LocalFolder</source>
+          <target state="translated">Windows.Storage.ApplicationData.Current.LocalFolder</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.ShowContributors.Description" translate="yes" xml:space="preserve">
+          <source>View contributors, translators and sponsors</source>
+          <target state="translated">查看貢獻者，翻譯和讚助者</target>
         </trans-unit>
       </group>
     </body>

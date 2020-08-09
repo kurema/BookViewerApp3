@@ -63,7 +63,13 @@ namespace BookViewerApp.Views
                 await Managers.LicenseManager.Initialize();
                 var listingInformation = await Managers.LicenseManager.GetListingAsync();
 
+
                 return listingInformation.ProductListings
+                    //I know it's not a good way. But there seems to be no way to delete addon on Partner Center.
+                    //https://docs.microsoft.com/en-us/windows/uwp/monetize/delete-an-add-on
+                    //Azire AD... no thank you.
+                    //https://twitter.com/juju4ka_/status/890359560237666304
+                    .Where(a => a.Value.ProductId != "free_addon")
                     .Select(a => new ViewModels.ListItemViewModel(
                     a.Value.Name ?? "", $" {a.Value.FormattedPrice ?? ""} {(Managers.LicenseManager.IsActive(a.Value) ? loader.GetString("Info/Purchase/Word/Purchased") : "")}"
                     , new DelegateCommand(async _ => await UIHelper.RequestPurchaseAsync(a.Value)
@@ -85,18 +91,18 @@ namespace BookViewerApp.Views
             //Info.Info.Translation
 
             var result = new ViewModels.ListItemViewModel[] {
-                new ViewModels.ListItemViewModel(loader.GetString("AppName"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogAboutThisApp())){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("AppName"), loader.GetString("Info/Info/AboutThisApp/Description"),new DelegateCommand(async _=>await OpenLicenseContentDialogAboutThisApp())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Privacy/Title"), loader.GetString("Info/Info/Privacy/Description"),new OpenWebCommand(tabpage,"https://github.com/kurema/BookViewerApp3/blob/master/PrivacyPolicy.md")){ GroupTag="Info/Info/Title"},
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogThirdParty())){ GroupTag="Info/Info/Title"},
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), "",new DelegateCommand(async _=>await OpenLicenseContentDialogContributors())){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), loader.GetString("Info/Info/ThirdParty/Description"),new DelegateCommand(async _=>await OpenLicenseContentDialogThirdParty())){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), loader.GetString("Info/Info/ShowContributors/Description"),new DelegateCommand(async _=>await OpenLicenseContentDialogContributors())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor/Title"), loader.GetString("Info/Info/BeSponsor/Description"),new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
             }.ToList();
 
             result.AddRange(new[] {
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData"), "",new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData/Title"), loader.GetString("Info/Debug/OpenAppData/Description"),new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
             });
 #if DEBUG
-            result.Add(new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL"), "", new DelegateCommand(async _ => await CopyFutureAccessListToClipboard())) { GroupTag = "Info/Debug/Title" });
+            result.Add(new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL/Title"), loader.GetString("Info/Debug/CopyFAL/Description"), new DelegateCommand(async _ => await CopyFutureAccessListToClipboard())) { GroupTag = "Info/Debug/Title" });
 #endif
             return result.ToArray();
         }

@@ -451,13 +451,13 @@ Annullare la registrazione?</value>
   <data name="Info.Info.Privacy.Title" xml:space="preserve">
     <value>Riservatezza</value>
   </data>
-  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+  <data name="Info.Debug.OpenAppData.Title" xml:space="preserve">
     <value>Apre la cartella dei dati.</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
     <value>Debug</value>
   </data>
-  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+  <data name="Info.Debug.CopyFAL.Title" xml:space="preserve">
     <value>Copia le informazioni di FutureAccessList.</value>
   </data>
   <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
@@ -511,5 +511,23 @@ Ti auguro buona fortuna.</value>
   </data>
   <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
     <value>Grazie per il vostro acquisto!</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenExternal.Title" xml:space="preserve">
+    <value>Apri in un browser esterno</value>
+  </data>
+  <data name="Info.Info.AboutThisApp.Description" xml:space="preserve">
+    <value>Informazioni su questa app</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Description" xml:space="preserve">
+    <value>Visualizza notifiche di terze parti</value>
+  </data>
+  <data name="Info.Debug.CopyFAL.Description" xml:space="preserve">
+    <value>StorageApplicationPermissions.FutureAccessList</value>
+  </data>
+  <data name="Info.Debug.OpenAppData.Description" xml:space="preserve">
+    <value>Windows.Storage.ApplicationData.Current.LocalFolder</value>
+  </data>
+  <data name="Info.Info.ShowContributors.Description" xml:space="preserve">
+    <value>Visualizza collaboratori, traduttori e sponsor</value>
   </data>
 </root>

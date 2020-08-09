@@ -177,7 +177,7 @@ namespace BookViewerApp.Helper
             public static MenuCommand[] MenuBookmarks(IFileItem item)
             {
                 var result = new List<MenuCommand>();
-                if (item is StorageBookmarkContainer container)
+                if (item is StorageBookmarkContainer container && !container.IsReadOnly)
                 {
                     result.Add(new MenuCommand(GetResourceTitle("Word/New"),
                         new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
@@ -205,20 +205,29 @@ namespace BookViewerApp.Helper
                 {
                     if (bookmarkItem.Content != null)
                     {
-                        result.Add(new MenuCommand(GetResourceTitle("Bookmarks/Edit"), async a =>
+                        if (!bookmarkItem.IsReadOnly)
                         {
-                            var dialog = new Views.BookmarkContentDialog()
+                            result.Add(new MenuCommand(GetResourceTitle("Bookmarks/Edit"), async a =>
                             {
-                                AddressBookmark = bookmarkItem.Content.url,
-                                TitleBookmark = bookmarkItem.Content.title,
-                            };
-                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                            {
-                                bookmarkItem.Content.url = dialog.AddressBookmark;
-                                bookmarkItem.Content.title = dialog.TitleBookmark;
+                                var dialog = new Views.BookmarkContentDialog()
+                                {
+                                    AddressBookmark = bookmarkItem.Content.url,
+                                    TitleBookmark = bookmarkItem.Content.title,
+                                };
+                                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                                {
+                                    bookmarkItem.Content.url = dialog.AddressBookmark;
+                                    bookmarkItem.Content.title = dialog.TitleBookmark;
 
-                                bookmarkItem.OnUpdate();
-                            }
+                                    bookmarkItem.OnUpdate();
+                                }
+                            }));
+                        }
+
+                        result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenExternal"), async a =>
+                        {
+                            if (Uri.TryCreate(bookmarkItem.TargetUrl, UriKind.Absolute, out var uri))
+                                await Windows.System.Launcher.LaunchUriAsync(uri);
                         }));
                     }
                 }

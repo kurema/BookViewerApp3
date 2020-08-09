@@ -526,10 +526,10 @@ Are you sure to unregister?</value>
   <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="Info.Debug.CopyFAL" xml:space="preserve">
+  <data name="Info.Debug.CopyFAL.Title" xml:space="preserve">
     <value>Copy FutureAccessList info.</value>
   </data>
-  <data name="Info.Debug.OpenAppData" xml:space="preserve">
+  <data name="Info.Debug.OpenAppData.Title" xml:space="preserve">
     <value>Open data folder.</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
@@ -616,5 +616,23 @@ I wish you good luck.</value>
   </data>
   <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
     <value>Purchased</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenExternal.Title" xml:space="preserve">
+    <value>Open in external browser</value>
+  </data>
+  <data name="Info.Debug.CopyFAL.Description" xml:space="preserve">
+    <value>StorageApplicationPermissions.FutureAccessList</value>
+  </data>
+  <data name="Info.Debug.OpenAppData.Description" xml:space="preserve">
+    <value>Windows.Storage.ApplicationData.Current.LocalFolder</value>
+  </data>
+  <data name="Info.Info.AboutThisApp.Description" xml:space="preserve">
+    <value>About this app</value>
+  </data>
+  <data name="Info.Info.ShowContributors.Description" xml:space="preserve">
+    <value>View contributors, translators and sponsors</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Description" xml:space="preserve">
+    <value>View Third-Party Notification</value>
   </data>
 </root>
