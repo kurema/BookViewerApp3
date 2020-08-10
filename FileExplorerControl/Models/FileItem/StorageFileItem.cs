@@ -52,7 +52,39 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             if (Content is StorageFolder f)
             {
-                return new ObservableCollection<IFileItem>((await f.GetItemsAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+                ////https://docs.microsoft.com/en-us/windows/uwp/files/fast-file-properties
+                //var folderIndexedState = await f.GetIndexedStateAsync();
+                //if (folderIndexedState == Windows.Storage.Search.IndexedState.FullyIndexed)
+                //{
+                //    //var query = new Windows.Storage.Search.QueryOptions(Windows.Storage.Search.CommonFolderQuery.DefaultQuery)
+                //    //{
+                //    //    FolderDepth=Windows.Storage.Search.FolderDepth.Shallow,
+                //    //    //ApplicationSearchFilter = "System.Security.EncryptionOwners:[]",
+                //    //};
+                //    //query.SetPropertyPrefetch(Windows.Storage.FileProperties.PropertyPrefetchOptions.BasicProperties, null);
+
+                //    var result = new System.Collections.Generic.List<IFileItem>();
+                //    result.AddRange((await f.GetFoldersAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+
+                //    uint index = 0;
+                //    const uint stepSize = 100;
+                //    var qResult = f.CreateFileQuery();
+                //    var buffer = await qResult.GetFilesAsync(index, stepSize);
+                //    while(buffer.Count != 0)
+                //    {
+                //        result.AddRange(buffer.Where(a => !(a is StorageFile file && !file.IsAvailable)).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+
+                //        index += stepSize;
+                //        buffer = await qResult.GetFilesAsync(index, stepSize);
+                //    }
+                //    return new ObservableCollection<IFileItem>(result);
+                //}
+                //else
+                {
+                    return new ObservableCollection<IFileItem>((await f.GetItemsAsync())
+                        .Where(a => !(a is StorageFile file && !file.IsAvailable))//https://docs.microsoft.com/ja-jp/windows/uwp/files/quickstart-determining-availability-of-microsoft-onedrive-files
+                        .Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+                }
             }
             else
             {
