@@ -9,6 +9,8 @@ using BookViewerApp.Helper;
 
 namespace kurema.FileExplorerControl.Models.FileItems
 {
+
+    [Obsolete]
     public class HistoryItem : IFileItem
     {
         public BookViewerApp.Storages.HistoryStorage.HistoryInfo Content;

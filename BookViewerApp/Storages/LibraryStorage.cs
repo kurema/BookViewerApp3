@@ -51,6 +51,18 @@ namespace BookViewerApp.Storages
             };
         }
 
+        public static ContainerDelegateItem GetItemHistoryMRU(System.Windows.Input.ICommand PathRequestCommand)
+        {
+            if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
+            return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", (_) =>
+            {
+                return Task.FromResult<IEnumerable<IFileItem>>(Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
+                {
+                    MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand)
+                }));
+            });
+        }
+
         public static ContainerDelegateItem GetItemHistory(System.Windows.Input.ICommand PathRequestCommand)
         {
             if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;

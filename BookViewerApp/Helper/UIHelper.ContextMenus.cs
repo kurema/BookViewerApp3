@@ -290,6 +290,36 @@ namespace BookViewerApp.Helper
 
             }
 
+            public static Func<IFileItem, MenuCommand[]> GetMenuHistoryMRU(System.Windows.Input.ICommand pathRequestCommand)
+            {
+                return (item) =>
+                {
+                    if (item is HistoryMRUItem item1)
+                    {
+                        var result = new List<MenuCommand>();
+                        result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new Helper.DelegateCommand(async a =>
+                        {
+                            try
+                            {
+                                var file = await item1.GetFile();
+                                if (file == null) return;
+                                var parent = await file.GetParentAsync();
+                                if (parent == null) return;
+                                if (pathRequestCommand?.CanExecute(parent.Path) == true) pathRequestCommand.Execute(parent.Path);
+                            }
+                            catch { }
+                    })));
+
+                        return result.ToArray();
+                    }
+                    else
+                    {
+                        return new MenuCommand[0];
+                    }
+                };
+            }
+
+
             public static Func<IFileItem, MenuCommand[]> GetMenuHistory(System.Windows.Input.ICommand pathRequestCommand)
             {
                 return (item) =>

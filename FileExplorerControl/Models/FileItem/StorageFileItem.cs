@@ -56,13 +56,6 @@ namespace kurema.FileExplorerControl.Models.FileItems
                 //var folderIndexedState = await f.GetIndexedStateAsync();
                 //if (folderIndexedState == Windows.Storage.Search.IndexedState.FullyIndexed)
                 //{
-                //    //var query = new Windows.Storage.Search.QueryOptions(Windows.Storage.Search.CommonFolderQuery.DefaultQuery)
-                //    //{
-                //    //    FolderDepth=Windows.Storage.Search.FolderDepth.Shallow,
-                //    //    //ApplicationSearchFilter = "System.Security.EncryptionOwners:[]",
-                //    //};
-                //    //query.SetPropertyPrefetch(Windows.Storage.FileProperties.PropertyPrefetchOptions.BasicProperties, null);
-
                 //    var result = new System.Collections.Generic.List<IFileItem>();
                 //    result.AddRange((await f.GetFoldersAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
 

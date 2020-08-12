@@ -13,8 +13,8 @@ namespace BookViewerApp.Storages
 
         public static int FutureAccessListMargin = 50;
 
-        //https://docs.microsoft.com/en-us/windows/uwp/files/how-to-track-recently-used-files-and-folders
-        public static Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList MRU = Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
+        ////https://docs.microsoft.com/en-us/windows/uwp/files/how-to-track-recently-used-files-and-folders
+        //public static Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList MRU = Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
 
         public async static Task AddHistory(Windows.Storage.IStorageFile file, string id)
         {

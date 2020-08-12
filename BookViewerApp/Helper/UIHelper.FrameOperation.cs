@@ -17,7 +17,7 @@ namespace BookViewerApp.Helper
     {
         public static class FrameOperation
         {
-            public async static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+            public static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
             {
                 if (file == null) return;
                 if (sender == null) return;
@@ -41,7 +41,8 @@ namespace BookViewerApp.Helper
                         };
                     }
                 }
-                await HistoryStorage.AddHistory(file, null);
+                HistoryManager.List.Add(file);
+                //await HistoryStorage.AddHistory(file, null);
             }
 
             public static async Task<bool> OpenBookPicked(Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null)
