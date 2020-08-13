@@ -19,6 +19,10 @@ namespace kurema.FileExplorerControl.Models.FileItems
         BookViewerApp.Managers.HistoryManager.Metadata Content;
         string Token;
 
+        public bool IsParentAccessible { get; set; } = true;
+
+        public string Id => Content?.ID;
+
         public string Name => Content.Name;
 
         public string Path => throw new NotImplementedException();
@@ -32,7 +36,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public ICommand DeleteCommand => new DelegateCommand((_) =>
         {
             if (BookViewerApp.Managers.HistoryManager.List.ContainsItem(this.Token)) BookViewerApp.Managers.HistoryManager.List.Remove(this.Token);
-            //LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+            this.OnUpdate();
         }, a => !(a is bool b && b == true));
         public ICommand RenameCommand => new InvalidCommand();
 

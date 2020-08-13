@@ -61,7 +61,7 @@ namespace BookViewerApp.Storages
                 return Task.FromResult<IEnumerable<IFileItem>>(Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
                 {
                     MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand)
-                }));
+                }).OrderByDescending(a => a.DateCreated));
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
@@ -222,6 +222,10 @@ namespace BookViewerApp.Storages
             //{
             //    await itemHistory.GetChildren();
             //};
+            Managers.HistoryManager.Updated += (s, e) =>
+            {
+                OnLibraryUpdateRequest(LibraryKind.History);
+            };
 
             LibraryUpdateRequest += async (s, e) =>
              {
@@ -310,7 +314,7 @@ namespace BookViewerApp.Storages
             await RoamingBookmarks.SaveAsync();
         }
 
-        public static Dictionary<string, int> GetTokenUsedCount(bool includeHistory = true)
+        public static Dictionary<string, int> GetTokenUsedCount()
         {
             var result = new Dictionary<string, int>();
 
@@ -321,7 +325,6 @@ namespace BookViewerApp.Storages
             }
 
             if (Content?.Content == null) return null;
-            if (includeHistory && HistoryStorage.Content?.Content == null) return null;
 
             foreach (var item in Content?.Content?.folders ?? new Library.libraryFolder[0])
             {
@@ -334,10 +337,19 @@ namespace BookViewerApp.Storages
                     CountUp(itemFolder.token);
                 }
             }
-            if (!includeHistory) return result;
+            return result;
+        }
+
+        [Obsolete]
+        public static Dictionary<string, int> GetTokenUsedCountHistory()
+        {
+            var result = new Dictionary<string, int>();
+
+            if (HistoryStorage.Content?.Content == null) return null;
             foreach (var item in HistoryStorage.Content?.Content)
             {
-                CountUp(item.Token);
+                if (result.ContainsKey(item.Token)) result[item.Token]++;
+                else result[item.Token] = 1;
             }
             return result;
         }
@@ -345,12 +357,15 @@ namespace BookViewerApp.Storages
         public static void GarbageCollectToken()
         {
             var stats = GetTokenUsedCount();
+#pragma warning disable CS0612 // 型またはメンバーが旧型式です
+            var stats2 = GetTokenUsedCountHistory();
+#pragma warning restore CS0612 // 型またはメンバーが旧型式です
 
             var fal = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
             if (fal == null || fal.Entries == null) return;
             foreach (var item in fal.Entries)
             {
-                if (!stats.ContainsKey(item.Token))
+                if (!stats.ContainsKey(item.Token) && stats2?.ContainsKey(item.Token) != true)
                 {
                     fal.Remove(item.Token);
                 }

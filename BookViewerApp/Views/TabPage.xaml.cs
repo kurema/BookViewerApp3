@@ -204,6 +204,7 @@ namespace BookViewerApp.Views
             if (tab == null) return;
             ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
             ((tab?.Content as Frame)?.Content as IDisposable)?.Dispose();
+            ((tab?.Content as Frame)?.Content as IDisposableBasic)?.DisposeBasic();
 
             if (tab.IsClosable)
             {

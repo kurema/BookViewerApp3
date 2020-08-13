@@ -294,7 +294,7 @@ namespace BookViewerApp.Helper
             {
                 return (item) =>
                 {
-                    if (item is HistoryMRUItem item1)
+                    if (item is HistoryMRUItem item1 && item1.IsParentAccessible)
                     {
                         var result = new List<MenuCommand>();
                         result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new Helper.DelegateCommand(async a =>
@@ -302,9 +302,17 @@ namespace BookViewerApp.Helper
                             try
                             {
                                 var file = await item1.GetFile();
-                                if (file == null) return;
+                                if (file == null)
+                                {
+                                    item1.IsParentAccessible = false;
+                                    return;
+                                }
                                 var parent = await file.GetParentAsync();
-                                if (parent == null) return;
+                                if (parent == null)
+                                {
+                                    item1.IsParentAccessible = false;
+                                    return;
+                                }
                                 if (pathRequestCommand?.CanExecute(parent.Path) == true) pathRequestCommand.Execute(parent.Path);
                             }
                             catch { }

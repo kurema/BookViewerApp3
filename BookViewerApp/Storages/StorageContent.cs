@@ -104,6 +104,22 @@ namespace BookViewerApp.Storages
             }
         }
 
+        public async Task<bool> ExistAsync()
+        {
+            var item = await DataFolder.TryGetItemAsync(FileName);
+            return item != null;
+        }
+
+        public async Task TryDeleteAsync()
+        {
+            try
+            {
+                var item = await DataFolder.TryGetItemAsync(FileName);
+                item?.DeleteAsync();
+            }
+            catch { return; }
+        }
+
         public bool TryAdd<T2>(T2 item)
         {
             return TryOperate<T2>((a) => { a?.Add(item); });

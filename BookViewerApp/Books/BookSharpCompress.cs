@@ -15,7 +15,7 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.Books
 {
-    public class CompressedBook : IBookFixed, ITocProvider,IDisposable
+    public class CompressedBook : IBookFixed, ITocProvider, IDisposableBasic
     {
         public string ID
         {
@@ -114,21 +114,13 @@ namespace BookViewerApp.Books
             return new CompressedPage(Entries[i]);
         }
 
-        protected virtual void Dispose(bool managed)
+        public void DisposeBasic()
         {
-            if (managed)
-            {
-                DisposableContent?.Dispose();
-                DisposableContent = null;
-                DisposableStream?.Close();
-                DisposableStream?.Dispose();
-                DisposableStream = null;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
+            DisposableContent?.Dispose();
+            DisposableContent = null;
+            DisposableStream?.Close();
+            DisposableStream?.Dispose();
+            DisposableStream = null;
         }
     }
 }

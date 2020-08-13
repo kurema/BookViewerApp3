@@ -263,6 +263,7 @@
     <Compile Include="Extension\HistoryItem.cs" />
     <Compile Include="Extension\HistoryMRUItem.cs" />
     <Compile Include="Extension\TokenLibraryItem.cs" />
+    <Compile Include="Helper\IDisposableBasic.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
     <Compile Include="Helper\MemoryStreamCache.cs" />
     <Compile Include="Helper\OpenWebCommand.cs" />

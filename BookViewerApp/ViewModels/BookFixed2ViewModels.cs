@@ -22,7 +22,7 @@ using BookViewerApp.Views;
 
 namespace BookViewerApp.ViewModels
 {
-    public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
+    public class BookViewModel : INotifyPropertyChanged, IBookViewModel, Helper.IDisposableBasic
     {
         public BookViewModel()
         {
@@ -108,7 +108,8 @@ namespace BookViewerApp.ViewModels
                     PathStorage.AddOrReplace(value.Path, bookf.ID);
                     await PathStorage.Content.SaveAsync();
                 }
-                await HistoryStorage.AddHistory(value, bookf.ID);
+                //await HistoryStorage.AddHistory(value, bookf.ID);
+                HistoryManager.AddEntry(value, bookf.ID);
             }
             this.Loading = false;
         }
@@ -124,7 +125,7 @@ namespace BookViewerApp.ViewModels
         {
             this.Loading = true;
             if (BookInfo != null) SaveInfo();
-            this.Dispose();//変なタイミングだがこれだ正しい。
+            this.DisposeBasic();//変なタイミングだがこれだ正しい。
             this.Title = "";
 
             Content = value;
@@ -388,14 +389,16 @@ namespace BookViewerApp.ViewModels
             return this.PagesCount > page && page >= 0;
         }
 
-        public void Dispose()
+        public void DisposeBasic()
         {
             if (Pages != null)
                 foreach (var item in this.Pages)
                 {
                     (item.Content as IDisposable)?.Dispose();
+                    (item.Content as IDisposableBasic)?.DisposeBasic();
                 }
             (this.Content as IDisposable)?.Dispose();
+            (this.Content as IDisposableBasic)?.DisposeBasic();
         }
     }
 
@@ -416,7 +419,7 @@ namespace BookViewerApp.ViewModels
 
 
         private System.Windows.Input.ICommand _MoveCommand;
-        public System.Windows.Input.ICommand MoveCommand => _MoveCommand = _MoveCommand ?? new DelegateCommand(async (parameter) =>
+        public System.Windows.Input.ICommand MoveCommand => _MoveCommand = _MoveCommand ?? new DelegateCommand((parameter) =>
         {
             var split = parameter.ToString().Split(',');
             if (split.Length >= 2)

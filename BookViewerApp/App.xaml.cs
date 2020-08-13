@@ -43,6 +43,9 @@ namespace BookViewerApp
             await LibraryStorage.Content.GetContentAsync();
             //await HistoryStorage.Content.GetContentAsync();
             await PathStorage.Content.GetContentAsync();
+
+            //Note: This will be eliminated in future version.
+            await Managers.HistoryManager.IntegrateAsync();
         }
 
         /// <summary>

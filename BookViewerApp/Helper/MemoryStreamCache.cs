@@ -8,7 +8,7 @@ using System.IO;
 
 namespace BookViewerApp.Helper
 {
-    public class MemoryStreamCache : IDisposable
+    public class MemoryStreamCache : IDisposableBasic
     {
         private System.Threading.SemaphoreSlim Semaphore = new System.Threading.SemaphoreSlim(1, 1);
         private System.Threading.SemaphoreSlim SemaphoreProvider = new System.Threading.SemaphoreSlim(1, 1);
@@ -55,18 +55,10 @@ namespace BookViewerApp.Helper
             }
         }
 
-        protected virtual void Dispose(bool managed)
+        public void DisposeBasic()
         {
-            if (managed)
-            {
-                ContentCache?.Dispose();
-                ContentCache = null;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
+            ContentCache?.Dispose();
+            ContentCache = null;
         }
     }
 }

@@ -102,7 +102,7 @@ namespace BookViewerApp.Books
         }
     }
 
-    public class VirtualPage : IPageFixed,IDisposable
+    public class VirtualPage : IPageFixed,Helper.IDisposableBasic
     {
         private Func<IPageFixed> accessor;
 
@@ -150,15 +150,10 @@ namespace BookViewerApp.Books
             await body.SetBitmapAsync(image);
         }
 
-        protected virtual void Dispose(bool managed)
+        public void DisposeBasic()
         {
-            if (managed) (PageCache as IDisposable)?.Dispose();
-
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
+            (PageCache as IDisposable)?.Dispose();
+            (PageCache as Helper.IDisposableBasic)?.DisposeBasic();
         }
     }
 

@@ -143,7 +143,10 @@ namespace BookViewerApp.Helper
                                 }
                                 if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
                                 {
-                                    string id = (a as kurema.FileExplorerControl.Models.FileItems.HistoryItem)?.Content?.Id ?? PathStorage.GetIdFromPath(a.Path);
+                                    string id =
+                                    ( a as kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem)?.Id ??
+                                    //(a as kurema.FileExplorerControl.Models.FileItems.HistoryItem)?.Content?.Id ??
+                                    PathStorage.GetIdFromPath(a.Path);
                                     if (!string.IsNullOrEmpty(id))
                                     {
                                         var image = await ThumbnailManager.GetImageSourceAsync(id);
@@ -180,11 +183,16 @@ namespace BookViewerApp.Helper
                                     {
                                         tab.OpenTabBook(sfi.Content);
                                     }
-                                    else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                    else if(fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
                                     {
-                                        var file = await hi.GetFile();
+                                        var file = await hm.GetFile();
                                         if (file != null) tab.OpenTabBook(file);
                                     }
+                                    //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                    //{
+                                    //    var file = await hi.GetFile();
+                                    //    if (file != null) tab.OpenTabBook(file);
+                                    //}
                                     else
                                     {
                                         var stream = fileitem?.OpenStreamForReadAsync();

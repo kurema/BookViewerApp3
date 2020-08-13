@@ -14,14 +14,34 @@ namespace BookViewerApp.Managers
 
         public static EventHandler Updated;
 
+        [Obsolete]
+        public async static Task IntegrateAsync()
+        {
+            if (!await Storages.HistoryStorage.Content.ExistAsync()) return;
+            
+            foreach (var item in (await Storages.HistoryStorage.Content.GetContentAsync()).OrderBy(a => a.Date))
+            {
+                try
+                {
+                    var file = await item.GetFile();
+                    var metadata = new Metadata() { Date = item.Date, ID = item.Id, Name = item.Name }.Serialize();
+                    List.Add(file, metadata);
+                }
+                catch { }
+            }
+            OnUpdated();
+            await Storages.HistoryStorage.Content.TryDeleteAsync();
+        }
+
+
         public static void OnUpdated(object sender = null) => Updated?.Invoke(sender, new EventArgs());
 
-        public static void AddEntry(IStorageItem item,string ID=null)
+        public static void AddEntry(IStorageItem file, string ID = null)
         {
-            if (item == null) return;
-            var metadata = new Metadata() { Name = item.Name, ID = ID, Date = DateTimeOffset.Now }.Serialize();
+            if (file == null) return;
+            var metadata = new Metadata() { Name = file.Name, ID = ID, Date = DateTimeOffset.Now }.Serialize();
             //ToDo:同一ファイル排除?
-            List.Add(item, metadata);
+            List.Add(file, metadata);
 
             OnUpdated();
         }

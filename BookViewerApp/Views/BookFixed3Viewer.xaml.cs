@@ -181,7 +181,7 @@ namespace BookViewerApp.Views
         public void CloseOperation()
         {
             Binding?.SaveInfo();
-            Binding?.Dispose();
+            Binding?.DisposeBasic();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -197,7 +197,7 @@ namespace BookViewerApp.Views
 
             SetTitle(this.OriginalTitle);
 
-            Binding?.Dispose();
+            Binding?.DisposeBasic();
 
             base.OnNavigatedFrom(e);
         }
