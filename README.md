@@ -28,8 +28,8 @@ Sponsors above $10/month will be here.
 
 ## Why 3?
 It's because there is [1](https://github.com/kurema/BookViewerApp/), which I developed five years before this.
-I've keep thinking I have to fix lots of it, and I tried to rewrite all. That's [2](https://github.com/kurema/BookViewerApp2/).
-But it turned out to be too hard and I gave up.
+I've been wanting to upgrade, and I tried to rewrite all. That's [2](https://github.com/kurema/BookViewerApp2/).
+But it just failed.
 This 3 is based on 1. Though its appearance is totally different, making use of old codes helped me a lot.
 
 So that's why this is 3, not 1, not 2.
