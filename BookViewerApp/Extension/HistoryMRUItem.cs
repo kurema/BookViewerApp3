@@ -29,7 +29,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public bool IsFolder => false;
 
-        public ICommand DeleteCommand => new DelegateCommand(async (_) =>
+        public ICommand DeleteCommand => new DelegateCommand((_) =>
         {
             if (BookViewerApp.Managers.HistoryManager.List.ContainsItem(this.Token)) BookViewerApp.Managers.HistoryManager.List.Remove(this.Token);
             //LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);

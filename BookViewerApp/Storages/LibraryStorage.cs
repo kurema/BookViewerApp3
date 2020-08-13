@@ -45,7 +45,9 @@ namespace BookViewerApp.Storages
                 })))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
             })
             {
-                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
+                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+                    kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult
+                    , () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
                 Tag = LibraryKind.Library,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
             };
@@ -60,9 +62,23 @@ namespace BookViewerApp.Storages
                 {
                     MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand)
                 }));
-            });
+            })
+            {
+                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+                    kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult
+                    , () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png"))),
+                MenuCommandsProvider = UIHelper.ContextMenus.MenuHistories,
+                Tag = LibraryKind.History,
+                FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
+                DeleteCommand = new DelegateCommand(a =>
+                {
+                    Managers.HistoryManager.List.Clear();
+                    OnLibraryUpdateRequest(LibraryKind.History);
+                }),
+            };
         }
 
+        [Obsolete]
         public static ContainerDelegateItem GetItemHistory(System.Windows.Input.ICommand PathRequestCommand)
         {
             if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
@@ -86,7 +102,9 @@ namespace BookViewerApp.Storages
                 //})?.ToArray() ?? Array.Empty<IFileItem>();
             })
             {
-                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png"))),
+                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+                    kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult
+                    , () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_clock_l.png"))),
                 MenuCommandsProvider = UIHelper.ContextMenus.MenuHistories,
                 DeleteCommand = new DelegateCommand(async a =>
                 {
@@ -173,7 +191,9 @@ namespace BookViewerApp.Storages
                 return list;
             })
             {
-                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async a => (null, null), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
+                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+                    kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult,
+                    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
                 Tag = LibraryKind.Bookmarks,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
                 MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks,
@@ -186,7 +206,8 @@ namespace BookViewerApp.Storages
 
             var itemFolder = GetItemFolders();
             var itemLibrary = GetItemLibrary();
-            var itemHistory = GetItemHistory(PathRequestCommand);
+            //var itemHistory = GetItemHistory(PathRequestCommand);
+            var itemHistory = GetItemHistoryMRU(PathRequestCommand);
             var itemBookmark = GetItemBookmarks(bookmarkAction);
 
             result.Add(itemFolder);
@@ -196,34 +217,40 @@ namespace BookViewerApp.Storages
 
             foreach (var item in result.ToArray()) { if (item == null) result.Remove(item); }
 
+            ////Why only ItemRemoved???
+            //Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.ItemRemoved += async (_s, _e) =>
+            //{
+            //    await itemHistory.GetChildren();
+            //};
+
             LibraryUpdateRequest += async (s, e) =>
-            {
-                switch (e)
-                {
-                    case LibraryKind.Bookmarks:
-                        await itemBookmark.GetChildren();
-                        break;
-                    case LibraryKind.Folders:
-                        await itemFolder.GetChildren();
-                        break;
-                    case LibraryKind.History:
-                        await itemHistory.GetChildren();
-                        var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryStorage.LibraryKind.History);
-                        if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
-                        {
-                            result.Remove(entryHistory);
-                        }
-                        else if ((bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory == null)
-                        {
-                            result.Insert(2, itemHistory);
-                        }
-                        break;
-                    case LibraryKind.Library:
-                        await itemLibrary.GetChildren();
-                        break;
-                    default: break;
-                }
-            };
+             {
+                 switch (e)
+                 {
+                     case LibraryKind.Bookmarks:
+                         await itemBookmark.GetChildren();
+                         break;
+                     case LibraryKind.Folders:
+                         await itemFolder.GetChildren();
+                         break;
+                     case LibraryKind.History:
+                         await itemHistory.GetChildren();
+                         var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryStorage.LibraryKind.History);
+                         if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
+                         {
+                             result.Remove(entryHistory);
+                         }
+                         else if ((bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory == null)
+                         {
+                             result.Insert(2, itemHistory);
+                         }
+                         break;
+                     case LibraryKind.Library:
+                         await itemLibrary.GetChildren();
+                         break;
+                     default: break;
+                 }
+             };
 
             return new ContainerItem(GetItem_GetWord("PC"), "/PC", result)
             {
@@ -381,7 +408,7 @@ namespace BookViewerApp.Storages
                     switch (item)
                     {
                         case libraryBookmarksContainer container:
-                            list.Add(container.AsFileItem(action, isReadOnly,menuCommandProvider));
+                            list.Add(container.AsFileItem(action, isReadOnly, menuCommandProvider));
                             break;
                         case libraryBookmarksContainerBookmark bookmark:
                             list.Add(bookmark.AsFileItem(action, isReadOnly, menuCommandProvider));

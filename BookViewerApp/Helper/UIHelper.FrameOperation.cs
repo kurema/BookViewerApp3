@@ -249,7 +249,7 @@ namespace BookViewerApp.Helper
                 {
                     {
                         var bookmark = LibraryStorage.GetItemBookmarks((_) => { });
-                        vm.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", async (bmNew) =>
+                        vm.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", (bmNew) =>
                         {
                             LibraryStorage.OperateBookmark(a =>
                             {
@@ -264,7 +264,7 @@ namespace BookViewerApp.Helper
                                 else if (a is kurema.FileExplorerControl.Models.FileItems.ContainerItem container)
                                 {
                                     return new kurema.BrowserControl.ViewModels.BookmarkItem(container.Name, (_) => { }
-                                    , async () => container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem()))
+                                    , () => Task.FromResult( container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem())))
                                     { IsReadOnly = true };
                                 }
                                 else return null;

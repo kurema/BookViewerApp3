@@ -55,10 +55,18 @@ namespace BookViewerApp.Helper
             }
         }
 
+        protected virtual void Dispose(bool managed)
+        {
+            if (managed)
+            {
+                ContentCache?.Dispose();
+                ContentCache = null;
+            }
+        }
+
         public void Dispose()
         {
-            ContentCache?.Dispose();
-            ContentCache = null;
+            Dispose(true);
         }
     }
 }

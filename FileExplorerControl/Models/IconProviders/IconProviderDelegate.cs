@@ -24,5 +24,7 @@ namespace kurema.FileExplorerControl.Models.IconProviders
         public async Task<Func<ImageSource>> GetIconLarge(IFileItem item) => (await IconSource(item)).Large;
 
         public async Task<Func<ImageSource>> GetIconSmall(IFileItem item) => (await IconSource(item)).Small;
+
+        public static Func<IFileItem, Task<(Func<ImageSource> Small, Func<ImageSource> Large)>> NullResult => a => Task.FromResult<(Func<ImageSource> Small, Func<ImageSource> Large)>((null, null));
     }
 }

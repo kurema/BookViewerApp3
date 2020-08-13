@@ -12,12 +12,18 @@ namespace BookViewerApp.Managers
     {
         public static Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList List => Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
 
+        public static EventHandler Updated;
+
+        public static void OnUpdated(object sender = null) => Updated?.Invoke(sender, new EventArgs());
+
         public static void AddEntry(IStorageItem item,string ID=null)
         {
             if (item == null) return;
             var metadata = new Metadata() { Name = item.Name, ID = ID, Date = DateTimeOffset.Now }.Serialize();
             //ToDo:同一ファイル排除?
             List.Add(item, metadata);
+
+            OnUpdated();
         }
 
         public class Metadata

@@ -150,9 +150,15 @@ namespace BookViewerApp.Books
             await body.SetBitmapAsync(image);
         }
 
+        protected virtual void Dispose(bool managed)
+        {
+            if (managed) (PageCache as IDisposable)?.Dispose();
+
+        }
+
         public void Dispose()
         {
-            (PageCache as IDisposable)?.Dispose();
+            Dispose(true);
         }
     }
 

@@ -114,13 +114,21 @@ namespace BookViewerApp.Books
             return new CompressedPage(Entries[i]);
         }
 
+        protected virtual void Dispose(bool managed)
+        {
+            if (managed)
+            {
+                DisposableContent?.Dispose();
+                DisposableContent = null;
+                DisposableStream?.Close();
+                DisposableStream?.Dispose();
+                DisposableStream = null;
+            }
+        }
+
         public void Dispose()
         {
-            DisposableContent?.Dispose();
-            DisposableContent = null;
-            DisposableStream?.Close();
-            DisposableStream?.Dispose();
-            DisposableStream = null;
+            Dispose(true);
         }
     }
 }
@@ -174,7 +182,7 @@ namespace BookViewerApp.Books
                     });
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 try
                 {

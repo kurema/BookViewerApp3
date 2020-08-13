@@ -16,7 +16,7 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.Books
 {
-    public class CbzBook : IBookFixed, ITocProvider,IDisposable
+    public class CbzBook : IBookFixed, ITocProvider, IDisposable
     {
         public ZipArchive Content { get; private set; }
         public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
@@ -127,13 +127,21 @@ namespace BookViewerApp.Books
             AvailableEntries = entries.ToArray();
         }
 
+        protected virtual void Dispose(bool cleanManaged)
+        {
+            if (cleanManaged)
+            {
+                Content?.Dispose();
+                Content = null;
+                DisposableStream?.Close();
+                DisposableStream?.Dispose();
+                DisposableStream = null;
+            }
+        }
+
         public void Dispose()
         {
-            Content?.Dispose();
-            Content = null;
-            DisposableStream?.Close();
-            DisposableStream?.Dispose();
-            DisposableStream = null;
+            Dispose(true);
         }
     }
 }
@@ -185,7 +193,7 @@ namespace BookViewerApp.Books
                     await Functions.ResizeImage((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream(), fileThumb, width, () => { Content.ExtractToFile(file.Path, true); });
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 try
                 { await file.DeleteAsync(); }
@@ -206,10 +214,18 @@ namespace BookViewerApp.Books
             }
         }
 
+        protected virtual void Dispose(bool managed)
+        {
+            if (managed)
+            {
+                Cache?.Dispose();
+                Cache = null;
+            }
+        }
+
         public void Dispose()
         {
-            Cache?.Dispose();
-            Cache = null;
+            Dispose(true);
         }
     }
 
