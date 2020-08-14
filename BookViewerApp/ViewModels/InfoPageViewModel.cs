@@ -16,6 +16,7 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.ViewModels
 {
+    [Obsolete]
     public class InfoPageViewModel : INotifyPropertyChanged
     {
 #pragma warning disable 0067

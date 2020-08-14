@@ -10,6 +10,9 @@ namespace BookViewerApp.Managers
 {
     public static class HistoryManager
     {
+        /// <summary>
+        /// Call OnUpdated when you changed the content
+        /// </summary>
         public static Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList List => Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
 
         public static EventHandler Updated;
@@ -39,7 +42,7 @@ namespace BookViewerApp.Managers
         public static void AddEntry(IStorageItem file, string ID = null)
         {
             if (file == null) return;
-            var metadata = new Metadata() { Name = file.Name, ID = ID, Date = DateTimeOffset.Now }.Serialize();
+            var metadata = new Metadata() { Name = file.Name, ID = ID ?? "", Date = DateTimeOffset.Now }.Serialize();
             //ToDo:同一ファイル排除?
             List.Add(file, metadata);
 
@@ -48,6 +51,13 @@ namespace BookViewerApp.Managers
 
         public class Metadata
         {
+            public Metadata()
+            {
+                Name = "";
+                ID = "";
+                Date = DateTime.Now;
+            }
+
             public string Name { get; set; }
             public string ID { get; set; }
 

@@ -41,7 +41,7 @@ namespace BookViewerApp.Helper
                         };
                     }
                 }
-                HistoryManager.List.Add(file);
+                HistoryManager.AddEntry(file);
                 //await HistoryStorage.AddHistory(file, null);
             }
 

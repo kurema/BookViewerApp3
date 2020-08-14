@@ -73,7 +73,7 @@ namespace BookViewerApp.Storages
                 DeleteCommand = new DelegateCommand(a =>
                 {
                     Managers.HistoryManager.List.Clear();
-                    OnLibraryUpdateRequest(LibraryKind.History);
+                    Managers.HistoryManager.OnUpdated();
                 }),
             };
         }

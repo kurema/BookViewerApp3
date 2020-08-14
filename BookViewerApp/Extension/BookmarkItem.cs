@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace kurema.FileExplorerControl.Models.FileItems
 {
-    public class StorageBookmarkItem : IFileItem, IStorageBookmark
+    public class StorageBookmarkItem : IStorageBookmark
     {
         public libraryBookmarksContainerBookmark Content;
 
@@ -97,11 +97,11 @@ namespace kurema.FileExplorerControl.Models.FileItems
         bool IsReadOnly { get; set; }
         Action<string> ActionOpen { get; set; }
         Action ActionDelete { get; set; }
-        Func<IFileItem, MenuCommand[]> MenuCommandsProvider { set; }
+        new Func<IFileItem, MenuCommand[]> MenuCommandsProvider { set; }
         IBookmarkItem GetBrowserBookmarkItem();
     }
 
-    public class StorageBookmarkContainer : IFileItem, IStorageBookmark
+    public class StorageBookmarkContainer : IStorageBookmark
     {
         public libraryBookmarksContainer Content;
 

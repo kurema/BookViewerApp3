@@ -12,7 +12,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
     {
         public HistoryMRUItem(Windows.Storage.AccessCache.AccessListEntry access)
         {
-            this.Content = BookViewerApp.Managers.HistoryManager.Metadata.Deserialize(access.Metadata);
+            this.Content = BookViewerApp.Managers.HistoryManager.Metadata.Deserialize(access.Metadata) ?? new BookViewerApp.Managers.HistoryManager.Metadata();
             this.Token = access.Token;
         }
 
@@ -35,8 +35,12 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public ICommand DeleteCommand => new DelegateCommand((_) =>
         {
-            if (BookViewerApp.Managers.HistoryManager.List.ContainsItem(this.Token)) BookViewerApp.Managers.HistoryManager.List.Remove(this.Token);
-            this.OnUpdate();
+            if (BookViewerApp.Managers.HistoryManager.List.ContainsItem(this.Token))
+            {
+                BookViewerApp.Managers.HistoryManager.List.Remove(this.Token);
+                BookViewerApp.Managers.HistoryManager.OnUpdated();
+                this.OnUpdate();
+            }
         }, a => !(a is bool b && b == true));
         public ICommand RenameCommand => new InvalidCommand();
 
