@@ -20,6 +20,7 @@ namespace BookViewerApp.Views
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
+    [Obsolete]
     public sealed partial class InfoPage : Page
     {
         public InfoPage()

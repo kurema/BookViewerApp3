@@ -217,11 +217,7 @@ namespace BookViewerApp.Storages
 
             foreach (var item in result.ToArray()) { if (item == null) result.Remove(item); }
 
-            ////Why only ItemRemoved???
-            //Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.ItemRemoved += async (_s, _e) =>
-            //{
-            //    await itemHistory.GetChildren();
-            //};
+
             Managers.HistoryManager.Updated += (s, e) =>
             {
                 OnLibraryUpdateRequest(LibraryKind.History);
