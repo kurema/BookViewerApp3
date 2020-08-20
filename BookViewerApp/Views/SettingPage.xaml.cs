@@ -209,6 +209,42 @@ namespace BookViewerApp.Views
             await dialog.ShowAsync();
         }
 
+        public class SettingEnumItemViewModel
+        {
+            public SettingEnumItemViewModel(Enum content, string stringResourceKey)
+            {
+                Content = content ?? throw new ArgumentNullException(nameof(content));
+                StringResourceKey = stringResourceKey ?? throw new ArgumentNullException(nameof(stringResourceKey));
+            }
+
+            public Enum Content { get; private set; }
+
+            public string StringResourceKey { get; private set; }
+
+            public string Title
+            {
+                get
+                {
+                    return Managers.ResourceManager.Loader.GetString($"{StringResourceKey}/{Name}/Title") ?? Name;
+                }
+            }
+
+            public string Name
+            {
+                get
+                {
+                    try
+                    {
+                        return Content?.GetType()?.GetEnumName(Content) ?? "";
+                    }
+                    catch
+                    {
+                        return "";
+                    }
+                }
+            }
+        }
+
         public class SettingViewModel : INotifyPropertyChanged
         {
             public event PropertyChangedEventHandler PropertyChanged;
@@ -261,6 +297,52 @@ namespace BookViewerApp.Views
                 {
                     var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
                     return rl.GetString(target.StringResourceKey + "/ValidRangeDescription");
+                }
+            }
+
+            public string EnumPlaceholderText
+            {
+                get
+                {
+                    var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
+                    return rl.GetString(target.StringResourceKey + "/Placeholder");
+                }
+            }
+
+            public SettingEnumItemViewModel[] EnumItems
+            {
+                get
+                {
+                    var type = Type;
+                    if (!type.IsEnum) return new SettingEnumItemViewModel[0];
+
+                    var result = new List<SettingEnumItemViewModel>();
+                    foreach (Enum item in type.GetEnumValues())
+                    {
+                        result.Add(GetEnumViewModel(item, type.Name));
+                    }
+                    return result.ToArray();
+                }
+            }
+
+            SettingEnumItemViewModel GetEnumViewModel(Enum item, string typeName) => new SettingEnumItemViewModel(item, target.StringResourceKey + "/" + typeName);
+
+            public SettingEnumItemViewModel SelectedEnum
+            {
+                get
+                {
+                    try
+                    {
+                        if (target.GetValue() is Enum @enum) return GetEnumViewModel(@enum, Type.Name);
+                    }
+                    catch
+                    {
+                    }
+                    return null;
+                }
+                set
+                {
+                    target.SetValue(value.Content);
                 }
             }
 
@@ -319,14 +401,11 @@ namespace BookViewerApp.Views
             public DataTemplate TemplateString { get; set; }
             public DataTemplate TemplateRegex { get; set; }
             public DataTemplate TemplateGeneralString { get; set; }
+            public DataTemplate TemplateEnum { get; set; }
 
             protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
             {
-                if (!(item is SettingPage.SettingViewModel))
-                {
-                    return base.SelectTemplateCore(item, container);
-                }
-                var itemVM = (SettingPage.SettingViewModel)item;
+                if (!(item is SettingPage.SettingViewModel itemVM)) return base.SelectTemplateCore(item, container);
                 if (itemVM.Type == typeof(bool))
                 {
                     return TemplateBool;
@@ -346,6 +425,10 @@ namespace BookViewerApp.Views
                 else if (itemVM.Type == typeof(System.Text.RegularExpressions.Regex))
                 {
                     return TemplateRegex;
+                }
+                else if (itemVM.Type.IsEnum)
+                {
+                    return TemplateEnum;
                 }
                 else
                 {

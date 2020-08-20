@@ -50,6 +50,8 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ExplorerIconSize",75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),
                         new SettingInstance("ShowHistories",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("MaximumHistoryCount",100,new TypeConverters.IntConverter(),group:"Explorer",isVisible:false){Minimum = 0,Maximum = 500},//MRUで履歴を管理するようにしたので非表示にしました。
+                        new SettingInstance("EpubViewerType",SettingEnums.EpubViewerType.Bibi, new TypeConverters.EnumConverter<SettingEnums.EpubViewerType>(),group:"Viewer"),
+
                     };
             }
         }
@@ -66,9 +68,17 @@ namespace BookViewerApp.Storages
             return null;
         }
 
-        public static void SetValue(string Key,object value)
+        public static void SetValue(string Key, object value)
         {
             SettingInstances?.FirstOrDefault(a => a.Key == Key)?.SetValue(value);
+        }
+
+        public static class SettingEnums
+        {
+            public enum EpubViewerType
+            {
+                Bibi, EpubJsReader
+            }
         }
 
         public class SettingInstance

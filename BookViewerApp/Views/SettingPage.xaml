@@ -107,8 +107,24 @@
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
-
                         </template:SettingTemplateSelector.TemplateInt>
+                        <template:SettingTemplateSelector.TemplateEnum>
+                            <DataTemplate>
+                                <Border Style="{StaticResource ItemBorder}">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                        <TextBlock Text="{Binding Description}"/>
+                                        <ComboBox ItemsSource="{Binding EnumItems}" Width="240" PlaceholderText="{Binding EnumPlaceholderText}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Title}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </template:SettingTemplateSelector.TemplateEnum>
                     </template:SettingTemplateSelector>
                 </ItemsControl.ItemTemplateSelector>
             </ItemsControl>
