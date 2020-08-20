@@ -706,20 +706,21 @@ I wish you good luck.</source>
           <target state="translated">貢献者・翻訳者・スポンサーを表示する</target>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerType.Description" translate="yes" xml:space="preserve">
-          <source>Choose engine for epub. We recommend Bibi.</source>
-          <target state="new">Choose engine for epub. We recommend Bibi.</target>
+          <source>Choose the engine for epub. We recommend Bibi.</source>
+          <target state="translated">Epubの表示に利用するエンジンを選択してください。Bibiを推奨します。</target>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerType.Title" translate="yes" xml:space="preserve">
-          <source>Epub viewer engine</source>
-          <target state="new">Epub viewer engine</target>
+          <source>Epub display engine</source>
+          <target state="needs-review-translation">Epub表示エンジン</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" translate="yes" xml:space="preserve">
           <source>Bibi</source>
-          <target state="new">Bibi</target>
+          <target state="translated">Bibi</target>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" translate="yes" xml:space="preserve">
           <source>Epub.js Reader</source>
-          <target state="new">Epub.js Reader</target>
+          <target state="translated">Epub.js Reader</target>
         </trans-unit>
       </group>
     </body>

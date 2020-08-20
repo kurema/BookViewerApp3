@@ -636,7 +636,7 @@ I wish you good luck.</value>
     <value>View Third-Party Notification</value>
   </data>
   <data name="Setting_EpubViewerType.Description" xml:space="preserve">
-    <value>Choose engine for epub. We recommend Bibi.</value>
+    <value>Choose the engine for epub. We recommend Bibi.</value>
   </data>
   <data name="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" xml:space="preserve">
     <value>Bibi</value>
@@ -645,6 +645,6 @@ I wish you good luck.</value>
     <value>Epub.js Reader</value>
   </data>
   <data name="Setting_EpubViewerType.Title" xml:space="preserve">
-    <value>Epub viewer engine</value>
+    <value>Epub display engine</value>
   </data>
 </root>
