@@ -704,6 +704,22 @@ I wish you good luck.</source>
           <source>View contributors, translators and sponsors</source>
           <target state="translated">查看貢獻者，翻譯和讚助者</target>
         </trans-unit>
+        <trans-unit id="Setting_EpubViewerType.Description" translate="yes" xml:space="preserve">
+          <source>Choose engine for epub. We recommend Bibi.</source>
+          <target state="new">Choose engine for epub. We recommend Bibi.</target>
+        </trans-unit>
+        <trans-unit id="Setting_EpubViewerType.Title" translate="yes" xml:space="preserve">
+          <source>Epub viewer engine</source>
+          <target state="new">Epub viewer engine</target>
+        </trans-unit>
+        <trans-unit id="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" translate="yes" xml:space="preserve">
+          <source>Bibi</source>
+          <target state="new">Bibi</target>
+        </trans-unit>
+        <trans-unit id="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" translate="yes" xml:space="preserve">
+          <source>Epub.js Reader</source>
+          <target state="new">Epub.js Reader</target>
+        </trans-unit>
       </group>
     </body>
   </file>

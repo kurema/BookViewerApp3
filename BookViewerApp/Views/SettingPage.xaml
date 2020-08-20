@@ -114,7 +114,9 @@
                                     <StackPanel>
                                         <TextBlock FontWeight="Bold" Text="{Binding Title}" />
                                         <TextBlock Text="{Binding Description}"/>
-                                        <ComboBox ItemsSource="{Binding EnumItems}" Width="240" PlaceholderText="{Binding EnumPlaceholderText}">
+                                        <ComboBox ItemsSource="{Binding EnumItems}" Width="240" PlaceholderText="{Binding EnumPlaceholderText}"
+                                                  SelectedItem="{Binding SelectedEnum,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  >
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Title}"/>

@@ -24,8 +24,13 @@ namespace BookViewerApp.Helper
                 SetTitleByResource(sender, "Epub");
                 var tabPage = GetCurrentTabPage(sender);
 
-
-                var resolver = EpubResolver.GetResolverBibi(file);
+                var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
+                var resolver = epubType switch
+                {
+                    SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolver.GetResolverBibi(file),
+                    SettingStorage.SettingEnums.EpubViewerType.EpubJsReader => EpubResolver.GetResolverBasic(file),
+                    _ => EpubResolver.GetResolverBibi(file),
+                };
                 frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), null);
 
                 if (frame.Content is kurema.BrowserControl.Views.BrowserControl content)

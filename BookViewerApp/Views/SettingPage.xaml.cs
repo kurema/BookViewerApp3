@@ -225,7 +225,8 @@ namespace BookViewerApp.Views
             {
                 get
                 {
-                    return Managers.ResourceManager.Loader.GetString($"{StringResourceKey}/{Name}/Title") ?? Name;
+                    var result = Managers.ResourceManager.Loader.GetString($"{StringResourceKey}/{Name}/Title");
+                    return string.IsNullOrEmpty(result) ? Name : result;
                 }
             }
 
@@ -309,10 +310,13 @@ namespace BookViewerApp.Views
                 }
             }
 
+            SettingEnumItemViewModel[] _EnumItems = null;
+
             public SettingEnumItemViewModel[] EnumItems
             {
                 get
                 {
+                    if (_EnumItems != null) return _EnumItems;
                     var type = Type;
                     if (!type.IsEnum) return new SettingEnumItemViewModel[0];
 
@@ -321,11 +325,12 @@ namespace BookViewerApp.Views
                     {
                         result.Add(GetEnumViewModel(item, type.Name));
                     }
-                    return result.ToArray();
+
+                    return _EnumItems = result.ToArray();
                 }
             }
 
-            SettingEnumItemViewModel GetEnumViewModel(Enum item, string typeName) => new SettingEnumItemViewModel(item, target.StringResourceKey + "/" + typeName);
+            SettingEnumItemViewModel GetEnumViewModel(Enum item, string typeName) => new SettingEnumItemViewModel(item, target.StringResourceKey + "/Enums/" + typeName);
 
             public SettingEnumItemViewModel SelectedEnum
             {
@@ -333,7 +338,7 @@ namespace BookViewerApp.Views
                 {
                     try
                     {
-                        if (target.GetValue() is Enum @enum) return GetEnumViewModel(@enum, Type.Name);
+                        if (target.GetValue() is Enum @enum) return EnumItems.First(a => a.Content.Equals( @enum));
                     }
                     catch
                     {
