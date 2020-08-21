@@ -29,6 +29,7 @@ namespace BookViewerApp.Views
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
+    [Obsolete]
     public sealed partial class BookFixed2Viewer : Page
     {
         private ViewModels.BookViewModel Binding => (BookViewModel)this.DataContext;
@@ -105,11 +106,11 @@ namespace BookViewerApp.Views
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
         }
 
-        private void SetBookShelfModel(BookShelfBookViewModel viewModel)
-        {
-            if (Binding != null)
-                Binding.AsBookShelfBook = viewModel;
-        }
+        //private void SetBookShelfModel(BookShelfBookViewModel viewModel)
+        //{
+        //    if (Binding != null)
+        //        Binding.AsBookShelfBook = viewModel;
+        //}
 
         public void SaveInfo()
         {
@@ -148,7 +149,7 @@ namespace BookViewerApp.Views
             {
                 var param = (BookAndParentNavigationParamater)e.Parameter;
                 Open(param.BookViewerModel);
-                SetBookShelfModel(param.BookShelfModel);
+                //SetBookShelfModel(param.BookShelfModel);
                 if (Binding != null)
                     Binding.Title = param.Title;
             }
@@ -167,7 +168,7 @@ namespace BookViewerApp.Views
         public struct BookAndParentNavigationParamater
         {
             public Books.IBookFixed BookViewerModel;
-            public BookShelfBookViewModel BookShelfModel;
+            //public BookShelfBookViewModel BookShelfModel;
             public string Title;
         }
 

@@ -10,7 +10,7 @@ namespace BookViewerApp.Helper
 {
     public class OpenWebCommand : ICommand
     {
-        private Views.TabPage TabPage;
+        private TabPage TabPage;
 
         public OpenWebCommand(TabPage tabPage, string address)
         {
@@ -20,7 +20,9 @@ namespace BookViewerApp.Helper
 
         public string Address { get; private set; }
 
+#pragma warning disable 0067
         public event EventHandler CanExecuteChanged;
+#pragma warning restore 0067
 
         public bool CanExecute(object parameter)
         {

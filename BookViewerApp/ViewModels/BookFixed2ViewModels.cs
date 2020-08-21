@@ -20,6 +20,7 @@ using BookViewerApp.Managers;
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
 
+#nullable enable
 namespace BookViewerApp.ViewModels
 {
     public class BookViewModel : INotifyPropertyChanged, IBookViewModel, Helper.IDisposableBasic
@@ -37,19 +38,19 @@ namespace BookViewerApp.ViewModels
             };
         }
 
-        private Commands.ICommandEventRaiseable _PageVisualAddCommand;
-        private Commands.ICommandEventRaiseable _PageVisualSetCommand;
-        private Commands.ICommandEventRaiseable _PageVisualMaxCommand;
-        private Commands.ICommandEventRaiseable _PageAddCommand;
-        private Commands.ICommandEventRaiseable _PageSetCommand;
-        private Commands.ICommandEventRaiseable _PageMaxCommand;
-        private Commands.ICommandEventRaiseable _SwapReverseCommand;
-        private Commands.ICommandEventRaiseable _AddCurrentPageToBookmarkCommand;
+        private Commands.ICommandEventRaiseable? _PageVisualAddCommand;
+        private Commands.ICommandEventRaiseable? _PageVisualSetCommand;
+        private Commands.ICommandEventRaiseable? _PageVisualMaxCommand;
+        private Commands.ICommandEventRaiseable? _PageAddCommand;
+        private Commands.ICommandEventRaiseable? _PageSetCommand;
+        private Commands.ICommandEventRaiseable? _PageMaxCommand;
+        private Commands.ICommandEventRaiseable? _SwapReverseCommand;
+        private Commands.ICommandEventRaiseable? _AddCurrentPageToBookmarkCommand;
 
-        private System.Windows.Input.ICommand _GoNextBookCommand;
-        private System.Windows.Input.ICommand _GoPreviousBookCommand;
-        private System.Windows.Input.ICommand _ToggleFullScreenCommand;
-        private System.Windows.Input.ICommand _GoToHomeCommand;
+        //private ICommand? _GoNextBookCommand;
+        //private ICommand? _GoPreviousBookCommand;
+        private ICommand? _ToggleFullScreenCommand;
+        private ICommand? _GoToHomeCommand;
 
 
         //private ICommand _TogglePinCommand;
@@ -67,8 +68,8 @@ namespace BookViewerApp.ViewModels
         public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand = _ToggleFullScreenCommand ?? new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
         public ICommand GoToHomeCommand { get => _GoToHomeCommand = _GoToHomeCommand ?? new InvalidCommand(); set => _GoToHomeCommand = value; }
 
-        public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
-        public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
+        //public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
+        //public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
 
         public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
         private string _Title = "";
@@ -80,7 +81,7 @@ namespace BookViewerApp.ViewModels
         private SpreadPagePanel.ModeEnum _SpreadMode;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
-        public async void Initialize(Windows.Storage.IStorageFile value, Control target = null)
+        public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
         {
             this.Loading = true;
             var book = (await BookManager.GetBookFromFile(value));
@@ -95,7 +96,8 @@ namespace BookViewerApp.ViewModels
                     var fileThumb = await ThumbnailManager.CreateImageFileAsync(bookf.ID);
                     try
                     {
-                        await bookf.GetPage(0)?.SaveImageAsync(fileThumb, 500);
+                        var page = bookf.GetPage(0);
+                        if (page != null) await page.SaveImageAsync(fileThumb, 500);
                         //if ((await fileThumb.GetBasicPropertiesAsync()).Size == 0) await fileThumb.DeleteAsync();
                     }
                     catch
@@ -114,14 +116,14 @@ namespace BookViewerApp.ViewModels
             this.Loading = false;
         }
 
-        public EventHandler SpreadStatusChangedEventHandler;
+        public EventHandler? SpreadStatusChangedEventHandler;
 
-        private string Password = null;
+        private string? Password = null;
 
         //To Dispose
-        private Books.IBookFixed Content;
+        private Books.IBookFixed? Content;
 
-        public async void Initialize(Books.IBookFixed value, Control target = null)
+        public async void Initialize(Books.IBookFixed value, Control? target = null)
         {
             this.Loading = true;
             if (BookInfo != null) SaveInfo();
@@ -193,7 +195,7 @@ namespace BookViewerApp.ViewModels
                 }
             }
             OnPropertyChanged(nameof(Reversed));
-            this.AsBookShelfBook = null;
+            //this.AsBookShelfBook = null;
 
             this.Bookmarks = new ObservableCollection<BookmarkViewModel>();
             {
@@ -201,9 +203,12 @@ namespace BookViewerApp.ViewModels
                 var bm = new BookmarkViewModel() { Page = 1, AutoGenerated = true, Title = rl.GetString("BookmarkTop/Title") };
                 this.Bookmarks.Add(bm);
             }
-            foreach (var bm in BookInfo.Bookmarks)
+            if (BookInfo != null)
             {
-                this.Bookmarks.Add(new BookmarkViewModel(bm));
+                foreach (var bm in BookInfo.Bookmarks)
+                {
+                    this.Bookmarks.Add(new BookmarkViewModel(bm));
+                }
             }
             {
                 var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
@@ -217,10 +222,11 @@ namespace BookViewerApp.ViewModels
             this.Loading = false;
         }
 
-        private Books.PageOptionsControl OptionCache;
+        private Books.PageOptionsControl? OptionCache;
 
-        public BookShelfBookViewModel AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value; OnPropertyChanged(nameof(AsBookShelfBook)); } }
-        private BookShelfBookViewModel _AsBookShelfBook;
+        //[Obsolete]
+        //public BookShelfBookViewModel? AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value; OnPropertyChanged(nameof(AsBookShelfBook)); } }
+        //private BookShelfBookViewModel? _AsBookShelfBook;
 
 
         private ObservableCollection<TocEntryViewModes> _Toc = new ObservableCollection<TocEntryViewModes>();
@@ -230,7 +236,7 @@ namespace BookViewerApp.ViewModels
         public bool Loading { get { return _Loading; } set { _Loading = value; OnPropertyChanged(nameof(Loading)); } }
         private bool _Loading = true;
 
-        private BookInfoStorage.BookInfo BookInfo = null;
+        private BookInfoStorage.BookInfo? BookInfo = null;
         public void SaveInfo()
         {
             if (BookInfo == null) return;
@@ -245,16 +251,16 @@ namespace BookViewerApp.ViewModels
             BookInfo.Password = this.Password;
         }
 
-        public string ID { get { return _ID; } private set { _ID = value; OnPropertyChanged(nameof(ID)); } }
-        private string _ID;
+        public string? ID { get { return _ID; } private set { _ID = value; OnPropertyChanged(nameof(ID)); } }
+        private string? _ID;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public IPageViewModel PageSelectedViewModel
+        public IPageViewModel? PageSelectedViewModel
         {
             get
             {
@@ -404,7 +410,7 @@ namespace BookViewerApp.ViewModels
 
     public class PageViewModel : INotifyPropertyChanged, IPageViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -418,8 +424,8 @@ namespace BookViewerApp.ViewModels
         public Books.IPageFixed Content { get; set; }
 
 
-        private System.Windows.Input.ICommand _MoveCommand;
-        public System.Windows.Input.ICommand MoveCommand => _MoveCommand = _MoveCommand ?? new DelegateCommand((parameter) =>
+        private ICommand? _MoveCommand = null;
+        public ICommand MoveCommand => _MoveCommand = _MoveCommand ?? new DelegateCommand((parameter) =>
         {
             var split = parameter.ToString().Split(',');
             if (split.Length >= 2)
@@ -433,7 +439,7 @@ namespace BookViewerApp.ViewModels
         });
 
 
-        private ICommand _ZoomFactorMultiplyCommand;
+        private ICommand? _ZoomFactorMultiplyCommand = null;
         public ICommand ZoomFactorMultiplyCommand
         {
             get => _ZoomFactorMultiplyCommand = _ZoomFactorMultiplyCommand ?? new DelegateCommand((a) =>
@@ -463,8 +469,8 @@ namespace BookViewerApp.ViewModels
             }
         }
 
-        private PageViewModel _NextPage;
-        public PageViewModel NextPage
+        private PageViewModel? _NextPage = null;
+        public PageViewModel? NextPage
         {
             get => _NextPage;
             set
@@ -495,7 +501,7 @@ namespace BookViewerApp.ViewModels
         }
 
 
-        public ZoomRequestedEventHandler ZoomRequested;
+        public ZoomRequestedEventHandler? ZoomRequested;
         public delegate void ZoomRequestedEventHandler(object sender, ZoomRequestedEventArgs e);
         public class ZoomRequestedEventArgs : EventArgs
         {
@@ -567,11 +573,11 @@ namespace BookViewerApp.ViewModels
         public class PageSetGeneralCommand : ICommandEventRaiseable
         {
 
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler? CanExecuteChanged;
             public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
             private BookViewModel model;
 
-            public PageSetGeneralCommand(BookViewModel model, Func<BookViewModel, int, int> getPage, Action<BookViewModel, int> setPage, Func<BookViewModel, int> checkSamePage = null)
+            public PageSetGeneralCommand(BookViewModel model, Func<BookViewModel, int, int> getPage, Action<BookViewModel, int> setPage, Func<BookViewModel, int>? checkSamePage = null)
             {
                 this.model = model ?? throw new ArgumentNullException(nameof(model));
                 GetPage = getPage ?? throw new ArgumentNullException(nameof(getPage));
@@ -581,9 +587,9 @@ namespace BookViewerApp.ViewModels
 
             public Func<BookViewModel, int, int> GetPage { get; private set; }
             public Action<BookViewModel, int> SetPage { get; private set; }
-            public Func<BookViewModel, int> CheckSamePage { get; private set; }
+            public Func<BookViewModel, int>? CheckSamePage { get; private set; }
 
-            public bool CanExecute(object parameter)
+            public bool CanExecute(object? parameter)
             {
                 int number = 0;
                 int.TryParse(parameter?.ToString(), out number);
@@ -592,7 +598,7 @@ namespace BookViewerApp.ViewModels
                 return model.PageWithinRange(result);
             }
 
-            public void Execute(object parameter)
+            public void Execute(object? parameter)
             {
                 int number = 0;
                 int.TryParse(parameter?.ToString(), out number);
@@ -600,79 +606,79 @@ namespace BookViewerApp.ViewModels
             }
         }
 
-        public class AddNumberToSelectedBook : System.Windows.Input.ICommand
-        {
-            public event EventHandler CanExecuteChanged;
-            public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+        //public class AddNumberToSelectedBook : System.Windows.Input.ICommand
+        //{
+        //    public event EventHandler CanExecuteChanged;
+        //    public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
 
-            private BookViewModel ViewModel;
-            private int NumberToAdd;
+        //    private BookViewModel ViewModel;
+        //    private int NumberToAdd;
 
-            public AddNumberToSelectedBook(BookViewModel vm, int i)
-            {
-                vm.PropertyChanged += (s, e) => { OnCanExecuteChanged(); };
-                ViewModel = vm;
-                NumberToAdd = i;
-            }
+        //    public AddNumberToSelectedBook(BookViewModel vm, int i)
+        //    {
+        //        vm.PropertyChanged += (s, e) => { OnCanExecuteChanged(); };
+        //        ViewModel = vm;
+        //        NumberToAdd = i;
+        //    }
 
-            public bool CanExecute(object parameter)
-            {
-                return GetAddedBook(ViewModel.ID) != null;
-            }
+        //    public bool CanExecute(object parameter)
+        //    {
+        //        return GetAddedBook(ViewModel.ID) != null;
+        //    }
 
-            public void Execute(object parameter)
-            {
-                throw new NotImplementedException();
-                //var bookFVM = GetAddedBook(ViewModel.ID);
-                //var file = await bookFVM.TryGetBookFile();
-                //var book = await Books.BookManager.GetBookFromFile(file);
-                //if (book is Books.IBookFixed)
-                //{
-                //    ViewModel.Initialize(book as Books.IBookFixed);
-                //    ViewModel.Title = System.IO.Path.GetFileNameWithoutExtension(file.Name);
-                //    ViewModel.AsBookShelfBook = bookFVM;
-                //}
-            }
+        //    public void Execute(object parameter)
+        //    {
+        //        throw new NotImplementedException();
+        //        //var bookFVM = GetAddedBook(ViewModel.ID);
+        //        //var file = await bookFVM.TryGetBookFile();
+        //        //var book = await Books.BookManager.GetBookFromFile(file);
+        //        //if (book is Books.IBookFixed)
+        //        //{
+        //        //    ViewModel.Initialize(book as Books.IBookFixed);
+        //        //    ViewModel.Title = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+        //        //    ViewModel.AsBookShelfBook = bookFVM;
+        //        //}
+        //    }
 
-            public BookShelfBookViewModel GetAddedBook(string ID)
-            {
-                var books = ViewModel.AsBookShelfBook?.Parent?.Books;
-                if (books == null) return null;
-                //var book = books.Where(a => (a is BookShelfViewModels.BookViewModel && (a as BookShelfViewModels.BookViewModel).ID == ID)).First();
-                var book = ViewModel.AsBookShelfBook;
+        //    public BookShelfBookViewModel GetAddedBook(string ID)
+        //    {
+        //        var books = ViewModel.AsBookShelfBook?.Parent?.Books;
+        //        if (books == null) return null;
+        //        //var book = books.Where(a => (a is BookShelfViewModels.BookViewModel && (a as BookShelfViewModels.BookViewModel).ID == ID)).First();
+        //        var book = ViewModel.AsBookShelfBook;
 
-                int cnt = 0;
-                if (NumberToAdd == 0) return book as BookShelfBookViewModel;
-                if (this.NumberToAdd > 0)
-                {
-                    for (int i = books.IndexOf(book) + 1; i < books.Count; i++)
-                    {
-                        if (books[i] is BookShelfBookViewModel) cnt++;
-                        if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
-                    }
-                }
-                else
-                {
-                    for (int i = books.IndexOf(book) - 1; i >= 0; i--)
-                    {
-                        if (books[i] is BookShelfBookViewModel) cnt--;
-                        if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
-                    }
-                }
-                return null;
-            }
-        }
+        //        int cnt = 0;
+        //        if (NumberToAdd == 0) return book as BookShelfBookViewModel;
+        //        if (this.NumberToAdd > 0)
+        //        {
+        //            for (int i = books.IndexOf(book) + 1; i < books.Count; i++)
+        //            {
+        //                if (books[i] is BookShelfBookViewModel) cnt++;
+        //                if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            for (int i = books.IndexOf(book) - 1; i >= 0; i--)
+        //            {
+        //                if (books[i] is BookShelfBookViewModel) cnt--;
+        //                if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
+        //            }
+        //        }
+        //        return null;
+        //    }
+        //}
 
         public class AddCurrentPageToBookmark : ICommandEventRaiseable
         {
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler? CanExecuteChanged;
             public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
 
             private BookViewModel model;
 
             public AddCurrentPageToBookmark(BookViewModel model) { this.model = model; model.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(model.PageSelectedDisplay)) { OnCanExecuteChanged(); } }; }
 
-            public bool CanExecute(object parameter)
+            public bool CanExecute(object? parameter)
             {
                 foreach (var bm in model.Bookmarks)
                 {
@@ -684,32 +690,32 @@ namespace BookViewerApp.ViewModels
                 return true;
             }
 
-            public void Execute(object parameter)
+            public void Execute(object? parameter)
             {
-                model.Bookmarks.Add(new BookmarkViewModel() { AutoGenerated = false, Page = model.PageSelectedDisplay, Title = parameter is string ? parameter as string : "" });
+                model.Bookmarks.Add(new BookmarkViewModel() { AutoGenerated = false, Page = model.PageSelectedDisplay, Title = parameter as string ?? "" });
             }
         }
 
         public class CommandBase : ICommandEventRaiseable
         {
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler? CanExecuteChanged;
             public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
 
-            private Func<object, bool> CanExecuteFunc;
-            private Action<object> ExecuteAction;
+            private Func<object?, bool> CanExecuteFunc;
+            private Action<object?> ExecuteAction;
 
-            public CommandBase(Func<object, bool> CanExecuteFunc, Action<object> ExecuteAction)
+            public CommandBase(Func<object?, bool> CanExecuteFunc, Action<object?> ExecuteAction)
             {
                 this.CanExecuteFunc = CanExecuteFunc;
                 this.ExecuteAction = ExecuteAction;
             }
 
-            public bool CanExecute(object parameter)
+            public bool CanExecute(object? parameter)
             {
                 return CanExecuteFunc(parameter);
             }
 
-            public void Execute(object parameter)
+            public void Execute(object? parameter)
             {
                 ExecuteAction(parameter);
             }
@@ -718,19 +724,24 @@ namespace BookViewerApp.ViewModels
 
     public class BookmarkViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public BookmarkViewModel() { }
+        public BookmarkViewModel()
+        {
+            var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
+            _Title = rl.GetString("BookmarkBasic/Title");
+            _Page = 1;
+        }
         public BookmarkViewModel(BookInfoStorage.BookInfo.BookmarkItem item)
         {
             var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
             this.Page = (int)item.Page;
-            this.Title = string.IsNullOrEmpty(item.Title) ? item.Type == BookInfoStorage.BookInfo.BookmarkItem.BookmarkItemType.UserDefined ? rl.GetString("BookmarkBasic/Title") : rl.GetString("BookmarkLastread/Title") : item.Title;
+            _Title = string.IsNullOrEmpty(item.Title) ? item.Type == BookInfoStorage.BookInfo.BookmarkItem.BookmarkItemType.UserDefined ? rl.GetString("BookmarkBasic/Title") : rl.GetString("BookmarkLastread/Title") : item.Title;
             this.AutoGenerated = item.Type == BookInfoStorage.BookInfo.BookmarkItem.BookmarkItemType.LastRead;
         }
 
@@ -759,8 +770,8 @@ namespace BookViewerApp.ViewModels
 
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
-            System.Action onChanged = null)
+            [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
+            Action? onChanged = null)
         {
             if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
@@ -770,7 +781,7 @@ namespace BookViewerApp.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
@@ -778,7 +789,7 @@ namespace BookViewerApp.ViewModels
         #endregion
 
 
-        private string _Title;
+        private string _Title = "";
         public string Title { get => _Title; set => SetProperty(ref _Title, value); }
 
 
@@ -786,7 +797,7 @@ namespace BookViewerApp.ViewModels
         public int Page { get => _Page; set => SetProperty(ref _Page, value); }
 
 
-        private ObservableCollection<TocEntryViewModes> _Children;
+        private ObservableCollection<TocEntryViewModes> _Children = new ObservableCollection<TocEntryViewModes>();
 
         public TocEntryViewModes()
         {
@@ -816,7 +827,7 @@ namespace BookViewerApp.ViewModels
         int PagesCount { get; }
         int PageSelectedDisplay { get; }
         bool IsControlPinned { get; }
-        IPageViewModel PageSelectedViewModel { get; }
+        IPageViewModel? PageSelectedViewModel { get; }
         ObservableCollection<BookmarkViewModel> Bookmarks { get; }
         string CurrentBookmarkName { get; }
     }

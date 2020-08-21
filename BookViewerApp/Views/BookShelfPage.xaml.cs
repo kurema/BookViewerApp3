@@ -22,6 +22,7 @@ namespace BookViewerApp.Views
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
+    [Obsolete]
     public sealed partial class BookShelfPage : Page
     {
         public BookShelfPage()
@@ -90,7 +91,9 @@ namespace BookViewerApp.Views
                 var book = await bookShelf.TryGetBook();
                 if (book != null && book is Books.IBookFixed)
                 {
-                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed, BookShelfModel = e.SelectedItem as BookShelfBookViewModel, Title= (e.SelectedItem as BookShelfBookViewModel).Title };
+                    var param = new BookFixed2Viewer.BookAndParentNavigationParamater() { BookViewerModel = book as Books.IBookFixed,
+                        //BookShelfModel = e.SelectedItem as BookShelfBookViewModel, 
+                        Title= (e.SelectedItem as BookShelfBookViewModel).Title };
                     this.Frame.Navigate(typeof(BookFixed2Viewer), param);
                 }
             }

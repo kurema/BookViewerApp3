@@ -26,12 +26,12 @@ namespace BookViewerApp.Books
     {
         IPageOptions Option { get; set; }
         //Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
-        Task SetBitmapAsync(Windows.UI.Xaml.Media.Imaging.BitmapImage image);
+        Task SetBitmapAsync(BitmapImage image);
         Task<bool> UpdateRequiredAsync();
         Task SaveImageAsync(Windows.Storage.StorageFile file,uint width);
     }
 
-    public interface IPageOptions:System.ComponentModel.INotifyPropertyChanged
+    public interface IPageOptions: INotifyPropertyChanged
     {
         double TargetWidth { get; }
         double TargetHeight { get; }
@@ -41,7 +41,9 @@ namespace BookViewerApp.Books
     {
         public string ID => Guid.NewGuid().ToString();
 
+#pragma warning disable 0067
         public event EventHandler Loaded;
+#pragma warning restore 0067
 
         public IStorageFile File { get; set; }
     }

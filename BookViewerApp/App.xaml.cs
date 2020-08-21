@@ -127,10 +127,12 @@ namespace BookViewerApp
         {
             if (Window.Current?.Content is Frame f)
             {
+#pragma warning disable CS0612 // 型またはメンバーが旧型式です
                 if (f.Content is BookFixed2Viewer v2)
                 {
                     v2.SaveInfo();
                 }
+#pragma warning restore CS0612 // 型またはメンバーが旧型式です
                 else if (f.Content is BookFixed3Viewer v3)
                 {
                     v3.CloseOperation();
