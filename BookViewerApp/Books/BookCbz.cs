@@ -14,11 +14,12 @@ using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Storages;
 
+#nullable enable
 namespace BookViewerApp.Books
 {
     public class CbzBook : IBookFixed, ITocProvider, Helper.IDisposableBasic
     {
-        public ZipArchive Content { get; private set; }
+        public ZipArchive? Content { get; private set; }
         public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
 
         public uint PageCount
@@ -43,13 +44,13 @@ namespace BookViewerApp.Books
             }
         }
 
-        public TocItem[] Toc { get; private set; }
+        public TocItem[] Toc { get; private set; } = new TocItem[0];
 
-        private string _IDCache = null;
+        private string? _IDCache = null;
 
 
 
-        public event EventHandler Loaded;
+        public event EventHandler? Loaded;
 
         private void OnLoaded(EventArgs e)
         {
@@ -61,7 +62,7 @@ namespace BookViewerApp.Books
             return new CbzPage(AvailableEntries[i]);
         }
 
-        private Stream DisposableStream;
+        private Stream? DisposableStream;
 
         public async Task LoadAsync(Stream stream)
         {
@@ -107,7 +108,7 @@ namespace BookViewerApp.Books
                     dirs.Add(".");
 
                     var ctoc = toc;
-                    TocItem lastitem = null;
+                    TocItem? lastitem = null;
                     for (int j = 0; j < dirs.Count; j++)
                     {
                         dirs[j] = dirs[j] == "" ? "." : dirs[j];
@@ -144,7 +145,7 @@ namespace BookViewerApp.Books
     {
         private ZipArchiveEntry Content;
 
-        public IPageOptions Option
+        public IPageOptions? Option
         {
             get; set;
         }
@@ -164,12 +165,13 @@ namespace BookViewerApp.Books
             };
         }
 
-        public async Task<BitmapImage> GetBitmapAsync()
+        public async Task<BitmapImage?> GetBitmapAsync()
         {
-            return await new Books.ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).GetBitmapAsync();
+            if (Cache == null) return null;
+            return await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).GetBitmapAsync();
         }
 
-        private Helper.MemoryStreamCache Cache;
+        private Helper.MemoryStreamCache? Cache;
 
         public Task<bool> UpdateRequiredAsync()
         {
@@ -178,6 +180,7 @@ namespace BookViewerApp.Books
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
+            if (Cache == null) return;
             try
             {
                 using (var fileThumb = await file.OpenAsync(FileAccessMode.ReadWrite))
@@ -196,6 +199,7 @@ namespace BookViewerApp.Books
 
         public async Task SetBitmapAsync(BitmapImage image)
         {
+            if (Cache == null) return;
             try
             {
                 await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).SetBitmapAsync(image);

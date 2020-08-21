@@ -13,6 +13,7 @@ using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Storages;
 
+#nullable enable
 namespace BookViewerApp.Books
 {
     public class CompressedBook : IBookFixed, ITocProvider, IDisposableBasic
@@ -25,7 +26,7 @@ namespace BookViewerApp.Books
             }
         }
 
-        private string IDCache = null;
+        private string? IDCache = null;
         private string GetID()
         {
             string result = "";
@@ -38,19 +39,19 @@ namespace BookViewerApp.Books
 
         public uint PageCount => (uint)(Entries?.Length ?? 0);
 
-        public event EventHandler Loaded;
+        public event EventHandler? Loaded;
         private void OnLoaded()
         {
             Loaded?.Invoke(this, new EventArgs());
         }
 
-        public TocItem[] Toc { get; private set; }
+        public TocItem[] Toc { get; private set; } = new TocItem[0];
 
         //private SharpCompress.Archive.IArchiveEntry Target;
-        private SharpCompress.Archives.IArchiveEntry[] Entries;
+        private SharpCompress.Archives.IArchiveEntry[] Entries = new SharpCompress.Archives.IArchiveEntry[0];
 
-        private SharpCompress.Archives.IArchive DisposableContent;//To Dispose
-        private Stream DisposableStream;
+        private SharpCompress.Archives.IArchive? DisposableContent;//To Dispose
+        private Stream? DisposableStream;
 
         public async Task LoadAsync(Stream sr)
         {
@@ -85,7 +86,7 @@ namespace BookViewerApp.Books
                             dirs.Add(".");
 
                             var ctoc = toc;
-                            TocItem lastitem = null;
+                            TocItem? lastitem = null;
                             for (int j = 0; j < dirs.Count; j++)
                             {
                                 dirs[j] = dirs[j] == "" ? "." : dirs[j];
@@ -129,7 +130,7 @@ namespace BookViewerApp.Books
 {
     public class CompressedPage : IPageFixed
     {
-        public IPageOptions Option
+        public IPageOptions? Option
         {
             get; set;
         }
@@ -151,8 +152,7 @@ namespace BookViewerApp.Books
             };
         }
 
-        private Helper.MemoryStreamCache Cache;
-
+        private MemoryStreamCache Cache;
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
@@ -187,7 +187,10 @@ namespace BookViewerApp.Books
 
         public async Task SetBitmapAsync(BitmapImage image)
         {
-            await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync())?.AsRandomAccessStream())?.SetBitmapAsync(image);
+            var stream = await Cache.GetMemoryStreamByProviderAsync();
+            if (stream == null) return;
+            Task? task = new ImagePageStream(stream.AsRandomAccessStream())?.SetBitmapAsync(image);
+            if (task != null) await task;
         }
 
         public Task<bool> UpdateRequiredAsync()

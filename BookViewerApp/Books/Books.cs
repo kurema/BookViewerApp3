@@ -8,30 +8,31 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
+#nullable enable
 namespace BookViewerApp.Books
 {
     public interface IBook
     {
-        event EventHandler Loaded;
-        string ID { get; }
+        event EventHandler? Loaded;
+        string? ID { get; }
     }
 
-    public interface IBookFixed:IBook
+    public interface IBookFixed : IBook
     {
         uint PageCount { get; }
-        IPageFixed GetPage(uint i);
+        IPageFixed? GetPage(uint i);
     }
 
     public interface IPageFixed
     {
-        IPageOptions Option { get; set; }
+        IPageOptions? Option { get; set; }
         //Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
         Task SetBitmapAsync(BitmapImage image);
         Task<bool> UpdateRequiredAsync();
-        Task SaveImageAsync(Windows.Storage.StorageFile file,uint width);
+        Task SaveImageAsync(StorageFile file, uint width);
     }
 
-    public interface IPageOptions: INotifyPropertyChanged
+    public interface IPageOptions : INotifyPropertyChanged
     {
         double TargetWidth { get; }
         double TargetHeight { get; }
@@ -39,10 +40,15 @@ namespace BookViewerApp.Books
 
     public class BookEpub : IBook
     {
+        public BookEpub(IStorageFile file)
+        {
+            File = file;
+        }
+
         public string ID => Guid.NewGuid().ToString();
 
 #pragma warning disable 0067
-        public event EventHandler Loaded;
+        public event EventHandler? Loaded;
 #pragma warning restore 0067
 
         public IStorageFile File { get; set; }
@@ -55,7 +61,7 @@ namespace BookViewerApp.Books
         public double TargetHeight { get { return _TargetHeight; } set { _TargetHeight = value; OnPropertyChanged(nameof(TargetHeight)); } }
         private double _TargetHeight;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
     }
@@ -81,9 +87,9 @@ namespace BookViewerApp.Books
         }
         private Windows.UI.Xaml.Controls.Control _TargetControl;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs( name)); }
+        protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
 
         public PageOptionsControl(Windows.UI.Xaml.Controls.Control control)
         {
@@ -104,18 +110,18 @@ namespace BookViewerApp.Books
         }
     }
 
-    public class VirtualPage : IPageFixed,Helper.IDisposableBasic
+    public class VirtualPage : IPageFixed, Helper.IDisposableBasic
     {
         private Func<IPageFixed> accessor;
 
-        private IPageFixed PageCache = null;
+        private IPageFixed? PageCache = null;
 
-        public IPageOptions Option
+        public IPageOptions? Option
         {
             get { if (PageCache == null) return _Option; else return PageCache.Option; }
             set { if (PageCache == null) _Option = value; else { PageCache.Option = Option; this._Option = value; } }
         }
-        private IPageOptions _Option = new PageOptions();
+        private IPageOptions? _Option = new PageOptions();
 
         public VirtualPage(Func<IPageFixed> accessor)
         {
@@ -138,12 +144,12 @@ namespace BookViewerApp.Books
 
         public async Task<bool> UpdateRequiredAsync()
         {
-            return await(await GetPage()).UpdateRequiredAsync();
+            return await (await GetPage()).UpdateRequiredAsync();
         }
 
-        public async Task SaveImageAsync(StorageFile file,uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width)
         {
-            await (await GetPage()).SaveImageAsync(file,width);
+            await (await GetPage()).SaveImageAsync(file, width);
         }
 
         public async Task SetBitmapAsync(BitmapImage image)
@@ -169,17 +175,17 @@ namespace BookViewerApp.Books
             this.Loaded += (s, e) => { OnLoaded(e); };
         }
 
-        public string ID => Origin.ID;
+        public string? ID => Origin.ID;
 
         public uint PageCount => Origin.PageCount;
 
-        public event EventHandler Loaded;
+        public event EventHandler? Loaded;
         private void OnLoaded(EventArgs e)
         {
             Loaded?.Invoke(this, e);
         }
 
-        public IPageFixed GetPage(uint i)
+        public IPageFixed? GetPage(uint i)
         {
             return Origin.GetPage(Origin.PageCount - i - 1);
         }
@@ -192,14 +198,14 @@ namespace BookViewerApp.Books
 
     public class TocItem
     {
-        public TocItem[] Children { get; set; }
-        public string Title { get; set; }
+        public TocItem[]? Children { get; set; }
+        public string Title { get; set; } = "";
         public int Page { get; set; }
     }
 
     public interface IPasswordPdovider
     {
-        string Password { get; }
+        string? Password { get; }
         bool PasswordRemember { get; }
     }
 

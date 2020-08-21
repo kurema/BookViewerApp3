@@ -135,7 +135,7 @@ namespace BookViewerApp.Managers
             }
         Epub:;
             {
-                return new BookEpub() { File = file };
+                return new BookEpub(file);
             }
         }
 

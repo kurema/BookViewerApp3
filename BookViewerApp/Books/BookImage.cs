@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 using BookViewerApp.Helper;
 
-
+#nullable enable
 namespace BookViewerApp.Books
 {
     public class ImagePageUrl : IPageFixed
@@ -23,7 +23,7 @@ namespace BookViewerApp.Books
             get; private set;
         }
 
-        public IPageOptions Option
+        public IPageOptions? Option
         {
             get; set;
         }
@@ -70,12 +70,12 @@ namespace BookViewerApp.Books
             this.stream = stream;
         }
 
-        public IPageOptions Option
+        public IPageOptions? Option
         {
             get; set;
         }
 
-        public Task<BitmapImage> GetBitmapAsync()
+        public Task<BitmapImage?> GetBitmapAsync()
         {
             var image = new BitmapImage();
             stream.Seek(0);
@@ -144,7 +144,7 @@ namespace BookViewerApp.Books
             }
         }
 
-        public event EventHandler Loaded;
+        public event EventHandler? Loaded;
 
         private void OnLoaded(EventArgs e)
         {

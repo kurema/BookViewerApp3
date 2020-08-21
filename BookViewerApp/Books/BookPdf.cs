@@ -16,38 +16,39 @@ using System.Collections;
 using BookViewerApp.Helper;
 using System.Runtime.InteropServices.WindowsRuntime;
 
+#nullable enable
 namespace BookViewerApp.Books
 {
     public class PdfBook : IBookFixed, IDirectionProvider, ITocProvider, IPasswordPdovider
     {
-        public pdf.PdfDocument Content { get; private set; }
+        public pdf.PdfDocument? Content { get; private set; }
         private bool PageLoaded = false;
 
-        public string Password { get; private set; } = null;
+        public string? Password { get; private set; } = null;
 
-        public event EventHandler Loaded;
+        public event EventHandler? Loaded;
 
         public uint PageCount => PageLoaded ? Content?.PageCount ?? 0 : 0;
 
-        public string ID
+        public string? ID
         {
             get; private set;
         }
 
         public Direction Direction { get; private set; } = Direction.Default;
 
-        public TocItem[] Toc { get; private set; }
+        public TocItem[] Toc { get; private set; } = new TocItem[0];
 
         public bool PasswordRemember { get; private set; }
 
-        public IPageFixed GetPage(uint i)
+        public IPageFixed? GetPage(uint i)
         {
             if (Content == null) return null;
-            if (i < PageCount) return new PdfPage(Content?.GetPage(i));
+            if (i < PageCount) return new PdfPage(Content.GetPage(i));
             else throw new Exception("Incorrect page.");
         }
 
-        public static iTextSharp.text.pdf.PdfReader GetPdfReader(Stream stream, string password)
+        public static iTextSharp.text.pdf.PdfReader? GetPdfReader(Stream stream, string? password)
         {
             try
             {
@@ -70,7 +71,7 @@ namespace BookViewerApp.Books
             }
         }
 
-        public static TocItem[] GetTocs(Array list, Hashtable nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
+        public static TocItem[] GetTocs(Array? list, Hashtable nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
         {
             int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
             {
@@ -154,18 +155,18 @@ namespace BookViewerApp.Books
         }
 
 
-        public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[] defaultPassword = null)
+        public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
         {
             using (var stream = await file.OpenReadAsync())
             {
-                string password = null;
+                string? password = null;
                 bool passSave = false;
 
-                string id = null;
+                string? id = null;
 
                 try
                 {
-                    iTextSharp.text.pdf.PdfReader pr = null;
+                    iTextSharp.text.pdf.PdfReader? pr = null;
                     var streamClassic = stream.AsStream();
 
                     #region Password
@@ -313,11 +314,11 @@ namespace BookViewerApp.Books
     {
         public pdf.PdfPage Content { get; private set; }
 
-        public IPageOptions Option
+        public IPageOptions? Option
         {
             get; set;
         }
-        public IPageOptions LastOption;
+        public IPageOptions? LastOption;
 
         public PdfPage(pdf.PdfPage page)
         {

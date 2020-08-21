@@ -137,7 +137,13 @@ namespace BookViewerApp.ViewModels
             for (uint i = 0; i < value.PageCount; i++)
             {
                 uint page = i;
-                pages.Add(new PageViewModel(new Books.VirtualPage(() => { var p = value.GetPage(page); p.Option = option; return p; })));
+                pages.Add(new PageViewModel(new Books.VirtualPage(() =>
+                {
+                    var p = value.GetPage(page);
+                    if (p == null) throw new ArgumentOutOfRangeException();
+                    p.Option = option;
+                    return p;
+                })));
                 {
                     pages[(int)i].PropertyChanged += (s, e) =>
                     {
