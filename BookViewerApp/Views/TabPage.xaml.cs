@@ -177,6 +177,8 @@ namespace BookViewerApp.Views
             tabView.TabItems.Add(newTab);
             tabView.SelectedIndex = tabView.TabItems.Count - 1;
 
+            frame.Focus(FocusState.Programmatic);
+
             return (frame, newTab);
         }
 
