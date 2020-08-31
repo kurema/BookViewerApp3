@@ -145,7 +145,7 @@ namespace BookViewerApp.Storages
                 var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
                 list.AddRange(bookmark_roaming?.AsFileItem(bookmarkAction)?.Where(a => a != null) ?? new IFileItem[0]);
 
-                foreach (var item in list.OrderBy(a => a.IsFolder))
+                foreach (var item in list)
                 {
                     switch (item)
                     {
@@ -426,7 +426,7 @@ namespace BookViewerApp.Storages
                             break;
                     }
                 }
-                return list.ToArray();
+                return list.OrderByDescending(a => a.IsFolder).ToArray();
             }
         }
 
