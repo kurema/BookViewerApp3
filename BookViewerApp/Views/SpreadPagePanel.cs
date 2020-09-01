@@ -68,7 +68,9 @@ namespace BookViewerApp.Views
             nameof(Mode),
             typeof(ModeEnum),
             typeof(SpreadPagePanel),
-            new PropertyMetadata(ModeEnum.Default)
+            new PropertyMetadata(ModeEnum.Default,new PropertyChangedCallback((s,e)=> {
+                if (s is SpreadPagePanel page) page.InvalidateArrange();
+            }))
             );
 
         public ModeEnum Mode
@@ -264,15 +266,14 @@ namespace BookViewerApp.Views
         {
 
             var panel = d as SpreadPagePanel;
-            if (panel == null)
-            {
-                return;
-            }
+            if (panel == null) return;
 
+            panel.InvalidateArrange();
 
             RoutedEventHandler routedEventHandler = (s2, e2) => panel.InvalidateArrange();
             ExceptionRoutedEventHandler exceptionRoutedEventHandler = (s2, e2) => panel.InvalidateArrange();
 
+            var callback = new DependencyPropertyChangedCallback((s, e) => panel.InvalidateArrange());
             {
                 if (e.OldValue is BitmapImage bitmap)
                 {

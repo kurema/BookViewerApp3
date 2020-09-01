@@ -78,7 +78,7 @@ namespace BookViewerApp.ViewModels
         private bool _IsControlPinned = false;
 
 
-        private SpreadPagePanel.ModeEnum _SpreadMode;
+        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
@@ -143,7 +143,7 @@ namespace BookViewerApp.ViewModels
                     if (p == null) throw new ArgumentOutOfRangeException();
                     p.Option = option;
                     return p;
-                })));
+                }), this));
                 {
                     pages[(int)i].PropertyChanged += (s, e) =>
                     {
@@ -265,6 +265,14 @@ namespace BookViewerApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        public Windows.Foundation.TypedEventHandler<BookViewModel, (PageViewModel, PropertyChangedEventArgs)>? PagePropertyChanged;
+
+        public void OnPagePropertyChanged(PageViewModel sender, PropertyChangedEventArgs args)
+        {
+            PagePropertyChanged?.Invoke(this, (sender, args));
+        }
+
 
         public IPageViewModel? PageSelectedViewModel
         {
@@ -420,14 +428,18 @@ namespace BookViewerApp.ViewModels
         private void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            Parent?.OnPagePropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
-        public PageViewModel(Books.IPageFixed page)
+        public PageViewModel(Books.IPageFixed page, BookViewModel parent)
         {
             this.Content = page;
+            this.Parent = parent;
         }
 
         public Books.IPageFixed Content { get; set; }
+
+        public BookViewModel Parent { get; private set; }
 
 
         private ICommand? _MoveCommand = null;

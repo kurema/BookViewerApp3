@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BookViewerApp")]
-[assembly: AssemblyDescription("CBZ/CBR/PDF viewer")]
+[assembly: AssemblyTitle("BookViewer 3")]
+[assembly: AssemblyDescription("CBZ/CBR/PDF/EPUB viewer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BookViewerApp")]

@@ -58,6 +58,9 @@ namespace BookViewerApp.Storages
             if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", (_) =>
             {
+                //Issue:
+                //同じファイルが重複登録されるバグを確認。
+                //一度のみ。原因不明。
                 return Task.FromResult<IEnumerable<IFileItem>>(Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
                 {
                     MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand)

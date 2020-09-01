@@ -50,7 +50,7 @@ namespace BookViewerApp.Views
 
             ((BookViewModel)this.DataContext).PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(ViewModels.BookViewModel.Title))
+                if (e.PropertyName == nameof(BookViewModel.Title))
                 {
                     SetTitle(Binding?.Title);
                 }
@@ -71,36 +71,36 @@ namespace BookViewerApp.Views
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
-            flipView.SelectionChanged += (s, e) =>
+            if (Binding != null)
             {
-                if (e.AddedItems.Count > 0 && e.AddedItems[0] is ViewModels.PageViewModel vm)
-                {
-                    int current = Binding?.Pages.IndexOf(vm) ?? -1;
-                    var prevPage = current >= 1 ? Binding.Pages[current - 1] : null;
-                    var prevPrevPage = current >= 2 ? Binding.Pages[current - 2] : null;
+                Binding.PagePropertyChanged += (s, e) =>
+                 {
+                     if (e.Item1 == flipView.SelectedItem && e.Item2.PropertyName == nameof(ViewModels.PageViewModel.SpreadDisplayedStatus))
+                     {
+                     }
+                 };
+            }
+            //ToDo:見開き対応。
+            //
+            //1. 以前選択されていたページのイベントを取り消す。
+            //2. 全ページリストアする？
+            //3. 選択中のページの見開き状態から次ページを表示するか切り替える。
+            //4. 選択中のページの見開き状態の変化イベントを登録する。
+            //5. 前のページの見開き状態が、
+            // a) 1ページなら何もしない。
+            // b) 半ページなら前に半ページ後半を挿入する。
+            // c) 2ページかつ2ページ前の見開き状態が2ページなら前ページを削除する。
+            // d) 2ページかつ2ページ前の見開き状態が1ページなら前ページを強制1ページ表示にする。
+            //6. 前ページの見開き状態の変化イベントを登録する。
+            //うわしんど。
 
-                    switch (vm.SpreadDisplayedStatus)
-                    {
-                        case SpreadPagePanel.DisplayedStatusEnum.Spread:
-                            break;
-                    }
-                }
+            //改正版
+            //1. 開かれているページで実行
+            //2. 全ページリストア
+            //3. 選択中の次のページだけ操作する。
+            //おわり。
+            //まだマシだね。
 
-                //ToDo:見開き対応。
-                //
-                //1. 以前選択されていたページのイベントを取り消す。
-                //2. 全ページリストアする？
-                //3. 選択中のページの見開き状態から次ページを表示するか切り替える。
-                //4. 選択中のページの見開き状態の変化イベントを登録する。
-                //5. 前のページの見開き状態が、
-                // a) 1ページなら何もしない。
-                // b) 半ページなら前に半ページ後半を挿入する。
-                // c) 2ページかつ2ページ前の見開き状態が2ページなら前ページを削除する。
-                // d) 2ページかつ2ページ前の見開き状態が1ページなら前ページを強制1ページ表示にする。
-                //6. 前ページの見開き状態の変化イベントを登録する。
-
-                //うわしんど。
-            };
         }
 
         private string OriginalTitle;

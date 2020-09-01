@@ -139,12 +139,14 @@ namespace BookViewerApp.Views
 
             if (await (DataContext as PageViewModel)?.Content?.UpdateRequiredAsync() == true)
             {
-                UpdateCancellationTokenSource(ref CancellationTokenSource1);
-                (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1);
-                if (spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
+                {
+                    UpdateCancellationTokenSource(ref CancellationTokenSource1);
+                    (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1);
+                }
+                if ((this.DataContext as PageViewModel)?.Parent?.SpreadMode == SpreadPagePanel.ModeEnum.Spread || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
-                    (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
+                    (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
                 }
             }
         }
@@ -153,8 +155,32 @@ namespace BookViewerApp.Views
         {
             scrollViewer.ChangeView(0, 0, 1.0f, true);
 
-            if (args.NewValue is ViewModels.PageViewModel dc)
+            if (args.NewValue is PageViewModel dc)
             {
+                void Parent_PropertyChanged(object sender, PropertyChangedEventArgs e)
+                {
+                    if (e.PropertyName == nameof(dc.Parent.SpreadMode))
+                    {
+                        UpdateSource2();
+                        spreadPanel.InvalidateArrange();
+                    }
+                }
+
+                void UpdateSource2()
+                {
+                    if (dc?.Parent?.SpreadMode == SpreadPagePanel.ModeEnum.Spread || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
+                    {
+
+                        if (dc.NextPage == null) spreadPanel.Source2 = null;
+                        else
+                        {
+                            UpdateCancellationTokenSource(ref CancellationTokenSource2);
+                            if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                            dc.NextPage.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
+                        }
+                    }
+                }
+
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
                     //Note: dc.Sourceを使うと複数ページに同じBitmapSourceが適用されるバグがあった。
@@ -162,24 +188,23 @@ namespace BookViewerApp.Views
                     dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1);
                 }
 
-                if (spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
+                UpdateSource2();
+
+                if (dc.Parent != null && dc.Parent != UserControl_DataContextChanged_CurrentParent)
                 {
-                    if (dc.NextPage == null) spreadPanel.Source2 = null;
-                    else
-                    {
-                        UpdateCancellationTokenSource(ref CancellationTokenSource2);
-                        if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-                        dc.NextPage.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
-                    }
+                    if (UserControl_DataContextChanged_CurrentParent != null) UserControl_DataContextChanged_CurrentParent.PropertyChanged -= Parent_PropertyChanged;
+                    dc.Parent.PropertyChanged += Parent_PropertyChanged;
+                    UserControl_DataContextChanged_CurrentParent = dc.Parent;
                 }
             }
         }
+
+        private BookViewModel UserControl_DataContextChanged_CurrentParent = null;
 
         private System.Threading.CancellationTokenSource CancellationTokenSource1;
         private System.Threading.CancellationTokenSource CancellationTokenSource2;
         private System.Threading.SemaphoreSlim Semaphore1 = new System.Threading.SemaphoreSlim(1, 1);
         private System.Threading.SemaphoreSlim Semaphore2 = new System.Threading.SemaphoreSlim(1, 1);
-
 
         private void UpdateCancellationTokenSource(ref System.Threading.CancellationTokenSource tokenSource)
         {
