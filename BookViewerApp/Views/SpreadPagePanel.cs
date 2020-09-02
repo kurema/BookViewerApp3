@@ -27,7 +27,11 @@ namespace BookViewerApp.Views
             nameof(Source1),
             typeof(ImageSource),
             typeof(SpreadPagePanel),
-            new PropertyMetadata(null, OnSourceChanged)
+            new PropertyMetadata(null, (s, e) =>
+            {
+                (s as SpreadPagePanel)?.SetChildrenCache(0, e.NewValue as ImageSource);
+                OnSourceChanged(s, e);
+            })
             );
 
         public ImageSource Source1
@@ -38,17 +42,25 @@ namespace BookViewerApp.Views
             }
             set
             {
-                ChildrenCache[0].Source = value;
-                if (Children.Count > 0 && Children[0] is Image image) image.Source = value;
                 SetValue(Source1Property, value);
             }
+        }
+
+        public void SetChildrenCache(int count, ImageSource source)
+        {
+            if (ChildrenCache.Count() > count && ChildrenCache[count] != null) ChildrenCache[count].Source = source;
+            if (Children.Count > count && Children[count] is Image image) image.Source = source;
         }
 
         public static readonly DependencyProperty Source2Property = DependencyProperty.Register(
             nameof(Source2),
             typeof(ImageSource),
             typeof(SpreadPagePanel),
-            new PropertyMetadata(null, OnSourceChanged)
+            new PropertyMetadata(null, (s, e) =>
+            {
+                (s as SpreadPagePanel)?.SetChildrenCache(1, e.NewValue as ImageSource);
+                OnSourceChanged(s, e);
+            })
             );
 
         public ImageSource Source2
@@ -57,9 +69,8 @@ namespace BookViewerApp.Views
             {
                 return (ImageSource)GetValue(Source2Property);
             }
-            set {
-                ChildrenCache[1].Source = value;
-                if (Children.Count > 1 && Children[1] is Image image) image.Source = value;
+            set
+            {
                 SetValue(Source2Property, value);
             }
         }
@@ -68,7 +79,8 @@ namespace BookViewerApp.Views
             nameof(Mode),
             typeof(ModeEnum),
             typeof(SpreadPagePanel),
-            new PropertyMetadata(ModeEnum.Default,new PropertyChangedCallback((s,e)=> {
+            new PropertyMetadata(ModeEnum.Default, new PropertyChangedCallback((s, e) =>
+            {
                 if (s is SpreadPagePanel page) page.InvalidateArrange();
             }))
             );
@@ -79,9 +91,25 @@ namespace BookViewerApp.Views
             set => SetValue(ModeProperty, value);
         }
 
+        public SingleModeEnum SingleMode
+        {
+            get { return (SingleModeEnum)GetValue(SingleModeProperty); }
+            set { SetValue(SingleModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SingleModeProperty =
+            DependencyProperty.Register(nameof(SingleMode), typeof(SingleModeEnum), typeof(SpreadPagePanel), new PropertyMetadata(SingleModeEnum.Default,
+                new PropertyChangedCallback((s, e) => (s as SpreadPagePanel)?.InvalidateArrange())));
+
+
         public enum ModeEnum
         {
-            Spread, Single, Default, ForceHalfFirst, ForceHalfSecond
+            Spread, Single, Default
+        }
+
+        public enum SingleModeEnum
+        {
+            Default, ForceHalfFirst, ForceHalfSecond
         }
 
         public static readonly DependencyProperty DisplayedStatusProperty = DependencyProperty.Register(
@@ -159,17 +187,21 @@ namespace BookViewerApp.Views
             {
                 goto Single;
             }
-            else if (Mode == ModeEnum.ForceHalfFirst)
+            else if (Mode == ModeEnum.Single)
             {
-                goto Half;
-            }
-            else if (Mode == ModeEnum.ForceHalfSecond)
-            {
-                goto HalfSecond;
-            }
-            else if (Mode == ModeEnum.Single && w1 > h1)
-            {
-                goto Half;
+                switch (SingleMode)
+                {
+                    case SingleModeEnum.Default when w1 > h1:
+                        goto Half;
+                    case SingleModeEnum.Default:
+                        goto Single;
+                    case SingleModeEnum.ForceHalfFirst:
+                        goto Half;
+                    case SingleModeEnum.ForceHalfSecond:
+                        goto HalfSecond;
+                    default:
+                        break;
+                }
             }
             else if (bmp2 == null || w2 == 0 || h2 == 0)
             {

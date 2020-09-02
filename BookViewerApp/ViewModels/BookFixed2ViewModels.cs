@@ -160,7 +160,7 @@ namespace BookViewerApp.ViewModels
             ID = value.ID;
             Password = null;
             if (value is Books.IPasswordPdovider pp && pp.PasswordRemember) Password = pp.Password;
-            this.Pages = pages;
+            this.PagesOriginal = pages;
             BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
             var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
             this.PageSelectedDisplay = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
@@ -326,12 +326,40 @@ namespace BookViewerApp.ViewModels
         }
         private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
 
+        public IEnumerable<PageViewModel> PagesOriginal
+        {
+            get { return _PagesOriginal; }
+            set
+            {
+                _PagesOriginal = value;
+                Pages = new ObservableCollection<PageViewModel>(value);
+                OnPropertyChanged(nameof(PagesOriginal));
+            }
+        }
+        IEnumerable<PageViewModel> _PagesOriginal = new PageViewModel[0];
+
+        public void RestorePages(params PageViewModel[] pagesToExclude)
+        {
+            int count = 0;
+            foreach (var item in PagesOriginal)
+            {
+                if (Pages.Count > count && pagesToExclude?.Contains(Pages[count]) == true) Pages.RemoveAt(count);
+                if (pagesToExclude?.Contains(item) == true) continue;
+                if (count >= Pages.Count) Pages.Add(item);
+                else if (Pages[count] != item) Pages.Insert(count, item);
+                count++;
+            }
+#if DEBUG
+            System.Diagnostics.Debug.Assert(pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
+#endif
+        }
+
         public int PagesCount { get { return _Pages.Count; } }
 
         public double ReadRate
         {
-            get { return Math.Min((double)PageSelectedDisplay / Pages.Count, 1.0); }
-            set { PageSelectedDisplay = (int)(value * Pages.Count); OnPropertyChanged(nameof(ReadRate)); }
+            get { return Math.Min((double)PageSelectedDisplay / Pages.Count(), 1.0); }
+            set { PageSelectedDisplay = (int)(value * Pages.Count()); OnPropertyChanged(nameof(ReadRate)); }
         }
 
         public string CurrentBookmarkName
@@ -411,8 +439,8 @@ namespace BookViewerApp.ViewModels
 
         public void DisposeBasic()
         {
-            if (Pages != null)
-                foreach (var item in this.Pages)
+            if (PagesOriginal != null)
+                foreach (var item in PagesOriginal)
                 {
                     (item.Content as IDisposable)?.Dispose();
                     (item.Content as IDisposableBasic)?.DisposeBasic();

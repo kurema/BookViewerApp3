@@ -71,36 +71,72 @@ namespace BookViewerApp.Views
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
+            async void UpdatePagesBySpreadStatus(SpreadPagePanel.DisplayedStatusEnum statusEnum)
+            {
+                if (!(flipView.SelectedItem is PageViewModel pageCurrent)) return;
+
+                await Task.Delay(100);
+
+                switch (statusEnum)
+                {
+                    case SpreadPagePanel.DisplayedStatusEnum.Spread when pageCurrent.NextPage != null:
+                        Binding.RestorePages(pageCurrent.NextPage);
+                        break;
+                    case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
+                    case SpreadPagePanel.DisplayedStatusEnum.Single:
+                    case SpreadPagePanel.DisplayedStatusEnum.Spread:
+                        Binding.RestorePages();
+                        break;
+                    case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
+                        //ToDo: Add Secondhalf page to next.
+                        throw new NotImplementedException();
+                        //break;
+                    default:
+                        break;
+                }
+            }
+
             if (Binding != null)
             {
                 Binding.PagePropertyChanged += (s, e) =>
                  {
-                     if (e.Item1 == flipView.SelectedItem && e.Item2.PropertyName == nameof(ViewModels.PageViewModel.SpreadDisplayedStatus))
+                     if (e.Item1 == flipView.SelectedItem && e.Item2.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
                      {
+                         UpdatePagesBySpreadStatus(e.Item1.SpreadDisplayedStatus);
                      }
                  };
             }
-            //ToDo:見開き対応。
-            //
-            //1. 以前選択されていたページのイベントを取り消す。
-            //2. 全ページリストアする？
-            //3. 選択中のページの見開き状態から次ページを表示するか切り替える。
-            //4. 選択中のページの見開き状態の変化イベントを登録する。
-            //5. 前のページの見開き状態が、
-            // a) 1ページなら何もしない。
-            // b) 半ページなら前に半ページ後半を挿入する。
-            // c) 2ページかつ2ページ前の見開き状態が2ページなら前ページを削除する。
-            // d) 2ページかつ2ページ前の見開き状態が1ページなら前ページを強制1ページ表示にする。
-            //6. 前ページの見開き状態の変化イベントを登録する。
-            //うわしんど。
 
-            //改正版
-            //1. 開かれているページで実行
-            //2. 全ページリストア
-            //3. 選択中の次のページだけ操作する。
-            //おわり。
-            //まだマシだね。
 
+            flipView.SelectionChanged += (s, e) =>
+            {
+                if (e.AddedItems.Count > 0 && e.AddedItems[0] is PageViewModel vm)
+                {
+                    UpdatePagesBySpreadStatus(vm.SpreadDisplayedStatus);
+                }
+
+                //ToDo:見開き対応。
+                //
+                //1. 以前選択されていたページのイベントを取り消す。
+                //2. 全ページリストアする？
+                //3. 選択中のページの見開き状態から次ページを表示するか切り替える。
+                //4. 選択中のページの見開き状態の変化イベントを登録する。
+                //5. 前のページの見開き状態が、
+                // a) 1ページなら何もしない。
+                // b) 半ページなら前に半ページ後半を挿入する。
+                // c) 2ページかつ2ページ前の見開き状態が2ページなら前ページを削除する。
+                // d) 2ページかつ2ページ前の見開き状態が1ページなら前ページを強制1ページ表示にする。
+                //6. 前ページの見開き状態の変化イベントを登録する。
+                //うわしんど。
+
+                //改正版
+                //1. 開かれているページで実行
+                //2. 全ページリストア
+                //3. 選択中の次のページだけ操作する。
+                //おわり。
+                //まだマシだね。
+
+            };
         }
 
         private string OriginalTitle;
