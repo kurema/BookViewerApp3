@@ -49,7 +49,7 @@ namespace BookViewerApp.Views
         public void SetChildrenCache(int count, ImageSource source)
         {
             if (ChildrenCache.Count() > count && ChildrenCache[count] != null) ChildrenCache[count].Source = source;
-            if (Children.Count > count && Children[count] is Image image) image.Source = source;
+            //if (Children.Count > count && Children[count] is Image image) image.Source = source;
         }
 
         public static readonly DependencyProperty Source2Property = DependencyProperty.Register(
@@ -139,11 +139,11 @@ namespace BookViewerApp.Views
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            void UpdateSource(Image image3, ImageSource source)
+            void UpdateSource(Image imageArg, ImageSource source)
             {
-                if (image3.Source != source) image3.Source = source;
+                if (imageArg.Source != source) imageArg.Source = source;
             }
-            void DesireChild(int count)
+            Image[] DesireChild(int count)
             {
                 var cCount = Children.Count;
 
@@ -164,6 +164,12 @@ namespace BookViewerApp.Views
                 {
                     Children.RemoveAt(Children.Count - 1);
                 }
+                foreach (Image image in Children)
+                {
+                    image.Clip = null;
+                    image.Translation = new System.Numerics.Vector3();
+                }
+                return Children.Select(a => a as Image).ToArray();
             }
 
             var bmp1 = Source1 as BitmapSource;
@@ -220,8 +226,45 @@ namespace BookViewerApp.Views
                 goto Single;
             }
 
+        //Image GetHalfImage(bool isLeft)
+        //{
+        //    //This is not OK
+        //    var image = GetSingleImage();
+        //    image.Clip = new RectangleGeometry()
+        //    {
+        //        Rect = new Rect(0, isLeft ? 0 : image.ActualWidth / 2.0, image.ActualWidth / 2.0, h),
+        //    };
+        //    image.Translation = new System.Numerics.Vector3((isLeft ? -1 : 1) * (float)image.ActualWidth / 4.0f, 0, 0);
+        //    return image;
+        //}
+
+
         Half:
-            DesireChild(1);
+            {
+                DisplayedStatus = DisplayedStatusEnum.HalfFirst;
+
+                if (w1 == 0 || h1 == 0) { Children.Clear(); goto Conclude; }
+
+                var rect = GetFilledItemSize(w, h, w1 / 2.0, h1);
+
+                Children.Clear();
+                var rectangle = new Windows.UI.Xaml.Shapes.Rectangle()
+                {
+                    Width=rect.Width,
+                    Height=rect.Height,
+                    Fill=new ImageBrush()
+                    {
+                        AlignmentX=AlignmentX.Left,
+                        AlignmentY=AlignmentY.Center,
+                        ImageSource=bmp1,
+                        Stretch=Stretch.UniformToFill
+                    }
+                };
+                Children.Add(rectangle);
+
+                rectangle.Measure(GetSizeFromRect(rect));
+                rectangle.Arrange(rect);
+            }
             throw new NotImplementedException();
         //DisplayedStatus = DisplayedStatusEnum.HalfFirst;
         //goto Conclude;
@@ -237,17 +280,15 @@ namespace BookViewerApp.Views
                 var wr2 = w2 * h / h2;
                 var wl = (w - wr1 - wr2) / 2.0;
 
-                DesireChild(2);
-                var image1 = Children[0] as Image;
-                UpdateSource(image1, bmp1);
-                var image2 = Children[1] as Image;
-                UpdateSource(image2, bmp2);
+                var images = DesireChild(2);
+                UpdateSource(images[0], bmp1);
+                UpdateSource(images[1], bmp2);
 
-                image1.Measure(new Size(wr1, h));
-                image2.Measure(new Size(wr2, h));
+                images[0].Measure(new Size(wr1, h));
+                images[1].Measure(new Size(wr2, h));
 
-                image1.Arrange(new Rect(wl, 0, wr1, h));
-                image2.Arrange(new Rect(wl + wr1, 0, wr2, h));
+                images[0].Arrange(new Rect(wl, 0, wr1, h));
+                images[1].Arrange(new Rect(wl + wr1, 0, wr2, h));
 
                 DisplayedStatus = DisplayedStatusEnum.Spread;
             }
@@ -255,23 +296,14 @@ namespace BookViewerApp.Views
 
         Single:
             {
-                DesireChild(1);
-                var image = Children[0] as Image;
+                var image = DesireChild(1)[0];
                 UpdateSource(image, bmp1);
 
-                if (w1 == 0 || h1 == 0) goto Conclude;
-
-                if (w / h > w1 / h1)
+                if (w1 > 0 && h1 > 0)
                 {
-                    var wr = w1 * h / h1;//width result
-                    image.Measure(new Size(wr, h));
-                    image.Arrange(new Rect((w - wr) / 2.0, 0, wr, h));
-                }
-                else
-                {
-                    var hr = h1 * w / w1;
-                    image.Measure(new Size(w, hr));
-                    image.Arrange(new Rect(0, (h - hr) / 2.0, w, hr));
+                    var rect = GetFilledItemSize(w, h, w1, h1);
+                    image.Measure(GetSizeFromRect(rect));
+                    image.Arrange(rect);
                 }
 
                 DisplayedStatus = DisplayedStatusEnum.Single;
@@ -293,6 +325,25 @@ namespace BookViewerApp.Views
             return image;
         }
 
+
+        public static Rect GetFilledItemSize(double w, double h, double w1, double h1)
+        {
+            if (w / h > w1 / h1)
+            {
+                var wr = w1 * h / h1;//width result
+                return new Rect((w - wr) / 2.0, 0, wr, h);
+            }
+            else
+            {
+                var hr = h1 * w / w1;
+                return new Rect(0, (h - hr) / 2.0, w, hr);
+            }
+        }
+
+        public static Size GetSizeFromRect(Rect arg)
+        {
+            return new Size(arg.Width, arg.Height);
+        }
 
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

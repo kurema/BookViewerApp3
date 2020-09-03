@@ -116,8 +116,6 @@ namespace BookViewerApp.ViewModels
             this.Loading = false;
         }
 
-        public EventHandler? SpreadStatusChangedEventHandler;
-
         private string? Password = null;
 
         //To Dispose
@@ -144,15 +142,6 @@ namespace BookViewerApp.ViewModels
                     p.Option = option;
                     return p;
                 }), this));
-                {
-                    pages[(int)i].PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
-                        {
-                            SpreadStatusChangedEventHandler?.Invoke(this, new EventArgs());
-                        }
-                    };
-                }
                 if (i > 0) pages[(int)i - 1].NextPage = pages[(int)i];
             }
             this._Reversed = false;
@@ -465,6 +454,11 @@ namespace BookViewerApp.ViewModels
             this.Parent = parent;
         }
 
+        public PageViewModel CloneBasic()
+        {
+            return new PageViewModel(this.Content, this.Parent) { NextPage = this.NextPage };
+        }
+
         public Books.IPageFixed Content { get; set; }
 
         public BookViewModel Parent { get; private set; }
@@ -525,6 +519,18 @@ namespace BookViewerApp.ViewModels
                 OnPropertyChanged(nameof(NextPage));
             }
         }
+
+
+        private SpreadPagePanel.SingleModeEnum _SpreadSingleMode = SpreadPagePanel.SingleModeEnum.Default;
+        public SpreadPagePanel.SingleModeEnum SpreadSingleMode
+        {
+            get => _SpreadSingleMode; set
+            {
+                _SpreadSingleMode = value;
+                OnPropertyChanged(nameof(SpreadSingleMode));
+            }
+        }
+
 
         private SpreadPagePanel.DisplayedStatusEnum _SpreadDisplayedStatus = SpreadPagePanel.DisplayedStatusEnum.Single;
         public SpreadPagePanel.DisplayedStatusEnum SpreadDisplayedStatus
@@ -651,69 +657,6 @@ namespace BookViewerApp.ViewModels
                 SetPage(model, GetPage(model, number));
             }
         }
-
-        //public class AddNumberToSelectedBook : System.Windows.Input.ICommand
-        //{
-        //    public event EventHandler CanExecuteChanged;
-        //    public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
-
-        //    private BookViewModel ViewModel;
-        //    private int NumberToAdd;
-
-        //    public AddNumberToSelectedBook(BookViewModel vm, int i)
-        //    {
-        //        vm.PropertyChanged += (s, e) => { OnCanExecuteChanged(); };
-        //        ViewModel = vm;
-        //        NumberToAdd = i;
-        //    }
-
-        //    public bool CanExecute(object parameter)
-        //    {
-        //        return GetAddedBook(ViewModel.ID) != null;
-        //    }
-
-        //    public void Execute(object parameter)
-        //    {
-        //        throw new NotImplementedException();
-        //        //var bookFVM = GetAddedBook(ViewModel.ID);
-        //        //var file = await bookFVM.TryGetBookFile();
-        //        //var book = await Books.BookManager.GetBookFromFile(file);
-        //        //if (book is Books.IBookFixed)
-        //        //{
-        //        //    ViewModel.Initialize(book as Books.IBookFixed);
-        //        //    ViewModel.Title = System.IO.Path.GetFileNameWithoutExtension(file.Name);
-        //        //    ViewModel.AsBookShelfBook = bookFVM;
-        //        //}
-        //    }
-
-        //    public BookShelfBookViewModel GetAddedBook(string ID)
-        //    {
-        //        var books = ViewModel.AsBookShelfBook?.Parent?.Books;
-        //        if (books == null) return null;
-        //        //var book = books.Where(a => (a is BookShelfViewModels.BookViewModel && (a as BookShelfViewModels.BookViewModel).ID == ID)).First();
-        //        var book = ViewModel.AsBookShelfBook;
-
-        //        int cnt = 0;
-        //        if (NumberToAdd == 0) return book as BookShelfBookViewModel;
-        //        if (this.NumberToAdd > 0)
-        //        {
-        //            for (int i = books.IndexOf(book) + 1; i < books.Count; i++)
-        //            {
-        //                if (books[i] is BookShelfBookViewModel) cnt++;
-        //                if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            for (int i = books.IndexOf(book) - 1; i >= 0; i--)
-        //            {
-        //                if (books[i] is BookShelfBookViewModel) cnt--;
-        //                if (cnt == this.NumberToAdd) return books[i] as BookShelfBookViewModel;
-        //            }
-        //        }
-        //        return null;
-        //    }
-        //}
 
         public class AddCurrentPageToBookmark : ICommandEventRaiseable
         {
