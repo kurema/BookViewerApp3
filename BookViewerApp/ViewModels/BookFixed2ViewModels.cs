@@ -330,16 +330,26 @@ namespace BookViewerApp.ViewModels
         public void RestorePages(params PageViewModel[] pagesToExclude)
         {
             int count = 0;
+            var currentPage = this.PageSelectedViewModel;
             foreach (var item in PagesOriginal)
             {
-                if (Pages.Count > count && pagesToExclude?.Contains(Pages[count]) == true) Pages.RemoveAt(count);
+                if (Pages.Count > count)
+                {
+                    if (pagesToExclude?.Contains(Pages[count]) == true) Pages.RemoveAt(count);
+                    else if (Pages[count].SpreadSingleMode == SpreadPagePanel.SingleModeEnum.ForceHalfSecond)
+                    {
+                        if (count == PageSelected - 1) count++;
+                        else Pages.RemoveAt(count);
+                    }
+                }
                 if (pagesToExclude?.Contains(item) == true) continue;
                 if (count >= Pages.Count) Pages.Add(item);
                 else if (Pages[count] != item) Pages.Insert(count, item);
                 count++;
             }
+            if (currentPage is PageViewModel page) this.PageSelected = Pages.IndexOf(page);
 #if DEBUG
-            System.Diagnostics.Debug.Assert(pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
+            System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
 #endif
         }
 
@@ -574,25 +584,6 @@ namespace BookViewerApp.ViewModels
         }
 
         private float _ZoomFactor = 1.0f;
-
-        //private ImageSource Source
-        //{
-        //    get
-        //    {
-        //        if (_Source != null) return _Source;
-        //        _Source = new BitmapImage();
-        //        SetImageNoWait(_Source);
-        //        return _Source;
-        //    }
-        //}
-
-
-        //private BitmapImage _Source;
-
-        //public void UpdateSource()
-        //{
-        //    SetImageNoWait(_Source);
-        //}
 
         public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token, System.Threading.SemaphoreSlim Semaphore)
         {

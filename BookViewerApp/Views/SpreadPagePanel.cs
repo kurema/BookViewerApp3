@@ -184,8 +184,7 @@ namespace BookViewerApp.Views
 
             if (w == 0 || h == 0) return finalSize;
 
-            if (Mode == ModeEnum.Single) throw new NotImplementedException();
-            if (bmp1 == null || w1 == 0 || h1 == 0)
+            if (w1 == 0 || h1 == 0)
             {
                 goto Conclude;
             }
@@ -209,7 +208,7 @@ namespace BookViewerApp.Views
                         break;
                 }
             }
-            else if (bmp2 == null || w2 == 0 || h2 == 0)
+            else if (w2 == 0 || h2 == 0)
             {
                 goto Single;
             }
@@ -226,18 +225,25 @@ namespace BookViewerApp.Views
                 goto Single;
             }
 
-        //Image GetHalfImage(bool isLeft)
-        //{
-        //    //This is not OK
-        //    var image = GetSingleImage();
-        //    image.Clip = new RectangleGeometry()
-        //    {
-        //        Rect = new Rect(0, isLeft ? 0 : image.ActualWidth / 2.0, image.ActualWidth / 2.0, h),
-        //    };
-        //    image.Translation = new System.Numerics.Vector3((isLeft ? -1 : 1) * (float)image.ActualWidth / 4.0f, 0, 0);
-        //    return image;
-        //}
+            static void SetupRectangle(ref Windows.UI.Xaml.Shapes.Rectangle rectangleTarget, Rect desiredRect, AlignmentX alignment, BitmapSource source, SpreadPagePanel panel)
+            {
+                rectangleTarget.Width = desiredRect.Width;
+                rectangleTarget.Height = desiredRect.Height;
+                {
+                    var brush = new ImageBrush()
+                    {
+                        AlignmentX = alignment,
+                        AlignmentY = AlignmentY.Center,
+                        ImageSource = source,
+                        Stretch = Stretch.UniformToFill
+                    };
+                    brush.ImageFailed += (s, e) => panel.InvalidateArrange();
+                    brush.ImageOpened += (s, e) => panel.InvalidateArrange();
+                    rectangleTarget.Fill = brush;
+                }
 
+                rectangleTarget.FlowDirection = FlowDirection.LeftToRight;
+            }
 
         Half:
             {
@@ -247,32 +253,49 @@ namespace BookViewerApp.Views
 
                 var rect = GetFilledItemSize(w, h, w1 / 2.0, h1);
 
-                Children.Clear();
-                var rectangle = new Windows.UI.Xaml.Shapes.Rectangle()
+                if (Children.Count != 1 || !(Children[0] is Windows.UI.Xaml.Shapes.Rectangle rectangle))
                 {
-                    Width=rect.Width,
-                    Height=rect.Height,
-                    Fill=new ImageBrush()
-                    {
-                        AlignmentX=AlignmentX.Left,
-                        AlignmentY=AlignmentY.Center,
-                        ImageSource=bmp1,
-                        Stretch=Stretch.UniformToFill
-                    }
-                };
-                Children.Add(rectangle);
+                    Children.Clear();
+                    rectangle = new Windows.UI.Xaml.Shapes.Rectangle();
+                    Children.Add(rectangle);
+                }
+                SetupRectangle(ref rectangle, rect, this.FlowDirection switch
+                {
+                    FlowDirection.LeftToRight => AlignmentX.Left,
+                    FlowDirection.RightToLeft => AlignmentX.Right,
+                    _ => AlignmentX.Left,
+                }, bmp1, this);
 
                 rectangle.Measure(GetSizeFromRect(rect));
                 rectangle.Arrange(rect);
             }
-            throw new NotImplementedException();
-        //DisplayedStatus = DisplayedStatusEnum.HalfFirst;
-        //goto Conclude;
+            goto Conclude;
 
         HalfSecond:
-            throw new NotImplementedException();
-        //DisplayedStatus = DisplayedStatusEnum.HalfSecond;
-        //goto Conclude;
+            {
+                DisplayedStatus = DisplayedStatusEnum.HalfSecond;
+
+                if (w1 == 0 || h1 == 0) { Children.Clear(); goto Conclude; }
+
+                var rect = GetFilledItemSize(w, h, w1 / 2.0, h1);
+
+                if (Children.Count != 1 || !(Children[0] is Windows.UI.Xaml.Shapes.Rectangle rectangle))
+                {
+                    Children.Clear();
+                    rectangle = new Windows.UI.Xaml.Shapes.Rectangle();
+                    Children.Add(rectangle);
+                }
+                SetupRectangle(ref rectangle, rect, this.FlowDirection switch
+                {
+                    FlowDirection.LeftToRight => AlignmentX.Right,
+                    FlowDirection.RightToLeft => AlignmentX.Left,
+                    _ => AlignmentX.Right,
+                }, bmp1, this);
+
+                rectangle.Measure(GetSizeFromRect(rect));
+                rectangle.Arrange(rect);
+            }
+            goto Conclude;
 
         Double:
             {

@@ -75,25 +75,33 @@ namespace BookViewerApp.Views
             {
                 if (!(flipView.SelectedItem is PageViewModel pageCurrent)) return;
 
-                await Task.Delay(100);
-
-                switch (statusEnum)
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    case SpreadPagePanel.DisplayedStatusEnum.Spread when pageCurrent.NextPage != null:
-                        Binding.RestorePages(pageCurrent.NextPage);
-                        break;
-                    case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
-                    case SpreadPagePanel.DisplayedStatusEnum.Single:
-                    case SpreadPagePanel.DisplayedStatusEnum.Spread:
-                        Binding.RestorePages();
-                        break;
-                    case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
-                        //ToDo: Add Secondhalf page to next.
-                        throw new NotImplementedException();
-                        //break;
-                    default:
-                        break;
-                }
+                    switch (statusEnum)
+                    {
+                        case SpreadPagePanel.DisplayedStatusEnum.Spread when pageCurrent.NextPage != null:
+                            Binding.RestorePages(pageCurrent.NextPage);
+                            break;
+                        case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
+                            break;
+                        case SpreadPagePanel.DisplayedStatusEnum.Single:
+                        case SpreadPagePanel.DisplayedStatusEnum.Spread:
+                            Binding.RestorePages();
+                            break;
+                        case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
+                            {
+                                Binding.RestorePages();
+                                if (Binding.PageSelectedViewModel is PageViewModel vm) {
+                                    var newPage = vm.CloneBasic();
+                                    newPage.SpreadSingleMode = SpreadPagePanel.SingleModeEnum.ForceHalfSecond;
+                                    Binding.Pages.Insert(Binding.PageSelected + 1, newPage);
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                });
             }
 
             if (Binding != null)
