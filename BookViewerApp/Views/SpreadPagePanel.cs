@@ -395,21 +395,6 @@ namespace BookViewerApp.Views
                 }
             }
 
-            //Image GetImage(ImageSource source)
-            //{
-            //    var image = new Image() { Stretch = Stretch.UniformToFill };
-            //    image.Source = source;
-            //    image.ImageOpened += (s2, e2) => panel.InvalidateArrange();
-            //    image.ImageFailed += (s2, e2) => panel.InvalidateArrange();
-            //    return image;
-            //}
-            //panel.Children.Clear();
-            //panel.Children.Add(GetImage(panel.Source1));
-            //panel.Children.Add(GetImage(panel.Source2));
-
-            //panel.Children.Add(img1);
-            //panel.Children.Add(img2);
-
             //panel
             //https://www.matatabi-ux.com/entry/2015/09/16/120000
 

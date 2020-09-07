@@ -327,7 +327,7 @@ namespace BookViewerApp.ViewModels
         }
         IEnumerable<PageViewModel> _PagesOriginal = new PageViewModel[0];
 
-        public void RestorePages(params PageViewModel[] pagesToExclude)
+        public async void RestorePages(params PageViewModel[] pagesToExclude)
         {
             int count = 0;
             var currentPage = this.PageSelectedViewModel;
@@ -347,10 +347,34 @@ namespace BookViewerApp.ViewModels
                 else if (Pages[count] != item) Pages.Insert(count, item);
                 count++;
             }
-            if (currentPage is PageViewModel page) this.PageSelected = Pages.IndexOf(page);
+            if (currentPage is PageViewModel page) this._PageSelected = Pages.IndexOf(page);
 #if DEBUG
             System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
 #endif
+
+        }
+
+        public void UpdatePages()
+        {
+            switch (this.SpreadMode)
+            {
+                case SpreadPagePanel.ModeEnum.Spread:
+                    {
+                        var pagesList = PagesOriginal.ToList();
+                        var excluded = new List<PageViewModel>();
+                        if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
+                        int page = pagesList.IndexOf(pageView);
+                        if (page >= 2 && pagesList[page - 2].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread) excluded.Add(pagesList[page - 1]);
+                        if (pageView.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread && pageView.NextPage != null) excluded.Add(pageView.NextPage);
+                        RestorePages(excluded.ToArray());
+                    }
+                    break;
+                case SpreadPagePanel.ModeEnum.Single:
+                    break;
+                case SpreadPagePanel.ModeEnum.Default: RestorePages(); return;
+                default:
+                    return;
+            }
         }
 
         public int PagesCount { get { return _Pages.Count; } }

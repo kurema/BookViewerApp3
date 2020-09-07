@@ -71,56 +71,62 @@ namespace BookViewerApp.Views
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
-            async void UpdatePagesBySpreadStatus(SpreadPagePanel.DisplayedStatusEnum statusEnum)
-            {
-                if (!(flipView.SelectedItem is PageViewModel pageCurrent)) return;
+            //async void UpdatePagesBySpreadStatus(SpreadPagePanel.DisplayedStatusEnum statusEnum)
+            //{
+            //    if (!(flipView.SelectedItem is PageViewModel pageCurrent)) return;
 
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    switch (statusEnum)
-                    {
-                        case SpreadPagePanel.DisplayedStatusEnum.Spread when pageCurrent.NextPage != null:
-                            Binding.RestorePages(pageCurrent.NextPage);
-                            break;
-                        case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
-                            break;
-                        case SpreadPagePanel.DisplayedStatusEnum.Single:
-                        case SpreadPagePanel.DisplayedStatusEnum.Spread:
-                            Binding.RestorePages();
-                            break;
-                        case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
-                            {
-                                Binding.RestorePages();
-                                if (Binding.PageSelectedViewModel is PageViewModel vm) {
-                                    var newPage = vm.CloneBasic();
-                                    newPage.SpreadSingleMode = SpreadPagePanel.SingleModeEnum.ForceHalfSecond;
-                                    Binding.Pages.Insert(Binding.PageSelected + 1, newPage);
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                });
-            }
+            //    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //    {
+            //        switch (statusEnum)
+            //        {
+            //            case SpreadPagePanel.DisplayedStatusEnum.Spread when pageCurrent.NextPage != null:
+            //                Binding.RestorePages(pageCurrent.NextPage);
+            //                break;
+            //            case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
+            //                break;
+            //            case SpreadPagePanel.DisplayedStatusEnum.Single:
+            //            case SpreadPagePanel.DisplayedStatusEnum.Spread:
+            //                Binding.RestorePages();
+            //                break;
+            //            case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
+            //                {
+            //                    Binding.RestorePages();
+            //                    if (Binding.PageSelectedViewModel is PageViewModel vm) {
+            //                        var newPage = vm.CloneBasic();
+            //                        newPage.SpreadSingleMode = SpreadPagePanel.SingleModeEnum.ForceHalfSecond;
+            //                        Binding.Pages.Insert(Binding.PageSelected + 1, newPage);
+            //                    }
+            //                }
+            //                break;
+            //            default:
+            //                break;
+            //        }
+            //    });
+            //}
 
             if (Binding != null)
             {
-                Binding.PagePropertyChanged += (s, e) =>
+                Binding.PagePropertyChanged += async (s, e) =>
                  {
-                     if (e.Item1 == flipView.SelectedItem && e.Item2.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
+                     if ((e.Item1 == flipView.SelectedItem || e.Item1?.NextPage?.NextPage == flipView.SelectedItem) && e.Item2.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
                      {
-                         UpdatePagesBySpreadStatus(e.Item1.SpreadDisplayedStatus);
+                         await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                         {
+                             Binding.UpdatePages();
+                         });
                      }
                  };
             }
 
 
-            flipView.SelectionChanged += (s, e) =>
+            flipView.SelectionChanged += async (s, e) =>
             {
                 if (e.AddedItems.Count > 0 && e.AddedItems[0] is PageViewModel vm)
                 {
-                    UpdatePagesBySpreadStatus(vm.SpreadDisplayedStatus);
+                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        Binding.UpdatePages();
+                    });
                 }
 
                 //ToDo:見開き対応。
