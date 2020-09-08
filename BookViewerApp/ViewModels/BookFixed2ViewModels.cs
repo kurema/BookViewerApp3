@@ -327,7 +327,7 @@ namespace BookViewerApp.ViewModels
         }
         IEnumerable<PageViewModel> _PagesOriginal = new PageViewModel[0];
 
-        public async void RestorePages(params PageViewModel[] pagesToExclude)
+        public void RestorePages(params PageViewModel[] pagesToExclude)
         {
             int count = 0;
             var currentPage = this.PageSelectedViewModel;
@@ -336,7 +336,7 @@ namespace BookViewerApp.ViewModels
                 if (Pages.Count > count)
                 {
                     if (pagesToExclude?.Contains(Pages[count]) == true) Pages.RemoveAt(count);
-                    else if (Pages[count].SpreadSingleMode == SpreadPagePanel.SingleModeEnum.ForceHalfSecond)
+                    else if (Pages[count].SpreadModeOverride == SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond)
                     {
                         if (count == PageSelected - 1) count++;
                         else Pages.RemoveAt(count);
@@ -354,6 +354,10 @@ namespace BookViewerApp.ViewModels
 
         }
 
+        /// <summary>
+        /// Update pages from SpreadDisplayedStatus around PageSelected.
+        /// Always call this from UI thread!!! (Dispatcher.RunAsync();)
+        /// </summary>
         public void UpdatePages()
         {
             switch (this.SpreadMode)
@@ -555,13 +559,13 @@ namespace BookViewerApp.ViewModels
         }
 
 
-        private SpreadPagePanel.SingleModeEnum _SpreadSingleMode = SpreadPagePanel.SingleModeEnum.Default;
-        public SpreadPagePanel.SingleModeEnum SpreadSingleMode
+        private SpreadPagePanel.ModeOverrideEnum _SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
+        public SpreadPagePanel.ModeOverrideEnum SpreadModeOverride
         {
-            get => _SpreadSingleMode; set
+            get => _SpreadModeOverride; set
             {
-                _SpreadSingleMode = value;
-                OnPropertyChanged(nameof(SpreadSingleMode));
+                _SpreadModeOverride = value;
+                OnPropertyChanged(nameof(SpreadModeOverride));
             }
         }
 

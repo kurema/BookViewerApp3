@@ -91,14 +91,14 @@ namespace BookViewerApp.Views
             set => SetValue(ModeProperty, value);
         }
 
-        public SingleModeEnum SingleMode
+        public ModeOverrideEnum ModeOverride
         {
-            get { return (SingleModeEnum)GetValue(SingleModeProperty); }
-            set { SetValue(SingleModeProperty, value); }
+            get { return (ModeOverrideEnum)GetValue(ModeOverrideProperty); }
+            set { SetValue(ModeOverrideProperty, value); }
         }
 
-        public static readonly DependencyProperty SingleModeProperty =
-            DependencyProperty.Register(nameof(SingleMode), typeof(SingleModeEnum), typeof(SpreadPagePanel), new PropertyMetadata(SingleModeEnum.Default,
+        public static readonly DependencyProperty ModeOverrideProperty =
+            DependencyProperty.Register(nameof(ModeOverride), typeof(ModeOverrideEnum), typeof(SpreadPagePanel), new PropertyMetadata(ModeOverrideEnum.Default,
                 new PropertyChangedCallback((s, e) => (s as SpreadPagePanel)?.InvalidateArrange())));
 
 
@@ -107,9 +107,9 @@ namespace BookViewerApp.Views
             Spread, Single, Default
         }
 
-        public enum SingleModeEnum
+        public enum ModeOverrideEnum
         {
-            Default, ForceHalfFirst, ForceHalfSecond
+            Default, ForceHalfFirst, ForceHalfSecond, ForceSingle
         }
 
         public static readonly DependencyProperty DisplayedStatusProperty = DependencyProperty.Register(
@@ -194,15 +194,15 @@ namespace BookViewerApp.Views
             }
             else if (Mode == ModeEnum.Single)
             {
-                switch (SingleMode)
+                switch (ModeOverride)
                 {
-                    case SingleModeEnum.Default when w1 > h1:
+                    case ModeOverrideEnum.Default when w1 > h1:
                         goto Half;
-                    case SingleModeEnum.Default:
+                    case ModeOverrideEnum.Default:
                         goto Single;
-                    case SingleModeEnum.ForceHalfFirst:
+                    case ModeOverrideEnum.ForceHalfFirst:
                         goto Half;
-                    case SingleModeEnum.ForceHalfSecond:
+                    case ModeOverrideEnum.ForceHalfSecond:
                         goto HalfSecond;
                     default:
                         break;

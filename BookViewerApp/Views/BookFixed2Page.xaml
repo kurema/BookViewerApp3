@@ -16,7 +16,7 @@
                   >
         <Grid  x:Name="grid">
             <!--<Image x:Name="image" Source="{Binding Source,Mode=OneWay}"  HorizontalAlignment="Center"/>-->
-            <local:SpreadPagePanel x:Name="spreadPanel"  HorizontalAlignment="Stretch" Mode="{Binding Parent.SpreadMode}" SingleMode="{Binding SpreadSingleMode}" DisplayedStatus="{Binding SpreadDisplayedStatus,Mode=TwoWay}" />
+            <local:SpreadPagePanel x:Name="spreadPanel"  HorizontalAlignment="Stretch" Mode="{Binding Parent.SpreadMode}" ModeOverride="{Binding SpreadModeOverride}" DisplayedStatus="{Binding SpreadDisplayedStatus,Mode=TwoWay}" />
         </Grid>
     </ScrollViewer>
 </UserControl>
