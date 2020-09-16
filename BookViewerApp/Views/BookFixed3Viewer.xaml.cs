@@ -106,27 +106,21 @@ namespace BookViewerApp.Views
 
             if (Binding != null)
             {
-                Binding.PagePropertyChanged += async (s, e) =>
+                Binding.PagePropertyChanged += (s, e) =>
                  {
                      if ((e.Item1 == flipView.SelectedItem || e.Item1?.NextPage?.NextPage == flipView.SelectedItem) && e.Item2.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
                      {
-                         await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                         {
-                             Binding.UpdatePages();
-                         });
+                         Binding.UpdatePages(this.Dispatcher);
                      }
                  };
             }
 
 
-            flipView.SelectionChanged += async (s, e) =>
+            flipView.SelectionChanged += (s, e) =>
             {
                 if (e.AddedItems.Count > 0 && e.AddedItems[0] is PageViewModel vm)
                 {
-                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        Binding.UpdatePages();
-                    });
+                    Binding.UpdatePages(this.Dispatcher);
                 }
 
                 //ToDo:見開き対応。

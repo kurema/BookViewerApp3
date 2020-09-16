@@ -29,7 +29,7 @@ namespace BookViewerApp.Views
             typeof(SpreadPagePanel),
             new PropertyMetadata(null, (s, e) =>
             {
-                (s as SpreadPagePanel)?.SetChildrenCache(0, e.NewValue as ImageSource);
+                if (e.OldValue != e.NewValue) (s as SpreadPagePanel)?.SetChildrenCache(0, e.NewValue as ImageSource);
                 OnSourceChanged(s, e);
             })
             );
@@ -58,7 +58,7 @@ namespace BookViewerApp.Views
             typeof(SpreadPagePanel),
             new PropertyMetadata(null, (s, e) =>
             {
-                (s as SpreadPagePanel)?.SetChildrenCache(1, e.NewValue as ImageSource);
+                if (e.OldValue != e.NewValue) (s as SpreadPagePanel)?.SetChildrenCache(1, e.NewValue as ImageSource);
                 OnSourceChanged(s, e);
             })
             );
@@ -81,7 +81,7 @@ namespace BookViewerApp.Views
             typeof(SpreadPagePanel),
             new PropertyMetadata(ModeEnum.Default, new PropertyChangedCallback((s, e) =>
             {
-                if (s is SpreadPagePanel page) page.InvalidateArrange();
+                if (e.OldValue != e.NewValue) (s as SpreadPagePanel)?.InvalidateArrange();
             }))
             );
 
@@ -99,7 +99,7 @@ namespace BookViewerApp.Views
 
         public static readonly DependencyProperty ModeOverrideProperty =
             DependencyProperty.Register(nameof(ModeOverride), typeof(ModeOverrideEnum), typeof(SpreadPagePanel), new PropertyMetadata(ModeOverrideEnum.Default,
-                new PropertyChangedCallback((s, e) => (s as SpreadPagePanel)?.InvalidateArrange())));
+                new PropertyChangedCallback((s, e) => { if (e.NewValue != e.OldValue) (s as SpreadPagePanel)?.InvalidateArrange(); })));
 
 
         public enum ModeEnum
@@ -139,6 +139,7 @@ namespace BookViewerApp.Views
 
         protected override Size ArrangeOverride(Size finalSize)
         {
+
             void UpdateSource(Image imageArg, ImageSource source)
             {
                 if (imageArg.Source != source) imageArg.Source = source;
@@ -182,6 +183,13 @@ namespace BookViewerApp.Views
             double w = finalSize.Width;
             double h = finalSize.Height;
 
+            switch (ModeOverride)
+            {
+                case ModeOverrideEnum.ForceHalfFirst: goto Half;
+                case ModeOverrideEnum.ForceHalfSecond: goto HalfSecond;
+                case ModeOverrideEnum.ForceSingle: goto Single;
+            }
+
             if (w == 0 || h == 0) return finalSize;
 
             if (w1 == 0 || h1 == 0)
@@ -192,21 +200,13 @@ namespace BookViewerApp.Views
             {
                 goto Single;
             }
+            else if (Mode == ModeEnum.Single && w1 > h1)
+            {
+                goto Half;
+            }
             else if (Mode == ModeEnum.Single)
             {
-                switch (ModeOverride)
-                {
-                    case ModeOverrideEnum.Default when w1 > h1:
-                        goto Half;
-                    case ModeOverrideEnum.Default:
-                        goto Single;
-                    case ModeOverrideEnum.ForceHalfFirst:
-                        goto Half;
-                    case ModeOverrideEnum.ForceHalfSecond:
-                        goto HalfSecond;
-                    default:
-                        break;
-                }
+                goto Single;
             }
             else if (w2 == 0 || h2 == 0)
             {

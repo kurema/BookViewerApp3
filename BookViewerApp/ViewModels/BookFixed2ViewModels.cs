@@ -78,7 +78,7 @@ namespace BookViewerApp.ViewModels
         private bool _IsControlPinned = false;
 
 
-        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
+        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Spread;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
@@ -354,28 +354,46 @@ namespace BookViewerApp.ViewModels
 
         }
 
-        /// <summary>
-        /// Update pages from SpreadDisplayedStatus around PageSelected.
-        /// Always call this from UI thread!!! (Dispatcher.RunAsync();)
-        /// </summary>
-        public void UpdatePages()
+        public async void UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
         {
+            await dispatcher.RunAsync(priority, () => this.UpdatePages());
+        }
+
+        private void UpdatePages()
+        {
+            //ja:直接呼ばれると落ちたりするのでprivateにしました。
+            //en:Calling this may crash the application, so this is private.
             switch (this.SpreadMode)
             {
                 case SpreadPagePanel.ModeEnum.Spread:
                     {
                         var pagesList = PagesOriginal.ToList();
                         var excluded = new List<PageViewModel>();
+                        bool pageOverridePrevious = false;
                         if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
                         int page = pagesList.IndexOf(pageView);
                         if (page >= 2 && pagesList[page - 2].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread) excluded.Add(pagesList[page - 1]);
+                        else pageOverridePrevious = true;
                         if (pageView.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread && pageView.NextPage != null) excluded.Add(pageView.NextPage);
                         RestorePages(excluded.ToArray());
+
+                        foreach (var item in Pages)
+                        {
+                            if (pageOverridePrevious && page >= 1 && item == pagesList[page - 1]) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
+                            else if (item.SpreadModeOverride != SpreadPagePanel.ModeOverrideEnum.Default) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
+                        }
                     }
                     break;
                 case SpreadPagePanel.ModeEnum.Single:
                     break;
-                case SpreadPagePanel.ModeEnum.Default: RestorePages(); return;
+                case SpreadPagePanel.ModeEnum.Default:
+                    {
+                        RestorePages();
+                        Pages
+                            .Where(a => a.SpreadModeOverride != SpreadPagePanel.ModeOverrideEnum.Default)
+                            .ToList().ForEach(a => a.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default);
+                    }
+                    return;
                 default:
                     return;
             }
