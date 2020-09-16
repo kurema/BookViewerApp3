@@ -32,20 +32,13 @@ namespace BookViewerApp.ViewModels
                 (PageVisualAddCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
                 (PageVisualSetCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
                 (PageVisualMaxCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
-                (PageAddCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
-                (PageSetCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
-                (PageMaxCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
             };
         }
 
         private Commands.ICommandEventRaiseable? _PageVisualAddCommand;
         private Commands.ICommandEventRaiseable? _PageVisualSetCommand;
         private Commands.ICommandEventRaiseable? _PageVisualMaxCommand;
-        private Commands.ICommandEventRaiseable? _PageAddCommand;
-        private Commands.ICommandEventRaiseable? _PageSetCommand;
-        private Commands.ICommandEventRaiseable? _PageMaxCommand;
         private Commands.ICommandEventRaiseable? _SwapReverseCommand;
-        private Commands.ICommandEventRaiseable? _AddCurrentPageToBookmarkCommand;
 
         //private ICommand? _GoNextBookCommand;
         //private ICommand? _GoPreviousBookCommand;
@@ -57,16 +50,12 @@ namespace BookViewerApp.ViewModels
         //public ICommand TogglePinCommand => _TogglePinCommand = _TogglePinCommand ?? new DelegateCommand((a) => IsControlPinned = !IsControlPinned);
 
 
-        public ICommand PageVisualAddCommand { get { return _PageVisualAddCommand = _PageVisualAddCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PageSelectedVisual + b, (a, b) => a.PageSelectedVisual = b); } }
-        public ICommand PageVisualSetCommand { get { return _PageVisualSetCommand = _PageVisualSetCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
-        public ICommand PageVisualMaxCommand { get { return _PageVisualMaxCommand = _PageVisualMaxCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PagesCount - 1, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
-        public ICommand PageAddCommand { get { return _PageAddCommand = _PageAddCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PageSelectedVisual + b, (a, b) => a.PageSelected = b); } }
-        public ICommand PageSetCommand { get { return _PageSetCommand = _PageSetCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
-        public ICommand PageMaxCommand { get { return _PageMaxCommand = _PageMaxCommand ?? new Commands.PageSetGeneralCommand(this, (a, b) => a.PagesCount - 1, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
-        public ICommand SwapReverseCommand { get { return _SwapReverseCommand = _SwapReverseCommand ?? new Commands.CommandBase((a) => { return true; }, (a) => { this.Reversed = !this.Reversed; }); } }
-        public ICommand AddCurrentPageToBookmarkCommand { get { return _AddCurrentPageToBookmarkCommand = _AddCurrentPageToBookmarkCommand ?? new Commands.AddCurrentPageToBookmark(this); } }
-        public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand = _ToggleFullScreenCommand ?? new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
-        public ICommand GoToHomeCommand { get => _GoToHomeCommand = _GoToHomeCommand ?? new InvalidCommand(); set => _GoToHomeCommand = value; }
+        public ICommand PageVisualAddCommand { get { return _PageVisualAddCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.PageSelectedVisual + b, (a, b) => a.PageSelectedVisual = b); } }
+        public ICommand PageVisualSetCommand { get { return _PageVisualSetCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
+        public ICommand PageVisualMaxCommand { get { return _PageVisualMaxCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.PagesCount - 1, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
+        public ICommand SwapReverseCommand { get { return _SwapReverseCommand ??= new Commands.CommandBase((a) => { return true; }, (a) => { this.Reversed = !this.Reversed; }); } }
+        public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand ??= new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
+        public ICommand GoToHomeCommand { get => _GoToHomeCommand ??= new InvalidCommand(); set => _GoToHomeCommand = value; }
 
         //public System.Windows.Input.ICommand GoNextBookCommand { get { return _GoNextBookCommand = _GoNextBookCommand ?? new Commands.AddNumberToSelectedBook(this, 1); } }
         //public System.Windows.Input.ICommand GoPreviousBookCommand { get { return _GoPreviousBookCommand = _GoPreviousBookCommand ?? new Commands.AddNumberToSelectedBook(this, -1); } }
@@ -219,11 +208,6 @@ namespace BookViewerApp.ViewModels
 
         private Books.PageOptionsControl? OptionCache;
 
-        //[Obsolete]
-        //public BookShelfBookViewModel? AsBookShelfBook { get { return _AsBookShelfBook; } set { _AsBookShelfBook = value; OnPropertyChanged(nameof(AsBookShelfBook)); } }
-        //private BookShelfBookViewModel? _AsBookShelfBook;
-
-
         private ObservableCollection<TocEntryViewModes> _Toc = new ObservableCollection<TocEntryViewModes>();
         public ObservableCollection<TocEntryViewModes> Toc { get => _Toc; set { _Toc = value; OnPropertyChanged(nameof(Toc)); } }
 
@@ -291,20 +275,43 @@ namespace BookViewerApp.ViewModels
 
         public int PageSelectedDisplay
         {
-            get { return _PageSelected + 1; }
+            get
+            {
+                //return _PageSelected + 1; 
+                return PagesOriginal.ToList().FindIndex(a => a.Content == (PageSelectedViewModel as PageViewModel)?.Content) + 1;
+            }
             set
             {
-                PageSelected = value - 1;
+                //PageSelected = value - 1;
+                var original = PagesOriginal.ToList();
+                if (0 <= value - 1 && value - 1 < original.Count)
+                {
+                    var result= Pages.ToList().FindIndex(a => a.Content == original[value - 1].Content);
+                    if (result != -1)
+                    {
+                        PageSelected = result;
+                        return;
+                    }
+                    else if (1 <= value - 1)
+                    {
+                        result = Pages.ToList().FindIndex(a => a.Content == original[value - 2].Content);
+                        if (result != -1)
+                        {
+                            PageSelected = result;
+                            return;
+                        }
+                    }
+                }
             }
         }
         private int _PageSelected = -1;
 
         public int PageSelectedVisual
         {
-            get { return Reversed ? Math.Max(PagesCount - PageSelectedDisplay, 0) : _PageSelected; }
+            get { return Reversed ? Math.Max(PagesCount - PageSelected - 1, 0) : _PageSelected; }
             set
             {
-                PageSelectedDisplay = Reversed ? PagesCount - value : value + 1;
+                PageSelected = Reversed ? PagesCount - value - 1 : value;
             }
         }
 
@@ -379,6 +386,7 @@ namespace BookViewerApp.ViewModels
 
                         foreach (var item in Pages)
                         {
+                            if (item == PageSelectedViewModel) continue;
                             if (pageOverridePrevious && page >= 1 && item == pagesList[page - 1]) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
                             else if (item.SpreadModeOverride != SpreadPagePanel.ModeOverrideEnum.Default) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
                         }
