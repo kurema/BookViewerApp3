@@ -286,7 +286,7 @@ namespace BookViewerApp.ViewModels
                 var original = PagesOriginal.ToList();
                 if (0 <= value - 1 && value - 1 < original.Count)
                 {
-                    var result= Pages.ToList().FindIndex(a => a.Content == original[value - 1].Content);
+                    var result = Pages.ToList().FindIndex(a => a.Content == original[value - 1].Content);
                     if (result != -1)
                     {
                         PageSelected = result;
@@ -334,8 +334,9 @@ namespace BookViewerApp.ViewModels
         }
         IEnumerable<PageViewModel> _PagesOriginal = new PageViewModel[0];
 
-        public void RestorePages(params PageViewModel[] pagesToExclude)
+        protected void RestorePages(PageViewModel[]? pagesToExclude = null)
         {
+            pagesToExclude ??= new PageViewModel[0];
             int count = 0;
             var currentPage = this.PageSelectedViewModel;
             foreach (var item in PagesOriginal)
@@ -358,7 +359,6 @@ namespace BookViewerApp.ViewModels
 #if DEBUG
             System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
 #endif
-
         }
 
         public async void UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
@@ -393,6 +393,10 @@ namespace BookViewerApp.ViewModels
                     }
                     break;
                 case SpreadPagePanel.ModeEnum.Single:
+                    {
+                        if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
+                        throw new NotImplementedException();
+                    }
                     break;
                 case SpreadPagePanel.ModeEnum.Default:
                     {

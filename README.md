@@ -7,7 +7,7 @@ It support CBR, CBZ, PDF and Epub books.
 
 <a href='//www.microsoft.com/store/apps/9n607jhlbczb?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png' alt='English badge' width='142px' height='52px'/></a>
 
-[![YouTube](http://img.youtube.com/vi/rKCw_OlOKb8/0.jpg)](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
+[![YouTube](/res/Movie/20200729/movie.gif)](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 
 [Discord](https://discord.gg/tKwuhcc)
 

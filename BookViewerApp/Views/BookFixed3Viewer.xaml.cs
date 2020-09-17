@@ -59,8 +59,7 @@ namespace BookViewerApp.Views
             var brSet = (double)SettingStorage.GetValue("BackgroundBrightness");
             var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
                              255.0);
-            //this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
-            var color = new Windows.UI.Color() { A = 255, B = br, G = br, R = br };
+            var color = new Color() { A = 255, B = br, G = br, R = br };
             this.Background = new AcrylicBrush()
             {
                 BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
@@ -70,39 +69,6 @@ namespace BookViewerApp.Views
             };
 
             flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
-
-            //async void UpdatePagesBySpreadStatus(SpreadPagePanel.DisplayedStatusEnum statusEnum)
-            //{
-            //    if (!(flipView.SelectedItem is PageViewModel pageCurrent)) return;
-
-            //    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            //    {
-            //        switch (statusEnum)
-            //        {
-            //            case SpreadPagePanel.DisplayedStatusEnum.Spread when pageCurrent.NextPage != null:
-            //                Binding.RestorePages(pageCurrent.NextPage);
-            //                break;
-            //            case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
-            //                break;
-            //            case SpreadPagePanel.DisplayedStatusEnum.Single:
-            //            case SpreadPagePanel.DisplayedStatusEnum.Spread:
-            //                Binding.RestorePages();
-            //                break;
-            //            case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
-            //                {
-            //                    Binding.RestorePages();
-            //                    if (Binding.PageSelectedViewModel is PageViewModel vm) {
-            //                        var newPage = vm.CloneBasic();
-            //                        newPage.SpreadSingleMode = SpreadPagePanel.SingleModeEnum.ForceHalfSecond;
-            //                        Binding.Pages.Insert(Binding.PageSelected + 1, newPage);
-            //                    }
-            //                }
-            //                break;
-            //            default:
-            //                break;
-            //        }
-            //    });
-            //}
 
             if (Binding != null)
             {
@@ -120,7 +86,7 @@ namespace BookViewerApp.Views
             {
                 if (e.AddedItems.Count > 0 && e.AddedItems[0] is PageViewModel vm)
                 {
-                    Binding.UpdatePages(this.Dispatcher);
+                    Binding?.UpdatePages(this.Dispatcher);
                 }
 
                 //ToDo:見開き対応。
