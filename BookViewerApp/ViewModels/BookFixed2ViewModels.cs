@@ -67,7 +67,7 @@ namespace BookViewerApp.ViewModels
         private bool _IsControlPinned = false;
 
 
-        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Spread;
+        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Single;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
@@ -334,13 +334,17 @@ namespace BookViewerApp.ViewModels
         }
         IEnumerable<PageViewModel> _PagesOriginal = new PageViewModel[0];
 
-        protected void RestorePages(PageViewModel[]? pagesToExclude = null)
+        protected void RestorePages(PageViewModel[]? pagesToExclude = null, PageViewModel[]? pagesToInclude = null)
         {
             pagesToExclude ??= new PageViewModel[0];
+            pagesToInclude ??= new PageViewModel[0];
             int count = 0;
             var currentPage = this.PageSelectedViewModel;
             foreach (var item in PagesOriginal)
             {
+                if (pagesToInclude?.Contains(item) == true) continue;
+                while (Pages.Count > count && pagesToInclude?.Contains(Pages[count]) == true) count++;
+
                 if (Pages.Count > count)
                 {
                     if (pagesToExclude?.Contains(Pages[count]) == true) Pages.RemoveAt(count);
@@ -357,14 +361,12 @@ namespace BookViewerApp.ViewModels
             }
             if (currentPage is PageViewModel page) this._PageSelected = Pages.IndexOf(page);
 #if DEBUG
-            System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
+            System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToInclude.Count() > 0 || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
 #endif
         }
 
         public async void UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
-        {
-            await dispatcher.RunAsync(priority, () => this.UpdatePages());
-        }
+            => await dispatcher.RunAsync(priority, () => this.UpdatePages());
 
         private void UpdatePages()
         {
@@ -374,10 +376,10 @@ namespace BookViewerApp.ViewModels
             {
                 case SpreadPagePanel.ModeEnum.Spread:
                     {
+                        if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
                         var pagesList = PagesOriginal.ToList();
                         var excluded = new List<PageViewModel>();
                         bool pageOverridePrevious = false;
-                        if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
                         int page = pagesList.IndexOf(pageView);
                         if (page >= 2 && pagesList[page - 2].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread) excluded.Add(pagesList[page - 1]);
                         else pageOverridePrevious = true;
@@ -395,7 +397,47 @@ namespace BookViewerApp.ViewModels
                 case SpreadPagePanel.ModeEnum.Single:
                     {
                         if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
-                        throw new NotImplementedException();
+                        var pagesList = PagesOriginal.ToList();
+                        var included = new List<PageViewModel>();
+                        int pageOrig = pagesList.IndexOf(pageView);
+                        if (pageOrig >= 1 && pagesList[pageOrig - 1].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.HalfFirst)
+                        {
+                            int pageCurrent = Pages.IndexOf(pagesList[pageOrig]);
+                            int pagePrev = Pages.IndexOf(pagesList[pageOrig - 1]);
+                            if (pagePrev != -1 && pageCurrent - pagePrev == 1)
+                            {
+                                var cloned = pagesList[pageOrig - 1].CloneBasic();
+                                cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
+                                Pages.Insert(pageCurrent, cloned);
+                                included.Add(cloned);
+                            }
+                            else if (pagePrev != -1 && pageCurrent - pagePrev == 2 && pageCurrent >= 1)
+                            {
+                                included.Add(Pages[pageCurrent - 1]);
+                            }
+                            this._PageSelected = Pages.IndexOf(pageView);
+                        }
+
+                        switch (pageView.SpreadDisplayedStatus)
+                        {
+                            case SpreadPagePanel.DisplayedStatusEnum.Single:
+                                RestorePages(null, included.ToArray());
+                                return;
+                            case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
+                                RestorePages(null, included.ToArray());
+                                {
+                                    var cloned = pageView.CloneBasic();
+                                    cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
+                                    Pages.Insert(this._PageSelected + 1, cloned);
+                                }
+                                break;
+                            case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
+                                RestorePages(null, new PageViewModel[] { pageView });
+                                return;
+                            case SpreadPagePanel.DisplayedStatusEnum.Spread:
+                            default:
+                                return;
+                        }
                     }
                     break;
                 case SpreadPagePanel.ModeEnum.Default:
