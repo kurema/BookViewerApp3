@@ -101,25 +101,6 @@ namespace BookViewerApp.Views
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
-        //private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)
-        //{
-        //    var ui = (Canvas)sender;
-        //    var rate = e.GetPosition(ui).X / ui.ActualWidth;
-        //    if (Binding.Reversed) { rate = 1 - rate; }
-        //    Binding.ReadRate = rate;
-        //}
-
-        //private void Scroller_PointerMoved(object sender, PointerRoutedEventArgs e)
-        //{
-        //    var ui = (Canvas)sender;
-        //    var cp = e.GetCurrentPoint(ui);
-        //    if (!cp.IsInContact) return;
-        //    var rate = cp.Position.X / ui.ActualWidth;
-        //    if (Binding.Reversed) { rate = 1 - rate; }
-        //    Binding.ReadRate = Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
-        //    e.Handled = true;
-        //}
-
         private void Canvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.SetControlPanelVisibility(true);
@@ -140,7 +121,7 @@ namespace BookViewerApp.Views
             if (!cp.IsInContact) return;
             var rate = cp.Position.X / ui.ActualWidth;
             if (Binding.Reversed) { rate = 1 - rate; }
-            Binding.ReadRate = Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
+            Binding.ReadRate = rate;// Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);//何故だっけ？
             e.Handled = true;
         }
 

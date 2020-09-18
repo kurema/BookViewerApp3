@@ -247,7 +247,7 @@ namespace BookViewerApp.Views
             if (!cp.IsInContact) return;
             var rate = cp.Position.X / ui.ActualWidth;
             if (Binding.Reversed) { rate = 1 - rate; }
-            Binding.ReadRate = Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
+            Binding.ReadRate = rate;// Math.Round(rate * (Binding.PagesCount)) / (Binding.PagesCount);
             e.Handled = true;
         }
 

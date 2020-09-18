@@ -52,7 +52,7 @@ namespace BookViewerApp.ViewModels
 
         public ICommand PageVisualAddCommand { get { return _PageVisualAddCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.PageSelectedVisual + b, (a, b) => a.PageSelectedVisual = b); } }
         public ICommand PageVisualSetCommand { get { return _PageVisualSetCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
-        public ICommand PageVisualMaxCommand { get { return _PageVisualMaxCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.PagesCount - 1, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
+        public ICommand PageVisualMaxCommand { get { return _PageVisualMaxCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.Pages.Count - 1, (a, b) => a.PageSelectedVisual = b, a => a.PageSelectedVisual); } }
         public ICommand SwapReverseCommand { get { return _SwapReverseCommand ??= new Commands.CommandBase((a) => { return true; }, (a) => { this.Reversed = !this.Reversed; }); } }
         public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand ??= new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
         public ICommand GoToHomeCommand { get => _GoToHomeCommand ??= new InvalidCommand(); set => _GoToHomeCommand = value; }
@@ -67,7 +67,7 @@ namespace BookViewerApp.ViewModels
         private bool _IsControlPinned = false;
 
 
-        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Single;
+        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
@@ -251,7 +251,7 @@ namespace BookViewerApp.ViewModels
         {
             get
             {
-                if (PageSelected < 0 || PagesCount <= PageSelected) return null;
+                if (PageSelected < 0 || Pages.Count <= PageSelected) return null;
                 return Pages[PageSelected];
             }
         }
@@ -261,7 +261,8 @@ namespace BookViewerApp.ViewModels
             get { return _PageSelected; }
             set
             {
-                if (value >= PagesCount) return;
+                if (value >= Pages.Count()) return;
+                if (_PageSelected == value) return;
                 if (value < 0) _PageSelected = 0;
                 else _PageSelected = value;
                 OnPropertyChanged(nameof(PageSelectedDisplay));
@@ -284,6 +285,12 @@ namespace BookViewerApp.ViewModels
             {
                 //PageSelected = value - 1;
                 var original = PagesOriginal.ToList();
+                value = Math.Max(value, 1);
+                //if (value == original.Count)
+                //{
+                //    PageSelected = Pages.Count - 1;
+                //    return;
+                //}
                 if (0 <= value - 1 && value - 1 < original.Count)
                 {
                     var result = Pages.ToList().FindIndex(a => a.Content == original[value - 1].Content);
@@ -308,17 +315,26 @@ namespace BookViewerApp.ViewModels
 
         public int PageSelectedVisual
         {
-            get { return Reversed ? Math.Max(PagesCount - PageSelected - 1, 0) : _PageSelected; }
+            get { return Reversed ? Math.Max(Pages.Count - PageSelected - 1, 0) : _PageSelected; }
             set
             {
-                PageSelected = Reversed ? PagesCount - value - 1 : value;
+                PageSelected = Reversed ? Pages.Count - value - 1 : value;
             }
         }
+
+        public int PagesCount { get { return PagesOriginal.Count(); } }
+
+        public double ReadRate
+        {
+            get { return Math.Min((double)PageSelectedDisplay / PagesOriginal.Count(), 1.0); }
+            set { PageSelectedDisplay = (int)Math.Clamp( Math.Round(value * PagesOriginal.Count()),1, PagesOriginal.Count()); OnPropertyChanged(nameof(ReadRate)); }
+        }
+
 
         public ObservableCollection<PageViewModel> Pages
         {
             get { return _Pages; }
-            set { _Pages = value; OnPropertyChanged(nameof(Pages)); PageSelected = 0; OnPropertyChanged(nameof(PagesCount)); OnPropertyChanged(nameof(ReadRate)); }
+            set { _Pages = value; OnPropertyChanged(nameof(Pages)); PageSelected = 0; }
         }
         private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
 
@@ -330,6 +346,8 @@ namespace BookViewerApp.ViewModels
                 _PagesOriginal = value;
                 Pages = new ObservableCollection<PageViewModel>(value);
                 OnPropertyChanged(nameof(PagesOriginal));
+                OnPropertyChanged(nameof(PagesCount));
+                OnPropertyChanged(nameof(ReadRate));
             }
         }
         IEnumerable<PageViewModel> _PagesOriginal = new PageViewModel[0];
@@ -360,7 +378,11 @@ namespace BookViewerApp.ViewModels
                 count++;
             }
             while (Pages.Last() != PagesOriginal.Last() && !pagesToInclude.Contains(Pages.Last())) Pages.RemoveAt(Pages.Count - 1);
-            if (currentPage is PageViewModel page) this._PageSelected = Pages.IndexOf(page);
+            if (currentPage is PageViewModel page)
+            {
+                int index = Pages.IndexOf(page);
+                if (index != -1) this._PageSelected = index;
+            }
 #if DEBUG
             System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToInclude.Count() > 0 || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
 #endif
@@ -373,6 +395,14 @@ namespace BookViewerApp.ViewModels
         {
             //ja:直接呼ばれると落ちたりするのでprivateにしました。
             //en:Calling this may crash the application, so this is private.
+
+            void CommandCanExecuteUpdate()
+            {
+                (PageVisualAddCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
+                (PageVisualSetCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
+                (PageVisualMaxCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
+            }
+
             switch (this.SpreadMode)
             {
                 case SpreadPagePanel.ModeEnum.Spread:
@@ -393,6 +423,7 @@ namespace BookViewerApp.ViewModels
                             if (pageOverridePrevious && page >= 1 && item == pagesList[page - 1]) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
                             else if (item.SpreadModeOverride != SpreadPagePanel.ModeOverrideEnum.Default) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
                         }
+                        CommandCanExecuteUpdate();
                     }
                     break;
                 case SpreadPagePanel.ModeEnum.Single:
@@ -417,13 +448,17 @@ namespace BookViewerApp.ViewModels
                             {
                                 included.Add(Pages[pageCurrent - 1]);
                             }
-                            this._PageSelected = Pages.IndexOf(pageView);
+                            {
+                                int index = Pages.IndexOf(pageView);
+                                if (index != -1) this._PageSelected = index;
+                            }
                         }
 
                         switch (pageView.SpreadDisplayedStatus)
                         {
                             case SpreadPagePanel.DisplayedStatusEnum.Single:
                                 RestorePages(null, included.ToArray());
+                                CommandCanExecuteUpdate();
                                 return;
                             case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
                                 RestorePages(null, included.ToArray());
@@ -431,11 +466,12 @@ namespace BookViewerApp.ViewModels
                                     var cloned = pageView.CloneBasic();
                                     cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
                                     Pages.Insert(this._PageSelected + 1, cloned);
-
                                 }
+                                CommandCanExecuteUpdate();
                                 break;
                             case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
                                 RestorePages(null, new PageViewModel[] { pageView });
+                                CommandCanExecuteUpdate();
                                 return;
                             case SpreadPagePanel.DisplayedStatusEnum.Spread:
                             default:
@@ -449,19 +485,12 @@ namespace BookViewerApp.ViewModels
                         Pages
                             .Where(a => a.SpreadModeOverride != SpreadPagePanel.ModeOverrideEnum.Default)
                             .ToList().ForEach(a => a.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default);
+                        CommandCanExecuteUpdate();
                     }
                     return;
                 default:
                     return;
             }
-        }
-
-        public int PagesCount { get { return _Pages.Count; } }
-
-        public double ReadRate
-        {
-            get { return Math.Min((double)PageSelectedDisplay / Pages.Count(), 1.0); }
-            set { PageSelectedDisplay = (int)(value * Pages.Count()); OnPropertyChanged(nameof(ReadRate)); }
         }
 
         public string CurrentBookmarkName
@@ -536,7 +565,7 @@ namespace BookViewerApp.ViewModels
 
         public bool PageWithinRange(int page)
         {
-            return this.PagesCount > page && page >= 0;
+            return this.Pages.Count > page && page >= 0;
         }
 
         public void DisposeBasic()
