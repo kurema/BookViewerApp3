@@ -344,7 +344,7 @@ namespace BookViewerApp.ViewModels
             {
                 if (pagesToInclude?.Contains(item) == true) continue;
                 while (Pages.Count > count && pagesToInclude?.Contains(Pages[count]) == true) count++;
-
+                //while (Pages.Count > count && Pages[count].SpreadModeOverride == SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond) Pages.RemoveAt(count);
                 if (Pages.Count > count)
                 {
                     if (pagesToExclude?.Contains(Pages[count]) == true) Pages.RemoveAt(count);
@@ -359,6 +359,7 @@ namespace BookViewerApp.ViewModels
                 else if (Pages[count] != item) Pages.Insert(count, item);
                 count++;
             }
+            while (Pages.Last() != PagesOriginal.Last() && !pagesToInclude.Contains(Pages.Last())) Pages.RemoveAt(Pages.Count - 1);
             if (currentPage is PageViewModel page) this._PageSelected = Pages.IndexOf(page);
 #if DEBUG
             System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToInclude.Count() > 0 || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
@@ -400,9 +401,10 @@ namespace BookViewerApp.ViewModels
                         var pagesList = PagesOriginal.ToList();
                         var included = new List<PageViewModel>();
                         int pageOrig = pagesList.IndexOf(pageView);
-                        if (pageOrig >= 1 && pagesList[pageOrig - 1].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.HalfFirst)
+                        if (pageView.SpreadDisplayedStatus != SpreadPagePanel.DisplayedStatusEnum.HalfSecond &&
+                            pageOrig >= 1 && pagesList[pageOrig - 1].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.HalfFirst)
                         {
-                            int pageCurrent = Pages.IndexOf(pagesList[pageOrig]);
+                            int pageCurrent = Pages.IndexOf(pageView);
                             int pagePrev = Pages.IndexOf(pagesList[pageOrig - 1]);
                             if (pagePrev != -1 && pageCurrent - pagePrev == 1)
                             {
@@ -429,6 +431,7 @@ namespace BookViewerApp.ViewModels
                                     var cloned = pageView.CloneBasic();
                                     cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
                                     Pages.Insert(this._PageSelected + 1, cloned);
+
                                 }
                                 break;
                             case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:

@@ -139,7 +139,6 @@ namespace BookViewerApp.Views
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-
             void UpdateSource(Image imageArg, ImageSource source)
             {
                 if (imageArg.Source != source) imageArg.Source = source;
