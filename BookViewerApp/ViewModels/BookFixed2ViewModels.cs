@@ -67,7 +67,7 @@ namespace BookViewerApp.ViewModels
         private bool _IsControlPinned = false;
 
 
-        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Single;
+        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
@@ -139,7 +139,7 @@ namespace BookViewerApp.ViewModels
             Password = null;
             if (value is Books.IPasswordPdovider pp && pp.PasswordRemember) Password = pp.Password;
             this.PagesOriginal = pages;
-            BookInfo = await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
+            BookInfo = value.ID == null ? null : await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
             var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
             this.PageSelectedDisplay = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
             {

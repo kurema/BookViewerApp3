@@ -8,6 +8,7 @@ using System.IO;
 
 using BookViewerApp.Helper;
 
+#nullable enable
 namespace BookViewerApp.Storages
 {
     public class BookInfoStorage
@@ -49,7 +50,7 @@ namespace BookViewerApp.Storages
             return infoRoaming.ToArray();
         }
 
-        private static async Task<BookInfo[]> LoadAsyncOne(Windows.Storage.StorageFile file,System.Threading.SemaphoreSlim sem)
+        private static async Task<BookInfo[]?> LoadAsyncOne(Windows.Storage.StorageFile file,System.Threading.SemaphoreSlim sem)
         {
             if (file == null) return null;
 
@@ -135,7 +136,7 @@ namespace BookViewerApp.Storages
             }
         }
 
-        private static List<BookInfo> BookInfosCache;
+        private static List<BookInfo>? BookInfosCache;
 
         public static async Task<List<BookInfo>> GetBookInfoAsync()
         {
@@ -143,7 +144,7 @@ namespace BookViewerApp.Storages
             return BookInfosCache;
         }
 
-        public static List<BookInfo> GetBookInfo()
+        public static List<BookInfo>? GetBookInfo()
         {
             return BookInfosCache;
         }
@@ -158,7 +159,7 @@ namespace BookViewerApp.Storages
             return book;
         }
 
-        public static BookInfo GetBookInfoByIDOrCreate(string id)
+        public static BookInfo? GetBookInfoByIDOrCreate(string id)
         {
             var bis = GetBookInfo();
             if (bis == null) return null;
@@ -173,7 +174,7 @@ namespace BookViewerApp.Storages
             return book;
         }
 
-        public static async Task<BookInfo> GetBookInfoByIDAsync(string id)
+        public static async Task<BookInfo?> GetBookInfoByIDAsync(string id)
         {
             var bis = (await GetBookInfoAsync());
             foreach (var item in bis)
@@ -194,7 +195,7 @@ namespace BookViewerApp.Storages
             public double ReadTimeSpan;
             public Books.Direction PageDirection = Books.Direction.Default;
 
-            public string Password;
+            public string? Password;
 
             public BookInfo()
             {

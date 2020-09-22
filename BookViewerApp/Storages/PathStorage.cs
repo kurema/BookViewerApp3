@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using BookViewerApp.Helper;
 using BookViewerApp.Storages.Library;
 
+#nullable enable
 namespace BookViewerApp.Storages
 {
     public static class PathStorage
@@ -48,8 +49,11 @@ namespace BookViewerApp.Storages
 
         public class PathInfo
         {
-            public PathInfo()
+            protected PathInfo()
             {
+                Salt = "";
+                ID = "";
+                PathEncoded = "";
             }
 
             public static PathInfo GetEncoded(string path, string id)
