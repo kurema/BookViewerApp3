@@ -210,3 +210,6 @@ project.lock.json
 acad.err
 *.dwl
 *.dwl2
+
+/res/Error reports/
+

@@ -11,13 +11,14 @@ using BookViewerApp.Helper;
 using kurema.FileExplorerControl.Models.FileItems;
 using kurema.FileExplorerControl.Models;
 
+#nullable enable
 namespace BookViewerApp.Storages
 {
     public static class LibraryStorage
     {
         public static StorageContent<Library.library> Content = new StorageContent<Library.library>(StorageContent<Library.library>.SavePlaces.Local, "Library.xml", () => new Library.library());
 
-        public static event Windows.Foundation.TypedEventHandler<object, LibraryKind> LibraryUpdateRequest;
+        public static event Windows.Foundation.TypedEventHandler<object?, LibraryKind>? LibraryUpdateRequest;
         public static void OnLibraryUpdateRequest(LibraryKind kind) => LibraryUpdateRequest?.Invoke(null, kind);
 
         public static StorageContent<Library.bookmarks_library> LocalBookmark = new StorageContent<Library.bookmarks_library>(StorageContent<Library.bookmarks_library>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
@@ -37,12 +38,12 @@ namespace BookViewerApp.Storages
             {
                 var library = await Content.GetContentAsync();
                 if (library?.libraries == null) return Array.Empty<IFileItem>();
-                return (await Task.WhenAll(library.libraries.Select(async a =>
-                {
-                    var result = await a?.AsFileItem();
-                    result.MenuCommandsProvider = UIHelper.ContextMenus.GetMenuLibrary(a);
-                    return result;
-                })))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
+                return (await Task.WhenAll(library.libraries.Where(a => a != null).Select(async a =>
+                    {
+                        var result = await a.AsFileItem();
+                        result.MenuCommandsProvider = UIHelper.ContextMenus.GetMenuLibrary(a);
+                        return result;
+                    })))?.Where(a => a != null)?.ToArray() ?? Array.Empty<IFileItem>();
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
@@ -53,7 +54,7 @@ namespace BookViewerApp.Storages
             };
         }
 
-        public static ContainerDelegateItem GetItemHistoryMRU(System.Windows.Input.ICommand PathRequestCommand)
+        public static ContainerDelegateItem? GetItemHistoryMRU(System.Windows.Input.ICommand PathRequestCommand)
         {
             if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", (_) =>
@@ -82,7 +83,7 @@ namespace BookViewerApp.Storages
         }
 
         [Obsolete]
-        public static ContainerDelegateItem GetItemHistory(System.Windows.Input.ICommand PathRequestCommand)
+        public static ContainerDelegateItem? GetItemHistory(System.Windows.Input.ICommand PathRequestCommand)
         {
             if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", async (_) =>
@@ -155,7 +156,7 @@ namespace BookViewerApp.Storages
                         case StorageBookmarkContainer item1:
                             item1.ActionDelete = () =>
                             {
-                                if (library.bookmarks != null) library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item1.Content)?.ToArray();
+                                if (library?.bookmarks != null) library.bookmarks.Items = Functions.GetArrayRemoved(library.bookmarks.Items, item1.Content)?.ToArray();
                                 if (bookmark_roaming != null) bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item1.Content)?.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
@@ -215,11 +216,8 @@ namespace BookViewerApp.Storages
 
             result.Add(itemFolder);
             result.Add(itemLibrary);
-            result.Add(itemHistory);
+            if(itemHistory!=null) result.Add(itemHistory);
             result.Add(itemBookmark);
-
-            foreach (var item in result.ToArray()) { if (item == null) result.Remove(item); }
-
 
             Managers.HistoryManager.Updated += (s, e) =>
             {
@@ -237,6 +235,7 @@ namespace BookViewerApp.Storages
                          await itemFolder.GetChildren();
                          break;
                      case LibraryKind.History:
+                         if (itemHistory == null) break;
                          await itemHistory.GetChildren();
                          var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryStorage.LibraryKind.History);
                          if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
@@ -297,7 +296,7 @@ namespace BookViewerApp.Storages
 
         public static Library.libraryFolder[] GetTokenUsedByFolders(string token) => Content?.Content?.folders.Where(a => a.token == token).ToArray() ?? Array.Empty<Library.libraryFolder>();
 
-        public static async void OperateBookmark(Func<List<object>, Task> action)
+        public static async void OperateBookmark(Func<List<object>?, Task> action)
         {
             var bookmarksRoaming = await RoamingBookmarks.GetContentAsync();
             if (bookmarksRoaming == null)
@@ -313,7 +312,7 @@ namespace BookViewerApp.Storages
             await RoamingBookmarks.SaveAsync();
         }
 
-        public static Dictionary<string, int> GetTokenUsedCount()
+        public static Dictionary<string, int>? GetTokenUsedCount()
         {
             var result = new Dictionary<string, int>();
 
@@ -340,12 +339,12 @@ namespace BookViewerApp.Storages
         }
 
         [Obsolete]
-        public static Dictionary<string, int> GetTokenUsedCountHistory()
+        public static Dictionary<string, int>? GetTokenUsedCountHistory()
         {
             var result = new Dictionary<string, int>();
 
             if (HistoryStorage.Content?.Content == null) return null;
-            foreach (var item in HistoryStorage.Content?.Content)
+            foreach (var item in HistoryStorage.Content.Content)
             {
                 if (result.ContainsKey(item.Token)) result[item.Token]++;
                 else result[item.Token] = 1;
@@ -356,6 +355,7 @@ namespace BookViewerApp.Storages
         public static void GarbageCollectToken()
         {
             var stats = GetTokenUsedCount();
+            if (stats == null) return;
 #pragma warning disable CS0612 // 型またはメンバーが旧型式です
             var stats2 = GetTokenUsedCountHistory();
 #pragma warning restore CS0612 // 型またはメンバーが旧型式です
@@ -371,7 +371,7 @@ namespace BookViewerApp.Storages
             }
         }
     }
-
+#nullable disable
     namespace Library
     {
         [Serializable()]

@@ -67,7 +67,7 @@ namespace BookViewerApp.ViewModels
         private bool _IsControlPinned = false;
 
 
-        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
+        private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Single;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
@@ -327,7 +327,7 @@ namespace BookViewerApp.ViewModels
         public double ReadRate
         {
             get { return Math.Min((double)PageSelectedDisplay / PagesOriginal.Count(), 1.0); }
-            set { PageSelectedDisplay = (int)Math.Clamp( Math.Round(value * PagesOriginal.Count()),1, PagesOriginal.Count()); OnPropertyChanged(nameof(ReadRate)); }
+            set { PageSelectedDisplay = (int)Math.Clamp(Math.Round(value * PagesOriginal.Count()), 1, PagesOriginal.Count()); OnPropertyChanged(nameof(ReadRate)); }
         }
 
 
@@ -429,56 +429,47 @@ namespace BookViewerApp.ViewModels
                 case SpreadPagePanel.ModeEnum.Single:
                     {
                         if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
-                        var pagesList = PagesOriginal.ToList();
-                        var included = new List<PageViewModel>();
-                        int pageOrig = pagesList.IndexOf(pageView);
-                        if (pageView.SpreadDisplayedStatus != SpreadPagePanel.DisplayedStatusEnum.HalfSecond &&
-                            pageOrig >= 1 && pagesList[pageOrig - 1].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.HalfFirst)
+                        int lastIndex = -1;
+                        foreach (var item in PagesOriginal)
                         {
-                            int pageCurrent = Pages.IndexOf(pageView);
-                            int pagePrev = Pages.IndexOf(pagesList[pageOrig - 1]);
-                            if (pagePrev != -1 && pageCurrent - pagePrev == 1)
-                            {
-                                var cloned = pagesList[pageOrig - 1].CloneBasic();
-                                cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
-                                Pages.Insert(pageCurrent, cloned);
-                                included.Add(cloned);
-                            }
-                            else if (pagePrev != -1 && pageCurrent - pagePrev == 2 && pageCurrent >= 1)
-                            {
-                                included.Add(Pages[pageCurrent - 1]);
-                            }
-                            {
-                                int index = Pages.IndexOf(pageView);
-                                if (index != -1) this._PageSelected = index;
-                            }
-                        }
+                            var index = Pages.IndexOf(item);
+                            var nextItem = index >= 0 && index + 1 < Pages.Count ? Pages[index + 1] : null;
+                            if (index == -1) Pages.Insert(lastIndex = index = lastIndex + 1, item);
+                            else lastIndex = index;
+                            bool nextHalfSecond = nextItem?.Content == item.Content && nextItem?.SpreadModeOverride == SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
 
-                        switch (pageView.SpreadDisplayedStatus)
-                        {
-                            case SpreadPagePanel.DisplayedStatusEnum.Single:
-                                RestorePages(null, included.ToArray());
-                                CommandCanExecuteUpdate();
-                                return;
-                            case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
-                                RestorePages(null, included.ToArray());
-                                {
-                                    var cloned = pageView.CloneBasic();
-                                    cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
-                                    Pages.Insert(this._PageSelected + 1, cloned);
-                                }
-                                CommandCanExecuteUpdate();
-                                break;
-                            case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
-                                RestorePages(null, new PageViewModel[] { pageView });
-                                CommandCanExecuteUpdate();
-                                return;
-                            case SpreadPagePanel.DisplayedStatusEnum.Spread:
-                            default:
-                                return;
+                            switch (item.SpreadDisplayedStatus)
+                            {
+                                case SpreadPagePanel.DisplayedStatusEnum.Single:
+                                    if (nextHalfSecond)
+                                    {
+                                        Pages.RemoveAt(index + 1);
+                                    }
+                                    break;
+                                case SpreadPagePanel.DisplayedStatusEnum.HalfFirst:
+                                    if (!nextHalfSecond)
+                                    {
+                                        var cloned = item.CloneBasic();
+                                        cloned.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceHalfSecond;
+                                        Pages.Insert(index + 1, cloned);
+                                    }
+                                    lastIndex++;
+                                    break;
+                                case SpreadPagePanel.DisplayedStatusEnum.Spread:
+                                case SpreadPagePanel.DisplayedStatusEnum.HalfSecond:
+                                default:
+#if DEBUG
+                                    System.Diagnostics.Debug.Fail("This should not happend");
+#endif
+                                    break;
+                            }
                         }
+                        {
+                            int index = Pages.IndexOf(pageView);
+                            if (index != -1) this._PageSelected = index;
+                        }
+                        break;
                     }
-                    break;
                 case SpreadPagePanel.ModeEnum.Default:
                     {
                         RestorePages();
