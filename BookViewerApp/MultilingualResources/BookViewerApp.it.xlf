@@ -739,23 +739,23 @@ Ti auguro buona fortuna.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Description" translate="yes" xml:space="preserve">
           <source>Select page layout.</source>
-          <target state="new">Select page layout.</target>
+          <target state="translated">Seleziona il layout della pagina.</target>
         </trans-unit>
-        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Default" translate="yes" xml:space="preserve">
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Default.Title" translate="yes" xml:space="preserve">
           <source>Default</source>
-          <target state="new">Default</target>
+          <target state="translated">Layout predefinito</target>
         </trans-unit>
-        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Single" translate="yes" xml:space="preserve">
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" translate="yes" xml:space="preserve">
           <source>Auto single page</source>
-          <target state="new">Auto single page</target>
+          <target state="translated">Pagina singola automatica</target>
         </trans-unit>
-        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread" translate="yes" xml:space="preserve">
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto switch single/dual page</source>
-          <target state="new">Auto switch single/dual page</target>
+          <target state="translated">Commutazione automatica pagina singola / doppia</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>
-          <target state="new">Page layout</target>
+          <target state="translated">Layout di pagina</target>
         </trans-unit>
       </group>
     </body>

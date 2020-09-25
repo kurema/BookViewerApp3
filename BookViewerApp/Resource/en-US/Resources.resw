@@ -650,13 +650,13 @@ I wish you good luck.</value>
   <data name="Setting_DefaultSpreadType.Description" xml:space="preserve">
     <value>Select page layout.</value>
   </data>
-  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Default" xml:space="preserve">
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Default.Title" xml:space="preserve">
     <value>Default</value>
   </data>
-  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single" xml:space="preserve">
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
     <value>Auto single page</value>
   </data>
-  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread" xml:space="preserve">
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
     <value>Auto switch single/dual page</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">

@@ -711,8 +711,7 @@ I wish you good luck.</source>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerType.Title" translate="yes" xml:space="preserve">
           <source>Epub display engine</source>
-          <target state="needs-review-translation">Epub表示エンジン</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Epub表示エンジン</target>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" translate="yes" xml:space="preserve">
           <source>Bibi</source>
@@ -724,23 +723,23 @@ I wish you good luck.</source>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Description" translate="yes" xml:space="preserve">
           <source>Select page layout.</source>
-          <target state="new">Select page layout.</target>
+          <target state="translated">ページの見開き設定。</target>
         </trans-unit>
-        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Default" translate="yes" xml:space="preserve">
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Default.Title" translate="yes" xml:space="preserve">
           <source>Default</source>
-          <target state="new">Default</target>
+          <target state="translated">デフォルト</target>
         </trans-unit>
-        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Single" translate="yes" xml:space="preserve">
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" translate="yes" xml:space="preserve">
           <source>Auto single page</source>
-          <target state="new">Auto single page</target>
+          <target state="translated">自動単ページ</target>
         </trans-unit>
-        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread" translate="yes" xml:space="preserve">
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto switch single/dual page</source>
-          <target state="new">Auto switch single/dual page</target>
+          <target state="translated">自動見開き</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>
-          <target state="new">Page layout</target>
+          <target state="translated">ページレイアウト</target>
         </trans-unit>
       </group>
     </body>

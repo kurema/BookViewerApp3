@@ -542,4 +542,19 @@
   <data name="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" xml:space="preserve">
     <value>Epub.js Reader</value>
   </data>
+  <data name="Setting_DefaultSpreadType.Description" xml:space="preserve">
+    <value>选择页面布局。</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Default.Title" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
+    <value>自动单页</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
+    <value>自动切换单/双页</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
+    <value>页面布局</value>
+  </data>
 </root>
