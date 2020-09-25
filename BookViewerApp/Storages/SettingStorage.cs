@@ -51,7 +51,7 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ShowHistories",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("MaximumHistoryCount",100,new TypeConverters.IntConverter(),group:"Explorer",isVisible:false){Minimum = 0,Maximum = 500},//MRUで履歴を管理するようにしたので非表示にしました。
                         new SettingInstance("EpubViewerType",SettingEnums.EpubViewerType.Bibi, new TypeConverters.EnumConverter<SettingEnums.EpubViewerType>(),group:"Viewer"),
-
+                        new SettingInstance("DefaultSpreadType",Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
                     };
             }
         }

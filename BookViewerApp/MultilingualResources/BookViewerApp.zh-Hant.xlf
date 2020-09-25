@@ -720,6 +720,26 @@ I wish you good luck.</source>
           <source>Epub.js Reader</source>
           <target state="translated">Epub.js Reader</target>
         </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Description" translate="yes" xml:space="preserve">
+          <source>Select page layout.</source>
+          <target state="new">Select page layout.</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Default" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="new">Default</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Single" translate="yes" xml:space="preserve">
+          <source>Auto single page</source>
+          <target state="new">Auto single page</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread" translate="yes" xml:space="preserve">
+          <source>Auto switch single/dual page</source>
+          <target state="new">Auto switch single/dual page</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
+          <source>Page layout</source>
+          <target state="new">Page layout</target>
+        </trans-unit>
       </group>
     </body>
   </file>

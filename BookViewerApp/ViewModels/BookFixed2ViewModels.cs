@@ -141,6 +141,7 @@ namespace BookViewerApp.ViewModels
             this.PagesOriginal = pages;
             BookInfo = value.ID == null ? null : await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
             var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
+            if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
             this.PageSelectedDisplay = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
             {
                 switch (BookInfo?.PageDirection)
