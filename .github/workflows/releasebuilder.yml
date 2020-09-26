@@ -57,7 +57,7 @@ jobs:
         
     - name: Decode the Pfx
       run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Pfx_Base64_Encoded }}")
         $currentDirectory = Get-Location
         $certificatePath1 = Join-Path -Path $currentDirectory -ChildPath $env:UWP_Project_Directory -AdditionalChildPath $env:SigningCertificate
         $certificatePath2 = Join-Path -Path $currentDirectory -ChildPath $env:BrowserControl_Project_Directory -AdditionalChildPath $env:SigningCertificate
@@ -67,7 +67,7 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath3", $pfx_cert_byte)
         
     - name: Build the sideload solution
-      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate /restore
+      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate  /p:PackageCertificatePassword=${{ secrets.Pfx_Key }} /restore 
       env:
         AppxBundle: Always
         BuildMode: StoreUpload
