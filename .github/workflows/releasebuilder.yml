@@ -67,7 +67,7 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath3", $pfx_cert_byte)
         
     - name: Build the sideload solution
-      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate  /p:PackageCertificatePassword="${{ secrets.Pfx_Key }}" /restore 
+      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate  /p:PackageCertificatePassword=${{ secrets.Pfx_Key }} /restore 
       env:
         AppxBundle: Always
         BuildMode: StoreUpload
