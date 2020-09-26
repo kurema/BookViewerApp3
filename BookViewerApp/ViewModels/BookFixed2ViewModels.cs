@@ -94,6 +94,7 @@ namespace BookViewerApp.ViewModels
                         //サムネイル作成が失敗しても大した問題はない。
                     }
                 }
+                if (bookf.ID != null)
                 {
                     await PathStorage.Content.GetContentAsync();
                     PathStorage.AddOrReplace(value.Path, bookf.ID);

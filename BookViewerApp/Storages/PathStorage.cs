@@ -16,7 +16,7 @@ namespace BookViewerApp.Storages
     {
         public static StorageContent<PathInfo[]> Content = new StorageContent<PathInfo[]>(StorageContent<PathInfo[]>.SavePlaces.Local, "Paths.xml", () => Array.Empty<PathInfo>());
 
-        public static string GetIdFromPath(string path)
+        public static string? GetIdFromPath(string path)
         {
             var item = Content?.Content?.FirstOrDefault(a => a.MatchPath(path));
             if (item != null) return item.ID;

@@ -237,6 +237,8 @@
     <Content Include="res\reader\font\fontello.woff" />
     <Content Include="res\values\WindowsStoreProxy.xml" Condition="'$(Configuration)' == 'Debug'" />
     <None Include="BookViewerApp_TemporaryKey.pfx" />
+    <None Include="BookViewerApp_TemporaryKey_GitHub.pfx" />
+    <None Include="BookViewerApp_TemporaryKey_GitHub.snk" />
     <None Include="Storages\Licenses.xsd">
       <SubType>Designer</SubType>
     </None>
