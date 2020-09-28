@@ -1,0 +1,25 @@
+name: Discord Message Notify
+
+on:
+  push:
+    tags: 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get tag
+      id: tag
+      uses: dawidd6/action-get-tag@v1
+
+    - name: Discord Message Notify
+      uses: appleboy/discord-action@0.0.3
+      with:
+        webhook_id: ${{ secrets.WEBHOOK_ID }}
+        webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+        color: "#48f442"
+        username: "GitHub Bot"
+        args: |
+          The ${{steps.tag.outputs.tag}} is released.
+          See what's new here!
+          https://github.com/kurema/BookViewerApp3/releases
