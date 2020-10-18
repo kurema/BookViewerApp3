@@ -24,6 +24,7 @@
         <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
         <ValueConverter:BoolToStringConverter x:Key="BoolToStringConverter" />
+        <ValueConverter:EqualZeroConverter x:Key="EqualZeroConverter" />
         <ControlTemplate x:Key="RepeatButtonTemplate1" TargetType="RepeatButton">
             <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BackgroundSizing="{TemplateBinding BackgroundSizing}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" CornerRadius="{TemplateBinding CornerRadius}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
                 <VisualStateManager.VisualStateGroups>
@@ -412,6 +413,39 @@
                                               >
                                     <SymbolIcon Symbol="Home"/>
                                 </AppBarButton>-->
+                                <Button
+                                    Visibility="{Binding ContainerItems.Count,Converter={StaticResource EqualZeroConverter},ConverterParameter=Collapsed:Visible,TargetNullValue=0}"
+                                    Template="{StaticResource ButtonTemplate}"
+                                    Style='{StaticResource ButtonStyle}'                                    >
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ListView ItemsSource="{Binding ContainerItems}" SelectedItem="{Binding FileItem,Mode=OneWay,TargetNullValue=0}" Grid.Row="0" Grid.ColumnSpan="3" SelectionMode="Single"
+                                                          SelectionChanged="ListView_SelectionChanged"
+                                                          >
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Name}"/>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                                <AppBarButton Icon="Previous" Grid.Column="0" Grid.Row="1"/>
+                                                <AppBarButton Icon="Next" Grid.Column="2" Grid.Row="1"/>
+                                            </Grid>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                    <SymbolIcon Symbol="Folder"/>
+                                </Button>
+
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Center" x:Name="BookReaderControlsCommandBar_Main_StackPanel"  Grid.Column="1" Margin="0,0" Style="{StaticResource StackPanelStyle}" >
                                 <Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" Command="{Binding PageVisualSetCommand}" CommandParameter="0" x:Name="ButtonLeftmost"
@@ -515,7 +549,7 @@
                                                 <RepeatButton Grid.Row="1" Grid.Column="2" Style='{StaticResource RepeatButtonStyle}' Command="{Binding PageSelectedViewModel.MoveCommand}" CommandParameter="-0.1,0" HorizontalAlignment="Center">
                                                     <RepeatButton.KeyboardAccelerators>
                                                         <KeyboardAccelerator Key="D" Modifiers="None"/>
-                                                        <KeyboardAccelerator Key="NumberPad6" Modifiers="None"/>                                                        
+                                                        <KeyboardAccelerator Key="NumberPad6" Modifiers="None"/>
                                                         <!--<KeyboardAccelerator Key="GamepadLeftThumbstickRight" Modifiers="None"/>-->
                                                     </RepeatButton.KeyboardAccelerators>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0AF;"/>

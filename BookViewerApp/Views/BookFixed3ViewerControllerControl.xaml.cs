@@ -141,6 +141,29 @@ namespace BookViewerApp.Views
             }
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!(sender is ListView view)) return;
+            if (e.AddedItems.Count != 1) return;
+            if (!(e.AddedItems[0] is kurema.FileExplorerControl.Models.FileItems.StorageFileItem file)) return;
+
+            BookFixed3Viewer parent = null;
+            FrameworkElement current = this;
+            while (current != null)
+            {
+                if(current.Parent is BookFixed3Viewer viewer)
+                {
+                    parent = viewer;
+                    goto Init;   
+                }
+                current = current.Parent as FrameworkElement;
+            }
+            return;
+
+            Init:
+            Binding.Initialize(file.Content as Windows.Storage.IStorageFile, parent.FlipViewControl);
+        }
+
         //private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         //{
         //    if (Binding?.PageSelectedViewModel != null)

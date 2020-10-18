@@ -98,6 +98,7 @@ namespace BookViewerApp.Views
 
         private void Open(Windows.Storage.IStorageFile file)
         {
+            Binding?.UpdateContainerInfo(file);
             Binding?.Initialize(file, this.flipView);
         }
 

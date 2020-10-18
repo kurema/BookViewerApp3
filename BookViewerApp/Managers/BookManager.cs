@@ -157,8 +157,15 @@ namespace BookViewerApp.Managers
 
         public static bool IsFileAvailabe(IStorageFile file)
         {
-            return AvailableExtensionsArchive.Contains(Path.GetExtension(file.Path).ToLower());
+            return IsFileAvailabe(file.Path);
         }
+
+        public static bool IsFileAvailabe(string path)
+        {
+            if (path == null) return false;
+            return AvailableExtensionsArchive.Contains(Path.GetExtension(path).ToLower());
+        }
+
 
         public static void StorageItemUnregister(string token)
         {

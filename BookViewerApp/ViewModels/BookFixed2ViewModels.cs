@@ -45,26 +45,12 @@ namespace BookViewerApp.ViewModels
         private ICommand? _ToggleFullScreenCommand;
         private ICommand? _GoToHomeCommand;
 
-
-        private kurema.FileExplorerControl.Models.FileItems.IFileItem? _Container;
-        public kurema.FileExplorerControl.Models.FileItems.IFileItem? Container { get => _Container; set
-            {
-                if (_Container == value) return;
-                if (value?.IsFolder != true)
-                {
-#if DEBUG
-                    System.Diagnostics.Debug.WriteLine($"{nameof(Container)} should be folder!");
-#endif
-                    return;
-                }
-                _Container = value;
-                OnPropertyChanged(nameof(Container));
-            }
-        }
-
+        public ObservableCollection<kurema.FileExplorerControl.Models.FileItems.IFileItem> ContainerItems { get; } = new ObservableCollection<kurema.FileExplorerControl.Models.FileItems.IFileItem>();
 
         private kurema.FileExplorerControl.Models.FileItems.IFileItem? _FileItem;
-        public kurema.FileExplorerControl.Models.FileItems.IFileItem? FileItem { get => _FileItem; set
+        public kurema.FileExplorerControl.Models.FileItems.IFileItem? FileItem
+        {
+            get => _FileItem; set
             {
                 if (_FileItem == value) return;
                 if (value?.IsFolder == true)
@@ -104,17 +90,31 @@ namespace BookViewerApp.ViewModels
         private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
         public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
 
+        public async Task UpdateContainerInfo(Windows.Storage.IStorageFile value)
+        {
+            if (value == null) return;
+
+            ContainerItems.Clear();
+            var parent = await (value as Windows.Storage.StorageFile)?.GetParentAsync();
+            if (parent == null)
+            {
+                FileItem = new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
+                return;
+            }
+            var children = (await new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(parent).GetChildren()).Where(a => BookManager.IsFileAvailabe(a.Path));
+            foreach (var item in children)
+            {
+                ContainerItems.Add(item);
+            }
+            FileItem = ContainerItems.FirstOrDefault(a => (a as kurema.FileExplorerControl.Models.FileItems.StorageFileItem)?.Content.Path == value.Path) ??
+                new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
+        }
+
         public async void Initialize(Windows.Storage.IStorageFile value, Control? target = null)
         {
             this.Loading = true;
 
             if (value == null) return;
-
-            {
-                this.FileItem = new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
-                var parent = await (value as Windows.Storage.StorageFile)?.GetParentAsync();
-                if (parent != null) this.Container = new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(parent);
-            }
 
             var book = (await BookManager.GetBookFromFile(value));
             if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
@@ -916,7 +916,7 @@ namespace BookViewerApp.ViewModels
     public class TocEntryViewModes : INotifyPropertyChanged
     {
 
-#region INotifyPropertyChanged
+        #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
             Action? onChanged = null)
@@ -934,7 +934,7 @@ namespace BookViewerApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
-#endregion
+        #endregion
 
 
         private string _Title = "";

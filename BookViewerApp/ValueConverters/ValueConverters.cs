@@ -105,6 +105,28 @@ namespace BookViewerApp.ValueConverters
         }
     }
 
+    public sealed class EqualZeroConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string[] text = parameter?.ToString()?.Split(':') ?? new string[0];
+            if (text.Length < 2) return "";
+            if(double.TryParse(value?.ToString(),out double result) && result == 0)
+            {
+                return text[0];
+            }
+            else
+            {
+                return text[1];
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public sealed class BoolToDoubleValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

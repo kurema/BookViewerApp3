@@ -33,6 +33,8 @@ namespace BookViewerApp.Views
     {
         private ViewModels.BookViewModel Binding => (BookViewModel)this.DataContext;
 
+        public FlipView FlipViewControl => this.flipView;
+
         public BookFixed3Viewer()
         {
             this.InitializeComponent();
@@ -88,27 +90,6 @@ namespace BookViewerApp.Views
                 {
                     Binding?.UpdatePages(this.Dispatcher);
                 }
-
-                //ToDo:見開き対応。
-                //
-                //1. 以前選択されていたページのイベントを取り消す。
-                //2. 全ページリストアする？
-                //3. 選択中のページの見開き状態から次ページを表示するか切り替える。
-                //4. 選択中のページの見開き状態の変化イベントを登録する。
-                //5. 前のページの見開き状態が、
-                // a) 1ページなら何もしない。
-                // b) 半ページなら前に半ページ後半を挿入する。
-                // c) 2ページかつ2ページ前の見開き状態が2ページなら前ページを削除する。
-                // d) 2ページかつ2ページ前の見開き状態が1ページなら前ページを強制1ページ表示にする。
-                //6. 前ページの見開き状態の変化イベントを登録する。
-                //うわしんど。
-
-                //改正版
-                //1. 開かれているページで実行
-                //2. 全ページリストア
-                //3. 選択中の次のページだけ操作する。
-                //おわり。
-                //まだマシだね。
 
             };
         }
@@ -275,6 +256,7 @@ namespace BookViewerApp.Views
 
         private void Open(Windows.Storage.IStorageFile file)
         {
+            Binding?.UpdateContainerInfo(file);
             Binding?.Initialize(file, this.flipView);
         }
 
@@ -317,6 +299,7 @@ namespace BookViewerApp.Views
                 }
                 else
                 {
+                    Binding?.UpdateContainerInfo(file);
                     Binding?.Initialize(file, this.flipView);
                 }
             }
