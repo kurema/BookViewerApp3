@@ -25,10 +25,10 @@ namespace BookViewerApp.Books
 
     public interface IPageFixed
     {
-        IPageOptions? Option { get; set; }
+        //IPageOptions? Option { get; set; }
         //Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
-        Task SetBitmapAsync(BitmapImage image);
-        Task<bool> UpdateRequiredAsync();
+        Task SetBitmapAsync(BitmapImage image, double width, double height);
+        Task<bool> UpdateRequiredAsync(double width, double height);
         Task SaveImageAsync(StorageFile file, uint width);
     }
 
@@ -116,12 +116,12 @@ namespace BookViewerApp.Books
 
         private IPageFixed? PageCache = null;
 
-        public IPageOptions? Option
-        {
-            get { if (PageCache == null) return _Option; else return PageCache.Option; }
-            set { if (PageCache == null) _Option = value; else { PageCache.Option = Option; this._Option = value; } }
-        }
-        private IPageOptions? _Option = new PageOptions();
+        //public IPageOptions? Option
+        //{
+        //    get { if (PageCache == null || !(PageCache is PdfPage pdf)) return _Option; else return pdf.Option; }
+        //    set { if (PageCache == null || !(PageCache is PdfPage pdf)) _Option = value; else { pdf.Option = Option; this._Option = value; } }
+        //}
+        //private IPageOptions? _Option = new PageOptions();
 
         public VirtualPage(Func<IPageFixed> accessor)
         {
@@ -131,7 +131,12 @@ namespace BookViewerApp.Books
         public async Task<IPageFixed> GetPage()
         {
             if (PageCache == null)
-                return await Task.Run(() => { PageCache = accessor(); PageCache.Option = this.Option; return PageCache; });
+                return await Task.Run(() =>
+                {
+                    PageCache = accessor();
+                    //PageCache.Option = this.Option;
+                    return PageCache;
+                });
             else
                 return PageCache;
         }
@@ -142,9 +147,9 @@ namespace BookViewerApp.Books
         //    return await body.GetBitmapAsync();
         //}
 
-        public async Task<bool> UpdateRequiredAsync()
+        public async Task<bool> UpdateRequiredAsync(double width, double height)
         {
-            return await (await GetPage()).UpdateRequiredAsync();
+            return await (await GetPage()).UpdateRequiredAsync(width,height);
         }
 
         public async Task SaveImageAsync(StorageFile file, uint width)
@@ -152,10 +157,10 @@ namespace BookViewerApp.Books
             await (await GetPage()).SaveImageAsync(file, width);
         }
 
-        public async Task SetBitmapAsync(BitmapImage image)
+        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
         {
             var body = await GetPage();
-            await body.SetBitmapAsync(image);
+            await body.SetBitmapAsync(image, width, height);
         }
 
         public void DisposeBasic()

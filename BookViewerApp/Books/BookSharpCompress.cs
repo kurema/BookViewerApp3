@@ -185,15 +185,15 @@ namespace BookViewerApp.Books
         }
 
 
-        public async Task SetBitmapAsync(BitmapImage image)
+        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
         {
             var stream = await Cache.GetMemoryStreamByProviderAsync();
             if (stream == null) return;
-            Task? task = new ImagePageStream(stream.AsRandomAccessStream())?.SetBitmapAsync(image);
+            Task? task = new ImagePageStream(stream.AsRandomAccessStream())?.SetBitmapAsync(image, width, height);
             if (task != null) await task;
         }
 
-        public Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync(double width, double height)
         {
             return Task.FromResult(false);
         }

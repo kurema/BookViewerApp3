@@ -172,7 +172,7 @@ namespace BookViewerApp.ViewModels
                 {
                     var p = value.GetPage(page);
                     if (p == null) throw new ArgumentOutOfRangeException();
-                    p.Option = option;
+                    //if (p is Books.PdfPage pdf) pdf.Option = option;// Is this OK?
                     return p;
                 }), this));
                 if (i > 0) pages[(int)i - 1].NextPage = pages[(int)i];
@@ -753,14 +753,14 @@ namespace BookViewerApp.ViewModels
 
         private float _ZoomFactor = 1.0f;
 
-        public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token, System.Threading.SemaphoreSlim Semaphore)
+        public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token, System.Threading.SemaphoreSlim Semaphore, double width, double height)
         {
             if (im == null) return;
             await Semaphore.WaitAsync();
             try
             {
                 token.ThrowIfCancellationRequested();
-                await Content.SetBitmapAsync(im);
+                await Content.SetBitmapAsync(im, width, height);
             }
             catch
             {

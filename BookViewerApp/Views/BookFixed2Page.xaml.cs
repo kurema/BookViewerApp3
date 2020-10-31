@@ -137,16 +137,16 @@ namespace BookViewerApp.Views
             spreadPanel.Width = this.ActualWidth;
             spreadPanel.Height = this.ActualHeight;
 
-            if (await (DataContext as PageViewModel)?.Content?.UpdateRequiredAsync() == true)
+            if (await (DataContext as PageViewModel)?.Content?.UpdateRequiredAsync(this.ActualWidth, this.ActualHeight) == true)
             {
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
-                    (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1);
+                    (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
                 }
                 if ((this.DataContext as PageViewModel)?.Parent?.SpreadMode == SpreadPagePanel.ModeEnum.Spread || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
-                    (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
+                    (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace BookViewerApp.Views
                         {
                             UpdateCancellationTokenSource(ref CancellationTokenSource2);
                             if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-                            dc.NextPage.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2);
+                            dc.NextPage.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
                         }
                     }
                 }
@@ -185,7 +185,7 @@ namespace BookViewerApp.Views
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
                     //Note: dc.Sourceを使うと複数ページに同じBitmapSourceが適用されるバグがあった。
                     if (!(spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-                    dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1);
+                    dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
                 }
 
                 UpdateSource2();

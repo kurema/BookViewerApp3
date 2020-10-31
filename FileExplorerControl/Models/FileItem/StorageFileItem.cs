@@ -188,7 +188,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             var ext = System.IO.Path.GetExtension(path);
             if (string.IsNullOrEmpty(ext)) return Application.ResourceLoader.Loader.GetString("FileType/NoExtension");
             if (ext.StartsWith('.')) ext = ext.Substring(1);
-            return String.Format(Application.ResourceLoader.Loader.GetString("FileType/General"), ext.ToUpper());
+            return String.Format(Application.ResourceLoader.Loader.GetString("FileType/General"), ext.ToUpperInvariant());
         }
 
         public event EventHandler Updated;

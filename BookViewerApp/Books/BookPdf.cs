@@ -314,43 +314,64 @@ namespace BookViewerApp.Books
     {
         public pdf.PdfPage Content { get; private set; }
 
-        public IPageOptions? Option
-        {
-            get; set;
-        }
-        public IPageOptions? LastOption;
+        //public IPageOptions? Option
+        //{
+        //    get; set;
+        //}
+        //public IPageOptions? LastOption;
+
+        private pdf.PdfPageRenderOptions? LastPdfOption;
 
         public PdfPage(pdf.PdfPage page)
         {
             Content = page;
         }
 
-        public async Task RenderToStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream)
+        public async Task RenderToStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream, double width, double height)
         {
-            if (Option != null)
+            if (width == 0 || height == 0)
             {
-                //Strange code. Maybe fix needed.
-                if (Option is PageOptionsControl)
-                {
-                    LastOption = (PageOptions)(PageOptionsControl)Option;
-                }
-                else { LastOption = Option; }
+                await Content.RenderToStreamAsync(stream);
+                return;
+            }
 
-                var pdfOption = new pdf.PdfPageRenderOptions();
-                if (Option.TargetHeight / Content.Size.Height < Option.TargetWidth / Content.Size.Width)
-                {
-                    pdfOption.DestinationHeight = (uint)Option.TargetHeight * 2;
-                }
-                else
-                {
-                    pdfOption.DestinationWidth = (uint)Option.TargetWidth * 2;
-                }
-                await Content.RenderToStreamAsync(stream, pdfOption);
+            var pdfOption = new pdf.PdfPageRenderOptions();
+            if (height / Content.Size.Height < width / Content.Size.Width)
+            {
+                pdfOption.DestinationHeight = (uint)height * 2;
             }
             else
             {
-                await Content.RenderToStreamAsync(stream);
+                pdfOption.DestinationWidth = (uint)width * 2;
             }
+            LastPdfOption = pdfOption;
+            await Content.RenderToStreamAsync(stream, pdfOption);
+
+
+            //if (Option != null)
+            //{
+            //    //Strange code. Maybe fix needed.
+            //    if (Option is PageOptionsControl)
+            //    {
+            //        LastOption = (PageOptions)(PageOptionsControl)Option;
+            //    }
+            //    else { LastOption = Option; }
+
+            //    var pdfOption = new pdf.PdfPageRenderOptions();
+            //    if (Option.TargetHeight / Content.Size.Height < Option.TargetWidth / Content.Size.Width)
+            //    {
+            //        pdfOption.DestinationHeight = (uint)Option.TargetHeight * 2;
+            //    }
+            //    else
+            //    {
+            //        pdfOption.DestinationWidth = (uint)Option.TargetWidth * 2;
+            //    }
+            //    await Content.RenderToStreamAsync(stream, pdfOption);
+            //}
+            //else
+            //{
+            //    await Content.RenderToStreamAsync(stream);
+            //}
         }
 
         public async Task PreparePageAsync()
@@ -358,19 +379,20 @@ namespace BookViewerApp.Books
             await Content.PreparePageAsync();
         }
 
-        public async Task<BitmapImage> GetBitmapAsync()
-        {
-            var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
-            await RenderToStreamAsync(stream);
-            var result = new BitmapImage();
-            await result.SetSourceAsync(stream);
-            return result;
-        }
+        //public async Task<BitmapImage> GetBitmapAsync()
+        //{
+        //    var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
+        //    await RenderToStreamAsync(stream);
+        //    var result = new BitmapImage();
+        //    await result.SetSourceAsync(stream);
+        //    return result;
+        //}
 
-        public Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync(double width, double height)
         {
-            if (LastOption != null && Option != null && (LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth))
+            //if (LastOption != null && Option != null && (LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth))
             //if (LastOption != null && Option != null)
+            if (LastPdfOption == null || (LastPdfOption.DestinationHeight < height * 1.3 && LastPdfOption.DestinationWidth < width * 1.3))
             { return Task.FromResult(true); }
             else { return Task.FromResult(false); }
         }
@@ -384,10 +406,10 @@ namespace BookViewerApp.Books
             await Functions.SaveStreamToFile(stream, file);
         }
 
-        public async Task SetBitmapAsync(BitmapImage image)
+        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
         {
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
-            await RenderToStreamAsync(stream);
+            await RenderToStreamAsync(stream, width, height);
             await image?.SetSourceAsync(stream);
         }
     }

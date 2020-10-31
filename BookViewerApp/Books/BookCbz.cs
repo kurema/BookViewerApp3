@@ -89,9 +89,9 @@ namespace BookViewerApp.Books
             var files = Content.Entries;
             foreach (var file in files)
             {
-                var s = Path.GetExtension(file.Name).ToLower();
-                var b = supportedFile.Contains(Path.GetExtension(file.Name).ToLower());
-                if (supportedFile.Contains(Path.GetExtension(file.Name).ToLower()))
+                var s = Path.GetExtension(file.Name).ToLowerInvariant();
+                var b = supportedFile.Contains(Path.GetExtension(file.Name).ToLowerInvariant());
+                if (supportedFile.Contains(Path.GetExtension(file.Name).ToLowerInvariant()))
                 {
                     entries.Add(file);
                 }
@@ -145,11 +145,6 @@ namespace BookViewerApp.Books
     {
         private ZipArchiveEntry Content;
 
-        public IPageOptions? Option
-        {
-            get; set;
-        }
-
         public CbzPage(ZipArchiveEntry entry)
         {
             Content = entry;
@@ -173,7 +168,7 @@ namespace BookViewerApp.Books
 
         private Helper.MemoryStreamCache? Cache;
 
-        public Task<bool> UpdateRequiredAsync()
+        public Task<bool> UpdateRequiredAsync(double width, double height)
         {
             return Task.FromResult(false);
         }
@@ -197,12 +192,12 @@ namespace BookViewerApp.Books
             return;
         }
 
-        public async Task SetBitmapAsync(BitmapImage image)
+        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
         {
             if (Cache == null) return;
             try
             {
-                await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).SetBitmapAsync(image);
+                await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).SetBitmapAsync(image, width, height);
             }
             catch
             {
