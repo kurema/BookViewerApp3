@@ -101,7 +101,7 @@ namespace BookViewerApp.ViewModels
                 FileItem = new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
                 return;
             }
-            var children = (await new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(parent).GetChildren()).Where(a => BookManager.IsFileAvailabe(a.Path));
+            var children = (await new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(parent).GetChildren()).Where(a => BookManager.IsFileAvailabe(a.Path) && !BookManager.IsEpub(a.Path));
             foreach (var item in children)
             {
                 ContainerItems.Add(item);

@@ -150,10 +150,12 @@ namespace BookViewerApp.Managers
 
         public static bool IsEpub(IStorageFile file)
         {
-            if (file.FileType.ToLower() == ".epub") { return true; }
+            if (file == null) return false;
+            if (file.FileType.ToLowerInvariant() == ".epub") { return true; }
             return false;
         }
 
+        public static bool IsEpub(string path) => path != null && Path.GetExtension(path).ToLowerInvariant() == ".epub";
 
         public static bool IsFileAvailabe(IStorageFile file)
         {
@@ -163,7 +165,7 @@ namespace BookViewerApp.Managers
         public static bool IsFileAvailabe(string path)
         {
             if (path == null) return false;
-            return AvailableExtensionsArchive.Contains(Path.GetExtension(path).ToLower());
+            return AvailableExtensionsArchive.Contains(Path.GetExtension(path).ToLowerInvariant());
         }
 
 
