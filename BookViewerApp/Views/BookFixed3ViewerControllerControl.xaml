@@ -420,12 +420,12 @@
                                     Style='{StaticResource ButtonStyle}'>
                                     <Button.Flyout>
                                         <Flyout>
-                                            <Flyout.FlyoutPresenterStyle>
+                                            <!--<Flyout.FlyoutPresenterStyle>
                                                 <Style TargetType="FlyoutPresenter">
                                                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                                                 </Style>
-                                            </Flyout.FlyoutPresenterStyle>
-                                            <Grid>
+                                            </Flyout.FlyoutPresenterStyle>-->
+                                            <!--<Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
@@ -449,9 +449,18 @@
                                                         </ListView.ItemTemplate>
                                                     </ListView>
                                                 </ScrollViewer>
-                                                <local:AcrylicButtonControl Margin="0" Icon="Previous" Grid.Column="0" Grid.Row="1" ToolTipService.ToolTip="Not implemented..."/>
-                                                <local:AcrylicButtonControl Margin="0" Icon="Next" Grid.Column="2" Grid.Row="1" ToolTipService.ToolTip="Not implemented..."/>
-                                            </Grid>
+                                                <local:AcrylicButtonControl Margin="0" Icon="Previous" Grid.Column="0" Grid.Row="1" Command="{Binding ShiftBookCommand}" CommandParameter="-1" />
+                                                <local:AcrylicButtonControl Margin="0" Icon="Next" Grid.Column="2" Grid.Row="1"  Command="{Binding ShiftBookCommand}" CommandParameter="1"/>
+                                            </Grid>-->
+                                            <ListView ItemsSource="{Binding ContainerItems}" SelectedItem="{Binding FileItem,Mode=OneWay,TargetNullValue=0}" SelectionMode="Single"
+                                                          SelectionChanged="ListView_SelectionChanged"
+                                                          >
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name}"/>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
                                         </Flyout>
                                     </Button.Flyout>
                                     <SymbolIcon Symbol="Folder"/>
