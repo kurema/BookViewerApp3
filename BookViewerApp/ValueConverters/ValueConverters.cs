@@ -315,4 +315,24 @@ namespace BookViewerApp.ValueConverters
             throw new NotImplementedException();
         }
     }
+
+    public sealed class BoolToAcrylicBackgroundBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is bool b)
+            {
+                return b ?AcrylicBackgroundSource.HostBackdrop : AcrylicBackgroundSource.Backdrop;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -26,6 +26,8 @@
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
         <ValueConverter:BoolToStringConverter x:Key="BoolToStringConverter" />
         <ValueConverter:EqualZeroConverter x:Key="EqualZeroConverter" />
+        <ValueConverter:BoolToAcrylicBackgroundBrushConverter x:Key="BoolToAcrylicBackgroundBrushConverter"/>
+
         <ControlTemplate x:Key="RepeatButtonTemplate1" TargetType="RepeatButton">
             <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BackgroundSizing="{TemplateBinding BackgroundSizing}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" CornerRadius="{TemplateBinding CornerRadius}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
                 <VisualStateManager.VisualStateGroups>
@@ -324,7 +326,7 @@
 
             <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border" >
                 <Border.Background>
-                    <AcrylicBrush BackgroundSource="{Binding IsControlPinned,Converter={StaticResource BoolToStringConverter},ConverterParameter=HostBackdrop:Backdrop}" TintColor="{StaticResource SystemChromeGrayColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2" FallbackColor="{StaticResource SystemChromeMediumColor}" />
+                    <AcrylicBrush BackgroundSource="{Binding IsControlPinned,Converter={StaticResource BoolToAcrylicBackgroundBrushConverter}}" TintColor="{StaticResource SystemChromeGrayColor}" TintOpacity="0.3" Windows10version1903:TintLuminosityOpacity="0.2" FallbackColor="{StaticResource SystemChromeMediumColor}" />
                 </Border.Background>
                 <Border.RenderTransform>
                     <TranslateTransform x:Name="TranslateVertical" X="0" Y="0"/>
