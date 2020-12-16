@@ -41,11 +41,24 @@
         VerticalAlignment="Stretch"
         >
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{Binding ControllerCollapsed,Converter={StaticResource vc_b2s},ConverterParameter=15:Auto}"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border Background="{ThemeResource SystemAltMediumHighColor}" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" BorderThickness="0,0,0,1"/>
-        <Grid>
+        <Grid Visibility="{Binding ControllerCollapsed,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}" HorizontalAlignment="Stretch">
+            <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click_ToggleCollapsed" Width="Auto" Height="Auto" VerticalContentAlignment="Stretch" Padding="0">
+                <Path Fill="{ThemeResource ApplicationForegroundThemeBrush}" Height="10" VerticalAlignment="Stretch" Width="30" Margin="0">
+                    <Path.Data>
+                        <GeometryGroup>
+                            <EllipseGeometry Center="5,5" RadiusX="1.5" RadiusY="1.5" />
+                            <EllipseGeometry Center="15,5" RadiusX="1.5" RadiusY="1.5" />
+                            <EllipseGeometry Center="25,5" RadiusX="1.5" RadiusY="1.5" />
+                        </GeometryGroup>
+                    </Path.Data>
+                </Path>
+            </Button>
+        </Grid>
+        <Grid Visibility="{Binding ControllerCollapsed,Converter={StaticResource vc_b2s},ConverterParameter=Collapsed:Visible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -100,7 +113,7 @@
                                             </DataTemplate>
                                         </winui:TreeView.ItemTemplate>
                                     </winui:TreeView>
-                                    
+
                                     <!--<ListView ItemsSource="{Binding BookmarkAddFolders}" SelectionMode="Single" IsItemClickEnabled="True" x:Name="listViewBookmarksAddFolder">
                                         <ListView.ItemContainerStyle>
                                             <Style TargetType="ListViewItem">

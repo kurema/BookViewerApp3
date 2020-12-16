@@ -45,6 +45,10 @@ namespace BookViewerApp.Helper
                             e.Handled = true;
                         };
                     }
+                    if(content.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm)
+                    {
+                        vm.ControllerCollapsed = true;
+                    }
                 }
                 HistoryManager.AddEntry(file);
                 //await HistoryStorage.AddHistory(file, null);

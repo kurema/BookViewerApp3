@@ -79,6 +79,9 @@ namespace kurema.BrowserControl.ViewModels
         public ObservableCollection<IBookmarkItem> BookmarkCurrent { get; } = new ObservableCollection<IBookmarkItem>();
         public ObservableCollection<IBookmarkItem> BookmarkAddFolders { get; } = new ObservableCollection<IBookmarkItem>();
 
+        private bool _ControllerCollapsed = false;
+        public bool ControllerCollapsed { get => _ControllerCollapsed; set => SetProperty(ref _ControllerCollapsed, value); }
+
         private IBookmarkItem _BookmarkProvider;
         public IBookmarkItem BookmarkRoot { get => _BookmarkProvider; set
             {

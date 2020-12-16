@@ -242,5 +242,11 @@ namespace kurema.BrowserControl.Views
             }
 
         }
+
+        private void Button_Click_ToggleCollapsed(object sender, RoutedEventArgs e)
+        {
+            if (!(DataContext is ViewModels.BrowserControlViewModel vm)) return;
+            vm.ControllerCollapsed = !vm.ControllerCollapsed;
+        }
     }
 }
