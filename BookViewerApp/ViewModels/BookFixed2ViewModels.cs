@@ -399,6 +399,11 @@ namespace BookViewerApp.ViewModels
 
         protected void RestorePages(PageViewModel[]? pagesToExclude = null, PageViewModel[]? pagesToInclude = null)
         {
+            if (PagesOriginal.Count() == 0)
+            {
+                Pages.Clear();
+                return;
+            }
             pagesToExclude ??= new PageViewModel[0];
             pagesToInclude ??= new PageViewModel[0];
             int count = 0;
@@ -422,7 +427,7 @@ namespace BookViewerApp.ViewModels
                 else if (Pages[count] != item) Pages.Insert(count, item);
                 count++;
             }
-            while (Pages.Last() != PagesOriginal.Last() && !pagesToInclude.Contains(Pages.Last())) Pages.RemoveAt(Pages.Count - 1);
+            while (!pagesToExclude.Contains(PagesOriginal.Last()) && Pages.Last() != PagesOriginal.Last() && !pagesToInclude.Contains(Pages.Last())) Pages.RemoveAt(Pages.Count - 1);
             if (currentPage is PageViewModel page)
             {
                 int index = Pages.IndexOf(page);
