@@ -38,7 +38,7 @@ jobs:
       run: echo ${{steps.tag.outputs.tag}}
 
     - name: Extract version from tag
-      uses: Amadevus/pwsh-script@v1
+      uses: Amadevus/pwsh-script@v2
       id: getVersion
       with:
         script: |
