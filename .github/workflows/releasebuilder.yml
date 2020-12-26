@@ -58,6 +58,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Update manifest version
+      if: github.event_name == 'push'
       run: |
         [xml]$manifest = get-content ".\$env:UWP_Project_Directory\Package.appxmanifest"
         $manifest.Package.Identity.Version = "${{steps.getVersion.outputs.result}}"
