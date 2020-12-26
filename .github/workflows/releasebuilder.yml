@@ -43,7 +43,7 @@ jobs:
       with:
         script: |
           if (github.event_name -eq 'push'){
-            '("${{steps.tag.outputs.tag}}").Split("v")[1]'
+            ("${{steps.tag.outputs.tag}}").Split("v")[1]
           } else{
             'test'
           }
