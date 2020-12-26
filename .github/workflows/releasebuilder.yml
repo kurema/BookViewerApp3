@@ -96,7 +96,7 @@ jobs:
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name != 'workflow_dispatch'
+      if: github.event_name == 'push'
       with:
         tag_name: ${{ github.ref }}
         release_name: RC ${{steps.getVersion.outputs.result}}
@@ -106,7 +106,7 @@ jobs:
     - name: Update release asset
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
-      if: github.event_name != 'workflow_dispatch'
+      if: github.event_name == 'push'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
