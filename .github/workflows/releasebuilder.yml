@@ -31,6 +31,7 @@ jobs:
     
     - name: Get tag
       id: tag
+      if: github.event_name == 'push'
       uses: dawidd6/action-get-tag@v1
 
     - name: Use tag
@@ -40,7 +41,12 @@ jobs:
       uses: Amadevus/pwsh-script@v1
       id: getVersion
       with:
-        script: '("${{steps.tag.outputs.tag}}").Split("v")[1]'
+        script: |
+          if (github.event_name -eq 'push'){
+            echo '("${{steps.tag.outputs.tag}}").Split("v")[1]'
+          } else{
+            echo 'test'
+          }
 
     - name: Checkout
       uses: actions/checkout@v2
