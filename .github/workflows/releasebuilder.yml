@@ -64,13 +64,19 @@ jobs:
         $manifest.Package.Identity.Version = "${{steps.getVersion.outputs.result}}"
         $manifest.save(".\$env:UWP_Project_Directory\Package.appxmanifest")
     
-    - name: Decode the Pfx
+    - name: Update Thumbprint
       run: |
         function UpdateThumbprint($solution_path){
           [xml]$sol = get-Content "$($solution_path)*.csproj"
           $sol.Project.PropertyGroup[0].PackageCertificateThumbprint = "${{ secrets.Pfx_Base64_Thumbprint }}"
           $sol.save($solution_path)
         }
+        UpdateThumbprint($env:UWP_Project_Directory)
+        UpdateThumbprint($env:BrowserControl_Project_Directory)
+        UpdateThumbprint($env:FileExplorerControl_Project_Directory)      
+    
+    - name: Decode the Pfx
+      run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Pfx_Base64_Encoded }}")
         $currentDirectory = Get-Location
         $certificatePath1 = Join-Path -Path $currentDirectory -ChildPath $env:UWP_Project_Directory -AdditionalChildPath $env:SigningCertificate
@@ -80,9 +86,6 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath2", $pfx_cert_byte)
         [IO.File]::WriteAllBytes("$certificatePath3", $pfx_cert_byte)
         [IO.File]::WriteAllBytes("$env:SigningCertificate", $pfx_cert_byte)
-        UpdateThumbprint("$certificatePath1")
-        UpdateThumbprint("$certificatePath2")
-        UpdateThumbprint("$certificatePath3")
         
     - name: Build the sideload solution
       run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate /restore 
