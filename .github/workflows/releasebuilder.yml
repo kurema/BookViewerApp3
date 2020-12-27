@@ -79,7 +79,7 @@ jobs:
       run: |
         function DisableSigning($solution_path){
           $csprojs = Get-ChildItem "$($solution_path)*.csproj"
-          Get-Content $csprojs[0].FullName | % { $_ -replace "<SignAssembly>true</SignAssembly>","<SignAssembly>false</SignAssembly>" } | Set-Content $csprojs[0].FullName
+          (Get-Content $csprojs[0].FullName) | % { $_ -replace "<SignAssembly>true</SignAssembly>","<SignAssembly>false</SignAssembly>" } | Set-Content $csprojs[0].FullName
         }
         DisableSigning($env:UWP_Project_Directory)
         DisableSigning($env:BrowserControl_Project_Directory)
