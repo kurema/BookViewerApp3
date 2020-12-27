@@ -67,10 +67,10 @@ jobs:
     - name: Update Thumbprint
       run: |
         function UpdateThumbprint($solution_path){
-          $csproj_path = $solution_path + "*.csproj"
-          [xml]$sol = get-Content $csproj_path
+          $csprojs = Get-ChildItem "$($solution_path)*.csproj"
+          [xml]$sol = get-Content $csprojs[0].FullName
           $sol.Project.PropertyGroup[0].PackageCertificateThumbprint = "${{ secrets.Pfx_Base64_Thumbprint }}"
-          $sol.save($csproj_path)
+          $sol.save($csprojs[0].FullName)
         }
         UpdateThumbprint($env:UWP_Project_Directory)
         UpdateThumbprint($env:BrowserControl_Project_Directory)
