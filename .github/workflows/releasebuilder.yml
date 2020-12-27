@@ -70,6 +70,7 @@ jobs:
           $csprojs = Get-ChildItem "$($solution_path)*.csproj"
           [xml]$sol = get-Content $csprojs[0].FullName
           $sol.Project.PropertyGroup[0].PackageCertificateThumbprint = "${{ secrets.Pfx_Base64_Thumbprint }}"
+          $sol.Project.PropertyGroup[0].AppxPackageSigningEnabled = "False"
           $sol.save($csprojs[0].FullName)
         }
         UpdateThumbprint($env:UWP_Project_Directory)
