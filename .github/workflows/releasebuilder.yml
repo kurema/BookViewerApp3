@@ -67,8 +67,8 @@ jobs:
     - name: Decode the Pfx
       run: |
         function UpdateThumbprint($solution_path){
-          [xml]$sol = get-Content $solution_path
-          $sol.Project.PropertyGroup[0].PackageCertificateThumbprint = "${{ secrets.Pfx_Base64_Thumbprint }}*.csproj"
+          [xml]$sol = get-Content "${{ solution_path }}*.csproj"
+          $sol.Project.PropertyGroup[0].PackageCertificateThumbprint = "${{ secrets.Pfx_Base64_Thumbprint }}"
           $sol.save($solution_path)
         }
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Pfx_Base64_Encoded }}")
