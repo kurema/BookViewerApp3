@@ -73,8 +73,6 @@ jobs:
           $sol.save($csprojs[0].FullName)
         }
         UpdateThumbprint($env:UWP_Project_Directory)
-        UpdateThumbprint($env:BrowserControl_Project_Directory)
-        UpdateThumbprint($env:FileExplorerControl_Project_Directory)      
     
     - name: Decode the Pfx
       run: |
