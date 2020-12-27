@@ -120,7 +120,7 @@ jobs:
       if: github.event_name == 'push'
       with:
         tag_name: ${{ github.ref }}
-        release_name: RC ${{steps.getVersion.outputs.result}}
+        release_name: ${{steps.tag.outputs.tag}}
         draft: false
         prerelease: false
 
