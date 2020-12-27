@@ -85,6 +85,9 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath2", $pfx_cert_byte)
         [IO.File]::WriteAllBytes("$certificatePath3", $pfx_cert_byte)
         [IO.File]::WriteAllBytes("$env:SigningCertificate", $pfx_cert_byte)
+        echo $certificatePath1
+        echo $certificatePath2
+        echo $certificatePath3
         
     - name: Build the sideload solution
       run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate /restore 
