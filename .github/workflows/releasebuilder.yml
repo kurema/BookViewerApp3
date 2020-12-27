@@ -70,7 +70,6 @@ jobs:
           $csprojs = Get-ChildItem "$($solution_path)*.csproj"
           [xml]$sol = get-Content $csprojs[0].FullName
           $sol.Project.PropertyGroup[0].PackageCertificateThumbprint = "${{ secrets.Pfx_Base64_Thumbprint }}"
-          $sol.Project.PropertyGroup[0].AppxPackageSigningEnabled = "False"
           $sol.save($csprojs[0].FullName)
         }
         UpdateThumbprint($env:UWP_Project_Directory)
@@ -98,7 +97,7 @@ jobs:
         [IO.File]::WriteAllBytes("$env:SigningCertificate", $pfx_cert_byte)
         
     - name: Build the sideload solution
-      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate /restore 
+      run: msbuild $env:Solution_Path /p:Platform=x86 /p:Configuration=$env:Configuration /p:AppxBundle=$env:AppxBundle /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate /restore 
       env:
         AppxBundle: Always
         BuildMode: StoreUpload
@@ -141,5 +140,5 @@ jobs:
       uses: actions/upload-artifact@v2
       if: github.event_name == 'workflow_dispatch'
       with:
-        name: docker-logs
+        name: StorePackage
         path: C:\DeployOutput\StorePackage_${{steps.getVersion.outputs.result}}.zip
