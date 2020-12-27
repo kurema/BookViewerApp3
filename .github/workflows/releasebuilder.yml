@@ -64,7 +64,7 @@ jobs:
         $manifest.Package.Identity.Version = "${{steps.getVersion.outputs.result}}"
         $manifest.save(".\$env:UWP_Project_Directory\Package.appxmanifest")
     
-    - name: Update Thumbprint
+    - name: Update thumbprint
       run: |
         function UpdateThumbprint($solution_path){
           $csprojs = Get-ChildItem "$($solution_path)*.csproj"
@@ -74,6 +74,16 @@ jobs:
           $sol.save($csprojs[0].FullName)
         }
         UpdateThumbprint($env:UWP_Project_Directory)
+        
+    - name: Disable signing (test)
+      run: |
+        function DisableSigning($solution_path){
+          $csprojs = Get-ChildItem "$($solution_path)*.csproj"
+          Get-Content $csprojs[0].FullName | % { $_ -replace "<SignAssembly>true</SignAssembly>","<SignAssembly>false</SignAssembly>" } | Set-Content $csprojs[0].FullName
+        }
+        DisableSigning($env:UWP_Project_Directory)
+        DisableSigning($env:BrowserControl_Project_Directory)
+        DisableSigning($env:FileExplorerControl_Project_Directory)
     
     - name: Decode the Pfx
       run: |
@@ -86,9 +96,6 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath2", $pfx_cert_byte)
         [IO.File]::WriteAllBytes("$certificatePath3", $pfx_cert_byte)
         [IO.File]::WriteAllBytes("$env:SigningCertificate", $pfx_cert_byte)
-        echo $certificatePath1
-        echo $certificatePath2
-        echo $certificatePath3
         
     - name: Build the sideload solution
       run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=$env:AppxBundle /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=C:\DeployOutput /p:PackageCertificateKeyFile=$env:SigningCertificate /restore 
