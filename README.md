@@ -1,7 +1,7 @@
 ![banner](/res/Banner/banner.png)
 
 # BookViewerApp 3
-![Release builder](https://github.com/kurema/BookViewerApp3/workflows/Release%20builder/badge.svg)
+[![Release builder](https://github.com/kurema/BookViewerApp3/workflows/Release%20builder/badge.svg)](https://github.com/kurema/BookViewerApp3/actions)
 
 BookViewer 3 is a powerful and beautiful viewer app for booklovers and comic fans.
 Its main features include multiple tabs, file manager, Fluent Design System and web browser.
