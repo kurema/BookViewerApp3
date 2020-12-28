@@ -12,7 +12,7 @@ It support CBR, CBZ, PDF and Epub books.
 [![YouTube](/res/Movie/20200729/movie.gif)  
 YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 
-[Discord](https://discord.gg/tKwuhcc)
+Discord: [![Chat on Discord](https://discordapp.com/api/guilds/741373122858713118/widget.png)](https://discord.gg/tKwuhcc)
 
 ## Screenshot
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171048.png)  
