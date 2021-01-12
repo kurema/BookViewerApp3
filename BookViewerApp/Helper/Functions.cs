@@ -46,14 +46,12 @@ namespace BookViewerApp.Helper
 
         public static async Task SaveStreamToFile(Windows.Storage.Streams.IRandomAccessStream stream, Windows.Storage.IStorageFile file)
         {
-            using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
-            {
-                var buffer = new byte[stream.Size];
-                var ibuffer = buffer.AsBuffer();
-                stream.Seek(0);
-                await stream.ReadAsync(ibuffer, (uint)stream.Size, Windows.Storage.Streams.InputStreamOptions.None);
-                await fileStream.WriteAsync(ibuffer);
-            }
+            using var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
+            var buffer = new byte[stream.Size];
+            var ibuffer = buffer.AsBuffer();
+            stream.Seek(0);
+            await stream.ReadAsync(ibuffer, (uint)stream.Size, Windows.Storage.Streams.InputStreamOptions.None);
+            await fileStream.WriteAsync(ibuffer);
         }
 
         public static async Task SerializeAsync<T>(T content, Windows.Storage.StorageFolder folder, string fileName, System.Threading.SemaphoreSlim semaphore)
@@ -62,11 +60,9 @@ namespace BookViewerApp.Helper
             try
             {
                 var f = await folder.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream())
-                {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                    serializer.Serialize(s, content);
-                }
+                using var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream();
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                serializer.Serialize(s, content);
             }
             catch { }
             finally
@@ -94,8 +90,10 @@ namespace BookViewerApp.Helper
 
             double scale = (double)maxSize / Math.Max(decoder.PixelWidth, decoder.PixelHeight);
 
-            var propset = new BitmapPropertySet();
-            propset.Add("ImageQuality", new BitmapTypedValue(0.5, Windows.Foundation.PropertyType.Single));
+            var propset = new BitmapPropertySet
+            {
+                { "ImageQuality", new BitmapTypedValue(0.5, Windows.Foundation.PropertyType.Single) }
+            };
             var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, result);
             encoder.SetSoftwareBitmap(softwareBitmap);
 
@@ -124,11 +122,9 @@ namespace BookViewerApp.Helper
             {
                 if (f != null)
                 {
-                    using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
-                    {
-                        var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                        return (serializer.Deserialize(s) as T);
-                    }
+                    using var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream();
+                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                    return (serializer.Deserialize(s) as T);
                 }
                 else { return null; }
             }
@@ -192,8 +188,8 @@ namespace BookViewerApp.Helper
 
         public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T,string> titleProvider)
         {
-            Func<T, bool> SortCover = (a) => !titleProvider(a).ToLower().Contains("cover");
-            Func<T, NaturalSort.NaturalList> SortNatural = (a) => new NaturalSort.NaturalList(titleProvider(a));
+            bool SortCover(T a) => !titleProvider(a).ToLower().Contains("cover");
+            NaturalSort.NaturalList SortNatural(T a) => new NaturalSort.NaturalList(titleProvider(a));
 
             if ((bool)Storages.SettingStorage.GetValue("SortNaturalOrder"))
             {

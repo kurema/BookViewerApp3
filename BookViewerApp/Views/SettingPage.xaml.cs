@@ -200,11 +200,15 @@ namespace BookViewerApp.Views
         {
             if (source == null) return;
 
-            var dialog = new ContentDialog();
-            dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK");
-            var control = new Views.LicenseControl();
-            control.Source = source;
-            control.OpenWebCommand = new DelegateCommand(address => UIHelper.GetCurrentTabPage(this)?.OpenTabWeb(address?.ToString()));
+            var dialog = new ContentDialog
+            {
+                CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK")
+            };
+            var control = new Views.LicenseControl
+            {
+                Source = source,
+                OpenWebCommand = new DelegateCommand(address => UIHelper.GetCurrentTabPage(this)?.OpenTabWeb(address?.ToString()))
+            };
             dialog.Content = control;
             await dialog.ShowAsync();
         }
@@ -255,7 +259,7 @@ namespace BookViewerApp.Views
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
 
-            private SettingStorage.SettingInstance target;
+            private readonly SettingStorage.SettingInstance target;
 
             public SettingViewModel(SettingStorage.SettingInstance instance)
             {
@@ -387,7 +391,7 @@ namespace BookViewerApp.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            //var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
             //currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             //currentView.BackRequested += CurrentView_BackRequested;
 

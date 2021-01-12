@@ -114,8 +114,7 @@ namespace BookViewerApp.Books
                         if (itemd["Page"] is string s)
                         {
                             var res = s.Split(' ');
-                            int page = 0;
-                            if (res.Length > 0 && int.TryParse(res[0], out page))
+                            if (res.Length > 0 && int.TryParse(res[0], out int page))
                             {
                                 tocItem.Page = page - 1;
                             }
@@ -157,147 +156,145 @@ namespace BookViewerApp.Books
 
         public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
         {
-            using (var stream = await file.OpenReadAsync())
-            {
-                string? password = null;
-                bool passSave = false;
+            using var stream = await file.OpenReadAsync();
+            string? password = null;
+            bool passSave = false;
 
-                string? id = null;
+            string? id = null;
+
+            try
+            {
+                iTextSharp.text.pdf.PdfReader? pr = null;
+                var streamClassic = stream.AsStream();
+
+                #region Password
+                pr = GetPdfReader(streamClassic, null);
+                if (pr != null) goto PasswordSuccess;
+
+                foreach (var item in defaultPassword ?? new string[0])
+                {
+                    pr = GetPdfReader(streamClassic, item);
+                    if (pr != null)
+                    {
+                        password = item;
+                        passSave = true;
+                        goto PasswordSuccess;
+                    }
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    var result = await passwordRequestedCallback(i);
+                    password = result.password;
+                    passSave = result.remember;
+                    pr = GetPdfReader(streamClassic, password);
+                    if (pr != null) goto PasswordSuccess;
+                }
+                throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
+            #endregion
+
+            PasswordSuccess:;
 
                 try
                 {
-                    iTextSharp.text.pdf.PdfReader? pr = null;
-                    var streamClassic = stream.AsStream();
+                    //Get page direction information.
 
-                    #region Password
-                    pr = GetPdfReader(streamClassic, null);
-                    if (pr != null) goto PasswordSuccess;
+                    //It took some hours to write next line. Thanks for
+                    //http://itext.2136553.n4.nabble.com/Using-getSimpleViewerPreferences-td2167775.html
+                    //私が書いた記事はこちら。
+                    //https://qiita.com/kurema/items/3f274507aa5cf9e845a8
+                    var vp = iTextSharp.text.pdf.intern.PdfViewerPreferencesImp.GetViewerPreferences(pr.Catalog).GetViewerPreferences();
 
-                    foreach (var item in defaultPassword ?? new string[0])
+                    //L2R document often don't have Direction information.
+                    //But it look like "L2R" in Acrobat Reader.
+                    //Direction = Direction.Default
+                    Direction = Direction.L2R;
+
+                    if (vp.Contains(iTextSharp.text.pdf.PdfName.Direction))
                     {
-                        pr = GetPdfReader(streamClassic, item);
-                        if (pr != null)
+                        var name = vp.GetAsName(iTextSharp.text.pdf.PdfName.Direction);
+
+                        if (name == iTextSharp.text.pdf.PdfName.R2L)
                         {
-                            password = item;
-                            passSave = true;
-                            goto PasswordSuccess;
+                            Direction = Direction.R2L;
+                        }
+                        else if (name == iTextSharp.text.pdf.PdfName.L2R)
+                        {
+                            Direction = Direction.L2R;
                         }
                     }
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var result = await passwordRequestedCallback(i);
-                        password = result.password;
-                        passSave = result.remember;
-                        pr = GetPdfReader(streamClassic, password);
-                        if (pr != null) goto PasswordSuccess;
-                    }
-                    throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
-                #endregion
-
-                PasswordSuccess:;
-
-                    try
-                    {
-                        //Get page direction information.
-
-                        //It took some hours to write next line. Thanks for
-                        //http://itext.2136553.n4.nabble.com/Using-getSimpleViewerPreferences-td2167775.html
-                        //私が書いた記事はこちら。
-                        //https://qiita.com/kurema/items/3f274507aa5cf9e845a8
-                        var vp = iTextSharp.text.pdf.intern.PdfViewerPreferencesImp.GetViewerPreferences(pr.Catalog).GetViewerPreferences();
-
-                        //L2R document often don't have Direction information.
-                        //But it look like "L2R" in Acrobat Reader.
-                        //Direction = Direction.Default
-                        Direction = Direction.L2R;
-
-                        if (vp.Contains(iTextSharp.text.pdf.PdfName.Direction))
-                        {
-                            var name = vp.GetAsName(iTextSharp.text.pdf.PdfName.Direction);
-
-                            if (name == iTextSharp.text.pdf.PdfName.R2L)
-                            {
-                                Direction = Direction.R2L;
-                            }
-                            else if (name == iTextSharp.text.pdf.PdfName.L2R)
-                            {
-                                Direction = Direction.L2R;
-                            }
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-                        //https://github.com/VahidN/iTextSharp.LGPLv2.Core/blob/73605fa82fb00e9e8670991c9e410c684731f9f8/src/iTextSharp.LGPLv2.Core/iTextSharp/text/pdf/PdfReader.cs#L3366
-                        //It seems to be...
-                        //documentIDs[0] doesn't change when you edit.
-                        //documentIDs[1] does. documentIDs[1] does not always exist.
-                        var documentIDs = pr.Trailer.GetAsArray(iTextSharp.text.pdf.PdfName.Id);
-                        if (documentIDs != null && documentIDs.Size > 0)
-                        {
-                            id = Functions.GetHash(documentIDs[0].GetBytes().AsBuffer());
-                        }
-                    }
-                    catch
-                    {
-                    }
-
-                    if (id == null)
-                    {
-                        try
-                        {
-                            //When PDF ID is unavailable, Hash(Hash([first 2048 bytes of the file])+"\nSize:"+file size) is used.
-                            //Problems are
-                            //・Some books may have the same first 2048 bytes.
-                            //・You may edit PDF file with same file size.
-                            //But it's much better than just fileName+pageCount.
-
-                            uint length = 2048;
-                            var buffer = new Windows.Storage.Streams.Buffer(length);
-                            stream.Seek(0);
-                            await stream.ReadAsync(buffer, length, Windows.Storage.Streams.InputStreamOptions.Partial);
-                            id = Functions.GetHash(Functions.GetHash(buffer) + "\nSize:" + stream.Size);
-
-                            stream.Seek(0);
-                        }
-                        catch
-                        {
-                            id = null;
-                        }
-                    }
-
-                    var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr)?.ToArray();
-                    var nd = pr.GetNamedDestination(false);
-
-                    //Pdf's page start from 1 somehow.
-                    var pageRefs = new List<iTextSharp.text.pdf.PrIndirectReference>();
-                    for (int i = 1; i <= pr.NumberOfPages; i++)
-                    {
-                        var oref = pr.GetPageOrigRef(i);
-                        pageRefs.Add(oref);
-                    }
-
-                    Toc = GetTocs(bm, nd, pageRefs);
-                    pr.Close();
                 }
                 catch { }
 
-                if (password == null)
+                try
                 {
-                    Content = await pdf.PdfDocument.LoadFromStreamAsync(stream);
+                    //https://github.com/VahidN/iTextSharp.LGPLv2.Core/blob/73605fa82fb00e9e8670991c9e410c684731f9f8/src/iTextSharp.LGPLv2.Core/iTextSharp/text/pdf/PdfReader.cs#L3366
+                    //It seems to be...
+                    //documentIDs[0] doesn't change when you edit.
+                    //documentIDs[1] does. documentIDs[1] does not always exist.
+                    var documentIDs = pr.Trailer.GetAsArray(iTextSharp.text.pdf.PdfName.Id);
+                    if (documentIDs != null && documentIDs.Size > 0)
+                    {
+                        id = Functions.GetHash(documentIDs[0].GetBytes().AsBuffer());
+                    }
                 }
-                else
+                catch
                 {
-                    Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password);
-                    Password = password;
-                    PasswordRemember = passSave;
                 }
-                OnLoaded(new EventArgs());
-                PageLoaded = true;
-                ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(file.Name, Content.PageCount));
+
+                if (id == null)
+                {
+                    try
+                    {
+                        //When PDF ID is unavailable, Hash(Hash([first 2048 bytes of the file])+"\nSize:"+file size) is used.
+                        //Problems are
+                        //・Some books may have the same first 2048 bytes.
+                        //・You may edit PDF file with same file size.
+                        //But it's much better than just fileName+pageCount.
+
+                        uint length = 2048;
+                        var buffer = new Windows.Storage.Streams.Buffer(length);
+                        stream.Seek(0);
+                        await stream.ReadAsync(buffer, length, Windows.Storage.Streams.InputStreamOptions.Partial);
+                        id = Functions.GetHash(Functions.GetHash(buffer) + "\nSize:" + stream.Size);
+
+                        stream.Seek(0);
+                    }
+                    catch
+                    {
+                        id = null;
+                    }
+                }
+
+                var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr)?.ToArray();
+                var nd = pr.GetNamedDestination(false);
+
+                //Pdf's page start from 1 somehow.
+                var pageRefs = new List<iTextSharp.text.pdf.PrIndirectReference>();
+                for (int i = 1; i <= pr.NumberOfPages; i++)
+                {
+                    var oref = pr.GetPageOrigRef(i);
+                    pageRefs.Add(oref);
+                }
+
+                Toc = GetTocs(bm, nd, pageRefs);
+                pr.Close();
             }
+            catch { }
+
+            if (password == null)
+            {
+                Content = await pdf.PdfDocument.LoadFromStreamAsync(stream);
+            }
+            else
+            {
+                Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password);
+                Password = password;
+                PasswordRemember = passSave;
+            }
+            OnLoaded(new EventArgs());
+            PageLoaded = true;
+            ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(file.Name, Content.PageCount));
         }
 
         private void OnLoaded(EventArgs e)
@@ -327,8 +324,8 @@ namespace BookViewerApp.Books
             Content = page;
         }
 
-        protected double renderScaleDefault => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 2.0 : 1.0;
-        protected double renderScaleMinimum => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 1.3 : 0.95;
+        protected double RenderScaleDefault => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 2.0 : 1.0;
+        protected double RenderScaleMinimum => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 1.3 : 0.95;
 
         public async Task RenderToStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream, double width, double height)
         {
@@ -351,11 +348,11 @@ namespace BookViewerApp.Books
             var pdfOption = new pdf.PdfPageRenderOptions();
             if (height / Content.Size.Height < width / Content.Size.Width)
             {
-                pdfOption.DestinationHeight = (uint)(height * renderScaleDefault);
+                pdfOption.DestinationHeight = (uint)(height * RenderScaleDefault);
             }
             else
             {
-                pdfOption.DestinationWidth = (uint)(width * renderScaleDefault);
+                pdfOption.DestinationWidth = (uint)(width * RenderScaleDefault);
             }
             LastPdfOption = pdfOption;
             await Content.RenderToStreamAsync(stream, pdfOption);
@@ -405,15 +402,17 @@ namespace BookViewerApp.Books
         {
             //if (LastOption != null && Option != null && (LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth))
             //if (LastOption != null && Option != null)
-            if (LastPdfOption == null || (LastPdfOption.DestinationHeight < height * renderScaleMinimum && LastPdfOption.DestinationWidth < width * renderScaleMinimum))
+            if (LastPdfOption == null || (LastPdfOption.DestinationHeight < height * RenderScaleMinimum && LastPdfOption.DestinationWidth < width * RenderScaleMinimum))
             { return Task.FromResult(true); }
             else { return Task.FromResult(false); }
         }
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
-            var pdfOption = new pdf.PdfPageRenderOptions();
-            pdfOption.DestinationWidth = width;
+            var pdfOption = new pdf.PdfPageRenderOptions
+            {
+                DestinationWidth = width
+            };
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await Content.RenderToStreamAsync(stream, pdfOption);
             await Functions.SaveStreamToFile(stream, file);

@@ -24,8 +24,7 @@ namespace BookViewerApp.Storages
         {
             get
             {
-                return _SettingInstances = _SettingInstances ??
-                    new SettingInstance[]
+                return _SettingInstances ??= new SettingInstance[]
                     {
                         new SettingInstance("DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
@@ -106,7 +105,6 @@ namespace BookViewerApp.Storages
             private Func<object, bool> IsValidObject { get; set; }
 
             public ITypeConverter Converter { get; private set; }
-            private object Cache;
 
             public object Minimum { get; set; }
             public object Maximum { get; set; }
@@ -129,7 +127,7 @@ namespace BookViewerApp.Storages
                 this.DefaultValue = DefaultValue;
                 this.IsLocal = IsLocal;
                 this.Converter = Converter;
-                this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { object result; return Converter.TryGetTypeGeneral(a.ToString(), out result); });
+                this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { return Converter.TryGetTypeGeneral(a.ToString(), out object result); });
                 this.GroupName = group;
                 this.IsVisible = isVisible;
 
@@ -139,15 +137,13 @@ namespace BookViewerApp.Storages
             {
                 if (!IsValid(Value)) return;
 
-                Cache = Value;
                 Setting.CreateContainer(Key, Windows.Storage.ApplicationDataCreateDisposition.Always);
                 Setting.Values[Key] = Converter.GetStringGeneral(Value);
             }
 
             public void SetValueAsString(string Value)
             {
-                object result;
-                if (Converter.TryGetTypeGeneral(Value, out result))
+                if (Converter.TryGetTypeGeneral(Value, out object result))
                     SetValue(result);
             }
 
@@ -167,23 +163,18 @@ namespace BookViewerApp.Storages
 
             public object GetValue()
             {
-                object data;
-                if (Setting.Values.TryGetValue(Key, out data) == false)
+                if (Setting.Values.TryGetValue(Key, out object data) == false)
                 {
-                    Cache = DefaultValue;
                     return DefaultValue;
                 }
                 else
                 {
-                    object result;
-                    if (Converter.TryGetTypeGeneral(data.ToString(), out result))
+                    if (Converter.TryGetTypeGeneral(data.ToString(), out object result))
                     {
-                        Cache = result;
                         return result;
                     }
                     else
                     {
-                        Cache = DefaultValue;
                         return DefaultValue;
                     }
                 }
@@ -234,8 +225,7 @@ namespace BookViewerApp.Storages
 
                 public bool TryGetTypeGeneral(string value, out object result)
                 {
-                    bool data;
-                    if (bool.TryParse(value, out data))
+                    if (bool.TryParse(value, out bool data))
                     {
                         result = data;
                         return true;
@@ -259,8 +249,7 @@ namespace BookViewerApp.Storages
 
                 public bool TryGetTypeGeneral(string value, out object result)
                 {
-                    int data;
-                    if (int.TryParse(value, out data))
+                    if (int.TryParse(value, out int data))
                     {
                         result = data;
                         return true;
@@ -316,8 +305,7 @@ namespace BookViewerApp.Storages
 
                 public bool TryGetTypeGeneral(string value, out object result)
                 {
-                    double data;
-                    if (double.TryParse(value, out data))
+                    if (double.TryParse(value, out double data))
                     {
                         result = data;
                         return true;
@@ -369,38 +357,34 @@ namespace BookViewerApp.Storages
                 {
                     if (!(value is T)) return null;
                     System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
-                    using (System.IO.TextWriter tw = new System.IO.StringWriter())
-                    {
-                        xs.Serialize(tw, value);
-                        return tw.ToString();
-                    }
+                    using System.IO.TextWriter tw = new System.IO.StringWriter();
+                    xs.Serialize(tw, value);
+                    return tw.ToString();
                 }
 
                 public bool TryGetTypeGeneral(string value, out object result)
                 {
                     System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
-                    using (System.IO.TextReader tr = new System.IO.StringReader(value))
+                    using System.IO.TextReader tr = new System.IO.StringReader(value);
+                    System.Xml.XmlReader xr;
+                    try
                     {
-                        System.Xml.XmlReader xr;
-                        try
-                        {
-                            xr = System.Xml.XmlReader.Create(tr);
-                        }
-                        catch
-                        {
-                            result = default(T);
-                            return false;
-                        }
-                        if (xs.CanDeserialize(xr))
-                        {
-                            result = (T)xs.Deserialize(xr);
-                            return true;
-                        }
-                        else
-                        {
-                            result = default(T);
-                            return false;
-                        }
+                        xr = System.Xml.XmlReader.Create(tr);
+                    }
+                    catch
+                    {
+                        result = default(T);
+                        return false;
+                    }
+                    if (xs.CanDeserialize(xr))
+                    {
+                        result = (T)xs.Deserialize(xr);
+                        return true;
+                    }
+                    else
+                    {
+                        result = default(T);
+                        return false;
                     }
                 }
             }
