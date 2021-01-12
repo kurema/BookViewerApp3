@@ -557,4 +557,10 @@
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>頁面佈局</value>
   </data>
+  <data name="Setting_PdfRenderScaling.Description" xml:space="preserve">
+    <value>以比顯示更高的分辨率繪製PDF。啟用它會增加繪圖負荷，但是即使縮放也可以改善畫質和外觀。</value>
+  </data>
+  <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
+    <value>PDF高分辨率圖紙</value>
+  </data>
 </root>

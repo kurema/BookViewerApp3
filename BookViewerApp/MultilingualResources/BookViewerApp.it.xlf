@@ -757,6 +757,14 @@ Ti auguro buona fortuna.</target>
           <source>Page layout</source>
           <target state="translated">Layout di pagina</target>
         </trans-unit>
+        <trans-unit id="Setting_PdfRenderScaling.Description" translate="yes" xml:space="preserve">
+          <source>Renders the PDF at a resolution larger than the display size. Turn it off improves the performance.</source>
+          <target state="translated">Visualizza il PDF con una risoluzione maggiore della dimensione del display. Disattivarlo migliora le prestazioni.</target>
+        </trans-unit>
+        <trans-unit id="Setting_PdfRenderScaling.Title" translate="yes" xml:space="preserve">
+          <source>PDF high resolution rendering</source>
+          <target state="translated">Rendering PDF ad alta risoluzione</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -557,4 +557,10 @@ Ti auguro buona fortuna.</value>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>Layout di pagina</value>
   </data>
+  <data name="Setting_PdfRenderScaling.Description" xml:space="preserve">
+    <value>Visualizza il PDF con una risoluzione maggiore della dimensione del display. Disattivarlo migliora le prestazioni.</value>
+  </data>
+  <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
+    <value>Rendering PDF ad alta risoluzione</value>
+  </data>
 </root>

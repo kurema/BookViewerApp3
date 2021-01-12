@@ -662,4 +662,10 @@ I wish you good luck.</value>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>Page layout</value>
   </data>
+  <data name="Setting_PdfRenderScaling.Description" xml:space="preserve">
+    <value>Renders the PDF at a resolution larger than the display size. Turn it off improves the performance.</value>
+  </data>
+  <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
+    <value>PDF high resolution rendering</value>
+  </data>
 </root>

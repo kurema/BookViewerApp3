@@ -327,6 +327,9 @@ namespace BookViewerApp.Books
             Content = page;
         }
 
+        protected double renderScaleDefault => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 2.0 : 1.0;
+        protected double renderScaleMinimum => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 1.3 : 0.95;
+
         public async Task RenderToStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream, double width, double height)
         {
             if (width == 0 || height == 0)
@@ -348,11 +351,11 @@ namespace BookViewerApp.Books
             var pdfOption = new pdf.PdfPageRenderOptions();
             if (height / Content.Size.Height < width / Content.Size.Width)
             {
-                pdfOption.DestinationHeight = (uint)height * 2;
+                pdfOption.DestinationHeight = (uint)(height * renderScaleDefault);
             }
             else
             {
-                pdfOption.DestinationWidth = (uint)width * 2;
+                pdfOption.DestinationWidth = (uint)(width * renderScaleDefault);
             }
             LastPdfOption = pdfOption;
             await Content.RenderToStreamAsync(stream, pdfOption);
@@ -402,7 +405,7 @@ namespace BookViewerApp.Books
         {
             //if (LastOption != null && Option != null && (LastOption.TargetHeight * 1.3 < Option.TargetHeight || LastOption.TargetWidth * 1.3 < Option.TargetWidth))
             //if (LastOption != null && Option != null)
-            if (LastPdfOption == null || (LastPdfOption.DestinationHeight < height * 1.3 && LastPdfOption.DestinationWidth < width * 1.3))
+            if (LastPdfOption == null || (LastPdfOption.DestinationHeight < height * renderScaleMinimum && LastPdfOption.DestinationWidth < width * renderScaleMinimum))
             { return Task.FromResult(true); }
             else { return Task.FromResult(false); }
         }

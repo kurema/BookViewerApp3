@@ -746,6 +746,14 @@ I wish you good luck.</source>
           <source>Page layout</source>
           <target state="translated">页面布局</target>
         </trans-unit>
+        <trans-unit id="Setting_PdfRenderScaling.Description" translate="yes" xml:space="preserve">
+          <source>Renders the PDF at a resolution larger than the display size. Turn it off improves the performance.</source>
+          <target state="translated">以比绘图目标更高的分辨率绘制PDF。启用它会增加绘图负荷，但是即使缩放也可以改善画质和外观。</target>
+        </trans-unit>
+        <trans-unit id="Setting_PdfRenderScaling.Title" translate="yes" xml:space="preserve">
+          <source>PDF high resolution rendering</source>
+          <target state="translated">PDF高分辨率渲染</target>
+        </trans-unit>
       </group>
     </body>
   </file>

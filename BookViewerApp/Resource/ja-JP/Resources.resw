@@ -561,4 +561,10 @@
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>ページレイアウト</value>
   </data>
+  <data name="Setting_PdfRenderScaling.Description" xml:space="preserve">
+    <value>PDFを表示より高解像度で描画します。オンにすると描画負荷が増加しますが、クオリティが向上しズームしてもきれいに見えます。</value>
+  </data>
+  <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
+    <value>PDF高解像度描画</value>
+  </data>
 </root>
