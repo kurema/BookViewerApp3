@@ -43,7 +43,7 @@ namespace BookViewerApp.Storages
                         new SettingInstance("ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
                         new SettingInstance("CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
                         new SettingInstance("WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
-                        new SettingInstance("WebSearchEngine","http://www.google.co.jp/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance("WebSearchEngine","http://www.google.com/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
                         new SettingInstance("RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("ExplorerContentStyle",kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
