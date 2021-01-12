@@ -331,8 +331,18 @@ namespace BookViewerApp.Books
         {
             if (width == 0 || height == 0)
             {
-                await Content.RenderToStreamAsync(stream);
-                return;
+                try
+                {
+                    var bound = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().VisibleBounds;
+                    var scaleFactor = Windows.Graphics.Display.DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+                    width = bound.Width * scaleFactor;
+                    height = bound.Height * scaleFactor;
+                }
+                catch
+                {
+                    await Content.RenderToStreamAsync(stream);
+                    return;
+                }
             }
 
             var pdfOption = new pdf.PdfPageRenderOptions();
