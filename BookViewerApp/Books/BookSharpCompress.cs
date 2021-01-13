@@ -22,7 +22,7 @@ namespace BookViewerApp.Books
         {
             get
             {
-                return IDCache = IDCache ?? GetID();
+                return IDCache ??= GetID();
             }
         }
 
@@ -135,44 +135,38 @@ namespace BookViewerApp.Books
             get; set;
         }
 
-        private SharpCompress.Archives.IArchiveEntry Entry;
+        //private SharpCompress.Archives.IArchiveEntry Entry;
 
         public CompressedPage(SharpCompress.Archives.IArchiveEntry Entry)
         {
-            this.Entry = Entry;
+            //this.Entry = Entry;
             Cache = new MemoryStreamCache()
             {
                 MemoryStreamProvider = async (th) =>
                 {
-                    using (var s = Entry.OpenEntryStream())
-                    {
-                        return await th.GetMemoryStreamAsync(s);
-                    }
+                    using var s = Entry.OpenEntryStream();
+                    return await th.GetMemoryStreamAsync(s);
                 }
             };
         }
 
-        private MemoryStreamCache Cache;
+        private readonly MemoryStreamCache Cache;
 
         public async Task SaveImageAsync(StorageFile file, uint width)
         {
             try
             {
                 //await Functions.SaveStreamToFile(GetStream(), file);
-                using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                using var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite);
+                var ms = await Cache.GetMemoryStreamByProviderAsync();
+                await Functions.ResizeImage(ms.AsRandomAccessStream(), fileStream, width, async () =>
                 {
-                    var ms = await Cache.GetMemoryStreamByProviderAsync();
-                    await Functions.ResizeImage(ms.AsRandomAccessStream(), fileStream, width, async () =>
-                    {
-                        using (var s = await Cache.GetMemoryStreamByProviderAsync())
-                        {
-                            var buffer = new byte[s.Length];
-                            await s.ReadAsync(buffer, 0, (int)s.Length);
-                            var ibuffer = buffer.AsBuffer();
-                            await fileStream.WriteAsync(ibuffer);
-                        }
-                    });
-                }
+                    using var s = await Cache.GetMemoryStreamByProviderAsync();
+                    var buffer = new byte[s.Length];
+                    await s.ReadAsync(buffer, 0, (int)s.Length);
+                    var ibuffer = buffer.AsBuffer();
+                    await fileStream.WriteAsync(ibuffer);
+                });
             }
             catch (Exception)
             {
