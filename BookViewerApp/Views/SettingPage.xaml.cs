@@ -96,6 +96,7 @@ namespace BookViewerApp.Views
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), loader.GetString("Info/Info/ThirdParty/Description"),new DelegateCommand(async _=>await OpenLicenseContentDialogThirdParty())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), loader.GetString("Info/Info/ShowContributors/Description"),new DelegateCommand(async _=>await OpenLicenseContentDialogContributors())){ GroupTag="Info/Info/Title"},
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor/Title"), loader.GetString("Info/Info/BeSponsor/Description"),new OpenWebCommand(tabpage,"https://github.com/sponsors/kurema/")){ GroupTag="Info/Info/Title"},
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ReleaseNotes/Title"), string.Format(loader.GetString("Info/Info/ReleaseNotes/Description"),VersionText),new OpenWebCommand(tabpage,"https://github.com/kurema/BookViewerApp3/releases")){ GroupTag="Info/Info/Title"},
             }.ToList();
 
             result.AddRange(new[] {
@@ -105,6 +106,21 @@ namespace BookViewerApp.Views
             result.Add(new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL/Title"), loader.GetString("Info/Debug/CopyFAL/Description"), new DelegateCommand(async _ => await CopyFutureAccessListToClipboard())) { GroupTag = "Info/Debug/Title" });
 #endif
             return result.ToArray();
+        }
+
+        public string VersionText
+        {
+            get
+            {
+                if (Windows.ApplicationModel.Package.Current?.Id?.Version is { } ver)
+                {
+                    return string.Format("v{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
+                }
+                else
+                {
+                    return "";
+                }
+            }
         }
 
         public async System.Threading.Tasks.Task CopyFutureAccessListToClipboard()
@@ -342,7 +358,7 @@ namespace BookViewerApp.Views
                 {
                     try
                     {
-                        if (target.GetValue() is Enum @enum) return EnumItems.First(a => a.Content.Equals( @enum));
+                        if (target.GetValue() is Enum @enum) return EnumItems.First(a => a.Content.Equals(@enum));
                     }
                     catch
                     {

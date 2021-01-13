@@ -668,4 +668,10 @@ I wish you good luck.</value>
   <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
     <value>PDF high resolution rendering</value>
   </data>
+  <data name="Info.Info.ReleaseNotes.Description" xml:space="preserve">
+    <value>{0} / Open the Release Notes on GitHub</value>
+  </data>
+  <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
 </root>

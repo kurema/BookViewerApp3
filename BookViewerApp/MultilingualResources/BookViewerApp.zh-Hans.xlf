@@ -754,6 +754,14 @@ I wish you good luck.</source>
           <source>PDF high resolution rendering</source>
           <target state="translated">PDF高分辨率渲染</target>
         </trans-unit>
+        <trans-unit id="Info.Info.ReleaseNotes.Description" translate="yes" xml:space="preserve">
+          <source>{0} / Open the Release Notes on GitHub</source>
+          <target state="translated">{0} / 在GitHub上打开发行说明</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.ReleaseNotes.Title" translate="yes" xml:space="preserve">
+          <source>Release Notes</source>
+          <target state="translated">发行说明</target>
+        </trans-unit>
       </group>
     </body>
   </file>

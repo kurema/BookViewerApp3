@@ -749,6 +749,14 @@ I wish you good luck.</source>
           <source>PDF high resolution rendering</source>
           <target state="translated">PDF高解像度描画</target>
         </trans-unit>
+        <trans-unit id="Info.Info.ReleaseNotes.Description" translate="yes" xml:space="preserve">
+          <source>{0} / Open the Release Notes on GitHub</source>
+          <target state="translated">{0} / GitHub上のリリースノートを開く</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.ReleaseNotes.Title" translate="yes" xml:space="preserve">
+          <source>Release Notes</source>
+          <target state="translated">リリースノート</target>
+        </trans-unit>
       </group>
     </body>
   </file>

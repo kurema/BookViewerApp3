@@ -563,4 +563,10 @@
   <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
     <value>PDF高分辨率渲染</value>
   </data>
+  <data name="Info.Info.ReleaseNotes.Description" xml:space="preserve">
+    <value>{0} / 在GitHub上打开发行说明</value>
+  </data>
+  <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
+    <value>发行说明</value>
+  </data>
 </root>

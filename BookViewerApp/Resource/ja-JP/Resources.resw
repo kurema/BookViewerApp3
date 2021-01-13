@@ -567,4 +567,10 @@
   <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
     <value>PDF高解像度描画</value>
   </data>
+  <data name="Info.Info.ReleaseNotes.Description" xml:space="preserve">
+    <value>{0} / GitHub上のリリースノートを開く</value>
+  </data>
+  <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
+    <value>リリースノート</value>
+  </data>
 </root>

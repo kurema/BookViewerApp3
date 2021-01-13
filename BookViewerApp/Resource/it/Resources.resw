@@ -563,4 +563,10 @@ Ti auguro buona fortuna.</value>
   <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
     <value>Rendering PDF ad alta risoluzione</value>
   </data>
+  <data name="Info.Info.ReleaseNotes.Description" xml:space="preserve">
+    <value>{0} / Apri le note di rilascio su GitHub</value>
+  </data>
+  <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
+    <value>Note di rilascio</value>
+  </data>
 </root>

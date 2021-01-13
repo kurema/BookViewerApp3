@@ -765,6 +765,14 @@ Ti auguro buona fortuna.</target>
           <source>PDF high resolution rendering</source>
           <target state="translated">Rendering PDF ad alta risoluzione</target>
         </trans-unit>
+        <trans-unit id="Info.Info.ReleaseNotes.Description" translate="yes" xml:space="preserve">
+          <source>{0} / Open the Release Notes on GitHub</source>
+          <target state="translated">{0} / Apri le note di rilascio su GitHub</target>
+        </trans-unit>
+        <trans-unit id="Info.Info.ReleaseNotes.Title" translate="yes" xml:space="preserve">
+          <source>Release Notes</source>
+          <target state="translated">Note di rilascio</target>
+        </trans-unit>
       </group>
     </body>
   </file>
