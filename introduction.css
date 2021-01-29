@@ -1,0 +1,86 @@
+#card-github-img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    animation: card-github-img-animation 8s cubic-bezier(0.2, 0, 1, 0.5) 0s infinite normal both running;
+}
+
+@keyframes card-github-img-animation {
+    0% {
+        object-position: top;
+    }
+
+    50% {
+        object-position: top;
+    }
+
+    70% {
+        object-position: bottom;
+    }
+
+    90% {
+        object-position: bottom;
+    }
+
+    100% {
+        object-position: top;
+    }
+}
+
+#card-support-icon {
+    animation: card-support-icon-animation 4s ease 0s infinite normal both running;
+    margin: auto;
+    font-size: min(140px, calc(140 * var(--vw-per-px)));
+    user-select: none;
+}
+
+@keyframes card-support-icon-animation {
+    0% {
+        transform: none;
+    }
+
+    79% {
+        transform: none;
+    }
+
+    86% {
+        transform: rotate(-25deg);
+    }
+
+    93% {
+        transform: rotate(25deg);
+    }
+
+    100% {
+        transform: none;
+    }
+}
+
+#card-explorer {
+    background-image: url('img/pexels-folder.webp');
+    background-size: cover;
+    background-position: right;
+}
+
+#card-explorer img {
+    width: 100%;
+    margin: 15px auto;
+    backdrop-filter: blur(2vw);
+    /* background-color: rgba(255, 255, 255, 0.4); */
+}
+
+#card-epub-icon {
+    margin: auto;
+    width: 40%;
+}
+
+#youtube-introduction {
+    width: min(980px, 100vw);
+    height: calc(min(980px, 100vw) * (551 / 980));
+}
+
+#youtube-grmwN_ifnJE{
+    margin:auto;
+    height:min(70%,450px);
+    width:min(100%,400px);
+}
