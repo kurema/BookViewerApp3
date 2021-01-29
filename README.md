@@ -14,6 +14,8 @@ YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 
 Discord: [![Chat on Discord](https://discordapp.com/api/guilds/741373122858713118/widget.png)](https://discord.gg/tKwuhcc)
 
+[Introduction](https://kurema.github.io/BookViewerApp3/introduction.en.html) | [紹介 (日本語)](https://kurema.github.io/BookViewerApp3/introduction.ja.html)
+
 ## Screenshot
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171048.png)  
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171351.png)  
