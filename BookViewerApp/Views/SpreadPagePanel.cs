@@ -104,7 +104,7 @@ namespace BookViewerApp.Views
 
         public enum ModeEnum
         {
-            Spread, Single, Default
+            Spread, Single, Default, ForceSpread, ForceSpreadFirstSingle
         }
 
         public enum ModeOverrideEnum
@@ -195,19 +195,28 @@ namespace BookViewerApp.Views
             {
                 goto Conclude;
             }
-            else if (Mode == ModeEnum.Default)
+
+            switch (Mode)
             {
-                goto Single;
+                case ModeEnum.Default:
+                    goto Single;
+                case ModeEnum.Spread:
+                    break;
+                case ModeEnum.Single when w1 > h1:
+                    goto Half;
+                case ModeEnum.Single:
+                    goto Single;
+                case ModeEnum.ForceSpread:
+                case ModeEnum.ForceSpreadFirstSingle:
+                    // ForceSpreadFirstSingle should goto Default if this is first page. But SpreadPagePanel does not know if this page is first or not.
+                    // So BookFixed2ViewModels deal with it using ModeOverride;
+                    //goto Double;
+                    if (w2 == 0 || h2 == 0) goto Single; else goto Double;
+                default:
+                    break;
             }
-            else if (Mode == ModeEnum.Single && w1 > h1)
-            {
-                goto Half;
-            }
-            else if (Mode == ModeEnum.Single)
-            {
-                goto Single;
-            }
-            else if (w2 == 0 || h2 == 0)
+
+            if (w2 == 0 || h2 == 0)
             {
                 goto Single;
             }
@@ -297,6 +306,16 @@ namespace BookViewerApp.Views
             goto Conclude;
 
         Double:
+            //if ((w2 == 0 || h2 == 0))
+            //{
+            //    var images = DesireChild(2);
+            //    var rect = GetFilledItemSize(w, h, w1, h1);
+            //    images[0].Measure(GetSizeFromRect(rect));
+            //    images[0].Arrange(rect);
+            //    images[1].Measure(new Size(1, 1));
+            //    images[1].Arrange(new Rect(1, 1, 1, 1));
+            //}
+            //else
             {
                 var wr1 = w1 * h / h1;
                 var wr2 = w2 * h / h2;

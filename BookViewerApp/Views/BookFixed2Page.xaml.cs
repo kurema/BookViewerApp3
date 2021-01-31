@@ -143,7 +143,9 @@ namespace BookViewerApp.Views
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
                     (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
                 }
-                if ((this.DataContext as PageViewModel)?.Parent?.SpreadMode == SpreadPagePanel.ModeEnum.Spread || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
+                var spreadMode = (this.DataContext as PageViewModel)?.Parent?.SpreadMode;
+                if (spreadMode == SpreadPagePanel.ModeEnum.Spread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle 
+                    || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
                     (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
@@ -168,7 +170,9 @@ namespace BookViewerApp.Views
 
                 void UpdateSource2()
                 {
-                    if (dc?.Parent?.SpreadMode == SpreadPagePanel.ModeEnum.Spread || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
+                    var spreadMode = dc?.Parent?.SpreadMode;
+                    if (spreadMode == SpreadPagePanel.ModeEnum.Spread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle ||
+                        spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                     {
 
                         if (dc.NextPage == null) spreadPanel.Source2 = null;

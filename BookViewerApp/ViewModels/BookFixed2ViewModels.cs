@@ -133,6 +133,7 @@ namespace BookViewerApp.ViewModels
                     catch
                     {
                         //サムネイル作成が失敗しても大した問題はない。
+                        //Failing to create thumbnail is not a big deal.
                     }
                 }
                 if (bookf.ID != null)
@@ -455,6 +456,58 @@ namespace BookViewerApp.ViewModels
 
             switch (this.SpreadMode)
             {
+                case SpreadPagePanel.ModeEnum.ForceSpread:
+                    {
+                        int i = 0;
+                        int pageCount = PagesOriginal.Count();
+                        foreach (var item in PagesOriginal)
+                        {
+                            var contains = Pages.Contains(item);
+                            if (i % 2 == 0 && (!contains))
+                            {
+                                Pages.Add(item);
+                                item.SpreadModeOverride = i== pageCount -1?
+                                    SpreadPagePanel.ModeOverrideEnum.ForceSingle :
+                                    SpreadPagePanel.ModeOverrideEnum.Default;
+                            }
+                            else if (i%2 == 1 && contains){
+                                Pages.Remove(item);
+                            }
+                            i++;
+                        }
+                    }
+                    break;
+                case SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle:
+                    {
+                        int i = 0;
+                        int pageCount = PagesOriginal.Count();
+
+                        foreach (var item in PagesOriginal)
+                        {
+                            var contains = Pages.Contains(item);
+                            if (i == 0)
+                            {
+                                if (!contains)
+                                {
+                                    Pages.Add(item);
+                                }
+                                item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
+                            }
+                            else if (i % 2 == 1 && (!contains))
+                            {
+                                Pages.Add(item);
+                                item.SpreadModeOverride = i == pageCount - 1 ?
+                                    SpreadPagePanel.ModeOverrideEnum.ForceSingle :
+                                    SpreadPagePanel.ModeOverrideEnum.Default;
+                            }
+                            else if (i % 2 == 0 && contains)
+                            {
+                                Pages.Remove(item);
+                            }
+                            i++;
+                        }
+                    }
+                    break;
                 case SpreadPagePanel.ModeEnum.Spread:
                     {
                         if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
