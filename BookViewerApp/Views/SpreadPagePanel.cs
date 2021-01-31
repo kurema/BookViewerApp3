@@ -306,16 +306,6 @@ namespace BookViewerApp.Views
             goto Conclude;
 
         Double:
-            //if ((w2 == 0 || h2 == 0))
-            //{
-            //    var images = DesireChild(2);
-            //    var rect = GetFilledItemSize(w, h, w1, h1);
-            //    images[0].Measure(GetSizeFromRect(rect));
-            //    images[0].Arrange(rect);
-            //    images[1].Measure(new Size(1, 1));
-            //    images[1].Arrange(new Rect(1, 1, 1, 1));
-            //}
-            //else
             {
                 var wr1 = w1 * h / h1;
                 var wr2 = w2 * h / h2;

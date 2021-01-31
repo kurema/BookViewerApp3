@@ -440,7 +440,10 @@ namespace BookViewerApp.ViewModels
         }
 
         public async void UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
-            => await dispatcher.RunAsync(priority, () => this.UpdatePages());
+        {
+            if (this.SpreadMode == SpreadPagePanel.ModeEnum.Spread) await Task.Delay(500);
+            await dispatcher.RunAsync(priority, () => this.UpdatePages());
+        }
 
         private void UpdatePages()
         {
