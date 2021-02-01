@@ -733,8 +733,9 @@ I wish you good luck.</source>
           <target state="translated">單頁檢視 (自動)</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
-          <source>Two Page View (Auto)</source>
-          <target state="translated">雙頁檢視 (自動)</target>
+          <source>Auto</source>
+          <target state="translated">自動</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>

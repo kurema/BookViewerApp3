@@ -657,7 +657,7 @@ I wish you good luck.</value>
     <value>Single Page View (Auto)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>Two Page View (Auto)</value>
+    <value>Auto</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>Page layout</value>

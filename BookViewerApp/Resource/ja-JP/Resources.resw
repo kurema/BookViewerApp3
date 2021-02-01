@@ -556,7 +556,7 @@
     <value>単一ページ表示 (自動)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>見開きページ表示 (自動)</value>
+    <value>自動切り替え</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>ページレイアウト</value>

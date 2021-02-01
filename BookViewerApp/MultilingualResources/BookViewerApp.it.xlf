@@ -750,8 +750,9 @@ Ti auguro buona fortuna.</target>
           <target state="translated">Pagina singola automatica (automatica)</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
-          <source>Two Page View (Auto)</source>
-          <target state="translated">Vista a due pagine (automatica)</target>
+          <source>Auto</source>
+          <target state="translated">Automatica</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>

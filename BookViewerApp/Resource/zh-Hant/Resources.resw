@@ -552,7 +552,7 @@
     <value>單頁檢視 (自動)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>雙頁檢視 (自動)</value>
+    <value>自動</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>頁面佈局</value>
