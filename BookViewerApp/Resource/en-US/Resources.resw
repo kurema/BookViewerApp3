@@ -654,10 +654,10 @@ I wish you good luck.</value>
     <value>Default</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
-    <value>Auto single page</value>
+    <value>Single Page View (Auto)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>Auto switch single/dual page</value>
+    <value>Two Page View (Auto)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>Page layout</value>
@@ -673,5 +673,11 @@ I wish you good luck.</value>
   </data>
   <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
     <value>Release Notes</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
+    <value>Two Page View (Show Cover Page in Two Page View)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
+    <value>Two Page View</value>
   </data>
 </root>

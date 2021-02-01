@@ -549,10 +549,10 @@
     <value>默认</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
-    <value>自动单页</value>
+    <value>单页视图 (自动)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>自动切换单/双页</value>
+    <value>双页视图 (自动)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>页面布局</value>

@@ -746,12 +746,12 @@ Ti auguro buona fortuna.</target>
           <target state="translated">Layout predefinito</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" translate="yes" xml:space="preserve">
-          <source>Auto single page</source>
-          <target state="translated">Pagina singola automatica</target>
+          <source>Single Page View (Auto)</source>
+          <target state="translated">Pagina singola automatica (automatica)</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
-          <source>Auto switch single/dual page</source>
-          <target state="translated">Commutazione automatica pagina singola / doppia</target>
+          <source>Two Page View (Auto)</source>
+          <target state="translated">Vista a due pagine (automatica)</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>
@@ -772,6 +772,14 @@ Ti auguro buona fortuna.</target>
         <trans-unit id="Info.Info.ReleaseNotes.Title" translate="yes" xml:space="preserve">
           <source>Release Notes</source>
           <target state="translated">Note di rilascio</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" translate="yes" xml:space="preserve">
+          <source>Two Page View (Show Cover Page in Two Page View)</source>
+          <target state="translated">Vista a due pagine (Mostra copertina nella vista a due pagine)</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" translate="yes" xml:space="preserve">
+          <source>Two Page View</source>
+          <target state="translated">Vista a due pagine</target>
         </trans-unit>
       </group>
     </body>

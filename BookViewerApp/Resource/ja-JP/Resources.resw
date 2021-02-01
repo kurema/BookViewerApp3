@@ -553,10 +553,10 @@
     <value>デフォルト</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
-    <value>自動単ページ</value>
+    <value>単一ページ表示 (自動)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>自動見開き</value>
+    <value>見開きページ表示 (自動)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>ページレイアウト</value>
@@ -572,5 +572,11 @@
   </data>
   <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
     <value>リリースノート</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
+    <value>見開きページ表示 (先頭ページも見開きで表示)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
+    <value>見開きページ表示</value>
   </data>
 </root>

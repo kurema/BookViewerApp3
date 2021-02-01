@@ -549,10 +549,10 @@
     <value>默認</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
-    <value>自動單頁</value>
+    <value>單頁檢視 (自動)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>自動切換單/雙頁</value>
+    <value>雙頁檢視 (自動)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>頁面佈局</value>
@@ -568,5 +568,11 @@
   </data>
   <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
     <value>發行說明</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
+    <value>雙頁檢視 (雙頁檢視時顯示封面)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
+    <value>雙頁檢視</value>
   </data>
 </root>

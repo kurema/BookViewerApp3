@@ -549,10 +549,10 @@ Ti auguro buona fortuna.</value>
     <value>Layout predefinito</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
-    <value>Pagina singola automatica</value>
+    <value>Pagina singola automatica (automatica)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
-    <value>Commutazione automatica pagina singola / doppia</value>
+    <value>Vista a due pagine (automatica)</value>
   </data>
   <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
     <value>Layout di pagina</value>
@@ -568,5 +568,11 @@ Ti auguro buona fortuna.</value>
   </data>
   <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
     <value>Note di rilascio</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
+    <value>Vista a due pagine (Mostra copertina nella vista a due pagine)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
+    <value>Vista a due pagine</value>
   </data>
 </root>

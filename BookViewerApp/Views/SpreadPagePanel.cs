@@ -315,11 +315,25 @@ namespace BookViewerApp.Views
                 UpdateSource(images[0], bmp1);
                 UpdateSource(images[1], bmp2);
 
-                images[0].Measure(new Size(wr1, h));
-                images[1].Measure(new Size(wr2, h));
+                if (wr1 + wr2 < w)
+                {
+                    images[0].Measure(new Size(wr1, h));
+                    images[1].Measure(new Size(wr2, h));
 
-                images[0].Arrange(new Rect(wl, 0, wr1, h));
-                images[1].Arrange(new Rect(wl + wr1, 0, wr2, h));
+                    images[0].Arrange(new Rect(wl, 0, wr1, h));
+                    images[1].Arrange(new Rect(wl + wr1, 0, wr2, h));
+                }
+                else
+                {
+                    var wscale = w/ (wr1 + wr2);
+                    var top = (1 - wscale) * h / 2.0;
+
+                    images[0].Measure(new Size(wr1*wscale, h * wscale));
+                    images[1].Measure(new Size(wr2 * wscale, h * wscale));
+
+                    images[0].Arrange(new Rect(0, top, wr1*wscale, h * wscale));
+                    images[1].Arrange(new Rect(wr1*wscale, top, wr2 * wscale, h * wscale));
+                }
 
                 DisplayedStatus = DisplayedStatusEnum.Spread;
             }
