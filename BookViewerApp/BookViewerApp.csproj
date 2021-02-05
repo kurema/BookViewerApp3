@@ -367,6 +367,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueConverters\ValueConverters.cs" />
+    <Compile Include="Views\SettingPanelControl.xaml.cs">
+      <DependentUpon>SettingPanelControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SimpleListViewControl.xaml.cs">
       <DependentUpon>SimpleListViewControl.xaml</DependentUpon>
     </Compile>
@@ -461,6 +464,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingPanelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

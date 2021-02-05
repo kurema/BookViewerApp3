@@ -1,0 +1,135 @@
+﻿<UserControl
+    x:Class="BookViewerApp.Views.SettingPanelControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookViewerApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:template="using:BookViewerApp.Views.TemplateSelectors"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <CollectionViewSource x:Name="settingSource" IsSourceGrouped="True"/>
+
+        <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
+        <ValueConverter:LocalizeFormatConverter x:Key="vc_lf"/>
+        <ValueConverter:LocalizeConverter x:Key="vc_local"/>
+
+        <Style TargetType="Border" x:Key="ItemBorder">
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="3"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ItemsControl Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ItemsSource="{Binding Source={StaticResource settingSource}}" >
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Key,Converter={StaticResource vc_lf},ConverterParameter='Setting/Group/{0}',Mode=OneTime}" Style="{ThemeResource TitleTextBlockStyle}" Margin="10"/>
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+                <GroupStyle.Panel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </GroupStyle.Panel>
+            </GroupStyle>
+        </ItemsControl.GroupStyle>
+        <ItemsControl.ItemTemplateSelector>
+            <template:SettingTemplateSelector>
+                <template:SettingTemplateSelector.TemplateBool>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Description}"/>
+                                <ToggleSwitch IsOn="{Binding Value,Mode=TwoWay}"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </template:SettingTemplateSelector.TemplateBool>
+                <template:SettingTemplateSelector.TemplateDouble>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Description}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox InputScope="Number" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
+                                    <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </template:SettingTemplateSelector.TemplateDouble>
+                <template:SettingTemplateSelector.TemplateRegex>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Description}"/>
+                                <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="300"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </template:SettingTemplateSelector.TemplateRegex>
+                <template:SettingTemplateSelector.TemplateString>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Description}"/>
+                                <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="600"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </template:SettingTemplateSelector.TemplateString>
+                <template:SettingTemplateSelector.TemplateInt>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Description}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox InputScope="Number"  Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
+                                    <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </template:SettingTemplateSelector.TemplateInt>
+                <template:SettingTemplateSelector.TemplateEnum>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Description}"/>
+                                <ComboBox ItemsSource="{Binding EnumItems}" Width="240" PlaceholderText="{Binding EnumPlaceholderText}"
+                                                  SelectedItem="{Binding SelectedEnum,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </template:SettingTemplateSelector.TemplateEnum>
+            </template:SettingTemplateSelector>
+        </ItemsControl.ItemTemplateSelector>
+    </ItemsControl>
+</UserControl>

@@ -41,8 +41,7 @@ namespace BookViewerApp.Views
                 src.Add(new SettingViewModel(item));
             }
             //this.SettingPanel.ItemsSource = src;
-            settingSource.Source = src.GroupBy(a => a.Group);
-
+            SettingPanel.SettingSource.Source = src.GroupBy(a => a.Group);
 
             this.Loaded += SettingPage_Loaded;
         }
