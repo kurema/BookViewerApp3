@@ -20,6 +20,5 @@ jobs:
         color: "#48f442"
         username: "GitHub Bot"
         args: |
-          The ${{steps.tag.outputs.tag}} is released.
-          See what's new here!
+          ${{steps.tag.outputs.tag}} will be released in a few days.
           https://github.com/kurema/BookViewerApp3/releases
