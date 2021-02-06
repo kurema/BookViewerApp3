@@ -575,4 +575,7 @@ Ti auguro buona fortuna.</value>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
     <value>Vista a due pagine</value>
   </data>
+  <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
+    <value>Impostazioni rapide</value>
+  </data>
 </root>

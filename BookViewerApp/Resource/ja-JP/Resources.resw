@@ -579,4 +579,7 @@
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
     <value>見開きページ表示</value>
   </data>
+  <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
+    <value>クイック設定</value>
+  </data>
 </root>

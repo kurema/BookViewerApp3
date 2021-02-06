@@ -38,6 +38,8 @@ namespace BookViewerApp.ViewModels
         private Commands.ICommandEventRaiseable? _PageVisualAddCommand;
         private Commands.ICommandEventRaiseable? _PageVisualSetCommand;
         private Commands.ICommandEventRaiseable? _PageVisualMaxCommand;
+        private Commands.ICommandEventRaiseable? _PageSetCommand;
+        private Commands.ICommandEventRaiseable? _PageMaxCommand;
         private Commands.ICommandEventRaiseable? _SwapReverseCommand;
 
         private Commands.ICommandEventRaiseable? _ShiftBookCommand;
@@ -75,6 +77,10 @@ namespace BookViewerApp.ViewModels
         public ICommand SwapReverseCommand { get { return _SwapReverseCommand ??= new Commands.CommandBase((a) => { return true; }, (a) => { this.Reversed = !this.Reversed; }); } }
         public ICommand ToggleFullScreenCommand { get => _ToggleFullScreenCommand ??= new InvalidCommand(); set => _ToggleFullScreenCommand = value; }
         public ICommand GoToHomeCommand { get => _GoToHomeCommand ??= new InvalidCommand(); set => _GoToHomeCommand = value; }
+
+        public ICommand PageSetCommand { get { return _PageSetCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
+        public ICommand PageMaxCommand { get { return _PageMaxCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.Pages.Count - 1, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
+
 
         public Commands.ICommandEventRaiseable ShiftBookCommand { get { return _ShiftBookCommand = _ShiftBookCommand ?? new Commands.ShiftSelectedBook(this); } }
 
@@ -435,11 +441,11 @@ namespace BookViewerApp.ViewModels
                 if (index != -1) this._PageSelected = index;
             }
 #if DEBUG
-            System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToInclude.Count() > 0 || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
+            //System.Diagnostics.Debug.Assert(this.SpreadMode == SpreadPagePanel.ModeEnum.Single || pagesToInclude.Count() > 0 || pagesToExclude.Count() > 0 || Enumerable.SequenceEqual(PagesOriginal.ToArray(), Pages.ToArray()));
 #endif
         }
 
-        public async void UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
+        public async Task UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
         {
             if (this.SpreadMode == SpreadPagePanel.ModeEnum.Spread) await Task.Delay(500);//Is 500msec good?
             await dispatcher.RunAsync(priority, () => this.UpdatePages());
@@ -663,6 +669,16 @@ namespace BookViewerApp.ViewModels
         public bool PageWithinRange(int page)
         {
             return this.Pages.Count > page && page >= 0;
+        }
+
+        public void UpdateSettings()
+        {
+            if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
+            foreach(var item in PagesOriginal)
+            {
+                item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
+                item.SpreadDisplayedStatus = SpreadPagePanel.DisplayedStatusEnum.Single;
+            }
         }
 
         public void DisposeBasic()

@@ -782,6 +782,10 @@ Ti auguro buona fortuna.</target>
           <source>Two Page View</source>
           <target state="translated">Vista a due pagine</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
+          <source>Quick Settings</source>
+          <target state="translated">Impostazioni rapide</target>
+        </trans-unit>
       </group>
     </body>
   </file>

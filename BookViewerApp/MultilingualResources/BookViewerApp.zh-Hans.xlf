@@ -765,11 +765,15 @@ I wish you good luck.</source>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" translate="yes" xml:space="preserve">
           <source>Two Page View (Show Cover Page in Two Page View)</source>
-          <target state="new">双页视图 (在双页视图中显示封面)</target>
+          <target state="translated">双页视图 (在双页视图中显示封面)</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" translate="yes" xml:space="preserve">
           <source>Two Page View</source>
-          <target state="new">双页视图</target>
+          <target state="translated">双页视图</target>
+        </trans-unit>
+        <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
+          <source>Quick Settings</source>
+          <target state="translated">快速配置</target>
         </trans-unit>
       </group>
     </body>

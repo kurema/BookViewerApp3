@@ -74,21 +74,21 @@ namespace BookViewerApp.Views
 
             if (Binding != null)
             {
-                Binding.PagePropertyChanged += (s, e) =>
+                Binding.PagePropertyChanged += async (s, e) =>
                  {
                      if ((e.Item1 == flipView.SelectedItem || e.Item1?.NextPage?.NextPage == flipView.SelectedItem) && e.Item2.PropertyName == nameof(PageViewModel.SpreadDisplayedStatus))
                      {
-                         Binding.UpdatePages(this.Dispatcher);
+                         await Binding.UpdatePages(this.Dispatcher);
                      }
                  };
             }
 
 
-            flipView.SelectionChanged += (s, e) =>
+            flipView.SelectionChanged += async (s, e) =>
             {
                 if (e.AddedItems.Count > 0 && e.AddedItems[0] is PageViewModel vm)
                 {
-                    Binding?.UpdatePages(this.Dispatcher);
+                    await Binding?.UpdatePages(this.Dispatcher);
                 }
 
             };
@@ -153,6 +153,9 @@ namespace BookViewerApp.Views
             //currentView.AppViewBackButtonVisibility = Frame?.CanGoBack == true ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
             currentView.BackRequested += CurrentView_BackRequested;
 
+            //このディレイがないとタブコントロールが表示されてしまう。親がロードされれば問題ないはずなのでディレイ。
+            //TrySetFullScreenMode()内のコメントアウト参照。そっちでの細かな経緯は忘れた。
+            //Without this Delay, Tab control is not hidden. See TrySetFullScreenMode().
             await Task.Delay(500);
             if ((bool)SettingStorage.GetValue("DefaultFullScreen"))
             {
@@ -376,6 +379,38 @@ namespace BookViewerApp.Views
                     break;
             }
 
+        }
+
+        private async void MenuFlyoutItem_Click_OpenSettingDialog(object sender, RoutedEventArgs e)
+        {
+            var panel = new SettingPanelControl();
+            var dialog = new ContentDialog()
+            {
+                Content = new ScrollViewer(){
+                    Content = panel
+                },
+            };
+
+            var src = new List<SettingPage.SettingViewModel>(SettingStorage.SettingInstances.Length);
+            foreach (var item in SettingStorage.SettingInstances.Where(a => a.IsVisible && a.GroupName== "Viewer"))
+            {
+                src.Add(new SettingPage.SettingViewModel(item));
+            }
+            panel.SettingSource.Source = src.GroupBy(a => a.Group);
+            dialog.IsPrimaryButtonEnabled = true;
+            dialog.PrimaryButtonText = Managers.ResourceManager.Loader.GetString("Word/OK");
+            Binding.SaveInfo();
+
+            dialog.Closed += async (s, e) =>
+            {
+                if (Binding == null) return;
+                this.Binding.UpdateSettings();
+                var page = Binding.PageSelectedDisplay ;
+                await this.Binding.UpdatePages(this.Dispatcher);
+                Binding.PageSelectedDisplay = page;
+            };
+
+            await dialog.ShowAsync();
         }
     }
 }

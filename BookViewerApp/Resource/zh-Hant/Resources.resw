@@ -575,4 +575,7 @@
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
     <value>雙頁檢視</value>
   </data>
+  <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
+    <value>快速配置</value>
+  </data>
 </root>

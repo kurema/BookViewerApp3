@@ -765,6 +765,10 @@ I wish you good luck.</source>
           <source>Two Page View</source>
           <target state="translated">雙頁檢視</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
+          <source>Quick Settings</source>
+          <target state="translated">快速配置</target>
+        </trans-unit>
       </group>
     </body>
   </file>

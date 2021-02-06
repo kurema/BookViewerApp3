@@ -569,4 +569,13 @@
   <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
     <value>发行说明</value>
   </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
+    <value>双页视图 (在双页视图中显示封面)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
+    <value>双页视图</value>
+  </data>
+  <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
+    <value>快速配置</value>
+  </data>
 </root>

@@ -61,6 +61,8 @@
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageTop.Label, Mode=OneTime}"  Command="{Binding PageSetCommand}" CommandParameter="0" />
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageEnd.Label, Mode=OneTime}"  Command="{Binding PageMaxCommand}" />
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.QuickSettings.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_OpenSettingDialog" />
                     </MenuFlyout>
 
                 </FlipView.Resources>
