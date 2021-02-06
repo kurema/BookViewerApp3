@@ -23,6 +23,7 @@
       </container>
       <container title="About BookViewer3">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
+        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
         <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
       </container>
@@ -30,6 +31,7 @@
         <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
         <bookmark url="https://github.com/kurema" title="GitHub" />
         <bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
+        <bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV/tag=kurema05-22" title="Wishlist" />
       </container>
     </bookmarks>
     <bookmarks language="ja" title="BookViewer3">
@@ -63,6 +65,7 @@
       </container>
       <container title="アプリについて">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
+        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
         <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
       </container>
