@@ -137,14 +137,19 @@ namespace BookViewerApp.Views
             spreadPanel.Width = this.ActualWidth;
             spreadPanel.Height = this.ActualHeight;
 
-            if (await (DataContext as PageViewModel)?.Content?.UpdateRequiredAsync(this.ActualWidth, this.ActualHeight) == true)
+            UpdateSourceIfRequired();
+        }
+
+        private async void UpdateSourceIfRequired()
+        {
+            if (await(DataContext as PageViewModel)?.Content?.UpdateRequiredAsync(this.ActualWidth, this.ActualHeight) == true)
             {
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
                     (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
                 }
                 var spreadMode = (this.DataContext as PageViewModel)?.Parent?.SpreadMode;
-                if (spreadMode == SpreadPagePanel.ModeEnum.Spread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle 
+                if (spreadMode == SpreadPagePanel.ModeEnum.Spread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle
                     || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
@@ -159,14 +164,16 @@ namespace BookViewerApp.Views
 
             if (args.NewValue is PageViewModel dc)
             {
-                void Parent_PropertyChanged(object sender, PropertyChangedEventArgs e)
-                {
-                    if (e.PropertyName == nameof(dc.Parent.SpreadMode))
-                    {
-                        UpdateSource2();
-                        spreadPanel.InvalidateArrange();
-                    }
-                }
+                //This caused problem.
+                //void Parent_PropertyChanged(object sender, PropertyChangedEventArgs e)
+                //{
+                //    if (e.PropertyName == nameof(dc.Parent.SpreadMode))
+                //    {
+                //        UpdateSource1();
+                //        UpdateSource2();
+                //        spreadPanel.InvalidateArrange();
+                //    }
+                //}
 
                 void UpdateSource2()
                 {
@@ -179,12 +186,13 @@ namespace BookViewerApp.Views
                         else
                         {
                             UpdateCancellationTokenSource(ref CancellationTokenSource2);
-                            if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-                            dc.NextPage.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
+                            if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage source2)) spreadPanel.Source2 = source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                            dc.NextPage.SetImageNoWait(source2, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
                         }
                     }
                 }
 
+                void UpdateSource1()
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
                     //Note: dc.Sourceを使うと複数ページに同じBitmapSourceが適用されるバグがあった。
@@ -192,12 +200,13 @@ namespace BookViewerApp.Views
                     dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
                 }
 
+                UpdateSource1();
                 UpdateSource2();
 
                 if (dc.Parent != null && dc.Parent != UserControl_DataContextChanged_CurrentParent)
                 {
-                    if (UserControl_DataContextChanged_CurrentParent != null) UserControl_DataContextChanged_CurrentParent.PropertyChanged -= Parent_PropertyChanged;
-                    dc.Parent.PropertyChanged += Parent_PropertyChanged;
+                    //if (UserControl_DataContextChanged_CurrentParent != null) UserControl_DataContextChanged_CurrentParent.PropertyChanged -= Parent_PropertyChanged;
+                    //dc.Parent.PropertyChanged += Parent_PropertyChanged;
                     UserControl_DataContextChanged_CurrentParent = dc.Parent;
                 }
             }

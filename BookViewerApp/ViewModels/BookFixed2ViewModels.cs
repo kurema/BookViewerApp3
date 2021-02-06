@@ -472,9 +472,9 @@ namespace BookViewerApp.ViewModels
                         foreach (var item in PagesOriginal)
                         {
                             var contains = Pages.Contains(item);
-                            if (i % 2 == 0 && (!contains))
+                            if (i % 2 == 0)
                             {
-                                Pages.Add(item);
+                                if(!contains) Pages.Add(item);
                                 item.SpreadModeOverride = i== pageCount -1?
                                     SpreadPagePanel.ModeOverrideEnum.ForceSingle :
                                     SpreadPagePanel.ModeOverrideEnum.Default;
@@ -502,9 +502,9 @@ namespace BookViewerApp.ViewModels
                                 }
                                 item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
                             }
-                            else if (i % 2 == 1 && (!contains))
+                            else if (i % 2 == 1)
                             {
-                                Pages.Add(item);
+                                if (!contains) Pages.Add(item);
                                 item.SpreadModeOverride = i == pageCount - 1 ?
                                     SpreadPagePanel.ModeOverrideEnum.ForceSingle :
                                     SpreadPagePanel.ModeOverrideEnum.Default;
@@ -674,7 +674,7 @@ namespace BookViewerApp.ViewModels
         public void UpdateSettings()
         {
             if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
-            foreach(var item in PagesOriginal)
+            foreach (var item in PagesOriginal)
             {
                 item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
                 item.SpreadDisplayedStatus = SpreadPagePanel.DisplayedStatusEnum.Single;

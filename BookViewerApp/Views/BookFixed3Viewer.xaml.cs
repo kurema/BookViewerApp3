@@ -404,8 +404,8 @@ namespace BookViewerApp.Views
             dialog.Closed += async (s, e) =>
             {
                 if (Binding == null) return;
+                var page = Binding.PageSelectedDisplay;
                 this.Binding.UpdateSettings();
-                var page = Binding.PageSelectedDisplay ;
                 await this.Binding.UpdatePages(this.Dispatcher);
                 Binding.PageSelectedDisplay = page;
             };
