@@ -649,7 +649,7 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</sou
         <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">寄付</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          
         </trans-unit>
         <trans-unit id="Info.Purchase.Word.Purchased" translate="yes" xml:space="preserve">
           <source>Purchased</source>
@@ -736,7 +736,7 @@ I wish you good luck.</source>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto</source>
           <target state="translated">自動切り替え</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>

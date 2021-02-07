@@ -131,8 +131,7 @@
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
           <source>Reverse page as default</source>
-          <target state="needs-review-translation">Pagine invertite come predefinito</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Pagine invertite come predefinito</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
@@ -140,8 +139,7 @@
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Title" translate="yes" xml:space="preserve">
           <source>Automatically open last read page</source>
-          <target state="needs-review-translation">Apri l'ultima pagina letta</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Apri l'ultima pagina letta</target>
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Description" translate="yes" xml:space="preserve">
           <source>Show go to rightmost/leftmost button in book viewer.</source>
@@ -149,18 +147,15 @@
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Title" translate="yes" xml:space="preserve">
           <source>Show go to rightmost /leftmost button</source>
-          <target state="needs-review-translation">Mostra i pulsanti tutto indietro/avanti</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Mostra i pulsanti tutto indietro/avanti</target>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
           <source>Sync bookmarks of books over the cloud.</source>
-          <target state="needs-review-translation">Sincronizza i segnalibri con il cloud.</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Sincronizza i segnalibri con il cloud.</target>
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
           <source>Sync bookmarks of books</source>
-          <target state="needs-review-translation">Sincronizza segnalibri</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Sincronizza segnalibri</target>
         </trans-unit>
         <trans-unit id="ToggleFullScreen.Label" translate="yes" xml:space="preserve">
           <source>Toggle full screen mode.</source>
@@ -208,8 +203,7 @@
         </trans-unit>
         <trans-unit id="Setting_BackgroundBrightness.Title" translate="yes" xml:space="preserve">
           <source>Brightness of background</source>
-          <target state="needs-review-translation">Luminosità sfondo.</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">Luminosità sfondo.</target>
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
           <source>Use scroll animation on book viewer.</source>
@@ -221,8 +215,7 @@
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Description" translate="yes" xml:space="preserve">
           <source>Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
-          <target state="needs-review-translation">La parte corrispondente del titolo viene nascosta. Inserisci una frase come regola. (es:\(.*\))</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">La parte corrispondente del titolo viene nascosta. Inserisci una frase come regola. (es:\(.*\))</target>
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Title" translate="yes" xml:space="preserve">
           <source>Book name to trim</source>
@@ -398,11 +391,11 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Bookmarks" translate="yes" xml:space="preserve">
           <source>Bookmarks</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Segnalibri</target>
+          <target state="final" state-qualifier="tm-suggestion">Segnalibri</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Folders" translate="yes" xml:space="preserve">
           <source>Folders</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Cartelle</target>
+          <target state="final" state-qualifier="tm-suggestion">Cartelle</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.Histories" translate="yes" xml:space="preserve">
           <source>Histories</source>
@@ -411,7 +404,7 @@
         </trans-unit>
         <trans-unit id="ExplorerContainer.Libraries" translate="yes" xml:space="preserve">
           <source>Libraries</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Librerie</target>
+          <target state="final" state-qualifier="tm-suggestion">Librerie</target>
         </trans-unit>
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
           <source>This PC</source>
@@ -428,9 +421,8 @@
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" translate="yes" xml:space="preserve">
           <source>The folder is referred by following library.
 Are you sure to unregister?</source>
-          <target state="needs-review-translation">La cartella viene indicata dalla seguente libreria.
-Annullare la registrazione?</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">La cartella è indicata dalla seguente libreria.
+Sei sicuro di annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" translate="yes" xml:space="preserve">
           <source>Unregister folder</source>
@@ -466,13 +458,11 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="Setting_WebSearchEngine.Description" translate="yes" xml:space="preserve">
           <source>Set the URL of search engine which is used when searching from address bar(%s in place of query).</source>
-          <target state="needs-review-translation">Imposta l'URL del motore di ricerca che viene utilizzato durante la ricerca dalla barra degli indirizzi (% s al posto della query).</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Imposta l'URL del motore di ricerca che viene utilizzato durante la ricerca dalla barra degli indirizzi (% s al posto della query).</target>
         </trans-unit>
         <trans-unit id="Setting_WebSearchEngine.Title" translate="yes" xml:space="preserve">
           <source>Search</source>
-          <target state="needs-review-translation">Ricerca</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Ricerca</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Histories.HideHistores.Title" translate="yes" xml:space="preserve">
           <source>Hide histories</source>
@@ -561,7 +551,7 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="Word.Title" translate="yes" xml:space="preserve">
           <source>Title</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Titolo</target>
+          <target state="translated" state-qualifier="tm-suggestion">Titolo</target>
         </trans-unit>
         <trans-unit id="Word.URL" translate="yes" xml:space="preserve">
           <source>URL</source>
@@ -569,15 +559,15 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Bookmarks.Edit.Title" translate="yes" xml:space="preserve">
           <source>Edit</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Modifica</target>
+          <target state="translated" state-qualifier="tm-suggestion">Modifica</target>
         </trans-unit>
         <trans-unit id="Info.Info.Contributors" translate="yes" xml:space="preserve">
           <source>Contributors</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Collaboratori</target>
+          <target state="translated" state-qualifier="tm-suggestion">Collaboratori</target>
         </trans-unit>
         <trans-unit id="Info.Info.Sponsors" translate="yes" xml:space="preserve">
           <source>Sponsors</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">sponsor</target>
+          <target state="translated" state-qualifier="tm-suggestion">Sponsor</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.License" translate="yes" xml:space="preserve">
           <source>License</source>
@@ -585,15 +575,15 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.LicenseTerms" translate="yes" xml:space="preserve">
           <source>License Terms</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Condizioni di licenza</target>
+          <target state="translated" state-qualifier="tm-suggestion">Condizioni di licenza</target>
         </trans-unit>
         <trans-unit id="Info.Info.Title" translate="yes" xml:space="preserve">
           <source>Info</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Informazioni</target>
+          <target state="translated" state-qualifier="tm-suggestion">Informazioni</target>
         </trans-unit>
         <trans-unit id="Info.Info.Translation" translate="yes" xml:space="preserve">
           <source>Translation</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Traduzione</target>
+          <target state="translated" state-qualifier="tm-suggestion">Traduzione</target>
         </trans-unit>
         <trans-unit id="Info.Info.ThirdParty.Title" translate="yes" xml:space="preserve">
           <source>Third-Party Notification</source>
@@ -609,11 +599,11 @@ Annullare la registrazione?</target>
         </trans-unit>
         <trans-unit id="Info.Info.Privacy.Title" translate="yes" xml:space="preserve">
           <source>Privacy</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Riservatezza</target>
+          <target state="translated" state-qualifier="tm-suggestion">Privacy</target>
         </trans-unit>
         <trans-unit id="Info.Debug.OpenAppData.Title" translate="yes" xml:space="preserve">
           <source>Open data folder.</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Apre la cartella dei dati.</target>
+          <target state="translated" state-qualifier="tm-suggestion">Apre la cartella dei dati.</target>
         </trans-unit>
         <trans-unit id="Info.Debug.Title" translate="yes" xml:space="preserve">
           <source>Debug</source>
@@ -669,7 +659,6 @@ Questo include schede, Fluent Design, filer integrato e numerose correzioni di b
         <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">Dnate</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Info.Purchase.Word.Purchased" translate="yes" xml:space="preserve">
           <source>Purchased</source>
@@ -752,7 +741,6 @@ Ti auguro buona fortuna.</target>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto</source>
           <target state="translated">Automatica</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>

@@ -241,10 +241,10 @@
     <value>瀏覽器</value>
   </data>
   <data name="Setting.Group.Cloud" xml:space="preserve">
-    <value>雲端</value>
+    <value>雲計算</value>
   </data>
   <data name="Setting.Group.Library" xml:space="preserve">
-    <value>圖庫</value>
+    <value>Library</value>
   </data>
   <data name="Setting.Group.Obsolete" xml:space="preserve">
     <value>已過時</value>
@@ -262,10 +262,10 @@
     <value>常用</value>
   </data>
   <data name="TabHeader.Info" xml:space="preserve">
-    <value>資訊</value>
+    <value>信息</value>
   </data>
   <data name="TabHeader.NewTab" xml:space="preserve">
-    <value>新索引標籤</value>
+    <value>新標籤</value>
   </data>
   <data name="TabHeader.Setting" xml:space="preserve">
     <value>設定</value>
@@ -280,10 +280,10 @@
     <value>瀏覽器</value>
   </data>
   <data name="TabHeader.Explorer" xml:space="preserve">
-    <value>檔案總管</value>
+    <value>資源管理器</value>
   </data>
   <data name="Explorer.Apps" xml:space="preserve">
-    <value>應用程式</value>
+    <value>應用</value>
   </data>
   <data name="Explorer.Browser" xml:space="preserve">
     <value>瀏覽器</value>
@@ -316,17 +316,17 @@
     <value>取消註冊文件夾</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
-    <value>該文件夾由以下庫引用。
+    <value>該文件夾由以下Library引用。
 您確定要註銷嗎？</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
     <value>取消註冊文件夾</value>
   </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
-    <value>新增媒體櫃</value>
+    <value>新Library</value>
   </data>
   <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
-    <value>添加到圖書館</value>
+    <value>添加到Library</value>
   </data>
   <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
     <value>該文件夾已被註冊。</value>
@@ -341,7 +341,7 @@
     <value>顯示預設書籤</value>
   </data>
   <data name="Setting.Group.Explorer" xml:space="preserve">
-    <value>檔案總管</value>
+    <value>資源管理器</value>
   </data>
   <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
     <value>設置從地址欄搜索時使用的搜索引擎URL（以％s代替查詢）。</value>
@@ -374,13 +374,13 @@
     <value>預設書籤</value>
   </data>
   <data name="ItemType.LibraryItem" xml:space="preserve">
-    <value>程式庫</value>
+    <value>Library</value>
   </data>
   <data name="ItemType.SystemFolder" xml:space="preserve">
     <value>系統資料夾</value>
   </data>
   <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
-    <value>開啟所屬資料夾</value>
+    <value>打開父文件夾</value>
   </data>
   <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
     <value>隱藏預設書籤</value>
@@ -389,7 +389,7 @@
     <value>顯示預設書籤</value>
   </data>
   <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
-    <value>取消註冊該庫</value>
+    <value>取消註冊該Library</value>
   </data>
   <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
     <value>要保存的最大歷史記錄數。</value>
@@ -398,16 +398,16 @@
     <value>歷史數</value>
   </data>
   <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
-    <value>管理這個圖書館</value>
+    <value>管理這個Library</value>
   </data>
   <data name="ContextMenu.Word.New.Title" xml:space="preserve">
-    <value>新增</value>
+    <value>新建</value>
   </data>
   <data name="Word.Folder" xml:space="preserve">
     <value>資料夾</value>
   </data>
   <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
-    <value>新增資料夾</value>
+    <value>新建文件夾</value>
   </data>
   <data name="ContextMenu.Word.New.Bookmark.Title" xml:space="preserve">
     <value>書籤</value>
@@ -425,13 +425,13 @@
     <value>參與者</value>
   </data>
   <data name="Info.Info.ThirdParty.License" xml:space="preserve">
-    <value>授權</value>
+    <value>執照</value>
   </data>
   <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
-    <value>授權條款</value>
+    <value>許可條款</value>
   </data>
   <data name="Info.Info.Title" xml:space="preserve">
-    <value>資訊</value>
+    <value>信息</value>
   </data>
   <data name="Info.Info.Translation" xml:space="preserve">
     <value>翻譯</value>
@@ -446,10 +446,10 @@
     <value>顯示隱私權政策</value>
   </data>
   <data name="Info.Info.Privacy.Title" xml:space="preserve">
-    <value>隱私權</value>
+    <value>隱私</value>
   </data>
   <data name="Info.Debug.OpenAppData.Title" xml:space="preserve">
-    <value>開啟數據資料夾。</value>
+    <value>打開數據文件夾。</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
     <value>除錯</value>

@@ -130,13 +130,13 @@
     <value>打开一本新书时，默认为右装订。</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>默认设置为右绑定。</value>
+    <value>反转页面作为默认值。</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
     <value>自动打开您上次阅读的页面。</value>
   </data>
   <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
-    <value>记住最后阅读的页面。</value>
+    <value>自动打开最后阅读的页面。</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
     <value>在书籍查看器中显示转到最右/最左按钮。</value>
@@ -175,7 +175,7 @@
     <value>滚动动画</value>
   </data>
   <data name="Setting_BookNameTrim.Description" xml:space="preserve">
-    <value>匹配的部分隐藏在书名中。以正则表达式输入。（例如：\(.*\)）</value>
+    <value>匹配的部分隐藏在书名中。以正则表达(Regular expression)式输入。（例如：\(.*\)）</value>
   </data>
   <data name="Setting_BookNameTrim.Title" xml:space="preserve">
     <value>要修剪的书名</value>
@@ -241,7 +241,7 @@
     <value>浏览器</value>
   </data>
   <data name="Setting.Group.Cloud" xml:space="preserve">
-    <value>云</value>
+    <value>云计算</value>
   </data>
   <data name="Setting.Group.Library" xml:space="preserve">
     <value>库</value>
@@ -256,10 +256,10 @@
     <value>书架</value>
   </data>
   <data name="TabHeader.BookViewer" xml:space="preserve">
-    <value>查看者</value>
+    <value>查看器</value>
   </data>
   <data name="TabHeader.Home" xml:space="preserve">
-    <value>住宅</value>
+    <value>主页</value>
   </data>
   <data name="TabHeader.Info" xml:space="preserve">
     <value>信息</value>
@@ -292,7 +292,7 @@
     <value>打开</value>
   </data>
   <data name="Explorer.Setting" xml:space="preserve">
-    <value>设置:</value>
+    <value>设置</value>
   </data>
   <data name="ExplorerContainer.Bookmarks" xml:space="preserve">
     <value>书签</value>
@@ -326,7 +326,7 @@
     <value>新建库</value>
   </data>
   <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
-    <value>添加到图书馆</value>
+    <value>添加到库</value>
   </data>
   <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
     <value>该文件夹已被注册。</value>
@@ -398,7 +398,7 @@
     <value>履历记录数</value>
   </data>
   <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
-    <value>管理图书馆</value>
+    <value>管理库</value>
   </data>
   <data name="ContextMenu.Word.New.Title" xml:space="preserve">
     <value>新建</value>
@@ -425,7 +425,7 @@
     <value>参与者</value>
   </data>
   <data name="Info.Info.ThirdParty.License" xml:space="preserve">
-    <value>许可证</value>
+    <value>执照</value>
   </data>
   <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
     <value>许可条款</value>
@@ -434,7 +434,7 @@
     <value>信息</value>
   </data>
   <data name="Info.Info.Translation" xml:space="preserve">
-    <value>译文</value>
+    <value>翻译</value>
   </data>
   <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
     <value>第三方通知</value>
@@ -452,7 +452,7 @@
     <value>打开数据文件夹。</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
-    <value>调试</value>
+    <value>除错</value>
   </data>
   <data name="Info.Debug.CopyFAL.Title" xml:space="preserve">
     <value>复制FutureAccessList信息。</value>
@@ -461,7 +461,7 @@
     <value>第三方</value>
   </data>
   <data name="Info.Info.Sponsors" xml:space="preserve">
-    <value>发起人</value>
+    <value>赞助</value>
   </data>
   <data name="Info.Info.Developers" xml:space="preserve">
     <value>开发人员</value>
