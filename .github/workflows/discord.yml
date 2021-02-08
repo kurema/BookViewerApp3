@@ -21,4 +21,4 @@ jobs:
         username: "GitHub Bot"
         args: |
           ${{steps.tag.outputs.tag}} will be released in a few days.
-          https://github.com/kurema/BookViewerApp3/releases
+          https://github.com/kurema/BookViewerApp3/releases/tag/${{steps.tag.outputs.tag}}
