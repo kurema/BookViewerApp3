@@ -69,6 +69,61 @@ namespace BookViewerApp.Managers
         }
 
 
+        public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string fileName)
+        {
+            var book = new PdfBook();
+            try
+            {
+                await book.Load(stream,fileName , async (a) =>
+                {
+                    var dialog = new Views.PasswordRequestContentDialog();
+                    var result = await dialog.ShowAsync();
+                    if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
+                    {
+                        return (dialog.Password, dialog.Remember);
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                });
+            }
+            catch { return null; }
+            if (book.PageCount <= 0) { return null; }
+            return book;
+        }
+
+        public static async Task<IBook> GetBookZip(Stream stream)
+        {
+            var book = new CbzBook();
+            try
+            {
+                await book.LoadAsync(stream);
+            }
+            catch
+            {
+                return null;
+            }
+            if (book.PageCount <= 0) { return null; }
+            return book;
+        }
+
+        public static async Task<IBook> GetBookSharpCompress(Stream stream)
+        {
+            var book = new CompressedBook();
+            try
+            {
+                await book.LoadAsync(stream);
+            }
+            catch
+            {
+                return null;
+            }
+            if (book.PageCount <= 0) { return null; }
+            return book;
+        }
+
         public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type)
         {
             switch (type)
@@ -82,57 +137,11 @@ namespace BookViewerApp.Managers
 
 
         Pdf:;
-            {
-                var book = new PdfBook();
-                try
-                {
-                    await book.Load(file, async (a) =>
-                    {
-                        var dialog = new Views.PasswordRequestContentDialog();
-                        var result = await dialog.ShowAsync();
-                        if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
-                        {
-                            return (dialog.Password, dialog.Remember);
-                        }
-                        else
-                        {
-                            throw new Exception();
-                        }
-
-                    });
-                }
-                catch { return null; }
-                if (book.PageCount <= 0) { return null; }
-                return book;
-            }
+            return await GetBookPdf(await file.OpenReadAsync(), file.Name);
         Zip:;
-            {
-                var book = new CbzBook();
-                try
-                {
-                    await book.LoadAsync((await file.OpenReadAsync()).AsStream());
-                }
-                catch
-                {
-                    return null;
-                }
-                if (book.PageCount <= 0) { return null; }
-                return book;
-            }
+            return await GetBookZip((await file.OpenReadAsync()).AsStream());
         SharpCompress:;
-            {
-                var book = new CompressedBook();
-                try
-                {
-                    await book.LoadAsync((await file.OpenReadAsync()).AsStream());
-                }
-                catch
-                {
-                    return null;
-                }
-                if (book.PageCount <= 0) { return null; }
-                return book;
-            }
+            return await GetBookSharpCompress((await file.OpenReadAsync()).AsStream());
         Epub:;
             {
                 return new BookEpub(file);

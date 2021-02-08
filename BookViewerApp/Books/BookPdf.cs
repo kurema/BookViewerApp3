@@ -153,10 +153,14 @@ namespace BookViewerApp.Books
             return result.ToArray();
         }
 
-
         public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
         {
-            using var stream = await file.OpenReadAsync();
+            using Windows.Storage.Streams.IRandomAccessStream stream = await file.OpenReadAsync();
+            await Load(stream, file.Name, passwordRequestedCallback, defaultPassword);
+        }
+
+        public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream,string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
+        {
             string? password = null;
             bool passSave = false;
 
@@ -294,7 +298,7 @@ namespace BookViewerApp.Books
             }
             OnLoaded(new EventArgs());
             PageLoaded = true;
-            ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(file.Name, Content.PageCount));
+            ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(fileName, Content.PageCount));
         }
 
         private void OnLoaded(EventArgs e)

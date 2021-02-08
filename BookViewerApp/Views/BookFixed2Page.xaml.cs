@@ -136,7 +136,7 @@ namespace BookViewerApp.Views
         }
 
 
-        private async void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             grid.Width = this.ActualWidth;
             grid.Height = this.ActualHeight;
