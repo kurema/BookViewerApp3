@@ -337,7 +337,7 @@ namespace BookViewerApp.Views
                 case Windows.System.VirtualKey.A:
                 case Windows.System.VirtualKey.NumberPad4:
                 case Windows.System.VirtualKey.GamepadLeftThumbstickLeft:
-                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("0.1,0");
+                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("-0.1,0");
                     e.Handled = true;
                     break;
                 case Windows.System.VirtualKey.S:
@@ -349,7 +349,7 @@ namespace BookViewerApp.Views
                 case Windows.System.VirtualKey.D:
                 case Windows.System.VirtualKey.NumberPad6:
                 case Windows.System.VirtualKey.GamepadLeftThumbstickRight:
-                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("-0.1,0");
+                    Binding?.PageSelectedViewModel?.MoveCommand?.Execute("0.1,0");
                     e.Handled = true;
                     break;
                 case Windows.System.VirtualKey.Subtract:

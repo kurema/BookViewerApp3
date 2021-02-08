@@ -71,7 +71,14 @@ namespace BookViewerApp.Views
                             //移動量は表示範囲に対する割合で。
                             //offset is rate of viewport.
                             var viewportMin = Math.Min(scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
-                            scrollViewer.ChangeView(scrollViewer.HorizontalOffset - viewportMin * e2.MoveHorizontal, scrollViewer.VerticalOffset - viewportMin * e2.MoveVertical, null, true);
+                            int direction = scrollViewer.FlowDirection switch
+                            {
+                                FlowDirection.LeftToRight => 1,
+                                FlowDirection.RightToLeft => -1,
+                                _ =>1,
+                            };
+                            
+                            scrollViewer.ChangeView(scrollViewer.HorizontalOffset + viewportMin * e2.MoveHorizontal * direction, scrollViewer.VerticalOffset - viewportMin * e2.MoveVertical, null, true);
                         }
                     };
                     pv.PropertyChanged += (s2, e2) =>
