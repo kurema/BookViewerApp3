@@ -54,7 +54,7 @@
                         <Border Style="{StaticResource ItemBorder}">
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}"/>
                                 <ToggleSwitch IsOn="{Binding Value,Mode=TwoWay}"/>
                             </StackPanel>
                         </Border>
@@ -65,7 +65,7 @@
                         <Border Style="{StaticResource ItemBorder}">
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox InputScope="Number" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
                                     <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
@@ -79,7 +79,7 @@
                         <Border Style="{StaticResource ItemBorder}">
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}"/>
                                 <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="300"/>
                             </StackPanel>
                         </Border>
@@ -90,7 +90,7 @@
                         <Border Style="{StaticResource ItemBorder}">
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}"/>
                                 <TextBox Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="600"/>
                             </StackPanel>
                         </Border>
@@ -101,7 +101,7 @@
                         <Border Style="{StaticResource ItemBorder}">
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox InputScope="Number"  Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
                                     <Slider Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"/>
@@ -115,8 +115,8 @@
                         <Border Style="{StaticResource ItemBorder}">
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                                <TextBlock Text="{Binding Description}"/>
-                                <ComboBox ItemsSource="{Binding EnumItems}" Width="240" PlaceholderText="{Binding EnumPlaceholderText}"
+                                <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}" />
+                                <ComboBox ItemsSource="{Binding EnumItems}" Width="360" PlaceholderText="{Binding EnumPlaceholderText}"
                                                   SelectedItem="{Binding SelectedEnum,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                   >
                                     <ComboBox.ItemTemplate>

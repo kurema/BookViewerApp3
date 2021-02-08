@@ -130,7 +130,7 @@
     <value>當您打開一本新書時，默認情況下為反向頁面。</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>默認為反向頁面</value>
+    <value>从右到左为标准</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
     <value>自動打開您上次閱讀的頁面。</value>
@@ -577,5 +577,16 @@
   </data>
   <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
     <value>快速配置</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
+    <value>記住每本書的頁面方向。</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
+    <value>記住頁面方向</value>
+  </data>
+  <data name="Setting.ToolTip.Message" xml:space="preserve">
+    <value>{0}
+{1}
+默認：{2}</value>
   </data>
 </root>

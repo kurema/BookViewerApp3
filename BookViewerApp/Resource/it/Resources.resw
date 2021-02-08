@@ -97,10 +97,10 @@
     <value>Imposta lo schermo intero come predefinito</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
-    <value>Inverte l'ordine delle pagine quando apri un libro.</value>
+    <value>Imposta l'orientamento della pagina R2L (Da destra a sinistra) come predefinito nel nuovo libro.</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>Pagine invertite come predefinito</value>
+    <value>R2L come impostazione predefinita</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
     <value>Quando apri un libro apre automaticamente la pagina dove eri rimasto.</value>
@@ -577,5 +577,16 @@ Ti auguro buona fortuna.</value>
   </data>
   <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
     <value>Impostazioni rapide</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
+    <value>Ricorda l'orientamento della pagina di ogni libro.</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
+    <value>Ricorda l'orientamento della pagina</value>
+  </data>
+  <data name="Setting.ToolTip.Message" xml:space="preserve">
+    <value>{0}
+{1}
+Predefinito: {2}</value>
   </data>
 </root>

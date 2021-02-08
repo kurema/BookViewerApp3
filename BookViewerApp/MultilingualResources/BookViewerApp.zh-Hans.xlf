@@ -157,16 +157,14 @@
         <trans-unit id="Setting_DefaultFullScreen.Title" translate="yes" xml:space="preserve">
           <source>Set full screen as default</source>
           <target state="translated">将全屏设置为默认值。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
-          <source>Reverse page as default when you open a new book.</source>
+          <source>Set the page orientation R2L(From right to left) as the default in the new book.</source>
           <target state="translated">打开一本新书时，默认为右装订。</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default</source>
-          <target state="translated">反转页面作为默认值。</target>
-          
+          <source>R2L as the default</source>
+          <target state="translated">从右到左为标准。</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
@@ -175,7 +173,6 @@
         <trans-unit id="Setting_SaveLastReadPage.Title" translate="yes" xml:space="preserve">
           <source>Automatically open last read page</source>
           <target state="translated">自动打开最后阅读的页面。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Description" translate="yes" xml:space="preserve">
           <source>Show go to rightmost/leftmost button in book viewer.</source>
@@ -184,17 +181,14 @@
         <trans-unit id="Setting_ShowRightmostAndLeftmost.Title" translate="yes" xml:space="preserve">
           <source>Show go to rightmost /leftmost button</source>
           <target state="translated">显示转到最右边/最左边的按钮。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
           <source>Sync bookmarks of books over the cloud.</source>
           <target state="translated">在云端同步书签。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
           <source>Sync bookmarks of books</source>
           <target state="translated">同步书签。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_TileHeight.Description" translate="yes" xml:space="preserve">
           <source>The height of book tile in bookshelf.</source>
@@ -219,7 +213,6 @@
         <trans-unit id="Setting_BackgroundBrightness.Title" translate="yes" xml:space="preserve">
           <source>Brightness of background</source>
           <target state="translated">背景的亮度。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_ScrollAnimation.Description" translate="yes" xml:space="preserve">
           <source>Use scroll animation on book viewer.</source>
@@ -232,7 +225,6 @@
         <trans-unit id="Setting_BookNameTrim.Description" translate="yes" xml:space="preserve">
           <source>Matched part is hidden in book name. Input in regular expression. (ex:\(.*\))</source>
           <target state="translated">匹配的部分隐藏在书名中。以正则表达(Regular expression)式输入。（例如：\(.*\)）</target>
-          
         </trans-unit>
         <trans-unit id="Setting_BookNameTrim.Title" translate="yes" xml:space="preserve">
           <source>Book name to trim</source>
@@ -409,7 +401,6 @@
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
           <source>This PC</source>
           <target state="translated">电脑</target>
-          
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Register a folder</source>
@@ -658,7 +649,6 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</sou
         <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">捐</target>
-          
         </trans-unit>
         <trans-unit id="Info.Purchase.Word.Purchased" translate="yes" xml:space="preserve">
           <source>Purchased</source>
@@ -741,7 +731,6 @@ I wish you good luck.</source>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto</source>
           <target state="translated">自动</target>
-          
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>
@@ -774,6 +763,20 @@ I wish you good luck.</source>
         <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
           <source>Quick Settings</source>
           <target state="translated">快速配置</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Description" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation of each book.</source>
+          <target state="translated">记住每本书的页面方向。</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Title" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation</source>
+          <target state="translated">记住页面方向</target>
+        </trans-unit>
+        <trans-unit id="Setting.ToolTip.Message" translate="yes" xml:space="preserve">
+          <source>Default: {2}</source>
+          <target state="translated">{0}
+{1}
+默认：{2}</target>
         </trans-unit>
       </group>
     </body>

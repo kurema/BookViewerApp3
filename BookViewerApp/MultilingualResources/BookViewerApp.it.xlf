@@ -126,12 +126,12 @@
           <target state="translated">Imposta lo schermo intero come predefinito</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
-          <source>Reverse page as default when you open a new book.</source>
-          <target state="final">Inverte l'ordine delle pagine quando apri un libro.</target>
+          <source>Set the page orientation R2L(From right to left) as the default in the new book.</source>
+          <target state="translated">Imposta l'orientamento della pagina R2L (Da destra a sinistra) come predefinito nel nuovo libro.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default</source>
-          <target state="final">Pagine invertite come predefinito</target>
+          <source>R2L as the default</source>
+          <target state="translated">R2L come impostazione predefinita</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
@@ -773,6 +773,20 @@ Ti auguro buona fortuna.</target>
         <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
           <source>Quick Settings</source>
           <target state="translated">Impostazioni rapide</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Description" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation of each book.</source>
+          <target state="translated">Ricorda l'orientamento della pagina di ogni libro.</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Title" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation</source>
+          <target state="translated">Ricorda l'orientamento della pagina</target>
+        </trans-unit>
+        <trans-unit id="Setting.ToolTip.Message" translate="yes" xml:space="preserve">
+          <source>Default: {2}</source>
+          <target state="translated">{0}
+{1}
+Predefinito: {2}</target>
         </trans-unit>
       </group>
     </body>

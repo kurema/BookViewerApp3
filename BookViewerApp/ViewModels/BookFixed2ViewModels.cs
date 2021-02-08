@@ -159,6 +159,40 @@ namespace BookViewerApp.ViewModels
         //To Dispose
         private Books.IBookFixed? Content;
 
+        private bool ShouldBeReversed(Books.IBookFixed value)
+        {
+            bool respectInfo= (bool)SettingStorage.GetValue("RememberPageDirection"); 
+
+            switch (BookInfo?.PageDirection)
+            {
+                case Books.Direction.L2R when respectInfo:
+                    return false;
+                case Books.Direction.R2L when respectInfo:
+                    return true;
+                case Books.Direction.Default:
+                case null:
+                default:
+                    bool defaultRev = (bool)SettingStorage.GetValue("DefaultPageReverse");
+                    if ((bool)SettingStorage.GetValue("RespectPageDirectionInfo") && value is Books.IDirectionProvider dp)
+                    {
+                        switch (dp.Direction)
+                        {
+                            case Books.Direction.L2R:
+                                return false;
+                            case Books.Direction.R2L:
+                                return true;
+                            case Books.Direction.Default:
+                            default:
+                                return defaultRev;
+                        }
+                    }
+                    else
+                    {
+                        return defaultRev;
+                    }
+            }
+        }
+
         public async void Initialize(Books.IBookFixed value, Control? target = null)
         {
             this.Loading = true;
@@ -192,42 +226,7 @@ namespace BookViewerApp.ViewModels
             var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
             if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
             this.PageSelectedDisplay = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
-            {
-                switch (BookInfo?.PageDirection)
-                {
-                    case Books.Direction.L2R:
-                        this.Reversed = false;
-                        break;
-                    case Books.Direction.R2L:
-                        this.Reversed = true;
-                        break;
-                    case Books.Direction.Default:
-                    case null:
-                    default:
-                        bool defaultRev = (bool)SettingStorage.GetValue("DefaultPageReverse");
-                        if ((bool)SettingStorage.GetValue("RespectPageDirectionInfo") && value is Books.IDirectionProvider dp)
-                        {
-                            switch (dp.Direction)
-                            {
-                                case Books.Direction.L2R:
-                                    this.Reversed = false;
-                                    break;
-                                case Books.Direction.R2L:
-                                    this.Reversed = true;
-                                    break;
-                                case Books.Direction.Default:
-                                default:
-                                    this.Reversed = defaultRev;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            this.Reversed = defaultRev;
-                        }
-                        break;
-                }
-            }
+            this.Reversed = ShouldBeReversed(value);
             OnPropertyChanged(nameof(Reversed));
             //this.AsBookShelfBook = null;
 
@@ -673,6 +672,7 @@ namespace BookViewerApp.ViewModels
 
         public void UpdateSettings()
         {
+            if (Content != null) this.Reversed = ShouldBeReversed(Content);
             if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
             foreach (var item in PagesOriginal)
             {

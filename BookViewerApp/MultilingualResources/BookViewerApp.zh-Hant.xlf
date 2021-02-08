@@ -159,12 +159,12 @@
           <target state="translated">將全屏設置為默認</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
-          <source>Reverse page as default when you open a new book.</source>
+          <source>Set the page orientation R2L(From right to left) as the default in the new book.</source>
           <target state="translated">當您打開一本新書時，默認情況下為反向頁面。</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default</source>
-          <target state="translated">默認為反向頁面</target>
+          <source>R2L as the default</source>
+          <target state="translated">从右到左为标准</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
           <source>Automatically open page where you read last time.</source>
@@ -185,12 +185,10 @@
         <trans-unit id="Setting_SyncBookmarks.Description" translate="yes" xml:space="preserve">
           <source>Sync bookmarks of books over the cloud.</source>
           <target state="translated">使用OneDrive同步書籍的書籤。</target>
-          
         </trans-unit>
         <trans-unit id="Setting_SyncBookmarks.Title" translate="yes" xml:space="preserve">
           <source>Sync bookmarks of books</source>
           <target state="translated">同步書籍的書籤</target>
-          
         </trans-unit>
         <trans-unit id="Setting_TileHeight.Description" translate="yes" xml:space="preserve">
           <source>The height of book tile in bookshelf.</source>
@@ -403,7 +401,6 @@
         <trans-unit id="ExplorerContainer.PC" translate="yes" xml:space="preserve">
           <source>This PC</source>
           <target state="translated">電腦</target>
-          
         </trans-unit>
         <trans-unit id="ContextMenu.Folders.RegisterFolder.Title" translate="yes" xml:space="preserve">
           <source>Register a folder</source>
@@ -652,7 +649,6 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</sou
         <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">捐</target>
-          
         </trans-unit>
         <trans-unit id="Info.Purchase.Word.Purchased" translate="yes" xml:space="preserve">
           <source>Purchased</source>
@@ -735,7 +731,6 @@ I wish you good luck.</source>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto</source>
           <target state="translated">自動</target>
-          
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>
@@ -768,6 +763,20 @@ I wish you good luck.</source>
         <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
           <source>Quick Settings</source>
           <target state="translated">快速配置</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Description" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation of each book.</source>
+          <target state="translated">記住每本書的頁面方向。</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Title" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation</source>
+          <target state="translated">記住頁面方向</target>
+        </trans-unit>
+        <trans-unit id="Setting.ToolTip.Message" translate="yes" xml:space="preserve">
+          <source>Default: {2}</source>
+          <target state="translated">{0}
+{1}
+默認：{2}</target>
         </trans-unit>
       </group>
     </body>

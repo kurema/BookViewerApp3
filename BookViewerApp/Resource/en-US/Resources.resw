@@ -202,10 +202,10 @@
     <value>Set full screen as default</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
-    <value>Reverse page as default when you open a new book.</value>
+    <value>Set the page orientation R2L(From right to left) as the default in the new book.</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>Reverse page as default</value>
+    <value>R2L as the default</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
     <value>Automatically open page where you read last time.</value>
@@ -682,5 +682,14 @@ I wish you good luck.</value>
   </data>
   <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
     <value>Quick Settings</value>
+  </data>
+  <data name="Setting.ToolTip.Message" xml:space="preserve">
+    <value>Default: {2}</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
+    <value>Remember the page orientation of each book.</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
+    <value>Remember the page orientation</value>
   </data>
 </root>

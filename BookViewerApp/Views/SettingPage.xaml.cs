@@ -307,6 +307,22 @@ namespace BookViewerApp.Views
                 }
             }
 
+            public string ToolTip
+            {
+                get
+                {
+                    var rl = new Windows.ApplicationModel.Resources.ResourceLoader();
+                    //https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#load-a-string-for-a-specific-language-or-other-context
+                    var resourceContext = new Windows.ApplicationModel.Resources.Core.ResourceContext();
+                    resourceContext.QualifierValues["Language"] = "en-US";
+                    var resourceMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap.GetSubtree("Resources");
+                    return String.Format(rl.GetString("Setting/ToolTip/Message"),
+                        resourceMap.GetValue(target.StringResourceKey + "/Title", resourceContext).ValueAsString,
+                        resourceMap.GetValue(target.StringResourceKey + "/Description", resourceContext).ValueAsString,
+                        target.DefaultValue?.ToString() ?? "null");
+                }
+            }
+
             public object Minimum => target.Minimum;
 
             public object Maximum => target.Maximum;

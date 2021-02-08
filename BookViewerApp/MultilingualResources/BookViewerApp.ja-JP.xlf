@@ -119,11 +119,11 @@
           <target state="translated">標準で全画面表示にする</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Description" translate="yes" xml:space="preserve">
-          <source>Reverse page as default when you open a new book.</source>
+          <source>Set the page orientation R2L(From right to left) as the default in the new book.</source>
           <target state="translated">新たに開いた本を右綴じと認識する。</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultPageReverse.Title" translate="yes" xml:space="preserve">
-          <source>Reverse page as default</source>
+          <source>R2L as the default</source>
           <target state="translated">標準で右綴じにする</target>
         </trans-unit>
         <trans-unit id="Setting_SaveLastReadPage.Description" translate="yes" xml:space="preserve">
@@ -649,7 +649,6 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</sou
         <trans-unit id="Info.Purchase.Title" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">寄付</target>
-          
         </trans-unit>
         <trans-unit id="Info.Purchase.Word.Purchased" translate="yes" xml:space="preserve">
           <source>Purchased</source>
@@ -736,7 +735,6 @@ I wish you good luck.</source>
         <trans-unit id="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" translate="yes" xml:space="preserve">
           <source>Auto</source>
           <target state="translated">自動切り替え</target>
-          
         </trans-unit>
         <trans-unit id="Setting_DefaultSpreadType.Title" translate="yes" xml:space="preserve">
           <source>Page layout</source>
@@ -769,6 +767,20 @@ I wish you good luck.</source>
         <trans-unit id="ContextMenu.BookViewer.QuickSettings.Title" translate="yes" xml:space="preserve">
           <source>Quick Settings</source>
           <target state="translated">クイック設定</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Description" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation of each book.</source>
+          <target state="translated">前回開いた時の本の向き(綴じ方)で開く。</target>
+        </trans-unit>
+        <trans-unit id="Setting_RememberPageDirection.Title" translate="yes" xml:space="preserve">
+          <source>Remember the page orientation</source>
+          <target state="translated">綴じ方を保存</target>
+        </trans-unit>
+        <trans-unit id="Setting.ToolTip.Message" translate="yes" xml:space="preserve">
+          <source>Default: {2}</source>
+          <target state="translated">{0}
+{1}
+デフォルト: {2}</target>
         </trans-unit>
       </group>
     </body>

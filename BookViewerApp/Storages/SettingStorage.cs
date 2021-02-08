@@ -27,11 +27,13 @@ namespace BookViewerApp.Storages
                 return _SettingInstances ??= new SettingInstance[]
                     {
                         new SettingInstance("DefaultSpreadType",Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
-                        new SettingInstance("DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("RememberPageDirection",true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance("RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("SyncBookmarks",true,new TypeConverters.BoolConverter(),group:"Cloud"),
-                        new SettingInstance("SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("TileWidth",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false) {Minimum=0,Maximum=1000 },
                         new SettingInstance("TileHeight",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum=0,Maximum=1000 },
                         new SettingInstance("BackgroundBrightness",90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){Minimum=0,Maximum=100 },
@@ -44,7 +46,6 @@ namespace BookViewerApp.Storages
                         new SettingInstance("CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
                         new SettingInstance("WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
                         new SettingInstance("WebSearchEngine","http://www.google.com/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
-                        new SettingInstance("RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("ExplorerContentStyle",kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
                         new SettingInstance("ExplorerIconSize",75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),

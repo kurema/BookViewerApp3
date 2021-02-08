@@ -582,4 +582,15 @@
   <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
     <value>クイック設定</value>
   </data>
+  <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
+    <value>前回開いた時の本の向き(綴じ方)で開く。</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
+    <value>綴じ方を保存</value>
+  </data>
+  <data name="Setting.ToolTip.Message" xml:space="preserve">
+    <value>{0}
+{1}
+デフォルト: {2}</value>
+  </data>
 </root>
