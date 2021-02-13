@@ -38,3 +38,6 @@ But it just failed.
 This 3 is based on 1. Though its appearance is totally different, making use of old codes helped me a lot.
 
 So that's why this is 3, not 1, not 2.
+
+## Star me
+[![Stargazers over time](https://starchart.cc/kurema/BookViewerApp3.svg)](https://starchart.cc/kurema/BookViewerApp3)
