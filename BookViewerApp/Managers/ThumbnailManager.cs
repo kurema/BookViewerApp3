@@ -75,20 +75,8 @@ namespace BookViewerApp.Managers
             return null;
         }
 
-        public static string GetFileNameFromID(string ID)
-        {
-            return "" + EscapeString(ID) + Extension;
-        }
+        public static string GetFileNameFromID(string ID) => "" + Helper.Functions.EscapeFileName(ID) + Extension;
 
         public static string Extension => ".jpeg";
-
-        public static String EscapeString(string str)
-        {
-            foreach (char t in System.IO.Path.GetInvalidFileNameChars())
-            {
-                str = str.Replace(t, '_');
-            }
-            return str;
-        }
     }
 }

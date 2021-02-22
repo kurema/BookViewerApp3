@@ -214,5 +214,14 @@ namespace BookViewerApp.Helper
                 }
             }
         }
+
+        public static string EscapeFileName(string str)
+        {
+            foreach (char t in Path.GetInvalidFileNameChars())
+            {
+                str = str.Replace(t, '_');
+            }
+            return str;
+        }
     }
 }
