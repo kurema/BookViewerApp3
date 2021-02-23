@@ -144,11 +144,34 @@ namespace BookViewerApp.Helper
                             var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
                             fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) =>
                             {
-                                if (a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem)
+                                if (a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem bookmark)
                                 {
                                     return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
                                     () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
                                     );
+                                    ////var image= Managers.FaviconManager.GetImage(new Uri(bookmark.TargetUrl));
+                                    //ImageMagick.MagickImage image=null;
+                                    //try
+                                    //{
+                                    //    image = await Managers.FaviconManager.GetMaximumIcon(bookmark.TargetUrl);
+                                    //}
+                                    //catch
+                                    //{
+                                    //    image = null;
+                                    //}
+
+                                    //if (image != null)
+                                    //{
+                                    //    var bitmap = await Helper.Functions.GetBitmapAsync(image);
+                                    //    image.Dispose();
+                                    //    return (() => bitmap, () => bitmap);
+                                    //}
+                                    //else
+                                    //{
+                                    //    return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
+                                    //    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
+                                    //    );
+                                    //}
                                 }
                                 if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
                                 {

@@ -341,7 +341,11 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public async void UpdateIcon()
         {
-            (IconSmall, IconLarge) = await IconProviderDefault.GetIcon(this.Content, IconProviders);
+            try
+            {
+                (IconSmall, IconLarge) = await IconProviderDefault.GetIcon(this.Content, IconProviders);
+            }
+            catch { }
         }
     }
 }

@@ -26,7 +26,19 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
 
-        public DateTimeOffset DateCreated => Content.Date;
+        public DateTimeOffset DateCreated {
+            get
+            {
+                try
+                {
+                    return Content.Date;
+                }
+                catch
+                {
+                    return new DateTimeOffset();
+                }
+            }
+        }
 
         public bool IsFolder => false;
 

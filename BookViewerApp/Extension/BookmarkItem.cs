@@ -34,7 +34,17 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public DateTimeOffset DateCreated
         {
-            get => new DateTimeOffset(Content.created).ToLocalTime();
+            get
+            {
+                try
+                {
+                    return new DateTimeOffset(Content.created).ToLocalTime();
+                }
+                catch
+                {
+                    return new DateTimeOffset();
+                }
+            }
             set => Content.created = value.UtcDateTime;
         }
 
@@ -120,7 +130,19 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string Path { get; set; }
 
-        public DateTimeOffset DateCreated => Content.created;
+        public DateTimeOffset DateCreated
+        {
+            get {
+                try
+                {
+                    return Content.created;
+                }
+                catch
+                {
+                    return new DateTimeOffset();
+                }
+            }
+        }
 
         public bool IsFolder => true;
 
