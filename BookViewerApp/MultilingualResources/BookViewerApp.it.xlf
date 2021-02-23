@@ -788,6 +788,14 @@ Ti auguro buona fortuna.</target>
 {1}
 Predefinito: {2}</target>
         </trans-unit>
+        <trans-unit id="Setting_ShowBookmarkFavicon.Description" translate="yes" xml:space="preserve">
+          <source>Show favicons of bookmarks.</source>
+          <target state="new">Show favicons of bookmarks.</target>
+        </trans-unit>
+        <trans-unit id="Setting_ShowBookmarkFavicon.Title" translate="yes" xml:space="preserve">
+          <source>Show favicons of bookmarks</source>
+          <target state="new">Show favicons of bookmarks</target>
+        </trans-unit>
       </group>
     </body>
   </file>

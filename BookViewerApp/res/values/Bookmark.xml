@@ -23,7 +23,7 @@
       </container>
       <container title="About BookViewer3">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
-        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />
+        <!--<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />-->
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
         <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
       </container>
@@ -55,7 +55,7 @@
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%90%91%E3%81%91%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9" title="Wikiを参照" />
         <bookmark url="https://www.ebsco.com/" title="EBSCOhost" />
         <bookmark url="https://elib.maruzen.co.jp/" title="Maruzen eBook Library" />
-        <bookmark url="https://kinoden.kinokuniya.co.jp/" title="KinoDen" />
+        <!--<bookmark url="https://kinoden.kinokuniya.co.jp/" title="KinoDen" />-->
         <bookmark url="http://ovidsp.dc2.ovid.com/" title="Ovid" />
         <bookmark url="https://japanknowledge.com/" title="JapanKnowledge" />
         <bookmark url="https://www.sciencedirect.com/browse/journals-and-books" title="ScienceDirect" />
@@ -65,7 +65,7 @@
       </container>
       <container title="アプリについて">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
-        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />
+        <!--<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />-->
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
         <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
       </container>

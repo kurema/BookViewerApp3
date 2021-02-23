@@ -246,23 +246,15 @@ namespace BookViewerApp.Helper
             return bitmapImage;
         }
 
-        public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync(ImageMagick.IMagickImage image)
+        public static MemoryStream GetPngStreamFromImageMagick(ImageMagick.IMagickImage image)
         {
             if (image == null) return null;
-            using var stream = new MemoryStream();
-            
-            var bitmapImage = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-            image.Format = ImageMagick.MagickFormat.Png;
-            image.Warning += Image_Warning;
-            image.Write(stream);
+            var stream = new MemoryStream();
+
+            image.Write(stream, ImageMagick.MagickFormat.Png);
             stream.Seek(0, SeekOrigin.Begin);
-            await bitmapImage.SetSourceAsync(stream.AsRandomAccessStream());
-            return bitmapImage;
+            return stream;
         }
 
-        private static void Image_Warning(object sender, ImageMagick.WarningEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

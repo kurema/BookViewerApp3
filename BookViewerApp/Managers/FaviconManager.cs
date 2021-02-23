@@ -14,40 +14,59 @@ namespace BookViewerApp.Managers
 {
     public static class FaviconManager
     {
-        private async static Task<Windows.Storage.StorageFolder> GetDataFolder() => await Functions.GetSaveFolderLocalCache().CreateFolderAsync("favicon", Windows.Storage.CreationCollisionOption.OpenIfExists);
-
-        public static string GetFileNameFromID(string ID) => "" + Helper.Functions.EscapeFileName(ID) + Extension;
-
-        public static string Extension => ".png";
-
-        //public static System.Drawing.Image? GetImage(Uri uri)
-        //{
-        //    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        //    var source = new FaviconFetcher.HttpSource()
-        //    {
-        //        CachePolicy= new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.CacheIfAvailable)
-        //    };
-        //    var fetcher = new FaviconFetcher.Fetcher(source);
-        //    var image = fetcher.FetchClosest(uri, new System.Drawing.Size(500, 500));
-        //    return image;
-        //}
-
-        public async static Task<ImageMagick.MagickImage?> GetMaximumIcon(string uri)
+        public async static Task<ImageMagick.IMagickImage<ushort>?> GetMaximumIcon(string uri)
         {
             if (uri == null) return null;
-            var icons = await Extractor.GetAllIcons(uri, new ExtractionSettings(true, false, true, true, 1));
-
-            int currentMaxWidth = -1;
-            ImageMagick.MagickImage? currentMax = null;
-            foreach (var item in icons)
+            IEnumerable<WebImage>? icons = null;
+            for (int i = 0; i < 2; i++)
             {
-                var img = await item.GetImageAsync();
-                if (img.Width > currentMaxWidth) currentMax = img;
+                try { icons = icons ?? await Extractor.GetAllIcons(uri, new ExtractionSettings(true, false, true, false, 0)); }
+                catch { }
             }
-            return currentMax;
+            if (icons == null) return null;
 
-            //return (await Task.WhenAll(icons.Where(a => a != null).Select(async a => await a.GetImageAsync())))
-            //    ?.Where(a => a != null)?.OrderByDescending(a => a.Width)?.FirstOrDefault();
+            //int currentMaxWidth = -1;
+            //ImageMagick.MagickImage? currentMax = null;
+            //foreach (var item in icons)
+            //{
+            //    ImageMagick.MagickImage? img = null;
+            //    for (int i = 0; i < 2; i++)
+            //    {
+            //        try { img = img ?? await item.GetImageAsync(); }
+            //        catch { continue; }
+            //    }
+            //    if (img?.Width > currentMaxWidth)
+            //    {
+            //        currentMaxWidth = img.Width;
+            //        currentMax = img;
+            //    }
+            //}
+            //return currentMax;
+
+            return (await Task.WhenAll(icons.Where(a => a != null).Select(async a =>
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    try
+                    {
+                        if(a.Uri.EndsWith(".ico"))
+                        {
+                            System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+                            var result2 = await client.GetAsync(a.Uri);
+                            using System.IO.Stream st = await result2.Content.ReadAsStreamAsync();
+                            var image2 = new ImageMagick.MagickImageCollection(st,ImageMagick.MagickFormat.Ico);
+                            return image2.ToArray();
+                        }
+                        else
+                        {
+                            return new[] { await a.GetImageAsync() };
+                        }
+                    }
+                    catch { }
+                }
+                return null;
+            })))?.Where(a => a != null)?.SelectMany(a=>a)
+                ?.Where(a => a != null)?.OrderByDescending(a => a?.Width)?.FirstOrDefault();
         }
     }
 }

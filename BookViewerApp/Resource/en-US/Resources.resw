@@ -692,4 +692,10 @@ I wish you good luck.</value>
   <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
     <value>Remember the page orientation</value>
   </data>
+  <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
+    <value>Show favicons of bookmarks.</value>
+  </data>
+  <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
+    <value>Show favicons of bookmarks</value>
+  </data>
 </root>

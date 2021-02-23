@@ -45,7 +45,7 @@ namespace BookViewerApp.Helper
                             e.Handled = true;
                         };
                     }
-                    if(content.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm)
+                    if (content.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm)
                     {
                         vm.ControllerCollapsed = true;
                     }
@@ -146,37 +146,44 @@ namespace BookViewerApp.Helper
                             {
                                 if (a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem bookmark)
                                 {
-                                    return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
-                                    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
-                                    );
-                                    ////var image= Managers.FaviconManager.GetImage(new Uri(bookmark.TargetUrl));
-                                    //ImageMagick.MagickImage image=null;
-                                    //try
-                                    //{
-                                    //    image = await Managers.FaviconManager.GetMaximumIcon(bookmark.TargetUrl);
-                                    //}
-                                    //catch
-                                    //{
-                                    //    image = null;
-                                    //}
+                                    //return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
+                                    //() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
+                                    //);
 
-                                    //if (image != null)
-                                    //{
-                                    //    var bitmap = await Helper.Functions.GetBitmapAsync(image);
-                                    //    image.Dispose();
-                                    //    return (() => bitmap, () => bitmap);
-                                    //}
-                                    //else
-                                    //{
-                                    //    return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
-                                    //    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
-                                    //    );
-                                    //}
+                                    var bmps = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png"));
+                                    var bmpl = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"));
+
+                                    async void LoadFavicon()
+                                    {
+                                        //try
+                                        {
+                                            var image = await Managers.FaviconManager.GetMaximumIcon(bookmark.TargetUrl);
+                                            if (image == null) return;
+                                            var png = Functions.GetPngStreamFromImageMagick(image);
+                                            if (png == null) return;
+                                            var png2 = new MemoryStream();
+                                            await png.CopyToAsync(png2);
+                                            png.Seek(0, SeekOrigin.Begin);
+                                            png2.Seek(0, SeekOrigin.Begin);
+                                            await frame.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                                            {
+                                                await bmps.SetSourceAsync(png.AsRandomAccessStream());
+                                                await bmpl.SetSourceAsync(png2.AsRandomAccessStream());
+                                            });
+                                            image.Dispose();
+                                        }
+                                        //catch
+                                        //{
+                                        //}
+                                    }
+                                    if ((bool)Storages.SettingStorage.GetValue("ShowBookmarkFavicon")) LoadFavicon();
+
+                                    return (() => bmps, () => bmpl);
                                 }
                                 if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
                                 {
                                     string id =
-                                    ( a as kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem)?.Id ??
+                                    (a as kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem)?.Id ??
                                     //(a as kurema.FileExplorerControl.Models.FileItems.HistoryItem)?.Content?.Id ??
                                     PathStorage.GetIdFromPath(a.Path);
                                     if (!string.IsNullOrEmpty(id))
@@ -215,7 +222,7 @@ namespace BookViewerApp.Helper
                                     {
                                         tab.OpenTabBook(sfi.Content);
                                     }
-                                    else if(fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
+                                    else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
                                     {
                                         var file = await hm.GetFile();
                                         if (file != null) tab.OpenTabBook(file);
@@ -304,7 +311,7 @@ namespace BookViewerApp.Helper
                                 else if (a is kurema.FileExplorerControl.Models.FileItems.ContainerItem container)
                                 {
                                     return new kurema.BrowserControl.ViewModels.BookmarkItem(container.Name, (_) => { }
-                                    , () => Task.FromResult( container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem())))
+                                    , () => Task.FromResult(container.Children.Select(b => (b as kurema.FileExplorerControl.Models.FileItems.IStorageBookmark)?.GetBrowserBookmarkItem())))
                                     { IsReadOnly = true };
                                 }
                                 else return null;
