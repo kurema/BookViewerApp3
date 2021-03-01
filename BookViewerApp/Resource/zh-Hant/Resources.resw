@@ -589,4 +589,12 @@
 {1}
 默認：{2}</value>
   </data>
+  <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
+    <value>顯示書籤Favicon。
+此時，該Favicon尚未緩存，其操作不穩定。
+信息：如果打開，則每次查看書籤列表時都從服務器獲取Favicon。某些信息是在服務器上收集的。</value>
+  </data>
+  <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
+    <value>顯示書籤Favicon</value>
+  </data>
 </root>

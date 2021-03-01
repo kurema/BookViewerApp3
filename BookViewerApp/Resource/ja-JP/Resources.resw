@@ -593,4 +593,12 @@
 {1}
 デフォルト: {2}</value>
   </data>
+  <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
+    <value>ブックマークのFaviconを表示。
+現時点ではFaviconはキャッシュされず動作は安定しません。
+情報：オンにした場合ブックマーク一覧を表示する度にサーバーからFaviconを取得します。サーバーで一定の情報が収集されます。</value>
+  </data>
+  <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
+    <value>ブックマークのFaviconを表示</value>
+  </data>
 </root>

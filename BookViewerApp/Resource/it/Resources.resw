@@ -589,4 +589,12 @@ Ti auguro buona fortuna.</value>
 {1}
 Predefinito: {2}</value>
   </data>
+  <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
+    <value>Mostra le favicon dei segnalibri.
+In questa versione, l'app non salva la cache della favicon e le favicon visualizzate sembrano essere instabili.
+Informativa sulla privacy: se questa opzione è attivata, verrà inviata una richiesta al server ogni volta che si apre la cartella dei segnalibri in Explorer. Il server potrebbe raccogliere alcuni dati.</value>
+  </data>
+  <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
+    <value>Mostra le favicon dei segnalibri</value>
+  </data>
 </root>
