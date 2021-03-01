@@ -783,12 +783,16 @@ I wish you good luck.</source>
 デフォルト: {2}</target>
         </trans-unit>
         <trans-unit id="Setting_ShowBookmarkFavicon.Description" translate="yes" xml:space="preserve">
-          <source>Show favicons of bookmarks.</source>
-          <target state="new">Show favicons of bookmarks.</target>
+          <source>Show favicons of bookmarks. 
+In this version, the app does not save the favicon cache and the favicons displayed seems to be unstable.
+Privacy Notice: If this is turned on, a request to the server will be sent each time you open the bookmarks folder in Explorer. The server may collect some data.</source>
+          <target state="translated">ブックマークのFaviconを表示。
+現時点ではFaviconはキャッシュされず動作は安定しません。
+情報：オンにした場合ブックマーク一覧を表示する度にサーバーからFaviconを取得します。サーバーで一定の情報が収集されます。</target>
         </trans-unit>
         <trans-unit id="Setting_ShowBookmarkFavicon.Title" translate="yes" xml:space="preserve">
           <source>Show favicons of bookmarks</source>
-          <target state="new">Show favicons of bookmarks</target>
+          <target state="translated">ブックマークのFaviconを表示</target>
         </trans-unit>
       </group>
     </body>

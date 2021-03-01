@@ -693,7 +693,9 @@ I wish you good luck.</value>
     <value>Remember the page orientation</value>
   </data>
   <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
-    <value>Show favicons of bookmarks.</value>
+    <value>Show favicons of bookmarks. 
+In this version, the app does not save the favicon cache and the favicons displayed seems to be unstable.
+Privacy Notice: If this is turned on, a request to the server will be sent each time you open the bookmarks folder in Explorer. The server may collect some data.</value>
   </data>
   <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
     <value>Show favicons of bookmarks</value>

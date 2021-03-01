@@ -5,6 +5,7 @@
       <container title="Search">
         <bookmark url="https://www.google.com/" title="Google" />
         <bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
+        <bookmark url="https://www.bing.com/" title="Bing" />
       </container>
       <container title="Free books">
         <bookmark url="https://www.gutenberg.org/" title="Project Gutenberg" />
@@ -39,6 +40,7 @@
         <bookmark url="https://www.google.co.jp/" title="Google" />
         <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
         <bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
+        <bookmark url="https://www.bing.com/" title="Bing" />
       </container>
       <container title="無料書籍">
         <bookmark url="https://www.aozora.gr.jp/" title="青空文庫" />

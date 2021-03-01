@@ -18,54 +18,33 @@ namespace BookViewerApp.Managers
         {
             if (uri == null) return null;
             IEnumerable<WebImage>? icons = null;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
-                try { icons = icons ?? await Extractor.GetAllIcons(uri, new ExtractionSettings(true, false, true, false, 0)); }
-                catch { }
+                try { icons ??= await Extractor.GetAllIcons(uri, new ExtractionSettings(true, false, true, false, 0)); }
+                catch { await Task.Delay(500); }
             }
             if (icons == null) return null;
 
-            //int currentMaxWidth = -1;
-            //ImageMagick.MagickImage? currentMax = null;
-            //foreach (var item in icons)
-            //{
-            //    ImageMagick.MagickImage? img = null;
-            //    for (int i = 0; i < 2; i++)
-            //    {
-            //        try { img = img ?? await item.GetImageAsync(); }
-            //        catch { continue; }
-            //    }
-            //    if (img?.Width > currentMaxWidth)
-            //    {
-            //        currentMaxWidth = img.Width;
-            //        currentMax = img;
-            //    }
-            //}
-            //return currentMax;
-
             return (await Task.WhenAll(icons.Where(a => a != null).Select(async a =>
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     try
                     {
-                        if(a.Uri.EndsWith(".ico"))
                         {
                             System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
                             var result2 = await client.GetAsync(a.Uri);
                             using System.IO.Stream st = await result2.Content.ReadAsStreamAsync();
-                            var image2 = new ImageMagick.MagickImageCollection(st,ImageMagick.MagickFormat.Ico);
-                            return image2.ToArray();
-                        }
-                        else
-                        {
-                            return new[] { await a.GetImageAsync() };
+
+                            if (a.Uri.ToLowerInvariant().EndsWith(".ico")) return new ImageMagick.MagickImageCollection(st, ImageMagick.MagickFormat.Ico).ToArray();
+                            else return new ImageMagick.MagickImageCollection(st).ToArray();
                         }
                     }
                     catch { }
+                    await Task.Delay(500);
                 }
                 return null;
-            })))?.Where(a => a != null)?.SelectMany(a=>a)
+            })))?.Where(a => a != null)?.SelectMany(a => a)
                 ?.Where(a => a != null)?.OrderByDescending(a => a?.Width)?.FirstOrDefault();
         }
     }

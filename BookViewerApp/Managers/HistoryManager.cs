@@ -43,7 +43,6 @@ namespace BookViewerApp.Managers
         {
             if (file == null) return;
             var metadata = new Metadata() { Name = file.Name, ID = ID ?? "", Date = DateTimeOffset.Now }.Serialize();
-            //ToDo:同一ファイル排除? - 不要でした。次回コミット以降コメント削除
             List.Add(file, metadata);
 
             OnUpdated();

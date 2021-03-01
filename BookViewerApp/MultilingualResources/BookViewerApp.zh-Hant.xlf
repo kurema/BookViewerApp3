@@ -779,12 +779,16 @@ I wish you good luck.</source>
 默認：{2}</target>
         </trans-unit>
         <trans-unit id="Setting_ShowBookmarkFavicon.Description" translate="yes" xml:space="preserve">
-          <source>Show favicons of bookmarks.</source>
-          <target state="new">Show favicons of bookmarks.</target>
+          <source>Show favicons of bookmarks. 
+In this version, the app does not save the favicon cache and the favicons displayed seems to be unstable.
+Privacy Notice: If this is turned on, a request to the server will be sent each time you open the bookmarks folder in Explorer. The server may collect some data.</source>
+          <target state="translated">顯示書籤Favicon。
+此時，該Favicon尚未緩存，其操作不穩定。
+信息：如果打開，則每次查看書籤列表時都從服務器獲取Favicon。某些信息是在服務器上收集的。</target>
         </trans-unit>
         <trans-unit id="Setting_ShowBookmarkFavicon.Title" translate="yes" xml:space="preserve">
           <source>Show favicons of bookmarks</source>
-          <target state="new">Show favicons of bookmarks</target>
+          <target state="translated">顯示書籤Favicon</target>
         </trans-unit>
       </group>
     </body>
