@@ -153,30 +153,30 @@ namespace BookViewerApp.Helper
                                     var bmps = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png"));
                                     var bmpl = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"));
 
-                                    async void LoadFavicon()
-                                    {
-                                        //try
-                                        {
-                                            var image = await Managers.FaviconManager.GetMaximumIcon(bookmark.TargetUrl);
-                                            if (image == null) return;
-                                            var png = Functions.GetPngStreamFromImageMagick(image);
-                                            if (png == null) return;
-                                            var png2 = new MemoryStream();
-                                            await png.CopyToAsync(png2);
-                                            png.Seek(0, SeekOrigin.Begin);
-                                            png2.Seek(0, SeekOrigin.Begin);
-                                            await frame.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                                            {
-                                                await bmps.SetSourceAsync(png.AsRandomAccessStream());
-                                                await bmpl.SetSourceAsync(png2.AsRandomAccessStream());
-                                            });
-                                            image.Dispose();
-                                        }
-                                        //catch
-                                        //{
-                                        //}
-                                    }
-                                    if ((bool)Storages.SettingStorage.GetValue("ShowBookmarkFavicon")) LoadFavicon();
+                                    //async void LoadFavicon()
+                                    //{
+                                    //    //try
+                                    //    {
+                                    //        var image = await Managers.FaviconManager.GetMaximumIcon(bookmark.TargetUrl);
+                                    //        if (image == null) return;
+                                    //        var png = Functions.GetPngStreamFromImageMagick(image);
+                                    //        if (png == null) return;
+                                    //        var png2 = new MemoryStream();
+                                    //        await png.CopyToAsync(png2);
+                                    //        png.Seek(0, SeekOrigin.Begin);
+                                    //        png2.Seek(0, SeekOrigin.Begin);
+                                    //        await frame.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                                    //        {
+                                    //            await bmps.SetSourceAsync(png.AsRandomAccessStream());
+                                    //            await bmpl.SetSourceAsync(png2.AsRandomAccessStream());
+                                    //        });
+                                    //        image.Dispose();
+                                    //    }
+                                    //    //catch
+                                    //    //{
+                                    //    //}
+                                    //}
+                                    //if ((bool)Storages.SettingStorage.GetValue("ShowBookmarkFavicon")) LoadFavicon();
 
                                     return (() => bmps, () => bmpl);
                                 }

@@ -246,15 +246,15 @@ namespace BookViewerApp.Helper
             return bitmapImage;
         }
 
-        public static MemoryStream GetPngStreamFromImageMagick(ImageMagick.IMagickImage image)
-        {
-            if (image == null) return null;
-            var stream = new MemoryStream();
+        //public static MemoryStream GetPngStreamFromImageMagick(ImageMagick.IMagickImage image)
+        //{
+        //    if (image == null) return null;
+        //    var stream = new MemoryStream();
 
-            image.Write(stream, ImageMagick.MagickFormat.Png);
-            stream.Seek(0, SeekOrigin.Begin);
-            return stream;
-        }
+        //    image.Write(stream, ImageMagick.MagickFormat.Png);
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    return stream;
+        //}
 
     }
 }

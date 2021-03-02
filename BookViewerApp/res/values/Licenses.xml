@@ -395,7 +395,7 @@ SOFTWARE.]]>
         </term>
       </license>
     </package>
-    <package href="https://github.com/James231/WebImageExtractor" title="WebImageExtractor">
+    <!--<package href="https://github.com/James231/WebImageExtractor" title="WebImageExtractor">
       <license>
         <summary>MIT License (c) 2020 Jam-Es.com</summary>
         <term>
@@ -657,7 +657,7 @@ SOFTWARE.]]>
 ]]>
         </term>
       </license>
-    </package>
+    </package>-->
     <!--<package href="https://github.com/Microsoft/Win2D" title="Win2D">
       <license>
         <summary>MIT License (c) Microsoft Corporation. All rights reserved.</summary>
@@ -882,7 +882,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.]]>
       </term>
     </license>
-    <license title="Apache License 2.0">
+    <!--<license title="Apache License 2.0">
       <summary>Apache License 2.0</summary>
       <term>
         <![CDATA[
@@ -1089,7 +1089,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    limitations under the License.
 ]]>
       </term>
-    </license>
+    </license>-->
   </license-terms>
   <contributors>
     <!--<person href="https://github.com/kurema/" name="kurema" role="Programmer / Designer / Basic Translation"/>-->
