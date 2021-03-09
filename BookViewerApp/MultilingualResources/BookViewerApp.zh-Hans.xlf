@@ -790,6 +790,14 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
           <source>Show favicons of bookmarks</source>
           <target state="translated">显示书签Favicon</target>
         </trans-unit>
+        <trans-unit id="Setting_FetchThumbnailsBackground.Description" translate="yes" xml:space="preserve">
+          <source>Fetch thumbnails in the background. Turn it off if you have performance issues.</source>
+          <target state="translated">在后台获取缩略图。如果您遇到性能问题，请将其关闭。</target>
+        </trans-unit>
+        <trans-unit id="Setting_FetchThumbnailsBackground.Title" translate="yes" xml:space="preserve">
+          <source>Fetch thumbnails in the background</source>
+          <target state="translated">在后台获取缩略图</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -597,4 +597,10 @@
   <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
     <value>顯示書籤Favicon</value>
   </data>
+  <data name="Setting_FetchThumbnailsBackground.Description" xml:space="preserve">
+    <value>在後台獲取縮略圖。如果您遇到性能問題，請將其關閉。</value>
+  </data>
+  <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
+    <value>在後台獲取縮略圖</value>
+  </data>
 </root>

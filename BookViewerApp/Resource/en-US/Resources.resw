@@ -700,4 +700,10 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
   <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
     <value>Show favicons of bookmarks</value>
   </data>
+  <data name="Setting_FetchThumbnailsBackground.Description" xml:space="preserve">
+    <value>Fetch thumbnails in the background. Turn it off if you have performance issues.</value>
+  </data>
+  <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
+    <value>Fetch thumbnails in the background</value>
+  </data>
 </root>

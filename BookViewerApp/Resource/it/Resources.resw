@@ -597,4 +597,10 @@ Informativa sulla privacy: se questa opzione è attivata, verrà inviata una ric
   <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
     <value>Mostra le favicon dei segnalibri</value>
   </data>
+  <data name="Setting_FetchThumbnailsBackground.Description" xml:space="preserve">
+    <value>Recupera le miniature in background. Disattivalo se hai problemi di prestazioni.</value>
+  </data>
+  <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
+    <value>Recupera le miniature in background</value>
+  </data>
 </root>

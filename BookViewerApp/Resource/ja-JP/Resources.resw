@@ -601,4 +601,10 @@
   <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
     <value>ブックマークのFaviconを表示</value>
   </data>
+  <data name="Setting_FetchThumbnailsBackground.Description" xml:space="preserve">
+    <value>バックグラウンドでサムネイルを取得します。性能上の問題がある場合オフにしてください。</value>
+  </data>
+  <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
+    <value>バックグラウンドでサムネイルを取得する</value>
+  </data>
 </root>

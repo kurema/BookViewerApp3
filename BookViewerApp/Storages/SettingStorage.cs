@@ -54,6 +54,8 @@ namespace BookViewerApp.Storages
                         new SettingInstance("EpubViewerType",SettingEnums.EpubViewerType.Bibi, new TypeConverters.EnumConverter<SettingEnums.EpubViewerType>(),group:"Viewer"),
                         new SettingInstance("PdfRenderScaling",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         //new SettingInstance("ShowBookmarkFavicon",false,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance("FetchThumbnailsBackground",true,new TypeConverters.BoolConverter(),group:"Explorer"),
+
                     };
                 //How to add resource when you add SettingInstance:
                 //1. Open Resource/en-US/Resources.resw
@@ -68,7 +70,7 @@ namespace BookViewerApp.Storages
 
                 //Sample:
                 //if ((bool)Storages.SettingStorage.GetValue("")){}
-                
+
             }
         }
 

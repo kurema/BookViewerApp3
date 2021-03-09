@@ -202,19 +202,22 @@ namespace BookViewerApp.Helper
                                         () =>
                                         {
                                             var bitmap = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"));
-                                            Task.Run(async () =>
+                                            if ((bool)SettingStorage.GetValue("FetchThumbnailsBackground"))
                                             {
-                                                try
+                                                Task.Run(async () =>
                                                 {
-                                                    var book = await ThumbnailManager.SaveImageAsync(storage.Content, cancel);
-                                                    if (cancel.IsCancellationRequested) return;
-                                                    await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
+                                                    try
                                                     {
-                                                        ThumbnailManager.SetToImageSourceNoWait(book.ID, bitmap);
-                                                    });
-                                                }
-                                                catch { }
-                                            });
+                                                        var book = await ThumbnailManager.SaveImageAsync(storage.Content, cancel);
+                                                        if (cancel.IsCancellationRequested) return;
+                                                        await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
+                                                        {
+                                                            ThumbnailManager.SetToImageSourceNoWait(book.ID, bitmap);
+                                                        });
+                                                    }
+                                                    catch { }
+                                                });
+                                            }
                                             return bitmap;
                                         }
                                         );
