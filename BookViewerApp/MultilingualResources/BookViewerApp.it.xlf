@@ -801,12 +801,12 @@ Informativa sulla privacy: se questa opzione è attivata, verrà inviata una ric
           <target state="translated">Mostra le favicon dei segnalibri</target>
         </trans-unit>
         <trans-unit id="Setting_FetchThumbnailsBackground.Description" translate="yes" xml:space="preserve">
-          <source>Fetch thumbnails in the background. Turn it off if you have performance issues.</source>
-          <target state="translated">Recupera le miniature in background. Disattivalo se hai problemi di prestazioni.</target>
+          <source>Generate thumbnails in the background. Turn it off if you have performance issues.</source>
+          <target state="translated">Genera miniature in background. Disattivalo se hai problemi di prestazioni.</target>
         </trans-unit>
         <trans-unit id="Setting_FetchThumbnailsBackground.Title" translate="yes" xml:space="preserve">
-          <source>Fetch thumbnails in the background</source>
-          <target state="translated">Recupera le miniature in background</target>
+          <source>Generate thumbnails in the background</source>
+          <target state="translated">Genera miniature in background</target>
         </trans-unit>
       </group>
     </body>

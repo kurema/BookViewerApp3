@@ -795,11 +795,11 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
           <target state="translated">ブックマークのFaviconを表示</target>
         </trans-unit>
         <trans-unit id="Setting_FetchThumbnailsBackground.Description" translate="yes" xml:space="preserve">
-          <source>Fetch thumbnails in the background. Turn it off if you have performance issues.</source>
+          <source>Generate thumbnails in the background. Turn it off if you have performance issues.</source>
           <target state="translated">バックグラウンドでサムネイルを取得します。性能上の問題がある場合オフにしてください。</target>
         </trans-unit>
         <trans-unit id="Setting_FetchThumbnailsBackground.Title" translate="yes" xml:space="preserve">
-          <source>Fetch thumbnails in the background</source>
+          <source>Generate thumbnails in the background</source>
           <target state="translated">バックグラウンドでサムネイルを取得する</target>
         </trans-unit>
       </group>
