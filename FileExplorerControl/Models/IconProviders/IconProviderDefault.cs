@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Windows.UI.Xaml.Media;
 
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace kurema.FileExplorerControl.Models.IconProviders
@@ -17,7 +18,7 @@ namespace kurema.FileExplorerControl.Models.IconProviders
         private static Windows.UI.Xaml.Media.Imaging.BitmapImage IconSmallCache;
         private static Windows.UI.Xaml.Media.Imaging.BitmapImage IconLargeCache;
 
-        public Task<Func<ImageSource>> GetIconSmall(IFileItem item)
+        public Task<Func<ImageSource>> GetIconSmall(IFileItem item, CancellationToken cancellationToken)
         {
             if (item is IIconProviderProvider container && container.Icon != null)
             {
@@ -30,7 +31,7 @@ namespace kurema.FileExplorerControl.Models.IconProviders
             return Task.FromResult<Func<ImageSource>>(null);
         }
 
-        public Task<Func<ImageSource>> GetIconLarge(IFileItem item)
+        public Task<Func<ImageSource>> GetIconLarge(IFileItem item, CancellationToken cancellationToken)
         {
             if (item is IIconProviderProvider container && container.Icon != null)
             {
@@ -43,7 +44,7 @@ namespace kurema.FileExplorerControl.Models.IconProviders
             return Task.FromResult<Func<ImageSource>>(null);
         }
 
-        public async static Task<(ImageSource SmallIcon, ImageSource LargeIcon)> GetIcon(IFileItem file, IEnumerable<IIconProvider> iconProviders)
+        public async static Task<(ImageSource SmallIcon, ImageSource LargeIcon)> GetIcon(IFileItem file, IEnumerable<IIconProvider> iconProviders, CancellationToken cancellationToken)
         {
             Func<ImageSource> small = null;
             Func<ImageSource> large = null;
@@ -52,8 +53,8 @@ namespace kurema.FileExplorerControl.Models.IconProviders
 
             foreach (var item in iconProviders)
             {
-                small = small ?? await item.GetIconSmall(file);
-                large = large ?? await item.GetIconLarge(file);
+                small = small ?? await item.GetIconSmall(file, cancellationToken);
+                large = large ?? await item.GetIconLarge(file, cancellationToken);
                 smallDefault = smallDefault ?? item.DefaultIconSmall;
                 largeDefault = largeDefault ?? item.DefaultIconLarge;
             }

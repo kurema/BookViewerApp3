@@ -142,7 +142,7 @@ namespace BookViewerApp.Helper
 
                             //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));
                             var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(library);
-                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a) =>
+                            fv.IconProviders.Add(new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (a, cancel) =>
                             {
                                 if (a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem bookmark)
                                 {
@@ -196,6 +196,30 @@ namespace BookViewerApp.Helper
                                             );
                                         }
                                     }
+                                    else if (a is kurema.FileExplorerControl.Models.FileItems.StorageFileItem storage)
+                                    {
+                                        return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
+                                        () =>
+                                        {
+                                            var bitmap = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"));
+                                            Task.Run(async () =>
+                                            {
+                                                try
+                                                {
+                                                    var book = await ThumbnailManager.SaveImageAsync(storage.Content, cancel);
+                                                    if (cancel.IsCancellationRequested) return;
+                                                    await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
+                                                    {
+                                                        ThumbnailManager.SetToImageSourceNoWait(book.ID, bitmap);
+                                                    });
+                                                }
+                                                catch { }
+                                            });
+                                            return bitmap;
+                                        }
+                                        );
+                                    }
+
 
                                     return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
                                     () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))

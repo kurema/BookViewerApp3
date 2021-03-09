@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using System.ComponentModel;
@@ -48,7 +49,6 @@ namespace kurema.FileExplorerControl.ViewModels
 
 
         #endregion
-
 
         private ContentStyles _ContentStyle = ContentStyles.Icon;
         public ContentStyles ContentStyle

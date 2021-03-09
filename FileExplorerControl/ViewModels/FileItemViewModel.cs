@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
+            [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
             System.Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
@@ -35,6 +36,9 @@ namespace kurema.FileExplorerControl.ViewModels
             PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        private CancellationTokenSource _IconCancellationTokenSource = new CancellationTokenSource();
+        public CancellationTokenSource IconCancellationTokenSource { get => _IconCancellationTokenSource; set { SetProperty(ref _IconCancellationTokenSource, value); } }
 
         private IFileItem _Content;
         public IFileItem Content
@@ -185,6 +189,21 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
+        public void IconFetchingCancel()
+        {
+            foreach(var item in Children)
+            {
+                if (!item.IsFolder) item.IconCancellationTokenSource.Cancel();
+            }
+        }
+
+        public void IconFetchingUnCancel()
+        {
+            foreach (var item in Children)
+            {
+                if (!item.IsFolder) item.IconCancellationTokenSource = new CancellationTokenSource();
+            }
+        }
 
         public async Task UpdateChildren()
         {
@@ -343,7 +362,7 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             try
             {
-                (IconSmall, IconLarge) = await IconProviderDefault.GetIcon(this.Content, IconProviders);
+                (IconSmall, IconLarge) = await IconProviderDefault.GetIcon(this.Content, IconProviders, IconCancellationTokenSource.Token);
             }
             catch { }
         }

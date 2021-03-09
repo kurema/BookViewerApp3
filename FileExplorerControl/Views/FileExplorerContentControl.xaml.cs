@@ -39,7 +39,10 @@ namespace kurema.FileExplorerControl.Views
         {
             await OperateBinding(async (vm) =>
             {
+                vm?.Item?.IconFetchingCancel();
+                if (folder == null) return;
                 if (folder.Children == null) await folder.UpdateChildren();
+                folder.IconFetchingUnCancel();
                 vm.Item = folder;
             });
         }

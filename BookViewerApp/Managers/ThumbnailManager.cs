@@ -14,6 +14,8 @@ namespace BookViewerApp.Managers
     {
         private async static Task<Windows.Storage.StorageFolder> GetDataFolder() => await Functions.GetSaveFolderLocalCache().CreateFolderAsync("thumbnail", Windows.Storage.CreationCollisionOption.OpenIfExists);
 
+        private static System.Threading.SemaphoreSlim SemaphoreFetchThumbnail = new System.Threading.SemaphoreSlim(1, 1);
+
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetImageSourceAsync(string ID)
         {
             var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
@@ -46,6 +48,27 @@ namespace BookViewerApp.Managers
             catch
             {
                 // ignored
+            }
+        }
+
+        public static async Task<Books.IBook> SaveImageAsync(Windows.Storage.IStorageItem storageItem,System.Threading.CancellationToken cancellationToken=new System.Threading.CancellationToken())
+        {
+            await SemaphoreFetchThumbnail.WaitAsync();
+            try
+            {
+                if (cancellationToken.IsCancellationRequested) return null;
+                if (!(storageItem is Windows.Storage.IStorageFile f)) return null;
+                var book = await BookManager.GetBookFromFile(f);
+                if (string.IsNullOrEmpty(book.ID)) return book;
+                Storages.PathStorage.AddOrReplace(f.Path, book.ID);
+                await SaveImageAsync(book);
+                await Storages.PathStorage.Content.SaveAsync();
+                await Task.Delay(1000);
+                return book;
+            }
+            finally
+            {
+                SemaphoreFetchThumbnail.Release();
             }
         }
 
