@@ -63,7 +63,6 @@ namespace kurema.FileExplorerControl.Views
                 if (ctreenode.Content is ViewModels.FileItemViewModel fvm && fvm.Children is null)
                 {
                     await fvm.UpdateChildren();
-                    //await ctreenode.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () => { await fvm.UpdateChildren(); });
                 }
                 ctreenode.IsExpanded = true;
                 treeview.Expand(ctreenode);

@@ -422,7 +422,7 @@ namespace BookViewerApp.Books
             await Functions.SaveStreamToFile(stream, file);
         }
 
-        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
+        public async Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await RenderToStreamAsync(stream, width, height);

@@ -17,14 +17,14 @@ namespace BookViewerApp.Managers
         {
             if (path == null) { return null; }
 
-            var ext = Path.GetExtension(path).ToLower();
+            var ext = Path.GetExtension(path).ToUpperInvariant();
             switch (ext)
             {
-                case ".pdf": return BookType.Pdf;
-                case ".zip": case ".cbz": return BookType.Zip;
-                case ".rar": case ".cbr": return BookType.Rar;
-                case ".7z": case ".cb7": return BookType.SevenZip;
-                case ".epub": return BookType.Epub;
+                case ".PDF": return BookType.Pdf;
+                case ".ZIP": case ".CBZ": return BookType.Zip;
+                case ".RAR": case ".CBR": return BookType.Rar;
+                case ".7Z": case ".CB7": return BookType.SevenZip;
+                case ".EPUB": return BookType.Epub;
                 default: return null;
             }
         }

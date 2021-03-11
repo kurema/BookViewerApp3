@@ -27,7 +27,7 @@ namespace BookViewerApp.Books
     {
         //IPageOptions? Option { get; set; }
         //Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
-        Task SetBitmapAsync(BitmapImage image, double width, double height);
+        Task SetBitmapAsync(BitmapSource image, double width, double height);
         Task<bool> UpdateRequiredAsync(double width, double height);
         Task SaveImageAsync(StorageFile file, uint width);
     }
@@ -157,7 +157,7 @@ namespace BookViewerApp.Books
             await (await GetPage()).SaveImageAsync(file, width);
         }
 
-        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
+        public async Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
             var body = await GetPage();
             await body.SetBitmapAsync(image, width, height);

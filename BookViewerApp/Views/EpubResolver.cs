@@ -67,7 +67,7 @@ namespace BookViewerApp.Views
                     var f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine(PathReaderLocal, pathTail)));
                     return await f.OpenAsync(FileAccessMode.Read);
                 }
-                if (uri.LocalPath.ToLower() == PathEpub)
+                if (uri.LocalPath.ToLowerInvariant() == PathEpub)
                 {
                     if (File == null) throw invalid;
                     return await File.OpenReadAsync();

@@ -67,7 +67,7 @@ namespace BookViewerApp.Books
                     {
                         if (!entry.IsDirectory && !entry.IsEncrypted)
                         {
-                            if (BookManager.AvailableExtensionsImage.Contains(Path.GetExtension(entry.Key).ToLower()))
+                            if (BookManager.AvailableExtensionsImage.Contains(Path.GetExtension(entry.Key).ToLowerInvariant()))
                             {
                                 entries.Add(entry);
                             }
@@ -179,7 +179,7 @@ namespace BookViewerApp.Books
         }
 
 
-        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
+        public async Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
             var stream = await Cache.GetMemoryStreamByProviderAsync();
             if (stream == null) return;

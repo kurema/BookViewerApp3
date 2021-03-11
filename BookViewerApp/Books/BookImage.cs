@@ -46,9 +46,16 @@ namespace BookViewerApp.Books
             }
         }
 
-        public Task SetBitmapAsync(BitmapImage image, double width, double height)
+        public Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
-            image.UriSource = Uri;
+            if (image is BitmapImage bimage)
+            {
+                bimage.UriSource = Uri;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
             return Task.CompletedTask;
         }
     }
@@ -78,7 +85,7 @@ namespace BookViewerApp.Books
             await Functions.SaveStreamToFile(stream, file);
         }
 
-        public Task SetBitmapAsync(BitmapImage image, double width, double height)
+        public Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
             if (stream == null)
             {

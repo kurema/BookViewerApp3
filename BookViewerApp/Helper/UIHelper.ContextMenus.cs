@@ -139,7 +139,30 @@ namespace BookViewerApp.Helper
                     }
                     else
                     {
+#if DEBUG
+                        var bookType = Managers.BookManager.GetBookTypeByPath(file.Path);
+                        if (bookType != null && bookType != Managers.BookManager.BookType.Epub)
+                        {
+                            if (file.Content is Windows.Storage.IStorageFile sfile)
+                            {
+                                list.Add(new MenuCommand("[Debug] Pick thumbnail", new Helper.DelegateCommand(async (_) =>
+                                {
+                                    var dialog = new ContentDialog();
+                                    var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;
+                                    if (book == null) return;
+                                    var page = new Views.ThumbnailSelectionPage();
+                                    dialog.Content = page;
+                                    dialog.CloseButtonText = "[Debug] CLOSE";
+                                    int size = Managers.ThumbnailManager.ThumbnailSize;
+                                    var writeableBitmap = new Windows.UI.Xaml.Media.Imaging.WriteableBitmap(size,size);
+                                    await book.GetPage(0).SetBitmapAsync(writeableBitmap, size*2, size*2);
+                                    page.ImageCropper.Source = writeableBitmap;
+                                    await dialog.ShowAsync();
+                                })));
+                            }
+                        }
                         //file
+#endif
                     }
                 }
 
@@ -316,7 +339,7 @@ namespace BookViewerApp.Helper
                                 if (pathRequestCommand?.CanExecute(parent.Path) == true) pathRequestCommand.Execute(parent.Path);
                             }
                             catch { }
-                    })));
+                        })));
 
                         return result.ToArray();
                     }

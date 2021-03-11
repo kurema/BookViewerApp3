@@ -188,7 +188,7 @@ namespace BookViewerApp.Helper
 
         public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T,string> titleProvider)
         {
-            bool SortCover(T a) => !titleProvider(a).ToLower().Contains("cover");
+            bool SortCover(T a) => !titleProvider(a).ToUpperInvariant().Contains("COVER");
             NaturalSort.NaturalList SortNatural(T a) => new NaturalSort.NaturalList(titleProvider(a));
 
             if ((bool)Storages.SettingStorage.GetValue("SortNaturalOrder"))

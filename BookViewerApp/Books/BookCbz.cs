@@ -192,7 +192,7 @@ namespace BookViewerApp.Books
             return;
         }
 
-        public async Task SetBitmapAsync(BitmapImage image, double width, double height)
+        public async Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
             if (Cache == null) return;
             try

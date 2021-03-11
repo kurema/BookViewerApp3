@@ -183,7 +183,7 @@ namespace BookViewerApp.Helper
 
                                     return (() => bmps, () => bmpl);
                                 }
-                                if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLower()))
+                                if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLowerInvariant()))
                                 {
                                     string id =
                                     (a as kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem)?.Id ??
@@ -241,7 +241,7 @@ namespace BookViewerApp.Helper
                             {
                                 e2?.Content?.Open();
                                 var fileitem = e2?.Content;
-                                if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLower()))
+                                if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLowerInvariant()))
                                 {
                                     return;
                                 }

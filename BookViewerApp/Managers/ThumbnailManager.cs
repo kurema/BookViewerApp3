@@ -16,6 +16,8 @@ namespace BookViewerApp.Managers
 
         private static System.Threading.SemaphoreSlim SemaphoreFetchThumbnail = new System.Threading.SemaphoreSlim(1, 1);
 
+        public const int ThumbnailSize = 300;
+
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetImageSourceAsync(string ID)
         {
             var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
@@ -78,7 +80,7 @@ namespace BookViewerApp.Managers
             {
                 if (await GetImageFileAsync(book.ID) == null)
                 {
-                    await (book as Books.IBookFixed).GetPage(0).SaveImageAsync(await CreateImageFileAsync(book.ID), 300);
+                    await (book as Books.IBookFixed).GetPage(0).SaveImageAsync(await CreateImageFileAsync(book.ID), ThumbnailSize);
                 }
             }
         }
