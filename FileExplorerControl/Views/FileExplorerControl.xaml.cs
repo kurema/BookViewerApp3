@@ -57,10 +57,16 @@ namespace kurema.FileExplorerControl.Views
             winui.TreeViewNode ctreenode = null;
             foreach (var item in list)
             {
-                ctreenode = cnode.FirstOrDefault(a => a.Content is ViewModels.FileItemViewModel fv2 && (fv2 == item || fv2.Content == item.Content));
-                if (ctreenode == null) continue;
-                if (ctreenode.Content is ViewModels.FileItemViewModel fvm && fvm.Children == null) await fvm.UpdateChildren();
+                var ctreenodeTmp = cnode.FirstOrDefault(a => a.Content is ViewModels.FileItemViewModel fv2 && (fv2 == item || fv2.Content == item.Content));
+                if (ctreenodeTmp is null) continue;
+                ctreenode = ctreenodeTmp;
+                if (ctreenode.Content is ViewModels.FileItemViewModel fvm && fvm.Children is null)
+                {
+                    await fvm.UpdateChildren();
+                    //await ctreenode.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () => { await fvm.UpdateChildren(); });
+                }
                 ctreenode.IsExpanded = true;
+                treeview.Expand(ctreenode);
                 cnode = ctreenode.Children;
             }
             //You can't get item in single selection mode before Microsoft.UI.Xaml v2.2.190731001-prerelease.

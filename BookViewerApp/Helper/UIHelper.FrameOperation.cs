@@ -106,7 +106,10 @@ namespace BookViewerApp.Helper
                                     if (uriResult.IsFile)
                                     {
                                         var result = await GetFileItemViewModelFromRoot(address.ToString(), control.GetTreeViewRoot());
-                                        if (result != null) fvm.Content.Item = result;
+                                        if (result != null)
+                                        {
+                                            fvm.Content.Item = result;
+                                        }
                                     }
                                 }
                             }, address =>
@@ -209,6 +212,7 @@ namespace BookViewerApp.Helper
                                                     try
                                                     {
                                                         var book = await ThumbnailManager.SaveImageAsync(storage.Content, cancel);
+                                                        if (book is null || string.IsNullOrEmpty(book?.ID)) return;
                                                         if (cancel.IsCancellationRequested) return;
                                                         await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
                                                         {

@@ -231,7 +231,7 @@ namespace kurema.FileExplorerControl.ViewModels
                 History.Add(value);
                 SelectedHistory = History.Count - 1;
 
-                if (value.Children == null)
+                if (value.Children is null)
                 {
                     Task.Run(
                         async () =>

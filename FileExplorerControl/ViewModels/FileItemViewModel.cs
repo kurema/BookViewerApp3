@@ -153,13 +153,13 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
-        private IEnumerable<FileItemViewModel> _Children;
+        private IEnumerable<FileItemViewModel> _Children = null;
 
         public IEnumerable<FileItemViewModel> Children
         {
             get
             {
-                return Order?.OrderDelegate == null ? _Children : Order?.OrderDelegate(_Children);
+                return Order?.OrderDelegate is null || _Children is null ? _Children : Order?.OrderDelegate(_Children);
             }
             private set
             {

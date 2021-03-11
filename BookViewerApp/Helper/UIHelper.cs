@@ -126,10 +126,10 @@ namespace BookViewerApp.Helper
 
         public async static Task<kurema.FileExplorerControl.ViewModels.FileItemViewModel> GetFileItemViewModelFromRoot(string address, IEnumerable<kurema.FileExplorerControl.ViewModels.FileItemViewModel> root)
         {
-            if (root == null) return null;
+            if (root is null) return null;
             var folders = root?.FirstOrDefault(a => a.Content.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Folders);
-            if (folders == null) return null;
-            if (folders.Children == null) await folders.UpdateChildren();
+            if (folders is null) return null;
+            if (folders.Children is null) await folders.UpdateChildren();
             var currentDir = address;
             kurema.FileExplorerControl.ViewModels.FileItemViewModel result = null;
 
@@ -155,10 +155,11 @@ namespace BookViewerApp.Helper
 
             foreach (var item in pathList)
             {
-                if (result.Children == null) await result.UpdateChildren();
+                if (result.Children is null) await result.UpdateChildren();
                 result = result.Children.FirstOrDefault(a => a.Title == item);
-                if (result == null) return null;
+                if (result is null) return null;
             }
+            await result.UpdateChildren();
             return result;
         }
     }

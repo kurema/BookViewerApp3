@@ -302,13 +302,13 @@ namespace BookViewerApp.Helper
                             try
                             {
                                 var file = await item1.GetFile();
-                                if (file == null)
+                                if (file is null)
                                 {
                                     item1.IsParentAccessible = false;
                                     return;
                                 }
                                 var parent = await file.GetParentAsync();
-                                if (parent == null)
+                                if (parent is null)
                                 {
                                     item1.IsParentAccessible = false;
                                     return;
