@@ -7,25 +7,54 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="600"
-    d:DesignWidth="400">
+    d:DesignHeight="300"
+    d:DesignWidth="200">
 
-    <Grid>
-        <Grid Background="#FFA9E2A4"></Grid>
+    <Border CornerRadius="5" >
         <Grid>
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                    <GradientStop Color="#8FFF" Offset="0.0"/>
-                    <GradientStop Color="Transparent" Offset="0.02"/>
-                    <GradientStop Color="Transparent" Offset="0.04"/>
-                    <GradientStop Color="#2000" Offset="0.06"/>
-                    <GradientStop Color="#2FFF" Offset="0.07"/>
-                    <GradientStop Color="Transparent" Offset="0.09"/>
-                    <GradientStop Color="Transparent" Offset="0.98"/>
-                    <GradientStop Color="#4000" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Grid.Background>
+            <Grid Background="#FFA9E2A4"></Grid>
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="1,0">
+                        <GradientStop Color="Transparent" Offset="1"/>
+                        <GradientStop Color="#33FFFFFF" Offset="0"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>
+            <Grid RenderTransformOrigin="0.5,0.5" BorderThickness="1,1,1,1.5" BorderBrush="#2000" CornerRadius="5">
+                <Grid.RenderTransform>
+                    <ScaleTransform  ScaleX="-1" />
+                </Grid.RenderTransform>
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.08,0" StartPoint="0,0"
+                                     >
+                        <GradientStop Color="#0FFF" Offset="0"/>
+                        <GradientStop Color="#8FFF" Offset="0.5"/>
+                        <GradientStop Color="#0000" Offset="0.5"/>
+                        <GradientStop Color="#3000" Offset="0.6"/>
+                        <GradientStop Color="#0000" Offset="0.7"/>
+                        <GradientStop Color="#0FFF" Offset="0.7"/>
+                        <GradientStop Color="#8FFF" Offset="0.85"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <!--<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5px"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5px"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5px"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5px"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.RowSpan="2" Grid.Row="1">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0,0.5" StartPoint="10,0.5">
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>-->
+            </Grid>
         </Grid>
-
-    </Grid>
+    </Border>
 </UserControl>
