@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <controls:ImageCropper Name="imageCropper"  Grid.ColumnSpan="3" Width="500" Height="500"/>
+        <controls:ImageCropper x:Name="imageCropper"  Grid.ColumnSpan="3" Width="500" Height="500"/>
         <local:AcrylicButtonControl Margin="0" Content="&lt;" Grid.Row="1"/>
         <local:AcrylicButtonControl Margin="0" Content="&gt;" Grid.Row="1" Grid.Column="2"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="1/2"/>

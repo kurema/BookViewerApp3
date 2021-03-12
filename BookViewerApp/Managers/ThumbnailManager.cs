@@ -78,7 +78,7 @@ namespace BookViewerApp.Managers
         {
             if (book is Books.IBookFixed && (book as Books.IBookFixed).PageCount > 0)
             {
-                if (await GetImageFileAsync(book.ID) == null)
+                if (await GetImageFileAsync(book.ID) is null)
                 {
                     await (book as Books.IBookFixed).GetPage(0).SaveImageAsync(await CreateImageFileAsync(book.ID), ThumbnailSize);
                 }
