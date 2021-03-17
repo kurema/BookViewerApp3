@@ -129,9 +129,9 @@ namespace BookViewerApp.ViewModels
 
                 if (await ThumbnailManager.GetImageFileAsync(bookf.ID) == null)
                 {
-                    var fileThumb = await ThumbnailManager.CreateImageFileAsync(bookf.ID);
                     try
                     {
+                        var fileThumb = await ThumbnailManager.CreateImageFileAsync(bookf.ID);
                         var page = bookf.GetPage(0);
                         if (page != null) await page.SaveImageAsync(fileThumb, 500);
                         //if ((await fileThumb.GetBasicPropertiesAsync()).Size == 0) await fileThumb.DeleteAsync();

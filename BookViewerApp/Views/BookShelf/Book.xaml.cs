@@ -27,11 +27,6 @@ namespace BookViewerApp.Views.BookShelf
             this.InitializeComponent();
 
             //https://stackoverflow.com/questions/41101198/how-to-combine-multiple-effects-in-uwp-composition-api
-
-            var brush = new LinearGradientBrush();
-            var brad = new GradientStop()
-            {
-            };
         }
     }
 }

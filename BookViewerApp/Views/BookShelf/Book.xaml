@@ -10,24 +10,30 @@
     d:DesignHeight="300"
     d:DesignWidth="200">
 
-    <Border CornerRadius="5" >
+    <UserControl.Resources>
+        <CornerRadius x:Key="radius">
+            5
+        </CornerRadius>
+    </UserControl.Resources>
+    <Border CornerRadius="{StaticResource radius}" >
         <Grid>
-            <Grid Background="#FFA9E2A4"></Grid>
+            <Grid Background="#FF3B5B38"></Grid>
             <Grid>
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="1,0">
-                        <GradientStop Color="Transparent" Offset="1"/>
-                        <GradientStop Color="#33FFFFFF" Offset="0"/>
+                        <GradientStop Color="#0FFF" Offset="1"/>
+                        <GradientStop Color="#4FFF" Offset="0"/>
                     </LinearGradientBrush>
                 </Grid.Background>
             </Grid>
-            <Grid RenderTransformOrigin="0.5,0.5" BorderThickness="1,1,1,1.5" BorderBrush="#2000" CornerRadius="5">
+            <Grid RenderTransformOrigin="0.5,0.5" BorderThickness="1,1,1,1.5" BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}" CornerRadius="{StaticResource radius}"
+                  x:Name="decorationGrid"
+                  >
                 <Grid.RenderTransform>
                     <ScaleTransform  ScaleX="-1" />
                 </Grid.RenderTransform>
                 <Grid.Background>
-                    <LinearGradientBrush EndPoint="0.08,0" StartPoint="0,0"
-                                     >
+                    <LinearGradientBrush EndPoint="0.08,0" StartPoint="0,0">
                         <GradientStop Color="#0FFF" Offset="0"/>
                         <GradientStop Color="#8FFF" Offset="0.5"/>
                         <GradientStop Color="#0000" Offset="0.5"/>
@@ -35,7 +41,7 @@
                         <GradientStop Color="#0000" Offset="0.7"/>
                         <GradientStop Color="#0FFF" Offset="0.7"/>
                         <GradientStop Color="#8FFF" Offset="0.85"/>
-                        <GradientStop Color="Transparent" Offset="1"/>
+                        <GradientStop Color="#0FFF" Offset="1"/>
                     </LinearGradientBrush>
                 </Grid.Background>
                 <!--<Grid.ColumnDefinitions>
