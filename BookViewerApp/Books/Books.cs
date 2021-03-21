@@ -29,7 +29,7 @@ namespace BookViewerApp.Books
         //Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
         Task SetBitmapAsync(BitmapSource image, double width, double height);
         Task<bool> UpdateRequiredAsync(double width, double height);
-        Task SaveImageAsync(StorageFile file, uint width);
+        Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null);
     }
 
     public interface IPageOptions : INotifyPropertyChanged
@@ -149,12 +149,12 @@ namespace BookViewerApp.Books
 
         public async Task<bool> UpdateRequiredAsync(double width, double height)
         {
-            return await (await GetPage()).UpdateRequiredAsync(width,height);
+            return await (await GetPage()).UpdateRequiredAsync(width, height);
         }
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
         {
-            await (await GetPage()).SaveImageAsync(file, width);
+            await (await GetPage()).SaveImageAsync(file, width, Clip);
         }
 
         public async Task SetBitmapAsync(BitmapSource image, double width, double height)

@@ -85,6 +85,13 @@ namespace BookViewerApp.Views
             ImageCropper.Source = new Windows.UI.Xaml.Media.Imaging.WriteableBitmap(size, size);
         }
 
-
+        private async void AcrylicButtonControl_Click(object sender, RoutedEventArgs e)
+        {
+            if (imageCropper.Source is null) return;
+            (var w, var h) = (imageCropper.Source.PixelWidth, imageCropper.Source.PixelHeight);
+            var r = imageCropper.CroppedRegion;
+            var rect = new Rect(r.X / w, r.Y / h, r.Width / w, r.Height / h);
+            await Book?.GetPage(CurrentPage).SaveImageAsync(await Managers.ThumbnailManager.CreateImageFileAsync(Book?.ID), Managers.ThumbnailManager.ThumbnailSize, rect);
+        }
     }
 }

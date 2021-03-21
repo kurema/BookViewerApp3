@@ -411,12 +411,17 @@ namespace BookViewerApp.Books
             else { return Task.FromResult(false); }
         }
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
         {
             var pdfOption = new pdf.PdfPageRenderOptions
             {
                 DestinationWidth = width
             };
+            if(croppedRegionRelative.HasValue)
+            {
+                //ToDo: Test
+                pdfOption.SourceRect = croppedRegionRelative.Value;
+            }
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await Content.RenderToStreamAsync(stream, pdfOption);
             await Functions.SaveStreamToFile(stream, file);

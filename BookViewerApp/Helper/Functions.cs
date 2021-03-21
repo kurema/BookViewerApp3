@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
 using Windows.Graphics.Imaging;
+using Windows.Foundation;
 
 namespace BookViewerApp.Helper
 {
@@ -83,16 +84,18 @@ namespace BookViewerApp.Helper
             }
         }
 
-        public static async Task ResizeImage(Windows.Storage.Streams.IRandomAccessStream origin, Windows.Storage.Streams.IRandomAccessStream result, uint maxSize, Action extractAction = null)
+        public static async Task ResizeImage(Windows.Storage.Streams.IRandomAccessStream origin, Windows.Storage.Streams.IRandomAccessStream result, uint maxSize, Rect? croppedRegionRelative = null, Action extractAction = null)
         {
+            var clop = croppedRegionRelative ?? new Rect(0, 0, 1, 1);
+
             var decoder = await BitmapDecoder.CreateAsync(origin);
             var softwareBitmap = await decoder.GetSoftwareBitmapAsync();
 
-            double scale = (double)maxSize / Math.Max(decoder.PixelWidth, decoder.PixelHeight);
+            double scale = (double)maxSize / Math.Max(decoder.PixelWidth * clop.Width, decoder.PixelHeight * clop.Height);
 
             var propset = new BitmapPropertySet
             {
-                { "ImageQuality", new BitmapTypedValue(0.5, Windows.Foundation.PropertyType.Single) }
+                { "ImageQuality", new BitmapTypedValue(0.5, PropertyType.Single) }
             };
             var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, result);
             encoder.SetSoftwareBitmap(softwareBitmap);
@@ -105,13 +108,27 @@ namespace BookViewerApp.Helper
             scale = Math.Min(scale, 0.5);
             encoder.BitmapTransform.ScaledWidth = (uint)(decoder.PixelWidth * scale);
             encoder.BitmapTransform.ScaledHeight = (uint)(decoder.PixelHeight * scale);
+            if (croppedRegionRelative.HasValue)
+            {
+                encoder.BitmapTransform.Bounds = new BitmapBounds()
+                {
+                    X = (uint)(clop.X * decoder.PixelWidth * scale),
+                    Y = (uint)(clop.Y * decoder.PixelHeight * scale),
+                    Width = (uint)(clop.Width * decoder.PixelWidth * scale),
+                    Height = (uint)(clop.Height * decoder.PixelHeight * scale),
+                };
+            }
             encoder.IsThumbnailGenerated = false;
             try
             {
                 await encoder.FlushAsync();
             }
-            catch
+            catch (Exception ex)
             {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+#endif
             }
         }
 
@@ -186,7 +203,7 @@ namespace BookViewerApp.Helper
             return list;
         }
 
-        public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T,string> titleProvider)
+        public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T, string> titleProvider)
         {
             bool SortCover(T a) => !titleProvider(a).ToUpperInvariant().Contains("COVER");
             NaturalSort.NaturalList SortNatural(T a) => new NaturalSort.NaturalList(titleProvider(a));
@@ -230,7 +247,7 @@ namespace BookViewerApp.Helper
 
             var bitmapImage = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
 
-            using (var stream = new Windows.Storage.Streams. InMemoryRandomAccessStream())
+            using (var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream())
             {
                 using (var writer = new Windows.Storage.Streams.DataWriter(stream))
                 {

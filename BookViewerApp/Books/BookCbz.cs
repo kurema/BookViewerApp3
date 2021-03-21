@@ -173,14 +173,14 @@ namespace BookViewerApp.Books
             return Task.FromResult(false);
         }
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
         {
-            if (Cache == null) return;
+            if (Cache is null) return;
             try
             {
                 using (var fileThumb = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    await Functions.ResizeImage((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream(), fileThumb, width, () => { Content.ExtractToFile(file.Path, true); });
+                    await Functions.ResizeImage((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream(), fileThumb, width, croppedRegionRelative: croppedRegionRelative, extractAction: () => { Content.ExtractToFile(file.Path, true); });
                 }
             }
             catch (Exception)

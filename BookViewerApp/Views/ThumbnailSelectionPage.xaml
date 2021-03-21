@@ -25,6 +25,6 @@
         <local:AcrylicButtonControl Margin="0" Content="←" Grid.Row="1" Command="{x:Bind CommandAddPage}" CommandParameter="-1"/>
         <local:AcrylicButtonControl Margin="0" Content="→" Grid.Row="1" Grid.Column="2" Command="{x:Bind CommandAddPage}" CommandParameter="1"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" x:Name="textBoxPage" />
-        <local:AcrylicButtonControl HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" Grid.ColumnSpan="3" Icon="Camera" Width="Auto"/>
+        <local:AcrylicButtonControl HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" Grid.ColumnSpan="3" Icon="Camera" Width="Auto" Click="AcrylicButtonControl_Click"/>
     </Grid>
 </Page>

@@ -152,21 +152,21 @@ namespace BookViewerApp.Books
 
         private readonly MemoryStreamCache Cache;
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
         {
             try
             {
                 //await Functions.SaveStreamToFile(GetStream(), file);
                 using var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite);
                 var ms = await Cache.GetMemoryStreamByProviderAsync();
-                await Functions.ResizeImage(ms.AsRandomAccessStream(), fileStream, width, async () =>
-                {
-                    using var s = await Cache.GetMemoryStreamByProviderAsync();
-                    var buffer = new byte[s.Length];
-                    await s.ReadAsync(buffer, 0, (int)s.Length);
-                    var ibuffer = buffer.AsBuffer();
-                    await fileStream.WriteAsync(ibuffer);
-                });
+                await Functions.ResizeImage(ms.AsRandomAccessStream(), fileStream, width, croppedRegionRelative: croppedRegionRelative, extractAction: async () =>
+                  {
+                      using var s = await Cache.GetMemoryStreamByProviderAsync();
+                      var buffer = new byte[s.Length];
+                      await s.ReadAsync(buffer, 0, (int)s.Length);
+                      var ibuffer = buffer.AsBuffer();
+                      await fileStream.WriteAsync(ibuffer);
+                  });
             }
             catch (Exception)
             {

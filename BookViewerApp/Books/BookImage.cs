@@ -35,11 +35,13 @@ namespace BookViewerApp.Books
             return Task.FromResult(false);
         }
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
         {
             //ToDo: Fix me!
             if (Uri.IsFile)
             {
+                //StorageFileのGetThumbnailAsyncを使ってます。サイズもいい加減だし明らかに微妙。
+                //Clip is ignored.
                 var thm = await (await StorageFile.GetFileFromApplicationUriAsync(Uri)).GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView);
 
                 await Functions.SaveStreamToFile(thm, file);
@@ -80,8 +82,9 @@ namespace BookViewerApp.Books
             return Task.FromResult(image);
         }
 
-        public async Task SaveImageAsync(StorageFile file, uint width)
+        public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
         {
+            //Clip is ignored.
             await Functions.SaveStreamToFile(stream, file);
         }
 
