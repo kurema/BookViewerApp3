@@ -151,12 +151,9 @@ namespace BookViewerApp.Helper
                                     var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;
                                     if (book == null) return;
                                     var page = new Views.ThumbnailSelectionPage();
+                                    page.Book = book;
                                     dialog.Content = page;
                                     dialog.CloseButtonText = "[Debug] CLOSE";
-                                    int size = Managers.ThumbnailManager.ThumbnailSize;
-                                    var writeableBitmap = new Windows.UI.Xaml.Media.Imaging.WriteableBitmap(size,size);
-                                    await book.GetPage(0).SetBitmapAsync(writeableBitmap, size*2, size*2);
-                                    page.ImageCropper.Source = writeableBitmap;
                                     await dialog.ShowAsync();
                                 })));
                             }

@@ -21,11 +21,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <controls:ImageCropper x:Name="imageCropper"  Grid.ColumnSpan="3" Width="500" Height="500" Visibility="Collapsed"/>
-        <bookshelf:Book Width="200" Height="300" Grid.ColumnSpan="3" x:Name="bookshelfBook"/>
-        <local:AcrylicButtonControl Margin="0" Content="&lt;" Grid.Row="1"/>
-        <local:AcrylicButtonControl Margin="0" Content="&gt;" Grid.Row="1" Grid.Column="2"/>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="1/2"/>
+        <controls:ImageCropper x:Name="imageCropper"  Grid.ColumnSpan="3" Width="500" Height="500"/>
+        <local:AcrylicButtonControl Margin="0" Content="←" Grid.Row="1" Command="{x:Bind CommandAddPage}" CommandParameter="-1"/>
+        <local:AcrylicButtonControl Margin="0" Content="→" Grid.Row="1" Grid.Column="2" Command="{x:Bind CommandAddPage}" CommandParameter="1"/>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" x:Name="textBoxPage" />
         <local:AcrylicButtonControl HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" Grid.ColumnSpan="3" Icon="Camera" Width="Auto"/>
     </Grid>
 </Page>
