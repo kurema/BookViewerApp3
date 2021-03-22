@@ -21,6 +21,8 @@ namespace BookViewerApp.Books
     {
         uint PageCount { get; }
         IPageFixed? GetPage(uint i);
+        IPageFixed? GetPageCover();
+
     }
 
     public interface IPageFixed
@@ -193,6 +195,11 @@ namespace BookViewerApp.Books
         public IPageFixed? GetPage(uint i)
         {
             return Origin.GetPage(Origin.PageCount - i - 1);
+        }
+
+        public IPageFixed? GetPageCover()
+        {
+            return Origin?.GetPageCover();
         }
     }
 

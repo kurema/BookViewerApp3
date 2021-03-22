@@ -123,6 +123,13 @@ namespace BookViewerApp.Books
             DisposableStream?.Dispose();
             DisposableStream = null;
         }
+
+        public IPageFixed? GetPageCover()
+        {
+            if (Entries is null || Entries?.Length == 0) return null;
+            var cover = this.Entries.FirstOrDefault(a => Functions.IsCover(a.Key));
+            return cover is null ? GetPage(0) : new CompressedPage(cover);
+        }
     }
 }
 
