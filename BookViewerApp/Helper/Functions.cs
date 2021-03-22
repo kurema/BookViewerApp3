@@ -237,7 +237,7 @@ namespace BookViewerApp.Helper
             return title.Contains("COVER") || //en
                 title.Contains("表紙") || //jp
                 title.Contains("封面") || //cn
-                title.Contains("COPERTINA"); //it - unlikely
+                title.Contains("COPERTINA"); //it
         }
 
 
