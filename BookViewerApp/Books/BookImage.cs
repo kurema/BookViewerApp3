@@ -155,5 +155,11 @@ namespace BookViewerApp.Books
         {
             return new ImagePageUrl(Content[i]);
         }
+
+        public IPageFixed? GetPageCover()
+        {
+            var cover = Content.FirstOrDefault(a => Functions.IsCover(a.Segments?.Last()));
+            return cover is null ? GetPage(0) : new ImagePageUrl(cover);
+        }
     }
 }

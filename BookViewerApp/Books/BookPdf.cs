@@ -306,6 +306,10 @@ namespace BookViewerApp.Books
             Loaded?.Invoke(this, e);
         }
 
+        public IPageFixed? GetPageCover()
+        {
+            return GetPage(0);
+        }
     }
 }
 

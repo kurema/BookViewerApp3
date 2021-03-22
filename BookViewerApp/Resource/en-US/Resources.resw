@@ -706,4 +706,10 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
   <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
     <value>Generate thumbnails in the background</value>
   </data>
+  <data name="ContextMenu.Book.SelectThumbnail.Title" xml:space="preserve">
+    <value>Select the thumbnail</value>
+  </data>
+  <data name="Word.Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>

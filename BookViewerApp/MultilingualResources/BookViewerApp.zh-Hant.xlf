@@ -798,6 +798,14 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
           <source>Generate thumbnails in the background</source>
           <target state="translated">在後台獲取縮略圖</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Book.SelectThumbnail.Title" translate="yes" xml:space="preserve">
+          <source>Select the thumbnail</source>
+          <target state="new">Select the thumbnail</target>
+        </trans-unit>
+        <trans-unit id="Word.Close" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="new">Close</target>
+        </trans-unit>
       </group>
     </body>
   </file>

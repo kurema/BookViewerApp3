@@ -203,7 +203,7 @@ namespace BookViewerApp.Helper
 
         public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T, string> titleProvider)
         {
-            bool SortCover(T a) => !titleProvider(a).ToUpperInvariant().Contains("COVER");
+            bool SortCover(T a) => !IsCover(titleProvider(a));
             NaturalSort.NaturalList SortNatural(T a) => new NaturalSort.NaturalList(titleProvider(a));
 
             if ((bool)Storages.SettingStorage.GetValue("SortNaturalOrder"))
@@ -229,6 +229,17 @@ namespace BookViewerApp.Helper
                 }
             }
         }
+
+        public static bool IsCover(string title)
+        {
+            if (title is null) return false;
+            title = title.ToUpperInvariant();
+            return title.Contains("COVER") || //en
+                title.Contains("表紙") || //jp
+                title.Contains("封面") || //cn
+                title.Contains("COPERTINA"); //it - unlikely
+        }
+
 
         public static string EscapeFileName(string str)
         {

@@ -51,7 +51,7 @@ namespace BookViewerApp.Views
             }
         }
 
-        private void UpdatePage() => textBoxPage.Text = $"{CurrentPage} / {Book?.PageCount ?? 0}";
+        private void UpdatePage() => textBoxPage.Text = $"{CurrentPage + 1} / {Book?.PageCount ?? 0}";
         private async void UpdateImage()
         {
             if (Book is null) return;

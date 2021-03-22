@@ -145,7 +145,7 @@ namespace BookViewerApp.Helper
                         {
                             if (file.Content is Windows.Storage.IStorageFile sfile)
                             {
-                                list.Add(new MenuCommand("[Debug] Pick thumbnail", new Helper.DelegateCommand(async (_) =>
+                                list.Add(new MenuCommand(GetResourceTitle("Book/SelectThumbnail"), new Helper.DelegateCommand(async (_) =>
                                 {
                                     var dialog = new ContentDialog();
                                     var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;
@@ -153,7 +153,7 @@ namespace BookViewerApp.Helper
                                     var page = new Views.ThumbnailSelectionPage();
                                     page.Book = book;
                                     dialog.Content = page;
-                                    dialog.CloseButtonText = "[Debug] CLOSE";
+                                    dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/Close");
                                     await dialog.ShowAsync();
                                 })));
                             }

@@ -136,6 +136,13 @@ namespace BookViewerApp.Books
             DisposableStream?.Dispose();
             DisposableStream = null;
         }
+
+        public IPageFixed? GetPageCover()
+        {
+            if (AvailableEntries is null || AvailableEntries?.Length == 0) return null;
+            var cover = this.AvailableEntries.FirstOrDefault(a => Helper.Functions.IsCover(a.Name));
+            return cover is null ? GetPage(0) : new CbzPage(cover);
+        }
     }
 }
 
