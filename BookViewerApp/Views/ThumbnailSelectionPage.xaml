@@ -11,6 +11,23 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CameraFlashStates">
+                <VisualState x:Name="CameraFlash">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="rectangleCameraFlash" Storyboard.TargetProperty="Opacity">
+                            <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
+                            <LinearDoubleKeyFrame KeyTime="0:0:0.1" Value="0.9"/>
+                            <SplineDoubleKeyFrame KeyTime="0:0:3" Value="0.0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="CameraFlashStop">
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -26,5 +43,8 @@
         <local:AcrylicButtonControl Margin="0" Content="→" Grid.Row="1" Grid.Column="2" Command="{x:Bind CommandAddPage}" CommandParameter="1"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" x:Name="textBoxPage" />
         <local:AcrylicButtonControl HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" Grid.ColumnSpan="3" Icon="Camera" Width="Auto" Click="AcrylicButtonControl_Click"/>
+
+        <Rectangle Fill="White" IsHitTestVisible="False" Grid.RowSpan="3" Grid.ColumnSpan="3" Opacity="0" x:Name="rectangleCameraFlash">
+        </Rectangle>
     </Grid>
 </Page>

@@ -419,7 +419,6 @@ namespace BookViewerApp.Books
             };
             if(croppedRegionRelative.HasValue)
             {
-                //ToDo: Test
                 pdfOption.SourceRect = croppedRegionRelative.Value;
             }
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();

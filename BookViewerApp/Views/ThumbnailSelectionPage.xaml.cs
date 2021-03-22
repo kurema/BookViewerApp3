@@ -92,6 +92,9 @@ namespace BookViewerApp.Views
             var r = imageCropper.CroppedRegion;
             var rect = new Rect(r.X / w, r.Y / h, r.Width / w, r.Height / h);
             await Book?.GetPage(CurrentPage).SaveImageAsync(await Managers.ThumbnailManager.CreateImageFileAsync(Book?.ID), Managers.ThumbnailManager.ThumbnailSize, rect);
+
+            VisualStateManager.GoToState(this, "CameraFlashStop", false);
+            VisualStateManager.GoToState(this, "CameraFlash", true);
         }
     }
 }

@@ -100,7 +100,7 @@ namespace BookViewerApp.Helper
             var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, result);
             encoder.SetSoftwareBitmap(softwareBitmap);
 
-            if (scale >= 1)
+            if (scale >= 1 && !croppedRegionRelative.HasValue)
             {
                 extractAction?.Invoke();
                 return;
