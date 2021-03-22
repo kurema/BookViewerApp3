@@ -134,8 +134,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
             {
                 return _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
                 {
-                    if (Content == null) return;
-                    if (parameter == null) return;
+                    if (Content is null) return;
+                    if (parameter is null) return;
                     try
                     {
                         await Content?.RenameAsync(parameter.ToString());
@@ -159,7 +159,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                 {
                     if (parameter is bool complete)
                     {
-                        if (Content == null) return;
+                        if (Content is null) return;
                         try
                         {
                             await Content?.DeleteAsync(complete ? StorageDeleteOption.PermanentDelete : StorageDeleteOption.Default);

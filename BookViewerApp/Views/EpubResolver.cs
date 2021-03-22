@@ -56,7 +56,7 @@ namespace BookViewerApp.Views
         protected async Task<IInputStream> GetContent(Uri uri)
         {
             var invalid = new Exception("Invalid Path");
-            if (uri == null) throw invalid;
+            if (uri is null) throw invalid;
             try
             {
                 //Security!
@@ -69,7 +69,7 @@ namespace BookViewerApp.Views
                 }
                 if (uri.LocalPath.ToLowerInvariant() == PathEpub)
                 {
-                    if (File == null) throw invalid;
+                    if (File is null) throw invalid;
                     return await File.OpenReadAsync();
                 }
                 throw invalid;

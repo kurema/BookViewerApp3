@@ -74,7 +74,7 @@ namespace BookViewerApp.ViewModels
             get => Content?.title ?? "";
             set
             {
-                if (Content == null) return;
+                if (Content is null) return;
                 Content.title = value;
                 OnPropertyChanged(nameof(Title));
             }
@@ -92,7 +92,7 @@ namespace BookViewerApp.ViewModels
 
         private void Result_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (Content == null) return;
+            if (Content is null) return;
             Content.Items = (sender as ObservableCollection<LibraryMemberItemViewModel>)?.Select(a => a.Content)?.ToArray() ?? Content.Items;
         }
     }
@@ -159,7 +159,7 @@ namespace BookViewerApp.ViewModels
         {
             get
             {
-                if (Content == null) return "";
+                if (Content is null) return "";
                 switch (Content)
                 {
                     case libraryLibraryFolder _: return "Folder";
@@ -176,7 +176,7 @@ namespace BookViewerApp.ViewModels
         {
             get
             {
-                if (Content == null) return "";
+                if (Content is null) return "";
                 switch (Content)
                 {
                     case libraryLibraryFolder _: return StorageItem?.Name;
@@ -197,7 +197,7 @@ namespace BookViewerApp.ViewModels
                 var result = new Helper.DelegateCommand(async (parameter) =>
                   {
                       var list = Parent?.Content?.Items?.ToList();
-                      if (list == null) return;
+                      if (list is null) return;
                       list.Remove(Content);
                       Parent.Content.Items = list.ToArray();
                       Storages.LibraryStorage.GarbageCollectToken();

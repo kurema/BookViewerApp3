@@ -40,8 +40,8 @@ namespace kurema.FileExplorerControl.Views
             await OperateBinding(async (vm) =>
             {
                 vm?.Item?.IconFetchingCancel();
-                if (folder == null) return;
-                if (folder.Children == null) await folder.UpdateChildren();
+                if (folder is null) return;
+                if (folder.Children is null) await folder.UpdateChildren();
                 folder.IconFetchingUnCancel();
                 vm.Item = folder;
             });
@@ -144,8 +144,8 @@ namespace kurema.FileExplorerControl.Views
         {
             await OperateBinding((vm) =>
             {
-                if (vm.Item == null) return Task.CompletedTask;
-                if (vm.Item.Order == null)
+                if (vm.Item is null) return Task.CompletedTask;
+                if (vm.Item.Order is null)
                 {
                     vm.Item.Order = new ViewModels.FileItemViewModel.OrderStatus().GetShiftedBasicOrder(e.Column.Tag as string);
                 }
@@ -160,7 +160,7 @@ namespace kurema.FileExplorerControl.Views
 
         private async Task Open(ViewModels.FileItemViewModel file)
         {
-            if (file == null) return;
+            if (file is null) return;
             else if (file.IsFolder)
             {
                 await SetFolder(file);

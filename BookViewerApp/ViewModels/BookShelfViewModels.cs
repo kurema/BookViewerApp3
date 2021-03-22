@@ -20,7 +20,7 @@ namespace BookViewerApp.ViewModels
         //public static async Task<ObservableCollection<BookShelfViewModel>> GetBookShelfViewModels (bool addSecretShelf){
         //    var storages = await BookShelfStorage.GetBookShelves();
         //    var result= new ObservableCollection<BookShelfViewModel>();
-        //    if (storages == null) return null;
+        //    if (storages is null) return null;
         //    foreach(var item in storages)
         //    {
         //        if (addSecretShelf || item.Secret == false)
@@ -134,7 +134,7 @@ namespace BookViewerApp.ViewModels
                     {
                         return (item as BookShelfBookViewModel).ID;
                     }
-                    else if (item is BookContainerViewModel && result == null)
+                    else if (item is BookContainerViewModel && result is null)
                     {
                         result = (item as BookContainerViewModel).TitleID;
                     }

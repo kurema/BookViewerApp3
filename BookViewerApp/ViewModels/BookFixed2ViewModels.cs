@@ -96,11 +96,11 @@ namespace BookViewerApp.ViewModels
 
         public async Task UpdateContainerInfo(Windows.Storage.IStorageFile value)
         {
-            if (value == null) return;
+            if (value is null) return;
 
             ContainerItems.Clear();
             var parent = await (value as Windows.Storage.StorageFile)?.GetParentAsync();
-            if (parent == null)
+            if (parent is null)
             {
                 FileItem = new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
                 return;
@@ -118,7 +118,7 @@ namespace BookViewerApp.ViewModels
         {
             this.Loading = true;
 
-            if (value == null) return;
+            if (value is null) return;
 
             var book = (await BookManager.GetBookFromFile(value));
             if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
@@ -127,7 +127,7 @@ namespace BookViewerApp.ViewModels
                 this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
                 this.Loading = false;
 
-                if (await ThumbnailManager.GetImageFileAsync(bookf.ID) == null)
+                if (await ThumbnailManager.GetImageFileAsync(bookf.ID) is null)
                 {
                     try
                     {
@@ -210,7 +210,7 @@ namespace BookViewerApp.ViewModels
                 pages.Add(new PageViewModel(new Books.VirtualPage(() =>
                 {
                     var p = value.GetPage(page);
-                    if (p == null) throw new ArgumentOutOfRangeException();
+                    if (p is null) throw new ArgumentOutOfRangeException();
                     //if (p is Books.PdfPage pdf) pdf.Option = option;// Is this OK?
                     return p;
                 }), this));
@@ -269,7 +269,7 @@ namespace BookViewerApp.ViewModels
         private BookInfoStorage.BookInfo? BookInfo = null;
         public void SaveInfo()
         {
-            if (BookInfo == null) return;
+            if (BookInfo is null) return;
             BookInfo.Bookmarks.Clear();
             BookInfo.SetLastReadPage((uint)this.PageSelectedDisplay);
             foreach (var bm in this.Bookmarks)
@@ -832,7 +832,7 @@ namespace BookViewerApp.ViewModels
 
         public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token, System.Threading.SemaphoreSlim Semaphore, double width, double height)
         {
-            if (im == null) return;
+            if (im is null) return;
             await Semaphore.WaitAsync();
             try
             {
@@ -928,7 +928,7 @@ namespace BookViewerApp.ViewModels
 
             public bool CanExecute(object parameter)
             {
-                if (model?.FileItem == null || parameter == null) return false;
+                if (model?.FileItem == null || parameter is null) return false;
                 if (!int.TryParse(parameter.ToString(), out int shift)) return false;
                 var index = model.ContainerItems.IndexOf(model.FileItem) + shift;
                 return 0 <= index && index < model.ContainerItems.Count;
@@ -936,7 +936,7 @@ namespace BookViewerApp.ViewModels
 
             public void Execute(object parameter)
             {
-                if (model?.FileItem == null || parameter == null) return;
+                if (model?.FileItem == null || parameter is null) return;
                 if (!int.TryParse(parameter.ToString(), out int shift)) return;
                 var index = model.ContainerItems.IndexOf(model.FileItem) + shift;
                 if (!(0 <= index && index < model.ContainerItems.Count)) return;

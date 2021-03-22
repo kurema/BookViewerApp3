@@ -52,7 +52,7 @@ namespace BookViewerApp.Storages
 
         private static async Task<BookInfo[]?> LoadAsyncOne(Windows.Storage.StorageFile file,System.Threading.SemaphoreSlim sem)
         {
-            if (file == null) return null;
+            if (file is null) return null;
 
             await sem.WaitAsync();
             try
@@ -140,7 +140,7 @@ namespace BookViewerApp.Storages
 
         public static async Task<List<BookInfo>> GetBookInfoAsync()
         {
-            if (BookInfosCache == null) BookInfosCache = ((await LoadAsync()) ?? new BookInfo[0]).ToList();
+            if (BookInfosCache is null) BookInfosCache = ((await LoadAsync()) ?? new BookInfo[0]).ToList();
             return BookInfosCache;
         }
 
@@ -162,7 +162,7 @@ namespace BookViewerApp.Storages
         public static BookInfo? GetBookInfoByIDOrCreate(string id)
         {
             var bis = GetBookInfo();
-            if (bis == null) return null;
+            if (bis is null) return null;
 
             foreach (var item in bis)
             {

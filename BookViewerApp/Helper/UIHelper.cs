@@ -74,7 +74,7 @@ namespace BookViewerApp.Helper
 
         public static string GetFileTypeDescription(Windows.Storage.IStorageItem item)
         {
-            if (item == null) return null;
+            if (item is null) return null;
             var ext = System.IO.Path.GetExtension(item.Path);
             if (item is Windows.Storage.StorageFolder f)
             {

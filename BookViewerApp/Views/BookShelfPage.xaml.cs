@@ -153,7 +153,7 @@ namespace BookViewerApp.Views
         private void AppBarButton_Click_ReloadBookShelf(object sender, RoutedEventArgs e)
         {
             //var cbs = (await GetCurrentBookShelf());
-            //if (cbs == null) return;
+            //if (cbs is null) return;
             //var item= await Books.BookManager.StorageItemGet(cbs.GetFirstAccessToken());
             //var storage = await BookShelfStorage.GetBookShelves();
             //var target = storage[(await GetActualCurrentIndex())];

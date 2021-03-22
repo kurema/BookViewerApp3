@@ -163,7 +163,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             ResultCache = this.ResultCache?? new ObservableCollection<IFileItem>();
             ResultCache.Clear();
-            if (Content.Items == null) return Task.FromResult(ResultCache);
+            if (Content.Items is null) return Task.FromResult(ResultCache);
             foreach (var item in GetChildrenStorageBookmark()) ResultCache.Add(item);
             return Task.FromResult(ResultCache);
         }
@@ -171,7 +171,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         protected List<IStorageBookmark> GetChildrenStorageBookmark()
         {
             var result = new List<IStorageBookmark>();
-            if (Content?.Items == null) return result;
+            if (Content?.Items is null) return result;
             foreach (var item in Content.Items)
             {
                 IStorageBookmark bookmark = null;
@@ -229,8 +229,8 @@ namespace kurema.FileExplorerControl.Models.FileItems
         private void IBookmarkItemAddItem(IBookmarkItem content)
         {
             if (IsReadOnly) return;
-            if (Content == null) return;
-            if (content == null) return;
+            if (Content is null) return;
+            if (content is null) return;
             var items = Content.Items?.ToList() ?? new List<object>();
             if (!content.IsFolder)
             {

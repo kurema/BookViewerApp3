@@ -394,7 +394,7 @@ namespace BookViewerApp.Views
         {
 
             var panel = d as SpreadPagePanel;
-            if (panel == null) return;
+            if (panel is null) return;
 
             panel.InvalidateArrange();
 

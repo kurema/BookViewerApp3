@@ -15,7 +15,7 @@ namespace BookViewerApp.Managers
     {
         public static BookType? GetBookTypeByPath(string path)
         {
-            if (path == null) { return null; }
+            if (path is null) { return null; }
 
             var ext = Path.GetExtension(path).ToUpperInvariant();
             switch (ext)
@@ -57,14 +57,14 @@ namespace BookViewerApp.Managers
 
         public async static Task<BookType?> GetBookTypeByStorageFile(IStorageFile file)
         {
-            if (file == null) return null;
+            if (file is null) return null;
             return GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
         }
 
         public static async Task<IBook> GetBookFromFile(IStorageFile file)
         {
             var type = await GetBookTypeByStorageFile(file);
-            if (type == null) return null;
+            if (type is null) return null;
             return await GetBookFromFile(file, (BookType)type);
         }
 
@@ -159,7 +159,7 @@ namespace BookViewerApp.Managers
 
         public static bool IsEpub(IStorageFile file)
         {
-            if (file == null) return false;
+            if (file is null) return false;
             if (file.FileType.ToLowerInvariant() == ".epub") { return true; }
             return false;
         }
@@ -173,7 +173,7 @@ namespace BookViewerApp.Managers
 
         public static bool IsFileAvailabe(string path)
         {
-            if (path == null) return false;
+            if (path is null) return false;
             return AvailableExtensionsArchive.Contains(Path.GetExtension(path).ToLowerInvariant());
         }
 
@@ -243,10 +243,10 @@ namespace BookViewerApp.Managers
         public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string[] Path)
         {
             Windows.Storage.IStorageItem currentFolder = await StorageItemGet(token);
-            if (Path == null) return currentFolder;
+            if (Path is null) return currentFolder;
             foreach (var item in Path)
             {
-                if (currentFolder == null) return null;
+                if (currentFolder is null) return null;
                 if (string.IsNullOrEmpty(item) || item.Trim() == ".") { }
                 else if (currentFolder is Windows.Storage.StorageFolder f)
                 {
@@ -279,7 +279,7 @@ namespace BookViewerApp.Managers
 
         public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(Windows.Storage.IStorageItem file)
         {
-            if (file == null) return null;
+            if (file is null) return null;
             return await GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()
             {
                 token = StorageItemRegister(file),
@@ -289,7 +289,7 @@ namespace BookViewerApp.Managers
 
         public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPath(string path)
         {
-            if (path == null) return null;
+            if (path is null) return null;
 
             path = Path.GetFullPath(path);
             //var tokens = (await Task.WhenAll(Content.Content.folders.Select(async a => KeyValuePair.Create(a, await a.GetStorageFolderAsync()))));//.ToDictionary(a => a.Key, a => a.Value);

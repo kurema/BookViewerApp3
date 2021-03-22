@@ -90,7 +90,7 @@ namespace BookViewerApp.Books
 
         public Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
-            if (stream == null)
+            if (stream is null)
             {
                 return Task.CompletedTask;
             }

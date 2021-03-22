@@ -130,7 +130,7 @@ namespace BookViewerApp.Books
 
         public async Task<IPageFixed> GetPage()
         {
-            if (PageCache == null)
+            if (PageCache is null)
                 return await Task.Run(() =>
                 {
                     PageCache = accessor();

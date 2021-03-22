@@ -146,7 +146,7 @@ namespace BookViewerApp.Views
             if (!(sender is ListView view)) return;
             if (e.AddedItems.Count != 1) return;
             if (!(e.AddedItems[0] is kurema.FileExplorerControl.Models.FileItems.StorageFileItem file)) return;
-            if (Binding == null) return;
+            if (Binding is null) return;
             FrameworkElement current = this;
 
             BookFixed3Viewer parent;

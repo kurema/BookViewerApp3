@@ -162,7 +162,7 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return "";
+            if (value is null) return "";
             try
             {
                 return string.Format(parameter?.ToString() ?? "{0}", value);
@@ -244,7 +244,7 @@ namespace kurema.FileExplorerControl.Helper.ValueConverters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return "";
+            if (value is null) return "";
             long num;
             if(long.TryParse(value.ToString(),out num))
             {

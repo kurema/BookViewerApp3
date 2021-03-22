@@ -189,7 +189,7 @@ namespace BookViewerApp.Views
                         spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                     {
 
-                        if (dc.NextPage == null) spreadPanel.Source2 = null;
+                        if (dc.NextPage is null) spreadPanel.Source2 = null;
                         else
                         {
                             UpdateCancellationTokenSource(ref CancellationTokenSource2);
@@ -260,7 +260,7 @@ namespace BookViewerApp.Views
                 if ((DateTime.Now - _lastClickedTime).TotalSeconds > 1) { scrollViewer_PointerInit(e); }
 
                 var point = e.GetCurrentPoint(scrollViewer);
-                if (point == null || _initialPoint == null) return;
+                if (point == null || _initialPoint is null) return;
                 scrollViewer.ChangeView(_initialHorizontalOffset - (point.Position.X - _initialPoint.Position.X),
                     _initialVerticalOffset - (point.Position.Y - _initialPoint.Position.Y), null);
                 e.Handled = true;
@@ -282,7 +282,7 @@ namespace BookViewerApp.Views
                 await Task.Delay(100);
             }
             var scrollViewer = sender as ScrollViewer;
-            if (scrollViewer == null) return;
+            if (scrollViewer is null) return;
 
             var doubleTapPoint = e.GetPosition(scrollViewer);
             if (scrollViewer.ZoomFactor != 1.0)

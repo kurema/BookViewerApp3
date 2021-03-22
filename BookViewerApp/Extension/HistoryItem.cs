@@ -78,7 +78,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
         {
             if (StorageCache != null) return StorageCache;
             StorageCache = await Content.GetFile();
-            if (StorageCache == null)
+            if (StorageCache is null)
             {
                 //Content.CurrentlyInaccessible = true;
                 if (!string.IsNullOrWhiteSpace(Content.Id)) await HistoryStorage.DeleteHistoryById(Content.Id);

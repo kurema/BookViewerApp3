@@ -43,7 +43,7 @@ namespace kurema.FileExplorerControl.Views
                 }
                 
 
-                if (cfile.Parent == null)
+                if (cfile.Parent is null)
                 {
                     break;
                 }

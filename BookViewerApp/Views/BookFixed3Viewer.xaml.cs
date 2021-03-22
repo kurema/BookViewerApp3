@@ -112,7 +112,7 @@ namespace BookViewerApp.Views
         {
             Helper.UIHelper.SetTitleByResource(this, "BookViewer");
 
-            if (e?.Parameter == null) { }
+            if (e?.Parameter is null) { }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {
                 var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
@@ -297,7 +297,7 @@ namespace BookViewerApp.Views
                 if (BookManager.GetBookTypeByPath(file.Path) == BookManager.BookType.Epub)
                 {
                     var tab = UIHelper.GetCurrentTabPage(this);
-                    if (tab == null) return;
+                    if (tab is null) return;
                     var (frame, newTab) = tab.OpenTab("BookViewer");
                     UIHelper.FrameOperation.OpenEpub(frame, file, newTab);
                 }
@@ -403,7 +403,7 @@ namespace BookViewerApp.Views
 
             dialog.Closed += async (s, e) =>
             {
-                if (Binding == null) return;
+                if (Binding is null) return;
                 var page = Binding.PageSelectedDisplay;
                 this.Binding.UpdateSettings();
                 await this.Binding.UpdatePages(this.Dispatcher);

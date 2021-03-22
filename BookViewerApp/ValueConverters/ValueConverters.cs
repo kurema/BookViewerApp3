@@ -14,7 +14,7 @@ namespace BookViewerApp.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return null;
+            if (value is null) return null;
             if (value is float f) { return f * 100; }
             else if (value is double d) { return d * 100; }
             return (double)value * 100;
@@ -22,7 +22,7 @@ namespace BookViewerApp.ValueConverters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return null;
+            if (value is null) return null;
             if (value is float f) { return f / 100; }
             else if (value is double d) { return d / 100; }
             return (double)value / 100;
@@ -33,7 +33,7 @@ namespace BookViewerApp.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return null;
+            if (value is null) return null;
             if (value is float f) { return (int)(f * 100); }
             else if (value is double d) { return (int)(d * 100); }
             return (int)((double)value * 100);
@@ -41,7 +41,7 @@ namespace BookViewerApp.ValueConverters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return null;
+            if (value is null) return null;
             if (value is float f) { return f / 100; }
             else if (value is double d) { return d / 100; }
             return (double)value / 100;

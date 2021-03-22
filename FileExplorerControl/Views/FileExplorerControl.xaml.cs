@@ -109,7 +109,7 @@ namespace kurema.FileExplorerControl.Views
             {
                 if (args.Item is ViewModels.FileItemViewModel vm)
                 {
-                    if (vm.Children == null) await vm.UpdateChildren();
+                    if (vm.Children is null) await vm.UpdateChildren();
                     args.Node.Children.Clear();
                     foreach (var item in vm.Folders)
                     {

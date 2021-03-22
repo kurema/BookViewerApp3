@@ -34,7 +34,7 @@ namespace BookViewerApp.Views
             var picker = new Windows.Storage.Pickers.FolderPicker();
             picker.FileTypeFilter.Add("*");
             var folder = await picker.PickSingleFolderAsync();
-            if (folder == null) return;
+            if (folder is null) return;
             
             if (DataContext is ViewModels.LibraryMemberViewModel vm && vm.Content!=null)
             {

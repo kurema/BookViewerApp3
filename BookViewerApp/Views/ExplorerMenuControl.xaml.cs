@@ -50,7 +50,7 @@ namespace BookViewerApp.Views
 
         public TabPage GetTabPage()
         {
-            if (OriginPage == null) return null;
+            if (OriginPage is null) return null;
             return UIHelper.GetCurrentTabPage(OriginPage);
         }
 

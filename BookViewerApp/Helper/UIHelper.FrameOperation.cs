@@ -19,8 +19,8 @@ namespace BookViewerApp.Helper
         {
             public static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
             {
-                if (file == null) return;
-                if (sender == null) return;
+                if (file is null) return;
+                if (sender is null) return;
                 SetTitleByResource(sender, "Epub");
                 var tabPage = GetCurrentTabPage(sender);
 
@@ -37,7 +37,7 @@ namespace BookViewerApp.Helper
                 {
                     Uri uri = content.Control.BuildLocalStreamUri("epub", resolver.PathHome);
                     content.Control.NavigateToLocalStreamUri(uri, resolver);
-                    if (tabPage != null)
+                    if (!(tabPage is null))
                     {
                         content.Control.NewWindowRequested += (s, e) =>
                         {
@@ -57,15 +57,15 @@ namespace BookViewerApp.Helper
             public static async Task<bool> OpenBookPicked(Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null)
             {
                 var file = await BookManager.PickFile();
-                if (file == null) return false;
+                if (file is null) return false;
                 OpenBook(file, frameProvider, handleOtherFileAction);
                 return true;
             }
 
             public async static void OpenBook(Windows.Storage.IStorageFile file, Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null)
             {
-                if (file == null) return;
-                if (frameProvider == null) return;
+                if (file is null) return;
+                if (frameProvider is null) return;
 
                 var type = await BookManager.GetBookTypeByStorageFile(file);
 
@@ -74,7 +74,7 @@ namespace BookViewerApp.Helper
                     var (frame, sender) = frameProvider();
                     OpenEpub(frame, file, sender);
                 }
-                else if (type != null)
+                else if (!(type is null))
                 {
                     var (frame, sender) = frameProvider();
                     frame.Navigate(typeof(BookFixed3Viewer), file);
@@ -123,7 +123,7 @@ namespace BookViewerApp.Helper
                                     if (uriResult.IsFile)
                                     {
                                         var folder = control.GetTreeViewRoot()?.FirstOrDefault(a => a.Content.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Folders);
-                                        if (folder == null) return false;
+                                        if (folder is null) return false;
                                         return folder.Children?.Any(item => Functions.IsAncestorOf(item.Path, address.ToString())) ?? true;
                                     }
                                     return false;
@@ -138,7 +138,7 @@ namespace BookViewerApp.Helper
                             var library = LibraryStorage.GetItem((a) =>
                             {
                                 var tab = GetCurrentTabPage(control);
-                                if (tab == null) return;
+                                if (tab is null) return;
                                 tab.OpenTabWeb(a);
                             }, control.AddressRequesteCommand
                             );
@@ -161,9 +161,9 @@ namespace BookViewerApp.Helper
                                     //    //try
                                     //    {
                                     //        var image = await Managers.FaviconManager.GetMaximumIcon(bookmark.TargetUrl);
-                                    //        if (image == null) return;
+                                    //        if (image is null) return;
                                     //        var png = Functions.GetPngStreamFromImageMagick(image);
-                                    //        if (png == null) return;
+                                    //        if (png is null) return;
                                     //        var png2 = new MemoryStream();
                                     //        await png.CopyToAsync(png2);
                                     //        png.Seek(0, SeekOrigin.Begin);

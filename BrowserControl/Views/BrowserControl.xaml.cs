@@ -94,7 +94,7 @@ namespace kurema.BrowserControl.Views
         private async void webView_UnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
         {
             var dataContext = DataContext as ViewModels.BrowserControlViewModel;
-            if (dataContext == null) return;
+            if (dataContext is null) return;
 
             if (UnviewableContentIdentifiedOverride != null)
             {
@@ -112,7 +112,7 @@ namespace kurema.BrowserControl.Views
                 var item = await (await dataContext.FolderProvider?.Invoke())?.CreateFileAsync(
                     namebody + extension
                     , Windows.Storage.CreationCollisionOption.GenerateUniqueName);
-                if (item == null) return;
+                if (item is null) return;
                 var downloader = new BackgroundDownloader();
                 var download = downloader.CreateDownload(args.Uri, item);
 
@@ -153,7 +153,7 @@ namespace kurema.BrowserControl.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter == null) return;
+            if (e.Parameter is null) return;
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs arg)
             {
             }
@@ -198,7 +198,7 @@ namespace kurema.BrowserControl.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var node = treeView_BookMarkAdd.SelectedNode;
-            if (node == null || node.Content == null)
+            if (node == null || node.Content is null)
             {
                 if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null)
                 {
@@ -228,7 +228,7 @@ namespace kurema.BrowserControl.Views
 
                     if (!vm.IsFolder) return;
                     var child = (await vm.GetChilderenAsync())?.Where(a => a.IsFolder && !a.IsReadOnly);
-                    if (child == null) return;
+                    if (child is null) return;
                     if (container is Microsoft.UI.Xaml.Controls.TreeViewItem tvi)
                     {
                         tvi.ItemsSource = child;

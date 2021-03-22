@@ -86,13 +86,13 @@ namespace kurema.BrowserControl.ViewModels
         public IBookmarkItem BookmarkRoot { get => _BookmarkProvider; set
             {
                 SetProperty(ref _BookmarkProvider, value);
-                if (value == null) return;
+                if (value is null) return;
                 Task.Run(async () =>
                 {
                     BookmarkCurrent.Clear();
                     BookmarkAddFolders.Clear();
                     var bookmarkResult = await value.GetChilderenAsync();
-                    if (bookmarkResult == null) return;
+                    if (bookmarkResult is null) return;
                     foreach (var item in bookmarkResult) BookmarkCurrent.Add(item);
                     foreach (var item in bookmarkResult?.Where(a => !a.IsReadOnly && a.IsFolder)) BookmarkAddFolders.Add(item);
                 });

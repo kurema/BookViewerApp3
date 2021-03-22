@@ -81,7 +81,7 @@ namespace BookViewerApp.Books
             }
             );
 
-            if (Content == null) { return; }
+            if (Content is null) { return; }
 
             var entries = new List<ZipArchiveEntry>();
             string[] supportedFile = BookManager.AvailableExtensionsImage;
@@ -162,7 +162,7 @@ namespace BookViewerApp.Books
 
         public async Task<BitmapImage?> GetBitmapAsync()
         {
-            if (Cache == null) return null;
+            if (Cache is null) return null;
             return await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).GetBitmapAsync();
         }
 
@@ -194,7 +194,7 @@ namespace BookViewerApp.Books
 
         public async Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
-            if (Cache == null) return;
+            if (Cache is null) return;
             try
             {
                 await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).SetBitmapAsync(image, width, height);

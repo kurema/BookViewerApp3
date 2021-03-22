@@ -37,7 +37,7 @@ namespace BookViewerApp.Storages
             return new ContainerDelegateItem(GetItem_GetWord("Libraries"), "/Libraries", async (_) =>
             {
                 var library = await Content.GetContentAsync();
-                if (library?.libraries == null) return Array.Empty<IFileItem>();
+                if (library?.libraries is null) return Array.Empty<IFileItem>();
                 return (await Task.WhenAll(library.libraries.Where(a => a != null).Select(async a =>
                     {
                         var result = await a.AsFileItem();
@@ -235,14 +235,14 @@ namespace BookViewerApp.Storages
                          await itemFolder.GetChildren();
                          break;
                      case LibraryKind.History:
-                         if (itemHistory == null) break;
+                         if (itemHistory is null) break;
                          await itemHistory.GetChildren();
                          var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryStorage.LibraryKind.History);
                          if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
                          {
                              result.Remove(entryHistory);
                          }
-                         else if ((bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory == null)
+                         else if ((bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory is null)
                          {
                              result.Insert(2, itemHistory);
                          }
@@ -265,7 +265,7 @@ namespace BookViewerApp.Storages
         public static Library.libraryLibrary[] GetTokenUsedByLibrary(string token)
         {
             var result = new List<Library.libraryLibrary>();
-            if (Content?.Content?.libraries == null) return Array.Empty<Library.libraryLibrary>();
+            if (Content?.Content?.libraries is null) return Array.Empty<Library.libraryLibrary>();
             foreach (var item in Content.Content.libraries)
             {
                 foreach (var item2 in item.Items)
@@ -299,7 +299,7 @@ namespace BookViewerApp.Storages
         public static async void OperateBookmark(Func<List<object>?, Task> action)
         {
             var bookmarksRoaming = await RoamingBookmarks.GetContentAsync();
-            if (bookmarksRoaming == null)
+            if (bookmarksRoaming is null)
             {
                 await action(null);
                 return;
@@ -322,7 +322,7 @@ namespace BookViewerApp.Storages
                 else result[token] = 1;
             }
 
-            if (Content?.Content == null) return null;
+            if (Content?.Content is null) return null;
 
             foreach (var item in Content?.Content?.folders ?? new Library.libraryFolder[0])
             {
@@ -343,7 +343,7 @@ namespace BookViewerApp.Storages
         {
             var result = new Dictionary<string, int>();
 
-            if (HistoryStorage.Content?.Content == null) return null;
+            if (HistoryStorage.Content?.Content is null) return null;
             foreach (var item in HistoryStorage.Content.Content)
             {
                 if (result.ContainsKey(item.Token)) result[item.Token]++;
@@ -355,13 +355,13 @@ namespace BookViewerApp.Storages
         public static void GarbageCollectToken()
         {
             var stats = GetTokenUsedCount();
-            if (stats == null) return;
+            if (stats is null) return;
 #pragma warning disable CS0612 // 型またはメンバーが旧型式です
             var stats2 = GetTokenUsedCountHistory();
 #pragma warning restore CS0612 // 型またはメンバーが旧型式です
 
             var fal = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList;
-            if (fal == null || fal.Entries == null) return;
+            if (fal == null || fal.Entries is null) return;
             foreach (var item in fal.Entries)
             {
                 if (!stats.ContainsKey(item.Token) && stats2?.ContainsKey(item.Token) != true)
@@ -387,7 +387,7 @@ namespace BookViewerApp.Storages
 
             public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
             {
-                if (bookmarks == null) return null;
+                if (bookmarks is null) return null;
                 libraryBookmarks defaultBookmarks = null;
                 libraryBookmarks languageMatchedBookmarks = null;
                 foreach (var item in bookmarks)
@@ -416,7 +416,7 @@ namespace BookViewerApp.Storages
             public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
                 var list = new List<IFileItem>();
-                if (Items == null) return new IFileItem[0];
+                if (Items is null) return new IFileItem[0];
                 foreach (var item in this.Items)
                 {
                     switch (item)
@@ -459,7 +459,7 @@ namespace BookViewerApp.Storages
             public async Task<IFileItem> AsFileItem()
             {
                 var storage = await GetStorageFolderAsync() as Windows.Storage.StorageFolder;
-                if (storage == null) return null;
+                if (storage is null) return null;
                 return new StorageFileItem(storage);
             }
 
@@ -555,14 +555,14 @@ namespace BookViewerApp.Storages
             public async Task<StorageFileItem> AsStorageFileItem()
             {
                 var storage = await GetStorageFolderAsync();
-                if (storage == null) return null;
+                if (storage is null) return null;
                 return new StorageFileItem(storage);
             }
 
             public async Task<TokenLibraryItem> AsTokenLibraryItem(Func<IFileItem, MenuCommand[]> menuCommand = null, Func<IFileItem, MenuCommand[]> menuCommandCascade = null)
             {
                 var fileItem = await this.AsStorageFileItem();
-                if (fileItem == null) return null;
+                if (fileItem is null) return null;
                 if (menuCommandCascade != null)
                 {
                     fileItem.MenuCommandsProviderCascade = menuCommandCascade;

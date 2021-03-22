@@ -53,7 +53,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
                 if (result != null) foreach (var item in result) ChildrenProvided.Add(item);
                 return ChildrenProvided;
             }
-            else if (result == null)
+            else if (result is null)
             {
                 return ChildrenProvided = new ObservableCollection<IFileItem>();
             }

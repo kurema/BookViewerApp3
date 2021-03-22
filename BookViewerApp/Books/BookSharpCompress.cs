@@ -182,7 +182,7 @@ namespace BookViewerApp.Books
         public async Task SetBitmapAsync(BitmapSource image, double width, double height)
         {
             var stream = await Cache.GetMemoryStreamByProviderAsync();
-            if (stream == null) return;
+            if (stream is null) return;
             Task? task = new ImagePageStream(stream.AsRandomAccessStream())?.SetBitmapAsync(image, width, height);
             if (task != null) await task;
         }

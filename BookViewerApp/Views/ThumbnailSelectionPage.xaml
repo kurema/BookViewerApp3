@@ -27,7 +27,6 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />

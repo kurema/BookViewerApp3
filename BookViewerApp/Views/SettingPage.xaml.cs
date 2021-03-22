@@ -33,7 +33,7 @@ namespace BookViewerApp.Views
         {
             this.InitializeComponent();
 
-            if (SettingStorage.SettingInstances == null) return;
+            if (SettingStorage.SettingInstances is null) return;
 
             var src = new List<SettingViewModel>(SettingStorage.SettingInstances.Length);
             foreach (var item in SettingStorage.SettingInstances.Where(a => a.IsVisible))
@@ -213,7 +213,7 @@ namespace BookViewerApp.Views
 
         public async System.Threading.Tasks.Task OpenLicenseContentDialog(object source)
         {
-            if (source == null) return;
+            if (source is null) return;
 
             var dialog = new ContentDialog
             {

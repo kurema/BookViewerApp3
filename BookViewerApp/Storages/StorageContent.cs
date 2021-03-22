@@ -132,14 +132,14 @@ namespace BookViewerApp.Storages
 
         public bool TryOperate<T2>(Action<List<T2>> action)
         {
-            if (action == null) return false;
+            if (action is null) return false;
             if (Content is IEnumerable<T2> contentEnum)
             {
                 var itemList = contentEnum.ToList();
                 action(itemList);
 
                 T result = (itemList as T) ?? (itemList.ToArray() as T);
-                if (result == null)
+                if (result is null)
                 {
                     return false;
                 }

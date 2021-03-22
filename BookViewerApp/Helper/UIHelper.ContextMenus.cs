@@ -29,14 +29,14 @@ namespace BookViewerApp.Helper
             {
                 var list = new List<MenuCommand>();
 
-                if (Storages.LibraryStorage.Content?.Content?.folders == null) return list.ToArray();
+                if (Storages.LibraryStorage.Content?.Content?.folders is null) return list.ToArray();
 
                 list.Add(new MenuCommand(GetResourceTitle("Folders/RegisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
                 {
                     var picker = new Windows.Storage.Pickers.FolderPicker();
                     picker.FileTypeFilter.Add("*");
                     var folder = await picker.PickSingleFolderAsync();
-                    if (folder == null) return;
+                    if (folder is null) return;
 
                     var foldersTemp = Storages.LibraryStorage.Content.Content.folders.ToList();
                     var folderNew = await Storages.Library.libraryFolder.GetLibraryFolderFromStorageAsync(folder);
@@ -57,11 +57,11 @@ namespace BookViewerApp.Helper
 
                 if (item is TokenLibraryItem token)
                 {
-                    if (token.Content == null) return list.ToArray();
+                    if (token.Content is null) return list.ToArray();
                     list.Add(new MenuCommand(GetResourceTitle("Folders/UnregisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
                     {
                         await Storages.LibraryStorage.Content.GetContentAsync();
-                        if (Storages.LibraryStorage.Content?.Content?.folders == null) return;
+                        if (Storages.LibraryStorage.Content?.Content?.folders is null) return;
 
                         {
                             var temp = Storages.LibraryStorage.Content.Content.folders.ToList();
@@ -95,7 +95,7 @@ namespace BookViewerApp.Helper
                             var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new Helper.DelegateCommand(async b =>
                              {
                                  var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
-                                 if (a.Items == null) a.Items = new object[0];
+                                 if (a.Items is null) a.Items = new object[0];
                                  if (tokenLf != null && a.Items.Any(c => (c as Storages.Library.libraryLibraryFolder)?.Compare(tokenLf) == true))
                                  {
                                      var message = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Message");
@@ -149,7 +149,7 @@ namespace BookViewerApp.Helper
                                 {
                                     var dialog = new ContentDialog();
                                     var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;
-                                    if (book == null) return;
+                                    if (book is null) return;
                                     var page = new Views.ThumbnailSelectionPage();
                                     page.Book = book;
                                     dialog.Content = page;
@@ -379,7 +379,7 @@ namespace BookViewerApp.Helper
                     result.Add(new MenuCommand(GetResourceTitle("Library/Unregister"), new DelegateCommand(async a =>
                     {
                         var libs = Storages.LibraryStorage.Content?.Content?.libraries?.ToList();
-                        if (libs == null) return;
+                        if (libs is null) return;
                         libs.Remove(library);
                         Storages.LibraryStorage.Content.Content.libraries = libs.ToArray();
                         Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);

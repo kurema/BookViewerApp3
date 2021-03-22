@@ -100,7 +100,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             {
                 return null;
             }
-            if (StorageCache == null)
+            if (StorageCache is null)
             {
                 try
                 {

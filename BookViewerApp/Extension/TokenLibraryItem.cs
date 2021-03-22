@@ -24,7 +24,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         //public async static Task<TokenLibraryItem> GetFromItem(libraryFolder content, Func<IFileItem, MenuCommand[]> menuCommandCascade)
         //{
-        //    if (content == null) return null;
+        //    if (content is null) return null;
         //    var fileItem = await content.AsTokenLibraryItem();
         //    fileItem.ContentFileItem.MenuCommandsProviderCascade = menuCommandCascade;
         //    fileItem.ContentFileItem.MenuCommandsProvider = menuCommandCascade;

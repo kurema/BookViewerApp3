@@ -223,7 +223,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
             var children_observable = await Content?.GetChildren();
 
-            if (children_observable == null)
+            if (children_observable is null)
             {
                 Children = new List<FileItemViewModel>();
                 return;
@@ -299,14 +299,14 @@ namespace kurema.FileExplorerControl.ViewModels
             get
             {
                 if (_Size != null) return _Size;
-                if (_Content == null) return null;
+                if (_Content is null) return null;
                 if (this.IsFolder)
                 {
-                    if (Children == null) return null;
+                    if (Children is null) return null;
                     ulong result = 0;
                     foreach (var item in Children)
                     {
-                        if (item.Size == null) return null;
+                        if (item.Size is null) return null;
                         else result += item.Size ?? 0;
                     }
                     return result;
@@ -320,7 +320,7 @@ namespace kurema.FileExplorerControl.ViewModels
         }
         private async void UpdateSize()
         {
-            if (_Content == null) return;
+            if (_Content is null) return;
             try
             {
                 _Size = await _Content.GetSizeAsync();
@@ -334,7 +334,7 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             get
             {
-                if (_IconSmall == null) UpdateIcon();
+                if (_IconSmall is null) UpdateIcon();
                 return _IconSmall;
             }
             set
@@ -349,7 +349,7 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             get
             {
-                if (_IconLarge == null) UpdateIcon();
+                if (_IconLarge is null) UpdateIcon();
                 return _IconLarge;
             }
             set

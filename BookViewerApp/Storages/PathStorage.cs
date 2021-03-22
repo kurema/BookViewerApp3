@@ -29,7 +29,7 @@ namespace BookViewerApp.Storages
             return Content.TryOperate<PathInfo>(a =>
             {
                 var f = a.FirstOrDefault(b => b.MatchPath(path));
-                if (f == null)
+                if (f is null)
                 {
                     a.Add(info);
                 }

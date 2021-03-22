@@ -23,7 +23,7 @@ namespace BookViewerApp.Helper
             try
             {
                 var ms = ContentCache ?? await MemoryStreamProvider?.Invoke(this);
-                if (ms == null) return null;
+                if (ms is null) return null;
                 ms.Seek(0, SeekOrigin.Begin);
                 return ContentCache = ms;
             }

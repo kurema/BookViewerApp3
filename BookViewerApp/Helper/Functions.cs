@@ -137,13 +137,11 @@ namespace BookViewerApp.Helper
             await semaphore.WaitAsync();
             try
             {
-                if (f != null)
-                {
-                    using var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream();
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                    return (serializer.Deserialize(s) as T);
-                }
-                else { return null; }
+                if (f is null) return null;
+                using var s1 = await f.OpenAsync(Windows.Storage.FileAccessMode.Read);
+                using var s2 = s1.AsStream();
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                return (serializer.Deserialize(s2) as T);
             }
             catch
             {
@@ -243,7 +241,7 @@ namespace BookViewerApp.Helper
 
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync(byte[] data)
         {
-            if (data == null) return null;
+            if (data is null) return null;
 
             var bitmapImage = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
 
@@ -265,7 +263,7 @@ namespace BookViewerApp.Helper
 
         //public static MemoryStream GetPngStreamFromImageMagick(ImageMagick.IMagickImage image)
         //{
-        //    if (image == null) return null;
+        //    if (image is null) return null;
         //    var stream = new MemoryStream();
 
         //    image.Write(stream, ImageMagick.MagickFormat.Png);

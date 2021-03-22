@@ -51,7 +51,7 @@ namespace BookViewerApp.Views
         void SetupWindow(AppWindow window)
         {
             //https://github.com/microsoft/Xaml-Controls-Gallery/blob/f2d4568ec53464c3d290940282d2f70cfd62fa94/XamlControlsGallery/TabViewPages/TabViewWindowingSamplePage.xaml.cs
-            if (window == null)
+            if (window is null)
             {
                 // Extend into the titlebar
                 var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -106,7 +106,7 @@ namespace BookViewerApp.Views
 
         public void OpenTabBook(IEnumerable<Windows.Storage.IStorageItem> files)
         {
-            if (files == null) return;
+            if (files is null) return;
             foreach (var item in files) OpenTabBook(item);
         }
 
@@ -203,7 +203,7 @@ namespace BookViewerApp.Views
 
         public async void CloseTab(winui.Controls.TabViewItem tab)
         {
-            if (tab == null) return;
+            if (tab is null) return;
             ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
             ((tab?.Content as Frame)?.Content as IDisposable)?.Dispose();
             ((tab?.Content as Frame)?.Content as IDisposableBasic)?.DisposeBasic();
@@ -412,7 +412,7 @@ namespace BookViewerApp.Views
             object obj;
             if (e.DataView.Properties.TryGetValue(DataIdentifier, out obj))
             {
-                if (obj == null) return;
+                if (obj is null) return;
                 var destinationTabView = sender as winui.Controls.TabView;
                 if (destinationTabView.TabItems != null)
                 {
@@ -461,7 +461,7 @@ namespace BookViewerApp.Views
         private void tabView_TabDragStarting(winui.Controls.TabView sender, winui.Controls.TabViewTabDragStartingEventArgs args)
         {
             //Closing main window causes a problem. So disable it.
-            if (this.tabView.TabItems.Count <= 1 && RootAppWindow == null) return;
+            if (this.tabView.TabItems.Count <= 1 && RootAppWindow is null) return;
 
             var firstItem = args.Tab;
             args.Data.Properties.Add(DataIdentifier, firstItem);

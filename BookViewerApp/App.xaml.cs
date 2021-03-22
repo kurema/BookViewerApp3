@@ -77,7 +77,7 @@ namespace BookViewerApp
                 Window.Current.Content = rootFrame;
             }
 
-            if (rootFrame.Content == null)
+            if (rootFrame.Content is null)
             {
                 // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
                 // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを

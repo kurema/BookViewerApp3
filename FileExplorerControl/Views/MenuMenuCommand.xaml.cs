@@ -26,7 +26,7 @@ namespace kurema.FileExplorerControl.Views
             RegisterPropertyChangedCallback(MenuCommandsProperty, (a, b) =>
             {
                 stack.Children.Clear();
-                if (MenuCommands == null) return;
+                if (MenuCommands is null) return;
                 foreach (var item in MenuCommands)
                 {
                     stack.Children.Add(GetMenu(item));

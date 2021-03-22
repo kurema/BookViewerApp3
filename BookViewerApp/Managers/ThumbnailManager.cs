@@ -22,9 +22,9 @@ namespace BookViewerApp.Managers
         {
             var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
             var file = (await GetImageFileAsync(ID));
-            if (file == null) return null;
+            if (file is null) return null;
             var src = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
-            if (src == null) return null;
+            if (src is null) return null;
             try
             {
                 await result.SetSourceAsync(src);
@@ -40,9 +40,9 @@ namespace BookViewerApp.Managers
         public static async void SetToImageSourceNoWait(string ID, Windows.UI.Xaml.Media.Imaging.BitmapImage image)
         {
             var file = (await GetImageFileAsync(ID));
-            if (file == null) return;
+            if (file is null) return;
             var src = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
-            if (src == null) return;
+            if (src is null) return;
             try
             {
                 await image.SetSourceAsync(src);

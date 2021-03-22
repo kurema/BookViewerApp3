@@ -198,7 +198,7 @@ namespace kurema.FileExplorerControl.ViewModels
         public System.Windows.Input.ICommand GoUpCommand => _GoUpCommand = _GoUpCommand ?? new Helper.DelegateCommand(
             async (a) =>
             {
-                if (Item.Parent.Children == null) await Item.Parent.UpdateChildren();
+                if (Item.Parent.Children is null) await Item.Parent.UpdateChildren();
                 Item = Item.Parent;
             },
             (a) =>
@@ -213,7 +213,7 @@ namespace kurema.FileExplorerControl.ViewModels
             {
                 if (a is FileItemViewModel vm)
                 {
-                    if (vm.Children == null) await vm.UpdateChildren();
+                    if (vm.Children is null) await vm.UpdateChildren();
                     Item = vm;
                 }
             }
@@ -352,7 +352,7 @@ namespace kurema.FileExplorerControl.ViewModels
             public ICommand ShiftCommand => _ShiftCommand = _ShiftCommand ?? new Helper.DelegateCommand(
                 a =>
                 {
-                    if (Parent?.Item?.Order == null) return;
+                    if (Parent?.Item?.Order is null) return;
                     Parent.Item.Order = Parent.Item.Order.GetShiftedBasicOrder(this.Key);
                 }
                 );
@@ -369,7 +369,7 @@ new Helper.ValueConverters.OrderToDirectionFontIconGlyphConverter().Convert(Pare
             //{
             //    get
             //    {
-            //        if (_GlyphBindig == null) return _GlyphBindig;
+            //        if (_GlyphBindig is null) return _GlyphBindig;
             //        var result = new Windows.UI.Xaml.Data.Binding();
             //        result.Path = new Windows.UI.Xaml.PropertyPath("Parent.Item.Order");
             //        result.Converter = new Helper.ValueConverters.OrderToDirectionFontIconGlyphConverter();

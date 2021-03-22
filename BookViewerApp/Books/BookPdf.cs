@@ -43,7 +43,7 @@ namespace BookViewerApp.Books
 
         public IPageFixed? GetPage(uint i)
         {
-            if (Content == null) return null;
+            if (Content is null) return null;
             if (i < PageCount) return new PdfPage(Content.GetPage(i));
             else throw new Exception("Incorrect page.");
         }
@@ -53,7 +53,7 @@ namespace BookViewerApp.Books
             try
             {
                 if (stream.CanSeek) stream.Seek(0, SeekOrigin.Begin);
-                if (password == null)
+                if (password is null)
                 {
                     return new iTextSharp.text.pdf.PdfReader(stream);
                 }
@@ -81,7 +81,7 @@ namespace BookViewerApp.Books
                 });
             }
 
-            if (list == null) return new TocItem[0];
+            if (list is null) return new TocItem[0];
 
             var result = new List<TocItem>();
             foreach (var item in list)
@@ -246,7 +246,7 @@ namespace BookViewerApp.Books
                 {
                 }
 
-                if (id == null)
+                if (id is null)
                 {
                     try
                     {
@@ -286,7 +286,7 @@ namespace BookViewerApp.Books
             }
             catch { }
 
-            if (password == null)
+            if (password is null)
             {
                 Content = await pdf.PdfDocument.LoadFromStreamAsync(stream);
             }

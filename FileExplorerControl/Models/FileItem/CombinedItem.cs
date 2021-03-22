@@ -73,7 +73,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public async Task<ObservableCollection<IFileItem>> GetChildren()
         {
-            if (Contents == null) return null;
+            if (Contents is null) return null;
             var result = new List<IFileItem>();
             foreach (var item in Contents)
             {
@@ -104,7 +104,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
             foreach (var item in Contents)
             {
                 var val = await item.GetSizeAsync();
-                if (val == null) return null;
+                if (val is null) return null;
                 result += val;
             }
             return result;

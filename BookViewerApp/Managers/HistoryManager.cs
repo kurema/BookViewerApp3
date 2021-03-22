@@ -41,7 +41,7 @@ namespace BookViewerApp.Managers
 
         public static void AddEntry(IStorageItem file, string ID = null)
         {
-            if (file == null) return;
+            if (file is null) return;
             var metadata = new Metadata() { Name = file.Name, ID = ID ?? "", Date = DateTimeOffset.Now }.Serialize();
             List.Add(file, metadata);
 

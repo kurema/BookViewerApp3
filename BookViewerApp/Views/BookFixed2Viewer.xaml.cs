@@ -122,7 +122,7 @@ namespace BookViewerApp.Views
         {
             UIHelper.SetTitleByResource(this, "BookViewer");
 
-            if (e?.Parameter == null) { }
+            if (e?.Parameter is null) { }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
             {
                 var args = (Windows.ApplicationModel.Activation.IActivatedEventArgs)e.Parameter;
