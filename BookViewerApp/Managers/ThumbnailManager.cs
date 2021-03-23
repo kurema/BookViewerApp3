@@ -16,12 +16,12 @@ namespace BookViewerApp.Managers
 
         private static System.Threading.SemaphoreSlim SemaphoreFetchThumbnail = new System.Threading.SemaphoreSlim(1, 1);
 
-        public const int ThumbnailSize = 300;
+        public const int ThumbnailSize = 600;
 
         public static async Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetImageSourceAsync(string ID)
         {
             var result = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
-            var file = (await GetImageFileAsync(ID));
+            var file = await GetImageFileAsync(ID);
             if (file is null) return null;
             var src = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
             if (src is null) return null;
@@ -34,6 +34,26 @@ namespace BookViewerApp.Managers
             {
                 return null;
             }
+        }
+
+        public static async Task DeleteAllAsync()
+        {
+            await SemaphoreFetchThumbnail.WaitAsync();
+            try
+            {
+                var f = await GetDataFolder();
+                await f.DeleteAsync();
+            }
+            finally
+            {
+                SemaphoreFetchThumbnail.Release();
+            }
+        }
+
+        public static async Task<Windows.Storage.FileProperties.BasicProperties> GetFolderBasicPropertiesAsync()
+        {
+            var f = await GetDataFolder();
+            return await f.GetBasicPropertiesAsync();
         }
 
         //Not smart at all...
@@ -80,7 +100,7 @@ namespace BookViewerApp.Managers
             {
                 if (await GetImageFileAsync(book.ID) is null)
                 {
-                    await (book as Books.IBookFixed).GetPage(0).SaveImageAsync(await CreateImageFileAsync(book.ID), ThumbnailSize);
+                    await (book as Books.IBookFixed).GetPageCover().SaveImageAsync(await CreateImageFileAsync(book.ID), ThumbnailSize);
                 }
             }
         }

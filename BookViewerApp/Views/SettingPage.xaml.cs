@@ -100,7 +100,18 @@ namespace BookViewerApp.Views
 
             result.AddRange(new[] {
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/OpenAppData/Title"), loader.GetString("Info/Debug/OpenAppData/Description"),new DelegateCommand(async _=>await Windows.System.Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder)) ){ GroupTag="Info/Debug/Title"},
-            });
+                new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/DeleteThumbnails/Title"), loader.GetString("Info/Debug/DeleteThumbnails/Description"),
+                    new DelegateCommand(async _=>{
+                        var dlg=new Windows.UI.Popups.MessageDialog(
+                            loader.GetString("Info/Debug/DeleteThumbnails/Dialog/Message"),
+                            loader.GetString("Info/Debug/DeleteThumbnails/Title")
+                            );
+                        dlg.Commands.Add(new Windows.UI.Popups.UICommand(loader.GetString("Word/OK")){ Id="ok"});
+                        dlg.Commands.Add(new Windows.UI.Popups.UICommand(loader.GetString("Word/Cancel")){ Id ="cancel"});
+                        var result=await dlg.ShowAsync();
+                        if(result.Id?.ToString() == "ok") await Managers.ThumbnailManager.DeleteAllAsync();
+                    } )){ GroupTag="Info/Debug/Title"},
+            }); ;
 #if DEBUG
             result.Add(new ViewModels.ListItemViewModel(loader.GetString("Info/Debug/CopyFAL/Title"), loader.GetString("Info/Debug/CopyFAL/Description"), new DelegateCommand(async _ => await CopyFutureAccessListToClipboard())) { GroupTag = "Info/Debug/Title" });
 #endif

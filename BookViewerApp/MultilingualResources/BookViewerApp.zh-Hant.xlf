@@ -806,6 +806,20 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
           <source>Close</source>
           <target state="new">Close</target>
         </trans-unit>
+        <trans-unit id="Info.Debug.DeleteThumbnails.Description" translate="yes" xml:space="preserve">
+          <source>Delete thumbnails of books</source>
+          <target state="new">Delete thumbnails of books</target>
+        </trans-unit>
+        <trans-unit id="Info.Debug.DeleteThumbnails.Dialog.Message" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to delete thumbnail folder?
+You can also disable thumbnail generation in Explorer tab with the setting above.</source>
+          <target state="new">Are you sure you want to delete thumbnail folder?
+You can also disable thumbnail generation in Explorer tab with the setting above.</target>
+        </trans-unit>
+        <trans-unit id="Info.Debug.DeleteThumbnails.Title" translate="yes" xml:space="preserve">
+          <source>Delete thumbnails</source>
+          <target state="new">Delete thumbnails</target>
+        </trans-unit>
       </group>
     </body>
   </file>

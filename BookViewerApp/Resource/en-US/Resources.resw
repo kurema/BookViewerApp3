@@ -712,4 +712,14 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
   <data name="Word.Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Info.Debug.DeleteThumbnails.Description" xml:space="preserve">
+    <value>Delete thumbnails of books</value>
+  </data>
+  <data name="Info.Debug.DeleteThumbnails.Dialog.Message" xml:space="preserve">
+    <value>Are you sure you want to delete thumbnail folder?
+You can also disable thumbnail generation in Explorer tab with the setting above.</value>
+  </data>
+  <data name="Info.Debug.DeleteThumbnails.Title" xml:space="preserve">
+    <value>Delete thumbnails</value>
+  </data>
 </root>
