@@ -722,4 +722,7 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="Info.Debug.DeleteThumbnails.Title" xml:space="preserve">
     <value>Delete thumbnails</value>
   </data>
+  <data name="Info.Debug.DeleteThumbnails.Dialog.MessageFail" xml:space="preserve">
+    <value>Could not delete the thumbnail folder. Please try again.</value>
+  </data>
 </root>

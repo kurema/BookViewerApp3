@@ -830,6 +830,10 @@ You can also disable thumbnail generation in Explorer tab with the setting above
           <source>Delete thumbnails</source>
           <target state="new">Delete thumbnails</target>
         </trans-unit>
+        <trans-unit id="Info.Debug.DeleteThumbnails.Dialog.MessageFail" translate="yes" xml:space="preserve">
+          <source>Could not delete the thumbnail folder. Please try again.</source>
+          <target state="new">Could not delete the thumbnail folder. Please try again.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
