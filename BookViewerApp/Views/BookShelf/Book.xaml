@@ -17,7 +17,8 @@
     </UserControl.Resources>
     <Border CornerRadius="{StaticResource radius}" >
         <Grid>
-            <Grid Background="#FF3B5B38"></Grid>
+            <!--<Grid Background="#FF3B5B38"></Grid>-->
+            <Image x:Name="mainPicture"/>
             <Grid>
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="1,0">
