@@ -90,6 +90,7 @@ namespace BookViewerApp.Views
                 {
                     if (this.DataContext is ViewModels.BookViewModel v)
                     {
+                        //Should I add 1? Tested. No.
                         v.PageSelectedDisplay = model.Page;
                     }
                 }
@@ -137,7 +138,7 @@ namespace BookViewerApp.Views
         {
             if (args.InvokedItem is ViewModels.TocEntryViewModes toc)
             {
-                Binding.PageSelected = toc.Page;
+                Binding.PageSelectedDisplay = toc.Page + 1;
             }
         }
 
