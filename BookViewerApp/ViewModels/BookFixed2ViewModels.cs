@@ -325,6 +325,9 @@ namespace BookViewerApp.ViewModels
             }
         }
 
+        //Use this if you need actual page displayed (in spread view, this add 2 each time you scroll). This start from 1 for compatibility reason.
+        //こっちは実際に画面に表示されているページ数です。例えば見開きモードだとPageSelectedは見開き一つを1ページカウントしますが、PageSelectedDisplayの場合画面に表示されている実際のページを示します。
+        //その為にわざわざLinqを使って検索してるわけですね。泥臭いけど大して遅くない。歴史的な理由(ViewModelとして画面表示で利用していた/いる)で1始まりです。
         public int PageSelectedDisplay
         {
             get
