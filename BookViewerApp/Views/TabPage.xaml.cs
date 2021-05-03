@@ -115,8 +115,8 @@ namespace BookViewerApp.Views
         {
             if (file is Windows.Storage.IStorageFile item)
             {
-                UIHelper.FrameOperation.OpenBook(item, () => OpenTab("BookViewer"),()=>
-                {
+                UIHelper.FrameOperation.OpenBook(item, () => OpenTab("BookViewer"), () =>
+                 {
                     //Dialog:Open dangerous file?
                     //Open.
                     //Or just ignore.
@@ -164,6 +164,13 @@ namespace BookViewerApp.Views
             var (frame, newTab) = OpenTab("Setting");
             frame?.Navigate(typeof(Views.SettingPage));
         }
+
+        public void OpenTabBookshelf()
+        {
+            var (frame, newTab) = OpenTab("Bookshelf");
+            frame?.Navigate(typeof(Views.SettingPage));
+        }
+
 
         public (Frame, winui.Controls.TabViewItem) OpenTab(string titleId)
         {
@@ -478,6 +485,7 @@ namespace BookViewerApp.Views
                     case "Browser": this.OpenTabWeb(); break;
                     case "Setting": this.OpenTabSetting(); break;
                     case "Picker": this.OpenTabBookPicked(); break;
+                    case "Bookshelf": this.OpenTabBookshelf(); break;
                 }
             }
         }

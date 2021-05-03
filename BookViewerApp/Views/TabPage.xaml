@@ -46,6 +46,7 @@
                         <MenuFlyout Placement="BottomEdgeAlignedLeft">
                             <MenuFlyoutItem Icon="Folder" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Explorer}" Click="MenuFlyoutItem_Click" Tag="Explorer"/>
                             <MenuFlyoutItem Icon="World" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Browser}" Click="MenuFlyoutItem_Click" Tag="Browser"/>
+                            <MenuFlyoutItem Icon="Library" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Bookshelf}" Click="MenuFlyoutItem_Click" Tag="Bookshelf"/>
                             <MenuFlyoutItem Icon="Setting" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Setting}" Click="MenuFlyoutItem_Click" Tag="Setting"/>
                             <MenuFlyoutSeparator/>
                             <MenuFlyoutItem Icon="OpenFile" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=Explorer/PickBook}" Click="MenuFlyoutItem_Click" Tag="Picker"/>

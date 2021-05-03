@@ -8,7 +8,5 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <ItemsControl>
-        
-    </ItemsControl>
+    <local:BookRowPanel x:Name="panel" />
 </UserControl>
