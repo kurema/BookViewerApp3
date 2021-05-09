@@ -92,7 +92,7 @@
                     <!--<AppBarButton x:Uid="BookPrevious" Command="{Binding GoPreviousBookCommand}"/>
                     <AppBarButton x:Uid="BookNext" Command="{Binding GoNextBookCommand}"/>-->
                     <AppBarButton x:Uid="PageReverse" Command="{Binding SwapReverseCommand}"/>
-                    <AppBarButton x:Uid="GoToBookShelf" Click="AppBarButton_GoToBookshelf"/>
+                    <AppBarButton x:Uid="GoToBookshelf" Click="AppBarButton_GoToBookshelf"/>
                 </CommandBar.SecondaryCommands>
             </CommandBar>
         </StackPanel>

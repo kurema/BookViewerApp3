@@ -49,7 +49,7 @@
                         <ToggleButton Grid.Column="0" Grid.Row="4"  VerticalAlignment="Center" HorizontalAlignment="Center">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
                         </ToggleButton>
-                        <TextBlock Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=SwitchBookShelfToggle/ToolTipService/ToolTip, Mode=OneTime}" />
+                        <TextBlock Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=SwitchBookshelfToggle/ToolTipService/ToolTip, Mode=OneTime}" />
                     </Grid>
                     <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="20" FontWeight="SemiBold" FontFamily="Arial" Padding="20" 
                                Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Welcome_HowToConfigure, Mode=OneTime}"/>
@@ -61,7 +61,7 @@
                     <StackPanel Orientation="Horizontal">
                         <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
                         <TextBlock VerticalAlignment="Center" Text="→"/>
-                        <Button VerticalAlignment="Stretch" Background="{ThemeResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=GoToBookShelf/Label, Mode=OneTime}" />
+                        <Button VerticalAlignment="Stretch" Background="{ThemeResource AppBarBackgroundThemeBrush}" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=GoToBookshelf/Label, Mode=OneTime}" />
                         <TextBlock VerticalAlignment="Center" Text="→" />
                         <AppBarButton VerticalAlignment="Center" Icon="More" IsCompact="True"/>
                         <TextBlock VerticalAlignment="Center" Text="→" />

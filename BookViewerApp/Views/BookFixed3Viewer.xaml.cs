@@ -104,7 +104,7 @@ namespace BookViewerApp.Views
         public struct BookAndParentNavigationParamater
         {
             public Books.IBookFixed BookViewerModel;
-            public BookShelfBookViewModel BookShelfModel;
+            public BookshelfBookViewModel BookshelfModel;
             public string Title;
         }
 
@@ -140,7 +140,7 @@ namespace BookViewerApp.Views
             {
                 var param = (BookAndParentNavigationParamater)e.Parameter;
                 Open(param.BookViewerModel);
-                //SetBookShelfModel(param.BookShelfModel);
+                //SetBookshelfModel(param.BookshelfModel);
                 if (Binding != null)
                     Binding.Title = param.Title;
             }

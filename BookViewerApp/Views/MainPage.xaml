@@ -10,5 +10,5 @@
     <!--<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <local:BookFixedViewerControl/>
     </Grid>-->
-    <local:BookShelfControl/>
+    <local:BookshelfControl/>
 </Page>

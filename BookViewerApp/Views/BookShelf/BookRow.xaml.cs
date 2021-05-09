@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace BookViewerApp.Views.BookShelf
+namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class BookRow : UserControl
     {

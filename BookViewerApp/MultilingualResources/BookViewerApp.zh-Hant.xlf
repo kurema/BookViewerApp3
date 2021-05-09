@@ -34,19 +34,19 @@
           <source>Read the previous book</source>
           <target state="translated">讀以前的書</target>
         </trans-unit>
-        <trans-unit id="BookShelfTitleNew" translate="yes" xml:space="preserve">
+        <trans-unit id="BookshelfTitleNew" translate="yes" xml:space="preserve">
           <source>Bookshelf</source>
           <target state="translated">書架</target>
         </trans-unit>
-        <trans-unit id="ClearAllBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ClearAllBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Clear all bookshelves</source>
           <target state="translated">清除所有書架</target>
         </trans-unit>
-        <trans-unit id="ClearThisBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ClearThisBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Clear this bookshelf</source>
           <target state="translated">刪除書架</target>
         </trans-unit>
-        <trans-unit id="GoToBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="GoToBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Go to bookshelf</source>
           <target state="translated">去書架</target>
         </trans-unit>
@@ -102,11 +102,11 @@
           <source>First</source>
           <target state="translated">首頁</target>
         </trans-unit>
-        <trans-unit id="ReloadBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ReloadBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Refresh</source>
           <target state="translated">更新</target>
         </trans-unit>
-        <trans-unit id="SetThisBookShelfSecret.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="SetThisBookshelfSecret.Label" translate="yes" xml:space="preserve">
           <source>Toggle secret</source>
           <target state="translated">秘密書架</target>
         </trans-unit>
@@ -134,7 +134,7 @@
           <source>Title</source>
           <target state="translated">標題</target>
         </trans-unit>
-        <trans-unit id="SwitchBookShelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="SwitchBookshelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Switch bookshelf.</source>
           <target state="translated">切換書架</target>
         </trans-unit>

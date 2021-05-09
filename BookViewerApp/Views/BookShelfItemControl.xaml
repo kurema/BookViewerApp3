@@ -6,10 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:BookViewerApp.ViewModels"
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
-    x:Class="BookViewerApp.Views.BookShelfItemControl"
+    x:Class="BookViewerApp.Views.BookshelfItemControl"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="300" d:DataContext="{d:DesignInstance vm:BookShelfViewModel}"
+    d:DesignWidth="300" d:DataContext="{d:DesignInstance vm:BookshelfViewModel}"
     >
     <UserControl.Resources>
         <ValueConverter:BoolToDoubleValueConverter x:Key="BoolToDoubleConverter"/>

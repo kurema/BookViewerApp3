@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
-namespace BookViewerApp.Views.BookShelf
+namespace BookViewerApp.Views.Bookshelf
 {
     public class BookRowPanel : Panel
     {

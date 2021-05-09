@@ -107,10 +107,10 @@ namespace BookViewerApp.Views
             if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
         }
 
-        //private void SetBookShelfModel(BookShelfBookViewModel viewModel)
+        //private void SetBookshelfModel(BookshelfBookViewModel viewModel)
         //{
         //    if (Binding != null)
-        //        Binding.AsBookShelfBook = viewModel;
+        //        Binding.AsBookshelfBook = viewModel;
         //}
 
         public void SaveInfo()
@@ -150,7 +150,7 @@ namespace BookViewerApp.Views
             {
                 var param = (BookAndParentNavigationParamater)e.Parameter;
                 Open(param.BookViewerModel);
-                //SetBookShelfModel(param.BookShelfModel);
+                //SetBookshelfModel(param.BookshelfModel);
                 if (Binding != null)
                     Binding.Title = param.Title;
             }
@@ -169,7 +169,7 @@ namespace BookViewerApp.Views
         public struct BookAndParentNavigationParamater
         {
             public Books.IBookFixed BookViewerModel;
-            //public BookShelfBookViewModel BookShelfModel;
+            //public BookshelfBookViewModel BookshelfModel;
             public string Title;
         }
 
@@ -229,7 +229,7 @@ namespace BookViewerApp.Views
         {
             this.SaveInfo();
 
-            this.Frame.Navigate(typeof(BookShelfPage), null);
+            this.Frame.Navigate(typeof(BookshelfPage), null);
         }
 
         private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)

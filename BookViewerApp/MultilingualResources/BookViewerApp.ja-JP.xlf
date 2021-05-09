@@ -42,15 +42,15 @@
           <source>Read the previous book</source>
           <target state="translated">前の本へ</target>
         </trans-unit>
-        <trans-unit id="BookShelfTitleNew" translate="yes" xml:space="preserve">
+        <trans-unit id="BookshelfTitleNew" translate="yes" xml:space="preserve">
           <source>Bookshelf</source>
           <target state="translated">本棚</target>
         </trans-unit>
-        <trans-unit id="ClearAllBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ClearAllBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Clear all bookshelves</source>
           <target state="translated">本棚を全て削除</target>
         </trans-unit>
-        <trans-unit id="GoToBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="GoToBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Go to bookshelf</source>
           <target state="translated">本棚を開く</target>
         </trans-unit>
@@ -154,11 +154,11 @@
           <source>Toggle full screen mode.</source>
           <target state="translated">全画面モード切替</target>
         </trans-unit>
-        <trans-unit id="ClearThisBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ClearThisBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Clear this bookshelf</source>
           <target state="translated">本棚を削除</target>
         </trans-unit>
-        <trans-unit id="SetThisBookShelfSecret.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="SetThisBookshelfSecret.Label" translate="yes" xml:space="preserve">
           <source>Toggle secret</source>
           <target state="translated">本棚を秘密にする</target>
         </trans-unit>
@@ -178,7 +178,7 @@
           <source>Width of book tile</source>
           <target state="translated">本タイルの幅</target>
         </trans-unit>
-        <trans-unit id="ReloadBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ReloadBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Refresh</source>
           <target state="translated">更新</target>
         </trans-unit>
@@ -254,7 +254,7 @@
           <source>Menu display time in book viewer</source>
           <target state="translated">書籍メニュー表示時間</target>
         </trans-unit>
-        <trans-unit id="SwitchBookShelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="SwitchBookshelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Switch bookshelf.</source>
           <target state="translated">本棚を切り替え</target>
         </trans-unit>

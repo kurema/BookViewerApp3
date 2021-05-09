@@ -228,7 +228,7 @@ namespace BookViewerApp.ViewModels
             this.PageSelectedDisplay = tempPageSelected == this.PagesCount ? 1 : tempPageSelected;
             this.Reversed = ShouldBeReversed(value);
             OnPropertyChanged(nameof(Reversed));
-            //this.AsBookShelfBook = null;
+            //this.AsBookshelfBook = null;
 
             this.Bookmarks = new ObservableCollection<BookmarkViewModel>();
             {

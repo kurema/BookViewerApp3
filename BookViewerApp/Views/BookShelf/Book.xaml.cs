@@ -19,7 +19,7 @@ using ef = Microsoft.Graphics.Canvas.Effects;
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
 #nullable enable
-namespace BookViewerApp.Views.BookShelf
+namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class Book : UserControl
     {

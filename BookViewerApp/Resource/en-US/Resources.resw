@@ -144,13 +144,13 @@
   <data name="BookPrevious.Label" xml:space="preserve">
     <value>Read the previous book</value>
   </data>
-  <data name="BookShelfTitleNew" xml:space="preserve">
+  <data name="BookshelfTitleNew" xml:space="preserve">
     <value>Bookshelf</value>
   </data>
-  <data name="ClearAllBookShelf.Label" xml:space="preserve">
+  <data name="ClearAllBookshelf.Label" xml:space="preserve">
     <value>Clear all bookshelves</value>
   </data>
-  <data name="GoToBookShelf.Label" xml:space="preserve">
+  <data name="GoToBookshelf.Label" xml:space="preserve">
     <value>Go to bookshelf</value>
   </data>
   <data name="LoadingFolder.Completed.Message" xml:space="preserve">
@@ -228,10 +228,10 @@
   <data name="ToggleFullScreen.Label" xml:space="preserve">
     <value>Toggle full screen mode.</value>
   </data>
-  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+  <data name="ClearThisBookshelf.Label" xml:space="preserve">
     <value>Clear this bookshelf</value>
   </data>
-  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+  <data name="SetThisBookshelfSecret.Label" xml:space="preserve">
     <value>Toggle secret</value>
   </data>
   <data name="Setting_TileHeight.Description" xml:space="preserve">
@@ -246,7 +246,7 @@
   <data name="Setting_TileWidth.Title" xml:space="preserve">
     <value>Width of book tile</value>
   </data>
-  <data name="ReloadBookShelf.Label" xml:space="preserve">
+  <data name="ReloadBookshelf.Label" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="BookmarkLast.Title" xml:space="preserve">
@@ -303,7 +303,7 @@
   <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
     <value>Menu display time in book viewer</value>
   </data>
-  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="SwitchBookshelfToggle.ToolTipService.ToolTip" xml:space="preserve">
     <value>Switch bookshelf.</value>
   </data>
   <data name="Welcome_HowToConfigure" xml:space="preserve">

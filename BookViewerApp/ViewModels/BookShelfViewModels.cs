@@ -15,19 +15,19 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.ViewModels
 {
-    public class BookShelfViewModel : INotifyPropertyChanged, IEnumerable<BookContainerViewModel>
+    public class BookshelfViewModel : INotifyPropertyChanged, IEnumerable<BookContainerViewModel>
     {
-        //public static async Task<ObservableCollection<BookShelfViewModel>> GetBookShelfViewModels (bool addSecretShelf){
-        //    var storages = await BookShelfStorage.GetBookShelves();
-        //    var result= new ObservableCollection<BookShelfViewModel>();
+        //public static async Task<ObservableCollection<BookshelfViewModel>> GetBookshelfViewModels (bool addSecretShelf){
+        //    var storages = await BookshelfStorage.GetBookShelves();
+        //    var result= new ObservableCollection<BookshelfViewModel>();
         //    if (storages is null) return null;
         //    foreach(var item in storages)
         //    {
         //        if (addSecretShelf || item.Secret == false)
         //        {
-        //            var content = new BookShelfViewModel();
+        //            var content = new BookshelfViewModel();
         //            content.Title = item.Title;
-        //            content.Containers = new ObservableCollection<BookContainerViewModel>(await BookContainerViewModel.GetFromBookShelfStorage(item.Folders,content));
+        //            content.Containers = new ObservableCollection<BookContainerViewModel>(await BookContainerViewModel.GetFromBookshelfStorage(item.Folders,content));
         //            content.Secret = item.Secret;
         //            result.Add(content);
         //        }
@@ -116,11 +116,11 @@ namespace BookViewerApp.ViewModels
 {
     public class BookContainerViewModel : INotifyPropertyChanged, IEnumerable<IItemViewModel>, IItemViewModel
     {
-        public BookContainerViewModel(string Title, BookShelfViewModel Shelf, BookContainerViewModel Parent = null)
+        public BookContainerViewModel(string Title, BookshelfViewModel Shelf, BookContainerViewModel Parent = null)
         {
             this.Title = Title;
             this.Parent = Parent;
-            BookShelf = Shelf;
+            Bookshelf = Shelf;
         }
 
         public string TitleID
@@ -130,9 +130,9 @@ namespace BookViewerApp.ViewModels
                 string result = null;
                 foreach (var item in this)
                 {
-                    if (item is BookShelfBookViewModel)
+                    if (item is BookshelfBookViewModel)
                     {
-                        return (item as BookShelfBookViewModel).ID;
+                        return (item as BookshelfBookViewModel).ID;
                     }
                     else if (item is BookContainerViewModel && result is null)
                     {
@@ -144,7 +144,7 @@ namespace BookViewerApp.ViewModels
         }
 
         public BookContainerViewModel Parent { get; private set; }
-        public BookShelfViewModel BookShelf { get; private set; }
+        public BookshelfViewModel Bookshelf { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
@@ -194,43 +194,43 @@ namespace BookViewerApp.ViewModels
             Books.Add(item);
         }
 
-        public static Task<BookContainerViewModel[]> GetFromBookShelfStorage(int index, BookShelfViewModel Shelf)
+        public static Task<BookContainerViewModel[]> GetFromBookshelfStorage(int index, BookshelfViewModel Shelf)
         {
             return Task.FromResult(new BookContainerViewModel[0]);
 
-            //var storages = await BookShelfStorage.GetBookShelves();
+            //var storages = await BookshelfStorage.GetBookShelves();
             //if (storages.Count > index)
             //{
-            //    return await GetFromBookShelfStorage(storages[index].Folders,Shelf);
+            //    return await GetFromBookshelfStorage(storages[index].Folders,Shelf);
             //}
             //else {
             //    return new BookContainerViewModel[0];
             //}
         }
 
-        //public static async Task<BookContainerViewModel[]> GetFromBookShelfStorage(IEnumerable<BookShelfStorage.BookContainer> storages, BookShelfViewModel Shelf)
+        //public static async Task<BookContainerViewModel[]> GetFromBookshelfStorage(IEnumerable<BookshelfStorage.BookContainer> storages, BookshelfViewModel Shelf)
         //{
         //    var result = new List<BookContainerViewModel>();
 
         //    foreach (var item in storages)
         //    {
         //        if (SettingStorage.GetValue("FolderNameToExclude") == null || !((System.Text.RegularExpressions.Regex)SettingStorage.GetValue("FolderNameToExclude")).IsMatch(item.Title))
-        //            result.Add(await GetFromBookShelfStorage(item, Shelf));
+        //            result.Add(await GetFromBookshelfStorage(item, Shelf));
         //    }
         //    return result.ToArray();
         //}
 
 
-        //public static async Task<BookContainerViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer storage,BookShelfViewModel Shelf,BookContainerViewModel Parent=null)
+        //public static async Task<BookContainerViewModel> GetFromBookshelfStorage(BookshelfStorage.BookContainer storage,BookshelfViewModel Shelf,BookContainerViewModel Parent=null)
         //{
         //    BookContainerViewModel result = new BookContainerViewModel(storage.Title, Shelf, Parent);
         //    foreach (var item in storage.Folders)
         //    {
-        //        result.Add(await GetFromBookShelfStorage(item as BookShelfStorage.BookContainer, Shelf, result));
+        //        result.Add(await GetFromBookshelfStorage(item as BookshelfStorage.BookContainer, Shelf, result));
         //    }
         //    foreach (var item in storage.Files)
         //    {
-        //        var temp = await BookShelfBookViewModel.GetFromBookShelfStorage(item as BookShelfStorage.BookContainer.BookShelfBook, result);
+        //        var temp = await BookshelfBookViewModel.GetFromBookshelfStorage(item as BookshelfStorage.BookContainer.BookshelfBook, result);
         //        if (temp != null && temp.BookSize>0)
         //            result.Add(temp);
         //    }
@@ -249,7 +249,7 @@ namespace BookViewerApp.ViewModels
 
 namespace BookViewerApp.ViewModels
 {
-    public class BookShelfBookViewModel : IItemViewModel
+    public class BookshelfBookViewModel : IItemViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string name)
@@ -259,9 +259,9 @@ namespace BookViewerApp.ViewModels
 
         public int BookSize { get; private set; }
         public string ID { get; private set; }
-        //private BookShelfStorage.BookAccessInfo AccessInfo;
+        //private BookshelfStorage.BookAccessInfo AccessInfo;
 
-        //public BookShelfBookViewModel(string ID, int BookSize,BookShelfStorage.BookAccessInfo accessInfo,BookContainerViewModel Parent)
+        //public BookshelfBookViewModel(string ID, int BookSize,BookshelfStorage.BookAccessInfo accessInfo,BookContainerViewModel Parent)
         //{
         //    this.ID = ID;
         //    this.BookSize = BookSize;
@@ -325,11 +325,11 @@ namespace BookViewerApp.ViewModels
         public bool Reversed { get { return _Reversed; } set { _Reversed = value; OnPropertyChanged(nameof(Reversed)); } }
         private bool _Reversed = false;
 
-        //public static async Task<BookShelfBookViewModel> GetFromBookShelfStorage(BookShelfStorage.BookContainer.BookShelfBook storage,BookContainerViewModel parent)
+        //public static async Task<BookshelfBookViewModel> GetFromBookshelfStorage(BookshelfStorage.BookContainer.BookshelfBook storage,BookContainerViewModel parent)
         //{
         //    var reg1 = SettingStorage.GetValue("BookNameTrim") as System.Text.RegularExpressions.Regex;
         //    if(! await storage.Access.IsAccessible()) { return null; }
-        //    var result = new BookShelfBookViewModel(storage.ID, storage.Size,storage.Access,parent) { Title = reg1 == null ? storage.Title : reg1.Replace(storage.Title, "") };
+        //    var result = new BookshelfBookViewModel(storage.ID, storage.Size,storage.Access,parent) { Title = reg1 == null ? storage.Title : reg1.Replace(storage.Title, "") };
         //    await result.GetFromBookInfoStorageAsync();
         //    return result;
         //}

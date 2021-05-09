@@ -4,23 +4,23 @@
     xmlns:local="using:BookViewerApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:BookShelfViewModels="using:BookViewerApp.ViewModels"
-    x:Class="BookViewerApp.Views.BookShelfPage"
+    xmlns:BookshelfViewModels="using:BookViewerApp.ViewModels"
+    x:Class="BookViewerApp.Views.BookshelfPage"
     mc:Ignorable="d"
     >
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Uid="ClearAllBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_ClearBookShelfStorage"/>
-                <AppBarButton x:Uid="ClearThisBookShelf" Icon="Clear" Label="" Click="AppBarButton_Click_AppBarButton_Click_ClearBookShelfStorageSingle"/>
-                <AppBarButton x:Uid="SetThisBookShelfSecret" Icon="Clear" Label="" Click="AppBarButton_Click_SetThisBookShelfSecret" x:Name="AppBarButtonToggleSecret" Visibility="Collapsed"/>
+                <AppBarButton x:Uid="ClearAllBookshelf" Icon="Clear" Label="" Click="AppBarButton_Click_ClearBookshelfStorage"/>
+                <AppBarButton x:Uid="ClearThisBookshelf" Icon="Clear" Label="" Click="AppBarButton_Click_AppBarButton_Click_ClearBookshelfStorageSingle"/>
+                <AppBarButton x:Uid="SetThisBookshelfSecret" Icon="Clear" Label="" Click="AppBarButton_Click_SetThisBookshelfSecret" x:Name="AppBarButtonToggleSecret" Visibility="Collapsed"/>
                 <AppBarButton x:Uid="Setting" Click="AppBarButton_Click_GoToSetting" RightTapped="AppBarButton_Debug_1"/>
                 <AppBarButton x:Uid="AboutThisApp" Tapped="AppBarButton_Click_GoToInfoPage" IsRightTapEnabled="True" RightTapped="AppBarButton_RightTapped"/>
             </CommandBar.SecondaryCommands>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_OpenLocalFile"/>
             <AppBarButton x:Uid="OpenLocalBook" Icon="OpenFile" Label="" Click="AppBarButton_Click_OpenLocalFile3"/>
             <AppBarButton x:Uid="AddLocalDirectory" Icon="Folder" Label="" Click="AppBarButton_Click_AddLocalDirectory"/>
-            <AppBarButton x:Uid="ReloadBookShelf" Icon="Refresh" Label="" Click="AppBarButton_Click_ReloadBookShelf"/>
+            <AppBarButton x:Uid="ReloadBookshelf" Icon="Refresh" Label="" Click="AppBarButton_Click_ReloadBookshelf"/>
         </CommandBar>
     </Page.BottomAppBar>
     <Grid>
@@ -32,11 +32,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ToggleButton x:Name="HamburgerButton"  VerticalAlignment="Top" ToolTipService.ToolTip="switch book shelf" x:Uid="SwitchBookShelfToggle">
+        <ToggleButton x:Name="HamburgerButton"  VerticalAlignment="Top" ToolTipService.ToolTip="switch book shelf" x:Uid="SwitchBookshelfToggle">
             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
         </ToggleButton>
         <Grid Grid.Row="0" Grid.Column="1" Background="{ThemeResource ApplicationForegroundThemeBrush}">
-            <TextBlock Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" Text="{Binding Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding ElementName=BookshelfList, Path=SelectedValue}" Text="{Binding Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <SplitView Grid.Column="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="SplitView"
                    DisplayMode="Overlay"
@@ -52,7 +52,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <ListView x:Name="BookShelfList" Grid.Row="1" Grid.Column="1">
+                    <ListView x:Name="BookshelfList" Grid.Row="1" Grid.Column="1">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -62,14 +62,14 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <local:BookShelfContainerControl DataContext="{Binding}" Height="200"/>
+                                <local:BookshelfContainerControl DataContext="{Binding}" Height="200"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </Grid>
             </SplitView.Pane>
             <Grid>
-                <local:BookShelfControl DataContext="{Binding ElementName=BookShelfList, Path=SelectedValue}" x:Name="BodyControl"/>
+                <local:BookshelfControl DataContext="{Binding ElementName=BookshelfList, Path=SelectedValue}" x:Name="BodyControl"/>
                 <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ProgressRing" IsActive="True" Visibility="Collapsed" Width="50" Height="50"/>
             </Grid>
         </SplitView>

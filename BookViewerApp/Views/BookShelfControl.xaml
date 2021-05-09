@@ -1,36 +1,36 @@
 ﻿<UserControl x:Name="userControl"
-    x:Class="BookViewerApp.Views.BookShelfControl"
+    x:Class="BookViewerApp.Views.BookshelfControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BookViewerApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:BookShelfViewModels="using:BookViewerApp.ViewModels"
+    xmlns:BookshelfViewModels="using:BookViewerApp.ViewModels"
              xmlns:TemplateSelectors="using:BookViewerApp.Views.TemplateSelectors"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-             d:DataContext="BookShelfViewModels:BookShelfViewModel"
+             d:DataContext="BookshelfViewModels:BookshelfViewModel"
              >
     <UserControl.Resources>
-        <Style x:Key="BookShelfItemSize" TargetType="UserControl"  x:Name="BookShelfItemStyle" />
-        <CollectionViewSource Source="{Binding Path=Containers}" x:Name="BookShelfItemsSource" IsSourceGrouped="True" ItemsPath="Books"/>
+        <Style x:Key="BookshelfItemSize" TargetType="UserControl"  x:Name="BookshelfItemStyle" />
+        <CollectionViewSource Source="{Binding Path=Containers}" x:Name="BookshelfItemsSource" IsSourceGrouped="True" ItemsPath="Books"/>
     </UserControl.Resources>
 
-    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookShelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True" SelectedIndex="-1" SelectionMode="None">
+    <GridView x:Name="GridViewMain" ItemsSource="{Binding Source={StaticResource BookshelfItemsSource}}" ItemClick="GridViewMain_ItemClick" IsItemClickEnabled="True" SelectedIndex="-1" SelectionMode="None">
         <GridView.ItemTemplateSelector>
-            <TemplateSelectors:BookShelfItemTemplateSelector>
-                <TemplateSelectors:BookShelfItemTemplateSelector.BookTemplate>
-                    <DataTemplate x:DataType="BookShelfViewModels:BookViewModel">
-                        <local:BookShelfItemControl x:Name="BookShelfItemControlInTemplate" DataContext="{Binding}" Style="{StaticResource BookShelfItemSize}" />
+            <TemplateSelectors:BookshelfItemTemplateSelector>
+                <TemplateSelectors:BookshelfItemTemplateSelector.BookTemplate>
+                    <DataTemplate x:DataType="BookshelfViewModels:BookViewModel">
+                        <local:BookshelfItemControl x:Name="BookshelfItemControlInTemplate" DataContext="{Binding}" Style="{StaticResource BookshelfItemSize}" />
                     </DataTemplate>
-                </TemplateSelectors:BookShelfItemTemplateSelector.BookTemplate>
-                <TemplateSelectors:BookShelfItemTemplateSelector.ContainerTemplate>
-                    <DataTemplate x:DataType="BookShelfViewModels:BookViewModel">
-                        <local:BookShelfContainerControl x:Name="BookShelfContainerControlInTemplate" DataContext="{Binding}" Style="{StaticResource BookShelfItemSize}" />
+                </TemplateSelectors:BookshelfItemTemplateSelector.BookTemplate>
+                <TemplateSelectors:BookshelfItemTemplateSelector.ContainerTemplate>
+                    <DataTemplate x:DataType="BookshelfViewModels:BookViewModel">
+                        <local:BookshelfContainerControl x:Name="BookshelfContainerControlInTemplate" DataContext="{Binding}" Style="{StaticResource BookshelfItemSize}" />
                     </DataTemplate>
-                </TemplateSelectors:BookShelfItemTemplateSelector.ContainerTemplate>
-            </TemplateSelectors:BookShelfItemTemplateSelector>
+                </TemplateSelectors:BookshelfItemTemplateSelector.ContainerTemplate>
+            </TemplateSelectors:BookshelfItemTemplateSelector>
         </GridView.ItemTemplateSelector>
         <GridView.GroupStyle>
             <GroupStyle HidesIfEmpty="True">

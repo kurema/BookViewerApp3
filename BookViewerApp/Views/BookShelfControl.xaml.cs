@@ -22,7 +22,7 @@ using BookViewerApp.Storages;
 
 namespace BookViewerApp.Views
 {
-    public sealed partial class BookShelfControl : UserControl
+    public sealed partial class BookshelfControl : UserControl
     {
         public event ItemClickedEventHandler ItemClicked;
         public delegate void ItemClickedEventHandler(object sender, ItemClickedEventArgs e);
@@ -36,23 +36,23 @@ namespace BookViewerApp.Views
         }
 
 
-        public BookShelfControl()
+        public BookshelfControl()
         {
             this.InitializeComponent();
 
-            SetBookShelfItemSize((double)SettingStorage.GetValue("TileWidth"), (double)SettingStorage.GetValue("TileHeight"));
+            SetBookshelfItemSize((double)SettingStorage.GetValue("TileWidth"), (double)SettingStorage.GetValue("TileHeight"));
         }
 
         public void SetSource(params BookContainerViewModel[] vms)
         {
-            BookShelfItemsSource.Source = vms;
+            BookshelfItemsSource.Source = vms;
         }
 
-        private void SetBookShelfItemSize(double width,double height)
+        private void SetBookshelfItemSize(double width,double height)
         {
-            BookShelfItemStyle.Setters.Clear();
-            BookShelfItemStyle.Setters.Add(new Setter(WidthProperty, width));
-            BookShelfItemStyle.Setters.Add(new Setter(HeightProperty, height));
+            BookshelfItemStyle.Setters.Clear();
+            BookshelfItemStyle.Setters.Add(new Setter(WidthProperty, width));
+            BookshelfItemStyle.Setters.Add(new Setter(HeightProperty, height));
         }
 
         private void GridViewMain_ItemClick(object sender, ItemClickEventArgs e)
@@ -66,7 +66,7 @@ namespace BookViewerApp.Views
 
     namespace TemplateSelectors
     {
-        public sealed class BookShelfItemTemplateSelector : DataTemplateSelector
+        public sealed class BookshelfItemTemplateSelector : DataTemplateSelector
         {
             public DataTemplate ContainerTemplate { get; set; }
             public DataTemplate BookTemplate { get; set; }
@@ -77,7 +77,7 @@ namespace BookViewerApp.Views
                 {
                     return ContainerTemplate;
                 }
-                else if (item is BookShelfBookViewModel)
+                else if (item is BookshelfBookViewModel)
                 {
                     return BookTemplate;
                 }

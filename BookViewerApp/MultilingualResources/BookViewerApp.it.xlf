@@ -49,15 +49,15 @@
           <source>Read the previous book</source>
           <target state="final">Libro precedente</target>
         </trans-unit>
-        <trans-unit id="BookShelfTitleNew" translate="yes" xml:space="preserve">
+        <trans-unit id="BookshelfTitleNew" translate="yes" xml:space="preserve">
           <source>Bookshelf</source>
           <target state="final">Scaffale</target>
         </trans-unit>
-        <trans-unit id="ClearAllBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ClearAllBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Clear all bookshelves</source>
           <target state="final">Pulisci tutta la libreria</target>
         </trans-unit>
-        <trans-unit id="GoToBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="GoToBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Go to bookshelf</source>
           <target state="final">Vai allo scaffale</target>
         </trans-unit>
@@ -161,11 +161,11 @@
           <source>Toggle full screen mode.</source>
           <target state="final">Schermo intero</target>
         </trans-unit>
-        <trans-unit id="ClearThisBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ClearThisBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Clear this bookshelf</source>
           <target state="final">Pulisci lo scaffale</target>
         </trans-unit>
-        <trans-unit id="SetThisBookShelfSecret.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="SetThisBookshelfSecret.Label" translate="yes" xml:space="preserve">
           <source>Toggle secret</source>
           <target state="final">Nascondi scaffale</target>
         </trans-unit>
@@ -185,7 +185,7 @@
           <source>Width of book tile</source>
           <target state="final">Lunghezza titoli</target>
         </trans-unit>
-        <trans-unit id="ReloadBookShelf.Label" translate="yes" xml:space="preserve">
+        <trans-unit id="ReloadBookshelf.Label" translate="yes" xml:space="preserve">
           <source>Refresh</source>
           <target state="final">Ricarica</target>
         </trans-unit>
@@ -261,7 +261,7 @@
           <source>Menu display time in book viewer</source>
           <target state="final">Tempo visualizzazione menu</target>
         </trans-unit>
-        <trans-unit id="SwitchBookShelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="SwitchBookshelfToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Switch bookshelf.</source>
           <target state="final">Passa ad un altro scaffale.</target>
         </trans-unit>

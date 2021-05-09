@@ -33,16 +33,16 @@
   <data name="BookPrevious.Label" xml:space="preserve">
     <value>读以前的书</value>
   </data>
-  <data name="BookShelfTitleNew" xml:space="preserve">
+  <data name="BookshelfTitleNew" xml:space="preserve">
     <value>书架</value>
   </data>
-  <data name="ClearAllBookShelf.Label" xml:space="preserve">
+  <data name="ClearAllBookshelf.Label" xml:space="preserve">
     <value>清除所有书架</value>
   </data>
-  <data name="ClearThisBookShelf.Label" xml:space="preserve">
+  <data name="ClearThisBookshelf.Label" xml:space="preserve">
     <value>删除书架</value>
   </data>
-  <data name="GoToBookShelf.Label" xml:space="preserve">
+  <data name="GoToBookshelf.Label" xml:space="preserve">
     <value>去书架</value>
   </data>
   <data name="LoadingFolder.Completed.Message" xml:space="preserve">
@@ -84,10 +84,10 @@
   <data name="PageTop.Label" xml:space="preserve">
     <value>首页</value>
   </data>
-  <data name="ReloadBookShelf.Label" xml:space="preserve">
+  <data name="ReloadBookshelf.Label" xml:space="preserve">
     <value>更新</value>
   </data>
-  <data name="SetThisBookShelfSecret.Label" xml:space="preserve">
+  <data name="SetThisBookshelfSecret.Label" xml:space="preserve">
     <value>秘密书架</value>
   </data>
   <data name="Setting.Label" xml:space="preserve">
@@ -108,7 +108,7 @@
   <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
     <value>标题</value>
   </data>
-  <data name="SwitchBookShelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="SwitchBookshelfToggle.ToolTipService.ToolTip" xml:space="preserve">
     <value>切换书架</value>
   </data>
   <data name="Welcome_HowToConfigure" xml:space="preserve">

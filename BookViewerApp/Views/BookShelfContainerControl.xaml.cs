@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace BookViewerApp.Views
 {
-    public sealed partial class BookShelfContainerControl : UserControl
+    public sealed partial class BookshelfContainerControl : UserControl
     {
-        public BookShelfContainerControl()
+        public BookshelfContainerControl()
         {
             this.InitializeComponent();
         }
