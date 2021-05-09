@@ -321,13 +321,16 @@
     <Compile Include="Views\BookmarkContentDialog.xaml.cs">
       <DependentUpon>BookmarkContentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelf\Book.xaml.cs">
+    <Compile Include="Views\Bookshelf\Book.xaml.cs">
       <DependentUpon>Book.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelf\BookRow.xaml.cs">
+    <Compile Include="Views\Bookshelf\BookRow.xaml.cs">
       <DependentUpon>BookRow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelf\BookRowPanel.cs" />
+    <Compile Include="Views\Bookshelf\BookRowPanel.cs" />
+    <Compile Include="Views\Bookshelf\BookshelfPage.xaml.cs">
+      <DependentUpon>BookshelfPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EpubResolver.cs" />
     <Compile Include="Views\ExplorerMenuControl.xaml.cs">
       <DependentUpon>ExplorerMenuControl.xaml</DependentUpon>
@@ -430,11 +433,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookShelf\Book.xaml">
+    <Page Include="Views\Bookshelf\Book.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookShelf\BookRow.xaml">
+    <Page Include="Views\Bookshelf\BookRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Bookshelf\BookshelfPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
