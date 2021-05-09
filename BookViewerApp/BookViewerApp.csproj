@@ -338,17 +338,17 @@
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelfContainerControl.xaml.cs">
-      <DependentUpon>BookShelfContainerControl.xaml</DependentUpon>
+    <Compile Include="Views\BookshelfContainerControl.xaml.cs">
+      <DependentUpon>BookshelfContainerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelfItemControl.xaml.cs">
-      <DependentUpon>BookShelfItemControl.xaml</DependentUpon>
+    <Compile Include="Views\BookshelfItemControl.xaml.cs">
+      <DependentUpon>BookshelfItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelfControl.xaml.cs">
-      <DependentUpon>BookShelfControl.xaml</DependentUpon>
+    <Compile Include="Views\BookshelfControl.xaml.cs">
+      <DependentUpon>BookshelfControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookShelfPage.xaml.cs">
-      <DependentUpon>BookShelfPage.xaml</DependentUpon>
+    <Compile Include="Views\BookshelfPage.xaml.cs">
+      <DependentUpon>BookshelfPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BookShelfViewModels.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
@@ -453,19 +453,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookShelfContainerControl.xaml">
+    <Page Include="Views\BookshelfContainerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookShelfItemControl.xaml">
+    <Page Include="Views\BookshelfItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookShelfControl.xaml">
+    <Page Include="Views\BookshelfControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookShelfPage.xaml">
+    <Page Include="Views\BookshelfPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
