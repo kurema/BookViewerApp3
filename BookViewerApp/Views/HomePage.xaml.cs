@@ -27,12 +27,12 @@ namespace BookViewerApp.Views
             this.InitializeComponent();
 
             var vm = new ViewModels.HomeViewModel() {
-                SettingItem = new ViewModels.Bookshelf2ViewModelMenuItem()
+                SettingItem = new ViewModels.HomeViewModelBookshelfMenuItem()
                 {
                     Action = (a) => { FrameNavigate(typeof(SettingPage), null); }
                 }
             };
-            vm.MenuItems.Add(new ViewModels.Bookshelf2ViewModelMenuItem()
+            vm.MenuItems.Add(new ViewModels.HomeViewModelBookshelfMenuItem()
             {
                 Title = "History",
                 Icon = new FontIcon()
@@ -43,7 +43,7 @@ namespace BookViewerApp.Views
                 Action = (a) =>
                   { }
             });
-            vm.MenuItems.Add(new ViewModels.Bookshelf2ViewModelMenuItem()
+            vm.MenuItems.Add(new ViewModels.HomeViewModelBookshelfMenuItem()
             {
                 Title = "Library",
                 Icon = new SymbolIcon(Symbol.Library),

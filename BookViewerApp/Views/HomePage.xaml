@@ -19,7 +19,7 @@
             <AutoSuggestBox QueryIcon="Find"/>
         </NavigationView.AutoSuggestBox>
         <NavigationView.MenuItemTemplate>
-            <DataTemplate x:DataType="vm:Bookshelf2ViewModelMenuItem">
+            <DataTemplate x:DataType="vm:HomeViewModelBookshelfMenuItem">
                 <NavigationViewItem Content="{Binding Title}" Icon="{Binding Icon}">
                 </NavigationViewItem>
             </DataTemplate>

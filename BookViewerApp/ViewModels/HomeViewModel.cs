@@ -20,9 +20,9 @@ namespace BookViewerApp.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        private ObservableCollection<Bookshelf2ViewModelMenuItem> menuItems = new ObservableCollection<Bookshelf2ViewModelMenuItem>();
-        public ObservableCollection<Bookshelf2ViewModelMenuItem> MenuItems { get => menuItems; }
-        public Bookshelf2ViewModelMenuItem SelectedItem
+        private ObservableCollection<HomeViewModelBookshelfMenuItem> menuItems = new ObservableCollection<HomeViewModelBookshelfMenuItem>();
+        public ObservableCollection<HomeViewModelBookshelfMenuItem> MenuItems { get => menuItems; }
+        public HomeViewModelBookshelfMenuItem SelectedItem
         {
             get => selectedItem;
             set
@@ -35,7 +35,7 @@ namespace BookViewerApp.ViewModels
             }
         }
 
-        public void UpdateSelectedItem(Bookshelf2ViewModelMenuItem value)
+        public void UpdateSelectedItem(HomeViewModelBookshelfMenuItem value)
         {
             //For "Back" button.
             SetProperty(ref selectedItem, value);
@@ -46,26 +46,26 @@ namespace BookViewerApp.ViewModels
             SettingItem?.Action?.Invoke(SettingItem);
         }
 
-        public Bookshelf2ViewModelMenuItem SettingItem
+        public HomeViewModelBookshelfMenuItem SettingItem
         {
             get => settingItem;
             set => SetProperty(ref settingItem, value);
         }
 
-        private Bookshelf2ViewModelMenuItem selectedItem = new Bookshelf2ViewModelMenuItem() { 
+        private HomeViewModelBookshelfMenuItem selectedItem = new HomeViewModelBookshelfMenuItem() { 
             Title="Setting",
         };
 
-        private Bookshelf2ViewModelMenuItem settingItem;
+        private HomeViewModelBookshelfMenuItem settingItem;
     }
 
-    public class Bookshelf2ViewModelMenuItem : ViewModelBase
+    public class HomeViewModelBookshelfMenuItem : ViewModelBase
     {
         private string title;
         private string resourceKey;
         private IconElement icon;
         private object tag;
-        private Action<Bookshelf2ViewModelMenuItem> action;
+        private Action<HomeViewModelBookshelfMenuItem> action;
 
         private bool isLocked;
 
@@ -73,7 +73,7 @@ namespace BookViewerApp.ViewModels
         public string ResourceKey { get => resourceKey; set => SetProperty(ref resourceKey, value); }
         public IconElement Icon { get => icon; set => SetProperty(ref icon, value); }
         public object Tag { get => tag; set => SetProperty(ref tag, value); }
-        public Action<Bookshelf2ViewModelMenuItem> Action { get => action; set => SetProperty(ref action, value); }
+        public Action<HomeViewModelBookshelfMenuItem> Action { get => action; set => SetProperty(ref action, value); }
         public bool IsLocked { get => isLocked; set => SetProperty(ref isLocked, value); }
     }
 }

@@ -293,6 +293,8 @@
     </Compile>
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
+    <Compile Include="ViewModels\Bookshelf2BookViewModel.cs" />
+    <Compile Include="ViewModels\Bookshelf2ViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LibraryMemberViewModel.cs" />
     <Compile Include="ViewModels\ListItemViewModel.cs" />
@@ -324,6 +326,9 @@
     <Compile Include="Views\Bookshelf\Book.xaml.cs">
       <DependentUpon>Book.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Bookshelf\BookInfo.xaml.cs">
+      <DependentUpon>BookInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Bookshelf\BookRow.xaml.cs">
       <DependentUpon>BookRow.xaml</DependentUpon>
     </Compile>
@@ -350,7 +355,7 @@
     <Compile Include="Views\BookshelfPage.xaml.cs">
       <DependentUpon>BookshelfPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BookShelfViewModels.cs" />
+    <Compile Include="ViewModels\BookshelfViewModels.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
@@ -434,6 +439,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Bookshelf\Book.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Bookshelf\BookInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

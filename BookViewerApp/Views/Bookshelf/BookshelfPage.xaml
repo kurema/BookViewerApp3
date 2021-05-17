@@ -7,5 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <StackPanel x:Name="mainPanel" />
+    <StackPanel x:Name="mainPanel" >
+        <local:BookInfo />
+    </StackPanel>
 </Page>
