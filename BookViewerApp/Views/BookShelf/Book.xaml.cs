@@ -25,6 +25,18 @@ namespace BookViewerApp.Views.Bookshelf
     {
         private double aspect { get; set; }// Width/Height
 
+        public ImageSource Source
+        {
+            get { return (ImageSource)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SourceProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register(nameof(Source), typeof(ImageSource), typeof(Book), new PropertyMetadata(null));
+
+
+
         public Book()
         {
             this.InitializeComponent();

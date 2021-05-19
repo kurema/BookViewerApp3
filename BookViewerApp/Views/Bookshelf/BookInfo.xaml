@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BookViewerApp.Views.Bookshelf"
+    xmlns:v="using:BookViewerApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:BookViewerApp.ViewModels"
@@ -15,11 +16,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <local:Book Height="200" Width="150" Grid.Row="0" Grid.ColumnSpan="2" />
+        <local:Book Height="280" Width="210" Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding File.IconLarge}" />
+        <TextBlock Text="{Binding File.Title}" Grid.Row="1" Grid.ColumnSpan="2" />
+        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" >
+            <Run Text="0" /> %
+        </TextBlock>
+        <Button  Grid.Column="1" Grid.Row="2" Margin="0" VerticalAlignment="Center" Style="{ThemeResource CommandBarFlyoutEllipsisButtonStyle}">
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Open"/>
+                    <MenuFlyoutItem Text="Delete"/>
+
+                </MenuFlyout>
+            </Button.Flyout>
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE712;"/>
+        </Button>
     </Grid>
 </UserControl>
