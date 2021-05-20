@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemBaseLowColor}"
+    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
     >
     <StackPanel x:Name="mainPanel" >
-        <local:BookInfo Width="210" />
+        <local:BookInfo Width="310" Margin="30" />
     </StackPanel>
 </Page>

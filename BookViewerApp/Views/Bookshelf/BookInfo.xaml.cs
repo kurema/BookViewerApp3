@@ -19,9 +19,19 @@ namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class BookInfo : UserControl
     {
+        public UIElement ShadowTarget => BookMain.ShadowTarget;
+
+
         public BookInfo()
         {
             this.InitializeComponent();
+
+            this.DataContext = new ViewModels.Bookshelf2BookViewModel();
+
+            SharedShadow.Receivers.Add(BackgroundGrid);
+
+            BookMain.ShadowTarget.Shadow = SharedShadow;
+            BookMain.Translation += new System.Numerics.Vector3(0, 0, 32);
         }
     }
 }

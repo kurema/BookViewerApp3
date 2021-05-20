@@ -15,7 +15,7 @@
             5
         </CornerRadius>
     </UserControl.Resources>
-    <Border CornerRadius="{StaticResource radius}" >
+    <Border CornerRadius="{StaticResource radius}" x:Name="BorderMain">
         <Grid>
             <!--<Grid Background="#FF3B5B38"></Grid>-->
             <Image x:Name="mainPicture"/>

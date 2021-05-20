@@ -23,7 +23,11 @@ namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class Book : UserControl
     {
-        private double aspect { get; set; }// Width/Height
+        //https://docs.microsoft.com/windows/uwp/design/style/rounded-corner#keyboard-focus-rectangle-and-shadow
+        //Shadow ignore corner radius by default. So it doesn't make much sense to use this. But it may in future.
+        public UIElement ShadowTarget => BorderMain;
+
+        private double aspect { get; set; } = 0;// Width/Height
 
         public ImageSource Source
         {
@@ -59,7 +63,7 @@ namespace BookViewerApp.Views.Bookshelf
                 return size;
             }
 
-            if (double.IsNaN(aspect) || aspect <= 0) return base.ArrangeOverride(finalSize); ;
+            if (double.IsNaN(aspect) || aspect <= 0) return base.ArrangeOverride(finalSize);
             if (double.IsNaN(finalSize.Width))
             {
                 if (double.IsNaN(finalSize.Height)) return base.ArrangeOverride(finalSize);
