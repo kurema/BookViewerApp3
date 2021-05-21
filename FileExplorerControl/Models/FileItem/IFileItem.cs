@@ -82,6 +82,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public void OnUpdate()
         {
+            Updated?.Invoke(this,new EventArgs());
         }
 
         public void Open()

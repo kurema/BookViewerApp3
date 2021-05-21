@@ -39,21 +39,24 @@ namespace BookViewerApp.Views.Bookshelf
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register(nameof(Source), typeof(ImageSource), typeof(Book), new PropertyMetadata(null, new PropertyChangedCallback(SourcePropertyChangedCallback)));
 
-        static private void SourcePropertyChangedCallback(DependencyObject d,DependencyPropertyChangedEventArgs args)
+        static private void SourcePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
+            if (!(d is Book db)) return;
+
             if (args.OldValue is Windows.UI.Xaml.Media.Imaging.BitmapSource so)
             {
-                if (!(SourcePropertySizeChangedCallbackToken is null))
+                if (!(db.SourcePropertySizeChangedCallbackToken is null))
                 {
-                    so.UnregisterPropertyChangedCallback(Windows.UI.Xaml.Media.Imaging.BitmapSource.PixelHeightProperty, SourcePropertySizeChangedCallbackToken ?? throw new Exception());
+                    so.UnregisterPropertyChangedCallback(Windows.UI.Xaml.Media.Imaging.BitmapSource.PixelHeightProperty, db.SourcePropertySizeChangedCallbackToken ?? 0);
+                    db.SourcePropertySizeChangedCallbackToken = null;
                 }
             }
 
             if (args.NewValue is Windows.UI.Xaml.Media.Imaging.BitmapSource sn)
             {
-                SourcePropertySizeChangedCallbackToken = sn.RegisterPropertyChangedCallback(Windows.UI.Xaml.Media.Imaging.BitmapSource.PixelHeightProperty, new DependencyPropertyChangedCallback((s, e) =>
+                db.SourcePropertySizeChangedCallbackToken = sn.RegisterPropertyChangedCallback(Windows.UI.Xaml.Media.Imaging.BitmapSource.PixelHeightProperty, new DependencyPropertyChangedCallback((s, e) =>
                 {
-                    if(d is Book db)
+                    if (d is Book db)
                     {
                         //PixelWidthとPexelHeightは同時に更新されるのか？
                         db.Aspect = double.IsNaN(sn.PixelWidth) || sn.PixelWidth == 0 || double.IsNaN(sn.PixelHeight) || sn.PixelHeight == 0 ? 0 : sn.PixelWidth / sn.PixelHeight;
@@ -63,7 +66,7 @@ namespace BookViewerApp.Views.Bookshelf
             }
         }
 
-        static private long? SourcePropertySizeChangedCallbackToken = null;
+        public long? SourcePropertySizeChangedCallbackToken = null;
 
         public Book()
         {
