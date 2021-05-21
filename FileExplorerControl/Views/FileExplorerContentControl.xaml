@@ -40,7 +40,6 @@
         </Flyout>
     </UserControl.Resources>
 
-
     <Grid>
         <controls:DataGrid Visibility="{Binding IsDataGrid,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}" Grid.Row="1" Grid.Column="1"
                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"

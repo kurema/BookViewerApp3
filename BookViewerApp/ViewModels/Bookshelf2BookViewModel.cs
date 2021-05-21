@@ -21,7 +21,6 @@ namespace BookViewerApp.ViewModels
         private kurema.FileExplorerControl.ViewModels.FileItemViewModel _File = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.FileItemPlaceHolder());
         public kurema.FileExplorerControl.ViewModels.FileItemViewModel File { get => _File; set => SetProperty(ref _File, value); }
 
-
         protected async Task GetFromBookInfoStorageAsync(string ID, int PageSize)
         {
             var bookInfo = await Storages.BookInfoStorage.GetBookInfoByIDAsync(ID);

@@ -39,7 +39,6 @@
                 <MenuFlyout Placement="Bottom">
                     <MenuFlyoutItem Text="Open"/>
                     <MenuFlyoutItem Text="Delete"/>
-
                 </MenuFlyout>
             </Button.Flyout>
             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE712;"/>
