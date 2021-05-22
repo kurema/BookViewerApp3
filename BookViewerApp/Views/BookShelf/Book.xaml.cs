@@ -90,17 +90,18 @@ namespace BookViewerApp.Views.Bookshelf
                 return size;
             }
 
-            if (double.IsNaN(Aspect) || Aspect <= 0) return base.ArrangeOverride(finalSize);
+            double aspect = Aspect;
+            if (double.IsNaN(Aspect) || Aspect <= 0) aspect = Math.Sqrt(0.5);
             if (double.IsNaN(finalSize.Width))
             {
                 if (double.IsNaN(finalSize.Height)) return base.ArrangeOverride(finalSize);
-                return ArrangeToStretch(finalSize.Height * Aspect, finalSize.Height, Content);
+                return ArrangeToStretch(finalSize.Height * aspect, finalSize.Height, Content);
             }
             {
-                if (double.IsNaN(finalSize.Height)) return new Size(finalSize.Width, finalSize.Width / Aspect);
-                double w = finalSize.Height * Aspect;
-                if (w <= finalSize.Width) return new Size(w, finalSize.Height);
-                return ArrangeToStretch(finalSize.Width, finalSize.Width / Aspect, Content);
+                if (double.IsNaN(finalSize.Height)) return new Size(finalSize.Width, finalSize.Width / aspect);
+                double w = finalSize.Height * aspect;
+                if (w <= finalSize.Width) return ArrangeToStretch(w, finalSize.Height, Content);
+                return ArrangeToStretch(finalSize.Width, finalSize.Width / aspect, Content);
             }
             //return base.ArrangeOverride(finalSize);
         }

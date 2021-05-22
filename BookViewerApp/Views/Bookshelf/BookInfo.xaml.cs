@@ -28,10 +28,17 @@ namespace BookViewerApp.Views.Bookshelf
 
             this.DataContext = new ViewModels.Bookshelf2BookViewModel();
 
-            SharedShadow.Receivers.Add(BackgroundGrid);
+            //BookMain.Translation += new System.Numerics.Vector3(0, 0, 32);
+        }
 
-            BookMain.ShadowTarget.Shadow = SharedShadow;
-            BookMain.Translation += new System.Numerics.Vector3(0, 0, 32);
+        private void BookMain_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            BookStoryboardEntry.Begin();
+        }
+
+        private void BookMain_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            BookStoryboardExit.Begin();
         }
     }
 }

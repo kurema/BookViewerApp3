@@ -22,6 +22,16 @@ namespace BookViewerApp.Views.Bookshelf
         public BookRow()
         {
             this.InitializeComponent();
+
+            SharedShadow.Receivers.Add(BackgroundGrid);
+        }
+
+        public void UpdateShadow()
+        {
+            foreach(var target in BookRowMain.ShadowTargets)
+            {
+                target.Shadow = SharedShadow;
+            }
         }
     }
 }

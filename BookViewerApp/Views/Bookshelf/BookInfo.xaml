@@ -22,14 +22,22 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-
         <Grid.Resources>
-            <ThemeShadow x:Name="SharedShadow"/>
+            <Storyboard x:Name="BookStoryboardEntry">
+                <DoubleAnimation Storyboard.TargetName="TranslateTransformBook" Storyboard.TargetProperty="Y" From="0" To="10" Duration="0:0:0.5"/>
+            </Storyboard>
+            <Storyboard x:Name="BookStoryboardExit">
+                <DoubleAnimation Storyboard.TargetName="TranslateTransformBook" Storyboard.TargetProperty="Y" From="10" To="0" Duration="0:0:0.5"/>
+            </Storyboard>
         </Grid.Resources>
-        
-        <Grid Grid.RowSpan="3" Grid.ColumnSpan="2" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  x:Name="BackgroundGrid"/>
 
-        <local:Book Height="296" Width="210" Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding File.IconLarge}" x:Name="BookMain"/>
+        <local:Book Height="296" Width="210" Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding File.IconLarge}" x:Name="BookMain"
+                    PointerEntered="BookMain_PointerEntered" PointerExited="BookMain_PointerExited"
+                    >
+            <local:Book.RenderTransform>
+                <TranslateTransform x:Name="TranslateTransformBook" />
+            </local:Book.RenderTransform>
+        </local:Book>
         <TextBlock Text="{Binding File.Title}" Grid.Row="1" Grid.ColumnSpan="1" />
         <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="{ThemeResource SystemBaseMediumColor}">
             <Run Text="{Binding ReadRate}" /> %

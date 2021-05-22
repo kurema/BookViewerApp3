@@ -8,5 +8,12 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <local:BookRowPanel x:Name="panel" />
+    <Grid>
+        <Grid.Resources>
+            <ThemeShadow x:Name="SharedShadow"/>
+        </Grid.Resources>
+
+        <Grid x:Name="BackgroundGrid"/>
+        <local:BookRowPanel x:Name="BookRowMain" />
+    </Grid>
 </UserControl>
