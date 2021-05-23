@@ -19,11 +19,14 @@ namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class BookRow : UserControl
     {
+        public UIElementCollection Children => this.BookRowMain.Children;
+
         public BookRow()
         {
             this.InitializeComponent();
 
             SharedShadow.Receivers.Add(BackgroundGrid);
+            BookRowMain.LayoutUpdated += (s, e) => { UpdateShadow(); };
         }
 
         public void UpdateShadow()

@@ -21,6 +21,14 @@ namespace BookViewerApp.Views.Bookshelf
     {
         public UIElement ShadowTarget => BookMain.ShadowTarget;
 
+        private double _BookHeight=0;
+
+        public double BookHeight
+        {
+            get { return _BookHeight; }
+            set { _BookHeight = value; InvalidateArrange(); }
+        }
+
 
         public BookInfo()
         {
@@ -28,17 +36,34 @@ namespace BookViewerApp.Views.Bookshelf
 
             this.DataContext = new ViewModels.Bookshelf2BookViewModel();
 
-            //BookMain.Translation += new System.Numerics.Vector3(0, 0, 32);
+            BookMain.Translation = new System.Numerics.Vector3(0, 0, 32);
         }
 
         private void BookMain_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            BookStoryboardEntry.Begin();
+            BookMain.Translation = new System.Numerics.Vector3(0, 0, 64);
         }
 
         private void BookMain_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            BookStoryboardExit.Begin();
+            BookMain.Translation = new System.Numerics.Vector3(0, 0, 32);
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            return base.ArrangeOverride(base.MeasureOverride(finalSize));
+            //return base.ArrangeOverride(finalSize);
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var size= base.MeasureOverride(availableSize);
+
+            //BookMainの幅に全体を合わせます。
+            if (!double.IsPositiveInfinity(availableSize.Height) || BookHeight <= 0) return base.MeasureOverride(availableSize);
+            BookMain.Measure(new Size(availableSize.Width, BookHeight));
+            return base.MeasureOverride(new Size(BookMain.DesiredSize.Width, double.PositiveInfinity));
+            //return base.MeasureOverride(availableSize);
         }
     }
 }

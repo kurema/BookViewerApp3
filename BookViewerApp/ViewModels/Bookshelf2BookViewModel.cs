@@ -44,7 +44,6 @@ namespace BookViewerApp.ViewModels
         private double _ReadRate = 0;
         public double ReadRate { get => _ReadRate; set => SetProperty(ref _ReadRate, value); }
 
-
         private bool _IsR2L = false;
         public bool IsR2L { get => _IsR2L; set => SetProperty(ref _IsR2L, value); }
     }
