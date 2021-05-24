@@ -149,10 +149,6 @@ namespace BookViewerApp.Helper
                             {
                                 if (a is kurema.FileExplorerControl.Models.FileItems.StorageBookmarkItem bookmark)
                                 {
-                                    //return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png")),
-                                    //() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"))
-                                    //);
-
                                     var bmps = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_s.png"));
                                     var bmpl = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_bookmark_l.png"));
 
@@ -207,31 +203,12 @@ namespace BookViewerApp.Helper
                                             var bitmap = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"));
                                             if ((bool)SettingStorage.GetValue("FetchThumbnailsBackground"))
                                             {
-                                                Task.Run(async () =>
-                                                {
-                                                    try
-                                                    {
-                                                        var book = await ThumbnailManager.SaveImageAsync(storage.Content, cancel);
-                                                        if (book is null || string.IsNullOrEmpty(book?.ID)) return;
-                                                        //It doesn't make sense not to update the bitmap after you fetched the thumbnail.
-                                                        //サムネイル作成後にUI更新だけ止めてもしゃーない。
-                                                        //if (cancel.IsCancellationRequested) return;
-                                                        await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
-                                                        {
-                                                            ThumbnailManager.SetToImageSourceNoWait(book.ID, bitmap);
-                                                        });
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        System.Diagnostics.Debug.WriteLine(ex);
-                                                    }
-                                                });
+                                                Task.Run(()=> ThumbnailManager.SaveImageAndLoadAsync(storage.Content,sender.Dispatcher,bitmap,cancel));
                                             }
                                             return bitmap;
                                         }
                                         );
                                     }
-
 
                                     return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
                                     () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_l.png"))

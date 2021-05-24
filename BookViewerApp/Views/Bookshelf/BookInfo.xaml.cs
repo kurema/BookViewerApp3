@@ -65,5 +65,12 @@ namespace BookViewerApp.Views.Bookshelf
             return base.MeasureOverride(new Size(BookMain.DesiredSize.Width, double.PositiveInfinity));
             //return base.MeasureOverride(availableSize);
         }
+
+        public event TappedEventHandler BookTapped;
+
+        private void BookMain_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            BookTapped?.Invoke(this, e);
+        }
     }
 }

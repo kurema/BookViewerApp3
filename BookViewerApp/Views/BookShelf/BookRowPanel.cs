@@ -15,6 +15,37 @@ namespace BookViewerApp.Views.Bookshelf
 {
     public class BookRowPanel : Panel
     {
+        public int MaxLine
+        {
+            get { return (int)GetValue(MaxLineProperty); }
+            set { SetValue(MaxLineProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MaxLine.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaxLineProperty =
+            DependencyProperty.Register("MaxLine", typeof(int), typeof(BookRowPanel), new PropertyMetadata(1));
+
+        public bool AllowOverflow
+        {
+            get { return (bool)GetValue(AllowOverflowProperty); }
+            set { SetValue(AllowOverflowProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AllowOverflow.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AllowOverflowProperty =
+            DependencyProperty.Register("AllowOverflow", typeof(bool), typeof(BookRowPanel), new PropertyMetadata(true));
+
+        public Size Spacing
+        {
+            get { return (Size)GetValue(SpacingProperty); }
+            set { SetValue(SpacingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Spacing.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SpacingProperty =
+            DependencyProperty.Register("Spacing", typeof(Size), typeof(BookRowPanel), new PropertyMetadata(new Size(0,0)));
+
+
         public UIElement[] ShadowTargets => Children.OfType<BookInfo>().Select(a => a.ShadowTarget).ToArray();
 
         protected override Size MeasureOverride(Size availableSize)
@@ -28,16 +59,36 @@ namespace BookViewerApp.Views.Bookshelf
             double y = 0;
             double x = 0;
             double hmax = 0;
+            double wmax = 0;
+            int line = 0;
             int i = 0;
-            while (x < finalSize.Width && i<Children.Count)
+            while (i < Children.Count)
             {
                 var child = Children[i];
+                if (x + (AllowOverflow ? 0 : child.DesiredSize.Width) > finalSize.Width)
+                {
+                    if (line + 1 >= MaxLine)
+                    {
+                        for (int j = i; j < Children.Count; j++)
+                        {
+                            //Is this fine? I doubt...
+                            Children[j].Arrange(new Rect(0, 0, 0, 0));
+                        }
+                        break;
+                    }
+                    wmax = Math.Max(wmax, x - Spacing.Width);
+                    x = 0;
+                    y += hmax;
+                    y += Spacing.Height;
+                    hmax = 0;
+                }
                 child.Arrange(new Rect(x, y, child.DesiredSize.Width, child.DesiredSize.Height));
                 hmax = Math.Max(hmax, child.DesiredSize.Height);
                 x += child.DesiredSize.Width;
+                x += Spacing.Width;
                 i++;
             }
-            return new Size(x, hmax + y);
+            return new Size(Math.Min(Math.Max(wmax, Math.Max(0,x-Spacing.Width)), finalSize.Width), hmax + y);
         }
     }
 }

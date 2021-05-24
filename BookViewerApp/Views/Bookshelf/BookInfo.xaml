@@ -25,6 +25,7 @@
 
         <local:Book Height="296" Width="210" Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding File.IconLarge}" x:Name="BookMain"
                     PointerEntered="BookMain_PointerEntered" PointerExited="BookMain_PointerExited"
+                    Tapped="BookMain_Tapped"
                     >
             <local:Book.TranslationTransition>
                 <Vector3Transition Duration="0:0:0.8"  />

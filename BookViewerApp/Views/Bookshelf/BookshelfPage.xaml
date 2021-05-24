@@ -9,10 +9,11 @@
     Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
     >
     <StackPanel x:Name="mainPanel" >
-        <local:BookRow HorizontalAlignment="Left">
+        <local:BookRow HorizontalAlignment="Left" Spacing="30,30" MarginPanel="20">
             <local:BookRow.Children>
-                <local:BookInfo BookHeight="240" Margin="30" />
-                <local:BookInfo BookHeight="240" Margin="30" />
+                <local:BookInfo BookHeight="240"/>
+                <local:BookInfo BookHeight="240"/>
+                <local:BookInfo BookHeight="240"/>
             </local:BookRow.Children>
         </local:BookRow>
     </StackPanel>

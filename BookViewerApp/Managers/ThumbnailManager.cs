@@ -73,7 +73,26 @@ namespace BookViewerApp.Managers
             }
         }
 
-        public static async Task<Books.IBook> SaveImageAsync(Windows.Storage.IStorageItem storageItem,System.Threading.CancellationToken cancellationToken=new System.Threading.CancellationToken())
+        public static async Task SaveImageAndLoadAsync(Windows.Storage.IStorageItem storageItem, Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Xaml.Media.Imaging.BitmapImage bitmap
+            , System.Threading.CancellationToken cancellationToken = new System.Threading.CancellationToken()
+            )
+        {
+            try
+            {
+                var book = await ThumbnailManager.SaveImageAsync(storageItem, cancellationToken);
+                if (book is null || string.IsNullOrEmpty(book?.ID)) return;
+                await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
+                {
+                    SetToImageSourceNoWait(book.ID, bitmap);
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+        }
+
+        public static async Task<Books.IBook> SaveImageAsync(Windows.Storage.IStorageItem storageItem, System.Threading.CancellationToken cancellationToken = new System.Threading.CancellationToken())
         {
             await SemaphoreFetchThumbnail.WaitAsync();
             try

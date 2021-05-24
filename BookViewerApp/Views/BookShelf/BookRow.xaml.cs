@@ -21,6 +21,13 @@ namespace BookViewerApp.Views.Bookshelf
     {
         public UIElementCollection Children => this.BookRowMain.Children;
 
+        /// <summary>
+        /// Use this instead of Margin for proper shadow.
+        /// </summary>
+        public Thickness MarginPanel { get => BookRowMain.Margin; set => BookRowMain.Margin = value; }
+
+        public Size Spacing { get => BookRowMain.Spacing; set => BookRowMain.Spacing = value; }
+
         public BookRow()
         {
             this.InitializeComponent();
