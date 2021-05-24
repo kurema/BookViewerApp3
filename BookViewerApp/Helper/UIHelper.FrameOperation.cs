@@ -199,7 +199,7 @@ namespace BookViewerApp.Helper
                                             );
                                         }
                                     }
-                                    else if (a is kurema.FileExplorerControl.Models.FileItems.StorageFileItem storage)
+                                    if (a is kurema.FileExplorerControl.Models.FileItems.StorageFileItem storage)
                                     {
                                         return (() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_book_s.png")),
                                         () =>
@@ -213,13 +213,18 @@ namespace BookViewerApp.Helper
                                                     {
                                                         var book = await ThumbnailManager.SaveImageAsync(storage.Content, cancel);
                                                         if (book is null || string.IsNullOrEmpty(book?.ID)) return;
-                                                        if (cancel.IsCancellationRequested) return;
+                                                        //It doesn't make sense not to update the bitmap after you fetched the thumbnail.
+                                                        //サムネイル作成後にUI更新だけ止めてもしゃーない。
+                                                        //if (cancel.IsCancellationRequested) return;
                                                         await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
                                                         {
                                                             ThumbnailManager.SetToImageSourceNoWait(book.ID, bitmap);
                                                         });
                                                     }
-                                                    catch { }
+                                                    catch (Exception ex)
+                                                    {
+                                                        System.Diagnostics.Debug.WriteLine(ex);
+                                                    }
                                                 });
                                             }
                                             return bitmap;
