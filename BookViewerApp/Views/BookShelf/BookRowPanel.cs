@@ -33,7 +33,7 @@ namespace BookViewerApp.Views.Bookshelf
 
         // Using a DependencyProperty as the backing store for AllowOverflow.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AllowOverflowProperty =
-            DependencyProperty.Register("AllowOverflow", typeof(bool), typeof(BookRowPanel), new PropertyMetadata(true));
+            DependencyProperty.Register("AllowOverflow", typeof(bool), typeof(BookRowPanel), new PropertyMetadata(false));
 
         public Size Spacing
         {
@@ -43,7 +43,19 @@ namespace BookViewerApp.Views.Bookshelf
 
         // Using a DependencyProperty as the backing store for Spacing.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SpacingProperty =
-            DependencyProperty.Register("Spacing", typeof(Size), typeof(BookRowPanel), new PropertyMetadata(new Size(0,0)));
+            DependencyProperty.Register("Spacing", typeof(Size), typeof(BookRowPanel), new PropertyMetadata(new Size(0, 0)));
+
+
+
+        public bool HasCollapsedItem
+        {
+            get { return (bool)GetValue(HasCollapsedItemProperty); }
+            set { if (HasCollapsedItem != value) SetValue(HasCollapsedItemProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HasCollapsedItem.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HasCollapsedItemProperty =
+            DependencyProperty.Register("HasCollapsedItem", typeof(bool), typeof(BookRowPanel), new PropertyMetadata(false));
 
 
         public UIElement[] ShadowTargets => Children.OfType<BookInfo>().Select(a => a.ShadowTarget).ToArray();
@@ -62,15 +74,17 @@ namespace BookViewerApp.Views.Bookshelf
             double wmax = 0;
             int line = 0;
             int i = 0;
+            bool collapsed = false;
             while (i < Children.Count)
             {
                 var child = Children[i];
-                if (x + (AllowOverflow ? 0 : child.DesiredSize.Width) > finalSize.Width)
+                if (x + (AllowOverflow ? 0 : child.DesiredSize.Width) > finalSize.Width && x > 0)
                 {
                     if (line + 1 >= MaxLine)
                     {
                         for (int j = i; j < Children.Count; j++)
                         {
+                            collapsed = true;
                             //Is this fine? I doubt...
                             Children[j].Arrange(new Rect(0, 0, 0, 0));
                         }
@@ -88,7 +102,8 @@ namespace BookViewerApp.Views.Bookshelf
                 x += Spacing.Width;
                 i++;
             }
-            return new Size(Math.Min(Math.Max(wmax, Math.Max(0,x-Spacing.Width)), finalSize.Width), hmax + y);
+            HasCollapsedItem = collapsed;
+            return new Size(Math.Min(Math.Max(wmax, Math.Max(0, x - Spacing.Width)), finalSize.Width), hmax + y);
         }
     }
 }

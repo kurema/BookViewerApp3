@@ -28,6 +28,13 @@ namespace BookViewerApp.Views.Bookshelf
 
         public Size Spacing { get => BookRowMain.Spacing; set => BookRowMain.Spacing = value; }
 
+        public int MaxLine { get => BookRowMain.MaxLine; set => BookRowMain.MaxLine = value; }
+
+        public bool AllowOverflow { get => BookRowMain.AllowOverflow; set => BookRowMain.AllowOverflow = value; }
+
+        public Thickness MarginHeader { get => GridHeader.Margin; set => GridHeader.Margin = value; }
+
+
         public BookRow()
         {
             this.InitializeComponent();
