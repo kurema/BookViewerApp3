@@ -11,6 +11,7 @@
     d:DesignWidth="400">
     <UserControl.Resources>
         <Custom:BoolToStringConverter x:Key="BoolToStringConverter"/>
+        <Custom:LocalizeConverter x:Key="LocalizeConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -28,9 +29,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="全ての本" Style="{ThemeResource HeaderTextBlockStyle}" VerticalAlignment="Center"/>
-            <Button Grid.Column="1" Style="{ThemeResource TextBlockButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock  Text="すべて見る" >
+            <TextBlock TextTrimming="CharacterEllipsis" Text="{x:Bind Header}" Style="{ThemeResource HeaderTextBlockStyle}" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" Style="{ThemeResource TextBlockButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{x:Bind CommandExpand}">
+                <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Expand, Mode=OneTime}" >
                     <TextBlock.Visibility>
                         <Binding Converter="{StaticResource BoolToStringConverter}" ConverterParameter="Visible:Collapsed" ElementName="BookRowMain" Path="HasCollapsedItem"/>
                     </TextBlock.Visibility>

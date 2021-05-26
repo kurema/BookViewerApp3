@@ -21,7 +21,7 @@ namespace BookViewerApp.Views.Bookshelf
     {
         public UIElement ShadowTarget => BookMain.ShadowTarget;
 
-        private double _BookHeight=0;
+        private double _BookHeight = 0;
 
         public double BookHeight
         {
@@ -57,12 +57,12 @@ namespace BookViewerApp.Views.Bookshelf
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var size= base.MeasureOverride(availableSize);
+            var size = base.MeasureOverride(availableSize);
 
             //BookMainの幅に全体を合わせます。
             if (!double.IsPositiveInfinity(availableSize.Height) || BookHeight <= 0) return base.MeasureOverride(availableSize);
-            BookMain.Measure(new Size(availableSize.Width, BookHeight));
-            return base.MeasureOverride(new Size(BookMain.DesiredSize.Width, double.PositiveInfinity));
+            BookMain.Measure(new Size(Math.Min(availableSize.Width, this.MaxWidth), BookHeight));
+            return base.MeasureOverride(new Size(Math.Max(BookMain.DesiredSize.Width, MinWidth), double.PositiveInfinity));
             //return base.MeasureOverride(availableSize);
         }
 

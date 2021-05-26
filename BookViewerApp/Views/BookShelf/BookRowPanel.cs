@@ -75,9 +75,11 @@ namespace BookViewerApp.Views.Bookshelf
             int line = 0;
             int i = 0;
             bool collapsed = false;
+
             while (i < Children.Count)
             {
                 var child = Children[i];
+                collapsed = collapsed || (AllowOverflow && x + child.DesiredSize.Width > finalSize.Width);
                 if (x + (AllowOverflow ? 0 : child.DesiredSize.Width) > finalSize.Width && x > 0)
                 {
                     if (line + 1 >= MaxLine)

@@ -34,6 +34,19 @@ namespace BookViewerApp.Views.Bookshelf
 
         public Thickness MarginHeader { get => GridHeader.Margin; set => GridHeader.Margin = value; }
 
+        public System.Windows.Input.ICommand CommandExpand { get; set; }
+
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(string), typeof(BookRow), new PropertyMetadata(""));
+
+
 
         public BookRow()
         {

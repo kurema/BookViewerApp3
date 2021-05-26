@@ -800,29 +800,33 @@ Privacy Notice: If this is turned on, a request to the server will be sent each 
         </trans-unit>
         <trans-unit id="ContextMenu.Book.SelectThumbnail.Title" translate="yes" xml:space="preserve">
           <source>Select the thumbnail</source>
-          <target state="new">Select the thumbnail</target>
+          <target state="translated">选择缩略图</target>
         </trans-unit>
         <trans-unit id="Word.Close" translate="yes" xml:space="preserve">
           <source>Close</source>
-          <target state="new">Close</target>
+          <target state="translated">关闭</target>
         </trans-unit>
         <trans-unit id="Info.Debug.DeleteThumbnails.Description" translate="yes" xml:space="preserve">
           <source>Delete thumbnails of books</source>
-          <target state="new">Delete thumbnails of books</target>
+          <target state="translated">删除书籍缩图</target>
         </trans-unit>
         <trans-unit id="Info.Debug.DeleteThumbnails.Dialog.Message" translate="yes" xml:space="preserve">
           <source>Are you sure you want to delete thumbnail folder?
 You can also disable thumbnail generation in Explorer tab with the setting above.</source>
-          <target state="new">Are you sure you want to delete thumbnail folder?
-You can also disable thumbnail generation in Explorer tab with the setting above.</target>
+          <target state="translated">您确定要删除缩略图文件夹吗？
+您也可以使用上面的设置在“资源管理器”选项卡中禁用缩略图生成。</target>
         </trans-unit>
         <trans-unit id="Info.Debug.DeleteThumbnails.Title" translate="yes" xml:space="preserve">
           <source>Delete thumbnails</source>
-          <target state="new">Delete thumbnails</target>
+          <target state="translated">删除缩略图</target>
         </trans-unit>
         <trans-unit id="Info.Debug.DeleteThumbnails.Dialog.MessageFail" translate="yes" xml:space="preserve">
           <source>Could not delete the thumbnail folder. Please try again.</source>
-          <target state="new">Could not delete the thumbnail folder. Please try again.</target>
+          <target state="translated">无法删除缩略图文件夹。 请再试一次。</target>
+        </trans-unit>
+        <trans-unit id="Word.Expand" translate="yes" xml:space="preserve">
+          <source>See All</source>
+          <target state="translated">查看全部</target>
         </trans-unit>
       </group>
     </body>
