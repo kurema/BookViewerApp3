@@ -336,6 +336,9 @@
     <Compile Include="Views\Bookshelf\BookshelfPage.xaml.cs">
       <DependentUpon>BookshelfPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Bookshelf\NavigationPage.xaml.cs">
+      <DependentUpon>NavigationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EpubResolver.cs" />
     <Compile Include="Views\ExplorerMenuControl.xaml.cs">
       <DependentUpon>ExplorerMenuControl.xaml</DependentUpon>
@@ -451,6 +454,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Bookshelf\BookshelfPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Bookshelf\NavigationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
