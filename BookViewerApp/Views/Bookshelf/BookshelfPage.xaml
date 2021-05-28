@@ -12,13 +12,12 @@
 
     <StackPanel x:Name="mainPanel" >
         <local:BookRow HorizontalAlignment="Stretch" Spacing="30,30" MarginPanel="20" AllowOverflow="True" MaxLine="1" MarginHeader="10" Header="All Books" x:Name="BookRowMain"
-                       
                        >
-            <!--<local:BookRow.Children>
+            <local:BookRow.Children>
                 <local:BookInfo BookHeight="240"/>
                 <local:BookInfo BookHeight="240"/>
                 <local:BookInfo BookHeight="240"/>
-            </local:BookRow.Children>-->
+            </local:BookRow.Children>
         </local:BookRow>
     </StackPanel>
 </Page>

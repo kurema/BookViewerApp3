@@ -20,12 +20,22 @@ namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class BookRow : UserControl
     {
-        //public UIElementCollection Children => this.BookRowMain?.Children;
+        public UIElementCollection Children => this.BookRowMain.Children;
 
         /// <summary>
         /// Use this instead of Margin for proper shadow.
         /// </summary>
-        public Thickness MarginPanel { get => BookItemsControl.Margin; set => BookItemsControl.Margin = value; }
+        public Thickness MarginPanel
+        {
+            get { return (Thickness)GetValue(MarginPanelProperty); }
+            set { SetValue(MarginPanelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MarginPanel.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MarginPanelProperty =
+            DependencyProperty.Register("MarginPanel", typeof(Thickness), typeof(BookRowPanel), new PropertyMetadata(new Thickness()));
+
+
 
         public Size Spacing
         {
@@ -73,28 +83,22 @@ namespace BookViewerApp.Views.Bookshelf
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header", typeof(string), typeof(BookRow), new PropertyMetadata(""));
 
-        public BookRowPanel? BookRowMain => BookItemsControl.ItemsPanelRoot as BookRowPanel;
-
-        public object? ItemsSource { get => BookItemsControl.ItemsSource; set => BookItemsControl.ItemsSource = value; }
-
         public BookRow()
         {
             this.InitializeComponent();
 
+            //following line cause crash:
+            //https://github.com/microsoft/microsoft-ui-xaml/issues/2133
+            SharedShadow.Receivers.Add(BackgroundGrid);
+            BookRowMain.LayoutUpdated += (s, e) => { UpdateShadow(); };
         }
-        //following line cause crash:
-        //https://github.com/microsoft/microsoft-ui-xaml/issues/2133
-        //SharedShadow.Receivers.Add(BackgroundGrid);
-
-        //BookItemsControl.LayoutUpdated += (s, e) => { UpdateShadow(); };
+        public void UpdateShadow()
+        {
+            if (BookRowMain is null) return;
+            foreach (var target in BookRowMain.ShadowTargets)
+            {
+                target.Shadow = SharedShadow;
+            }
+        }
     }
-
-    //public void UpdateShadow()
-    //{
-    //    if (BookRowMain is null) return;
-    //    foreach(var target in BookRowMain.ShadowTargets)
-    //    {
-    //        target.Shadow = SharedShadow;
-    //    }
-    //}
 }

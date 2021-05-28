@@ -23,20 +23,9 @@
         </Grid.Resources>
 
         <Grid Grid.RowSpan="2" x:Name="BackgroundGrid"/>
-        <!--<local:BookRowPanel Grid.Row="1" x:Name="BookRowMain"/>-->
-        <ItemsControl x:Name="BookItemsControl" Grid.Row="1" HorizontalAlignment="Left">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <local:BookRowPanel/>
-                    <!--Spacing="{Bind Spacing}" MaxLine="{x:Bind MaxLine}" AllowOverflow="{x:Bind AllowOverflow}"-->
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <local:BookInfo BookHeight="240" ShadowBook="{StaticResource SharedShadow}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <local:BookRowPanel Grid.Row="1" x:Name="BookRowMain" HorizontalAlignment="Left"
+                            Margin="{x:Bind MarginPanel}" Spacing="{x:Bind Spacing}" MaxLine="{x:Bind MaxLine}" AllowOverflow="{x:Bind AllowOverflow}"
+                            />
         <Grid Grid.Row="0" x:Name="GridHeader">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
