@@ -25,6 +25,11 @@ namespace BookViewerApp.Views.Bookshelf
         public BookshelfPage()
         {
             this.InitializeComponent();
+
+            BookRowMain.ItemsSource = new object[]
+            {
+                new object(),new object()
+            };
         }
     }
 }

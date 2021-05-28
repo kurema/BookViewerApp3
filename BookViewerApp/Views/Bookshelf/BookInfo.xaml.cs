@@ -20,6 +20,7 @@ namespace BookViewerApp.Views.Bookshelf
     public sealed partial class BookInfo : UserControl
     {
         public UIElement ShadowTarget => BookMain.ShadowTarget;
+        public Shadow ShadowBook { get => BookMain.ShadowTarget.Shadow; set => BookMain.ShadowTarget.Shadow = value; }
 
         private double _BookHeight = 0;
 

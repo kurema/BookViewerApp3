@@ -15,26 +15,53 @@ using Windows.UI.Xaml.Navigation;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
+#nullable enable
 namespace BookViewerApp.Views.Bookshelf
 {
     public sealed partial class BookRow : UserControl
     {
-        public UIElementCollection Children => this.BookRowMain.Children;
+        //public UIElementCollection Children => this.BookRowMain?.Children;
 
         /// <summary>
         /// Use this instead of Margin for proper shadow.
         /// </summary>
-        public Thickness MarginPanel { get => BookRowMain.Margin; set => BookRowMain.Margin = value; }
+        public Thickness MarginPanel { get => BookItemsControl.Margin; set => BookItemsControl.Margin = value; }
 
-        public Size Spacing { get => BookRowMain.Spacing; set => BookRowMain.Spacing = value; }
+        public Size Spacing
+        {
+            get { return (Size)GetValue(SpacingProperty); }
+            set { SetValue(SpacingProperty, value); }
+        }
 
-        public int MaxLine { get => BookRowMain.MaxLine; set => BookRowMain.MaxLine = value; }
+        // Using a DependencyProperty as the backing store for Spacing.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SpacingProperty =
+            DependencyProperty.Register("Spacing", typeof(Size), typeof(BookRow), new PropertyMetadata(new Size()));
 
-        public bool AllowOverflow { get => BookRowMain.AllowOverflow; set => BookRowMain.AllowOverflow = value; }
+        public int MaxLine
+        {
+            get { return (int)GetValue(MaxLineProperty); }
+            set { SetValue(MaxLineProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MaxLine.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaxLineProperty =
+            DependencyProperty.Register("MaxLine", typeof(int), typeof(BookRow), new PropertyMetadata(1));
+
+
+
+        public bool AllowOverflow
+        {
+            get { return (bool)GetValue(AllowOverflowProperty); }
+            set { SetValue(AllowOverflowProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AllowOverflow.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AllowOverflowProperty =
+            DependencyProperty.Register("AllowOverflow", typeof(bool), typeof(BookRow), new PropertyMetadata(true));
 
         public Thickness MarginHeader { get => GridHeader.Margin; set => GridHeader.Margin = value; }
 
-        public System.Windows.Input.ICommand CommandExpand { get; set; }
+        public System.Windows.Input.ICommand? CommandExpand { get; set; }
 
         public string Header
         {
@@ -46,22 +73,28 @@ namespace BookViewerApp.Views.Bookshelf
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header", typeof(string), typeof(BookRow), new PropertyMetadata(""));
 
+        public BookRowPanel? BookRowMain => BookItemsControl.ItemsPanelRoot as BookRowPanel;
 
+        public object? ItemsSource { get => BookItemsControl.ItemsSource; set => BookItemsControl.ItemsSource = value; }
 
         public BookRow()
         {
             this.InitializeComponent();
 
-            SharedShadow.Receivers.Add(BackgroundGrid);
-            BookRowMain.LayoutUpdated += (s, e) => { UpdateShadow(); };
         }
+        //following line cause crash:
+        //https://github.com/microsoft/microsoft-ui-xaml/issues/2133
+        //SharedShadow.Receivers.Add(BackgroundGrid);
 
-        public void UpdateShadow()
-        {
-            foreach(var target in BookRowMain.ShadowTargets)
-            {
-                target.Shadow = SharedShadow;
-            }
-        }
+        //BookItemsControl.LayoutUpdated += (s, e) => { UpdateShadow(); };
     }
+
+    //public void UpdateShadow()
+    //{
+    //    if (BookRowMain is null) return;
+    //    foreach(var target in BookRowMain.ShadowTargets)
+    //    {
+    //        target.Shadow = SharedShadow;
+    //    }
+    //}
 }

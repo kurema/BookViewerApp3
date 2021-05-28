@@ -13,17 +13,30 @@
         <Custom:BoolToStringConverter x:Key="BoolToStringConverter"/>
         <Custom:LocalizeConverter x:Key="LocalizeConverter"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.Resources>
-            <ThemeShadow x:Name="SharedShadow"/>
+            <ThemeShadow x:Name="SharedShadow" />
         </Grid.Resources>
 
         <Grid Grid.RowSpan="2" x:Name="BackgroundGrid"/>
-        <local:BookRowPanel Grid.Row="1" x:Name="BookRowMain"/>
+        <!--<local:BookRowPanel Grid.Row="1" x:Name="BookRowMain"/>-->
+        <ItemsControl x:Name="BookItemsControl" Grid.Row="1" HorizontalAlignment="Left">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <local:BookRowPanel/>
+                    <!--Spacing="{Bind Spacing}" MaxLine="{x:Bind MaxLine}" AllowOverflow="{x:Bind AllowOverflow}"-->
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:BookInfo BookHeight="240" ShadowBook="{StaticResource SharedShadow}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Grid Grid.Row="0" x:Name="GridHeader">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

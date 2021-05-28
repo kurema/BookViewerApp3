@@ -58,7 +58,16 @@ namespace BookViewerApp.Views.Bookshelf
             DependencyProperty.Register("HasCollapsedItem", typeof(bool), typeof(BookRowPanel), new PropertyMetadata(false));
 
 
-        public UIElement[] ShadowTargets => Children.OfType<BookInfo>().Select(a => a.ShadowTarget).ToArray();
+        public UIElement[] ShadowTargets =>
+            Children.Select(
+                a =>
+                {
+                    //if (a is ContentPresenter cp && cp.Content is BookInfo bi) return bi;
+                    if (a is BookInfo bi2) return bi2;
+                    return null;
+                }
+                ).Where(a => !(a is null)).Select(a => a.ShadowTarget).ToArray();
+        //Children.OfType<BookInfo>().Select(a => a.ShadowTarget).ToArray();
 
         protected override Size MeasureOverride(Size availableSize)
         {
