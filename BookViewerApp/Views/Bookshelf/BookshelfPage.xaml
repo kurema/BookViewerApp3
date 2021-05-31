@@ -17,6 +17,10 @@
                 <local:BookInfo BookHeight="240"/>
                 <local:BookInfo BookHeight="240"/>
                 <local:BookInfo BookHeight="240"/>
+                <local:BookInfo BookHeight="240"/>
+                <local:BookInfo BookHeight="240"/>
+                <local:BookInfo BookHeight="240"/>
+                <local:BookInfo BookHeight="240"/>
             </local:BookRow.Children>
         </local:BookRow>
     </StackPanel>

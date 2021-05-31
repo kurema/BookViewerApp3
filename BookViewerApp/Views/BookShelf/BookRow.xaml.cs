@@ -89,8 +89,13 @@ namespace BookViewerApp.Views.Bookshelf
 
             //following line cause crash:
             //https://github.com/microsoft/microsoft-ui-xaml/issues/2133
-            SharedShadow.Receivers.Add(BackgroundGrid);
-            BookRowMain.LayoutUpdated += (s, e) => { UpdateShadow(); };
+            //On current version of WinUI (2021/05/31), ThemeShadow has limit of 5 shadow.
+            //https://github.com/microsoft/microsoft-ui-xaml/issues/2132
+            //This is likely to be fixed in WinUI 3. So it's disabled until then.
+            //https://github.com/microsoft/microsoft-ui-xaml/issues/2132#issuecomment-651279341
+
+            //SharedShadow.Receivers.Add(BackgroundGrid);
+            //BookRowMain.LayoutUpdated += (s, e) => { UpdateShadow(); };
         }
         public void UpdateShadow()
         {

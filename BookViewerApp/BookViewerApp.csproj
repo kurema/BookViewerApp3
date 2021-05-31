@@ -294,7 +294,6 @@
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="ViewModels\Bookshelf2BookViewModel.cs" />
-    <Compile Include="ViewModels\Bookshelf2ViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LibraryMemberViewModel.cs" />
     <Compile Include="ViewModels\ListItemViewModel.cs" />
@@ -335,6 +334,9 @@
     <Compile Include="Views\Bookshelf\BookRowPanel.cs" />
     <Compile Include="Views\Bookshelf\BookshelfPage.xaml.cs">
       <DependentUpon>BookshelfPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Bookshelf\BookshelfPageFileItem.xaml.cs">
+      <DependentUpon>BookshelfPageFileItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bookshelf\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
@@ -454,6 +456,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Bookshelf\BookshelfPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Bookshelf\BookshelfPageFileItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
