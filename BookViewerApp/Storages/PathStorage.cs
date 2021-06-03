@@ -18,14 +18,19 @@ namespace BookViewerApp.Storages
 
         public static string? GetIdFromPath(string path)
         {
-            var item = Content?.Content?.FirstOrDefault(a => a.MatchPath(path));
+            var item = GetInfoFromPath(path);
             if (item != null) return item.ID;
             return null;
         }
 
-        public static bool AddOrReplace(string path, string id)
+        public static PathInfo? GetInfoFromPath(string path)
         {
-            var info = PathInfo.GetEncoded(path, id);
+            return Content?.Content?.FirstOrDefault(a => a.MatchPath(path));
+        }
+
+        public static bool AddOrReplace(string path, string id, uint? size = null)
+        {
+            var info = PathInfo.GetEncoded(path, id, (long?)size ?? -1);
             return Content.TryOperate<PathInfo>(a =>
             {
                 var f = a.FirstOrDefault(b => b.MatchPath(path));
@@ -54,14 +59,16 @@ namespace BookViewerApp.Storages
                 Salt = "";
                 ID = "";
                 PathEncoded = "";
+                Size = -1;
             }
 
-            public static PathInfo GetEncoded(string path, string id)
+            public static PathInfo GetEncoded(string path, string id, long size = -1)
             {
                 var result = new PathInfo();
                 result.Salt = Guid.NewGuid().ToString();
                 result.PathEncoded = GetPathEncoded(path, result.Salt);
                 result.ID = id;
+                result.Size = size;
                 return result;
             }
 
@@ -74,6 +81,7 @@ namespace BookViewerApp.Storages
 
             public string PathEncoded { get; set; }
             public string ID { get; set; }
+            public long Size { get; set; }
 
             public string Salt { get; set; }
         }

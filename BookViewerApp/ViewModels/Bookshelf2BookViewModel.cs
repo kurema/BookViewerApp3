@@ -21,10 +21,10 @@ namespace BookViewerApp.ViewModels
         private kurema.FileExplorerControl.ViewModels.FileItemViewModel _File = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.FileItemPlaceHolder());
         public kurema.FileExplorerControl.ViewModels.FileItemViewModel File { get => _File; set => SetProperty(ref _File, value); }
 
-        protected async Task GetFromBookInfoStorageAsync(string ID, int PageSize)
+        protected async Task GetFromBookInfoStorageAsync(string ID, long PageSize)
         {
             var bookInfo = await Storages.BookInfoStorage.GetBookInfoByIDAsync(ID);
-            if (bookInfo != null)
+            if (!(bookInfo is null))
             {
                 switch (bookInfo.PageDirection)
                 {
@@ -32,7 +32,7 @@ namespace BookViewerApp.ViewModels
                     case Books.Direction.R2L: IsR2L = true; break;
                     case Books.Direction.Default: default: IsR2L = (bool)SettingStorage.GetValue("DefaultPageReverse"); break;
                 }
-                ReadRate = (bookInfo.GetLastReadPage()?.Page ?? 0) / (double)PageSize;
+                if (PageSize <= 0) ReadRate = 0; else ReadRate = (bookInfo.GetLastReadPage()?.Page ?? 0) / (double)PageSize;
             }
             else
             {
@@ -45,6 +45,25 @@ namespace BookViewerApp.ViewModels
         public double ReadRate { get => _ReadRate; set => SetProperty(ref _ReadRate, value); }
 
         private bool _IsR2L = false;
+
+        public Bookshelf2BookViewModel()
+        {
+        }
+
+        public async Task Load(kurema.FileExplorerControl.ViewModels.FileItemViewModel file)
+        {
+            var id = PathStorage.GetInfoFromPath(file.Path);
+            this.File = file;
+            if (id?.ID is null)
+            {
+                ReadRate = 0;
+                IsR2L = false;
+                return;
+            }
+            await GetFromBookInfoStorageAsync(id.ID, id.Size);
+        }
+
+
         public bool IsR2L { get => _IsR2L; set => SetProperty(ref _IsR2L, value); }
     }
 }

@@ -30,35 +30,43 @@ namespace BookViewerApp.Views.Bookshelf
             this.InitializeComponent();
         }
 
-        private void Page_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private async void Page_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (!(args.NewValue is IFileItem vm)) return;
             if (!vm.IsFolder) return;
             {
                 ProgressBarMain.Visibility = Visibility.Visible;
-                ProgressBarMain.IsAccessKeyScope = true;
+                ProgressBarMain.IsActive = true;
             }
             try
             {
-                vm.GetChildren();
+                var result = new List<Bookshelf2BookViewModel[]>();
+                await ListUpChildren(result, vm, 5);
             }
             finally
             {
                 ProgressBarMain.Visibility = Visibility.Collapsed;
-                ProgressBarMain.IsAccessKeyScope = false;
+                ProgressBarMain.IsActive = false;
             }
         }
 
         private async Task ListUpChildren(List<Bookshelf2BookViewModel[]> shelfs, IFileItem fileItem, int level)
         {
             if (!fileItem.IsFolder) return;
-            try
+            if (level < 0) return;
+            System.Collections.ObjectModel.ObservableCollection<IFileItem> children;
+            try { children = await fileItem.GetChildren(); } catch { return; }
+            var result = new List<Bookshelf2BookViewModel>();
+            foreach (var item in children.Where(a => !a.IsFolder && Managers.BookManager.IsFileAvailabe(a.Path)))
             {
-                var children = await fileItem.GetChildren();
+                var vm = new Bookshelf2BookViewModel();
+                await vm.Load(new kurema.FileExplorerControl.ViewModels.FileItemViewModel(fileItem));
+                result.Add(vm);
             }
-            catch
+            if (result.Count > 0) shelfs?.Add(result.ToArray());
+            foreach (var item in children.Where(a => a.IsFolder))
             {
-                return;
+                await ListUpChildren(shelfs, item, level - 1);
             }
         }
     }

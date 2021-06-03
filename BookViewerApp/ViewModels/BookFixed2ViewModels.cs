@@ -145,7 +145,7 @@ namespace BookViewerApp.ViewModels
                 if (bookf.ID != null)
                 {
                     await PathStorage.Content.GetContentAsync();
-                    PathStorage.AddOrReplace(value.Path, bookf.ID);
+                    PathStorage.AddOrReplace(value.Path, bookf.ID, bookf.PageCount);
                     await PathStorage.Content.SaveAsync();
                 }
                 //await HistoryStorage.AddHistory(value, bookf.ID);
