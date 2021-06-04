@@ -156,12 +156,6 @@ namespace BookViewerApp.Views
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
                     pv?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
-                    spreadPanel.SetBinding(SpreadPagePanel.Aspect1Property, new Binding()
-                    {
-                        Mode = BindingMode.TwoWay,
-                        Source = pv,
-                        Path = new PropertyPath(nameof(pv.Aspect)),
-                    });
                 }
                 var spreadMode = (this.DataContext as PageViewModel)?.Parent?.SpreadMode;
                 if (spreadMode == SpreadPagePanel.ModeEnum.Spread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle
@@ -169,15 +163,6 @@ namespace BookViewerApp.Views
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
                     pv?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
-                    if (!(pv?.NextPage is null))
-                    {
-                        spreadPanel.SetBinding(SpreadPagePanel.Aspect2Property, new Binding()
-                        {
-                            Mode = BindingMode.TwoWay,
-                            Source = pv,
-                            Path = new PropertyPath($"{nameof(pv.NextPage)}.{nameof(pv.NextPage.Aspect)}"),
-                        });
-                    }
                 }
             }
         }

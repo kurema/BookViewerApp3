@@ -850,6 +850,9 @@ namespace BookViewerApp.ViewModels
         public async void SetImageNoWait(BitmapImage im, System.Threading.CancellationToken token, System.Threading.SemaphoreSlim Semaphore, double width, double height)
         {
             if (im is null) return;
+
+            if (width != 0 && height != 0) Aspect = width / height;
+
             await Semaphore.WaitAsync();
             try
             {
