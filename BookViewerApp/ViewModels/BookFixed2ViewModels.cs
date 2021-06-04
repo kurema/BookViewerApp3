@@ -161,7 +161,7 @@ namespace BookViewerApp.ViewModels
 
         private bool ShouldBeReversed(Books.IBookFixed value)
         {
-            bool respectInfo= (bool)SettingStorage.GetValue("RememberPageDirection"); 
+            bool respectInfo = (bool)SettingStorage.GetValue("RememberPageDirection");
 
             switch (BookInfo?.PageDirection)
             {
@@ -476,12 +476,13 @@ namespace BookViewerApp.ViewModels
                             var contains = Pages.Contains(item);
                             if (i % 2 == 0)
                             {
-                                if(!contains) Pages.Add(item);
-                                item.SpreadModeOverride = i== pageCount -1?
+                                if (!contains) Pages.Add(item);
+                                item.SpreadModeOverride = i == pageCount - 1 ?
                                     SpreadPagePanel.ModeOverrideEnum.ForceSingle :
                                     SpreadPagePanel.ModeOverrideEnum.Default;
                             }
-                            else if (i%2 == 1 && contains){
+                            else if (i % 2 == 1 && contains)
+                            {
                                 Pages.Remove(item);
                             }
                             i++;
@@ -736,6 +737,19 @@ namespace BookViewerApp.ViewModels
             }
         });
 
+        private double _Aspect = -1;
+        public double Aspect
+        {
+            get => _Aspect;
+            set
+            {
+                if (_Aspect != value && value > 0)
+                {
+                    _Aspect = value;
+                    OnPropertyChanged(nameof(Aspect));
+                }
+            }
+        }
 
         private ICommand? _ZoomFactorMultiplyCommand = null;
         public ICommand ZoomFactorMultiplyCommand

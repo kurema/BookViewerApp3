@@ -75,6 +75,30 @@ namespace BookViewerApp.Views
             }
         }
 
+
+
+        public double Aspect1
+        {
+            get { return (double)GetValue(Aspect1Property); }
+            set { SetValue(Aspect1Property, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Aspect1.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty Aspect1Property =
+            DependencyProperty.Register("Aspect1", typeof(double), typeof(SpreadPagePanel), new PropertyMetadata(-1.0));
+
+
+        public double Aspect2
+        {
+            get { return (double)GetValue(Aspect2Property); }
+            set { SetValue(Aspect2Property, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Aspect1.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty Aspect2Property =
+            DependencyProperty.Register("Aspect2", typeof(double), typeof(SpreadPagePanel), new PropertyMetadata(-1.0));
+
+
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
             nameof(Mode),
             typeof(ModeEnum),
@@ -181,6 +205,9 @@ namespace BookViewerApp.Views
             double h2 = bmp2?.PixelHeight ?? 0;
             double w = finalSize.Width;
             double h = finalSize.Height;
+
+            if (w1 != 0 && h1 != 0) Aspect1 = w1 / h1;
+            if (w2 != 0 && h2 != 0) Aspect2 = w2 / h2;
 
             switch (ModeOverride)
             {

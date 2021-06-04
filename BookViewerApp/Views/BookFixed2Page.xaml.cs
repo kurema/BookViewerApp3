@@ -75,9 +75,9 @@ namespace BookViewerApp.Views
                             {
                                 FlowDirection.LeftToRight => 1,
                                 FlowDirection.RightToLeft => -1,
-                                _ =>1,
+                                _ => 1,
                             };
-                            
+
                             scrollViewer.ChangeView(scrollViewer.HorizontalOffset + viewportMin * e2.MoveHorizontal * direction, scrollViewer.VerticalOffset - viewportMin * e2.MoveVertical, null, true);
                         }
                     };
@@ -149,18 +149,35 @@ namespace BookViewerApp.Views
 
         private async void UpdateSourceIfRequired()
         {
-            if (await(DataContext as PageViewModel)?.Content?.UpdateRequiredAsync(this.ActualWidth, this.ActualHeight) == true)
+            if (!(DataContext is PageViewModel pv)) return;
+
+            if (await pv?.Content?.UpdateRequiredAsync(this.ActualWidth, this.ActualHeight) == true)
             {
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource1);
-                    (DataContext as PageViewModel)?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
+                    pv?.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
+                    spreadPanel.SetBinding(SpreadPagePanel.Aspect1Property, new Binding()
+                    {
+                        Mode = BindingMode.TwoWay,
+                        Source = pv,
+                        Path = new PropertyPath(nameof(pv.Aspect)),
+                    });
                 }
                 var spreadMode = (this.DataContext as PageViewModel)?.Parent?.SpreadMode;
                 if (spreadMode == SpreadPagePanel.ModeEnum.Spread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpread || spreadMode == SpreadPagePanel.ModeEnum.ForceSpreadFirstSingle
                     || spreadPanel.Mode == SpreadPagePanel.ModeEnum.Spread)
                 {
                     UpdateCancellationTokenSource(ref CancellationTokenSource2);
-                    (DataContext as PageViewModel)?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
+                    pv?.NextPage?.SetImageNoWait(spreadPanel.Source2 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
+                    if (!(pv?.NextPage is null))
+                    {
+                        spreadPanel.SetBinding(SpreadPagePanel.Aspect2Property, new Binding()
+                        {
+                            Mode = BindingMode.TwoWay,
+                            Source = pv,
+                            Path = new PropertyPath($"{nameof(pv.NextPage)}.{nameof(pv.NextPage.Aspect)}"),
+                        });
+                    }
                 }
             }
         }
