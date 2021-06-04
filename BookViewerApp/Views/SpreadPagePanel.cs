@@ -109,7 +109,7 @@ namespace BookViewerApp.Views
 
         public enum ModeOverrideEnum
         {
-            Default, ForceHalfFirst, ForceHalfSecond, ForceSingle
+            Default, ForceHalfFirst, ForceHalfSecond, ForceSingle, ForceDouble
         }
 
         public static readonly DependencyProperty DisplayedStatusProperty = DependencyProperty.Register(
@@ -188,6 +188,7 @@ namespace BookViewerApp.Views
                 case ModeOverrideEnum.ForceHalfFirst: goto Half;
                 case ModeOverrideEnum.ForceHalfSecond: goto HalfSecond;
                 case ModeOverrideEnum.ForceSingle: goto Single;
+                case ModeOverrideEnum.ForceDouble:goto Double;
             }
 
             if (w == 0 || h == 0) return finalSize;
@@ -199,6 +200,7 @@ namespace BookViewerApp.Views
 
             switch (Mode)
             {
+                default:
                 case ModeEnum.Default:
                     goto Single;
                 case ModeEnum.Spread:
@@ -213,8 +215,6 @@ namespace BookViewerApp.Views
                     // So BookFixed2ViewModels deal with it using ModeOverride;
                     //goto Double;
                     if (w2 == 0 || h2 == 0) goto Single; else goto Double;
-                default:
-                    break;
             }
 
             if (w2 == 0 || h2 == 0)
@@ -326,14 +326,14 @@ namespace BookViewerApp.Views
                 }
                 else
                 {
-                    var wscale = w/ (wr1 + wr2);
+                    var wscale = w / (wr1 + wr2);
                     var top = (1 - wscale) * h / 2.0;
 
-                    images[0].Measure(new Size(wr1*wscale, h * wscale));
+                    images[0].Measure(new Size(wr1 * wscale, h * wscale));
                     images[1].Measure(new Size(wr2 * wscale, h * wscale));
 
-                    images[0].Arrange(new Rect(0, top, wr1*wscale, h * wscale));
-                    images[1].Arrange(new Rect(wr1*wscale, top, wr2 * wscale, h * wscale));
+                    images[0].Arrange(new Rect(0, top, wr1 * wscale, h * wscale));
+                    images[1].Arrange(new Rect(wr1 * wscale, top, wr2 * wscale, h * wscale));
                 }
 
                 DisplayedStatus = DisplayedStatusEnum.Spread;

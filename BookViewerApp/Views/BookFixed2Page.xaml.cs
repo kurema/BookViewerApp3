@@ -145,6 +145,11 @@ namespace BookViewerApp.Views
             spreadPanel.Height = this.ActualHeight;
 
             UpdateSourceIfRequired();
+
+            if (!(DataContext is PageViewModel pv)) return;
+            spreadPanel.InvalidateArrange();
+            if (spreadPanel.ActualWidth == 0 || spreadPanel.ActualHeight == 0) pv.AspectCanvas = -1;
+            else pv.AspectCanvas = spreadPanel.ActualWidth / spreadPanel.ActualHeight;
         }
 
         private async void UpdateSourceIfRequired()
@@ -297,5 +302,6 @@ namespace BookViewerApp.Views
             }
             e.Handled = true;
         }
+
     }
 }

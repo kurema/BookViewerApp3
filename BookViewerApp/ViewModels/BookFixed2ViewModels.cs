@@ -449,7 +449,7 @@ namespace BookViewerApp.ViewModels
 
         public async Task UpdatePages(Windows.UI.Core.CoreDispatcher dispatcher, Windows.UI.Core.CoreDispatcherPriority priority = Windows.UI.Core.CoreDispatcherPriority.Normal)
         {
-            if (this.SpreadMode == SpreadPagePanel.ModeEnum.Spread) await Task.Delay(500);//Is 500msec good?
+            if (this.SpreadMode == SpreadPagePanel.ModeEnum.Spread && (bool)SettingStorage.GetValue("ScrollAnimation")) await Task.Delay(500);//Is 500msec good?
             await dispatcher.RunAsync(priority, () => this.UpdatePages());
         }
 
@@ -525,17 +525,43 @@ namespace BookViewerApp.ViewModels
                         if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
                         var pagesList = PagesOriginal.ToList();
                         var excluded = new List<PageViewModel>();
-                        bool pageOverridePrevious = false;
+                        bool pageOverridePreviousSingle = false;
+                        bool PageOverridePreviousDouble = false;
                         int page = pagesList.IndexOf(pageView);
-                        if (page >= 2 && pagesList[page - 2].SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread) excluded.Add(pagesList[page - 1]);
-                        else pageOverridePrevious = true;
+                        if (page >= 2)
+                        {
+                            var pagem2 = pagesList[page - 2];
+                            var pagem1 = pagesList[page - 1];
+
+                            if (pagem2.Aspect > 1.0 || pagem1.Aspect > 1.0 || pageView.AspectCanvas <= 0 || pagem2.Aspect < 0 || pagem1.Aspect < 0)
+                            {
+                                pageOverridePreviousSingle = true;
+                            }
+                            else if (pageView.AspectCanvas > pagem2.Aspect + pagem1.Aspect)
+                            {
+                                excluded.Add(pagesList[page - 1]);
+                                PageOverridePreviousDouble = true;
+                            }
+                            else
+                            {
+                                pageOverridePreviousSingle = true;
+                            }
+                        }
                         if (pageView.SpreadDisplayedStatus == SpreadPagePanel.DisplayedStatusEnum.Spread && pageView.NextPage != null) excluded.Add(pageView.NextPage);
                         RestorePages(excluded.ToArray());
 
                         foreach (var item in Pages)
                         {
                             if (item == PageSelectedViewModel) continue;
-                            if (pageOverridePrevious && page >= 1 && item == pagesList[page - 1]) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
+                            if (page >= 1 && item == pagesList[page - 1])
+                            {
+                                if (pageOverridePreviousSingle) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceSingle;
+                                else item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
+                            }
+                            else if (PageOverridePreviousDouble && page >= 2 && item == pagesList[page - 2])
+                            {
+                                item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.ForceDouble;
+                            }
                             else if (item.SpreadModeOverride != SpreadPagePanel.ModeOverrideEnum.Default) item.SpreadModeOverride = SpreadPagePanel.ModeOverrideEnum.Default;
                         }
                         CommandCanExecuteUpdate();
@@ -751,6 +777,21 @@ namespace BookViewerApp.ViewModels
             }
         }
 
+        private double _AspectCanvas = -1;
+        public double AspectCanvas
+        {
+            get => _AspectCanvas;
+            set
+            {
+                if (_AspectCanvas != value)
+                {
+                    _AspectCanvas = value;
+                    OnPropertyChanged(nameof(AspectCanvas));
+                }
+            }
+        }
+
+
         private ICommand? _ZoomFactorMultiplyCommand = null;
         public ICommand ZoomFactorMultiplyCommand
         {
@@ -851,13 +892,14 @@ namespace BookViewerApp.ViewModels
         {
             if (im is null) return;
 
-            if (width != 0 && height != 0) Aspect = width / height;
+            if (width != 0 && height != 0) AspectCanvas = width / height;
 
             await Semaphore.WaitAsync();
             try
             {
                 token.ThrowIfCancellationRequested();
                 await Content.SetBitmapAsync(im, width, height);
+                Aspect = (double)im.PixelWidth / (double)im.PixelHeight;
             }
             catch
             {
