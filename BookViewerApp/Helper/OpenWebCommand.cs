@@ -29,9 +29,9 @@ namespace BookViewerApp.Helper
             return TabPage != null && Uri.TryCreate(Address, UriKind.Absolute, out _);
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            TabPage?.OpenTabWeb(Address);
+            await TabPage?.OpenTabWebPreferedBrowser(Address);
         }
     }
 }

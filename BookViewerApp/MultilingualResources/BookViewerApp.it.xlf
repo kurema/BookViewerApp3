@@ -838,6 +838,14 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
           <source>See All</source>
           <target state="translated">Vedi tutto</target>
         </trans-unit>
+        <trans-unit id="Setting_DefaultBrowserExternal.Description" translate="yes" xml:space="preserve">
+          <source>Use external browser to open URL.</source>
+          <target state="new">Use external browser to open URL.</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultBrowserExternal.Title" translate="yes" xml:space="preserve">
+          <source>Open URL in external browser</source>
+          <target state="new">Open URL in external browser</target>
+        </trans-unit>
       </group>
     </body>
   </file>

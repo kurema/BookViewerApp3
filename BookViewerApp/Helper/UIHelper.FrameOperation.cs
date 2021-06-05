@@ -39,9 +39,9 @@ namespace BookViewerApp.Helper
                     content.Control.NavigateToLocalStreamUri(uri, resolver);
                     if (!(tabPage is null))
                     {
-                        content.Control.NewWindowRequested += (s, e) =>
+                        content.Control.NewWindowRequested += async (s, e) =>
                         {
-                            tabPage.OpenTabWeb(e.Uri.ToString());
+                            await tabPage.OpenTabWebPreferedBrowser(e.Uri.ToString());
                             e.Handled = true;
                         };
                     }
@@ -102,7 +102,7 @@ namespace BookViewerApp.Helper
                                 var tab = GetCurrentTabPage(control);
                                 if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
                                 {
-                                    if ((uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)) tab.OpenTabWeb(address?.ToString());
+                                    if (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) await tab.OpenTabWebPreferedBrowser(address?.ToString());
                                     if (uriResult.IsFile)
                                     {
                                         var result = await GetFileItemViewModelFromRoot(address.ToString(), control.GetTreeViewRoot());
@@ -119,7 +119,7 @@ namespace BookViewerApp.Helper
                                 var tab = GetCurrentTabPage(control);
                                 if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
                                 {
-                                    if ((uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)) return true;
+                                    if (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) return true;
                                     if (uriResult.IsFile)
                                     {
                                         var folder = control.GetTreeViewRoot()?.FirstOrDefault(a => a.Content.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Folders);
@@ -135,11 +135,11 @@ namespace BookViewerApp.Helper
 
                             //control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
-                            var library = LibraryStorage.GetItem((a) =>
+                            var library = LibraryStorage.GetItem(async (a) =>
                             {
                                 var tab = GetCurrentTabPage(control);
                                 if (tab is null) return;
-                                tab.OpenTabWeb(a);
+                                await tab.OpenTabWebPreferedBrowser(a);
                             }, control.AddressRequesteCommand
                             );
 

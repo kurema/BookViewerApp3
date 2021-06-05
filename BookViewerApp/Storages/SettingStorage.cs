@@ -55,6 +55,7 @@ namespace BookViewerApp.Storages
                         new SettingInstance("PdfRenderScaling",true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         //new SettingInstance("ShowBookmarkFavicon",false,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("FetchThumbnailsBackground",true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance("DefaultBrowserExternal",false,new TypeConverters.BoolConverter(),group:"Explorer"),
 
                     };
                 //How to add resource when you add SettingInstance:

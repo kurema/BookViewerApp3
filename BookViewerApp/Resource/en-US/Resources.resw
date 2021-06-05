@@ -728,4 +728,10 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="Word.Expand" xml:space="preserve">
     <value>See All</value>
   </data>
+  <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
+    <value>Use external browser to open URL.</value>
+  </data>
+  <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
+    <value>Open URL in external browser</value>
+  </data>
 </root>

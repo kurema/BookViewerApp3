@@ -828,6 +828,14 @@ You can also disable thumbnail generation in Explorer tab with the setting above
           <source>See All</source>
           <target state="translated">查看全部</target>
         </trans-unit>
+        <trans-unit id="Setting_DefaultBrowserExternal.Description" translate="yes" xml:space="preserve">
+          <source>Use external browser to open URL.</source>
+          <target state="new">Use external browser to open URL.</target>
+        </trans-unit>
+        <trans-unit id="Setting_DefaultBrowserExternal.Title" translate="yes" xml:space="preserve">
+          <source>Open URL in external browser</source>
+          <target state="new">Open URL in external browser</target>
+        </trans-unit>
       </group>
     </body>
   </file>

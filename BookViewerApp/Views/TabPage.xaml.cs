@@ -159,6 +159,21 @@ namespace BookViewerApp.Views
             );
         }
 
+        public async System.Threading.Tasks.Task OpenTabWebPreferedBrowser(string uri)
+        {
+            if ((bool)SettingStorage.GetValue("DefaultBrowserExternal"))
+            {
+                if (Uri.TryCreate(uri, UriKind.Absolute, out var uri1))
+                {
+                    await Windows.System.Launcher.LaunchUriAsync(uri1);
+                }
+            }
+            else
+            {
+                OpenTabWeb(uri);
+            }
+        }
+
         public void OpenTabSetting()
         {
             var (frame, newTab) = OpenTab("Setting");

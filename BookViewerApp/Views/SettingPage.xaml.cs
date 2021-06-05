@@ -194,13 +194,13 @@ namespace BookViewerApp.Views
             }
         }
 
-        public async System.Threading.Tasks.Task OpenLicenseContentDialogThirdParty()
+        public async Task OpenLicenseContentDialogThirdParty()
         {
             var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
             await OpenLicenseContentDialog(license.thirdparty.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/ThirdParty/ThirdParty")));
         }
 
-        public async System.Threading.Tasks.Task OpenLicenseContentDialogContributors()
+        public async Task OpenLicenseContentDialogContributors()
         {
             var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
 
@@ -217,9 +217,9 @@ namespace BookViewerApp.Views
             await OpenLicenseContentDialog(groups);
         }
 
-        public async System.Threading.Tasks.Task OpenLicenseContentDialogAboutThisApp()
+        public async Task OpenLicenseContentDialogAboutThisApp()
         {
-            var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+            var license = await LicenseStorage.LocalLicense.GetContentAsync();
 
             var groups = new List<IGrouping<string, object>>();
             void Add(IEnumerable<IGrouping<string, object>> item)
@@ -233,7 +233,7 @@ namespace BookViewerApp.Views
             await OpenLicenseContentDialog(groups);
         }
 
-        public async System.Threading.Tasks.Task OpenLicenseContentDialog(object source)
+        public async Task OpenLicenseContentDialog(object source)
         {
             if (source is null) return;
 
@@ -241,10 +241,13 @@ namespace BookViewerApp.Views
             {
                 CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK")
             };
-            var control = new Views.LicenseControl
+            var control = new LicenseControl
             {
                 Source = source,
-                OpenWebCommand = new DelegateCommand(address => UIHelper.GetCurrentTabPage(this)?.OpenTabWeb(address?.ToString()))
+                OpenWebCommand = new DelegateCommand(async address =>
+                {
+                    await UIHelper.GetCurrentTabPage(this)?.OpenTabWebPreferedBrowser(address?.ToString());
+                })
             };
             dialog.Content = control;
             await dialog.ShowAsync();
@@ -338,7 +341,7 @@ namespace BookViewerApp.Views
                     var resourceContext = new Windows.ApplicationModel.Resources.Core.ResourceContext();
                     resourceContext.QualifierValues["Language"] = "en-US";
                     var resourceMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap.GetSubtree("Resources");
-                    return String.Format(rl.GetString("Setting/ToolTip/Message"),
+                    return string.Format(rl.GetString("Setting/ToolTip/Message"),
                         resourceMap.GetValue(target.StringResourceKey + "/Title", resourceContext).ValueAsString,
                         resourceMap.GetValue(target.StringResourceKey + "/Description", resourceContext).ValueAsString,
                         target.DefaultValue?.ToString() ?? "null");

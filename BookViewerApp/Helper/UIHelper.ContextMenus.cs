@@ -139,7 +139,6 @@ namespace BookViewerApp.Helper
                     }
                     else
                     {
-#if DEBUG
                         var bookType = Managers.BookManager.GetBookTypeByPath(file.Path);
                         if (bookType != null && bookType != Managers.BookManager.BookType.Epub)
                         {
@@ -159,7 +158,6 @@ namespace BookViewerApp.Helper
                             }
                         }
                         //file
-#endif
                     }
                 }
 
@@ -243,12 +241,23 @@ namespace BookViewerApp.Helper
                                 }
                             }));
                         }
-
-                        result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenExternal"), async a =>
+                        if ((bool)Storages.SettingStorage.GetValue("DefaultBrowserExternal"))
                         {
-                            if (Uri.TryCreate(bookmarkItem.TargetUrl, UriKind.Absolute, out var uri))
-                                await Windows.System.Launcher.LaunchUriAsync(uri);
-                        }));
+                            //タブ開けない…。
+                            //result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenInternal"), async a =>
+                            //{
+                            //    if (Uri.TryCreate(bookmarkItem.TargetUrl, UriKind.Absolute, out var uri))
+                            //        UIHelper.GetCurrentTabPage(this)?.OpenTabWeb(uri?.ToString());
+                            //}));
+                        }
+                        else
+                        {
+                            result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenExternal"), async a =>
+                            {
+                                if (Uri.TryCreate(bookmarkItem.TargetUrl, UriKind.Absolute, out var uri))
+                                    await Windows.System.Launcher.LaunchUriAsync(uri);
+                            }));
+                        }
                     }
                 }
                 else if (item.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Bookmarks)
