@@ -194,6 +194,5 @@ namespace kurema.FileExplorerControl.Models.FileItems
         public event EventHandler Updated;
 
         public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
-
     }
 }

@@ -45,7 +45,10 @@ namespace kurema.FileExplorerControl.ViewModels
         {
             get => _Content; set
             {
-                if (_Content != null) _Content.Updated -= _Content_Updated;
+                if (_Content != null)
+                {
+                    _Content.Updated -= _Content_Updated;
+                }
 
                 SetProperty(ref _Content, value);
                 _Children = null;
@@ -59,6 +62,8 @@ namespace kurema.FileExplorerControl.ViewModels
         private void _Content_Updated(object sender, EventArgs e)
         {
             Content_Updated();
+
+            if (!(IconLarge is null && IconSmall is null)) UpdateIcon();
         }
 
         private void Content_Updated()
@@ -191,7 +196,7 @@ namespace kurema.FileExplorerControl.ViewModels
 
         public void IconFetchingCancel()
         {
-            foreach(var item in Children)
+            foreach (var item in Children)
             {
                 if (!item.IsFolder) item.IconCancellationTokenSource.Cancel();
             }

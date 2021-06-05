@@ -135,11 +135,23 @@ namespace BookViewerApp.Helper
 
                             //control.MenuChildrens.Add(new ExplorerMenuControl() { OriginPage = content });
 
-                            var library = LibraryStorage.GetItem(async (a) =>
+                            var library = LibraryStorage.GetItem(async (a,b) =>
                             {
                                 var tab = GetCurrentTabPage(control);
                                 if (tab is null) return;
-                                await tab.OpenTabWebPreferedBrowser(a);
+                                switch (b)
+                                {
+                                    default:
+                                    case LibraryStorage.BookmarkActionType.Auto:
+                                        await tab.OpenTabWebPreferedBrowser(a);
+                                        break;
+                                    case LibraryStorage.BookmarkActionType.Internal:
+                                        tab.OpenTabWeb(a);
+                                        break;
+                                    case LibraryStorage.BookmarkActionType.External:
+                                        await UIHelper.OpenWebExternal(a);
+                                        break;
+                                }
                             }, control.AddressRequesteCommand
                             );
 
@@ -308,7 +320,7 @@ namespace BookViewerApp.Helper
                 if ((frame.Content as kurema.BrowserControl.Views.BrowserControl)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
                 {
                     {
-                        var bookmark = LibraryStorage.GetItemBookmarks((_) => { });
+                        var bookmark = LibraryStorage.GetItemBookmarks((_,_2) => { });
                         vm.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", (bmNew) =>
                         {
                             LibraryStorage.OperateBookmark(a =>

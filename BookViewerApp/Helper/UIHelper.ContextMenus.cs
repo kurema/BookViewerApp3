@@ -154,10 +154,10 @@ namespace BookViewerApp.Helper
                                     dialog.Content = page;
                                     dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/Close");
                                     await dialog.ShowAsync();
+                                    file.OnUpdate();
                                 })));
                             }
                         }
-                        //file
                     }
                 }
 
@@ -192,103 +192,103 @@ namespace BookViewerApp.Helper
                 return result.ToArray();
             }
 
-            public static MenuCommand[] MenuBookmarks(IFileItem item)
+            public static Func<IFileItem, MenuCommand[]> MenuBookmarks(Action<string, Storages.LibraryStorage.BookmarkActionType> bookmarkAction)
             {
-                var result = new List<MenuCommand>();
-                if (item is StorageBookmarkContainer container && !container.IsReadOnly)
+                return (item) =>
                 {
-                    result.Add(new MenuCommand(GetResourceTitle("Word/New"),
-                        new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
-                        {
-                            var items = container?.Content?.Items?.ToList() ?? new List<object>();
-                            items.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
-                            container.Content.Items = items.ToArray();
-                            await container.GetChildren();
-                        })),
-                        new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
-                        {
-                            var dialog = new Views.BookmarkContentDialog();
-                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                    var result = new List<MenuCommand>();
+                    if (item is StorageBookmarkContainer container && !container.IsReadOnly)
+                    {
+                        result.Add(new MenuCommand(GetResourceTitle("Word/New"),
+                            new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
                             {
                                 var items = container?.Content?.Items?.ToList() ?? new List<object>();
-                                items.Add(dialog.GetLibraryBookmark());
+                                items.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
                                 container.Content.Items = items.ToArray();
                                 await container.GetChildren();
-                            }
-                        })
-                        ))
-                        );
-                }
-                else if (item is StorageBookmarkItem bookmarkItem)
-                {
-                    if (bookmarkItem.Content != null)
-                    {
-                        if (!bookmarkItem.IsReadOnly)
-                        {
-                            result.Add(new MenuCommand(GetResourceTitle("Bookmarks/Edit"), async a =>
+                            })),
+                            new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
                             {
-                                var dialog = new Views.BookmarkContentDialog()
-                                {
-                                    AddressBookmark = bookmarkItem.Content.url,
-                                    TitleBookmark = bookmarkItem.Content.title,
-                                };
+                                var dialog = new Views.BookmarkContentDialog();
                                 if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                                 {
-                                    bookmarkItem.Content.url = dialog.AddressBookmark;
-                                    bookmarkItem.Content.title = dialog.TitleBookmark;
-
-                                    bookmarkItem.OnUpdate();
+                                    var items = container?.Content?.Items?.ToList() ?? new List<object>();
+                                    items.Add(dialog.GetLibraryBookmark());
+                                    container.Content.Items = items.ToArray();
+                                    await container.GetChildren();
                                 }
-                            }));
-                        }
-                        if ((bool)Storages.SettingStorage.GetValue("DefaultBrowserExternal"))
+                            })
+                            ))
+                            );
+                    }
+                    else if (item is StorageBookmarkItem bookmarkItem)
+                    {
+                        if (bookmarkItem.Content != null)
                         {
-                            //タブ開けない…。
-                            //result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenInternal"), async a =>
-                            //{
-                            //    if (Uri.TryCreate(bookmarkItem.TargetUrl, UriKind.Absolute, out var uri))
-                            //        UIHelper.GetCurrentTabPage(this)?.OpenTabWeb(uri?.ToString());
-                            //}));
-                        }
-                        else
-                        {
-                            result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenExternal"), async a =>
+                            if (!bookmarkItem.IsReadOnly)
                             {
-                                if (Uri.TryCreate(bookmarkItem.TargetUrl, UriKind.Absolute, out var uri))
-                                    await Windows.System.Launcher.LaunchUriAsync(uri);
-                            }));
+                                result.Add(new MenuCommand(GetResourceTitle("Bookmarks/Edit"), async a =>
+                                {
+                                    var dialog = new Views.BookmarkContentDialog()
+                                    {
+                                        AddressBookmark = bookmarkItem.Content.url,
+                                        TitleBookmark = bookmarkItem.Content.title,
+                                    };
+                                    if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                                    {
+                                        bookmarkItem.Content.url = dialog.AddressBookmark;
+                                        bookmarkItem.Content.title = dialog.TitleBookmark;
+
+                                        bookmarkItem.OnUpdate();
+                                    }
+                                }));
+                            }
+                            if ((bool)Storages.SettingStorage.GetValue("DefaultBrowserExternal"))
+                            {
+                                result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenInternal"), a =>
+                                {
+                                    bookmarkAction(bookmarkItem.TargetUrl, Storages.LibraryStorage.BookmarkActionType.Internal);
+                                }));
+                            }
+                            else
+                            {
+                                result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenExternal"), async a =>
+                                {
+                                    await UIHelper.OpenWebExternal(bookmarkItem.TargetUrl);
+                                }));
+                            }
                         }
                     }
-                }
-                else if (item.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Bookmarks)
-                {
-                    result.Add(GetMenuBookmarkShowPreset());
-                    result.Add(new MenuCommand(GetResourceTitle("Word/New"),
-                        new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(a =>
-                        {
-                            Storages.LibraryStorage.OperateBookmark(b =>
-                            {
-                                b?.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
-                                return Task.CompletedTask;
-                            });
-                        })),
-                        new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
-                        {
-                            var dialog = new Views.BookmarkContentDialog();
-                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                    else if (item.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Bookmarks)
+                    {
+                        result.Add(GetMenuBookmarkShowPreset());
+                        result.Add(new MenuCommand(GetResourceTitle("Word/New"),
+                            new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(a =>
                             {
                                 Storages.LibraryStorage.OperateBookmark(b =>
                                 {
-                                    b?.Add(dialog.GetLibraryBookmark());
+                                    b?.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
                                     return Task.CompletedTask;
                                 });
-                            }
-                        })
-                        ))
-                        );
-                }
+                            })),
+                            new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
+                            {
+                                var dialog = new Views.BookmarkContentDialog();
+                                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                                {
+                                    Storages.LibraryStorage.OperateBookmark(b =>
+                                    {
+                                        b?.Add(dialog.GetLibraryBookmark());
+                                        return Task.CompletedTask;
+                                    });
+                                }
+                            })
+                            ))
+                            );
+                    }
 
-                return result.ToArray();
+                    return result.ToArray();
+                };
             }
 
             public static MenuCommand[] MenuBookmarkPreset(IFileItem item)

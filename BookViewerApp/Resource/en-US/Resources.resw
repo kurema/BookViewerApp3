@@ -734,4 +734,7 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
     <value>Open URL in external browser</value>
   </data>
+  <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
+    <value>Open in built-in browser</value>
+  </data>
 </root>

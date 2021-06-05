@@ -138,8 +138,9 @@ namespace BookViewerApp.Storages
             };
         }
 
-        public static ContainerDelegateItem GetItemBookmarks(Action<string> bookmarkAction)
+        public static ContainerDelegateItem GetItemBookmarks(Action<string, BookmarkActionType> bookmarkAction)
         {
+            var menuCommandsPr = UIHelper.ContextMenus.MenuBookmarks(bookmarkAction);
             return new ContainerDelegateItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", async (parent) =>
             {
                 var library = await Content.GetContentAsync();
@@ -162,7 +163,7 @@ namespace BookViewerApp.Storages
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
-                            item1.MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks;
+                            item1.MenuCommandsProvider = menuCommandsPr;
                             break;
                         case StorageBookmarkItem item2:
                             item2.ActionDelete = () =>
@@ -173,7 +174,7 @@ namespace BookViewerApp.Storages
                                 //parent?.ChildrenProvided?.Remove(item);
                                 LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
-                            item2.MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks;
+                            item2.MenuCommandsProvider = menuCommandsPr;
                             break;
                     }
 
@@ -183,7 +184,7 @@ namespace BookViewerApp.Storages
                     if ((bool)SettingStorage.GetValue("ShowPresetBookmarks"))
                     {
                         var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
-                        var local = bookmarksCulture?.AsFileItem(bookmarkAction, true, UIHelper.ContextMenus.MenuBookmarks);
+                        var local = bookmarksCulture?.AsFileItem(bookmarkAction, true, menuCommandsPr);
                         if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local)
                         {
                             FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/PresetBookmark"),
@@ -200,11 +201,16 @@ namespace BookViewerApp.Storages
                     () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_star_l.png"))),
                 Tag = LibraryKind.Bookmarks,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
-                MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarks,
+                MenuCommandsProvider = menuCommandsPr,
             };
         }
 
-        public static ContainerItem GetItem(Action<string> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand)
+        public enum BookmarkActionType
+        {
+            Auto, Internal, External
+        }
+
+        public static ContainerItem GetItem(Action<string, BookmarkActionType> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand)
         {
             var result = new ObservableCollection<IFileItem>();
 
@@ -413,7 +419,7 @@ namespace BookViewerApp.Storages
             "ry.xsd", IsNullable = false)]
         public partial class libraryBookmarks
         {
-            public IFileItem[] AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
+            public IFileItem[] AsFileItem(Action<string, LibraryStorage.BookmarkActionType> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
                 var list = new List<IFileItem>();
                 if (Items is null) return new IFileItem[0];
@@ -422,10 +428,10 @@ namespace BookViewerApp.Storages
                     switch (item)
                     {
                         case libraryBookmarksContainer container:
-                            list.Add(container.AsFileItem(action, isReadOnly, menuCommandProvider));
+                            list.Add(container.AsFileItem((a)=>action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));
                             break;
                         case libraryBookmarksContainerBookmark bookmark:
-                            list.Add(bookmark.AsFileItem(action, isReadOnly, menuCommandProvider));
+                            list.Add(bookmark.AsFileItem((a) => action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));
                             break;
                     }
                 }

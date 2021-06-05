@@ -124,6 +124,11 @@ namespace BookViewerApp.Helper
             }
         }
 
+        public static async Task OpenWebExternal(string address)
+        {
+            if (Uri.TryCreate(address, UriKind.Absolute, out var uri)) await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
         public async static Task<kurema.FileExplorerControl.ViewModels.FileItemViewModel> GetFileItemViewModelFromRoot(string address, IEnumerable<kurema.FileExplorerControl.ViewModels.FileItemViewModel> root)
         {
             if (root is null) return null;
