@@ -42,6 +42,10 @@ namespace BookViewerApp.Views.Bookshelf
             {
                 var result = new List<Bookshelf2BookViewModel[]>();
                 await ListUpChildren(result, vm, 5);
+                foreach(var item in result)
+                {
+                    var row = new BookRow();
+                }
             }
             finally
             {
