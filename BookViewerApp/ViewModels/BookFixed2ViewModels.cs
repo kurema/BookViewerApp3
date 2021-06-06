@@ -120,7 +120,7 @@ namespace BookViewerApp.ViewModels
 
             if (value is null) return;
 
-            var book = (await BookManager.GetBookFromFile(value));
+            var book = await BookManager.GetBookFromFile(value);
             if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
             {
                 Initialize(bookf, target);

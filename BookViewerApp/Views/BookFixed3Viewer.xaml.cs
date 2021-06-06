@@ -31,7 +31,7 @@ namespace BookViewerApp.Views
     /// </summary>
     public sealed partial class BookFixed3Viewer : Page
     {
-        private ViewModels.BookViewModel Binding => (BookViewModel)this.DataContext;
+        private BookViewModel Binding => (BookViewModel)this.DataContext;
 
         public FlipView FlipViewControl => this.flipView;
 
@@ -43,7 +43,7 @@ namespace BookViewerApp.Views
             if (Binding != null) Binding.GoToHomeCommand = new Helper.DelegateCommand((a) =>
             {
                 Binding?.SaveInfo();
-                this.Frame.Navigate(typeof(HomePage), null);
+                Frame.Navigate(typeof(HomePage), null);
             });
 
             Application.Current.Suspending += (s, e) => Binding?.SaveInfo();
@@ -110,7 +110,7 @@ namespace BookViewerApp.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            Helper.UIHelper.SetTitleByResource(this, "BookViewer");
+            UIHelper.SetTitleByResource(this, "BookViewer");
 
             if (e?.Parameter is null) { }
             else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)

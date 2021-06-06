@@ -240,7 +240,7 @@ namespace BookViewerApp.Helper
                                     return;
                                 }
 
-                                var tab = UIHelper.GetCurrentTabPage(control);
+                                var tab = GetCurrentTabPage(control);
                                 if (tab != null)
                                 {
                                     if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
