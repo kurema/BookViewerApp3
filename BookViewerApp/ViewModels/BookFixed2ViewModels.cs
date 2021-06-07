@@ -23,7 +23,7 @@ using BookViewerApp.Views;
 #nullable enable
 namespace BookViewerApp.ViewModels
 {
-    public class BookViewModel : INotifyPropertyChanged, IBookViewModel, Helper.IDisposableBasic
+    public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposableBasic
     {
         public BookViewModel()
         {
@@ -915,7 +915,7 @@ namespace BookViewerApp.ViewModels
 
     public class Commands
     {
-        public interface ICommandEventRaiseable : System.Windows.Input.ICommand
+        public interface ICommandEventRaiseable : ICommand
         {
             void OnCanExecuteChanged();
         }
@@ -1094,7 +1094,7 @@ namespace BookViewerApp.ViewModels
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
             Action? onChanged = null)
         {
-            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+            if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
@@ -1105,7 +1105,7 @@ namespace BookViewerApp.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

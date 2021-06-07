@@ -21,9 +21,9 @@ namespace kurema.BrowserControl.ViewModels
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
-            System.Action onChanged = null)
+            Action onChanged = null)
         {
-            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+            if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
@@ -31,10 +31,10 @@ namespace kurema.BrowserControl.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -236,7 +236,7 @@ namespace kurema.BrowserControl.ViewModels
 
         public class Commands
         {
-            public abstract class CommandBase : System.Windows.Input.ICommand
+            public abstract class CommandBase : ICommand
             {
                 public event EventHandler CanExecuteChanged;
 

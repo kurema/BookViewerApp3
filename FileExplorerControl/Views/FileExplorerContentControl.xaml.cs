@@ -49,7 +49,7 @@ namespace kurema.FileExplorerControl.Views
 
         public TypedEventHandler<FileExplorerContentControl, ViewModels.FileItemViewModel> FileOpenedEventHandler;
 
-        private void UserControl_DataContextChanged(Windows.UI.Xaml.FrameworkElement sender, Windows.UI.Xaml.DataContextChangedEventArgs args)
+        private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (args.NewValue is ViewModels.ContentViewModel vm)
             {
@@ -72,7 +72,7 @@ namespace kurema.FileExplorerControl.Views
                       };
                 vm.DialogDelete = async (arg, canDeleteComplete) =>
                 {
-                    var dialog = new Views.DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete };
+                    var dialog = new DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete };
                     dialog.DataContext = arg;
                     var result = await dialog.ShowAsync();
                     switch (result)
@@ -132,7 +132,7 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        public async Task OperateBinding(System.Func<ViewModels.ContentViewModel, Task> action)
+        public async Task OperateBinding(Func<ViewModels.ContentViewModel, Task> action)
         {
             if (this.DataContext is ViewModels.ContentViewModel vm)
             {
@@ -179,7 +179,7 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        private async void MenuFlyoutItem_Click_Property(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void MenuFlyoutItem_Click_Property(object sender, RoutedEventArgs e)
         {
             if ((sender as MenuFlyoutItem)?.DataContext is ViewModels.FileItemViewModel vm1)
             {
@@ -202,7 +202,7 @@ namespace kurema.FileExplorerControl.Views
             }
         }
 
-        private void StackPanel_LostFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void StackPanel_LostFocus(object sender, RoutedEventArgs e)
         {
             if (((sender as StackPanel).Parent as FlyoutPresenter).Parent is Popup f)
             {

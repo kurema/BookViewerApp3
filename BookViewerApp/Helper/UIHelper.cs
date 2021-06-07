@@ -55,7 +55,7 @@ namespace BookViewerApp.Helper
 
         public static string GetTitleByResource(string id) => ResourceManager.Loader.GetString("TabHeader/" + id);
 
-        public static Views.TabPage GetCurrentTabPage(UIElement ui)
+        public static TabPage GetCurrentTabPage(UIElement ui)
         {
             if ((ui?.XamlRoot?.Content as Frame)?.Content is TabPage tab)
             {
@@ -75,7 +75,7 @@ namespace BookViewerApp.Helper
         public static string GetFileTypeDescription(Windows.Storage.IStorageItem item)
         {
             if (item is null) return null;
-            var ext = System.IO.Path.GetExtension(item.Path);
+            var ext = Path.GetExtension(item.Path);
             if (item is Windows.Storage.StorageFolder f)
             {
                 return kurema.FileExplorerControl.Application.ResourceLoader.Loader.GetString("FileType/Folder");
@@ -85,7 +85,7 @@ namespace BookViewerApp.Helper
 
         public async static Task RequestPurchaseAsync(Windows.ApplicationModel.Store.ProductListing product)
         {
-            var loader = Managers.ResourceManager.Loader;
+            var loader = ResourceManager.Loader;
 
             var owned = LicenseManager.IsActive(product);
             if (owned)

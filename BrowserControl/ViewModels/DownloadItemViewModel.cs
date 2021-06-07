@@ -11,7 +11,7 @@ namespace kurema.BrowserControl.ViewModels
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
-            System.Action onChanged = null)
+            Action onChanged = null)
         {
             if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
@@ -21,10 +21,10 @@ namespace kurema.BrowserControl.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -38,7 +38,7 @@ namespace kurema.BrowserControl.ViewModels
 
         public double DownloadedRate { get => _DownloadedRate; set => SetProperty(ref _DownloadedRate, value); }
 
-        public Windows.Storage.StorageFile File { get; private set; }
+        public StorageFile File { get; private set; }
 
     }
 }

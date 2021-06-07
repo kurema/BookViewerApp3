@@ -16,9 +16,9 @@ namespace BookViewerApp.ViewModels
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
-            System.Action onChanged = null)
+            Action onChanged = null)
         {
-            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+            if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
@@ -29,7 +29,7 @@ namespace BookViewerApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -103,7 +103,7 @@ namespace BookViewerApp.ViewModels
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
-            System.Action onChanged = null)
+            Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
@@ -116,7 +116,7 @@ namespace BookViewerApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

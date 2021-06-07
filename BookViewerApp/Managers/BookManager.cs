@@ -235,20 +235,20 @@ namespace BookViewerApp.Managers
             return Path.Split(FileSplitLetter);
         }
 
-        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string Path)
+        public static async Task<IStorageItem> StorageItemGet(string token, string Path)
         {
             return await StorageItemGet(token, PathSplit(String.IsNullOrWhiteSpace(Path) ? "." : Path));
         }
 
-        public static async Task<Windows.Storage.IStorageItem> StorageItemGet(string token, string[] Path)
+        public static async Task<IStorageItem> StorageItemGet(string token, string[] Path)
         {
-            Windows.Storage.IStorageItem currentFolder = await StorageItemGet(token);
+            IStorageItem currentFolder = await StorageItemGet(token);
             if (Path is null) return currentFolder;
             foreach (var item in Path)
             {
                 if (currentFolder is null) return null;
                 if (string.IsNullOrEmpty(item) || item.Trim() == ".") { }
-                else if (currentFolder is Windows.Storage.StorageFolder f)
+                else if (currentFolder is StorageFolder f)
                 {
                     if (item.Trim() == "..") currentFolder = await f.GetParentAsync();
                     else currentFolder = await f.TryGetItemAsync(item);
@@ -261,7 +261,7 @@ namespace BookViewerApp.Managers
             return currentFolder;
         }
 
-        public static async Task<Windows.Storage.StorageFile> PickFile()
+        public static async Task<StorageFile> PickFile()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             foreach (var ext in AvailableExtensionsArchive)
@@ -277,7 +277,7 @@ namespace BookViewerApp.Managers
             return (await GetBookFromFile(await PickFile()));
         }
 
-        public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(Windows.Storage.IStorageItem file)
+        public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(IStorageItem file)
         {
             if (file is null) return null;
             return await GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()

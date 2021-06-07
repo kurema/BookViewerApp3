@@ -92,7 +92,7 @@ namespace BookViewerApp.Helper
                         if (libs != null)
                         {
                             var libsToAdd = new List<MenuCommand>();
-                            var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new Helper.DelegateCommand(async b =>
+                            var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new DelegateCommand(async b =>
                              {
                                  var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
                                  if (a.Items is null) a.Items = new object[0];
@@ -117,7 +117,7 @@ namespace BookViewerApp.Helper
                              })));
                             foreach (var t in commandsToAdd) libsToAdd.Add(t);
 
-                            libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new Helper.DelegateCommand(async a =>
+                            libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new DelegateCommand(async a =>
                             {
                                 var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
                                 {
@@ -144,7 +144,7 @@ namespace BookViewerApp.Helper
                         {
                             if (file.Content is Windows.Storage.IStorageFile sfile)
                             {
-                                list.Add(new MenuCommand(GetResourceTitle("Book/SelectThumbnail"), new Helper.DelegateCommand(async (_) =>
+                                list.Add(new MenuCommand(GetResourceTitle("Book/SelectThumbnail"), new DelegateCommand(async (_) =>
                                 {
                                     var dialog = new ContentDialog();
                                     var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;
@@ -169,7 +169,7 @@ namespace BookViewerApp.Helper
                 var result = new List<MenuCommand>();
                 if ((bool)Storages.SettingStorage.GetValue("ShowHistories"))
                 {
-                    result.Add(new MenuCommand(GetResourceTitle("Histories/HideHistores"), new Helper.DelegateCommand(a =>
+                    result.Add(new MenuCommand(GetResourceTitle("Histories/HideHistores"), new DelegateCommand(a =>
                     {
                         Storages.SettingStorage.SetValue("ShowHistories", false);
                         Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.History);
@@ -177,7 +177,7 @@ namespace BookViewerApp.Helper
                 }
                 else
                 {
-                    result.Add(new MenuCommand(GetResourceTitle("Histories/ShowHistores"), new Helper.DelegateCommand(a =>
+                    result.Add(new MenuCommand(GetResourceTitle("Histories/ShowHistores"), new DelegateCommand(a =>
                     {
                         Storages.SettingStorage.SetValue("ShowHistories", true);
                         Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.History);
@@ -254,7 +254,7 @@ namespace BookViewerApp.Helper
                             {
                                 result.Add(new MenuCommand(GetResourceTitle("Bookmarks/OpenExternal"), async a =>
                                 {
-                                    await UIHelper.OpenWebExternal(bookmarkItem.TargetUrl);
+                                    await OpenWebExternal(bookmarkItem.TargetUrl);
                                 }));
                             }
                         }
@@ -302,7 +302,7 @@ namespace BookViewerApp.Helper
             {
                 if ((bool)Storages.SettingStorage.GetValue("ShowPresetBookmarks"))
                 {
-                    return new MenuCommand(GetResourceTitle("Bookmarks/HidePreset"), new Helper.DelegateCommand(a =>
+                    return new MenuCommand(GetResourceTitle("Bookmarks/HidePreset"), new DelegateCommand(a =>
                     {
                         Storages.SettingStorage.SetValue("ShowPresetBookmarks", false);
                         Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Bookmarks);
@@ -310,7 +310,7 @@ namespace BookViewerApp.Helper
                 }
                 else
                 {
-                    return new MenuCommand(GetResourceTitle("Bookmarks/ShowPreset"), new Helper.DelegateCommand(a =>
+                    return new MenuCommand(GetResourceTitle("Bookmarks/ShowPreset"), new DelegateCommand(a =>
                     {
                         Storages.SettingStorage.SetValue("ShowPresetBookmarks", true);
                         Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Bookmarks);
@@ -326,7 +326,7 @@ namespace BookViewerApp.Helper
                     if (item is HistoryMRUItem item1 && item1.IsParentAccessible)
                     {
                         var result = new List<MenuCommand>();
-                        result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new Helper.DelegateCommand(async a =>
+                        result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new DelegateCommand(async a =>
                         {
                             try
                             {
@@ -364,7 +364,7 @@ namespace BookViewerApp.Helper
                     var result = new List<MenuCommand>();
                     if (!string.IsNullOrWhiteSpace(item?.Path) && pathRequestCommand?.CanExecute(System.IO.Directory.GetParent(item.Path)) == true)
                     {
-                        result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new Helper.DelegateCommand(a =>
+                        result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new DelegateCommand(a =>
                          {
                              var parent = System.IO.Directory.GetParent(item.Path);
                              if (pathRequestCommand?.CanExecute(parent) == true) pathRequestCommand.Execute(parent);

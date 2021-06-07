@@ -17,9 +17,9 @@ namespace kurema.FileExplorerControl.ViewModels
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
-            System.Action onChanged = null)
+            Action onChanged = null)
         {
-            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+            if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
@@ -27,17 +27,17 @@ namespace kurema.FileExplorerControl.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
         #region dialog
 
-        private Func<ViewModels.FileItemViewModel, bool, Task<(bool delete, bool completeDelete)>> _DialogDelete;
-        public Func<ViewModels.FileItemViewModel, bool, Task<(bool delete, bool completeDelete)>> DialogDelete { get => _DialogDelete; set => SetProperty(ref _DialogDelete, value); }
+        private Func<FileItemViewModel, bool, Task<(bool delete, bool completeDelete)>> _DialogDelete;
+        public Func<FileItemViewModel, bool, Task<(bool delete, bool completeDelete)>> DialogDelete { get => _DialogDelete; set => SetProperty(ref _DialogDelete, value); }
 
 
         private Func<FileItemViewModel, Task<string>> _DialogRename;
@@ -133,15 +133,15 @@ namespace kurema.FileExplorerControl.ViewModels
             return History != null && 0 <= target && target < History.Count;
         }
 
-        private System.Windows.Input.ICommand _RefreshCommand;
+        private ICommand _RefreshCommand;
         public ICommand RefreshCommand => _RefreshCommand = _RefreshCommand ?? new Helper.DelegateCommand(
             async (a) => await Item?.UpdateChildren(),
             (a) => Item != null
             );
 
 
-        private System.Windows.Input.ICommand _LaunchCommand;
-        public System.Windows.Input.ICommand LaunchCommand { get => _LaunchCommand = _LaunchCommand ?? new Helper.DelegateCommand(async (parameter) =>
+        private ICommand _LaunchCommand;
+        public ICommand LaunchCommand { get => _LaunchCommand = _LaunchCommand ?? new Helper.DelegateCommand(async (parameter) =>
         {
             if (Item?.Content is Models.FileItems.StorageFileItem storage && storage.Content is Windows.Storage.IStorageFolder folder)
             {
@@ -151,8 +151,8 @@ namespace kurema.FileExplorerControl.ViewModels
             set => _LaunchCommand = value;
         }
 
-        private System.Windows.Input.ICommand _HistoryShiftCommand;
-        public System.Windows.Input.ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
+        private ICommand _HistoryShiftCommand;
+        public ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
             (a) =>
             {
                 this.SelectedHistory += int.Parse(a.ToString());
@@ -163,9 +163,9 @@ namespace kurema.FileExplorerControl.ViewModels
             }
             );
 
-        private System.Windows.Input.ICommand _SetContentStyleCommand;
+        private ICommand _SetContentStyleCommand;
 
-        public System.Windows.Input.ICommand SetContentStyleCommand => _SetContentStyleCommand = _SetContentStyleCommand ?? new Helper.DelegateCommand(
+        public ICommand SetContentStyleCommand => _SetContentStyleCommand = _SetContentStyleCommand ?? new Helper.DelegateCommand(
             a =>
             {
                 var atxt = a.ToString();
@@ -194,8 +194,8 @@ namespace kurema.FileExplorerControl.ViewModels
             );
 
 
-        private System.Windows.Input.ICommand _GoUpCommand;
-        public System.Windows.Input.ICommand GoUpCommand => _GoUpCommand = _GoUpCommand ?? new Helper.DelegateCommand(
+        private ICommand _GoUpCommand;
+        public ICommand GoUpCommand => _GoUpCommand = _GoUpCommand ?? new Helper.DelegateCommand(
             async (a) =>
             {
                 if (Item.Parent.Children is null) await Item.Parent.UpdateChildren();
@@ -207,8 +207,8 @@ namespace kurema.FileExplorerControl.ViewModels
             }
             );
 
-        private System.Windows.Input.ICommand _GoToCommand;
-        public System.Windows.Input.ICommand GoToCommand => _GoToCommand = _GoToCommand ?? new Helper.DelegateCommand(
+        private ICommand _GoToCommand;
+        public ICommand GoToCommand => _GoToCommand = _GoToCommand ?? new Helper.DelegateCommand(
             async a =>
             {
                 if (a is FileItemViewModel vm)
@@ -287,9 +287,9 @@ namespace kurema.FileExplorerControl.ViewModels
             #region INotifyPropertyChanged
             protected bool SetProperty<T>(ref T backingStore, T value,
                 [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
-                System.Action onChanged = null)
+                Action onChanged = null)
             {
-                if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+                if (EqualityComparer<T>.Default.Equals(backingStore, value))
                     return false;
 
                 backingStore = value;
@@ -297,10 +297,10 @@ namespace kurema.FileExplorerControl.ViewModels
                 OnPropertyChanged(propertyName);
                 return true;
             }
-            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+            public event PropertyChangedEventHandler PropertyChanged;
             protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
             {
-                PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
             #endregion
 

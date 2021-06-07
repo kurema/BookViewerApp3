@@ -17,7 +17,7 @@ using BookViewerApp.Storages;
 #nullable enable
 namespace BookViewerApp.Books
 {
-    public class CbzBook : IBookFixed, ITocProvider, Helper.IDisposableBasic
+    public class CbzBook : IBookFixed, ITocProvider, IDisposableBasic
     {
         public ZipArchive? Content { get; private set; }
         public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
@@ -140,7 +140,7 @@ namespace BookViewerApp.Books
         public IPageFixed? GetPageCover()
         {
             if (AvailableEntries is null || AvailableEntries?.Length == 0) return null;
-            var cover = this.AvailableEntries.FirstOrDefault(a => Helper.Functions.IsCover(a.Name));
+            var cover = this.AvailableEntries.FirstOrDefault(a => Functions.IsCover(a.Name));
             return cover is null ? GetPage(0) : new CbzPage(cover);
         }
     }
@@ -148,7 +148,7 @@ namespace BookViewerApp.Books
 
 namespace BookViewerApp.Books
 {
-    public class CbzPage : IPageFixed, Helper.IDisposableBasic
+    public class CbzPage : IPageFixed, IDisposableBasic
     {
         private ZipArchiveEntry Content;
 
@@ -173,7 +173,7 @@ namespace BookViewerApp.Books
             return await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).GetBitmapAsync();
         }
 
-        private Helper.MemoryStreamCache? Cache;
+        private MemoryStreamCache? Cache;
 
         public Task<bool> UpdateRequiredAsync(double width, double height)
         {

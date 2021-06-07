@@ -79,7 +79,7 @@ namespace BookViewerApp.Managers
         {
             try
             {
-                var book = await ThumbnailManager.SaveImageAsync(storageItem, cancellationToken);
+                var book = await SaveImageAsync(storageItem, cancellationToken);
                 if (book is null || string.IsNullOrEmpty(book?.ID)) return;
                 await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
                 {
@@ -139,7 +139,7 @@ namespace BookViewerApp.Managers
             return null;
         }
 
-        public static string GetFileNameFromID(string ID) => "" + Helper.Functions.EscapeFileName(ID) + Extension;
+        public static string GetFileNameFromID(string ID) => "" + Functions.EscapeFileName(ID) + Extension;
 
         public static string Extension => ".jpeg";
     }

@@ -228,7 +228,7 @@ namespace kurema.FileExplorerControl.Views
 
         }
 
-        private async void MenuFlyoutItem_Click_Property(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void MenuFlyoutItem_Click_Property(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is ViewModels.FileItemViewModel vm)
             {

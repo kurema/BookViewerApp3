@@ -13,7 +13,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
     [Obsolete]
     public class HistoryItem : IFileItem
     {
-        public BookViewerApp.Storages.HistoryStorage.HistoryInfo Content;
+        public HistoryStorage.HistoryInfo Content;
 
         public HistoryItem(HistoryStorage.HistoryInfo content)
         {

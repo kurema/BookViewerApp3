@@ -177,20 +177,20 @@ namespace BookViewerApp.Views
         public void OpenTabSetting()
         {
             var (frame, newTab) = OpenTab("Setting");
-            frame?.Navigate(typeof(Views.SettingPage));
+            frame?.Navigate(typeof(SettingPage));
         }
 
         public void OpenTabBookshelf()
         {
             var (frame, newTab) = OpenTab("Bookshelf");
-            frame?.Navigate(typeof(Views.Bookshelf.BookshelfPage));
+            frame?.Navigate(typeof(Bookshelf.BookshelfPage));
         }
 
 
         public (Frame, winui.Controls.TabViewItem) OpenTab(string titleId)
         {
             var newTab = new winui.Controls.TabViewItem();
-            var titleString = Helper.UIHelper.GetTitleByResource(titleId);
+            var titleString = UIHelper.GetTitleByResource(titleId);
             newTab.Header = string.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
 
             Frame frame = new Frame();
@@ -204,12 +204,12 @@ namespace BookViewerApp.Views
             return (frame, newTab);
         }
 
-        private void TabView_AddTabButtonClick(Microsoft.UI.Xaml.Controls.TabView sender, object args)
+        private void TabView_AddTabButtonClick(winui.Controls.TabView sender, object args)
         {
             OpenTabExplorer();
         }
 
-        private void TabView_TabCloseRequested(Microsoft.UI.Xaml.Controls.TabView sender, Microsoft.UI.Xaml.Controls.TabViewTabCloseRequestedEventArgs args)
+        private void TabView_TabCloseRequested(winui.Controls.TabView sender, winui.Controls.TabViewTabCloseRequestedEventArgs args)
         {
             if (RootAppWindow == null && tabView.TabItems.Count == 1)
             {
@@ -257,7 +257,7 @@ namespace BookViewerApp.Views
                         //Window.Current.Close();
                         //OpenTabWeb("https://www.google.com/");
                     }
-                    catch (System.InvalidOperationException)
+                    catch (InvalidOperationException)
                     {
                     }
                 }
@@ -384,7 +384,7 @@ namespace BookViewerApp.Views
             //}
 
             {
-                if (!Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+                if (!ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
                 {
                     return;
                 }

@@ -32,7 +32,7 @@ namespace BookViewerApp.Views
     [Obsolete]
     public sealed partial class BookFixed2Viewer : Page
     {
-        private ViewModels.BookViewModel Binding => (BookViewModel)this.DataContext;
+        private BookViewModel Binding => (BookViewModel)this.DataContext;
 
         public BookFixed2Viewer()
         {
@@ -51,11 +51,11 @@ namespace BookViewerApp.Views
             var brSet = (double)SettingStorage.GetValue("BackgroundBrightness");
             var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
                              255.0);
-            this.Background = new SolidColorBrush(new Windows.UI.Color() { A = 255, B = br, G = br, R = br });
+            this.Background = new SolidColorBrush(new Color() { A = 255, B = br, G = br, R = br });
 
             ((BookViewModel)this.DataContext).PropertyChanged += (s, e) =>
            {
-               if (e.PropertyName == nameof(ViewModels.BookViewModel.Title))
+               if (e.PropertyName == nameof(BookViewModel.Title))
                {
                    SetTitle(Binding?.Title);
                }
@@ -219,9 +219,9 @@ namespace BookViewerApp.Views
 
         private void BookmarkClicked(object sender, ItemClickEventArgs e)
         {
-            if (DataContext is ViewModels.BookViewModel && e.ClickedItem != null && e.ClickedItem is ViewModels.BookmarkViewModel)
+            if (DataContext is BookViewModel && e.ClickedItem != null && e.ClickedItem is BookmarkViewModel)
             {
-                ((ViewModels.BookViewModel)this.DataContext).PageSelectedDisplay = ((ViewModels.BookmarkViewModel)e.ClickedItem).Page;
+                ((BookViewModel)this.DataContext).PageSelectedDisplay = ((BookmarkViewModel)e.ClickedItem).Page;
             }
         }
 
@@ -268,7 +268,7 @@ namespace BookViewerApp.Views
             CommandBar1.Visibility = Visibility.Visible;
 
             //CommandBar1.Foreground = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? RequestedThemeProperty.: Colors.Black);//ad-hoc fix me
-            CommandBar1.Foreground = (Brush)App.Current.Resources.ThemeDictionaries["AppBarItemForegroundThemeBrush"];
+            CommandBar1.Foreground = (Brush)Application.Current.Resources.ThemeDictionaries["AppBarItemForegroundThemeBrush"];
             MakeCommandBarVisibleForAWhile_DelayCount++;
             await Task.Delay(visibleTime);
             MakeCommandBarVisibleForAWhile_DelayCount--;

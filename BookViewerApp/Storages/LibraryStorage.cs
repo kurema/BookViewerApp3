@@ -56,7 +56,7 @@ namespace BookViewerApp.Storages
 
         public static ContainerDelegateItem? GetItemHistoryMRU(System.Windows.Input.ICommand PathRequestCommand)
         {
-            if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
+            if (!(bool)SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", (_) =>
             {
                 //Issue:
@@ -85,11 +85,11 @@ namespace BookViewerApp.Storages
         [Obsolete]
         public static ContainerDelegateItem? GetItemHistory(System.Windows.Input.ICommand PathRequestCommand)
         {
-            if (!(bool)Storages.SettingStorage.GetValue("ShowHistories")) return null;
+            if (!(bool)SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", async (_) =>
             {
                 var history = await HistoryStorage.Content.GetContentAsync();
-                if (history == null || !(bool)Storages.SettingStorage.GetValue("ShowHistories")) return Array.Empty<IFileItem>();
+                if (history == null || !(bool)SettingStorage.GetValue("ShowHistories")) return Array.Empty<IFileItem>();
                 //一々ファイル取得してると重い…。
                 //特に、履歴から開く→履歴更新がファイルを開く処理と同時になったりする。
                 //一方、履歴の情報だけだとファイルが既に消えてる場合がある。
@@ -115,7 +115,7 @@ namespace BookViewerApp.Storages
                     HistoryStorage.Content.Content = Array.Empty<HistoryStorage.HistoryInfo>();
                     await HistoryStorage.Content.SaveAsync();
                     OnLibraryUpdateRequest(LibraryKind.History);
-                    LibraryStorage.GarbageCollectToken();
+                    GarbageCollectToken();
                 }, a => !(a is bool b && b == true)),
                 Tag = LibraryKind.History,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
@@ -161,7 +161,7 @@ namespace BookViewerApp.Storages
                                 if (bookmark_roaming != null) bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming.Items, item1.Content)?.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
-                                LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
+                                OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
                             item1.MenuCommandsProvider = menuCommandsPr;
                             break;
@@ -172,7 +172,7 @@ namespace BookViewerApp.Storages
                                 if (bookmark_roaming != null) bookmark_roaming.Items = Functions.GetArrayRemoved(bookmark_roaming?.Items, item2.Content)?.ToArray();
                                 //await parent.GetChildren();
                                 //parent?.ChildrenProvided?.Remove(item);
-                                LibraryStorage.OnLibraryUpdateRequest(LibraryKind.Bookmarks);
+                                OnLibraryUpdateRequest(LibraryKind.Bookmarks);
                             };
                             item2.MenuCommandsProvider = menuCommandsPr;
                             break;
@@ -243,12 +243,12 @@ namespace BookViewerApp.Storages
                      case LibraryKind.History:
                          if (itemHistory is null) break;
                          await itemHistory.GetChildren();
-                         var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryStorage.LibraryKind.History);
-                         if (!(bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory != null)
+                         var entryHistory = result.FirstOrDefault(a => a.Tag is LibraryKind kind && kind == LibraryKind.History);
+                         if (!(bool)SettingStorage.GetValue("ShowHistories") && entryHistory != null)
                          {
                              result.Remove(entryHistory);
                          }
-                         else if ((bool)Storages.SettingStorage.GetValue("ShowHistories") && entryHistory is null)
+                         else if ((bool)SettingStorage.GetValue("ShowHistories") && entryHistory is null)
                          {
                              result.Insert(2, itemHistory);
                          }

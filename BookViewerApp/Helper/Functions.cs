@@ -167,12 +167,12 @@ namespace BookViewerApp.Helper
 
         public static void ArrayAdd<T>(ref T[] ts, T t)
         {
-            ArrayOperate<T>(ref ts, (list) => list.Add(t));
+            ArrayOperate(ref ts, (list) => list.Add(t));
         }
 
         public static void ArrayRemove<T>(ref T[] ts, T t)
         {
-            ArrayOperate<T>(ref ts, (list) => { if (list.Contains(t)) list.Remove(t); });
+            ArrayOperate(ref ts, (list) => { if (list.Contains(t)) list.Remove(t); });
         }
 
         public static void ArrayOperate<T>(ref T[] ts, Action<List<T>> action)

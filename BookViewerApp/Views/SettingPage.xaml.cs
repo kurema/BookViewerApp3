@@ -144,7 +144,7 @@ namespace BookViewerApp.Views
             }
         }
 
-        public async System.Threading.Tasks.Task CopyFutureAccessListToClipboard()
+        public async Task CopyFutureAccessListToClipboard()
         {
             var statistics = LibraryStorage.GetTokenUsedCount();
 
@@ -196,13 +196,13 @@ namespace BookViewerApp.Views
 
         public async Task OpenLicenseContentDialogThirdParty()
         {
-            var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+            var license = await LicenseStorage.LocalLicense.GetContentAsync();
             await OpenLicenseContentDialog(license.thirdparty.GroupBy(a => Managers.ResourceManager.Loader.GetString("Info/Info/ThirdParty/ThirdParty")));
         }
 
         public async Task OpenLicenseContentDialogContributors()
         {
-            var license = await Storages.LicenseStorage.LocalLicense.GetContentAsync();
+            var license = await LicenseStorage.LocalLicense.GetContentAsync();
 
             var groups = new List<IGrouping<string, object>>();
             void Add(IEnumerable<IGrouping<string, object>> item)

@@ -15,9 +15,9 @@ namespace BookViewerApp.ViewModels
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
-            System.Action onChanged = null)
+            Action onChanged = null)
         {
-            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
+            if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
@@ -25,10 +25,10 @@ namespace BookViewerApp.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -39,8 +39,8 @@ namespace BookViewerApp.ViewModels
         private string _Description;
         public string Description { get => _Description; set => SetProperty(ref _Description, value); }
 
-        private System.Windows.Input.ICommand _OpenCommand;
-        public System.Windows.Input.ICommand OpenCommand { get => _OpenCommand; set => SetProperty(ref _OpenCommand, value); }
+        private ICommand _OpenCommand;
+        public ICommand OpenCommand { get => _OpenCommand; set => SetProperty(ref _OpenCommand, value); }
 
 
         public ListItemViewModel(string title, string description = "", ICommand openCommand = null, object tag = null)

@@ -25,14 +25,14 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         bool IsFolder { get; }
 
-        System.Windows.Input.ICommand DeleteCommand { get; }
-        System.Windows.Input.ICommand RenameCommand { get; }
+        ICommand DeleteCommand { get; }
+        ICommand RenameCommand { get; }
 
         Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; }
         
 
-        Task<System.IO.Stream> OpenStreamForReadAsync();
-        Task<System.IO.Stream> OpenStreamForWriteAsync();
+        Task<Stream> OpenStreamForReadAsync();
+        Task<Stream> OpenStreamForWriteAsync();
 
         object Tag { get; set; }
     }

@@ -76,7 +76,7 @@ namespace BookViewerApp.Helper
                 }
                 else if (!(type is null))
                 {
-                    var (frame, sender) = frameProvider();
+                    var (frame, _) = frameProvider();
                     frame.Navigate(typeof(BookFixed3Viewer), file);
                 }
                 else
@@ -89,7 +89,7 @@ namespace BookViewerApp.Helper
             {
                 {
                     //Too long! Split!
-                    UIHelper.SetTitleByResource(sender, "Explorer");
+                    SetTitleByResource(sender, "Explorer");
                     frame.Navigate(typeof(kurema.FileExplorerControl.Views.FileExplorerControl), null);
                     if (frame.Content is kurema.FileExplorerControl.Views.FileExplorerControl control)
                     {
@@ -122,7 +122,7 @@ namespace BookViewerApp.Helper
                                     if (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) return true;
                                     if (uriResult.IsFile)
                                     {
-                                        var folder = control.GetTreeViewRoot()?.FirstOrDefault(a => a.Content.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Folders);
+                                        var folder = control.GetTreeViewRoot()?.FirstOrDefault(a => a.Content.Tag is LibraryStorage.LibraryKind kind && kind == LibraryStorage.LibraryKind.Folders);
                                         if (folder is null) return false;
                                         return folder.Children?.Any(item => Functions.IsAncestorOf(item.Path, address.ToString())) ?? true;
                                     }
@@ -149,7 +149,7 @@ namespace BookViewerApp.Helper
                                         tab.OpenTabWeb(a);
                                         break;
                                     case LibraryStorage.BookmarkActionType.External:
-                                        await UIHelper.OpenWebExternal(a);
+                                        await OpenWebExternal(a);
                                         break;
                                 }
                             }, control.AddressRequesteCommand
@@ -191,7 +191,7 @@ namespace BookViewerApp.Helper
 
                                     return (() => bmps, () => bmpl);
                                 }
-                                if (BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(a.Name).ToLowerInvariant()))
+                                if (BookManager.AvailableExtensionsArchive.Contains(Path.GetExtension(a.Name).ToLowerInvariant()))
                                 {
                                     string id =
                                     (a as kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem)?.Id ??
@@ -235,7 +235,7 @@ namespace BookViewerApp.Helper
                             {
                                 e2?.Content?.Open();
                                 var fileitem = e2?.Content;
-                                if (!BookManager.AvailableExtensionsArchive.Contains(System.IO.Path.GetExtension(fileitem?.Name ?? "").ToLowerInvariant()))
+                                if (!BookManager.AvailableExtensionsArchive.Contains(Path.GetExtension(fileitem?.Name ?? "").ToLowerInvariant()))
                                 {
                                     return;
                                 }
@@ -344,7 +344,7 @@ namespace BookViewerApp.Helper
                         });
                     }
 
-                    vm.OpenDownloadDirectoryCommand = new Helper.DelegateCommand(async (_) =>
+                    vm.OpenDownloadDirectoryCommand = new DelegateCommand(async (_) =>
                     {
                         var folder = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Download", Windows.Storage.CreationCollisionOption.OpenIfExists);
                         await Windows.System.Launcher.LaunchFolderAsync(folder);

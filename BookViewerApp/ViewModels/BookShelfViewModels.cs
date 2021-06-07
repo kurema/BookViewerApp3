@@ -294,7 +294,7 @@ namespace BookViewerApp.ViewModels
 
         private async Task GetFromBookInfoStorageAsync(string ID)
         {
-            var bookInfo = await Storages.BookInfoStorage.GetBookInfoByIDAsync(ID);
+            var bookInfo = await BookInfoStorage.GetBookInfoByIDAsync(ID);
             if (bookInfo != null)
             {
                 switch (bookInfo.PageDirection)

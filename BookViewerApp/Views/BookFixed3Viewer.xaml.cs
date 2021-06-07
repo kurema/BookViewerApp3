@@ -39,8 +39,8 @@ namespace BookViewerApp.Views
         {
             this.InitializeComponent();
 
-            if (Binding != null) Binding.ToggleFullScreenCommand = new Helper.DelegateCommand((a) => ToggleFullScreen());
-            if (Binding != null) Binding.GoToHomeCommand = new Helper.DelegateCommand((a) =>
+            if (Binding != null) Binding.ToggleFullScreenCommand = new DelegateCommand((a) => ToggleFullScreen());
+            if (Binding != null) Binding.GoToHomeCommand = new DelegateCommand((a) =>
             {
                 Binding?.SaveInfo();
                 Frame.Navigate(typeof(HomePage), null);
@@ -398,7 +398,7 @@ namespace BookViewerApp.Views
             }
             panel.SettingSource.Source = src.GroupBy(a => a.Group);
             dialog.IsPrimaryButtonEnabled = true;
-            dialog.PrimaryButtonText = Managers.ResourceManager.Loader.GetString("Word/OK");
+            dialog.PrimaryButtonText = ResourceManager.Loader.GetString("Word/OK");
             Binding.SaveInfo();
 
             dialog.Closed += async (s, e) =>
