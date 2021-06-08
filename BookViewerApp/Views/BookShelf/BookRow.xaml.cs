@@ -105,5 +105,11 @@ namespace BookViewerApp.Views.Bookshelf
                 target.Shadow = SharedShadow;
             }
         }
+
+        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books)
+        {
+            //DataContext or Items is better? It may be.
+            BookRowMain.LoadItems(books);
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace BookViewerApp.Views.Bookshelf
 
         private async void Page_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
+            StackPanelMain.Children.Clear();
+
             if (!(args.NewValue is IFileItem vm)) return;
             if (!vm.IsFolder) return;
             {
@@ -45,6 +47,8 @@ namespace BookViewerApp.Views.Bookshelf
                 foreach(var item in result)
                 {
                     var row = new BookRow();
+                    row.LoadItems(item);
+                    StackPanelMain.Children.Add(row);
                 }
             }
             finally

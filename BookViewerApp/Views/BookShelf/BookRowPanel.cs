@@ -74,6 +74,16 @@ namespace BookViewerApp.Views.Bookshelf
             return ArrangeOverride(availableSize);
         }
 
+        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books)
+        {
+            Children.Clear();
+            foreach (var item in books)
+            {
+                var child = new BookInfo() { DataContext = item };
+                Children.Add(child);
+            }
+        }
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             foreach (var item in Children) item.Measure(finalSize);
