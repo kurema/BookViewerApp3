@@ -79,7 +79,7 @@ namespace BookViewerApp.Helper
 
                     var result = GetAddLibraryMenu(() => Task.FromResult(new Storages.Library.libraryLibraryFolder()
                     {
-                        path = ".",
+                        path = "",
                         token = token.Content.token
                     }), token.Name);
                     if (!(result is null)) list.Add(result);
@@ -397,6 +397,47 @@ namespace BookViewerApp.Helper
 
                     return result.ToArray();
                 };
+            }
+
+            public static MenuCommand[] MenuLibraryContainer(IFileItem item)
+            {
+                if (item is ContainerDelegateItem && item.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Library)
+                {
+                    var result = new List<MenuCommand>();
+
+                    result.Add(new MenuCommand(GetResourceTitle("Library/AddNew"), new Helper.DelegateCommand(async (a) =>
+                    {
+                        Storages.Library.libraryLibrary library;
+                        {
+                            var currentLibs = Storages.LibraryStorage.Content.Content.libraries;
+                            Array.Resize(ref currentLibs, currentLibs.Length + 1);
+                            currentLibs[currentLibs.Length - 1] = library = new Storages.Library.libraryLibrary()
+                            {
+                                Items = new object[0],
+                                title = GetResourceTitle("Library/New")
+                            };
+                            Storages.LibraryStorage.Content.Content.libraries = currentLibs;
+                        }
+                        Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+
+                        var dialog = new ContentDialog()
+                        {
+                            PrimaryButtonText = Managers.ResourceManager.Loader.GetString("Word/OK"),
+                        };
+                        dialog.Content = new Views.LibraryManagerControl()
+                        {
+                            DataContext = new ViewModels.LibraryMemberViewModel(library),
+                        };
+                        await dialog.ShowAsync();
+                        await Storages.LibraryStorage.Content.SaveAsync();
+                    })));
+
+                    return result.ToArray();
+                }
+                else
+                {
+                    return new MenuCommand[0];
+                }
             }
 
             public static Func<IFileItem, MenuCommand[]> GetMenuLibrary(Storages.Library.libraryLibrary library)

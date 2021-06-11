@@ -850,6 +850,10 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
           <source>Open in built-in browser</source>
           <target state="new">Open in built-in browser</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Library.AddNew.Title" translate="yes" xml:space="preserve">
+          <source>Add new library</source>
+          <target state="new">Add new library</target>
+        </trans-unit>
       </group>
     </body>
   </file>

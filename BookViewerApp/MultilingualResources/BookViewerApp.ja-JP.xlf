@@ -844,6 +844,10 @@ You can also disable thumbnail generation in Explorer tab with the setting above
           <source>Open in built-in browser</source>
           <target state="new">Open in built-in browser</target>
         </trans-unit>
+        <trans-unit id="ContextMenu.Library.AddNew.Title" translate="yes" xml:space="preserve">
+          <source>Add new library</source>
+          <target state="new">Add new library</target>
+        </trans-unit>
       </group>
     </body>
   </file>

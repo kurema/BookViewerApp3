@@ -51,6 +51,7 @@ namespace BookViewerApp.Storages
                     , () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
                 Tag = LibraryKind.Library,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
+                MenuCommandsProvider=UIHelper.ContextMenus.MenuLibraryContainer
             };
         }
 
