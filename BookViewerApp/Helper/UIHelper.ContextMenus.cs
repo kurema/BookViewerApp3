@@ -76,8 +76,73 @@ namespace BookViewerApp.Helper
                         Storages.LibraryStorage.GarbageCollectToken();
                     }
                     )));
+
+                    var result = GetAddLibraryMenu(() => Task.FromResult(new Storages.Library.libraryLibraryFolder()
+                    {
+                        path = ".",
+                        token = token.Content.token
+                    }), token.Name);
+                    if (!(result is null)) list.Add(result);
+
                 }
                 return list.ToArray();
+            }
+
+            public static MenuCommand GetAddLibraryMenu(Windows.Storage.IStorageItem content, string path)
+            {
+                return GetAddLibraryMenu(async () => await Managers.BookManager.GetTokenFromPathOrRegister(content), System.IO.Path.GetFileName(path));
+            }
+
+            public static MenuCommand GetAddLibraryMenu(Func<Task<Storages.Library.libraryLibraryFolder>> tokenLfGetter, string newLibraryName)
+            {
+                var libs = Storages.LibraryStorage.Content?.Content?.libraries;
+                if (libs is null) return null;
+
+                var libsToAdd = new List<MenuCommand>();
+                var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new DelegateCommand(async b =>
+                {
+                    var tokenLf = await tokenLfGetter?.Invoke();
+                    //await Managers.BookManager.GetTokenFromPathOrRegister(content);
+                    if (a.Items is null) a.Items = new object[0];
+                    if (tokenLf != null && a.Items.Any(c => (c as Storages.Library.libraryLibraryFolder)?.Compare(tokenLf) == true))
+                    {
+                        var message = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Message");
+                        var title = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Title");
+                        var dlg = new Windows.UI.Popups.MessageDialog($"{message}", title);
+                        dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
+                        dlg.DefaultCommandIndex = 0;
+                        var res = await dlg.ShowAsync();
+                        return;
+                    }
+                    {
+                        var items = a.Items;
+                        Array.Resize(ref items, items.Length + 1);
+                        items[items.Length - 1] = tokenLf;
+                        a.Items = items;
+                    }
+                    Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+                    await Storages.LibraryStorage.Content.SaveAsync();
+                })));
+                foreach (var t in commandsToAdd) libsToAdd.Add(t);
+
+                libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new DelegateCommand(async a =>
+                {
+                    var tokenLf = await tokenLfGetter?.Invoke();
+                    {
+                        var currentLibs = Storages.LibraryStorage.Content.Content.libraries;
+                        Array.Resize(ref currentLibs, currentLibs.Length + 1);
+                        currentLibs[currentLibs.Length - 1] = new Storages.Library.libraryLibrary()
+                        {
+                            Items = new object[] { tokenLf },
+                            title = newLibraryName,
+                        };
+                        Storages.LibraryStorage.Content.Content.libraries = currentLibs;
+                    }
+                    Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
+                    await Storages.LibraryStorage.Content.SaveAsync();
+                })));
+
+                return new MenuCommand(GetResourceTitle("StorageFolder/AddToLibrary"), libsToAdd.ToArray());
             }
 
             public static MenuCommand[] MenuStorage(IFileItem item)
@@ -88,54 +153,8 @@ namespace BookViewerApp.Helper
                 {
                     if (file.IsFolder)
                     {
-                        var libs = Storages.LibraryStorage.Content?.Content?.libraries;
-                        if (libs != null)
-                        {
-                            var libsToAdd = new List<MenuCommand>();
-                            var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new DelegateCommand(async b =>
-                             {
-                                 var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
-                                 if (a.Items is null) a.Items = new object[0];
-                                 if (tokenLf != null && a.Items.Any(c => (c as Storages.Library.libraryLibraryFolder)?.Compare(tokenLf) == true))
-                                 {
-                                     var message = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Message");
-                                     var title = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Title");
-                                     var dlg = new Windows.UI.Popups.MessageDialog($"{message}", title);
-                                     dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
-                                     dlg.DefaultCommandIndex = 0;
-                                     var res = await dlg.ShowAsync();
-                                     return;
-                                 }
-                                 {
-                                     var items = a.Items;
-                                     Array.Resize(ref items, items.Length + 1);
-                                     items[items.Length - 1] = tokenLf;
-                                     a.Items = items;
-                                 }
-                                 Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
-                                 await Storages.LibraryStorage.Content.SaveAsync();
-                             })));
-                            foreach (var t in commandsToAdd) libsToAdd.Add(t);
-
-                            libsToAdd.Add(new MenuCommand(GetResourceTitle("Library/New"), new DelegateCommand(async a =>
-                            {
-                                var tokenLf = await Managers.BookManager.GetTokenFromPathOrRegister(file?.Content);
-                                {
-                                    var currentLibs = Storages.LibraryStorage.Content.Content.libraries;
-                                    Array.Resize(ref currentLibs, currentLibs.Length + 1);
-                                    currentLibs[currentLibs.Length - 1] = new Storages.Library.libraryLibrary()
-                                    {
-                                        Items = new object[] { tokenLf },
-                                        title = System.IO.Path.GetFileName(file.Path),
-                                    };
-                                    Storages.LibraryStorage.Content.Content.libraries = currentLibs;
-                                }
-                                Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
-                                await Storages.LibraryStorage.Content.SaveAsync();
-                            })));
-
-                            list.Add(new MenuCommand(GetResourceTitle("StorageFolder/AddToLibrary"), libsToAdd.ToArray()));
-                        }
+                        var result = GetAddLibraryMenu(file?.Content, file.Path);
+                        if (!(result is null)) list.Add(result);
                     }
                     else
                     {
