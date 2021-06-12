@@ -55,7 +55,7 @@ namespace BookViewerApp.Helper
             {
                 var list = new List<MenuCommand>();
 
-                if (item is TokenLibraryItem token)
+                if (item is TokenLibraryItem token && !(token.Content is null))
                 {
                     if (token.Content is null) return list.ToArray();
                     list.Add(new MenuCommand(GetResourceTitle("Folders/UnregisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
@@ -79,7 +79,7 @@ namespace BookViewerApp.Helper
 
                     var result = GetAddLibraryMenu(() => Task.FromResult(new Storages.Library.libraryLibraryFolder()
                     {
-                        path = "",
+                        path = token.Content.path ?? "",
                         token = token.Content.token
                     }), token.Name);
                     if (!(result is null)) list.Add(result);
@@ -467,6 +467,7 @@ namespace BookViewerApp.Helper
                             DataContext = new ViewModels.LibraryMemberViewModel(library),
                         };
                         await dialog.ShowAsync();
+                        await Storages.LibraryStorage.Content.SaveAsync();
                     })));
 
                     return result.ToArray();
