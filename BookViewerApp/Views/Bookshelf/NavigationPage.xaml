@@ -5,15 +5,51 @@
     xmlns:local="using:BookViewerApp.Views.Bookshelf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:BookViewerApp.ViewModels"
+    xmlns:vc="using:BookViewerApp.ValueConverters"
+    xmlns:ts="using:BookViewerApp.Views.TemplateSelectors"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    >
+    <Page.Resources>
+        <vc:LocalizeConverter x:Name="LocalVC" />
+    </Page.Resources>
+    <Page.DataContext>
+        <vm:Bookshelf2NavigationViewModel />
+    </Page.DataContext>
     <NavigationView
         HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-        IsSettingsVisible="False"
+        IsSettingsVisible="True" MenuItemsSource="{Binding MenuItems}"
+        IsBackButtonVisible="Collapsed" 
+        SelectionChanged="NavigationView_SelectionChanged"
         >
-        <NavigationView.AutoSuggestBox>
+        <NavigationView.Resources>
+            <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground"
+                BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemChromeGrayColor}" TintOpacity="0.3"  FallbackColor="{ThemeResource SystemChromeMediumColor}" />
+            <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground"
+                BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemChromeGrayColor}" TintOpacity="0.3"  FallbackColor="{ThemeResource SystemChromeMediumColor}" />
+        </NavigationView.Resources>
+        <!--<NavigationView.AutoSuggestBox>
             <AutoSuggestBox QueryIcon="Find"/>
-        </NavigationView.AutoSuggestBox>
+        </NavigationView.AutoSuggestBox>-->
+        <NavigationView.MenuItemTemplateSelector>
+            <ts:Bookshelf2NavigationItemTemplateSelector>
+                <ts:Bookshelf2NavigationItemTemplateSelector.TemplateItem>
+                    <DataTemplate x:DataType="vm:Bookshelf2NavigationItemViewModel">
+                        <NavigationViewItem Content="{Binding Title}" Icon="{Binding Icon}" />
+                    </DataTemplate>
+                </ts:Bookshelf2NavigationItemTemplateSelector.TemplateItem>
+                <ts:Bookshelf2NavigationItemTemplateSelector.TemplateSeparator>
+                    <DataTemplate x:DataType="vm:Bookshelf2NavigationItemViewModel">
+                        <NavigationViewItemSeparator />
+                    </DataTemplate>
+                </ts:Bookshelf2NavigationItemTemplateSelector.TemplateSeparator>
+                <ts:Bookshelf2NavigationItemTemplateSelector.TemplateHeader>
+                    <DataTemplate x:DataType="vm:Bookshelf2NavigationItemViewModel">
+                        <NavigationViewItemHeader Content="{Binding Title}" />
+                    </DataTemplate>
+                </ts:Bookshelf2NavigationItemTemplateSelector.TemplateHeader>
+            </ts:Bookshelf2NavigationItemTemplateSelector>
+        </NavigationView.MenuItemTemplateSelector>
         <Frame x:Name="FrameMain"/>
     </NavigationView>
 </Page>

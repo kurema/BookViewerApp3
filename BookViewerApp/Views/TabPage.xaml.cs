@@ -183,7 +183,7 @@ namespace BookViewerApp.Views
         public void OpenTabBookshelf()
         {
             var (frame, newTab) = OpenTab("Bookshelf");
-            frame?.Navigate(typeof(Bookshelf.BookshelfPage));
+            frame?.Navigate(typeof(Bookshelf.NavigationPage));
         }
 
 

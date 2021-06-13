@@ -43,7 +43,7 @@ namespace BookViewerApp.Views
             if (Binding != null) Binding.GoToHomeCommand = new DelegateCommand((a) =>
             {
                 Binding?.SaveInfo();
-                Frame.Navigate(typeof(HomePage), null);
+                Frame.Navigate(typeof(Bookshelf.NavigationPage), null);
             });
 
             Application.Current.Suspending += (s, e) => Binding?.SaveInfo();

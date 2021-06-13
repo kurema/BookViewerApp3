@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using BookViewerApp.ViewModels;
+
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace BookViewerApp.Views.Bookshelf
@@ -25,6 +27,81 @@ namespace BookViewerApp.Views.Bookshelf
         public NavigationPage()
         {
             this.InitializeComponent();
+
+            SetUpItems();
         }
+
+        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                FrameMain.Navigate(typeof(SettingPage));
+                return;
+            }
+            if (!(args.SelectedItem is Bookshelf2NavigationItemViewModel itemVM)) return;
+            itemVM.Open();
+        }
+
+        private async void SetUpItems()
+        {
+            if (!(this.DataContext is ViewModels.Bookshelf2NavigationViewModel vm)) return;
+            vm.MenuItems.Clear();
+            var items = await Storages.LibraryStorage.GetItemLibrary()?.GetChildren();
+            if (items is null) return;
+            var list = new List<Bookshelf2NavigationItemViewModel>();
+            foreach(var item in items)
+            {
+                list.Add(new Bookshelf2NavigationItemViewModel() { Icon = new SymbolIcon(Symbol.Library), ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Item, Tag = item, Title = item.Name ,
+                    OpenAction= OpenItem
+                });
+            }
+            if (list.Count > 0)
+            {
+                vm.MenuItems.Add(new Bookshelf2NavigationItemViewModel()
+                {
+                    Title = "Library",
+                    ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Header
+                });
+                foreach(var item in list) { vm.MenuItems.Add(item); }
+            }
+        }
+
+        private void OpenItem(Bookshelf2NavigationItemViewModel vm)
+        {
+            if (!(vm.Tag is kurema.FileExplorerControl.Models.FileItems.IFileItem file)) return;
+            FrameMain.Navigate(typeof(BookshelfPageFileItem), file);
+        }
+    }
+}
+
+namespace BookViewerApp.Views.TemplateSelectors
+{
+    public sealed class Bookshelf2NavigationItemTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate TemplateItem { get; set; }
+        public DataTemplate TemplateSeparator { get; set; }
+        public DataTemplate TemplateHeader { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (!(item is Bookshelf2NavigationItemViewModel vm)) return base.SelectTemplateCore(item);
+
+            switch (vm.ItemKind)
+            {
+                default:
+                case Bookshelf2NavigationItemViewModel.ItemType.Item:
+                    return TemplateItem;
+                case Bookshelf2NavigationItemViewModel.ItemType.Separator:
+                    return TemplateSeparator;
+                case Bookshelf2NavigationItemViewModel.ItemType.Header:
+                    return TemplateHeader;
+            }
+        }
+
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+        {
+            return SelectTemplateCore(item);
+        }
+
     }
 }

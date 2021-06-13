@@ -83,6 +83,7 @@ namespace kurema.FileExplorerControl.ViewModels
         public FileItemViewModel(IFileItem content)
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
+            IconProviders = new ObservableCollection<IIconProvider>();
         }
 
         public FileItemViewModel[] Folders
@@ -175,7 +176,7 @@ namespace kurema.FileExplorerControl.ViewModels
             }
         }
 
-        private ObservableCollection<IIconProvider> _IconProviders = new ObservableCollection<IIconProvider>(new[] { new IconProviderDefault() });
+        private ObservableCollection<IIconProvider> _IconProviders = null;
 
         public ObservableCollection<IIconProvider> IconProviders
         {

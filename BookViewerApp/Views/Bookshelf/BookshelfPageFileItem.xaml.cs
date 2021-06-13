@@ -42,12 +42,17 @@ namespace BookViewerApp.Views.Bookshelf
             }
             try
             {
-                var result = new List<Bookshelf2BookViewModel[]>();
-                await ListUpChildren(result, vm, 5);
-                foreach(var item in result)
+                var result = new List<(IFileItem, Bookshelf2BookViewModel[])>();
+                await ListUpChildren(result, vm, 5, 5);
+                foreach (var item in result)
                 {
-                    var row = new BookRow();
-                    row.LoadItems(item);
+                    var row = new BookRow()
+                    {
+                        Margin = new Thickness(30),
+                        Spacing = new Size(10, 10),
+                        Header = item.Item1.Name
+                    };
+                    row.LoadItems(item.Item2);
                     StackPanelMain.Children.Add(row);
                 }
             }
@@ -58,24 +63,40 @@ namespace BookViewerApp.Views.Bookshelf
             }
         }
 
-        private async Task ListUpChildren(List<Bookshelf2BookViewModel[]> shelfs, IFileItem fileItem, int level)
+        private async Task ListUpChildren(List<(IFileItem, Bookshelf2BookViewModel[])> shelfs, IFileItem fileItem, int level, int maxItem = 10)
         {
             if (!fileItem.IsFolder) return;
             if (level < 0) return;
+            if (shelfs.Count >= maxItem) return;
+
             System.Collections.ObjectModel.ObservableCollection<IFileItem> children;
             try { children = await fileItem.GetChildren(); } catch { return; }
             var result = new List<Bookshelf2BookViewModel>();
             foreach (var item in children.Where(a => !a.IsFolder && Managers.BookManager.IsFileAvailabe(a.Path)))
             {
                 var vm = new Bookshelf2BookViewModel();
-                await vm.Load(new kurema.FileExplorerControl.ViewModels.FileItemViewModel(fileItem));
+                var fivm = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(fileItem);
+                fivm.IconProviders = new System.Collections.ObjectModel.ObservableCollection<kurema.FileExplorerControl.Models.IconProviders.IIconProvider>() {
+                    new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate((f,cancel)=>{
+                        return null;
+                    }),
+                };
+                await vm.Load(fivm);
                 result.Add(vm);
             }
-            if (result.Count > 0) shelfs?.Add(result.ToArray());
-            foreach (var item in children.Where(a => a.IsFolder))
+            if (result.Count > 0) shelfs?.Add((fileItem, result.ToArray()));
+            foreach (var item in children.Where(a => a.IsFolder).OrderBy((_) => Guid.NewGuid().ToString()))
             {
                 await ListUpChildren(shelfs, item, level - 1);
+                if (shelfs.Count >= maxItem) return;
             }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is IFileItem vm) { this.DataContext = vm; return; }
+
+            base.OnNavigatedTo(e);
         }
     }
 }
