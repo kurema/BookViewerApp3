@@ -43,16 +43,17 @@ namespace BookViewerApp.Views.Bookshelf
             try
             {
                 var result = new List<(IFileItem, Bookshelf2BookViewModel[])>();
-                await ListUpChildren(result, vm, 5, 5);
+                await ListUpChildren(result, vm, 2, 3);
                 foreach (var item in result)
                 {
                     var row = new BookRow()
                     {
                         Margin = new Thickness(30),
                         Spacing = new Size(10, 10),
-                        Header = item.Item1.Name
+                        Header = item.Item1.Name,
+                        SubHeader = item.Item1.Path,
                     };
-                    row.LoadItems(item.Item2);
+                    row.LoadItems(item.Item2, 300);
                     StackPanelMain.Children.Add(row);
                 }
             }
@@ -75,10 +76,10 @@ namespace BookViewerApp.Views.Bookshelf
             foreach (var item in children.Where(a => !a.IsFolder && Managers.BookManager.IsFileAvailabe(a.Path)))
             {
                 var vm = new Bookshelf2BookViewModel();
-                var fivm = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(fileItem);
+                var fivm = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(item);
                 fivm.IconProviders = new System.Collections.ObjectModel.ObservableCollection<kurema.FileExplorerControl.Models.IconProviders.IIconProvider>() {
-                    new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate((f,cancel)=>{
-                        return null;
+                    new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(async (f,cancel)=>{
+                        return await Helper.UIHelper.IconProviderHelper.BookIconsBookshelf(f,cancel,this.Dispatcher);
                     }),
                 };
                 await vm.Load(fivm);

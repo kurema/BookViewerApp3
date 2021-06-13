@@ -23,7 +23,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <local:Book Height="296" Width="210" Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding File.IconLarge}" x:Name="BookMain"
+        <local:Book Height="{x:Bind BookHeight,Mode=OneWay}" Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding File.IconLarge}" x:Name="BookMain"
                     PointerEntered="BookMain_PointerEntered" PointerExited="BookMain_PointerExited"
                     Tapped="BookMain_Tapped"
                     >

@@ -83,7 +83,7 @@ namespace kurema.FileExplorerControl.ViewModels
         public FileItemViewModel(IFileItem content)
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
-            IconProviders = new ObservableCollection<IIconProvider>();
+            IconProviders = new ObservableCollection<IIconProvider>() { new IconProviderDefault() };
         }
 
         public FileItemViewModel[] Folders
@@ -188,10 +188,10 @@ namespace kurema.FileExplorerControl.ViewModels
                     OnPropertyChanged(nameof(IconLarge));
                 }
 
-                if (_IconProviders != null) _IconProviders.CollectionChanged -= IconUpdate;
+                if (!(_IconProviders is null)) _IconProviders.CollectionChanged -= IconUpdate;
                 SetProperty(ref _IconProviders, value);
                 IconUpdate(this, null);
-                if (_IconProviders != null) _IconProviders.CollectionChanged += IconUpdate;
+                if (!(_IconProviders is null)) _IconProviders.CollectionChanged += IconUpdate;
             }
         }
 

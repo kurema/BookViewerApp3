@@ -18,7 +18,7 @@
     <Border CornerRadius="{StaticResource radius}" x:Name="BorderMain">
         <Grid>
             <!--<Grid Background="#FF3B5B38"></Grid>-->
-            <Image x:Name="mainPicture"/>
+            <Image x:Name="mainPicture" Source="{x:Bind Source,Mode=OneWay}" SizeChanged="mainPicture_SizeChanged"/>
             <Grid>
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="1,0">

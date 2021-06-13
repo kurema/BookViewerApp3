@@ -100,7 +100,7 @@ namespace BookViewerApp.Managers
                 if (cancellationToken.IsCancellationRequested) return null;
                 if (!(storageItem is Windows.Storage.IStorageFile f)) return null;
                 var book = await BookManager.GetBookFromFile(f);
-                if (string.IsNullOrEmpty(book.ID)) return book;
+                if (string.IsNullOrEmpty(book?.ID)) return book;
                 Storages.PathStorage.AddOrReplace(f.Path, book.ID, (book as Books.IBookFixed)?.PageCount);
                 await SaveImageAsync(book);
                 await Storages.PathStorage.Content.SaveAsync();

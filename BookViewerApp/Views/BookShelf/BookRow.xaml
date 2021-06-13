@@ -31,8 +31,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <TextBlock TextTrimming="CharacterEllipsis" Text="{x:Bind Header}" Style="{ThemeResource HeaderTextBlockStyle}" VerticalAlignment="Center"/>
-            <Button Grid.Column="1" Style="{ThemeResource TextBlockButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{x:Bind CommandExpand}">
+            <TextBlock Grid.Row="1" TextTrimming="CharacterEllipsis" Text="{x:Bind SubHeader}" Style="{ThemeResource SubtitleTextBlockStyle}" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" Grid.RowSpan="2" Style="{ThemeResource TextBlockButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{x:Bind CommandExpand}">
                 <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Expand, Mode=OneTime}" >
                     <TextBlock.Visibility>
                         <Binding Converter="{StaticResource BoolToStringConverter}" ConverterParameter="Visible:Collapsed" ElementName="BookRowMain" Path="HasCollapsedItem"/>

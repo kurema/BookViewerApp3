@@ -27,7 +27,15 @@ namespace BookViewerApp.Views.Bookshelf
         //Shadow ignore corner radius by default. So it doesn't make much sense to use this. But it may in future.
         public UIElement ShadowTarget => BorderMain;
 
-        private double Aspect { get; set; } = 0;// Width/Height
+        public double Aspect
+        {
+            get { return (double)GetValue(AspectProperty); }
+            set { SetValue(AspectProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Aspect.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AspectProperty =
+            DependencyProperty.Register("Aspect", typeof(double), typeof(Book), new PropertyMetadata(0));
 
         public ImageSource Source
         {
@@ -42,31 +50,15 @@ namespace BookViewerApp.Views.Bookshelf
         static private void SourcePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (!(d is Book db)) return;
-
-            if (args.OldValue is Windows.UI.Xaml.Media.Imaging.BitmapSource so)
-            {
-                if (!(db.SourcePropertySizeChangedCallbackToken is null))
-                {
-                    so.UnregisterPropertyChangedCallback(Windows.UI.Xaml.Media.Imaging.BitmapSource.PixelHeightProperty, db.SourcePropertySizeChangedCallbackToken ?? 0);
-                    db.SourcePropertySizeChangedCallbackToken = null;
-                }
-            }
-
             if (args.NewValue is Windows.UI.Xaml.Media.Imaging.BitmapSource sn)
             {
-                db.SourcePropertySizeChangedCallbackToken = sn.RegisterPropertyChangedCallback(Windows.UI.Xaml.Media.Imaging.BitmapSource.PixelHeightProperty, new DependencyPropertyChangedCallback((s, e) =>
-                {
-                    if (d is Book db)
-                    {
-                        //PixelWidthとPexelHeightは同時に更新されるのか？
-                        db.Aspect = double.IsNaN(sn.PixelWidth) || sn.PixelWidth == 0 || double.IsNaN(sn.PixelHeight) || sn.PixelHeight == 0 ? 0 : sn.PixelWidth / sn.PixelHeight;
-                        db.InvalidateArrange();
-                    }
-                }));
+                db.Aspect = GetAspect(sn);
+                db.InvalidateMeasure();
             }
+            else { db.Aspect = 0; }
         }
 
-        public long? SourcePropertySizeChangedCallbackToken = null;
+        private static double GetAspect(Windows.UI.Xaml.Media.Imaging.BitmapSource? source) => source is null || source.PixelWidth == 0 || source.PixelHeight == 0 ? 0 : source.PixelWidth / (double)source.PixelHeight;
 
         public Book()
         {
@@ -104,6 +96,16 @@ namespace BookViewerApp.Views.Bookshelf
                 return ArrangeToStretch(finalSize.Width, finalSize.Width / aspect, Content);
             }
             //return base.ArrangeOverride(finalSize);
+        }
+
+        private void mainPicture_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var aspect = GetAspect((sender as Image)?.Source as Windows.UI.Xaml.Media.Imaging.BitmapSource);
+            if (aspect != Aspect)
+            {
+                Aspect = aspect;
+                InvalidateMeasure();
+            }
         }
     }
 }

@@ -35,8 +35,6 @@ namespace BookViewerApp.Views.Bookshelf
         public static readonly DependencyProperty MarginPanelProperty =
             DependencyProperty.Register("MarginPanel", typeof(Thickness), typeof(BookRowPanel), new PropertyMetadata(new Thickness()));
 
-
-
         public Size Spacing
         {
             get { return (Size)GetValue(SpacingProperty); }
@@ -56,8 +54,6 @@ namespace BookViewerApp.Views.Bookshelf
         // Using a DependencyProperty as the backing store for MaxLine.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MaxLineProperty =
             DependencyProperty.Register("MaxLine", typeof(int), typeof(BookRow), new PropertyMetadata(1));
-
-
 
         public bool AllowOverflow
         {
@@ -83,6 +79,20 @@ namespace BookViewerApp.Views.Bookshelf
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header", typeof(string), typeof(BookRow), new PropertyMetadata(""));
 
+
+
+        public string SubHeader
+        {
+            get { return (string)GetValue(SubHeaderProperty); }
+            set { SetValue(SubHeaderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SubHeader.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubHeaderProperty =
+            DependencyProperty.Register("SubHeader", typeof(string), typeof(BookRow), new PropertyMetadata(""));
+
+
+
         public BookRow()
         {
             this.InitializeComponent();
@@ -106,10 +116,10 @@ namespace BookViewerApp.Views.Bookshelf
             }
         }
 
-        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books)
+        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books, double bookHeight = 0)
         {
             //DataContext or Items is better? It may be.
-            BookRowMain.LoadItems(books);
+            BookRowMain.LoadItems(books, bookHeight);
         }
     }
 }

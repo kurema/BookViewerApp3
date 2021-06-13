@@ -277,6 +277,7 @@
     <Compile Include="Helper\UIHelper.ContextMenus.cs" />
     <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Helper\UIHelper.FrameOperation.cs" />
+    <Compile Include="Helper\UIHelper.IconProviders.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
     <Compile Include="Managers\FaviconManager.cs" />
