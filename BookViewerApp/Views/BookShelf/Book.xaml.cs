@@ -104,7 +104,12 @@ namespace BookViewerApp.Views.Bookshelf
             if (aspect != Aspect)
             {
                 Aspect = aspect;
-                InvalidateMeasure();
+                FrameworkElement? element = this;
+                for (int i = 0; i < 3 && !(element is null); i++)
+                {
+                    element.InvalidateMeasure();
+                    element = element.Parent as FrameworkElement;
+                }
             }
         }
     }

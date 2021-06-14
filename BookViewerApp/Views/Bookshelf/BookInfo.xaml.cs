@@ -54,16 +54,9 @@ namespace BookViewerApp.Views.Bookshelf
         {
             //BookMainの幅に全体を合わせます。
             if (!double.IsPositiveInfinity(availableSize.Height) || BookHeight <= 0 || double.IsNaN(BookHeight)) return base.MeasureOverride(availableSize);
-            BookMain.Measure(new Size(Math.Min(MaxWidth, availableSize.Width), BookHeight));
+            BookMain.Measure(new Size(availableSize.Width, BookHeight));
             Content.Measure(new Size(BookMain.DesiredSize.Width, double.PositiveInfinity));
-            //{
-            //    System.Diagnostics.Debug.WriteLine(Content.DesiredSize.ToString());
-            //    System.Diagnostics.Debug.WriteLine(Environment.StackTrace);
-            //}
             return Content.DesiredSize;
-            //var result= base.MeasureOverride(new Size(Math.Min(Math.Max(BookMain.DesiredSize.Width, MinWidth), availableSize.Width), double.PositiveInfinity));
-            //return base.MeasureOverride(availableSize);
-            //return result;
         }
 
         public event TappedEventHandler BookTapped;
