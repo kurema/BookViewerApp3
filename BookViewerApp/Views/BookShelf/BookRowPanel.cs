@@ -92,7 +92,7 @@ namespace BookViewerApp.Views.Bookshelf
 
         private Size MeasureOrArrange(Size finalSize, bool arrange)
         {
-            foreach (var item in Children) item.Measure(finalSize);
+            foreach (var item in Children) item.Measure(new Size(double.MaxValue, double.MaxValue));
             double y = 0;
             double x = 0;
             double hmax = 0;

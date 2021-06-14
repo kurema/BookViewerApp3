@@ -63,7 +63,7 @@ namespace BookViewerApp.Views.Bookshelf
                 Header = file.Name,
                 SubHeader = file.Path,
             };
-            row.LoadItems(vms, 300,300);
+            row.LoadItems(vms, 300,500);
             StackPanelMain.Children.Add(row);
         }
 
