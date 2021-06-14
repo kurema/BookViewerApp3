@@ -44,6 +44,11 @@ namespace BookViewerApp.Views.Bookshelf
             {
                 var result = new List<(IFileItem, Bookshelf2BookViewModel[])>();
                 await ListUpChildren(AddChildren, vm, () => StackPanelMain.Children.Count < 1);
+                if(StackPanelMain.Children.Count == 1 && StackPanelMain.Children[0] is BookRow br)
+                {
+                    br.MaxLine = int.MaxValue;
+                    br.AllowOverflow = false;
+                }
             }
             finally
             {
@@ -63,7 +68,7 @@ namespace BookViewerApp.Views.Bookshelf
                 Header = file.Name,
                 SubHeader = file.Path,
             };
-            row.LoadItems(vms, 300,300);
+            row.LoadItems(vms, 300, 300);
             StackPanelMain.Children.Add(row);
         }
 
@@ -77,7 +82,7 @@ namespace BookViewerApp.Views.Bookshelf
             System.Collections.ObjectModel.ObservableCollection<IFileItem> children;
             try { children = await fileItem.GetChildren(); } catch { return; }
             var result = new List<Bookshelf2BookViewModel>();
-            foreach (var item in children.Where(a => !a.IsFolder && Managers.BookManager.IsFileAvailabe(a.Path)))
+            foreach (var item in children.Where(a => !a.IsFolder && (a is HistoryMRUItem || Managers.BookManager.IsFileAvailabe(a.Path))))
             {
                 var vm = new Bookshelf2BookViewModel();
                 var fivm = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(item);

@@ -25,7 +25,7 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public string Name => Content.Name;
 
-        public string Path => throw new NotImplementedException();
+        public string Path => Token;
 
         public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
 

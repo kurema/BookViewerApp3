@@ -49,10 +49,15 @@ namespace BookViewerApp.Views.Bookshelf
             var items = await Storages.LibraryStorage.GetItemLibrary()?.GetChildren();
             if (items is null) return;
             var list = new List<Bookshelf2NavigationItemViewModel>();
-            foreach(var item in items)
+            foreach (var item in items)
             {
-                list.Add(new Bookshelf2NavigationItemViewModel() { Icon = new SymbolIcon(Symbol.Library), ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Item, Tag = item, Title = item.Name ,
-                    OpenAction= OpenItem
+                list.Add(new Bookshelf2NavigationItemViewModel()
+                {
+                    Icon = new SymbolIcon(Symbol.Library),
+                    ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Item,
+                    Tag = item,
+                    Title = item.Name,
+                    OpenAction = OpenItem
                 });
             }
             if (list.Count > 0)
@@ -62,8 +67,20 @@ namespace BookViewerApp.Views.Bookshelf
                     Title = "Library",
                     ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Header
                 });
-                foreach(var item in list) { vm.MenuItems.Add(item); }
+                foreach (var item in list) { vm.MenuItems.Add(item); }
             }
+            vm.MenuItems.Add(new Bookshelf2NavigationItemViewModel()
+            {
+                ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Separator
+            });
+            vm.MenuItems.Add(new Bookshelf2NavigationItemViewModel()
+            {
+                Title = "History",
+                ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Item,
+                Icon = new FontIcon() { FontFamily = new FontFamily("Segoe MDL2 Assets"), Glyph = "\uF738", },
+                OpenAction = OpenItem,
+                Tag = Storages.LibraryStorage.GetItemHistoryMRU(new Helper.InvalidCommand()),
+            });
         }
 
         private void OpenItem(Bookshelf2NavigationItemViewModel vm)
