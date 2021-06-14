@@ -71,20 +71,26 @@ namespace BookViewerApp.Views.Bookshelf
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return ArrangeOverride(availableSize);
+            return MeasureOrArrange(availableSize, false);
         }
 
-        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books, double bookHeight = 0)
+        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books, double bookHeight = double.NaN, double maxWidth = double.PositiveInfinity)
         {
             Children.Clear();
             foreach (var item in books)
             {
-                var child = new BookInfo() { DataContext = item, BookHeight = bookHeight };
+                var child = new BookInfo() { DataContext = item, MaxWidth = maxWidth };
+                if (!double.IsNaN(bookHeight)) child.BookHeight = bookHeight;
                 Children.Add(child);
             }
         }
 
         protected override Size ArrangeOverride(Size finalSize)
+        {
+            return MeasureOrArrange(finalSize, true);
+        }
+
+        private Size MeasureOrArrange(Size finalSize, bool arrange)
         {
             foreach (var item in Children) item.Measure(finalSize);
             double y = 0;
@@ -103,11 +109,11 @@ namespace BookViewerApp.Views.Bookshelf
                 {
                     if (line + 1 >= MaxLine)
                     {
-                        for (int j = i; j < Children.Count; j++)
+                        for (; i < Children.Count; i++)
                         {
                             collapsed = true;
                             //Is this fine? I doubt...
-                            Children[j].Arrange(new Rect(0, 0, 0, 0));
+                            if (arrange) Children[i].Arrange(new Rect(0, 0, 0, 0));
                         }
                         break;
                     }
@@ -117,7 +123,7 @@ namespace BookViewerApp.Views.Bookshelf
                     y += Spacing.Height;
                     hmax = 0;
                 }
-                child.Arrange(new Rect(x, y, child.DesiredSize.Width, child.DesiredSize.Height));
+                if (arrange) child.Arrange(new Rect(x, y, child.DesiredSize.Width, child.DesiredSize.Height));
                 hmax = Math.Max(hmax, child.DesiredSize.Height);
                 x += child.DesiredSize.Width;
                 x += Spacing.Width;

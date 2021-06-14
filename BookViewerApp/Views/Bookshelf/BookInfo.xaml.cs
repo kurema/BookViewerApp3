@@ -50,22 +50,16 @@ namespace BookViewerApp.Views.Bookshelf
             BookMain.Translation = new System.Numerics.Vector3(0, 0, 32);
         }
 
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            return base.ArrangeOverride(base.MeasureOverride(finalSize));
-            //return base.ArrangeOverride(finalSize);
-        }
-
         protected override Size MeasureOverride(Size availableSize)
         {
             //BookMainの幅に全体を合わせます。
-            if (!double.IsPositiveInfinity(availableSize.Height) || BookHeight <= 0) return base.MeasureOverride(availableSize);
+            if (!double.IsPositiveInfinity(availableSize.Height) || BookHeight <= 0 || double.IsNaN(BookHeight)) return base.MeasureOverride(availableSize);
             BookMain.Measure(new Size(Math.Min(MaxWidth, availableSize.Width), BookHeight));
-            this.Width = BookMain.DesiredSize.Width;
-            //Content.Measure(new Size(BookMain.DesiredSize.Width, double.PositiveInfinity));
+            Content.Measure(new Size(BookMain.DesiredSize.Width, double.PositiveInfinity));
             //return Content.DesiredSize;
-            //return base.MeasureOverride(new Size(Math.Min(Math.Max(BookMain.DesiredSize.Width, MinWidth), availableSize.Width), double.PositiveInfinity));
+            var result= base.MeasureOverride(new Size(Math.Min(Math.Max(BookMain.DesiredSize.Width, MinWidth), availableSize.Width), double.PositiveInfinity));
             return base.MeasureOverride(availableSize);
+            //return result;
         }
 
         public event TappedEventHandler BookTapped;

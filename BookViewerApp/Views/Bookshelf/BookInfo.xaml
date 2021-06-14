@@ -31,7 +31,7 @@
                 <Vector3Transition Duration="0:0:0.8"  />
             </local:Book.TranslationTransition>
         </local:Book>
-        <TextBlock Text="{Binding File.Title}" Grid.Row="1" Grid.ColumnSpan="1" />
+        <TextBlock Text="{Binding File.Title}" Grid.Row="1" Grid.ColumnSpan="1" TextTrimming="CharacterEllipsis"/>
         <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="{ThemeResource SystemBaseMediumColor}">
             <Run Text="{Binding ReadRate}" /> %
         </TextBlock>

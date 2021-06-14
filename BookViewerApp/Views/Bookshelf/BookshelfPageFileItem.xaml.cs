@@ -43,19 +43,7 @@ namespace BookViewerApp.Views.Bookshelf
             try
             {
                 var result = new List<(IFileItem, Bookshelf2BookViewModel[])>();
-                await ListUpChildren(result, vm, 2, 3);
-                foreach (var item in result)
-                {
-                    var row = new BookRow()
-                    {
-                        Margin = new Thickness(30),
-                        Spacing = new Size(10, 10),
-                        Header = item.Item1.Name,
-                        SubHeader = item.Item1.Path,
-                    };
-                    row.LoadItems(item.Item2, 300);
-                    StackPanelMain.Children.Add(row);
-                }
+                await ListUpChildren(AddChildren, vm, () => StackPanelMain.Children.Count < 1);
             }
             finally
             {
@@ -64,11 +52,27 @@ namespace BookViewerApp.Views.Bookshelf
             }
         }
 
-        private async Task ListUpChildren(List<(IFileItem, Bookshelf2BookViewModel[])> shelfs, IFileItem fileItem, int level, int maxItem = 10)
+        private void AddChildren(IFileItem file, Bookshelf2BookViewModel[] vms)
+        {
+            if (file is null || vms is null || vms.Length == 0) return;
+
+            var row = new BookRow()
+            {
+                Margin = new Thickness(30),
+                Spacing = new Size(10, 10),
+                Header = file.Name,
+                SubHeader = file.Path,
+            };
+            row.LoadItems(vms, 300,300);
+            StackPanelMain.Children.Add(row);
+        }
+
+        private async Task ListUpChildren(Action<IFileItem, Bookshelf2BookViewModel[]> AddShelfAction, IFileItem fileItem, Func<bool> checkContinue, int level = 2)
         {
             if (!fileItem.IsFolder) return;
-            if (level < 0) return;
-            if (shelfs.Count >= maxItem) return;
+            if (AddShelfAction is null) return;
+            if (checkContinue?.Invoke() == false) return;
+            //if (shelfs.Count >= maxItem) return;
 
             System.Collections.ObjectModel.ObservableCollection<IFileItem> children;
             try { children = await fileItem.GetChildren(); } catch { return; }
@@ -85,11 +89,13 @@ namespace BookViewerApp.Views.Bookshelf
                 await vm.Load(fivm);
                 result.Add(vm);
             }
-            if (result.Count > 0) shelfs?.Add((fileItem, result.ToArray()));
+            if (result.Count > 0) AddShelfAction(fileItem, result.ToArray());
+            if (level <= 0) return;
             foreach (var item in children.Where(a => a.IsFolder).OrderBy((_) => Guid.NewGuid().ToString()))
             {
-                await ListUpChildren(shelfs, item, level - 1);
-                if (shelfs.Count >= maxItem) return;
+                await ListUpChildren(AddShelfAction, item, checkContinue, level - 1);
+                if (checkContinue?.Invoke() == false) return;
+                //if (shelfs.Count >= maxItem) return;
             }
         }
 

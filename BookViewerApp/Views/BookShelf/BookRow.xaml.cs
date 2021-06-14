@@ -116,10 +116,10 @@ namespace BookViewerApp.Views.Bookshelf
             }
         }
 
-        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books, double bookHeight = 0)
+        public void LoadItems(ViewModels.Bookshelf2BookViewModel[] books, double bookHeight = double.NaN, double maxWidth=double.PositiveInfinity)
         {
             //DataContext or Items is better? It may be.
-            BookRowMain.LoadItems(books, bookHeight);
+            BookRowMain.LoadItems(books, bookHeight, maxWidth);
         }
     }
 }
