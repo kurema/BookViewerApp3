@@ -30,12 +30,20 @@ namespace BookViewerApp.Views.Bookshelf
             this.InitializeComponent();
         }
 
+        private object DataContextProcessed = null;
+
         private async void Page_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
+            // This is called twice. I couldn't figure out why...
+            if (args.NewValue == DataContextProcessed) return;
+            DataContextProcessed = args.NewValue;
+
             StackPanelMain.Children.Clear();
+
 
             if (!(args.NewValue is IFileItem vm)) return;
             if (!vm.IsFolder) return;
+            args.Handled = true;
             {
                 ProgressBarMain.Visibility = Visibility.Visible;
                 ProgressBarMain.IsActive = true;
@@ -43,7 +51,7 @@ namespace BookViewerApp.Views.Bookshelf
             try
             {
                 var result = new List<(IFileItem, Bookshelf2BookViewModel[])>();
-                await ListUpChildren(AddChildren, vm, () => StackPanelMain.Children.Count < 1);
+                await ListUpChildren(AddChildren, vm, () => StackPanelMain.Children.Count < 2);
                 if(StackPanelMain.Children.Count == 1 && StackPanelMain.Children[0] is BookRow br)
                 {
                     br.MaxLine = int.MaxValue;

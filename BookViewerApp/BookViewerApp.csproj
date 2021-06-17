@@ -187,6 +187,7 @@
     <Content Include="res\bibi\bibi\resources\scripts\polyfills\intersection-observer.js" />
     <Content Include="res\bibi\bibi\resources\styles\bibi.css" />
     <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
+    <Content Include="res\cover\shincho.png" />
     <Content Include="res\Icon\icon_bookmark_l.png" />
     <Content Include="res\Icon\icon_bookmark_s.png" />
     <Content Include="res\Icon\icon_book_l.png" />
