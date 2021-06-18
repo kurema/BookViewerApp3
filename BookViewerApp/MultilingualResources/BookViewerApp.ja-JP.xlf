@@ -848,6 +848,10 @@ You can also disable thumbnail generation in Explorer tab with the setting above
           <source>Add new library</source>
           <target state="new">Add new library</target>
         </trans-unit>
+        <trans-unit id="TabHeader.MediaPlayer" translate="yes" xml:space="preserve">
+          <source>Player</source>
+          <target state="new">Player</target>
+        </trans-unit>
       </group>
     </body>
   </file>

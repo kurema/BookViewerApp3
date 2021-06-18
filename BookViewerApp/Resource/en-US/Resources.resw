@@ -740,4 +740,7 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
     <value>Add new library</value>
   </data>
+  <data name="TabHeader.MediaPlayer" xml:space="preserve">
+    <value>Player</value>
+  </data>
 </root>

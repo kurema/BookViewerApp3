@@ -182,20 +182,19 @@ namespace BookViewerApp.Views
             double w = finalSize.Width;
             double h = finalSize.Height;
 
+            if (w == 0 || h == 0) return finalSize;
+
+            if (w1 == 0 || h1 == 0)
+            {
+                goto Conclude;
+            }
 
             switch (ModeOverride)
             {
                 case ModeOverrideEnum.ForceHalfFirst: goto Half;
                 case ModeOverrideEnum.ForceHalfSecond: goto HalfSecond;
                 case ModeOverrideEnum.ForceSingle: goto Single;
-                case ModeOverrideEnum.ForceDouble:goto Double;
-            }
-
-            if (w == 0 || h == 0) return finalSize;
-
-            if (w1 == 0 || h1 == 0)
-            {
-                goto Conclude;
+                case ModeOverrideEnum.ForceDouble when w2 != 0 && h2 != 0: goto Double;
             }
 
             switch (Mode)

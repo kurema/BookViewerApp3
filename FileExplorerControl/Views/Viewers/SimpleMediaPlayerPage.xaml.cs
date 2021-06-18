@@ -38,7 +38,7 @@ namespace kurema.FileExplorerControl.Views.Viewers
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(e.Parameter is Windows.Media.Playback.IMediaPlaybackSource source)
+            if (e.Parameter is Windows.Media.Playback.IMediaPlaybackSource source)
             {
                 mediaPlayerMain.Source = source;
                 return;
@@ -47,9 +47,9 @@ namespace kurema.FileExplorerControl.Views.Viewers
             base.OnNavigatedTo(e);
         }
 
-        public async static Task<string[]> GetAvailableExtensionsAsync()
+        public static Task<string[]> GetAvailableExtensionsAsync()
         {
-            return new[] { ".MP4", ".MP3", ".FLAC" };
+            return Task.FromResult(new[] { ".MP4", ".MP3", ".FLAC", ".WMA", ".WMV", ".WAV" });
         }
     }
 }

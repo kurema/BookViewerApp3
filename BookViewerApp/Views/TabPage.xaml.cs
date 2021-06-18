@@ -130,6 +130,12 @@ namespace BookViewerApp.Views
             frame.Navigate(typeof(BookFixed3Viewer), stream);
         }
 
+        public async void OpenTabBook(System.Threading.Tasks.Task<Stream> stream)
+        {
+            OpenTabBook(await stream);
+        }
+
+
         public void OpenTabExplorer()
         {
             var (frame, newTab) = OpenTab("Explorer");
@@ -138,7 +144,7 @@ namespace BookViewerApp.Views
 
         public void OpenTabMedia(kurema.FileExplorerControl.Models.FileItems.IFileItem file)
         {
-            var (frame, newTab) = OpenTab("BookViewer");
+            var (frame, newTab) = OpenTab("MediaPlayer");
             switch (file)
             {
                 case kurema.FileExplorerControl.Models.FileItems.StorageFileItem sf when sf.Content is Windows.Storage.IStorageFile sfFile:
@@ -146,12 +152,6 @@ namespace BookViewerApp.Views
                     break;
             }
         }
-
-        public async void OpenTabBook(System.Threading.Tasks.Task<Stream> stream)
-        {
-            OpenTabBook(await stream);
-        }
-
 
         public void OpenTabWeb()
         {
