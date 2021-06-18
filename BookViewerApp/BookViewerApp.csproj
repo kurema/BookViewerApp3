@@ -188,6 +188,8 @@
     <Content Include="res\bibi\bibi\resources\styles\bibi.css" />
     <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
     <Content Include="res\cover\shincho.png" />
+    <Content Include="res\epub\META-INF\container.xml" />
+    <Content Include="res\epub\OPS\main.html" />
     <Content Include="res\Icon\icon_bookmark_l.png" />
     <Content Include="res\Icon\icon_bookmark_s.png" />
     <Content Include="res\Icon\icon_book_l.png" />
@@ -239,6 +241,9 @@
     <Content Include="res\values\WindowsStoreProxy.xml" Condition="'$(Configuration)' == 'Debug'" />
     <None Include="BookViewerApp_TemporaryKey.pfx" />
     <None Include="BookViewerApp_TemporaryKey_GitHub.pfx" />
+    <Content Include="res\epub\mimetype" />
+    <Content Include="res\epub\OPS\nav.xhtml" />
+    <Content Include="res\epub\OPS\package.opf" />
     <None Include="Storages\Licenses.xsd">
       <SubType>Designer</SubType>
     </None>

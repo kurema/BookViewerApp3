@@ -148,6 +148,7 @@ namespace BookViewerApp.Views
             switch (file)
             {
                 case kurema.FileExplorerControl.Models.FileItems.StorageFileItem sf when sf.Content is Windows.Storage.IStorageFile sfFile:
+                    newTab.Header = Path.GetFileNameWithoutExtension(sfFile.Path);
                     frame.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage), Windows.Media.Core.MediaSource.CreateFromStorageFile(sfFile));
                     break;
             }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package version="3.0" unique-identifier="pub-id" xmlns="http://www.idpf.org/2007/opf">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:identifier id="pub-id">{BA90B0D6-F180-4C62-8CC1-AB5B5875DE51}</dc:identifier>
+    <dc:title>Title</dc:title>
+    <dc:language>en</dc:language>
+    <meta property="dcterms:modified">2021-01-01T12:00:00Z</meta>
+  </metadata>
+  <manifest>
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav" />
+    <item id="main" href="main.html" media-type="application/xhtml+xml" />
+  </manifest>
+  <spine>
+    <itemref idref="main" />
+  </spine>
+</package>
