@@ -136,6 +136,16 @@ namespace BookViewerApp.Views
             UIHelper.FrameOperation.OpenExplorer(frame, newTab);
         }
 
+        public void OpenTabMedia(kurema.FileExplorerControl.Models.FileItems.IFileItem file)
+        {
+            var (frame, newTab) = OpenTab("BookViewer");
+            switch (file)
+            {
+                case kurema.FileExplorerControl.Models.FileItems.StorageFileItem sf when sf.Content is Windows.Storage.IStorageFile sfFile:
+                    frame.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage), Windows.Media.Core.MediaSource.CreateFromStorageFile(sfFile));
+                    break;
+            }
+        }
 
         public async void OpenTabBook(System.Threading.Tasks.Task<Stream> stream)
         {
@@ -226,9 +236,10 @@ namespace BookViewerApp.Views
         public async void CloseTab(winui.Controls.TabViewItem tab)
         {
             if (tab is null) return;
-            ((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
+            //((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
             ((tab?.Content as Frame)?.Content as IDisposable)?.Dispose();
             ((tab?.Content as Frame)?.Content as IDisposableBasic)?.DisposeBasic();
+            (tab?.Content as Frame)?.Navigate(typeof(Page));
 
             if (tab.IsClosable)
             {

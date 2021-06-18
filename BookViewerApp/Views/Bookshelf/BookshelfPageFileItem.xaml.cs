@@ -40,10 +40,10 @@ namespace BookViewerApp.Views.Bookshelf
 
             StackPanelMain.Children.Clear();
 
-
             if (!(args.NewValue is IFileItem vm)) return;
             if (!vm.IsFolder) return;
             args.Handled = true;
+
             {
                 ProgressBarMain.Visibility = Visibility.Visible;
                 ProgressBarMain.IsActive = true;

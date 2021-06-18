@@ -176,33 +176,50 @@ namespace BookViewerApp.Helper
                             {
                                 e2?.Content?.Open();
                                 var fileitem = e2?.Content;
-                                if (!BookManager.AvailableExtensionsArchive.Contains(Path.GetExtension(fileitem?.Name ?? "").ToLowerInvariant()))
+                                if (BookManager.AvailableExtensionsArchive.Contains(Path.GetExtension(fileitem?.Name ?? "").ToLowerInvariant()))
                                 {
-                                    return;
+                                    var tab = GetCurrentTabPage(control);
+                                    if (tab != null)
+                                    {
+                                        if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
+                                        {
+                                            tab.OpenTabBook(sfi.Content);
+                                        }
+                                        else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
+                                        {
+                                            var file = await hm.GetFile();
+                                            if (file != null) tab.OpenTabBook(file);
+                                        }
+                                        //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                        //{
+                                        //    var file = await hi.GetFile();
+                                        //    if (file != null) tab.OpenTabBook(file);
+                                        //}
+                                        else
+                                        {
+                                            var stream = fileitem?.OpenStreamForReadAsync();
+                                            if (stream != null)
+                                                tab.OpenTabBook(stream);
+                                        }
+                                    }
                                 }
 
-                                var tab = GetCurrentTabPage(control);
-                                if (tab != null)
+                                //var codecQuery = new Windows.Media.Core.CodecQuery();
+                                //var queryResults= await codecQuery.FindAllAsync(Windows.Media.Core.CodecKind.Video,Windows.Media.Core.CodecCategory.Decoder,"");
+                                //foreach(var item in queryResults)
+                                //{
+                                //    System.Diagnostics.Debug.WriteLine(item.DisplayName);
+                                //    foreach (var item2 in item.Subtypes)
+                                //    {
+                                //        System.Diagnostics.Debug.WriteLine(item2);
+                                //    }
+                                //}
+                                if ((await kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage.GetAvailableExtensionsAsync()).Contains(Path.GetExtension(fileitem?.Name ?? "").ToUpperInvariant()))
                                 {
-                                    if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
+                                    var tab = GetCurrentTabPage(control);
+                                    if(tab != null)
                                     {
-                                        tab.OpenTabBook(sfi.Content);
-                                    }
-                                    else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
-                                    {
-                                        var file = await hm.GetFile();
-                                        if (file != null) tab.OpenTabBook(file);
-                                    }
-                                    //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
-                                    //{
-                                    //    var file = await hi.GetFile();
-                                    //    if (file != null) tab.OpenTabBook(file);
-                                    //}
-                                    else
-                                    {
-                                        var stream = fileitem?.OpenStreamForReadAsync();
-                                        if (stream != null)
-                                            tab.OpenTabBook(stream);
+                                        tab.OpenTabMedia(fileitem);
                                     }
                                 }
                             };
