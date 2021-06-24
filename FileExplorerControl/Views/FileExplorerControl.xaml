@@ -97,6 +97,8 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
                 </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
@@ -107,7 +109,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
-            <Button Grid.Column="0" Command="{Binding Content.HistoryShiftCommand}" CommandParameter="-1">
+            <Button Grid.Column="0" Command="{Binding Content.HistoryShiftCommand}" CommandParameter="-1" BorderThickness="0" BorderBrush="Transparent">
                 <SymbolIcon Symbol="Back"/>
             </Button>
             <Button Grid.Column="1" Command="{Binding Content.HistoryShiftCommand}" CommandParameter="1">
@@ -193,6 +195,8 @@
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
                                     </Style>
                                     <Style TargetType="Image">
 
@@ -346,6 +350,8 @@
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>
+                                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
                                                     </Style>
                                                 </Button.Style>
                                                 <Grid>
@@ -367,7 +373,7 @@
                 </Button.Flyout>
             </Button>
 
-            <Grid Grid.Column="3" BorderBrush="{ThemeResource SystemBaseLowColor}" BorderThickness="1" Margin="5" >
+            <Grid Grid.Column="3" BorderBrush="{ThemeResource SystemBaseLowColor}" BorderThickness="1" Margin="5"  Background="{ThemeResource SystemAltHighColor}" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -375,10 +381,10 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged"  VerticalAlignment="Center" KeyDown="address_text_KeyDown"/>
                 <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="address_FocusLostRequested"/>
-                <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}">
+                <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}" Background="Transparent">
                     <SymbolIcon Symbol="Share"/>
                 </Button>
-                <Button Grid.Column="2" Command="{Binding Content.RefreshCommand}">
+                <Button Grid.Column="2" Command="{Binding Content.RefreshCommand}" Background="Transparent">
                     <SymbolIcon Symbol="Refresh"/>
                 </Button>
             </Grid>

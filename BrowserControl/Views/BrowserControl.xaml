@@ -22,15 +22,17 @@
 
     <UserControl.Resources>
         <Style TargetType="AppBarButton">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Width" Value="38"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="45"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Width" Value="38"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="45"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
         </Style>
         <vc:IsZeroValueConveter x:Key="IsZero"/>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>

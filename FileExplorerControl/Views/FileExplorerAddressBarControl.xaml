@@ -34,7 +34,7 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Auto"  HorizontalScrollMode="Auto">
-        <Grid Background="{ThemeResource SystemAltHighColor}" >
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
