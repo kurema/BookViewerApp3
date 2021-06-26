@@ -92,7 +92,14 @@
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
                     <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" 
-                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"/>
+                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus">
+                        <TextBox.Style>
+                            <!--Without this empty style, border is shown some how. -->
+                            <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->
+                            <Style TargetType="TextBox">
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
                     <Button Grid.Column="2" x:Name="button_favorite">
                         <SymbolIcon Symbol="Favorite" />
                         <Button.Flyout>

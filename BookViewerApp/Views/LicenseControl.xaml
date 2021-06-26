@@ -33,7 +33,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock Grid.Row="0" Text="{Binding name}" Style="{ThemeResource SubtitleTextBlockStyle}"  FontWeight="Normal" />
                 <TextBlock Grid.Row="1" Text="{Binding role}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding role,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
 
                 <!-- Command is better than Tapped but I don't know how to bind root which is outside of DataTemplate... -->
@@ -47,7 +47,7 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Key}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
+                            <TextBlock Text="{Binding Key}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"  FontWeight="Normal" />
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                     <GroupStyle.Panel>
@@ -76,9 +76,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Grid.Row="0" Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal"  />
                                 <TextBlock Grid.Row="1" Text="{Binding summary}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding summary,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
-
                                 <ToggleButton x:Name="toggle"  Margin="0" Grid.RowSpan="2" Grid.Column="1"
                                               BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
                                               Height="60" Width="60"
@@ -90,7 +89,6 @@
                                     <SymbolIcon Symbol="Document" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                                 </ToggleButton>
                                 <TextBlock TextWrapping="WrapWholeWords" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding license.term}" Visibility="{Binding ElementName=toggle,Path=IsChecked,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}"/>
-
                             </Grid>
                         </DataTemplate>
                     </template:LicenseControlTemplateSelector.TemplateLicense>
@@ -107,7 +105,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Grid.Row="0" Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" />
                                 <TextBlock Grid.Row="1" Text="{Binding license.summary}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding license.summary,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
 
                                 <!-- Command is better than Tapped but I don't know how to bind root which is outside of DataTemplate... -->
@@ -137,7 +135,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Text="{Binding lang,Converter={StaticResource vc_l2nn},ConverterParameter=NativeName}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Grid.Row="0" Text="{Binding lang,Converter={StaticResource vc_l2nn},ConverterParameter=NativeName}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" />
 
                                 <ItemsControl Grid.Row="1" ItemsSource="{Binding person}">
                                     <ItemsControl.ItemsPanel>

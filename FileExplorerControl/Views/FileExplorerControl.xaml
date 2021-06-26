@@ -379,7 +379,16 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged"  VerticalAlignment="Center" KeyDown="address_text_KeyDown"/>
+                <TextBox Grid.Column="0" 
+                         BorderBrush="Transparent" BorderThickness="0"
+                         x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="address_text_KeyDown">
+                    <TextBox.Style>
+                        <!--Without this empty style, border is shown some how. -->
+                        <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->
+                        <Style TargetType="TextBox">
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
                 <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="address_FocusLostRequested"/>
                 <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}" Background="Transparent">
                     <SymbolIcon Symbol="Share"/>

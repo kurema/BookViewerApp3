@@ -743,4 +743,13 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="TabHeader.MediaPlayer" xml:space="preserve">
     <value>Player</value>
   </data>
+  <data name="LibraryManager.KindTitle.Archive" xml:space="preserve">
+    <value>Archive file</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
+    <value>Network item</value>
+  </data>
 </root>

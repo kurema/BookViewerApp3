@@ -139,6 +139,8 @@ namespace BookViewerApp.ViewModels
                 SetProperty(ref _Content, value);
                 OnPropertyChanged(nameof(Path));
                 OnPropertyChanged(nameof(Kind));
+                OnPropertyChanged(nameof(KindTitle));
+                OnPropertyChanged(nameof(Title));
                 if (value is libraryLibraryFolder f)
                 {
                     Task.Run(async () =>
@@ -154,6 +156,7 @@ namespace BookViewerApp.ViewModels
 
         public string Path => StorageItem?.Path ?? Content?.path;
 
+        public string KindTitle => Managers.ResourceManager.Loader.GetString($"LibraryManager/KindTitle/Archive/{Kind}");
 
         public string Kind
         {

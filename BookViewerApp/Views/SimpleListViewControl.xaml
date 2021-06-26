@@ -34,7 +34,7 @@
             <DataTemplate>
                 <ListViewItem  d:DataContext="{d:DesignInstance ViewModels:ListItemViewModel}" Tapped="ListViewItem_Tapped">
                     <StackPanel >
-                        <TextBlock Text="{Binding Title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="{Binding Title}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal"/>
                         <TextBlock Text="{Binding Description}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemColorGrayTextColor}" Visibility="{Binding Description,Converter={StaticResource vc_sne},ConverterParameter=Collapsed:Visible}"/>
                     </StackPanel>
                 </ListViewItem>

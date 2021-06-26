@@ -337,6 +337,7 @@ namespace BookViewerApp.Storages
             }
             foreach (var item in Content?.Content?.libraries ?? new Library.libraryLibrary[0])
             {
+                if (item.Items is null) continue;
                 foreach (Library.libraryLibraryFolder itemFolder in item.Items)
                 {
                     CountUp(itemFolder.token);

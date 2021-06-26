@@ -858,6 +858,18 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
           <source>Player</source>
           <target state="new">Player</target>
         </trans-unit>
+        <trans-unit id="LibraryManager.KindTitle.Archive" translate="yes" xml:space="preserve">
+          <source>Archive file</source>
+          <target state="new">Archive file</target>
+        </trans-unit>
+        <trans-unit id="LibraryManager.KindTitle.Folder" translate="yes" xml:space="preserve">
+          <source>Folder</source>
+          <target state="new">Folder</target>
+        </trans-unit>
+        <trans-unit id="LibraryManager.KindTitle.Network" translate="yes" xml:space="preserve">
+          <source>Network item</source>
+          <target state="new">Network item</target>
+        </trans-unit>
       </group>
     </body>
   </file>
