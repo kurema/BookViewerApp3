@@ -37,10 +37,10 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <FontIcon Grid.Column="0" VerticalAlignment="Center" Margin="10,0,0,0"
-                            FontFamily="Segoe MDL2 Assets" Glyph="{Binding Kind,Converter={StaticResource scvc},ConverterParameter=Folder:&#xF12B;::Archive:&#xE8D5;::Network:&#xE968;}"
-                                  ToolTipService.ToolTip="{Binding KindTitle}"
+                            FontFamily="Segoe MDL2 Assets" Glyph="{Binding Kind,Converter={StaticResource scvc},TargetNullValue='Folder',ConverterParameter=Folder:&#xF12B;::Archive:&#xE8D5;::Network:&#xE968;}"
+                                  ToolTipService.ToolTip="{Binding KindTitle,TargetNullValue=''}"
                                   />
-                        <TextBlock Text="{Binding Title}" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" ToolTipService.ToolTip="{Binding Path}"/>
+                        <TextBlock Text="{Binding Title,TargetNullValue=''}" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" ToolTipService.ToolTip="{Binding Path,TargetNullValue=''}"/>
                         <local:AcrylicButtonControl Grid.Column="2" Command="{Binding RemoveCommand}" Icon="Delete" Margin="0"/>
                     </Grid>
                 </DataTemplate>

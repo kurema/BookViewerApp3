@@ -12,6 +12,21 @@ namespace BookViewerApp.ViewModels
 {
     public class LibraryMemberViewModel : INotifyPropertyChanged
     {
+        //注意：
+        //UIスレッドの関係で、UpdateStorages()をnew後すぐに実行する必要があります。
+        //現時点で利用箇所はコンテキストメニューだけなので動いていますが、設計としては良くないです。
+        //より詳細には
+        //1. Content.Itemsの要素がlibraryLibraryFolderの場合、フォルダ名(Title)とPathが分かりません(FutureAccessListのtokenしか記録してないので)。
+        //2. その為、await GetStorageFolderAsync()を呼ばなければなりません。
+        //3. しかしコンストラクタは動機なので呼べなくて、投げっぱなしになります。
+        //4. それで読み込み後PropertyChangedを呼べば良いんですが、UIスレッド以外から呼ぶと更新されません。
+        //5. Dispatcherを登録しておいたりすれば良いんですがごちゃごちゃします。なおAppWindowを使っている関係上
+        //     Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher.RunAsync
+        //   も使えません。というか良く分からんけどnullだったしあんまり調べてません。
+        //6. 正直、UIHelper.ContextMenusで予めawait UpdateStorages();しておけばUI読み込み時にはTitleとPathが準備されてるので無問題。めんどくさくなくて良いです。
+        //7. でもあんまり良くないです。本来は色々と書き直すべきかなという気がします。
+        //他の問題として、コンストラクタでItemsをContent.Itemsから作っているのでこの後Content.Itemsに変更があった場合齟齬が生じるという問題もあります。
+        //全体的に設計として良くないです(二度目)。書き直すべきなような気がしています。とりあえず動いています。
 
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
@@ -39,8 +54,10 @@ namespace BookViewerApp.ViewModels
         public LibraryMemberViewModel(libraryLibrary content)
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
-        }
 
+            Items = new ObservableCollection<LibraryMemberItemViewModel>((Content?.Items ?? new object[0]).Where(a => a is IlibraryLibraryItem).Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
+            Items.CollectionChanged += Result_CollectionChanged;
+        }
         public LibraryMemberViewModel()
         {
         }
@@ -50,13 +67,13 @@ namespace BookViewerApp.ViewModels
             get => _Content;
             set
             {
-                if (_Content != null) value.PropertyChanged -= Value_PropertyChanged;
+                if (!(_Content is null)) value.PropertyChanged -= Value_PropertyChanged;
 
                 SetProperty(ref _Content, value);
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(Items));
 
-                if (value != null) value.PropertyChanged += Value_PropertyChanged;
+                if (!(value is null)) value.PropertyChanged += Value_PropertyChanged;
             }
         }
 
@@ -80,20 +97,21 @@ namespace BookViewerApp.ViewModels
             }
         }
 
-        public ObservableCollection<LibraryMemberItemViewModel> Items
-        {
-            get
-            {
-                var result = new ObservableCollection<LibraryMemberItemViewModel>((Content?.Items ?? new object[0]).Where(a => a is IlibraryLibraryItem).Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
-                result.CollectionChanged += Result_CollectionChanged;
-                return result;
-            }
-        }
+
+        public ObservableCollection<LibraryMemberItemViewModel> Items { get; set; }
 
         private void Result_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (Content is null) return;
             Content.Items = (sender as ObservableCollection<LibraryMemberItemViewModel>)?.Select(a => a.Content)?.ToArray() ?? Content.Items;
+        }
+
+        public async Task UpdateStorages()
+        {
+            foreach (var item in this.Items)
+            {
+                await item.UpdateStorageItem();
+            }
         }
     }
 
@@ -120,7 +138,6 @@ namespace BookViewerApp.ViewModels
         }
         #endregion
 
-
         private LibraryMemberViewModel _Parent;
         public LibraryMemberViewModel Parent { get => _Parent; private set => SetProperty(ref _Parent, value); }
 
@@ -128,30 +145,25 @@ namespace BookViewerApp.ViewModels
 
         public LibraryMemberItemViewModel(IlibraryLibraryItem member, LibraryMemberViewModel parent)
         {
-            Content = member ?? throw new ArgumentNullException(nameof(member));
+            _Content = member ?? throw new ArgumentNullException(nameof(member));
             Parent = parent ?? throw new ArgumentNullException(nameof(parent));
+            var _ = UpdateStorageItem();
         }
 
         public IlibraryLibraryItem Content
         {
-            get => _Content; set
+            get => _Content;
+        }
+
+        public async Task UpdateStorageItem()
+        {
+            if (Content is libraryLibraryFolder f)
             {
-                SetProperty(ref _Content, value);
-                OnPropertyChanged(nameof(Path));
-                OnPropertyChanged(nameof(Kind));
-                OnPropertyChanged(nameof(KindTitle));
+                StorageItem = await f.GetStorageFolderAsync().ConfigureAwait(false);
                 OnPropertyChanged(nameof(Title));
-                if (value is libraryLibraryFolder f)
-                {
-                    Task.Run(async () =>
-                    {
-                        StorageItem = await f.GetStorageFolderAsync();
-                        OnPropertyChanged(nameof(Title));
-                        OnPropertyChanged(nameof(Path));
-                    });
-                }
-                else StorageItem = null;
+                OnPropertyChanged(nameof(Path));
             }
+            else StorageItem = null;
         }
 
         public string Path => StorageItem?.Path ?? Content?.path;

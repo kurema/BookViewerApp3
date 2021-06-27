@@ -44,5 +44,13 @@ namespace BookViewerApp.Views
                 //vm.OnPropertyChanged(nameof(vm.Items));
             }
         }
+
+        //private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        //{
+        //    if(args.NewValue is ViewModels.LibraryMemberViewModel vm)
+        //    {
+        //        vm.Dispatcher = this.Dispatcher;
+        //    }
+        //}
     }
 }

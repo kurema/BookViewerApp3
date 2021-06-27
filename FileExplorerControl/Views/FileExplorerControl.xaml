@@ -32,7 +32,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
+        <Grid Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
             <Grid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="VerticalAlignment" Value="Center"/>

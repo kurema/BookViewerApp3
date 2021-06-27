@@ -424,9 +424,10 @@ namespace BookViewerApp.Helper
                         {
                             PrimaryButtonText = Managers.ResourceManager.Loader.GetString("Word/OK"),
                         };
+                        var vm = new ViewModels.LibraryMemberViewModel(library);
                         dialog.Content = new Views.LibraryManagerControl()
                         {
-                            DataContext = new ViewModels.LibraryMemberViewModel(library),
+                            DataContext = vm
                         };
                         await dialog.ShowAsync();
                         await Storages.LibraryStorage.Content.SaveAsync();
@@ -462,9 +463,11 @@ namespace BookViewerApp.Helper
                         {
                             PrimaryButtonText = Managers.ResourceManager.Loader.GetString("Word/OK"),
                         };
+                        var vm = new ViewModels.LibraryMemberViewModel(library);
+                        await vm.UpdateStorages();
                         dialog.Content = new Views.LibraryManagerControl()
                         {
-                            DataContext = new ViewModels.LibraryMemberViewModel(library),
+                            DataContext = vm,
                         };
                         await dialog.ShowAsync();
                         await Storages.LibraryStorage.Content.SaveAsync();
