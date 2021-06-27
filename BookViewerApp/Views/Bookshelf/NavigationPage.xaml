@@ -8,6 +8,8 @@
     xmlns:vm="using:BookViewerApp.ViewModels"
     xmlns:vc="using:BookViewerApp.ValueConverters"
     xmlns:ts="using:BookViewerApp.Views.TemplateSelectors"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     mc:Ignorable="d"
     >
     <Page.Resources>
@@ -16,40 +18,51 @@
     <Page.DataContext>
         <vm:Bookshelf2NavigationViewModel />
     </Page.DataContext>
-    <NavigationView
+    <controls:NavigationView
         HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
         IsSettingsVisible="True" MenuItemsSource="{Binding MenuItems}"
         IsBackButtonVisible="Collapsed" 
         SelectionChanged="NavigationView_SelectionChanged"
         >
-        <NavigationView.Resources>
+        <controls:NavigationView.Resources>
             <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground"
                 BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemChromeGrayColor}" TintOpacity="0.3"  FallbackColor="{ThemeResource SystemChromeMediumColor}" />
             <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground"
                 BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemChromeGrayColor}" TintOpacity="0.3"  FallbackColor="{ThemeResource SystemChromeMediumColor}" />
-        </NavigationView.Resources>
-        <!--<NavigationView.AutoSuggestBox>
+        </controls:NavigationView.Resources>
+        <!--<controls:NavigationView.AutoSuggestBox>
             <AutoSuggestBox QueryIcon="Find"/>
-        </NavigationView.AutoSuggestBox>-->
-        <NavigationView.MenuItemTemplateSelector>
+        </controls:NavigationView.AutoSuggestBox>-->
+        <controls:NavigationView.MenuItemTemplateSelector>
             <ts:Bookshelf2NavigationItemTemplateSelector>
                 <ts:Bookshelf2NavigationItemTemplateSelector.TemplateItem>
                     <DataTemplate x:DataType="vm:Bookshelf2NavigationItemViewModel">
-                        <NavigationViewItem Content="{Binding Title}" Icon="{Binding Icon}" />
+                        <controls:NavigationViewItem Content="{Binding Title}" Icon="{Binding Icon}">
+                            <!--<controls:NavigationViewItem.Icon>
+                                <controls:AnimatedIcon>
+                                    <controls:AnimatedIcon.Source>
+                                        <animatedvisuals:AnimatedSettingsVisualSource />
+                                    </controls:AnimatedIcon.Source>
+                                    <controls:AnimatedIcon.FallbackIconSource>
+                                        <controls:SymbolIconSource Symbol="{Binding Icon}"/>
+                                    </controls:AnimatedIcon.FallbackIconSource>
+                                </controls:AnimatedIcon>
+                            </controls:NavigationViewItem.Icon>-->
+                        </controls:NavigationViewItem>
                     </DataTemplate>
                 </ts:Bookshelf2NavigationItemTemplateSelector.TemplateItem>
                 <ts:Bookshelf2NavigationItemTemplateSelector.TemplateSeparator>
                     <DataTemplate x:DataType="vm:Bookshelf2NavigationItemViewModel">
-                        <NavigationViewItemSeparator />
+                        <controls:NavigationViewItemSeparator />
                     </DataTemplate>
                 </ts:Bookshelf2NavigationItemTemplateSelector.TemplateSeparator>
                 <ts:Bookshelf2NavigationItemTemplateSelector.TemplateHeader>
                     <DataTemplate x:DataType="vm:Bookshelf2NavigationItemViewModel">
-                        <NavigationViewItemHeader Content="{Binding Title}" />
+                        <controls:NavigationViewItemHeader Content="{Binding Title}" />
                     </DataTemplate>
                 </ts:Bookshelf2NavigationItemTemplateSelector.TemplateHeader>
             </ts:Bookshelf2NavigationItemTemplateSelector>
-        </NavigationView.MenuItemTemplateSelector>
+        </controls:NavigationView.MenuItemTemplateSelector>
         <Frame x:Name="FrameMain"/>
-    </NavigationView>
+    </controls:NavigationView>
 </Page>

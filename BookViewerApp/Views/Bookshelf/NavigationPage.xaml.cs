@@ -31,17 +31,6 @@ namespace BookViewerApp.Views.Bookshelf
             SetUpItems();
         }
 
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.IsSettingsSelected)
-            {
-                FrameMain.Navigate(typeof(SettingPage));
-                return;
-            }
-            if (!(args.SelectedItem is Bookshelf2NavigationItemViewModel itemVM)) return;
-            itemVM.Open();
-        }
-
         private async void SetUpItems()
         {
             if (!(this.DataContext is ViewModels.Bookshelf2NavigationViewModel vm)) return;
@@ -87,6 +76,17 @@ namespace BookViewerApp.Views.Bookshelf
         {
             if (!(vm.Tag is kurema.FileExplorerControl.Models.FileItems.IFileItem file)) return;
             FrameMain.Navigate(typeof(BookshelfPageFileItem), file);
+        }
+
+        private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                FrameMain.Navigate(typeof(SettingPage));
+                return;
+            }
+            if (!(args.SelectedItem is Bookshelf2NavigationItemViewModel itemVM)) return;
+            itemVM.Open();
         }
     }
 }
