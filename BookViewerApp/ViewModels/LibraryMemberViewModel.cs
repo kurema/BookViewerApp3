@@ -12,22 +12,6 @@ namespace BookViewerApp.ViewModels
 {
     public class LibraryMemberViewModel : INotifyPropertyChanged
     {
-        //注意：
-        //UIスレッドの関係で、UpdateStorages()をnew後すぐに実行する必要があります。
-        //現時点で利用箇所はコンテキストメニューだけなので動いていますが、設計としては良くないです。
-        //より詳細には
-        //1. Content.Itemsの要素がlibraryLibraryFolderの場合、フォルダ名(Title)とPathが分かりません(FutureAccessListのtokenしか記録してないので)。
-        //2. その為、await GetStorageFolderAsync()を呼ばなければなりません。
-        //3. しかしコンストラクタは動機なので呼べなくて、投げっぱなしになります。
-        //4. それで読み込み後PropertyChangedを呼べば良いんですが、UIスレッド以外から呼ぶと更新されません。
-        //5. Dispatcherを登録しておいたりすれば良いんですがごちゃごちゃします。なおAppWindowを使っている関係上
-        //     Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher.RunAsync
-        //   も使えません。というか良く分からんけどnullだったしあんまり調べてません。
-        //6. 正直、UIHelper.ContextMenusで予めawait UpdateStorages();しておけばUI読み込み時にはTitleとPathが準備されてるので無問題。めんどくさくなくて良いです。
-        //7. でもあんまり良くないです。本来は色々と書き直すべきかなという気がします。
-        //他の問題として、コンストラクタでItemsをContent.Itemsから作っているのでこの後Content.Itemsに変更があった場合齟齬が生じるという問題もあります。
-        //全体的に設計として良くないです(二度目)。書き直すべきなような気がしています。とりあえず動いています。
-
         #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
@@ -48,18 +32,28 @@ namespace BookViewerApp.ViewModels
         }
         #endregion
 
-
         private libraryLibrary _Content;
 
-        public LibraryMemberViewModel(libraryLibrary content)
+        public LibraryMemberViewModel()
+        {
+            Items = new ObservableCollection<LibraryMemberItemViewModel>();
+        }
+
+        /// <summary>
+        /// Load libraryLibrary and update Title asynchronously. Call this from UI thread.
+        /// </summary>
+        /// <param name="content">Content to load</param>
+        /// <returns>Task</returns>
+        public async Task LoadContent(libraryLibrary content)
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
 
             Items = new ObservableCollection<LibraryMemberItemViewModel>((Content?.Items ?? new object[0]).Where(a => a is IlibraryLibraryItem).Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
+            foreach(var item in Items)
+            {
+                await item.UpdateStorageItem();
+            }
             Items.CollectionChanged += Result_CollectionChanged;
-        }
-        public LibraryMemberViewModel()
-        {
         }
 
         public libraryLibrary Content
@@ -160,8 +154,6 @@ namespace BookViewerApp.ViewModels
             if (Content is libraryLibraryFolder f)
             {
                 StorageItem = await f.GetStorageFolderAsync().ConfigureAwait(false);
-                OnPropertyChanged(nameof(Title));
-                OnPropertyChanged(nameof(Path));
             }
             else StorageItem = null;
         }
