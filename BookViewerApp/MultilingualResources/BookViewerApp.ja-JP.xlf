@@ -681,7 +681,7 @@ I wish you good luck.</source>
           <target state="translated">ご支援ありがとうございます。</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Bookmarks.OpenExternal.Title" translate="yes" xml:space="preserve">
-          <source>Open in external browser</source>
+          <source>Open in the external browser</source>
           <target state="translated">外部ブラウザで開く</target>
         </trans-unit>
         <trans-unit id="Info.Info.AboutThisApp.Description" translate="yes" xml:space="preserve">
@@ -833,36 +833,36 @@ You can also disable thumbnail generation in Explorer tab with the setting above
           <target state="translated">すべて見る</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultBrowserExternal.Description" translate="yes" xml:space="preserve">
-          <source>Use external browser to open URL.</source>
-          <target state="new">Use external browser to open URL.</target>
+          <source>Use the external browser to open URL.</source>
+          <target state="translated">URLを開く際、外部ブラウザを利用します。</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultBrowserExternal.Title" translate="yes" xml:space="preserve">
-          <source>Open URL in external browser</source>
-          <target state="new">Open URL in external browser</target>
+          <source>Open URL in the external browser</source>
+          <target state="translated">外部ブラウザでURLを開く</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Bookmarks.OpenInternal.Title" translate="yes" xml:space="preserve">
-          <source>Open in built-in browser</source>
-          <target state="new">Open in built-in browser</target>
+          <source>Open in the built-in browser</source>
+          <target state="translated">内蔵ブラウザで開く</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Library.AddNew.Title" translate="yes" xml:space="preserve">
-          <source>Add new library</source>
-          <target state="new">Add new library</target>
+          <source>Add a new library</source>
+          <target state="translated">新しいライブラリの作成</target>
         </trans-unit>
         <trans-unit id="TabHeader.MediaPlayer" translate="yes" xml:space="preserve">
           <source>Player</source>
-          <target state="new">Player</target>
+          <target state="translated">プレイヤー</target>
         </trans-unit>
         <trans-unit id="LibraryManager.KindTitle.Archive" translate="yes" xml:space="preserve">
           <source>Archive file</source>
-          <target state="new">Archive file</target>
+          <target state="translated">圧縮ファイル</target>
         </trans-unit>
         <trans-unit id="LibraryManager.KindTitle.Folder" translate="yes" xml:space="preserve">
           <source>Folder</source>
-          <target state="new">Folder</target>
+          <target state="translated">フォルダー</target>
         </trans-unit>
         <trans-unit id="LibraryManager.KindTitle.Network" translate="yes" xml:space="preserve">
           <source>Network item</source>
-          <target state="new">Network item</target>
+          <target state="translated">ネットワークフォルダー</target>
         </trans-unit>
       </group>
     </body>

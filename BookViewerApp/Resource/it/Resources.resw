@@ -625,4 +625,28 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
   <data name="Word.Expand" xml:space="preserve">
     <value>Vedi tutto</value>
   </data>
+  <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
+    <value>Usa un browser esterno per aprire l'URL.</value>
+  </data>
+  <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
+    <value>Apri URL nel browser esterno</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
+    <value>Apri nel browser integrato</value>
+  </data>
+  <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
+    <value>Aggiungi una nuova libreria</value>
+  </data>
+  <data name="TabHeader.MediaPlayer" xml:space="preserve">
+    <value>Media Player</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Archive" xml:space="preserve">
+    <value>File di archivio</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Folder" xml:space="preserve">
+    <value>Cartella</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
+    <value>Elemento di rete</value>
+  </data>
 </root>

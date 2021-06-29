@@ -618,7 +618,7 @@ I wish you good luck.</value>
     <value>Purchased</value>
   </data>
   <data name="ContextMenu.Bookmarks.OpenExternal.Title" xml:space="preserve">
-    <value>Open in external browser</value>
+    <value>Open in the external browser</value>
   </data>
   <data name="Info.Debug.CopyFAL.Description" xml:space="preserve">
     <value>StorageApplicationPermissions.FutureAccessList</value>
@@ -729,16 +729,16 @@ You can also disable thumbnail generation in Explorer tab with the setting above
     <value>See All</value>
   </data>
   <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
-    <value>Use external browser to open URL.</value>
+    <value>Use the external browser to open URL.</value>
   </data>
   <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
-    <value>Open URL in external browser</value>
+    <value>Open URL in the external browser</value>
   </data>
   <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
-    <value>Open in built-in browser</value>
+    <value>Open in the built-in browser</value>
   </data>
   <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
-    <value>Add new library</value>
+    <value>Add a new library</value>
   </data>
   <data name="TabHeader.MediaPlayer" xml:space="preserve">
     <value>Player</value>

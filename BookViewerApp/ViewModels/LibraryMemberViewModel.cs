@@ -160,7 +160,7 @@ namespace BookViewerApp.ViewModels
 
         public string Path => StorageItem?.Path ?? Content?.path;
 
-        public string KindTitle => Managers.ResourceManager.Loader.GetString($"LibraryManager/KindTitle/Archive/{Kind}");
+        public string KindTitle => Managers.ResourceManager.Loader.GetString($"LibraryManager/KindTitle/{Kind}");
 
         public string Kind
         {

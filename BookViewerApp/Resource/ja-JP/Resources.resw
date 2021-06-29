@@ -629,4 +629,28 @@
   <data name="Word.Expand" xml:space="preserve">
     <value>すべて見る</value>
   </data>
+  <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
+    <value>URLを開く際、外部ブラウザを利用します。</value>
+  </data>
+  <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
+    <value>外部ブラウザでURLを開く</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
+    <value>内蔵ブラウザで開く</value>
+  </data>
+  <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
+    <value>新しいライブラリの作成</value>
+  </data>
+  <data name="TabHeader.MediaPlayer" xml:space="preserve">
+    <value>プレイヤー</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Archive" xml:space="preserve">
+    <value>圧縮ファイル</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Folder" xml:space="preserve">
+    <value>フォルダー</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
+    <value>ネットワークフォルダー</value>
+  </data>
 </root>

@@ -625,4 +625,28 @@
   <data name="Word.Expand" xml:space="preserve">
     <value>查看全部</value>
   </data>
+  <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
+    <value>使用外部浏览器打开 URL。</value>
+  </data>
+  <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
+    <value>在外部浏览器中打开 URL</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
+    <value>在内置浏览器中打开</value>
+  </data>
+  <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
+    <value>添加新库</value>
+  </data>
+  <data name="TabHeader.MediaPlayer" xml:space="preserve">
+    <value>媒体播放器</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Archive" xml:space="preserve">
+    <value>存档文件</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Folder" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
+    <value>网络项</value>
+  </data>
 </root>

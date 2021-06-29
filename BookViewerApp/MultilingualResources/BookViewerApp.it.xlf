@@ -687,7 +687,7 @@ Ti auguro buona fortuna.</target>
           <target state="translated">Grazie per il vostro acquisto!</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Bookmarks.OpenExternal.Title" translate="yes" xml:space="preserve">
-          <source>Open in external browser</source>
+          <source>Open in the external browser</source>
           <target state="translated">Apri in un browser esterno</target>
         </trans-unit>
         <trans-unit id="Info.Info.AboutThisApp.Description" translate="yes" xml:space="preserve">
@@ -839,36 +839,36 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
           <target state="translated">Vedi tutto</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultBrowserExternal.Description" translate="yes" xml:space="preserve">
-          <source>Use external browser to open URL.</source>
-          <target state="new">Use external browser to open URL.</target>
+          <source>Use the external browser to open URL.</source>
+          <target state="translated">Usa un browser esterno per aprire l'URL.</target>
         </trans-unit>
         <trans-unit id="Setting_DefaultBrowserExternal.Title" translate="yes" xml:space="preserve">
-          <source>Open URL in external browser</source>
-          <target state="new">Open URL in external browser</target>
+          <source>Open URL in the external browser</source>
+          <target state="translated">Apri URL nel browser esterno</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Bookmarks.OpenInternal.Title" translate="yes" xml:space="preserve">
-          <source>Open in built-in browser</source>
-          <target state="new">Open in built-in browser</target>
+          <source>Open in the built-in browser</source>
+          <target state="translated">Apri nel browser integrato</target>
         </trans-unit>
         <trans-unit id="ContextMenu.Library.AddNew.Title" translate="yes" xml:space="preserve">
-          <source>Add new library</source>
-          <target state="new">Add new library</target>
+          <source>Add a new library</source>
+          <target state="translated">Aggiungi una nuova libreria</target>
         </trans-unit>
         <trans-unit id="TabHeader.MediaPlayer" translate="yes" xml:space="preserve">
           <source>Player</source>
-          <target state="new">Player</target>
+          <target state="translated">Media Player</target>
         </trans-unit>
         <trans-unit id="LibraryManager.KindTitle.Archive" translate="yes" xml:space="preserve">
           <source>Archive file</source>
-          <target state="new">Archive file</target>
+          <target state="translated">File di archivio</target>
         </trans-unit>
         <trans-unit id="LibraryManager.KindTitle.Folder" translate="yes" xml:space="preserve">
           <source>Folder</source>
-          <target state="new">Folder</target>
+          <target state="translated">Cartella</target>
         </trans-unit>
         <trans-unit id="LibraryManager.KindTitle.Network" translate="yes" xml:space="preserve">
           <source>Network item</source>
-          <target state="new">Network item</target>
+          <target state="translated">Elemento di rete</target>
         </trans-unit>
       </group>
     </body>
