@@ -48,12 +48,17 @@ namespace BookViewerApp.ViewModels
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
 
-            Items = new ObservableCollection<LibraryMemberItemViewModel>((Content?.Items ?? new object[0]).Where(a => a is IlibraryLibraryItem).Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
+            UpdateItems();
             foreach(var item in Items)
             {
                 await item.UpdateStorageItem();
             }
             Items.CollectionChanged += Result_CollectionChanged;
+        }
+
+        private void UpdateItems()
+        {
+            Items = new ObservableCollection<LibraryMemberItemViewModel>((Content?.Items ?? new object[0]).Where(a => a is IlibraryLibraryItem).Select(a => new LibraryMemberItemViewModel(a as IlibraryLibraryItem, this)));
         }
 
         public libraryLibrary Content
@@ -75,6 +80,7 @@ namespace BookViewerApp.ViewModels
         {
             if (e.PropertyName == nameof(Content.Items))
             {
+                UpdateItems();
                 OnPropertyChanged(nameof(Items));
             }
             Storages.LibraryStorage.OnLibraryUpdateRequest(Storages.LibraryStorage.LibraryKind.Library);
@@ -91,21 +97,14 @@ namespace BookViewerApp.ViewModels
             }
         }
 
+        private ObservableCollection<LibraryMemberItemViewModel> _Items;
 
-        public ObservableCollection<LibraryMemberItemViewModel> Items { get; set; }
+        public ObservableCollection<LibraryMemberItemViewModel> Items { get => _Items; set { SetProperty(ref _Items, value); } }
 
         private void Result_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (Content is null) return;
             Content.Items = (sender as ObservableCollection<LibraryMemberItemViewModel>)?.Select(a => a.Content)?.ToArray() ?? Content.Items;
-        }
-
-        public async Task UpdateStorages()
-        {
-            foreach (var item in this.Items)
-            {
-                await item.UpdateStorageItem();
-            }
         }
     }
 

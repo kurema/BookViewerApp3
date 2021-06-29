@@ -46,7 +46,7 @@
             <RowDefinition Height="{Binding ControllerCollapsed,Converter={StaticResource vc_b2s},ConverterParameter=15:Auto}"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Background="{ThemeResource SystemAltMediumHighColor}" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" BorderThickness="0,0,0,1"/>
+        <Border Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" BorderThickness="0,0,0,1" />
         <Grid Visibility="{Binding ControllerCollapsed,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}" HorizontalAlignment="Stretch">
             <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click_ToggleCollapsed" Width="Auto" Height="Auto" VerticalContentAlignment="Stretch" Padding="0">
                 <Path Fill="{ThemeResource ApplicationForegroundThemeBrush}" Height="10" VerticalAlignment="Stretch" Width="30" Margin="0">

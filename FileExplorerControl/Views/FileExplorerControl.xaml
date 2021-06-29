@@ -14,8 +14,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    >
     <Page.DataContext>
         <vm:FileExplorerViewModel/>
     </Page.DataContext>
@@ -32,7 +31,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+        <Grid Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}">
             <Grid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="VerticalAlignment" Value="Center"/>

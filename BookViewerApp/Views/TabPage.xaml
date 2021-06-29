@@ -44,79 +44,107 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="&#xE70D;">
-                    <Button.Flyout>
-                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                            <MenuFlyoutItem Icon="Folder" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Explorer}" Click="MenuFlyoutItem_Click" Tag="Explorer"/>
-                            <MenuFlyoutItem Icon="World" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Browser}" Click="MenuFlyoutItem_Click" Tag="Browser"/>
-                            <!--<MenuFlyoutItem Icon="Library" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Bookshelf}" Click="MenuFlyoutItem_Click" Tag="Bookshelf"/>-->
-                            <MenuFlyoutItem Icon="Setting" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Setting}" Click="MenuFlyoutItem_Click" Tag="Setting"/>
-                            <MenuFlyoutSeparator/>
-                            <MenuFlyoutItem Icon="OpenFile" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=Explorer/PickBook}" Click="MenuFlyoutItem_Click" Tag="Picker"/>
-                        </MenuFlyout>
-                    </Button.Flyout>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="{ThemeResource TabViewButtonBackground}"/>
-                            <Setter Property="Foreground" Value="{ThemeResource TabViewButtonForeground}"/>
-                            <Setter Property="CornerRadius" Value="{Binding Converter={StaticResource TopCornerRadiusFilterConverter}, Source={ThemeResource OverlayCornerRadius}}"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-                            <Setter Property="VerticalAlignment" Value="Bottom"/>
-                            <Setter Property="Margin" Value="0,7,0,0"/>
-                            <Setter Property="Padding" Value="10,10,10,11"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" Background="{TemplateBinding Background}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" CornerRadius="{TemplateBinding CornerRadius}" ContentTransitions="{TemplateBinding ContentTransitions}" FontWeight="SemiLight" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal">
-                                                        <Storyboard>
+                <Border Grid.Column="0"
+                        Padding="{ThemeResource TabViewItemAddButtonContainerPadding}"
+                        VerticalAlignment="Bottom"
+                        >
+                    <Button  Content="&#xE70D;"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsTextScaleFactorEnabled="False"
+                        HighContrastAdjustment="None"
+                        >
+                        <Button.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                <MenuFlyoutItem Icon="Folder" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Explorer}" Click="MenuFlyoutItem_Click" Tag="Explorer"/>
+                                <MenuFlyoutItem Icon="World" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Browser}" Click="MenuFlyoutItem_Click" Tag="Browser"/>
+                                <!--<MenuFlyoutItem Icon="Library" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Bookshelf}" Click="MenuFlyoutItem_Click" Tag="Bookshelf"/>-->
+                                <MenuFlyoutItem Icon="Setting" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=TabHeader/Setting}" Click="MenuFlyoutItem_Click" Tag="Setting"/>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Icon="OpenFile" Text="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource localizeVC},ConverterParameter=Explorer/PickBook}" Click="MenuFlyoutItem_Click" Tag="Picker"/>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                        <Button.Style>
+                            <!-- https://github.com/microsoft/microsoft-ui-xaml/blob/main/dev/TabView/TabView.xaml -->
+                            <Style TargetType="Button"
+                               xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
+                               xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,7)"
+                               >
+                                <Setter Property="Background" Value="{ThemeResource TabViewButtonBackground}"/>
+                                <Setter Property="Foreground" Value="{ThemeResource TabViewButtonForeground}"/>
+                                <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+                                <Setter Property="FontSize" Value="{ThemeResource TabViewItemAddButtonFontSize}"/>
+                                <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}"/>
+                                <!--<Setter Property="Width" Value="{ThemeResource TabViewItemAddButtonWidth}"/>-->
+                                <Setter Property="Height" Value="{ThemeResource TabViewItemAddButtonHeight}"/>
+                                <Setter Property="FocusVisualMargin" Value="-3"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <ContentPresenter x:Name="ContentPresenter"
+                                            Background="{TemplateBinding Background}"
+                                            contract7Present:BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                            contract7Present:CornerRadius="{TemplateBinding CornerRadius}"
+                                            contract7NotPresent:CornerRadius="{ThemeResource ControlCornerRadius}"
+                                            FontSize="{TemplateBinding FontSize}"
+                                            FontFamily="{TemplateBinding FontFamily}"
+                                            FontWeight="SemiLight"
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            AutomationProperties.AccessibilityView="Raw">
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+                                                        <VisualState x:Name="Normal">
+                                                            <!--<Storyboard>
                                                             <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="PointerOver">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderBackgroundPointerOver}"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderForegroundPointerOver}"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Pressed">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderBackgroundPressed}"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderForegroundPressed}"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter"/>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Disabled">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewButtonBackgroundDisabled}"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewButtonForegroundDisabled}"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                        </ContentPresenter>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                                                        </Storyboard>-->
+                                                        </VisualState>
+                                                        <VisualState x:Name="PointerOver">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderBackgroundPointerOver}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderForegroundPointerOver}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Pressed">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderBackgroundPressed}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewItemHeaderForegroundPressed}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Disabled">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewButtonBackgroundDisabled}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TabViewButtonForegroundDisabled}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                            </ContentPresenter>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Border>
                 <Grid Grid.Column="1" x:Name="CustomDragRegion" Background="Transparent" />
             </Grid>
         </controls:TabView.TabStripFooter>
