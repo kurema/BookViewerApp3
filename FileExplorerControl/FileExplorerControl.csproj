@@ -139,6 +139,7 @@
   <ItemGroup>
     <Compile Include="Application\ResourceLoader.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Helper\UIHelper.cs" />
     <Compile Include="Models\FileItem\CombinedItem.cs" />
     <Compile Include="Models\FileItem\ContainerDelegateItem.cs" />
     <Compile Include="Models\FileItem\ContainerItem.cs" />
@@ -190,7 +191,7 @@
       <Version>7.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.6.0</Version>
+      <Version>2.6.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,10 @@
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:EqualConverter x:Key="vc_eq"/>
         <vc:OrderToDirectionFontIconGlyphConverter x:Key="vc_o2g"/>
+        <Style TargetType="FlyoutPresenter" x:Name="FlyoutPresenterStyleBasic">
+            <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}" />
+        </Style>
+
     </Page.Resources>
 
     <Grid>
@@ -121,7 +125,7 @@
             <Button Grid.Column="4">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE700;"/>
                 <Button.Flyout>
-                    <Flyout>
+                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterStyleBasic}">
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>

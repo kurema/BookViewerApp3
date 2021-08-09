@@ -117,10 +117,10 @@ namespace BookViewerApp.Views
             {
                 UIHelper.FrameOperation.OpenBook(item, () => OpenTab("BookViewer"), () =>
                  {
-                    //Dialog:Open dangerous file?
-                    //Open.
-                    //Or just ignore.
-                });
+                     //Dialog:Open dangerous file?
+                     //Open.
+                     //Or just ignore.
+                 });
             }
         }
 
@@ -220,27 +220,30 @@ namespace BookViewerApp.Views
             OpenTabExplorer();
         }
 
-        private void TabView_TabCloseRequested(winui.Controls.TabView sender, winui.Controls.TabViewTabCloseRequestedEventArgs args)
+        private async void TabView_TabCloseRequested(winui.Controls.TabView sender, winui.Controls.TabViewTabCloseRequestedEventArgs args)
         {
             if (RootAppWindow == null && tabView.TabItems.Count == 1)
             {
                 OpenTabExplorer();
-                CloseTab(args.Tab);
+                await CloseTab(args.Tab);
                 tabView.SelectedIndex = 0;
             }
             else
             {
-                CloseTab(args.Tab);
+                await CloseTab(args.Tab);
             }
         }
 
-        public async void CloseTab(winui.Controls.TabViewItem tab)
+        public async System.Threading.Tasks.Task CloseTab(winui.Controls.TabViewItem tab, bool dispose = true)
         {
             if (tab is null) return;
-            //((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
-            ((tab?.Content as Frame)?.Content as IDisposable)?.Dispose();
-            ((tab?.Content as Frame)?.Content as IDisposableBasic)?.DisposeBasic();
-            (tab?.Content as Frame)?.Navigate(typeof(Page));
+            if (dispose)
+            {
+                //((tab?.Content as Frame)?.Content as BookFixed3Viewer)?.CloseOperation();
+                ((tab?.Content as Frame)?.Content as IDisposable)?.Dispose();
+                ((tab?.Content as Frame)?.Content as IDisposableBasic)?.DisposeBasic();
+                (tab?.Content as Frame)?.Navigate(typeof(Page));
+            }
 
             if (tab.IsClosable)
             {
@@ -291,11 +294,11 @@ namespace BookViewerApp.Views
             }
         }
 
-        private void CloseSelectedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        private async void CloseSelectedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             if ((DateTimeOffset.UtcNow - LastKeyboardActionDateTime).TotalSeconds > 0.2)
             {
-                CloseTab(((winui.Controls.TabViewItem)tabView?.SelectedItem));
+                await CloseTab(((winui.Controls.TabViewItem)tabView?.SelectedItem));
                 LastKeyboardActionDateTime = DateTimeOffset.UtcNow;
             }
         }
@@ -405,7 +408,7 @@ namespace BookViewerApp.Views
                 var newWindow = await AppWindow.TryCreateAsync();
                 var newPage = new TabPage();
                 newPage.SetupWindow(newWindow);
-                CloseTab(e.Tab);
+                await CloseTab(e.Tab,false);
                 newPage.AddItemToTabs(e.Tab);
                 Windows.UI.Xaml.Hosting.ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
 
@@ -441,7 +444,7 @@ namespace BookViewerApp.Views
             //}
         }
 
-        private void tabView_TabStripDrop(object sender, DragEventArgs e)
+        private async void tabView_TabStripDrop(object sender, DragEventArgs e)
         {
             object obj;
             if (e.DataView.Properties.TryGetValue(DataIdentifier, out obj))
@@ -466,7 +469,9 @@ namespace BookViewerApp.Views
                     {
                         //var destinationTabViewListView = ((obj as winui.Controls.TabViewItem).Parent as winui.Controls.Primitives.TabViewListView);
                         //destinationTabViewListView?.Items.Remove(obj);
-                        if ((obj as winui.Controls.TabViewItem).XamlRoot.Content is TabPage tabPage) tabPage.CloseTab(obj as winui.Controls.TabViewItem);
+                        var tabPage = UIHelper.GetCurrentTabPage(obj as UIElement);
+                        if (tabPage != null) await tabPage.CloseTab(obj as winui.Controls.TabViewItem, false); else return;
+                        //if ((obj as winui.Controls.TabViewItem).XamlRoot.Content is TabPage tabPage) await tabPage.CloseTab(obj as winui.Controls.TabViewItem);
                     }
 
                     if (index < 0)

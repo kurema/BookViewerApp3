@@ -37,6 +37,9 @@
         <vc:IsZeroValueConveter x:Key="IsZero"/>
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:ObjectToTreeViewItemConverter x:Key="vc_tvi"/>
+        <Style TargetType="FlyoutPresenter" x:Name="FlyoutPresenterStyleBasic">
+            <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}" />
+        </Style>
     </UserControl.Resources>
     <Grid
         HorizontalAlignment="Stretch"
@@ -103,7 +106,7 @@
                     <Button Grid.Column="2" x:Name="button_favorite">
                         <SymbolIcon Symbol="Favorite" />
                         <Button.Flyout>
-                            <Flyout Placement="TopEdgeAlignedRight">
+                            <Flyout Placement="TopEdgeAlignedRight" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterStyleBasic}">
                                 <StackPanel MinWidth="200">
                                     <TextBox Text="{Binding Title,Mode=OneWay}" Name="textBox_BookmarkAdd" VerticalAlignment="Stretch"/>
                                     <winui:TreeView x:Name="treeView_BookMarkAdd" SelectionMode="Single" ItemsSource="{Binding BookmarkAddFolders}" CanReorderItems="False" CanDragItems="False"  Expanding="TreeView_Expanding">
@@ -166,7 +169,7 @@
             <Button Grid.Column="5" >
                 <SymbolIcon Symbol="GlobalNavigationButton"/>
                 <Button.Flyout>
-                    <Flyout Placement="BottomEdgeAlignedLeft">
+                    <Flyout Placement="BottomEdgeAlignedLeft" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterStyleBasic}">
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>

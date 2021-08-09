@@ -215,8 +215,7 @@ namespace kurema.FileExplorerControl.Views
                 {
                     var item = new MenuFlyoutItem()
                     {
-                        Text = Application.ResourceLoader.Loader.GetString("Command/Property")
-
+                        Text = Application.ResourceLoader.Loader.GetString("Command/Property"),
                     };
                     item.DataContext = vm.Item;
                     item.Click += MenuFlyoutItem_Click_Property;
