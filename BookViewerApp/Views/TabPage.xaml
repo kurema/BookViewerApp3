@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     >
     <Page.Background>
-        <AcrylicBrush BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemChromeAltHighColor}" TintOpacity="0.3" FallbackColor="{ThemeResource SystemChromeMediumColor}" />
+        <AcrylicBrush BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemChromeHighColor}" TintOpacity="0.5" FallbackColor="{ThemeResource SystemChromeHighColor}" />
     </Page.Background>
     <Page.Resources>
         <ValueConverter:LocalizeConverter x:Name="localizeVC"/>

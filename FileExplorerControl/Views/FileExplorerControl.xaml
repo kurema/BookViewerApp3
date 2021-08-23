@@ -111,7 +111,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
             <Button Grid.Column="0" Command="{Binding Content.HistoryShiftCommand}" CommandParameter="-1" BorderThickness="0" BorderBrush="Transparent">
                 <SymbolIcon Symbol="Back"/>
             </Button>
@@ -125,7 +125,7 @@
             <Button Grid.Column="4">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE700;"/>
                 <Button.Flyout>
-                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterStyleBasic}">
+                    <Flyout>
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -382,9 +382,25 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" 
+                <TextBox Grid.Column="0" Background="Transparent"
                          BorderBrush="Transparent" BorderThickness="0"
                          x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="address_text_KeyDown">
+                    <TextBox.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Light">
+                                    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                                </ResourceDictionary>
+                                <ResourceDictionary x:Key="Dark">
+                                    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </TextBox.Resources>
                     <TextBox.Style>
                         <!--Without this empty style, border is shown some how. -->
                         <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->

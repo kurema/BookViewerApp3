@@ -94,8 +94,24 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
-                    <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" 
+                    <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" Background="Transparent"
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus">
+                        <TextBox.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.ThemeDictionaries>
+                                    <ResourceDictionary x:Key="Light">
+                                        <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                                    </ResourceDictionary>
+                                    <ResourceDictionary x:Key="Dark">
+                                        <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                                    </ResourceDictionary>
+                                </ResourceDictionary.ThemeDictionaries>
+                            </ResourceDictionary>
+                        </TextBox.Resources>
                         <TextBox.Style>
                             <!--Without this empty style, border is shown some how. -->
                             <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->

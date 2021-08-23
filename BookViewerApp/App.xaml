@@ -9,6 +9,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
+            <!--<Style TargetType="FlyoutPresenter">
+                <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}"/>
+            </Style>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>
