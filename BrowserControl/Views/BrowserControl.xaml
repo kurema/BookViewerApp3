@@ -191,6 +191,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="1*"/>
+                                    <!--<ColumnDefinition Width="1*"/>-->
                                 </Grid.ColumnDefinitions>
                                 <Grid.Resources>
                                     <Style TargetType="RadioButton" BasedOn="{StaticResource ToggleButtonRevealStyle}">
@@ -198,6 +199,7 @@
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                         <Setter Property="Background" Value="Transparent" />
                                         <Setter Property="CornerRadius" Value="0"/>
+                                        <!--<Setter Property="MinWidth" Value="85"/>-->
                                     </Style>
                                 </Grid.Resources>
                                 <RadioButton Grid.Column="1" GroupName="tabGroup" x:Name="TabButtonDownload" >
@@ -206,6 +208,9 @@
                                 <RadioButton Grid.Column="0" GroupName="tabGroup"  x:Name="TabButtonBookmark" IsChecked="True" Tapped="ListViewItem_Tapped_1">
                                     <SymbolIcon Symbol="Bookmarks"/>
                                 </RadioButton>
+                                <!--<RadioButton Grid.Column="2" GroupName="tabGroup"  x:Name="TabButtonOthers">
+                                    <SymbolIcon Symbol="AllApps"/>
+                                </RadioButton>-->
                             </Grid>
                             <StackPanel Visibility="{Binding IsChecked ,ElementName=TabButtonBookmark,Converter={StaticResource vc_b2s},ConverterParameter=Visible:Collapsed}">
                                 <ListView ItemsSource="{Binding BookmarkCurrent}" ItemClick="listViewBookmarks_ItemClick" SelectionMode="None" IsItemClickEnabled="True" x:Name="listViewBookmarks">
