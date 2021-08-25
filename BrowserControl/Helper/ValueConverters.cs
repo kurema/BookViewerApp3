@@ -71,4 +71,20 @@ namespace kurema.BrowserControl.Helper.ValueConverters
             throw new NotImplementedException();
         }
     }
+
+    public class UIElementCollectionEmptyConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string[] text = parameter.ToString().Split(':');
+            if (text.Length < 2) throw new ArgumentException();
+            return (value as Windows.UI.Xaml.Controls.UIElementCollection)?.Count == 0 ? text[0] : text[1];
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }

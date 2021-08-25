@@ -23,6 +23,8 @@ namespace kurema.BrowserControl.Views
     {
         public WebView Control => this.webView;
 
+        public UIElementCollection AddOnSpace => PanelOthers.Children;
+
         public BrowserControl()
         {
             this.InitializeComponent();
