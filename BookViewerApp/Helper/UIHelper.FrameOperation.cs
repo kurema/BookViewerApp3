@@ -51,7 +51,37 @@ namespace BookViewerApp.Helper
                     {
                         vm.ControllerCollapsed = true;
                     }
-                    //content.AddOnSpace.Add(new Button() { Content = "Hello!" });
+                    {
+                        var checkbox = new CheckBox() { Content = "Darkmode",IsChecked=true };
+
+                        async Task applyDarkMode()
+                        {
+                            if (checkbox.IsChecked ?? false)
+                            {
+                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.background='white'" });
+                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='invert(100%) hue-rotate(180deg)';" });
+                            }
+                            else
+                            {
+                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.background='white'" });
+                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='none';" });
+                            }
+                        }
+
+                        checkbox.Checked += async (s, e) =>
+                        {
+                            await applyDarkMode();
+                        };
+                        checkbox.Unchecked += async (s, e) =>
+                        {
+                            await applyDarkMode();
+                        };
+                        content.Control.NavigationCompleted += async (s, e) =>
+                        {
+                            await applyDarkMode();
+                        };
+                        content.AddOnSpace.Add(checkbox);
+                    }
                 }
                 HistoryManager.AddEntry(file);
                 //await HistoryStorage.AddHistory(file, null);
@@ -220,7 +250,7 @@ namespace BookViewerApp.Helper
                                 if ((await kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage.GetAvailableExtensionsAsync()).Contains(Path.GetExtension(fileitem?.Name ?? "").ToUpperInvariant()))
                                 {
                                     var tab = GetCurrentTabPage(control);
-                                    if(tab != null)
+                                    if (tab != null)
                                     {
                                         tab.OpenTabMedia(fileitem);
                                     }
