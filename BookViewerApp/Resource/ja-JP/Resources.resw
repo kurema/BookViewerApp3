@@ -653,4 +653,13 @@
   <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
     <value>ネットワークフォルダー</value>
   </data>
+  <data name="Setting_EpubViewerDarkMode.Description" xml:space="preserve">
+    <value>Windows設定で「既定のアプリモード」がダークになっている場合、Epubビュワーで色を反転します。</value>
+  </data>
+  <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
+    <value>Epubビュワーにダークモードを適用 (実験的)</value>
+  </data>
+  <data name="Browser.Addon.DarkMode" xml:space="preserve">
+    <value>ダークモード</value>
+  </data>
 </root>

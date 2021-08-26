@@ -306,7 +306,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         </term>
       </license>
     </package>
-    <package href="https://github.com/futurepress/epubjs-reader" title="Epub.js Reader">
+    <package href="https://github.com/intity/epubjs-reader" title="Epub.js Reader">
       <license>
         <summary>MIT License (c) 2017 futurepress</summary>
         <term>

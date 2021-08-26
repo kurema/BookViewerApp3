@@ -52,36 +52,36 @@ namespace BookViewerApp.Helper
                         vm.ControllerCollapsed = true;
                     }
                     {
-                        var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && App.Current.RequestedTheme == ApplicationTheme.Dark;
-                        var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark };
+                        //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
+                        var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                        var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
 
                         async Task applyDarkMode()
                         {
                             if (checkbox.IsChecked ?? false)
                             {
-                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.background='white'" });
+                                //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi)
+                                await content.Control.InvokeScriptAsync("eval", new[] { @"if(document.body.style.background===""""){document.body.style.background='white';}" });
                                 await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='invert(100%) hue-rotate(180deg)';" });
                             }
                             else
                             {
-                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.background='white'" });
+                                //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi) 
+                                await content.Control.InvokeScriptAsync("eval", new[] { @"if(document.body.style.background===""white""){document.body.style.background='';}" });
                                 await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='none';" });
                             }
                         }
 
-                        checkbox.Checked += async (s, e) =>
-                        {
-                            await applyDarkMode();
-                        };
-                        checkbox.Unchecked += async (s, e) =>
-                        {
-                            await applyDarkMode();
-                        };
-                        content.Control.NavigationCompleted += async (s, e) =>
-                        {
-                            await applyDarkMode();
-                        };
+                        checkbox.Checked += async (s, e) => { await applyDarkMode(); };
+                        checkbox.Unchecked += async (s, e) => { await applyDarkMode(); };
+                        content.Control.NavigationCompleted += async (s, e) => { await applyDarkMode(); };
                         content.AddOnSpace.Add(checkbox);
+
+                        content.Control.ScriptNotify += (s, e) =>
+                        {
+                            //window.external.notify(document.body.style.background);
+                            var v = e.Value;
+                        };
                     }
                 }
                 HistoryManager.AddEntry(file);
