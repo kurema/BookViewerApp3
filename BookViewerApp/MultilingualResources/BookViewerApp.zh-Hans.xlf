@@ -870,7 +870,7 @@ You can also disable thumbnail generation in Explorer tab with the setting above
         </trans-unit>
         <trans-unit id="Browser.Addon.DarkMode" translate="yes" xml:space="preserve">
           <source>Dark mode</source>
-          <target state="translated">黑暗模式</target>
+          <target state="translated">暗模式</target>
         </trans-unit>
       </group>
     </body>
