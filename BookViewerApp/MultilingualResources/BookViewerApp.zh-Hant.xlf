@@ -862,15 +862,15 @@ You can also disable thumbnail generation in Explorer tab with the setting above
         </trans-unit>
         <trans-unit id="Setting_EpubViewerDarkMode.Description" translate="yes" xml:space="preserve">
           <source>If the app is set to dark mode, the Epub viewer will also be in dark mode.</source>
-          <target state="new">If the app is set to dark mode, the Epub viewer will also be in dark mode.</target>
+          <target state="translated">如果應用程序設置為暗模式，則 Epub 查看器也將處於暗模式。</target>
         </trans-unit>
         <trans-unit id="Setting_EpubViewerDarkMode.Title" translate="yes" xml:space="preserve">
           <source>Apply the dark mode settings to the Epub viewer. (Experimental)</source>
-          <target state="new">Apply the dark mode settings to the Epub viewer. (Experimental)</target>
+          <target state="translated">將暗模式設置應用於 Epub 查看器。（實驗選項）</target>
         </trans-unit>
         <trans-unit id="Browser.Addon.DarkMode" translate="yes" xml:space="preserve">
           <source>Dark mode</source>
-          <target state="new">Dark mode</target>
+          <target state="translated">黑暗模式</target>
         </trans-unit>
       </group>
     </body>
