@@ -752,4 +752,13 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
     <value>Network item</value>
   </data>
+  <data name="Browser.Addon.DarkMode" xml:space="preserve">
+    <value>Dark mode</value>
+  </data>
+  <data name="Setting_EpubViewerDarkMode.Description" xml:space="preserve">
+    <value>If the app is set to dark mode, the Epub viewer will also be in dark mode.</value>
+  </data>
+  <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
+    <value>Apply the dark mode settings to the Epub viewer. (Experimental)</value>
+  </data>
 </root>

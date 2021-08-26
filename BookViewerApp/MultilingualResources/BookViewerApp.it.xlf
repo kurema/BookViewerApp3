@@ -870,6 +870,18 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
           <source>Network item</source>
           <target state="translated">Elemento di rete</target>
         </trans-unit>
+        <trans-unit id="Setting_EpubViewerDarkMode.Description" translate="yes" xml:space="preserve">
+          <source>If the app is set to dark mode, the Epub viewer will also be in dark mode.</source>
+          <target state="new">If the app is set to dark mode, the Epub viewer will also be in dark mode.</target>
+        </trans-unit>
+        <trans-unit id="Setting_EpubViewerDarkMode.Title" translate="yes" xml:space="preserve">
+          <source>Apply the dark mode settings to the Epub viewer. (Experimental)</source>
+          <target state="new">Apply the dark mode settings to the Epub viewer. (Experimental)</target>
+        </trans-unit>
+        <trans-unit id="Browser.Addon.DarkMode" translate="yes" xml:space="preserve">
+          <source>Dark mode</source>
+          <target state="new">Dark mode</target>
+        </trans-unit>
       </group>
     </body>
   </file>

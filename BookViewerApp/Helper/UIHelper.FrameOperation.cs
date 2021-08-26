@@ -52,7 +52,8 @@ namespace BookViewerApp.Helper
                         vm.ControllerCollapsed = true;
                     }
                     {
-                        var checkbox = new CheckBox() { Content = "Darkmode",IsChecked=true };
+                        var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && App.Current.RequestedTheme == ApplicationTheme.Dark;
+                        var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark };
 
                         async Task applyDarkMode()
                         {

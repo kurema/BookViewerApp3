@@ -18,7 +18,6 @@
             <TextBlock Text="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource vc_local},ConverterParameter=Setting/Label}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
             <local:SettingPanelControl  x:Name="SettingPanel" DataContext="{Binding}" />
             <local:SimpleListViewControl x:Name="listView"/>
-
         </StackPanel>
     </ScrollViewer>
 </Page>

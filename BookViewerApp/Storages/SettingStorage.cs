@@ -56,7 +56,7 @@ namespace BookViewerApp.Storages
                         //new SettingInstance("ShowBookmarkFavicon",false,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("FetchThumbnailsBackground",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("DefaultBrowserExternal",false,new TypeConverters.BoolConverter(),group:"Explorer"),
-
+                        new SettingInstance("EpubViewerDarkMode",false, new TypeConverters.BoolConverter(),group:"Viewer"),
                     };
                 //How to add resource when you add SettingInstance:
                 //1. Open Resource/en-US/Resources.resw
