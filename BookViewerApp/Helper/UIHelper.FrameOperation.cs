@@ -52,37 +52,51 @@ namespace BookViewerApp.Helper
                         vm.ControllerCollapsed = true;
                     }
                     {
-                        //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
-                        var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Application.Current.RequestedTheme == ApplicationTheme.Dark;
-                        var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
-
-                        async Task applyDarkMode()
                         {
-                            if (checkbox.IsChecked ?? false)
+                            //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
+                            var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                            var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
+
+                            async Task applyDarkMode()
                             {
-                                //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi)
-                                await content.Control.InvokeScriptAsync("eval", new[] { @"if(document.body.style.background===""""){document.body.style.background='white';}" });
-                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='invert(100%) hue-rotate(180deg)';" });
+                                if (checkbox.IsChecked ?? false)
+                                {
+                                    //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi)
+                                    await content.Control.InvokeScriptAsync("eval", new[] { @"if(document.body.style.background===""""){document.body.style.background='white';}" });
+                                    await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='invert(100%) hue-rotate(180deg)';" });
+                                }
+                                else
+                                {
+                                    //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi) 
+                                    await content.Control.InvokeScriptAsync("eval", new[] { @"if(document.body.style.background===""white""){document.body.style.background='';}" });
+                                    await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='none';" });
+                                }
                             }
-                            else
-                            {
-                                //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi) 
-                                await content.Control.InvokeScriptAsync("eval", new[] { @"if(document.body.style.background===""white""){document.body.style.background='';}" });
-                                await content.Control.InvokeScriptAsync("eval", new[] { @"document.body.style.filter='none';" });
-                            }
+
+                            checkbox.Checked += async (s, e) => { await applyDarkMode(); };
+                            checkbox.Unchecked += async (s, e) => { await applyDarkMode(); };
+                            content.Control.NavigationCompleted += async (s, e) => { await applyDarkMode(); };
+                            content.AddOnSpace.Add(checkbox);
                         }
-
-                        checkbox.Checked += async (s, e) => { await applyDarkMode(); };
-                        checkbox.Unchecked += async (s, e) => { await applyDarkMode(); };
-                        content.Control.NavigationCompleted += async (s, e) => { await applyDarkMode(); };
-                        content.AddOnSpace.Add(checkbox);
-
-                        content.Control.ScriptNotify += (s, e) =>
                         {
-                            //window.external.notify(document.body.style.background);
-                            var v = e.Value;
-                        };
+                            var checkbox = new CheckBox()
+                            {
+                                Content = ResourceManager.Loader.GetString("Setting_EpubViewerDarkMode/Title"),
+                                IsChecked = (bool)SettingStorage.GetValue("EpubViewerDarkMode"),
+                                HorizontalAlignment = HorizontalAlignment.Stretch,
+                            };
+                            ToolTipService.SetToolTip(checkbox, ResourceManager.Loader.GetString("Setting_EpubViewerDarkMode/Description"));
+                            checkbox.Checked += (s, e) => SettingStorage.SetValue("EpubViewerDarkMode", true);
+                            checkbox.Unchecked += (s, e) => SettingStorage.SetValue("EpubViewerDarkMode", false);
+                            content.AddOnSpace.Add(checkbox);
+                        }
                     }
+
+                    //content.Control.ScriptNotify += (s, e) =>
+                    //{
+                    //    //window.external.notify(document.body.style.background);
+                    //    var v = e.Value;
+                    //};
                 }
                 HistoryManager.AddEntry(file);
                 //await HistoryStorage.AddHistory(file, null);
