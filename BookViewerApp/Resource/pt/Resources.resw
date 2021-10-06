@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutThisApp.Label" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="AddLocalDirectory.Label" xml:space="preserve">
+    <value>Adicionar um diretório</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>BookViewer 3</value>
+  </data>
+  <data name="BookmarkBasic.Title" xml:space="preserve">
+    <value>Marcador</value>
+  </data>
+  <data name="BookmarkLastread.Title" xml:space="preserve">
+    <value>[Automático]</value>
+  </data>
+  <data name="Bookmarks.Label" xml:space="preserve">
+    <value>Marcadores</value>
+  </data>
+  <data name="BookmarkTitle.PlaceholderText" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="BookNext.Label" xml:space="preserve">
+    <value>Ler o próximo livro</value>
+  </data>
+  <data name="BookPrevious.Label" xml:space="preserve">
+    <value>Ler o livro anterior</value>
+  </data>
+  <data name="BookshelfTitleNew" xml:space="preserve">
+    <value>Prateleira</value>
+  </data>
+  <data name="ClearAllBookshelf.Label" xml:space="preserve">
+    <value>Limpar todas as prateleiras</value>
+  </data>
+  <data name="GoToBookshelf.Label" xml:space="preserve">
+    <value>Ir para a prateleira</value>
+  </data>
+  <data name="LoadingFolder.Completed.Message" xml:space="preserve">
+    <value>O carregamento foi concluído. Obrigado.</value>
+  </data>
+  <data name="LoadingFolder.Started.Message" xml:space="preserve">
+    <value>Isto vai demorar algum tempo. Não feche esta aplicação enquanto carrega.</value>
+  </data>
+  <data name="LoadingFolder.Title" xml:space="preserve">
+    <value>A carregar as pastas</value>
+  </data>
+  <data name="OpenLocalBook.Label" xml:space="preserve">
+    <value>Abrir</value>
+  </data>
+  <data name="PageEnd.Label" xml:space="preserve">
+    <value>Fim</value>
+  </data>
+  <data name="PageLeft.Label" xml:space="preserve">
+    <value>Esquerda</value>
+  </data>
+  <data name="PageLeftmost.Label" xml:space="preserve">
+    <value>Mais à esquerda</value>
+  </data>
+  <data name="PageNext.Label" xml:space="preserve">
+    <value>Próximo</value>
+  </data>
+  <data name="PagePrevious.Label" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="PageReverse.Label" xml:space="preserve">
+    <value>Inverter a direção da página</value>
+  </data>
+  <data name="PageRight.Label" xml:space="preserve">
+    <value>Direita</value>
+  </data>
+  <data name="PageRightmost.Label" xml:space="preserve">
+    <value>Mais à direita</value>
+  </data>
+  <data name="PageTop.Label" xml:space="preserve">
+    <value>Início</value>
+  </data>
+  <data name="Setting.Label" xml:space="preserve">
+    <value>Definição</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
+    <value>Ligar o modo ecrã inteiro quando se abre um livro.</value>
+  </data>
+  <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
+    <value>Definir ecrã inteiro como predefinição</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
+    <value>Definir a orientação da página R2L(Da direita para a esquerda) como predefinição no novo livro.</value>
+  </data>
+  <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
+    <value>R2L como predefinição</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
+    <value>Abrir automaticamente a página onde leu da última vez.</value>
+  </data>
+  <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
+    <value>Abrir automaticamente a última página lida</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
+    <value>Mostrar o botão ir para mais à direita/esquerda no visualizador de livros.</value>
+  </data>
+  <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
+    <value>Mostrar o botão ir para mais à direita/mais à esquerda</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
+    <value>Sincronizar os marcadores dos livros com a nuvem.</value>
+  </data>
+  <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
+    <value>Sincronização de marcadores de livros</value>
+  </data>
+  <data name="ToggleFullScreen.Label" xml:space="preserve">
+    <value>Alternar o modo ecrã inteiro.</value>
+  </data>
+  <data name="ClearThisBookshelf.Label" xml:space="preserve">
+    <value>Limpar esta prateleira</value>
+  </data>
+  <data name="SetThisBookshelfSecret.Label" xml:space="preserve">
+    <value>Ocultar prateleira</value>
+  </data>
+  <data name="Setting_TileHeight.Description" xml:space="preserve">
+    <value>A altura do mosaico do livro na prateleira.</value>
+  </data>
+  <data name="Setting_TileHeight.Title" xml:space="preserve">
+    <value>Altura do mosaico para livros</value>
+  </data>
+  <data name="Setting_TileWidth.Description" xml:space="preserve">
+    <value>A largura do mosaico do livro na prateleira.</value>
+  </data>
+  <data name="Setting_TileWidth.Title" xml:space="preserve">
+    <value>Largura do mosaico para livros</value>
+  </data>
+  <data name="ReloadBookshelf.Label" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
+  <data name="BookmarkLast.Title" xml:space="preserve">
+    <value>[Fim]</value>
+  </data>
+  <data name="BookmarkTop.Title" xml:space="preserve">
+    <value>[Início]</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
+    <value>Luminosidade de fundo. 100:Branco, 0:Preto. (Oposto no tema escuro)</value>
+  </data>
+  <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
+    <value>Luminosidade de fundo</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
+    <value>Use a animação scroll no visualizador de livros.</value>
+  </data>
+  <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
+    <value>Animação do scroll</value>
+  </data>
+  <data name="Setting_BookNameTrim.Description" xml:space="preserve">
+    <value>A parte correspondente está oculta no nome do livro. Entrada em expressão regular. (ex:\(.*))</value>
+  </data>
+  <data name="Setting_BookNameTrim.Title" xml:space="preserve">
+    <value>Tamanho do título</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
+    <value>Excluir pasta na vista da prateleira se corresponder em expressão regular.</value>
+  </data>
+  <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
+    <value>Nome da pasta a excluir</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
+    <value>Assumir fotografia que tenha "capa" no nome do ficheiro para ser o primeiro ficheiro na CBZ/CBR.</value>
+  </data>
+  <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
+    <value>Assumir fotografia de capa por nome de ficheiro na CBZ/CBR</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
+    <value>Ordenar por ordem natural na CBZ/CBR (ex:01.jpg→2.jpg→003.jpg)</value>
+  </data>
+  <data name="Setting_SortNaturalOrder.Title" xml:space="preserve">
+    <value>Ordem natural em CBZ/CBR</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
+    <value>Segundos para exibir o botão de zoom ao tocar no ecrã (0: desativar).</value>
+  </data>
+  <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
+    <value>Tempo de exibição do botão de zoom</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
+    <value>Segundos para exibir o menu quando se toca no ecrã na página do visualizador de livros (0: sempre).</value>
+  </data>
+  <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
+    <value>Tempo de exibição do menu no visualizador de livros</value>
+  </data>
+  <data name="SwitchBookshelfToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Trocar de prateleira.</value>
+  </data>
+  <data name="Welcome_HowToConfigure" xml:space="preserve">
+    <value>Como alterar as definições</value>
+  </data>
+  <data name="Welcome_HowToUse" xml:space="preserve">
+    <value>Como se usa</value>
+  </data>
+  <data name="Welcome_OpenMenu" xml:space="preserve">
+    <value>Abrir o menu.</value>
+  </data>
+  <data name="Setting_WebHomePage.Description" xml:space="preserve">
+    <value>Página Inicial.</value>
+  </data>
+  <data name="Setting_WebHomePage.Title" xml:space="preserve">
+    <value>Página Inicial</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
+    <value>Respeitar a informação da direção em PDF (R2L/L2R).</value>
+  </data>
+  <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
+    <value>Respeitar a informação da direção</value>
+  </data>
+  <data name="Password.Message" xml:space="preserve">
+    <value>Introduza a palavra-passe para abrir.</value>
+  </data>
+  <data name="Password.Save.Message" xml:space="preserve">
+    <value>Salvar Palavra-passe</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>Confirmar Palavra-passe</value>
+  </data>
+  <data name="Word.Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Word.OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Setting.Group.Browser" xml:space="preserve">
+    <value>Navegador</value>
+  </data>
+  <data name="Setting.Group.Cloud" xml:space="preserve">
+    <value>Nuvem</value>
+  </data>
+  <data name="Setting.Group.Library" xml:space="preserve">
+    <value>Biblioteca</value>
+  </data>
+  <data name="Setting.Group.Obsolete" xml:space="preserve">
+    <value>Obsoleto</value>
+  </data>
+  <data name="Setting.Group.Viewer" xml:space="preserve">
+    <value>Visualizador</value>
+  </data>
+  <data name="TabHeader.Bookshelf" xml:space="preserve">
+    <value>Prateleira</value>
+  </data>
+  <data name="TabHeader.BookViewer" xml:space="preserve">
+    <value>Visualizador</value>
+  </data>
+  <data name="TabHeader.Home" xml:space="preserve">
+    <value>Página Inicial</value>
+  </data>
+  <data name="TabHeader.Info" xml:space="preserve">
+    <value>Informação</value>
+  </data>
+  <data name="TabHeader.NewTab" xml:space="preserve">
+    <value>Novo Separador</value>
+  </data>
+  <data name="TabHeader.Setting" xml:space="preserve">
+    <value>Definição</value>
+  </data>
+  <data name="TabHeader.Epub" xml:space="preserve">
+    <value>Epub</value>
+  </data>
+  <data name="TabHeader.Main" xml:space="preserve">
+    <value>Início</value>
+  </data>
+  <data name="TabHeader.Browser" xml:space="preserve">
+    <value>Navegador</value>
+  </data>
+  <data name="TabHeader.Explorer" xml:space="preserve">
+    <value>Explorador</value>
+  </data>
+  <data name="Explorer.Apps" xml:space="preserve">
+    <value>Aplicações</value>
+  </data>
+  <data name="Explorer.Browser" xml:space="preserve">
+    <value>Navegador</value>
+  </data>
+  <data name="Explorer.PickBook" xml:space="preserve">
+    <value>Abrir</value>
+  </data>
+  <data name="Explorer.Setting" xml:space="preserve">
+    <value>Definição</value>
+  </data>
+  <data name="ExplorerContainer.Bookmarks" xml:space="preserve">
+    <value>Marcadores</value>
+  </data>
+  <data name="ExplorerContainer.Folders" xml:space="preserve">
+    <value>Pastas</value>
+  </data>
+  <data name="ExplorerContainer.Histories" xml:space="preserve">
+    <value>Histórico</value>
+  </data>
+  <data name="ExplorerContainer.Libraries" xml:space="preserve">
+    <value>Bibliotecas</value>
+  </data>
+  <data name="ExplorerContainer.PC" xml:space="preserve">
+    <value>Este PC</value>
+  </data>
+  <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
+    <value>Registar uma pasta</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.Title" xml:space="preserve">
+    <value>Cancelar registo uma pasta</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
+    <value>A pasta é referida pela seguinte biblioteca.
+Tem a certeza que quer cancelar o registo?</value>
+  </data>
+  <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
+    <value>Cancelar registo da pasta</value>
+  </data>
+  <data name="ContextMenu.Library.New.Title" xml:space="preserve">
+    <value>Nova biblioteca</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.Title" xml:space="preserve">
+    <value>Adicionar a uma biblioteca</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Message" xml:space="preserve">
+    <value>A pasta já está registada.</value>
+  </data>
+  <data name="ContextMenu.StorageFolder.AddToLibrary.AlreadyRegistered.MessageDialog.Title" xml:space="preserve">
+    <value>Impossível de registar</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
+    <value>Mostrar marcadores predefinidos.</value>
+  </data>
+  <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
+    <value>Mostrar marcadores predefinidos</value>
+  </data>
+  <data name="Setting.Group.Explorer" xml:space="preserve">
+    <value>Explorador</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
+    <value>Definir o URL do motor de busca que é utilizado na pesquisa a partir da barra de endereços (%s no lugar da consulta).</value>
+  </data>
+  <data name="Setting_WebSearchEngine.Title" xml:space="preserve">
+    <value>Procura</value>
+  </data>
+  <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
+    <value>Ocultar histórico</value>
+  </data>
+  <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
+    <value>Mostrar histórico</value>
+  </data>
+  <data name="Setting_ShowHistories.Description" xml:space="preserve">
+    <value>Mostrar histórico.</value>
+  </data>
+  <data name="Setting_ShowHistories.Title" xml:space="preserve">
+    <value>Mostrar histórico</value>
+  </data>
+  <data name="ItemType.BookmarkContainer" xml:space="preserve">
+    <value>Pasta de marcadores</value>
+  </data>
+  <data name="ItemType.BookmarkItem" xml:space="preserve">
+    <value>Item de marcador</value>
+  </data>
+  <data name="ItemType.HistoryItem" xml:space="preserve">
+    <value>Item do histórico</value>
+  </data>
+  <data name="ItemType.PresetBookmark" xml:space="preserve">
+    <value>Marcadores predefinidos</value>
+  </data>
+  <data name="ItemType.LibraryItem" xml:space="preserve">
+    <value>Biblioteca</value>
+  </data>
+  <data name="ItemType.SystemFolder" xml:space="preserve">
+    <value>Pasta do Sistema</value>
+  </data>
+  <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
+    <value>Abrir a pasta que contém</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
+    <value>Ocultar marcadores predefinidos</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
+    <value>Mostrar marcadores predefinidos</value>
+  </data>
+  <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
+    <value>Cancelar registo desta biblioteca</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
+    <value>Número máximo de históricos a serem salvos.</value>
+  </data>
+  <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
+    <value>Número de históricos</value>
+  </data>
+  <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
+    <value>Gerir esta biblioteca</value>
+  </data>
+  <data name="ContextMenu.Word.New.Title" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="Word.Folder" xml:space="preserve">
+    <value>Pasta</value>
+  </data>
+  <data name="ContextMenu.Word.NewContaiener.Title" xml:space="preserve">
+    <value>Nova pasta</value>
+  </data>
+  <data name="ContextMenu.Word.New.Bookmark.Title" xml:space="preserve">
+    <value>Marcador</value>
+  </data>
+  <data name="Word.Title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="Word.URL" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Edit.Title" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Info.Info.Contributors" xml:space="preserve">
+    <value>Contribuidores</value>
+  </data>
+  <data name="Info.Info.Sponsors" xml:space="preserve">
+    <value>Patrocinadores</value>
+  </data>
+  <data name="Info.Info.ThirdParty.License" xml:space="preserve">
+    <value>Licença</value>
+  </data>
+  <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
+    <value>Termos de licença</value>
+  </data>
+  <data name="Info.Info.Title" xml:space="preserve">
+    <value>Informação</value>
+  </data>
+  <data name="Info.Info.Translation" xml:space="preserve">
+    <value>Tradução</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
+    <value>Notificação de Terceiros</value>
+  </data>
+  <data name="Info.Info.BeSponsor.Title" xml:space="preserve">
+    <value>Seja um patrocinador!</value>
+  </data>
+  <data name="Info.Info.Privacy.Description" xml:space="preserve">
+    <value>Mostrar Política de Privacidade</value>
+  </data>
+  <data name="Info.Info.Privacy.Title" xml:space="preserve">
+    <value>Privacidade</value>
+  </data>
+  <data name="Info.Debug.OpenAppData.Title" xml:space="preserve">
+    <value>Abrir pasta de dados.</value>
+  </data>
+  <data name="Info.Debug.Title" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Info.Debug.CopyFAL.Title" xml:space="preserve">
+    <value>Copiar informação do FutureAccessList.</value>
+  </data>
+  <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
+    <value>Terceira Parte</value>
+  </data>
+  <data name="Info.Info.Developers" xml:space="preserve">
+    <value>Desenvolvedores</value>
+  </data>
+  <data name="AppName_Classic" xml:space="preserve">
+    <value>BookViewer Classic</value>
+  </data>
+  <data name="Migration.Dialog.Description" xml:space="preserve">
+    <value>Foi lançado uma nova versão do BookViewer.
+Isto inclui separadores, Fluent Design, arquivador integrado e numerosas correções de bugs.</value>
+  </data>
+  <data name="Migration.Dialog.Title" xml:space="preserve">
+    <value>A nova aplicação foi lançada!</value>
+  </data>
+  <data name="Migration.General.Title" xml:space="preserve">
+    <value>Atualize para BookViewer3</value>
+  </data>
+  <data name="Setting_HideMigration.Description" xml:space="preserve">
+    <value>Ocultar botão de aviso de atualização.</value>
+  </data>
+  <data name="Setting_HideMigration.Title" xml:space="preserve">
+    <value>Ocultar aviso de atualização</value>
+  </data>
+  <data name="Word.NeverShowAgain" xml:space="preserve">
+    <value>Nunca mais mostrar isto.</value>
+  </data>
+  <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
+    <value>sobre os Patrocinadores GitHub</value>
+  </data>
+  <data name="Info.Purchase.Title" xml:space="preserve">
+    <value>Doar</value>
+  </data>
+  <data name="Info.Purchase.Word.Purchased" xml:space="preserve">
+    <value>Adquirido</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
+    <value>Obrigado!
+Os fundos que forneceu tornou possível ao autor continuar o trabalho! Se quiser apoiar mais, considere a possibilidade de utilizar os Patrocinadores GitHub.
+Desejo-lhe boa sorte.</value>
+  </data>
+  <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
+    <value>Obrigado por me apoiar!</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
+    <value>Os fundos que forneceu torna possível a continuação do trabalho de kurema! Dá-me poder para continuar.
+Desejo-vos boa sorte.</value>
+  </data>
+  <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
+    <value>Obrigado pela sua aquisição!</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenExternal.Title" xml:space="preserve">
+    <value>Aberto no navegador externo</value>
+  </data>
+  <data name="Info.Info.AboutThisApp.Description" xml:space="preserve">
+    <value>Acerca desta aplicação</value>
+  </data>
+  <data name="Info.Info.ThirdParty.Description" xml:space="preserve">
+    <value>Ver Notificação de Terceiros</value>
+  </data>
+  <data name="Info.Debug.CopyFAL.Description" xml:space="preserve">
+    <value>StorageApplicationPermissions.FutureAccessList</value>
+  </data>
+  <data name="Info.Debug.OpenAppData.Description" xml:space="preserve">
+    <value>Windows.Storage.ApplicationData.Current.LocalFolder</value>
+  </data>
+  <data name="Info.Info.ShowContributors.Description" xml:space="preserve">
+    <value>Ver os colaboradores, tradutores e patrocinadores</value>
+  </data>
+  <data name="Setting_EpubViewerType.Description" xml:space="preserve">
+    <value>Escolher o motor para epub. Recomendamos a Bibi.</value>
+  </data>
+  <data name="Setting_EpubViewerType.Title" xml:space="preserve">
+    <value>Motor de visualização Epub</value>
+  </data>
+  <data name="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" xml:space="preserve">
+    <value>Bibi</value>
+  </data>
+  <data name="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" xml:space="preserve">
+    <value>Epub.js Reader</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Description" xml:space="preserve">
+    <value>Selecione o layout da página.</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Default.Title" xml:space="preserve">
+    <value>Predefinição</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Single.Title" xml:space="preserve">
+    <value>Visualização de página única (Auto)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Spread.Title" xml:space="preserve">
+    <value>Automático</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Title" xml:space="preserve">
+    <value>Layout da Página</value>
+  </data>
+  <data name="Setting_PdfRenderScaling.Description" xml:space="preserve">
+    <value>Renderiza o PDF com uma resolução maior do que o tamanho do ecrã. Ao desligar, melhora o desempenho.</value>
+  </data>
+  <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
+    <value>Renderização em PDF de alta resolução</value>
+  </data>
+  <data name="Info.Info.ReleaseNotes.Description" xml:space="preserve">
+    <value>{0} / Abrir as Notas de Lançamento sobre o GitHub</value>
+  </data>
+  <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
+    <value>Notas de Lançamento</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
+    <value>Visualização de duas páginas (Mostrar página de capa em Visualização de duas páginas)</value>
+  </data>
+  <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpreadFirstSingle.Title" xml:space="preserve">
+    <value>Visualização de duas páginas</value>
+  </data>
+  <data name="ContextMenu.BookViewer.QuickSettings.Title" xml:space="preserve">
+    <value>Definições Rápidas</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
+    <value>Lembrar da orientação da página de cada livro.</value>
+  </data>
+  <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
+    <value>Lembrar a orientação da página</value>
+  </data>
+  <data name="Setting.ToolTip.Message" xml:space="preserve">
+    <value>Predefinição: {2}</value>
+  </data>
+  <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
+    <value>Mostrar favicons de marcadores. 
+Nesta versão, a aplicação não guarda a cache de favicons e os favicons exibidos parecem ser instáveis.
+Nota de Privacidade: Se isto estiver ligado, será enviado um pedido ao servidor cada vez que abrir a pasta de marcadores no Explorador. O servidor pode recolher alguns dados.</value>
+  </data>
+  <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
+    <value>Mostrar favicons de marcadores</value>
+  </data>
+  <data name="Setting_FetchThumbnailsBackground.Description" xml:space="preserve">
+    <value>Gerar miniaturas em segundo plano. Desligue-o se tiver problemas de desempenho.</value>
+  </data>
+  <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
+    <value>Gerar miniaturas em segundo plano</value>
+  </data>
+  <data name="ContextMenu.Book.SelectThumbnail.Title" xml:space="preserve">
+    <value>Selecione a miniatura</value>
+  </data>
+  <data name="Word.Close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="Info.Debug.DeleteThumbnails.Description" xml:space="preserve">
+    <value>Eliminar as miniaturas dos livros</value>
+  </data>
+  <data name="Info.Debug.DeleteThumbnails.Dialog.Message" xml:space="preserve">
+    <value>Tem a certeza de que quer apagar a pasta de miniaturas?
+Também pode desativar a geração de miniaturas no separador Explorador com a definição acima.</value>
+  </data>
+  <data name="Info.Debug.DeleteThumbnails.Title" xml:space="preserve">
+    <value>Eliminar miniaturas</value>
+  </data>
+  <data name="Info.Debug.DeleteThumbnails.Dialog.MessageFail" xml:space="preserve">
+    <value>Não foi possível apagar a pasta de miniaturas. Por favor, tente novamente.</value>
+  </data>
+  <data name="Word.Expand" xml:space="preserve">
+    <value>Ver tudo</value>
+  </data>
+  <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
+    <value>Utilize o navegador externo para abrir o URL.</value>
+  </data>
+  <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
+    <value>Abrir URL no navegador externo</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
+    <value>Abrir no navegador incorporado</value>
+  </data>
+  <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
+    <value>Adicionar uma nova biblioteca</value>
+  </data>
+  <data name="TabHeader.MediaPlayer" xml:space="preserve">
+    <value>Media Player</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Archive" xml:space="preserve">
+    <value>Pasta de ficheiro</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Folder" xml:space="preserve">
+    <value>Pasta</value>
+  </data>
+  <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
+    <value>Item de rede</value>
+  </data>
+  <data name="Setting_EpubViewerDarkMode.Description" xml:space="preserve">
+    <value>Se a aplicação estiver definida para modo escuro, o visualizador Epub também estará em modo escuro.</value>
+  </data>
+  <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
+    <value>Aplicar as definições do modo escuro ao visualizador Epub. (Experimental)</value>
+  </data>
+  <data name="Browser.Addon.DarkMode" xml:space="preserve">
+    <value>Modo escuro</value>
+  </data>
+</root>
