@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="pt-PT" original="FILEEXPLORERCONTROL/RESOURCE/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6915.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="FILEEXPLORERCONTROL/RESOURCE/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="Command.Copy" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="final">Copiar</target>
+        </trans-unit>
+        <trans-unit id="Command.Delete" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="final">Eliminar</target>
+        </trans-unit>
+        <trans-unit id="Command.OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="final">OK</target>
+        </trans-unit>
+        <trans-unit id="Command.Open" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target state="final">Abrir</target>
+        </trans-unit>
+        <trans-unit id="Command.Property" translate="yes" xml:space="preserve">
+          <source>Property</source>
+          <target state="final">Propriedade</target>
+        </trans-unit>
+        <trans-unit id="Delete.Message" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to delete this item?</source>
+          <target state="final">Tem a certeza de que quer eliminar este item?</target>
+        </trans-unit>
+        <trans-unit id="Delete.Option.No" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target state="final">Não</target>
+        </trans-unit>
+        <trans-unit id="Delete.Option.Permanent" translate="yes" xml:space="preserve">
+          <source>Permanently</source>
+          <target state="final">Permanentemente</target>
+        </trans-unit>
+        <trans-unit id="Delete.Option.Yes" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target state="final">Sim</target>
+        </trans-unit>
+        <trans-unit id="Delete.Title" translate="yes" xml:space="preserve">
+          <source>Delete Item</source>
+          <target state="final">Eliminar Item</target>
+        </trans-unit>
+        <trans-unit id="Header.Date" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <target state="final">Data</target>
+        </trans-unit>
+        <trans-unit id="Header.Name" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="final">Nome</target>
+        </trans-unit>
+        <trans-unit id="Header.Size" translate="yes" xml:space="preserve">
+          <source>Size</source>
+          <target state="final">Tamanho</target>
+        </trans-unit>
+        <trans-unit id="Table.Date" translate="yes" xml:space="preserve">
+          <source>Date:</source>
+          <target state="final">Data:</target>
+        </trans-unit>
+        <trans-unit id="Table.Name" translate="yes" xml:space="preserve">
+          <source>Name:</source>
+          <target state="final">Nome:</target>
+        </trans-unit>
+        <trans-unit id="Table.Path" translate="yes" xml:space="preserve">
+          <source>Path:</source>
+          <target state="final">Localização:</target>
+        </trans-unit>
+        <trans-unit id="Table.Size" translate="yes" xml:space="preserve">
+          <source>Size:</source>
+          <target state="final">Tamanho:</target>
+        </trans-unit>
+        <trans-unit id="Header.FileType" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="final">Tipo</target>
+        </trans-unit>
+        <trans-unit id="Table.FileType" translate="yes" xml:space="preserve">
+          <source>Type:</source>
+          <target state="final">Tipo:</target>
+        </trans-unit>
+        <trans-unit id="FileType.General" translate="yes" xml:space="preserve">
+          <source>{0} File</source>
+          <target state="final">Ficheiro {0}</target>
+        </trans-unit>
+        <trans-unit id="FileType.NoExtension" translate="yes" xml:space="preserve">
+          <source>File</source>
+          <target state="final">Ficheiro</target>
+        </trans-unit>
+        <trans-unit id="FileType.Folder" translate="yes" xml:space="preserve">
+          <source>File folder</source>
+          <target state="final">Pasta de ficheiro</target>
+        </trans-unit>
+        <trans-unit id="FileType.Combined" translate="yes" xml:space="preserve">
+          <source>Combined container</source>
+          <target state="final">Contentor combinado</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
