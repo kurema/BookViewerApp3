@@ -245,7 +245,6 @@
     <None Include="Storages\Licenses.xsd">
       <SubType>Designer</SubType>
     </None>
-    <PRIResource Include="Resource\it\Resources.resw" />
     <Content Include="res\bibi\bibi\presets\README.md" />
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.eot" />
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.ttf" />
@@ -257,7 +256,9 @@
       <SubType>Designer</SubType>
     </None>
     <PRIResource Include="Resource\en-US\Resources.resw" />
+    <PRIResource Include="Resource\it\Resources.resw" />
     <PRIResource Include="Resource\ja-JP\Resources.resw" />
+    <PRIResource Include="Resource\pt-PT\Resources.resw" />
     <PRIResource Include="Resource\zh-Hans\Resources.resw" />
     <PRIResource Include="Resource\zh-Hant\Resources.resw" />
   </ItemGroup>
@@ -557,6 +558,7 @@
   <ItemGroup>
     <XliffResource Include="MultilingualResources\BookViewerApp.it.xlf" />
     <XliffResource Include="MultilingualResources\BookViewerApp.ja-JP.xlf" />
+    <XliffResource Include="MultilingualResources\BookViewerApp.pt-PT.xlf" />
     <XliffResource Include="MultilingualResources\BookViewerApp.zh-Hans.xlf" />
     <XliffResource Include="MultilingualResources\BookViewerApp.zh-Hant.xlf" />
   </ItemGroup>
