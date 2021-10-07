@@ -10,12 +10,9 @@ BookViewer 3 is a powerful and beautiful viewer app for booklovers and comic fan
 Its main features include multiple tabs, file manager, Fluent Design System and web browser.
 It support CBR, CBZ, PDF and Epub books.
 
-<a href='//www.microsoft.com/store/apps/9n607jhlbczb?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png' alt='English badge' width='142px' height='52px'/></a>
-
-[![YouTube](/res/Movie/20200729/movie.gif)  
-YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
-
-Introduction page: [English](https://kurema.github.io/BookViewerApp3/introduction.en.html) | [日本語](https://kurema.github.io/BookViewerApp3/introduction.ja.html)
+| Store | [YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube") | Introduction page |
+| :--: | :--: | :--: |
+| <a href='//www.microsoft.com/store/apps/9n607jhlbczb?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png' alt='English badge' width='142px' height='52px'/></a> | [![YouTube](/res/Movie/20200729/movie.gif)](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube") | [English](https://kurema.github.io/BookViewerApp3/introduction.en.html) &#124; [日本語](https://kurema.github.io/BookViewerApp3/introduction.ja.html) |
 
 ## Screenshot
 | Explorer | Viewer |
