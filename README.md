@@ -15,7 +15,7 @@ It support CBR, CBZ, PDF and Epub books.
 [![YouTube](/res/Movie/20200729/movie.gif)  
 YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 
-Introduction: [English](https://kurema.github.io/BookViewerApp3/introduction.en.html) | [紹介 (日本語)](https://kurema.github.io/BookViewerApp3/introduction.ja.html)
+Introduction page: [English](https://kurema.github.io/BookViewerApp3/introduction.en.html) | [日本語](https://kurema.github.io/BookViewerApp3/introduction.ja.html)
 
 ## Screenshot
 | Explorer | Viewer |
