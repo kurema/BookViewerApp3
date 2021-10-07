@@ -24,7 +24,7 @@ YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171428.png)  
 
 ## Thanks
-The Italian translation is by Emanuele (https://github.com/Manu99it).
+The Italian translation is by Emanuele (https://github.com/Manu99it).  
 The Portuguese translation is by Esibruti (https://github.com/esibruti).
 
 Thank you!
