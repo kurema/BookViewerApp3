@@ -15,13 +15,16 @@ It support CBR, CBZ, PDF and Epub books.
 [![YouTube](/res/Movie/20200729/movie.gif)  
 YouTube](http://www.youtube.com/watch?v=rKCw_OlOKb8 "YouTube")
 
-[Introduction](https://kurema.github.io/BookViewerApp3/introduction.en.html) | [紹介 (日本語)](https://kurema.github.io/BookViewerApp3/introduction.ja.html)
+Introduction: [English](https://kurema.github.io/BookViewerApp3/introduction.en.html) | [紹介 (日本語)](https://kurema.github.io/BookViewerApp3/introduction.ja.html)
 
 ## Screenshot
-![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171048.png)  
-![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171351.png)  
-![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171315.png)  
-![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171428.png)  
+| Explorer | Viewer |
+| -- | -- |
+| ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171048.png) | ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171351.png) |
+
+| Browser | Config |
+| -- | -- |
+| ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171315.png) | ![screenshot](/res/Screenshots/Pics/en/2020-07-18%20171428.png) |
 
 ## Thanks
 The Italian translation is by Emanuele (https://github.com/Manu99it).  
