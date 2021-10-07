@@ -64,7 +64,9 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public async Task<ulong?> GetSizeAsync()
         {
-            return (await (await GetFile())?.GetBasicPropertiesAsync())?.Size;
+            var file = await GetFile();
+            if (file is null) return null;
+            return (await file.GetBasicPropertiesAsync())?.Size;
         }
 
         public void Open()
@@ -91,12 +93,16 @@ namespace kurema.FileExplorerControl.Models.FileItems
 
         public async Task<Stream> OpenStreamForReadAsync()
         {
-            return await (await GetFile())?.OpenStreamForReadAsync();
+            var file = await GetFile();
+            if (file is null) return null;
+            return await file.OpenStreamForReadAsync();
         }
 
         public async Task<Stream> OpenStreamForWriteAsync()
         {
-            return await (await GetFile())?.OpenStreamForWriteAsync();
+            var file = await GetFile();
+            if (file is null) return null;
+            return await file.OpenStreamForWriteAsync();
         }
 
         public event EventHandler Updated;

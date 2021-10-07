@@ -136,7 +136,7 @@ namespace kurema.FileExplorerControl.Views
         {
             if (this.DataContext is ViewModels.ContentViewModel vm)
             {
-                await action?.Invoke(vm);
+                if(!(action is null)) await action.Invoke(vm);
             }
         }
 
