@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="kurema.FileExplorerControl.Views.RenamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:kurema.FileExplorerControl.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent"
+    
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    Width="800"
+    >
+
+    <Grid ColumnSpacing="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="286" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel>
+            <AutoSuggestBox />
+            <CheckBox Content="Use regular expressions"/>
+            <CheckBox Content="Match all occurences"/>
+            <CheckBox Content="Case sensitive" />
+            <MenuFlyoutSeparator Margin="10" />
+            <AutoSuggestBox />
+        </StackPanel>
+
+        <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" >
+            <controls:DataGrid.Columns>
+                <controls:DataGridCheckBoxColumn />
+                <controls:DataGridTextColumn Tag="Original" Binding="{Binding Original}" Header="Original"/>
+                <controls:DataGridTextColumn Tag="Renamed" Binding="{Binding Renamed}" Header="Renamed"/>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+    </Grid>
+</Page>

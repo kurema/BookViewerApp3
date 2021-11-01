@@ -175,6 +175,9 @@
     <Compile Include="Views\PropertyControl.xaml.cs">
       <DependentUpon>PropertyControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RenamePage.xaml.cs">
+      <DependentUpon>RenamePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Viewers\SimpleMediaPlayerPage.xaml.cs">
       <DependentUpon>SimpleMediaPlayerPage.xaml</DependentUpon>
     </Compile>
@@ -226,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PropertyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RenamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

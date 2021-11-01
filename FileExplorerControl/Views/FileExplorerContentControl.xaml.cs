@@ -237,6 +237,15 @@ namespace kurema.FileExplorerControl.Views
                     //}
                     menu.Items.Add(item);
                 }
+                if (vm.IsFolder)
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text="Rename",
+                    };
+                    item.Click += Item_Click_Rename;
+                    menu.Items.Add(item);
+                }
                 {
                     var item = new MenuFlyoutItem()
                     {
@@ -262,6 +271,11 @@ namespace kurema.FileExplorerControl.Views
 
                 args.Handled = true;
             }
+        }
+
+        private async void Item_Click_Rename(object sender, RoutedEventArgs e)
+        {
+            await Helper.UIHelper.OpenRename(null);
         }
 
         //private async void items_ContextRequested(UIElement sender, ContextRequestedEventArgs args)

@@ -23,5 +23,18 @@ namespace kurema.FileExplorerControl.Helper
 
         //    }
         //}
+
+        public static async  Task OpenRename(Models.FileItems.IFileItem file)
+        {
+            var dialog = new ContentDialog()
+            {
+                Content = new Views.RenamePage()
+            };
+            {
+                var loader = Application.ResourceLoader.Loader;
+                dialog.CloseButtonText = loader.GetString("Command/OK");
+            }
+            await dialog.ShowAsync();
+        }
     }
 }
