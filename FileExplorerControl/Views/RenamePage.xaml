@@ -12,6 +12,7 @@
     Width="800"
     >
 
+    <!--https://github.com/microsoft/PowerToys/blob/master/src/modules/powerrename/PowerRenameUILib/MainWindow.xaml-->
     <Grid ColumnSpacing="8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="286" />
@@ -30,7 +31,6 @@
             <MenuFlyoutSeparator Margin="10" />
             <AutoSuggestBox />
         </StackPanel>
-
         <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" >
             <controls:DataGrid.Columns>
                 <controls:DataGridCheckBoxColumn />
