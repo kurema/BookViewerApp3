@@ -7,96 +7,95 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.IO;
 
-namespace kurema.FileExplorerControl.Models.FileItems
+namespace kurema.FileExplorerControl.Models.FileItems;
+
+public interface IFileItem
 {
-    public interface IFileItem
-    {
-        event EventHandler Updated;
-        void OnUpdate();
+    event EventHandler Updated;
+    void OnUpdate();
 
-        Task<ObservableCollection<IFileItem>> GetChildren();
-        string Name { get; }
-        string Path { get; }
-        string FileTypeDescription { get; }
-        void Open();
+    Task<ObservableCollection<IFileItem>> GetChildren();
+    string Name { get; }
+    string Path { get; }
+    string FileTypeDescription { get; }
+    void Open();
 
-        DateTimeOffset DateCreated { get; }
-        Task<ulong?> GetSizeAsync();
+    DateTimeOffset DateCreated { get; }
+    Task<ulong?> GetSizeAsync();
 
-        bool IsFolder { get; }
+    bool IsFolder { get; }
 
-        ICommand DeleteCommand { get; }
-        ICommand RenameCommand { get; }
+    ICommand DeleteCommand { get; }
+    ICommand RenameCommand { get; }
 
-        Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; }
-        
+    Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; }
 
-        Task<Stream> OpenStreamForReadAsync();
-        Task<Stream> OpenStreamForWriteAsync();
 
-        object Tag { get; set; }
-    }
+    Task<Stream> OpenStreamForReadAsync();
+    Task<Stream> OpenStreamForWriteAsync();
 
-    public interface IIconProviderProvider
-    {
-        IconProviders.IIconProvider Icon { get; set; }
-    }
+    object Tag { get; set; }
+}
 
-    public class FileItemPlaceHolder : IFileItem
-    {
-        public string Name =>
+public interface IIconProviderProvider
+{
+    IconProviders.IIconProvider Icon { get; set; }
+}
+
+public class FileItemPlaceHolder : IFileItem
+{
+    public string Name =>
 #if DEBUG
             "Test";
 #else
             "";
 #endif
 
-        public string Path => "";
+    public string Path => "";
 
-        public string FileTypeDescription => "";
+    public string FileTypeDescription => "";
 
-        public DateTimeOffset DateCreated => new DateTimeOffset();
+    public DateTimeOffset DateCreated => new DateTimeOffset();
 
-        public bool IsFolder => false;
+    public bool IsFolder => false;
 
-        public ICommand DeleteCommand => new Helper.DelegateCommand((_) => { });
+    public ICommand DeleteCommand => new Helper.DelegateCommand((_) => { });
 
-        public ICommand RenameCommand => new Helper.DelegateCommand((_) => { });
+    public ICommand RenameCommand => new Helper.DelegateCommand((_) => { });
 
-        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider => (_) => new MenuCommand[0];
+    public Func<IFileItem, MenuCommand[]> MenuCommandsProvider => (_) => new MenuCommand[0];
 
-        private object _Tag;
-        public object Tag { get => _Tag; set => _Tag = value; }
+    private object _Tag;
+    public object Tag { get => _Tag; set => _Tag = value; }
 
-        public event EventHandler Updated;
+    public event EventHandler Updated;
 
-        public Task<ObservableCollection<IFileItem>> GetChildren()
-        {
-            return Task.FromResult(new ObservableCollection<IFileItem>());
-        }
+    public Task<ObservableCollection<IFileItem>> GetChildren()
+    {
+        return Task.FromResult(new ObservableCollection<IFileItem>());
+    }
 
-        public Task<ulong?> GetSizeAsync()
-        {
-            return Task.FromResult<ulong?>(null);
-        }
+    public Task<ulong?> GetSizeAsync()
+    {
+        return Task.FromResult<ulong?>(null);
+    }
 
-        public void OnUpdate()
-        {
-            Updated?.Invoke(this,new EventArgs());
-        }
+    public void OnUpdate()
+    {
+        Updated?.Invoke(this, new EventArgs());
+    }
 
-        public void Open()
-        {
-        }
+    public void Open()
+    {
+    }
 
-        public Task<Stream> OpenStreamForReadAsync()
-        {
-            return Task.FromResult<Stream>( new MemoryStream());
-        }
+    public Task<Stream> OpenStreamForReadAsync()
+    {
+        return Task.FromResult<Stream>(new MemoryStream());
+    }
 
-        public Task<Stream> OpenStreamForWriteAsync()
-        {
-            return Task.FromResult<Stream>(new MemoryStream());
-        }
+    public Task<Stream> OpenStreamForWriteAsync()
+    {
+        return Task.FromResult<Stream>(new MemoryStream());
     }
 }

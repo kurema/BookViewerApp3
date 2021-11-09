@@ -8,191 +8,190 @@ using System.Windows.Input;
 using Windows.Storage;
 using System.IO;
 
-namespace kurema.FileExplorerControl.Models.FileItems
+namespace kurema.FileExplorerControl.Models.FileItems;
+
+public class StorageFileItem : IFileItem
 {
-    public class StorageFileItem : IFileItem
+    public StorageFileItem(IStorageItem content)
     {
-        public StorageFileItem(IStorageItem content)
+        Content = content ?? throw new ArgumentNullException(nameof(content));
+    }
+
+
+    private IStorageItem _Content;
+    public IStorageItem Content
+    {
+        get => _Content; set
         {
-            Content = content ?? throw new ArgumentNullException(nameof(content));
+            _Content = value;
+            (RenameCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
+            (DeleteCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
         }
+    }
 
+    public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+    public Func<IFileItem, MenuCommand[]> MenuCommandsProviderCascade { get; set; }
 
-        private IStorageItem _Content;
-        public IStorageItem Content
+    public string Name => Content.Name;
+
+    public DateTimeOffset DateCreated => DateCreatedOverride ?? Content.DateCreated;
+
+    //History用。日時を強制的に上書きする。あんまりスマートではない。
+    //For history. Not smart.
+    public DateTimeOffset? DateCreatedOverride { get; set; } = null;
+
+    public bool IsFolder => Content is StorageFolder;
+
+    public string Path => Content?.Path ?? "";
+
+    public bool CanDelete => Content != null;
+
+    public bool CanRename => Content != null;
+
+    public async Task<ObservableCollection<IFileItem>> GetChildren()
+    {
+        if (Content is StorageFolder f)
         {
-            get => _Content; set
+            ////https://docs.microsoft.com/en-us/windows/uwp/files/fast-file-properties
+            //var folderIndexedState = await f.GetIndexedStateAsync();
+            //if (folderIndexedState == Windows.Storage.Search.IndexedState.FullyIndexed)
+            //{
+            //    var result = new System.Collections.Generic.List<IFileItem>();
+            //    result.AddRange((await f.GetFoldersAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+
+            //    uint index = 0;
+            //    const uint stepSize = 100;
+            //    var qResult = f.CreateFileQuery();
+            //    var buffer = await qResult.GetFilesAsync(index, stepSize);
+            //    while(buffer.Count != 0)
+            //    {
+            //        result.AddRange(buffer.Where(a => !(a is StorageFile file && !file.IsAvailable)).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+
+            //        index += stepSize;
+            //        buffer = await qResult.GetFilesAsync(index, stepSize);
+            //    }
+            //    return new ObservableCollection<IFileItem>(result);
+            //}
+            //else
             {
-                _Content = value;
-                (RenameCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
-                (DeleteCommand as Helper.DelegateAsyncCommand)?.OnCanExecuteChanged();
+                return new ObservableCollection<IFileItem>((await f.GetItemsAsync())
+                    .Where(a => !(a is StorageFile file && !file.IsAvailable))//https://docs.microsoft.com/ja-jp/windows/uwp/files/quickstart-determining-availability-of-microsoft-onedrive-files
+                    .Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
             }
         }
-
-        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
-        public Func<IFileItem, MenuCommand[]> MenuCommandsProviderCascade { get; set; }
-
-        public string Name => Content.Name;
-
-        public DateTimeOffset DateCreated => DateCreatedOverride ?? Content.DateCreated;
-
-        //History用。日時を強制的に上書きする。あんまりスマートではない。
-        //For history. Not smart.
-        public DateTimeOffset? DateCreatedOverride { get; set; } = null;
-
-        public bool IsFolder => Content is StorageFolder;
-
-        public string Path => Content?.Path ?? "";
-
-        public bool CanDelete => Content != null;
-
-        public bool CanRename => Content != null;
-
-        public async Task<ObservableCollection<IFileItem>> GetChildren()
+        else
         {
-            if (Content is StorageFolder f)
+            return new ObservableCollection<IFileItem>();
+        }
+    }
+
+    public EventHandler OpenEvent;
+
+    public void Open()
+    {
+        OpenEvent?.Invoke(this, new EventArgs());
+    }
+
+    public async Task<Stream> OpenStreamForReadAsync()
+    {
+        if (Content is StorageFile file)
+        {
+            return await file.OpenStreamForReadAsync();
+        }
+        return null;
+    }
+
+    public async Task<Stream> OpenStreamForWriteAsync()
+    {
+        if (Content is StorageFile file)
+        {
+            return await file.OpenStreamForWriteAsync();
+        }
+        return null;
+    }
+
+    public async Task<ulong?> GetSizeAsync()
+    {
+        if (IsFolder)
+        {
+            return null;
+        }
+        else if (Content is StorageFile f)
+        {
+            var prop = await f.GetBasicPropertiesAsync();
+            return prop.Size;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private ICommand _RenameCommand;
+    public ICommand RenameCommand
+    {
+        get
+        {
+            return _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
             {
-                ////https://docs.microsoft.com/en-us/windows/uwp/files/fast-file-properties
-                //var folderIndexedState = await f.GetIndexedStateAsync();
-                //if (folderIndexedState == Windows.Storage.Search.IndexedState.FullyIndexed)
-                //{
-                //    var result = new System.Collections.Generic.List<IFileItem>();
-                //    result.AddRange((await f.GetFoldersAsync()).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
-
-                //    uint index = 0;
-                //    const uint stepSize = 100;
-                //    var qResult = f.CreateFileQuery();
-                //    var buffer = await qResult.GetFilesAsync(index, stepSize);
-                //    while(buffer.Count != 0)
-                //    {
-                //        result.AddRange(buffer.Where(a => !(a is StorageFile file && !file.IsAvailable)).Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
-
-                //        index += stepSize;
-                //        buffer = await qResult.GetFilesAsync(index, stepSize);
-                //    }
-                //    return new ObservableCollection<IFileItem>(result);
-                //}
-                //else
+                if (Content is null) return;
+                if (parameter is null) return;
+                try
                 {
-                    return new ObservableCollection<IFileItem>((await f.GetItemsAsync())
-                        .Where(a => !(a is StorageFile file && !file.IsAvailable))//https://docs.microsoft.com/ja-jp/windows/uwp/files/quickstart-determining-availability-of-microsoft-onedrive-files
-                        .Select(a => new StorageFileItem(a) { MenuCommandsProvider = this.MenuCommandsProviderCascade, MenuCommandsProviderCascade = this.MenuCommandsProviderCascade, FileTypeDescriptionProvider = FileTypeDescriptionProvider }));
+                    await Content?.RenameAsync(parameter.ToString());
                 }
-            }
-            else
-            {
-                return new ObservableCollection<IFileItem>();
-            }
+                catch
+                {
+                }
+            });
         }
-
-        public EventHandler OpenEvent;
-
-        public void Open()
+        set
         {
-            OpenEvent?.Invoke(this, new EventArgs());
+            _RenameCommand = value;
         }
+    }
 
-        public async Task<Stream> OpenStreamForReadAsync()
-        {
-            if (Content is StorageFile file)
-            {
-                return await file.OpenStreamForReadAsync();
-            }
-            return null;
-        }
 
-        public async Task<Stream> OpenStreamForWriteAsync()
-        {
-            if (Content is StorageFile file)
+    private ICommand _DeleteCommand;
+    public ICommand DeleteCommand
+    {
+        get => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
             {
-                return await file.OpenStreamForWriteAsync();
-            }
-            return null;
-        }
-
-        public async Task<ulong?> GetSizeAsync()
-        {
-            if (IsFolder)
-            {
-                return null;
-            }
-            else if (Content is StorageFile f)
-            {
-                var prop = await f.GetBasicPropertiesAsync();
-                return prop.Size;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private ICommand _RenameCommand;
-        public ICommand RenameCommand
-        {
-            get
-            {
-                return _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+                if (parameter is bool complete)
                 {
                     if (Content is null) return;
-                    if (parameter is null) return;
                     try
                     {
-                        await Content?.RenameAsync(parameter.ToString());
+                        await Content?.DeleteAsync(complete ? StorageDeleteOption.PermanentDelete : StorageDeleteOption.Default);
                     }
                     catch
                     {
                     }
-                });
-            }
-            set
-            {
-                _RenameCommand = value;
-            }
-        }
+                }
+            }, (b) => Content != null);
 
-
-        private ICommand _DeleteCommand;
-        public ICommand DeleteCommand
+        set
         {
-            get => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
-                {
-                    if (parameter is bool complete)
-                    {
-                        if (Content is null) return;
-                        try
-                        {
-                            await Content?.DeleteAsync(complete ? StorageDeleteOption.PermanentDelete : StorageDeleteOption.Default);
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }, (b) => Content != null);
-
-            set
-            {
-                _DeleteCommand = value;
-            }
+            _DeleteCommand = value;
         }
-
-        public object Tag { get; set; }
-
-        public string FileTypeDescription => FileTypeDescriptionProvider?.Invoke(this.Content) ?? (this.IsFolder ? Application.ResourceLoader.Loader.GetString("FileType/Folder") : GetGeneralFileType(this.Content?.Path));
-
-        public Func<IStorageItem, string> FileTypeDescriptionProvider { get; set; }
-
-        public static string GetGeneralFileType(string path)
-        {
-            if (string.IsNullOrEmpty(path)) return "";
-            var ext = System.IO.Path.GetExtension(path);
-            if (string.IsNullOrEmpty(ext)) return Application.ResourceLoader.Loader.GetString("FileType/NoExtension");
-            if (ext.StartsWith('.')) ext = ext.Substring(1);
-            return String.Format(Application.ResourceLoader.Loader.GetString("FileType/General"), ext.ToUpperInvariant());
-        }
-
-        public event EventHandler Updated;
-
-        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
     }
+
+    public object Tag { get; set; }
+
+    public string FileTypeDescription => FileTypeDescriptionProvider?.Invoke(this.Content) ?? (this.IsFolder ? Application.ResourceLoader.Loader.GetString("FileType/Folder") : GetGeneralFileType(this.Content?.Path));
+
+    public Func<IStorageItem, string> FileTypeDescriptionProvider { get; set; }
+
+    public static string GetGeneralFileType(string path)
+    {
+        if (string.IsNullOrEmpty(path)) return "";
+        var ext = System.IO.Path.GetExtension(path);
+        if (string.IsNullOrEmpty(ext)) return Application.ResourceLoader.Loader.GetString("FileType/NoExtension");
+        if (ext.StartsWith('.')) ext = ext.Substring(1);
+        return String.Format(Application.ResourceLoader.Loader.GetString("FileType/General"), ext.ToUpperInvariant());
+    }
+
+    public event EventHandler Updated;
+
+    public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
 }

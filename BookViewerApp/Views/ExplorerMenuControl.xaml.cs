@@ -17,16 +17,16 @@ using BookViewerApp.Helper;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace BookViewerApp.Views
-{
-    public sealed partial class ExplorerMenuControl : UserControl
-    {
-        public ExplorerMenuControl()
-        {
-            this.InitializeComponent();
+namespace BookViewerApp.Views;
 
-            listView.ItemsSource = new MenuItem[]
-            {
+public sealed partial class ExplorerMenuControl : UserControl
+{
+    public ExplorerMenuControl()
+    {
+        this.InitializeComponent();
+
+        listView.ItemsSource = new MenuItem[]
+        {
                 //new MenuItem(Symbol.Folder,"Add Folder",()=>{ }),
                 new MenuItem(Symbol.World,"Browser",()=>{
                     var tab=GetTabPage();
@@ -43,39 +43,38 @@ namespace BookViewerApp.Views
                     if(tab==null) return;
                     tab.OpenTabSetting();
                 }),
-            };
+        };
+    }
+
+    public Page OriginPage { get; set; }
+
+    public TabPage GetTabPage()
+    {
+        if (OriginPage is null) return null;
+        return UIHelper.GetCurrentTabPage(OriginPage);
+    }
+
+
+    public class MenuItem
+    {
+        public MenuItem(Symbol icon, string title, Action action)
+        {
+            Icon = icon;
+            _ = title ?? throw new ArgumentNullException(nameof(title));
+            Title = Managers.ResourceManager.Loader.GetString("Explorer/" + title);
+            Action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
-        public Page OriginPage { get; set; }
+        public Symbol Icon { get; set; }
+        public string Title { get; set; }
+        public Action Action { get; set; }
+    }
 
-        public TabPage GetTabPage()
+    private void listView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is MenuItem item)
         {
-            if (OriginPage is null) return null;
-            return UIHelper.GetCurrentTabPage(OriginPage);
-        }
-
-
-        public class MenuItem
-        {
-            public MenuItem(Symbol icon, string title, Action action)
-            {
-                Icon = icon;
-                _ = title ?? throw new ArgumentNullException(nameof(title));
-                Title = Managers.ResourceManager.Loader.GetString("Explorer/" + title);
-                Action = action ?? throw new ArgumentNullException(nameof(action));
-            }
-
-            public Symbol Icon { get; set; }
-            public string Title { get; set; }
-            public Action Action { get; set; }
-        }
-
-        private void listView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (e.ClickedItem is MenuItem item)
-            {
-                item?.Action?.Invoke();
-            }
+            item?.Action?.Invoke();
         }
     }
 }

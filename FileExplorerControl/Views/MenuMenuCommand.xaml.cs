@@ -15,60 +15,59 @@ using Windows.UI.Xaml.Navigation;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace kurema.FileExplorerControl.Views
+namespace kurema.FileExplorerControl.Views;
+
+public sealed partial class MenuMenuCommand : UserControl
 {
-    public sealed partial class MenuMenuCommand : UserControl
+    public MenuMenuCommand()
     {
-        public MenuMenuCommand()
-        {
-            this.InitializeComponent();
+        this.InitializeComponent();
 
-            RegisterPropertyChangedCallback(MenuCommandsProperty, (a, b) =>
+        RegisterPropertyChangedCallback(MenuCommandsProperty, (a, b) =>
+        {
+            stack.Children.Clear();
+            if (MenuCommands is null) return;
+            foreach (var item in MenuCommands)
             {
-                stack.Children.Clear();
-                if (MenuCommands is null) return;
-                foreach (var item in MenuCommands)
-                {
-                    stack.Children.Add(GetMenu(item));
-                }
-            });
+                stack.Children.Add(GetMenu(item));
+            }
+        });
+    }
+
+    public Models.MenuCommand[] MenuCommands
+    {
+        get { return (Models.MenuCommand[])GetValue(MenuCommandsProperty); }
+        set
+        {
+            SetValue(MenuCommandsProperty, value);
         }
+    }
 
-        public Models.MenuCommand[] MenuCommands
+    // Using a DependencyProperty as the backing store for MenuCommands.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty MenuCommandsProperty =
+        DependencyProperty.Register("MenuCommands", typeof(Models.MenuCommand[]), typeof(MenuMenuCommand), new PropertyMetadata(new Models.MenuCommand[0]));
+
+    public static MenuFlyoutItemBase GetMenu(Models.MenuCommand menu)
+    {
+        if (menu.HasChild)
         {
-            get { return (Models.MenuCommand[])GetValue(MenuCommandsProperty); }
-            set
+            var result = new MenuFlyoutSubItem()
             {
-                SetValue(MenuCommandsProperty, value);
+                Text = menu.Title,
+            };
+            foreach (var item in menu.Items)
+            {
+                result.Items.Add(GetMenu(item));
             }
+            return result;
         }
-
-        // Using a DependencyProperty as the backing store for MenuCommands.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MenuCommandsProperty =
-            DependencyProperty.Register("MenuCommands", typeof(Models.MenuCommand[]), typeof(MenuMenuCommand), new PropertyMetadata(new Models.MenuCommand[0]));
-
-        public static MenuFlyoutItemBase GetMenu(Models.MenuCommand menu)
+        else
         {
-            if (menu.HasChild)
+            return new MenuFlyoutItem()
             {
-                var result = new MenuFlyoutSubItem()
-                {
-                    Text = menu.Title,
-                };
-                foreach(var item in menu.Items)
-                {
-                    result.Items.Add(GetMenu(item));
-                }
-                return result;
-            }
-            else
-            {
-                return new MenuFlyoutItem()
-                {
-                    Text=menu.Title,
-                    Command=menu.Command
-                };
-            }
+                Text = menu.Title,
+                Command = menu.Command
+            };
         }
     }
 }

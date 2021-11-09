@@ -19,97 +19,96 @@ using ef = Microsoft.Graphics.Canvas.Effects;
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
 #nullable enable
-namespace BookViewerApp.Views.Bookshelf
+namespace BookViewerApp.Views.Bookshelf;
+
+public sealed partial class Book : UserControl
 {
-    public sealed partial class Book : UserControl
+    //https://docs.microsoft.com/windows/uwp/design/style/rounded-corner#keyboard-focus-rectangle-and-shadow
+    //Shadow ignore corner radius by default. So it doesn't make much sense to use this. But it may in future.
+    public UIElement ShadowTarget => BorderMain;
+
+    public double Aspect
     {
-        //https://docs.microsoft.com/windows/uwp/design/style/rounded-corner#keyboard-focus-rectangle-and-shadow
-        //Shadow ignore corner radius by default. So it doesn't make much sense to use this. But it may in future.
-        public UIElement ShadowTarget => BorderMain;
+        get { return (double)GetValue(AspectProperty); }
+        set { SetValue(AspectProperty, value); }
+    }
 
-        public double Aspect
+    // Using a DependencyProperty as the backing store for Aspect.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty AspectProperty =
+        DependencyProperty.Register("Aspect", typeof(double), typeof(Book), new PropertyMetadata(0));
+
+    public ImageSource Source
+    {
+        get { return (ImageSource)GetValue(SourceProperty); }
+        set { SetValue(SourceProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for SourceProperty.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty SourceProperty =
+        DependencyProperty.Register(nameof(Source), typeof(ImageSource), typeof(Book), new PropertyMetadata(null, new PropertyChangedCallback(SourcePropertyChangedCallback)));
+
+    static private void SourcePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs args)
+    {
+        if (!(d is Book db)) return;
+        if (args.NewValue is Windows.UI.Xaml.Media.Imaging.BitmapSource sn)
         {
-            get { return (double)GetValue(AspectProperty); }
-            set { SetValue(AspectProperty, value); }
+            db.Aspect = GetAspect(sn);
+            db.InvalidateMeasure();
+        }
+        else { db.Aspect = 0; }
+    }
+
+    private static double GetAspect(Windows.UI.Xaml.Media.Imaging.BitmapSource? source) => source is null || source.PixelWidth == 0 || source.PixelHeight == 0 ? 0 : source.PixelWidth / (double)source.PixelHeight;
+
+    public Book()
+    {
+        this.InitializeComponent();
+
+        //https://stackoverflow.com/questions/41101198/how-to-combine-multiple-effects-in-uwp-composition-api
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        return ArrangeOverride(availableSize);
+        //return base.MeasureOverride(availableSize);
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        static Size ArrangeToStretch(double width, double height, UIElement content)
+        {
+            var size = new Size(width, height);
+            content.Arrange(new Rect(new Point(), size));
+            return size;
         }
 
-        // Using a DependencyProperty as the backing store for Aspect.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty AspectProperty =
-            DependencyProperty.Register("Aspect", typeof(double), typeof(Book), new PropertyMetadata(0));
-
-        public ImageSource Source
+        double aspect = Aspect;
+        if (double.IsNaN(Aspect) || Aspect <= 0) aspect = Math.Sqrt(0.5);
+        if (double.IsNaN(finalSize.Width))
         {
-            get { return (ImageSource)GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
+            if (double.IsNaN(finalSize.Height)) return base.ArrangeOverride(finalSize);
+            return ArrangeToStretch(finalSize.Height * aspect, finalSize.Height, Content);
         }
-
-        // Using a DependencyProperty as the backing store for SourceProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SourceProperty =
-            DependencyProperty.Register(nameof(Source), typeof(ImageSource), typeof(Book), new PropertyMetadata(null, new PropertyChangedCallback(SourcePropertyChangedCallback)));
-
-        static private void SourcePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
-            if (!(d is Book db)) return;
-            if (args.NewValue is Windows.UI.Xaml.Media.Imaging.BitmapSource sn)
+            if (double.IsNaN(finalSize.Height)) return new Size(finalSize.Width, finalSize.Width / aspect);
+            double w = finalSize.Height * aspect;
+            if (w <= finalSize.Width) return ArrangeToStretch(w, finalSize.Height, Content);
+            return ArrangeToStretch(finalSize.Width, finalSize.Width / aspect, Content);
+        }
+        //return base.ArrangeOverride(finalSize);
+    }
+
+    private void mainPicture_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        var aspect = GetAspect((sender as Image)?.Source as Windows.UI.Xaml.Media.Imaging.BitmapSource);
+        if (aspect != Aspect)
+        {
+            Aspect = aspect;
+            FrameworkElement? element = this;
+            for (int i = 0; i < 3 && !(element is null); i++)
             {
-                db.Aspect = GetAspect(sn);
-                db.InvalidateMeasure();
-            }
-            else { db.Aspect = 0; }
-        }
-
-        private static double GetAspect(Windows.UI.Xaml.Media.Imaging.BitmapSource? source) => source is null || source.PixelWidth == 0 || source.PixelHeight == 0 ? 0 : source.PixelWidth / (double)source.PixelHeight;
-
-        public Book()
-        {
-            this.InitializeComponent();
-
-            //https://stackoverflow.com/questions/41101198/how-to-combine-multiple-effects-in-uwp-composition-api
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            return ArrangeOverride(availableSize);
-            //return base.MeasureOverride(availableSize);
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            static Size ArrangeToStretch(double width, double height, UIElement content)
-            {
-                var size = new Size(width, height);
-                content.Arrange(new Rect(new Point(), size));
-                return size;
-            }
-
-            double aspect = Aspect;
-            if (double.IsNaN(Aspect) || Aspect <= 0) aspect = Math.Sqrt(0.5);
-            if (double.IsNaN(finalSize.Width))
-            {
-                if (double.IsNaN(finalSize.Height)) return base.ArrangeOverride(finalSize);
-                return ArrangeToStretch(finalSize.Height * aspect, finalSize.Height, Content);
-            }
-            {
-                if (double.IsNaN(finalSize.Height)) return new Size(finalSize.Width, finalSize.Width / aspect);
-                double w = finalSize.Height * aspect;
-                if (w <= finalSize.Width) return ArrangeToStretch(w, finalSize.Height, Content);
-                return ArrangeToStretch(finalSize.Width, finalSize.Width / aspect, Content);
-            }
-            //return base.ArrangeOverride(finalSize);
-        }
-
-        private void mainPicture_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var aspect = GetAspect((sender as Image)?.Source as Windows.UI.Xaml.Media.Imaging.BitmapSource);
-            if (aspect != Aspect)
-            {
-                Aspect = aspect;
-                FrameworkElement? element = this;
-                for (int i = 0; i < 3 && !(element is null); i++)
-                {
-                    element.InvalidateMeasure();
-                    element = element.Parent as FrameworkElement;
-                }
+                element.InvalidateMeasure();
+                element = element.Parent as FrameworkElement;
             }
         }
     }

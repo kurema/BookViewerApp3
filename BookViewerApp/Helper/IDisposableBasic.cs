@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookViewerApp.Helper
+namespace BookViewerApp.Helper;
+
+public interface IDisposableBasic
 {
-    public interface IDisposableBasic
-    {
-        void DisposeBasic();
-    }
+    void DisposeBasic();
 }

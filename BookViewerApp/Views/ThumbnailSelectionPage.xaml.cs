@@ -15,86 +15,85 @@ using Windows.UI.Xaml.Navigation;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
-namespace BookViewerApp.Views
+namespace BookViewerApp.Views;
+
+/// <summary>
+/// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
+/// </summary>
+public sealed partial class ThumbnailSelectionPage : Page
 {
-    /// <summary>
-    /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
-    /// </summary>
-    public sealed partial class ThumbnailSelectionPage : Page
+    public Microsoft.Toolkit.Uwp.UI.Controls.ImageCropper ImageCropper => this.imageCropper;
+
+    private Books.IBookFixed book;
+    public Books.IBookFixed Book
     {
-        public Microsoft.Toolkit.Uwp.UI.Controls.ImageCropper ImageCropper => this.imageCropper;
-
-        private Books.IBookFixed book;
-        public Books.IBookFixed Book
+        get => book; set
         {
-            get => book; set
-            {
-                book = value;
-                currentPage = 0;
-                UpdatePage();
-                UpdateImage();
-                _CommandAddPage?.OnCanExecuteChanged();
-            }
+            book = value;
+            currentPage = 0;
+            UpdatePage();
+            UpdateImage();
+            _CommandAddPage?.OnCanExecuteChanged();
         }
+    }
 
-        private uint currentPage = 0;
+    private uint currentPage = 0;
 
-        public uint CurrentPage
+    public uint CurrentPage
+    {
+        get => currentPage; set
         {
-            get => currentPage; set
-            {
-                if (currentPage == value) return;
-                currentPage = value;
-                UpdatePage();
-                UpdateImage();
-                _CommandAddPage?.OnCanExecuteChanged();
-            }
+            if (currentPage == value) return;
+            currentPage = value;
+            UpdatePage();
+            UpdateImage();
+            _CommandAddPage?.OnCanExecuteChanged();
         }
+    }
 
-        private void UpdatePage() => textBoxPage.Text = $"{CurrentPage + 1} / {Book?.PageCount ?? 0}";
-        private async void UpdateImage()
-        {
-            if (Book is null) return;
-            int size = Managers.ThumbnailManager.ThumbnailSize;
-            if (!GetIfPageIsInRange(CurrentPage)) return;
-            if (!(ImageCropper.Source is Windows.UI.Xaml.Media.Imaging.WriteableBitmap wbmp)) return;
-            await Book.GetPage(CurrentPage).SetBitmapAsync(wbmp, size * 2, size * 2);
-            ImageCropper.Reset();
-            
-        }
+    private void UpdatePage() => textBoxPage.Text = $"{CurrentPage + 1} / {Book?.PageCount ?? 0}";
+    private async void UpdateImage()
+    {
+        if (Book is null) return;
+        int size = Managers.ThumbnailManager.ThumbnailSize;
+        if (!GetIfPageIsInRange(CurrentPage)) return;
+        if (!(ImageCropper.Source is Windows.UI.Xaml.Media.Imaging.WriteableBitmap wbmp)) return;
+        await Book.GetPage(CurrentPage).SetBitmapAsync(wbmp, size * 2, size * 2);
+        ImageCropper.Reset();
 
-        private bool GetIfPageIsInRange(long target) => target >= 0 && target < Book.PageCount;
+    }
 
-        public Helper.DelegateCommand _CommandAddPage;
+    private bool GetIfPageIsInRange(long target) => target >= 0 && target < Book.PageCount;
 
-        public Helper.DelegateCommand CommandAddPage => _CommandAddPage ??= new Helper.DelegateCommand((param) =>
-        {
-            if (!int.TryParse(param.ToString(), out int delta)) delta = 0;
-            CurrentPage = (uint)Math.Clamp(CurrentPage + delta, 0, Book.PageCount);
-        }, (param) =>
-        {
-            if (!int.TryParse(param.ToString(), out int delta)) delta = 0;
-            return GetIfPageIsInRange(CurrentPage + delta);
-        });
+    public Helper.DelegateCommand _CommandAddPage;
 
-        public ThumbnailSelectionPage()
-        {
-            this.InitializeComponent();
+    public Helper.DelegateCommand CommandAddPage => _CommandAddPage ??= new Helper.DelegateCommand((param) =>
+    {
+        if (!int.TryParse(param.ToString(), out int delta)) delta = 0;
+        CurrentPage = (uint)Math.Clamp(CurrentPage + delta, 0, Book.PageCount);
+    }, (param) =>
+    {
+        if (!int.TryParse(param.ToString(), out int delta)) delta = 0;
+        return GetIfPageIsInRange(CurrentPage + delta);
+    });
 
-            int size = Managers.ThumbnailManager.ThumbnailSize;
-            ImageCropper.Source = new Windows.UI.Xaml.Media.Imaging.WriteableBitmap(size, size);
-        }
+    public ThumbnailSelectionPage()
+    {
+        this.InitializeComponent();
 
-        private async void AcrylicButtonControl_Click(object sender, RoutedEventArgs e)
-        {
-            if (imageCropper.Source is null) return;
-            (var w, var h) = (imageCropper.Source.PixelWidth, imageCropper.Source.PixelHeight);
-            var r = imageCropper.CroppedRegion;
-            var rect = new Rect(r.X / w, r.Y / h, r.Width / w, r.Height / h);
-            await Book?.GetPage(CurrentPage).SaveImageAsync(await Managers.ThumbnailManager.CreateImageFileAsync(Book?.ID), Managers.ThumbnailManager.ThumbnailSize, rect);
+        int size = Managers.ThumbnailManager.ThumbnailSize;
+        ImageCropper.Source = new Windows.UI.Xaml.Media.Imaging.WriteableBitmap(size, size);
+    }
 
-            VisualStateManager.GoToState(this, "CameraFlashStop", false);
-            VisualStateManager.GoToState(this, "CameraFlash", true);
-        }
+    private async void AcrylicButtonControl_Click(object sender, RoutedEventArgs e)
+    {
+        if (imageCropper.Source is null) return;
+        (var w, var h) = (imageCropper.Source.PixelWidth, imageCropper.Source.PixelHeight);
+        var r = imageCropper.CroppedRegion;
+        var rect = new Rect(r.X / w, r.Y / h, r.Width / w, r.Height / h);
+        await Book?.GetPage(CurrentPage).SaveImageAsync(await Managers.ThumbnailManager.CreateImageFileAsync(Book?.ID), Managers.ThumbnailManager.ThumbnailSize, rect);
+
+        VisualStateManager.GoToState(this, "CameraFlashStop", false);
+        VisualStateManager.GoToState(this, "CameraFlash", true);
     }
 }

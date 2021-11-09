@@ -6,78 +6,77 @@ using System.Threading.Tasks;
 
 using Windows.Storage;
 
-namespace BookViewerApp.Managers
+namespace BookViewerApp.Managers;
+
+public static class HistoryManager
 {
-    public static class HistoryManager
+    /// <summary>
+    /// Call OnUpdated when you changed the content
+    /// </summary>
+    public static Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList List => Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
+
+    public static EventHandler Updated;
+
+    [Obsolete]
+    public async static Task IntegrateAsync()
     {
-        /// <summary>
-        /// Call OnUpdated when you changed the content
-        /// </summary>
-        public static Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList List => Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
+        if (!await Storages.HistoryStorage.Content.ExistAsync()) return;
 
-        public static EventHandler Updated;
-
-        [Obsolete]
-        public async static Task IntegrateAsync()
+        foreach (var item in (await Storages.HistoryStorage.Content.GetContentAsync()).OrderBy(a => a.Date))
         {
-            if (!await Storages.HistoryStorage.Content.ExistAsync()) return;
-            
-            foreach (var item in (await Storages.HistoryStorage.Content.GetContentAsync()).OrderBy(a => a.Date))
+            try
             {
-                try
-                {
-                    var file = await item.GetFile();
-                    var metadata = new Metadata() { Date = item.Date, ID = item.Id, Name = item.Name }.Serialize();
-                    List.Add(file, metadata);
-                }
-                catch { }
+                var file = await item.GetFile();
+                var metadata = new Metadata() { Date = item.Date, ID = item.Id, Name = item.Name }.Serialize();
+                List.Add(file, metadata);
             }
-            OnUpdated();
-            await Storages.HistoryStorage.Content.TryDeleteAsync();
+            catch { }
+        }
+        OnUpdated();
+        await Storages.HistoryStorage.Content.TryDeleteAsync();
+    }
+
+
+    public static void OnUpdated(object sender = null) => Updated?.Invoke(sender, new EventArgs());
+
+    public static void AddEntry(IStorageItem file, string ID = null)
+    {
+        if (file is null) return;
+        var metadata = new Metadata() { Name = file.Name, ID = ID ?? "", Date = DateTimeOffset.Now }.Serialize();
+        List.Add(file, metadata);
+
+        OnUpdated();
+    }
+
+    public class Metadata
+    {
+        public Metadata()
+        {
+            Name = "";
+            ID = "";
+            Date = DateTime.Now;
         }
 
+        public string Name { get; set; }
+        public string ID { get; set; }
 
-        public static void OnUpdated(object sender = null) => Updated?.Invoke(sender, new EventArgs());
+        public DateTimeOffset Date { get; set; }
 
-        public static void AddEntry(IStorageItem file, string ID = null)
+        public string Serialize()
         {
-            if (file is null) return;
-            var metadata = new Metadata() { Name = file.Name, ID = ID ?? "", Date = DateTimeOffset.Now }.Serialize();
-            List.Add(file, metadata);
-
-            OnUpdated();
+            return System.Text.Json.JsonSerializer.Serialize(this);
         }
 
-        public class Metadata
+        public static Metadata Deserialize(string data)
         {
-            public Metadata()
+            if (string.IsNullOrWhiteSpace(data)) return null;
+            try
             {
-                Name = "";
-                ID = "";
-                Date = DateTime.Now;
+                return System.Text.Json.JsonSerializer.Deserialize<Metadata>(data);
             }
-
-            public string Name { get; set; }
-            public string ID { get; set; }
-
-            public DateTimeOffset Date { get; set; }
-
-            public string Serialize()
+            catch
             {
-                return System.Text.Json.JsonSerializer.Serialize(this);
-            }
-
-            public static Metadata Deserialize(string data)
-            {
-                if (string.IsNullOrWhiteSpace(data)) return null;
-                try
-                {
-                    return System.Text.Json.JsonSerializer.Deserialize<Metadata>(data);
-                }
-                catch
-                {
-                    return null;
-                }
+                return null;
             }
         }
     }

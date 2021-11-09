@@ -7,14 +7,13 @@ using System.Threading;
 
 using Windows.UI.Xaml.Media;
 
-namespace kurema.FileExplorerControl.Models.IconProviders
-{
-    public interface IIconProvider
-    {
-        Func<ImageSource> DefaultIconSmall { get; }
-        Func<ImageSource> DefaultIconLarge { get; }
+namespace kurema.FileExplorerControl.Models.IconProviders;
 
-        Task<Func<ImageSource>> GetIconSmall(IFileItem item, CancellationToken cancellationToken);
-        Task<Func<ImageSource>> GetIconLarge(IFileItem item, CancellationToken cancellationToken);
-    }
+public interface IIconProvider
+{
+    Func<ImageSource> DefaultIconSmall { get; }
+    Func<ImageSource> DefaultIconLarge { get; }
+
+    Task<Func<ImageSource>> GetIconSmall(IFileItem item, CancellationToken cancellationToken);
+    Task<Func<ImageSource>> GetIconLarge(IFileItem item, CancellationToken cancellationToken);
 }

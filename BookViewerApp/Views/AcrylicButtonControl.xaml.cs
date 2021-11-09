@@ -15,40 +15,39 @@ using Windows.UI.Xaml.Navigation;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace BookViewerApp.Views
+namespace BookViewerApp.Views;
+
+public sealed partial class AcrylicButtonControl : Button
 {
-    public sealed partial class AcrylicButtonControl : Button
+    public AcrylicButtonControl()
     {
-        public AcrylicButtonControl()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
 
 
-        //public IconElement Icon
-        //{
-        //    get
-        //    {
-        //        return this.Content as IconElement;
-        //        //return (IconElement)GetValue(IconProperty);
-        //    }
-        //    set
-        //    {
-        //        SetValue(IconProperty, value);
-        //        this.Content = value;
-        //    }
-        //}
+    //public IconElement Icon
+    //{
+    //    get
+    //    {
+    //        return this.Content as IconElement;
+    //        //return (IconElement)GetValue(IconProperty);
+    //    }
+    //    set
+    //    {
+    //        SetValue(IconProperty, value);
+    //        this.Content = value;
+    //    }
+    //}
 
-        //public static readonly DependencyProperty IconProperty =
-        //    DependencyProperty.Register("Icon", typeof(IconElement), typeof(AcrylicButtonControl), new PropertyMetadata(null));
+    //public static readonly DependencyProperty IconProperty =
+    //    DependencyProperty.Register("Icon", typeof(IconElement), typeof(AcrylicButtonControl), new PropertyMetadata(null));
 
 
 
-        public IconElement Icon
-        {
-            get => this.Content as IconElement;
-            set => this.Content = value;
-        }
+    public IconElement Icon
+    {
+        get => this.Content as IconElement;
+        set => this.Content = value;
     }
 }

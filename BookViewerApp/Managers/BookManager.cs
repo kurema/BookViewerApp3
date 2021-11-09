@@ -9,191 +9,191 @@ using BookViewerApp.Books;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 
-namespace BookViewerApp.Managers
+namespace BookViewerApp.Managers;
+
+public class BookManager
 {
-    public class BookManager
+    public static BookType? GetBookTypeByPath(string path)
     {
-        public static BookType? GetBookTypeByPath(string path)
-        {
-            if (path is null) { return null; }
+        if (path is null) { return null; }
 
-            var ext = Path.GetExtension(path).ToUpperInvariant();
-            switch (ext)
-            {
-                case ".PDF": return BookType.Pdf;
-                case ".ZIP": case ".CBZ": return BookType.Zip;
-                case ".RAR": case ".CBR": return BookType.Rar;
-                case ".7Z": case ".CB7": return BookType.SevenZip;
-                case ".EPUB": return BookType.Epub;
-                default: return null;
-            }
+        var ext = Path.GetExtension(path).ToUpperInvariant();
+        switch (ext)
+        {
+            case ".PDF": return BookType.Pdf;
+            case ".ZIP": case ".CBZ": return BookType.Zip;
+            case ".RAR": case ".CBR": return BookType.Rar;
+            case ".7Z": case ".CB7": return BookType.SevenZip;
+            case ".EPUB": return BookType.Epub;
+            default: return null;
         }
+    }
 
-        public static BookType? GetBookTypeByStream(Stream stream)
+    public static BookType? GetBookTypeByStream(Stream stream)
+    {
+        var buffer = new byte[64];
+        stream.Read(buffer, 0, stream.Length < 64 ? (int)stream.Length : 64);
+        stream.Close();
+        stream.Dispose();
+
+        if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d })) return BookType.Pdf;
+        else if (buffer.Take(6).SequenceEqual(new byte[] { 0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C })) return BookType.SevenZip;
+        else if (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x03, 0x04 }) ||
+            buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x05, 0x06 }) ||
+            buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x07, 0x08 })
+            )
         {
-            var buffer = new byte[64];
-            stream.Read(buffer, 0, stream.Length < 64 ? (int)stream.Length : 64);
-            stream.Close();
-            stream.Dispose();
-
-            if (buffer.Take(5).SequenceEqual(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2d })) return BookType.Pdf;
-            else if (buffer.Take(6).SequenceEqual(new byte[] { 0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C })) return BookType.SevenZip;
-            else if (buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x03, 0x04 }) ||
-                buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x05, 0x06 }) ||
-                buffer.Take(4).SequenceEqual(new byte[] { 0x50, 0x4B, 0x07, 0x08 })
-                )
+            if (buffer.Skip(0x1e).Take(28).SequenceEqual(Encoding.ASCII.GetBytes("mimetypeapplication/epub+zip")))
             {
-                if (buffer.Skip(0x1e).Take(28).SequenceEqual(Encoding.ASCII.GetBytes("mimetypeapplication/epub+zip")))
-                {
-                    return BookType.Epub;
-                }
-                return BookType.Zip;
+                return BookType.Epub;
             }
-            else if (buffer.Take(7).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 })) return BookType.Rar;
-            else if (buffer.Take(8).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 })) return BookType.Rar;
+            return BookType.Zip;
+        }
+        else if (buffer.Take(7).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 })) return BookType.Rar;
+        else if (buffer.Take(8).SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 })) return BookType.Rar;
 
+        return null;
+    }
+
+    public async static Task<BookType?> GetBookTypeByStorageFile(IStorageFile file)
+    {
+        if (file is null) return null;
+        return GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
+    }
+
+    public static async Task<IBook> GetBookFromFile(IStorageFile file)
+    {
+        var type = await GetBookTypeByStorageFile(file);
+        if (type is null) return null;
+        return await GetBookFromFile(file, (BookType)type);
+    }
+
+
+    public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string fileName)
+    {
+        var book = new PdfBook();
+        try
+        {
+            await book.Load(stream, fileName, async (a) =>
+            {
+                var dialog = new Views.PasswordRequestContentDialog();
+                var result = await dialog.ShowAsync();
+                if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
+                {
+                    return (dialog.Password, dialog.Remember);
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+            });
+        }
+        catch { return null; }
+        if (book.PageCount <= 0) { return null; }
+        return book;
+    }
+
+    public static async Task<IBook> GetBookZip(Stream stream)
+    {
+        var book = new CbzBook();
+        try
+        {
+            await book.LoadAsync(stream);
+        }
+        catch
+        {
             return null;
         }
+        if (book.PageCount <= 0) { return null; }
+        return book;
+    }
 
-        public async static Task<BookType?> GetBookTypeByStorageFile(IStorageFile file)
+    public static async Task<IBook> GetBookSharpCompress(Stream stream)
+    {
+        var book = new CompressedBook();
+        try
         {
-            if (file is null) return null;
-            return GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
+            await book.LoadAsync(stream);
         }
-
-        public static async Task<IBook> GetBookFromFile(IStorageFile file)
+        catch
         {
-            var type = await GetBookTypeByStorageFile(file);
-            if (type is null) return null;
-            return await GetBookFromFile(file, (BookType)type);
+            return null;
         }
+        if (book.PageCount <= 0) { return null; }
+        return book;
+    }
 
-
-        public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string fileName)
+    public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type)
+    {
+        switch (type)
         {
-            var book = new PdfBook();
-            try
-            {
-                await book.Load(stream,fileName , async (a) =>
-                {
-                    var dialog = new Views.PasswordRequestContentDialog();
-                    var result = await dialog.ShowAsync();
-                    if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
-                    {
-                        return (dialog.Password, dialog.Remember);
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
-
-                });
-            }
-            catch { return null; }
-            if (book.PageCount <= 0) { return null; }
-            return book;
-        }
-
-        public static async Task<IBook> GetBookZip(Stream stream)
-        {
-            var book = new CbzBook();
-            try
-            {
-                await book.LoadAsync(stream);
-            }
-            catch
-            {
-                return null;
-            }
-            if (book.PageCount <= 0) { return null; }
-            return book;
-        }
-
-        public static async Task<IBook> GetBookSharpCompress(Stream stream)
-        {
-            var book = new CompressedBook();
-            try
-            {
-                await book.LoadAsync(stream);
-            }
-            catch
-            {
-                return null;
-            }
-            if (book.PageCount <= 0) { return null; }
-            return book;
-        }
-
-        public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type)
-        {
-            switch (type)
-            {
-                case BookType.Epub: goto Epub;
-                case BookType.Zip: goto Zip;
-                case BookType.Rar: goto SharpCompress;
-                case BookType.SevenZip: goto SharpCompress;
-                case BookType.Pdf: goto Pdf;
-            }
-
-
-        Pdf:;
-            return await GetBookPdf(await file.OpenReadAsync(), file.Name);
-        Zip:;
-            return await GetBookZip((await file.OpenReadAsync()).AsStream());
-        SharpCompress:;
-            return await GetBookSharpCompress((await file.OpenReadAsync()).AsStream());
-        Epub:;
-            {
-                return new BookEpub(file);
-            }
-        }
-
-        public enum BookType
-        {
-            Epub, Zip, Pdf, Rar, SevenZip
-        }
-
-        public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7", ".epub" }; } }
-
-        public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr" }; } }
-
-        public static bool IsEpub(IStorageFile file)
-        {
-            if (file is null) return false;
-            if (file.FileType.ToLowerInvariant() == ".epub") { return true; }
-            return false;
-        }
-
-        public static bool IsEpub(string path) => path != null && Path.GetExtension(path).ToLowerInvariant() == ".epub";
-
-        public static bool IsFileAvailabe(IStorageFile file)
-        {
-            return IsFileAvailabe(file.Path);
-        }
-
-        public static bool IsFileAvailabe(string path)
-        {
-            if (path is null) return false;
-            return AvailableExtensionsArchive.Contains(Path.GetExtension(path).ToLowerInvariant());
+            case BookType.Epub: goto Epub;
+            case BookType.Zip: goto Zip;
+            case BookType.Rar: goto SharpCompress;
+            case BookType.SevenZip: goto SharpCompress;
+            case BookType.Pdf: goto Pdf;
         }
 
 
-        public static void StorageItemUnregister(string token)
+    Pdf:;
+        return await GetBookPdf(await file.OpenReadAsync(), file.Name);
+    Zip:;
+        return await GetBookZip((await file.OpenReadAsync()).AsStream());
+    SharpCompress:;
+        return await GetBookSharpCompress((await file.OpenReadAsync()).AsStream());
+    Epub:;
         {
-            var acl = StorageApplicationPermissions.FutureAccessList;
-            acl.Remove(token);
+            return new BookEpub(file);
         }
+    }
 
-        public static string StorageItemRegister(IStorageItem file)
-        {
-            var acl = StorageApplicationPermissions.FutureAccessList;
-            return acl.Add(file);
-        }
+    public enum BookType
+    {
+        Epub, Zip, Pdf, Rar, SevenZip
+    }
 
-        public static Dictionary<string, StorageFolder> GetApplicationFolders()
-        {
-            var current = ApplicationData.Current;
-            return new Dictionary<string, StorageFolder>()
+    public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7", ".epub" }; } }
+
+    public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr" }; } }
+
+    public static bool IsEpub(IStorageFile file)
+    {
+        if (file is null) return false;
+        if (file.FileType.ToLowerInvariant() == ".epub") { return true; }
+        return false;
+    }
+
+    public static bool IsEpub(string path) => path != null && Path.GetExtension(path).ToLowerInvariant() == ".epub";
+
+    public static bool IsFileAvailabe(IStorageFile file)
+    {
+        return IsFileAvailabe(file.Path);
+    }
+
+    public static bool IsFileAvailabe(string path)
+    {
+        if (path is null) return false;
+        return AvailableExtensionsArchive.Contains(Path.GetExtension(path).ToLowerInvariant());
+    }
+
+
+    public static void StorageItemUnregister(string token)
+    {
+        var acl = StorageApplicationPermissions.FutureAccessList;
+        acl.Remove(token);
+    }
+
+    public static string StorageItemRegister(IStorageItem file)
+    {
+        var acl = StorageApplicationPermissions.FutureAccessList;
+        return acl.Add(file);
+    }
+
+    public static Dictionary<string, StorageFolder> GetApplicationFolders()
+    {
+        var current = ApplicationData.Current;
+        return new Dictionary<string, StorageFolder>()
             {
                 { "{Special:" + nameof(current.LocalFolder) + "}",  current.LocalFolder },
                 { "{Special:" + nameof(current.LocalCacheFolder) + "}", current.LocalCacheFolder},
@@ -201,117 +201,116 @@ namespace BookViewerApp.Managers
                 { "{Special:" + nameof(current.TemporaryFolder) + "}", current.TemporaryFolder},
                 //{ "{Special:" + nameof(current.SharedLocalFolder) + "}", current.SharedLocalFolder },
             };
+    }
+
+    public static async Task<IStorageItem> StorageItemGet(string token)
+    {
+        {
+            var dic = GetApplicationFolders();
+            if (dic.ContainsKey(token)) return dic[token];
         }
 
-        public static async Task<IStorageItem> StorageItemGet(string token)
+        var acl = StorageApplicationPermissions.FutureAccessList;
+        try
         {
-            {
-                var dic = GetApplicationFolders();
-                if (dic.ContainsKey(token)) return dic[token];
-            }
+            if (acl.ContainsItem(token)) return await acl.GetItemAsync(token);
+            else return null;
+        }
+        catch (FileNotFoundException)
+        {
+            //本来は削除するのが正しいかもしれないけど、共有フォルダがアクセスできないとか普通にあるので放置。
+            return null;
+        }
+    }
 
-            var acl = StorageApplicationPermissions.FutureAccessList;
-            try
+    public static char FileSplitLetter { get { return Path.DirectorySeparatorChar; } }
+
+    public static string PathJoin(string[] Path)
+    {
+        return string.Join(FileSplitLetter.ToString(), Path);
+    }
+
+    public static string[] PathSplit(string Path)
+    {
+        return Path.Split(FileSplitLetter);
+    }
+
+    public static async Task<IStorageItem> StorageItemGet(string token, string Path)
+    {
+        return await StorageItemGet(token, PathSplit(String.IsNullOrWhiteSpace(Path) ? "." : Path));
+    }
+
+    public static async Task<IStorageItem> StorageItemGet(string token, string[] Path)
+    {
+        IStorageItem currentFolder = await StorageItemGet(token);
+        if (Path is null) return currentFolder;
+        foreach (var item in Path)
+        {
+            if (currentFolder is null) return null;
+            if (string.IsNullOrEmpty(item) || item.Trim() == ".") { }
+            else if (currentFolder is StorageFolder f)
             {
-                if (acl.ContainsItem(token)) return await acl.GetItemAsync(token);
-                else return null;
+                if (item.Trim() == "..") currentFolder = await f.GetParentAsync();
+                else currentFolder = await f.TryGetItemAsync(item);
             }
-            catch (FileNotFoundException)
+            else
             {
-                //本来は削除するのが正しいかもしれないけど、共有フォルダがアクセスできないとか普通にあるので放置。
                 return null;
             }
         }
+        return currentFolder;
+    }
 
-        public static char FileSplitLetter { get { return Path.DirectorySeparatorChar; } }
-
-        public static string PathJoin(string[] Path)
+    public static async Task<StorageFile> PickFile()
+    {
+        var picker = new Windows.Storage.Pickers.FileOpenPicker();
+        foreach (var ext in AvailableExtensionsArchive)
         {
-            return string.Join(FileSplitLetter.ToString(), Path);
+            picker.FileTypeFilter.Add(ext);
         }
-
-        public static string[] PathSplit(string Path)
-        {
-            return Path.Split(FileSplitLetter);
-        }
-
-        public static async Task<IStorageItem> StorageItemGet(string token, string Path)
-        {
-            return await StorageItemGet(token, PathSplit(String.IsNullOrWhiteSpace(Path) ? "." : Path));
-        }
-
-        public static async Task<IStorageItem> StorageItemGet(string token, string[] Path)
-        {
-            IStorageItem currentFolder = await StorageItemGet(token);
-            if (Path is null) return currentFolder;
-            foreach (var item in Path)
-            {
-                if (currentFolder is null) return null;
-                if (string.IsNullOrEmpty(item) || item.Trim() == ".") { }
-                else if (currentFolder is StorageFolder f)
-                {
-                    if (item.Trim() == "..") currentFolder = await f.GetParentAsync();
-                    else currentFolder = await f.TryGetItemAsync(item);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            return currentFolder;
-        }
-
-        public static async Task<StorageFile> PickFile()
-        {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            foreach (var ext in AvailableExtensionsArchive)
-            {
-                picker.FileTypeFilter.Add(ext);
-            }
-            return await picker.PickSingleFileAsync();
-
-        }
-
-        public static async Task<IBook> PickBook()
-        {
-            return (await GetBookFromFile(await PickFile()));
-        }
-
-        public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(IStorageItem file)
-        {
-            if (file is null) return null;
-            return await GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()
-            {
-                token = StorageItemRegister(file),
-                path = ""
-            };
-        }
-
-        public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPath(string path)
-        {
-            if (path is null) return null;
-
-            path = Path.GetFullPath(path);
-            //var tokens = (await Task.WhenAll(Content.Content.folders.Select(async a => KeyValuePair.Create(a, await a.GetStorageFolderAsync()))));//.ToDictionary(a => a.Key, a => a.Value);
-            var acl = StorageApplicationPermissions.FutureAccessList;
-            var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await StorageItemGet(a.Token))))).Where(a => a.Item2 != null).ToList();
-            tokens.AddRange(GetApplicationFolders().Select(a => (a.Key, a.Value as IStorageItem)));
-
-            string currentPath = path;
-            while (true)
-            {
-                foreach (var item in tokens)
-                {
-                    if (item.Item2 != null && Path.GetRelativePath(item.Item2.Path, currentPath) == ".") return new Storages.Library.libraryLibraryFolder()
-                    {
-                        token = item.Token,
-                        path = Path.GetRelativePath(item.Item2.Path, path)
-                    };
-                }
-                currentPath = Path.GetDirectoryName(currentPath);
-                if (String.IsNullOrEmpty(currentPath)) return null;
-            }
-        }
+        return await picker.PickSingleFileAsync();
 
     }
+
+    public static async Task<IBook> PickBook()
+    {
+        return (await GetBookFromFile(await PickFile()));
+    }
+
+    public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPathOrRegister(IStorageItem file)
+    {
+        if (file is null) return null;
+        return await GetTokenFromPath(file.Path) ?? new Storages.Library.libraryLibraryFolder()
+        {
+            token = StorageItemRegister(file),
+            path = ""
+        };
+    }
+
+    public async static Task<Storages.Library.libraryLibraryFolder> GetTokenFromPath(string path)
+    {
+        if (path is null) return null;
+
+        path = Path.GetFullPath(path);
+        //var tokens = (await Task.WhenAll(Content.Content.folders.Select(async a => KeyValuePair.Create(a, await a.GetStorageFolderAsync()))));//.ToDictionary(a => a.Key, a => a.Value);
+        var acl = StorageApplicationPermissions.FutureAccessList;
+        var tokens = (await Task.WhenAll(acl.Entries.Select(async a => (a.Token, await StorageItemGet(a.Token))))).Where(a => a.Item2 != null).ToList();
+        tokens.AddRange(GetApplicationFolders().Select(a => (a.Key, a.Value as IStorageItem)));
+
+        string currentPath = path;
+        while (true)
+        {
+            foreach (var item in tokens)
+            {
+                if (item.Item2 != null && Path.GetRelativePath(item.Item2.Path, currentPath) == ".") return new Storages.Library.libraryLibraryFolder()
+                {
+                    token = item.Token,
+                    path = Path.GetRelativePath(item.Item2.Path, path)
+                };
+            }
+            currentPath = Path.GetDirectoryName(currentPath);
+            if (String.IsNullOrEmpty(currentPath)) return null;
+        }
+    }
+
 }

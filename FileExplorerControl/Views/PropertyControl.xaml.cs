@@ -17,25 +17,24 @@ using Windows.ApplicationModel.DataTransfer;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace kurema.FileExplorerControl.Views
-{
-    public sealed partial class PropertyControl : UserControl
-    {
-        public PropertyControl()
-        {
-            this.InitializeComponent();
-        }
+namespace kurema.FileExplorerControl.Views;
 
-        private void Button_Click_Copy(object sender, RoutedEventArgs e)
+public sealed partial class PropertyControl : UserControl
+{
+    public PropertyControl()
+    {
+        this.InitializeComponent();
+    }
+
+    private void Button_Click_Copy(object sender, RoutedEventArgs e)
+    {
+        var text = (sender as Button)?.DataContext?.ToString();
+        if (!string.IsNullOrEmpty(text))
         {
-            var text = (sender as Button)?.DataContext?.ToString();
-            if (!string.IsNullOrEmpty(text))
-            {
-                DataPackage dataPackage = new DataPackage();
-                dataPackage.RequestedOperation = DataPackageOperation.Copy;
-                dataPackage.SetText(text);
-                Clipboard.SetContent(dataPackage);
-            }
+            DataPackage dataPackage = new DataPackage();
+            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+            dataPackage.SetText(text);
+            Clipboard.SetContent(dataPackage);
         }
     }
 }

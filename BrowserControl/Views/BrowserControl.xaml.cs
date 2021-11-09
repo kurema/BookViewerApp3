@@ -17,238 +17,237 @@ using Windows.Networking.BackgroundTransfer;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace kurema.BrowserControl.Views
+namespace kurema.BrowserControl.Views;
+
+public sealed partial class BrowserControl : Page, IDisposable
 {
-    public sealed partial class BrowserControl : Page, IDisposable
+    public WebView Control => this.webView;
+
+    public UIElementCollection AddOnSpace => PanelOthers.Children;
+
+    public BrowserControl()
     {
-        public WebView Control => this.webView;
+        this.InitializeComponent();
 
-        public UIElementCollection AddOnSpace => PanelOthers.Children;
-
-        public BrowserControl()
+        //webView.Navigate(new Uri("http://www.google.co.jp/"));
+        if (this.DataContext is ViewModels.BrowserControlViewModel vm)
         {
-            this.InitializeComponent();
+            vm.Content = this.webView;
+        }
 
-            //webView.Navigate(new Uri("http://www.google.co.jp/"));
-            if (this.DataContext is ViewModels.BrowserControlViewModel vm)
+        webView.NavigationFailed += WebView_NavigationFailed;
+    }
+
+    private void WebView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+    {
+        HideErrorStoryboard.Begin();
+    }
+
+    private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            webView.Focus(FocusState.Programmatic);
+        }
+    }
+
+    private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+    {
+        (sender as TextBox)?.SelectAll();
+    }
+
+    private async void Button_Click_OpenBrowser(object sender, RoutedEventArgs e)
+    {
+        if (webView.Source != null) await Windows.System.Launcher.LaunchUriAsync(webView.Source);
+    }
+
+    private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
+    {
+        var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+
+        if (sender?.ContainsFullScreenElement == true && !v.IsFullScreenMode)
+        {
+            if (v.TryEnterFullScreenMode())
             {
-                vm.Content = this.webView;
             }
+        }
+        else if (sender?.ContainsFullScreenElement == false && v.IsFullScreenMode)
+        {
+            v.ExitFullScreenMode();
+        }
+    }
 
-            webView.NavigationFailed += WebView_NavigationFailed;
+    public void Dispose()
+    {
+        //To stop audio in background.
+        //There should be the better way.
+        webView.NavigateToString("");
+        this.Content = new Grid();
+    }
+
+    private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        var command = ((sender as FrameworkElement)?.DataContext as ViewModels.BrowserControlViewModel)?.OpenDownloadDirectoryCommand;
+        if (command?.CanExecute(null) == true) command.Execute(null);
+    }
+
+    public Action<WebView, WebViewUnviewableContentIdentifiedEventArgs, ViewModels.BrowserControlViewModel> UnviewableContentIdentifiedOverride { get; set; }
+
+    private async void webView_UnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
+    {
+        var dataContext = DataContext as ViewModels.BrowserControlViewModel;
+        if (dataContext is null) return;
+
+        if (UnviewableContentIdentifiedOverride != null)
+        {
+            UnviewableContentIdentifiedOverride.Invoke(sender, args, dataContext);
+            return;
         }
 
-        private void WebView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        try
         {
-            HideErrorStoryboard.Begin();
-        }
+            var namebody = Path.GetFileNameWithoutExtension(args.Uri.AbsoluteUri);
+            namebody = namebody.Length > 32 ? namebody.Substring(0, 32) : namebody;
+            var extension = Path.GetExtension(args.Uri.AbsoluteUri);
+            extension = string.IsNullOrEmpty(extension) ? MimeTypes.MimeTypeMap.GetExtension(args.MediaType) : extension;
 
-        private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
+            var item = await (await dataContext.FolderProvider?.Invoke())?.CreateFileAsync(
+                namebody + extension
+                , Windows.Storage.CreationCollisionOption.GenerateUniqueName);
+            if (item is null) return;
+            var downloader = new BackgroundDownloader();
+            var download = downloader.CreateDownload(args.Uri, item);
+
+            var dlitem = new ViewModels.DownloadItemViewModel(item);
+            dataContext?.Downloads.Add(dlitem);
+
+            await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) =>
             {
-                webView.Focus(FocusState.Programmatic);
-            }
-        }
-
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            (sender as TextBox)?.SelectAll();
-        }
-
-        private async void Button_Click_OpenBrowser(object sender, RoutedEventArgs e)
-        {
-            if (webView.Source != null) await Windows.System.Launcher.LaunchUriAsync(webView.Source);
-        }
-
-        private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
-        {
-            var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-
-            if (sender?.ContainsFullScreenElement == true && !v.IsFullScreenMode)
-            {
-                if (v.TryEnterFullScreenMode())
+                try
                 {
-                }
-            }
-            else if (sender?.ContainsFullScreenElement == false && v.IsFullScreenMode)
-            {
-                v.ExitFullScreenMode();
-            }
-        }
-
-        public void Dispose()
-        {
-            //To stop audio in background.
-            //There should be the better way.
-            webView.NavigateToString("");
-            this.Content = new Grid();
-        }
-
-        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var command = ((sender as FrameworkElement)?.DataContext as ViewModels.BrowserControlViewModel)?.OpenDownloadDirectoryCommand;
-            if (command?.CanExecute(null) == true) command.Execute(null);
-        }
-
-        public Action<WebView, WebViewUnviewableContentIdentifiedEventArgs, ViewModels.BrowserControlViewModel> UnviewableContentIdentifiedOverride { get; set; }
-
-        private async void webView_UnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
-        {
-            var dataContext = DataContext as ViewModels.BrowserControlViewModel;
-            if (dataContext is null) return;
-
-            if (UnviewableContentIdentifiedOverride != null)
-            {
-                UnviewableContentIdentifiedOverride.Invoke(sender, args, dataContext);
-                return;
-            }
-
-            try
-            {
-                var namebody = Path.GetFileNameWithoutExtension(args.Uri.AbsoluteUri);
-                namebody = namebody.Length > 32 ? namebody.Substring(0, 32) : namebody;
-                var extension = Path.GetExtension(args.Uri.AbsoluteUri);
-                extension = string.IsNullOrEmpty(extension) ? MimeTypes.MimeTypeMap.GetExtension(args.MediaType) : extension;
-
-                var item = await (await dataContext.FolderProvider?.Invoke())?.CreateFileAsync(
-                    namebody + extension
-                    , Windows.Storage.CreationCollisionOption.GenerateUniqueName);
-                if (item is null) return;
-                var downloader = new BackgroundDownloader();
-                var download = downloader.CreateDownload(args.Uri, item);
-
-                var dlitem = new ViewModels.DownloadItemViewModel(item);
-                dataContext?.Downloads.Add(dlitem);
-
-                await download.StartAsync().AsTask(new Progress<DownloadOperation>((t) =>
-                {
-                    try
-                    {
                         //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
                         if (t.Progress.TotalBytesToReceive > 0)
-                        {
-                            double br = t.Progress.TotalBytesToReceive;
-                            dlitem.DownloadedRate = br / t.Progress.TotalBytesToReceive;
-                        }
-                    }
-                    catch { }
-                }));
-
-                dlitem.DownloadedRate = 1.0;
-                OpenFile(item);
-            }
-            catch { }
-        }
-
-        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement).DataContext is ViewModels.DownloadItemViewModel dlitem && dlitem.DownloadedRate == 1.0) OpenFile(dlitem.File);
-        }
-
-        private void OpenFile(Windows.Storage.StorageFile storageFile)
-        {
-            DownloadedFileOpenedEventHandler?.Invoke(this, storageFile);
-        }
-
-        public TypedEventHandler<BrowserControl, Windows.Storage.StorageFile> DownloadedFileOpenedEventHandler;
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (e.Parameter is null) return;
-            else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs arg)
-            {
-            }
-            else if (e.Parameter is string s)
-            {
-                if (DataContext is ViewModels.BrowserControlViewModel vm && vm != null)
-                {
-                    vm.Uri = s;
-                }
-            }
-        }
-
-        private async void listViewBookmarks_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (sender is ItemsControl list && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem && DataContext is ViewModels.BrowserControlViewModel vm)
-            {
-                if (bookmarkItem.IsFolder)
-                {
-                    vm.BookmarkCurrent.Clear();
-                    foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
-                }
-                else
-                {
-                    Uri uri;
-                    if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out uri))
                     {
-                        webView.Navigate(uri);
+                        double br = t.Progress.TotalBytesToReceive;
+                        dlitem.DownloadedRate = br / t.Progress.TotalBytesToReceive;
                     }
                 }
+                catch { }
+            }));
+
+            dlitem.DownloadedRate = 1.0;
+            OpenFile(item);
+        }
+        catch { }
+    }
+
+    private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement).DataContext is ViewModels.DownloadItemViewModel dlitem && dlitem.DownloadedRate == 1.0) OpenFile(dlitem.File);
+    }
+
+    private void OpenFile(Windows.Storage.StorageFile storageFile)
+    {
+        DownloadedFileOpenedEventHandler?.Invoke(this, storageFile);
+    }
+
+    public TypedEventHandler<BrowserControl, Windows.Storage.StorageFile> DownloadedFileOpenedEventHandler;
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is null) return;
+        else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs arg)
+        {
+        }
+        else if (e.Parameter is string s)
+        {
+            if (DataContext is ViewModels.BrowserControlViewModel vm && vm != null)
+            {
+                vm.Uri = s;
             }
         }
+    }
 
-        private async void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
+    private async void listViewBookmarks_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (sender is ItemsControl list && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem && DataContext is ViewModels.BrowserControlViewModel vm)
         {
-            if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null && vm.BookmarkCurrent != null)
+            if (bookmarkItem.IsFolder)
             {
                 vm.BookmarkCurrent.Clear();
-                foreach (var item in await vm.BookmarkRoot.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+                foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+            }
+            else
+            {
+                Uri uri;
+                if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out uri))
+                {
+                    webView.Navigate(uri);
+                }
             }
         }
+    }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+    private async void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null && vm.BookmarkCurrent != null)
         {
-            var node = treeView_BookMarkAdd.SelectedNode;
-            if (node == null || node.Content is null)
+            vm.BookmarkCurrent.Clear();
+            foreach (var item in await vm.BookmarkRoot.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+        }
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        var node = treeView_BookMarkAdd.SelectedNode;
+        if (node == null || node.Content is null)
+        {
+            if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null)
             {
-                if (DataContext is ViewModels.BrowserControlViewModel vm && vm?.BookmarkRoot != null)
-                {
-                    vm.BookmarkRoot.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
-                    button_favorite.Flyout.Hide();
-                }
-                return;
-            }
-            if (node.Content is ViewModels.IBookmarkItem bm)
-            {
-                bm.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
+                vm.BookmarkRoot.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
                 button_favorite.Flyout.Hide();
             }
+            return;
         }
-
-        private async void TreeView_Expanding(Microsoft.UI.Xaml.Controls.TreeView sender, Microsoft.UI.Xaml.Controls.TreeViewExpandingEventArgs args)
+        if (node.Content is ViewModels.IBookmarkItem bm)
         {
-            if (!args.Node.HasUnrealizedChildren) return;
+            bm.AddItem(new ViewModels.BookmarkItem(textBox_BookmarkAdd.Text, webView.Source.AbsoluteUri));
+            button_favorite.Flyout.Hide();
+        }
+    }
 
-            sender.IsEnabled = false;
+    private async void TreeView_Expanding(Microsoft.UI.Xaml.Controls.TreeView sender, Microsoft.UI.Xaml.Controls.TreeViewExpandingEventArgs args)
+    {
+        if (!args.Node.HasUnrealizedChildren) return;
 
-            try
+        sender.IsEnabled = false;
+
+        try
+        {
+            if (args.Item is ViewModels.IBookmarkItem vm)
             {
-                if (args.Item is ViewModels.IBookmarkItem vm)
-                {
-                    var container = sender.ContainerFromItem(args.Item);
+                var container = sender.ContainerFromItem(args.Item);
 
-                    if (!vm.IsFolder) return;
-                    var child = (await vm.GetChilderenAsync())?.Where(a => a.IsFolder && !a.IsReadOnly);
-                    if (child is null) return;
-                    if (container is Microsoft.UI.Xaml.Controls.TreeViewItem tvi)
-                    {
-                        tvi.ItemsSource = child;
-                    }
+                if (!vm.IsFolder) return;
+                var child = (await vm.GetChilderenAsync())?.Where(a => a.IsFolder && !a.IsReadOnly);
+                if (child is null) return;
+                if (container is Microsoft.UI.Xaml.Controls.TreeViewItem tvi)
+                {
+                    tvi.ItemsSource = child;
                 }
             }
-            finally
-            {
-                args.Node.HasUnrealizedChildren = false;
-                sender.IsEnabled = true;
-            }
-
         }
-
-        private void Button_Click_ToggleCollapsed(object sender, RoutedEventArgs e)
+        finally
         {
-            if (!(DataContext is ViewModels.BrowserControlViewModel vm)) return;
-            vm.ControllerCollapsed = !vm.ControllerCollapsed;
+            args.Node.HasUnrealizedChildren = false;
+            sender.IsEnabled = true;
         }
+
+    }
+
+    private void Button_Click_ToggleCollapsed(object sender, RoutedEventArgs e)
+    {
+        if (!(DataContext is ViewModels.BrowserControlViewModel vm)) return;
+        vm.ControllerCollapsed = !vm.ControllerCollapsed;
     }
 }

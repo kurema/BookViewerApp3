@@ -15,15 +15,14 @@ using Windows.UI.Xaml.Navigation;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace BookViewerApp.Views
-{
-    public sealed partial class SettingPanelControl : UserControl
-    {
-        public CollectionViewSource SettingSource => this.settingSource;
+namespace BookViewerApp.Views;
 
-        public SettingPanelControl()
-        {
-            this.InitializeComponent();
-        }
+public sealed partial class SettingPanelControl : UserControl
+{
+    public CollectionViewSource SettingSource => this.settingSource;
+
+    public SettingPanelControl()
+    {
+        this.InitializeComponent();
     }
 }

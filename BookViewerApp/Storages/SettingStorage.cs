@@ -12,20 +12,20 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-namespace BookViewerApp.Storages
-{
-    public class SettingStorage
-    {
-        public static Windows.Storage.ApplicationDataContainer LocalSettings { get { return Windows.Storage.ApplicationData.Current.LocalSettings; } }
-        public static Windows.Storage.ApplicationDataContainer RoamingSettings { get { return Windows.Storage.ApplicationData.Current.RoamingSettings; } }
+namespace BookViewerApp.Storages;
 
-        private static SettingInstance[] _SettingInstances = null;
-        public static SettingInstance[] SettingInstances
+public class SettingStorage
+{
+    public static Windows.Storage.ApplicationDataContainer LocalSettings { get { return Windows.Storage.ApplicationData.Current.LocalSettings; } }
+    public static Windows.Storage.ApplicationDataContainer RoamingSettings { get { return Windows.Storage.ApplicationData.Current.RoamingSettings; } }
+
+    private static SettingInstance[] _SettingInstances = null;
+    public static SettingInstance[] SettingInstances
+    {
+        get
         {
-            get
-            {
-                return _SettingInstances ??= new SettingInstance[]
-                    {
+            return _SettingInstances ??= new SettingInstance[]
+                {
                         new SettingInstance("DefaultSpreadType",Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
                         new SettingInstance("DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance("SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
@@ -57,341 +57,340 @@ namespace BookViewerApp.Storages
                         new SettingInstance("FetchThumbnailsBackground",true,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("DefaultBrowserExternal",false,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance("EpubViewerDarkMode",false, new TypeConverters.BoolConverter(),group:"Viewer"),
-                    };
-                //How to add resource when you add SettingInstance:
-                //1. Open Resource/en-US/Resources.resw
-                //2. Add entries nemad:
-                //   * Setting_*.Title
-                //   * Setting_*.Description
-                //3. Build (with Multilingual App Toolkit)
-                //4. Edit files in MultilingualResources/
-                //Notebook:
-                //Setting_.Title
-                //Setting_.Description
+                };
+            //How to add resource when you add SettingInstance:
+            //1. Open Resource/en-US/Resources.resw
+            //2. Add entries nemad:
+            //   * Setting_*.Title
+            //   * Setting_*.Description
+            //3. Build (with Multilingual App Toolkit)
+            //4. Edit files in MultilingualResources/
+            //Notebook:
+            //Setting_.Title
+            //Setting_.Description
 
-                //Sample:
-                //if ((bool)Storages.SettingStorage.GetValue("")){}
+            //Sample:
+            //if ((bool)Storages.SettingStorage.GetValue("")){}
 
+        }
+    }
+
+    public static object GetValue(string Key)
+    {
+        foreach (var item in SettingInstances)
+        {
+            if (item.Key == Key)
+            {
+                return item.GetValue();
             }
         }
+        return null;
+    }
 
-        public static object GetValue(string Key)
+    public static void SetValue(string Key, object value)
+    {
+        SettingInstances?.FirstOrDefault(a => a.Key == Key)?.SetValue(value);
+    }
+
+    public static class SettingEnums
+    {
+        public enum EpubViewerType
         {
-            foreach (var item in SettingInstances)
+            Bibi, EpubJsReader
+        }
+    }
+
+    public class SettingInstance
+    {
+        //SettingEntry sounds better. But I keep it this way for now.
+        public string StringResourceKey;
+
+        public string Key { get; private set; }
+        public bool IsLocal { get; private set; }
+        public object DefaultValue { get; private set; }
+        private Func<object, bool> IsValidObject { get; set; }
+
+        public ITypeConverter Converter { get; private set; }
+
+        public object Minimum { get; set; }
+        public object Maximum { get; set; }
+
+        public string GroupName { get; set; }
+
+        public bool IsVisible { get; set; }
+
+        private Windows.Storage.ApplicationDataContainer Setting => (IsLocal ? LocalSettings : RoamingSettings);
+
+        public Type GetGenericType()
+        {
+            return Converter.GetConvertType();
+        }
+
+        public SettingInstance(string Key, object DefaultValue, ITypeConverter Converter, bool IsLocal = true, Func<object, bool> CheckValid = null, string group = "", bool isVisible = true)
+        {
+            this.Key = Key;
+            this.StringResourceKey = "Setting_" + Key;
+            this.DefaultValue = DefaultValue;
+            this.IsLocal = IsLocal;
+            this.Converter = Converter;
+            this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { return Converter.TryGetTypeGeneral(a.ToString(), out object result); });
+            this.GroupName = group;
+            this.IsVisible = isVisible;
+
+        }
+
+        public void SetValue(object Value)
+        {
+            if (!IsValid(Value)) return;
+
+            Setting.CreateContainer(Key, Windows.Storage.ApplicationDataCreateDisposition.Always);
+            Setting.Values[Key] = Converter.GetStringGeneral(Value);
+        }
+
+        public void SetValueAsString(string Value)
+        {
+            if (Converter.TryGetTypeGeneral(Value, out object result))
+                SetValue(result);
+        }
+
+        public string GetValueAsString()
+        {
+            return Converter.GetStringGeneral(GetValue());
+        }
+
+        public bool IsValid(object obj)
+        {
+            //if (obj.GetType() == GetGenericType())//?
             {
-                if (item.Key == Key)
+                return IsValidObject(obj);
+            }
+            //return false;
+        }
+
+        public object GetValue()
+        {
+            if (Setting.Values.TryGetValue(Key, out object data) == false)
+            {
+                return DefaultValue;
+            }
+            else
+            {
+                if (Converter.TryGetTypeGeneral(data.ToString(), out object result))
                 {
-                    return item.GetValue();
-                }
-            }
-            return null;
-        }
-
-        public static void SetValue(string Key, object value)
-        {
-            SettingInstances?.FirstOrDefault(a => a.Key == Key)?.SetValue(value);
-        }
-
-        public static class SettingEnums
-        {
-            public enum EpubViewerType
-            {
-                Bibi, EpubJsReader
-            }
-        }
-
-        public class SettingInstance
-        {
-            //SettingEntry sounds better. But I keep it this way for now.
-            public string StringResourceKey;
-
-            public string Key { get; private set; }
-            public bool IsLocal { get; private set; }
-            public object DefaultValue { get; private set; }
-            private Func<object, bool> IsValidObject { get; set; }
-
-            public ITypeConverter Converter { get; private set; }
-
-            public object Minimum { get; set; }
-            public object Maximum { get; set; }
-
-            public string GroupName { get; set; }
-
-            public bool IsVisible { get; set; }
-
-            private Windows.Storage.ApplicationDataContainer Setting => (IsLocal ? LocalSettings : RoamingSettings);
-
-            public Type GetGenericType()
-            {
-                return Converter.GetConvertType();
-            }
-
-            public SettingInstance(string Key, object DefaultValue, ITypeConverter Converter, bool IsLocal = true, Func<object, bool> CheckValid = null, string group = "", bool isVisible = true)
-            {
-                this.Key = Key;
-                this.StringResourceKey = "Setting_" + Key;
-                this.DefaultValue = DefaultValue;
-                this.IsLocal = IsLocal;
-                this.Converter = Converter;
-                this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { return Converter.TryGetTypeGeneral(a.ToString(), out object result); });
-                this.GroupName = group;
-                this.IsVisible = isVisible;
-
-            }
-
-            public void SetValue(object Value)
-            {
-                if (!IsValid(Value)) return;
-
-                Setting.CreateContainer(Key, Windows.Storage.ApplicationDataCreateDisposition.Always);
-                Setting.Values[Key] = Converter.GetStringGeneral(Value);
-            }
-
-            public void SetValueAsString(string Value)
-            {
-                if (Converter.TryGetTypeGeneral(Value, out object result))
-                    SetValue(result);
-            }
-
-            public string GetValueAsString()
-            {
-                return Converter.GetStringGeneral(GetValue());
-            }
-
-            public bool IsValid(object obj)
-            {
-                //if (obj.GetType() == GetGenericType())//?
-                {
-                    return IsValidObject(obj);
-                }
-                //return false;
-            }
-
-            public object GetValue()
-            {
-                if (Setting.Values.TryGetValue(Key, out object data) == false)
-                {
-                    return DefaultValue;
+                    return result;
                 }
                 else
                 {
-                    if (Converter.TryGetTypeGeneral(data.ToString(), out object result))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        return DefaultValue;
-                    }
+                    return DefaultValue;
                 }
             }
         }
+    }
 
-        public interface ITypeConverter
+    public interface ITypeConverter
+    {
+        String GetStringGeneral(object value);
+        bool TryGetTypeGeneral(string value, out object result);
+
+        Type GetConvertType();
+    }
+
+
+    public class TypeConverters
+    {
+        public class StringConverter : ITypeConverter
         {
-            String GetStringGeneral(object value);
-            bool TryGetTypeGeneral(string value, out object result);
+            public Type GetConvertType()
+            {
+                return typeof(string);
+            }
 
-            Type GetConvertType();
+            public string GetStringGeneral(object value)
+            {
+                return value?.ToString() ?? "";
+            }
+
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                result = value;
+                return true;
+            }
         }
 
-
-        public class TypeConverters
+        public class BoolConverter : ITypeConverter
         {
-            public class StringConverter : ITypeConverter
+            public Type GetConvertType()
             {
-                public Type GetConvertType()
-                {
-                    return typeof(string);
-                }
+                return typeof(bool);
+            }
 
-                public string GetStringGeneral(object value)
-                {
-                    return value?.ToString() ?? "";
-                }
+            public string GetStringGeneral(object value)
+            {
+                return value.ToString();
+            }
 
-                public bool TryGetTypeGeneral(string value, out object result)
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                if (bool.TryParse(value, out bool data))
                 {
-                    result = value;
+                    result = data;
                     return true;
                 }
+                result = null;
+                return false;
+            }
+        }
+
+        public class IntConverter : ITypeConverter
+        {
+            public Type GetConvertType()
+            {
+                return typeof(int);
             }
 
-            public class BoolConverter : ITypeConverter
+            public string GetStringGeneral(object value)
             {
-                public Type GetConvertType()
-                {
-                    return typeof(bool);
-                }
+                return value.ToString();
+            }
 
-                public string GetStringGeneral(object value)
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                if (int.TryParse(value, out int data))
                 {
-                    return value.ToString();
+                    result = data;
+                    return true;
                 }
+                result = null;
+                return false;
+            }
 
-                public bool TryGetTypeGeneral(string value, out object result)
+        }
+
+        public class EnumConverter<T> : ITypeConverter where T : Enum
+        {
+            public Type GetConvertType()
+            {
+                return typeof(T);
+            }
+
+            public string GetStringGeneral(object value)
+            {
+                return value.ToString();
+            }
+
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                var values = typeof(T).GetEnumValues();
+                foreach (var t in values)
                 {
-                    if (bool.TryParse(value, out bool data))
+                    var name = Enum.GetName(typeof(T), t);
+                    if (name == value)
                     {
-                        result = data;
+                        result = (T)t;
                         return true;
                     }
+                }
+                {
+                    result = default(T);
+                    return false;
+                }
+            }
+        }
+
+        public class DoubleConverter : ITypeConverter
+        {
+            public Type GetConvertType()
+            {
+                return typeof(double);
+            }
+
+            public string GetStringGeneral(object value)
+            {
+                return value.ToString();
+            }
+
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                if (double.TryParse(value, out double data))
+                {
+                    result = data;
+                    return true;
+                }
+                result = null;
+                return false;
+            }
+        }
+
+        public class RegexConverter : ITypeConverter
+        {
+            public Type GetConvertType()
+            {
+                return typeof(System.Text.RegularExpressions.Regex);
+            }
+
+            public string GetStringGeneral(object value)
+            {
+                if (value is System.Text.RegularExpressions.Regex)
+                {
+                    return (value as System.Text.RegularExpressions.Regex).ToString();
+                }
+                else return value?.ToString();
+            }
+
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                try
+                {
+                    result = new System.Text.RegularExpressions.Regex(value);
+                    return true;
+                }
+                catch
+                {
                     result = null;
                     return false;
                 }
             }
+        }
 
-            public class IntConverter : ITypeConverter
+        public class SerializableConverter<T> : ITypeConverter
+        {
+            public Type GetConvertType()
             {
-                public Type GetConvertType()
-                {
-                    return typeof(int);
-                }
+                return typeof(T);
+            }
 
-                public string GetStringGeneral(object value)
-                {
-                    return value.ToString();
-                }
+            public string GetStringGeneral(object value)
+            {
+                if (!(value is T)) return null;
+                System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
+                using System.IO.TextWriter tw = new System.IO.StringWriter();
+                xs.Serialize(tw, value);
+                return tw.ToString();
+            }
 
-                public bool TryGetTypeGeneral(string value, out object result)
+            public bool TryGetTypeGeneral(string value, out object result)
+            {
+                System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
+                using System.IO.TextReader tr = new System.IO.StringReader(value);
+                System.Xml.XmlReader xr;
+                try
                 {
-                    if (int.TryParse(value, out int data))
-                    {
-                        result = data;
-                        return true;
-                    }
-                    result = null;
+                    xr = System.Xml.XmlReader.Create(tr);
+                }
+                catch
+                {
+                    result = default(T);
                     return false;
                 }
-
-            }
-
-            public class EnumConverter<T> : ITypeConverter where T : Enum
-            {
-                public Type GetConvertType()
+                if (xs.CanDeserialize(xr))
                 {
-                    return typeof(T);
+                    result = (T)xs.Deserialize(xr);
+                    return true;
                 }
-
-                public string GetStringGeneral(object value)
+                else
                 {
-                    return value.ToString();
-                }
-
-                public bool TryGetTypeGeneral(string value, out object result)
-                {
-                    var values = typeof(T).GetEnumValues();
-                    foreach (var t in values)
-                    {
-                        var name = Enum.GetName(typeof(T), t);
-                        if (name == value)
-                        {
-                            result = (T)t;
-                            return true;
-                        }
-                    }
-                    {
-                        result = default(T);
-                        return false;
-                    }
-                }
-            }
-
-            public class DoubleConverter : ITypeConverter
-            {
-                public Type GetConvertType()
-                {
-                    return typeof(double);
-                }
-
-                public string GetStringGeneral(object value)
-                {
-                    return value.ToString();
-                }
-
-                public bool TryGetTypeGeneral(string value, out object result)
-                {
-                    if (double.TryParse(value, out double data))
-                    {
-                        result = data;
-                        return true;
-                    }
-                    result = null;
+                    result = default(T);
                     return false;
-                }
-            }
-
-            public class RegexConverter : ITypeConverter
-            {
-                public Type GetConvertType()
-                {
-                    return typeof(System.Text.RegularExpressions.Regex);
-                }
-
-                public string GetStringGeneral(object value)
-                {
-                    if (value is System.Text.RegularExpressions.Regex)
-                    {
-                        return (value as System.Text.RegularExpressions.Regex).ToString();
-                    }
-                    else return value?.ToString();
-                }
-
-                public bool TryGetTypeGeneral(string value, out object result)
-                {
-                    try
-                    {
-                        result = new System.Text.RegularExpressions.Regex(value);
-                        return true;
-                    }
-                    catch
-                    {
-                        result = null;
-                        return false;
-                    }
-                }
-            }
-
-            public class SerializableConverter<T> : ITypeConverter
-            {
-                public Type GetConvertType()
-                {
-                    return typeof(T);
-                }
-
-                public string GetStringGeneral(object value)
-                {
-                    if (!(value is T)) return null;
-                    System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
-                    using System.IO.TextWriter tw = new System.IO.StringWriter();
-                    xs.Serialize(tw, value);
-                    return tw.ToString();
-                }
-
-                public bool TryGetTypeGeneral(string value, out object result)
-                {
-                    System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
-                    using System.IO.TextReader tr = new System.IO.StringReader(value);
-                    System.Xml.XmlReader xr;
-                    try
-                    {
-                        xr = System.Xml.XmlReader.Create(tr);
-                    }
-                    catch
-                    {
-                        result = default(T);
-                        return false;
-                    }
-                    if (xs.CanDeserialize(xr))
-                    {
-                        result = (T)xs.Deserialize(xr);
-                        return true;
-                    }
-                    else
-                    {
-                        result = default(T);
-                        return false;
-                    }
                 }
             }
         }

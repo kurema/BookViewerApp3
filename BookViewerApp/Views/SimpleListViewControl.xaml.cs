@@ -15,25 +15,24 @@ using Windows.UI.Xaml.Navigation;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
-namespace BookViewerApp.Views
+namespace BookViewerApp.Views;
+
+public sealed partial class SimpleListViewControl : UserControl
 {
-    public sealed partial class SimpleListViewControl : UserControl
+    public SimpleListViewControl()
     {
-        public SimpleListViewControl()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
-        public object Source
-        {
-            get => itemsSource?.Source;
-            set => itemsSource.Source = value;
-        }
+    public object Source
+    {
+        get => itemsSource?.Source;
+        set => itemsSource.Source = value;
+    }
 
-        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var command = ((sender as FrameworkElement)?.DataContext as ViewModels.ListItemViewModel)?.OpenCommand;
-            if (command?.CanExecute(sender) == true) command.Execute(sender);
-        }
+    private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        var command = ((sender as FrameworkElement)?.DataContext as ViewModels.ListItemViewModel)?.OpenCommand;
+        if (command?.CanExecute(sender) == true) command.Execute(sender);
     }
 }

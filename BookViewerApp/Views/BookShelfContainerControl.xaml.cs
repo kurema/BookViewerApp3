@@ -15,13 +15,12 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace BookViewerApp.Views
+namespace BookViewerApp.Views;
+
+public sealed partial class BookshelfContainerControl : UserControl
 {
-    public sealed partial class BookshelfContainerControl : UserControl
+    public BookshelfContainerControl()
     {
-        public BookshelfContainerControl()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

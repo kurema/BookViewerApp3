@@ -14,30 +14,29 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Data;
 
-namespace BookViewerApp.Helper
+namespace BookViewerApp.Helper;
+
+public class ViewModelBase : INotifyPropertyChanged
 {
-    public class ViewModelBase : INotifyPropertyChanged
+
+    #region INotifyPropertyChanged
+    protected bool SetProperty<T>(ref T backingStore, T value,
+        [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
+        Action onChanged = null)
     {
+        if (EqualityComparer<T>.Default.Equals(backingStore, value))
+            return false;
 
-        #region INotifyPropertyChanged
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [System.Runtime.CompilerServices.CallerMemberName]string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
+        backingStore = value;
+        onChanged?.Invoke();
+        OnPropertyChanged(propertyName);
+        return true;
     }
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    #endregion
+
 }

@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace BookViewerApp.ViewModels
+namespace BookViewerApp.ViewModels;
+
+public class Bookshelf2NavigationViewModel
 {
-    public class Bookshelf2NavigationViewModel
+    private ObservableCollection<Bookshelf2NavigationItemViewModel> _MenuItems = new ObservableCollection<Bookshelf2NavigationItemViewModel>()
     {
-        private ObservableCollection<Bookshelf2NavigationItemViewModel> _MenuItems = new ObservableCollection<Bookshelf2NavigationItemViewModel>() {
-        };
-        public ObservableCollection<Bookshelf2NavigationItemViewModel> MenuItems { get => _MenuItems; }
-    }
+    };
+    public ObservableCollection<Bookshelf2NavigationItemViewModel> MenuItems { get => _MenuItems; }
 }

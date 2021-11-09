@@ -1,0 +1,6 @@
+# Rules in this file were initially inferred by Visual Studio IntelliCode from the E:\Users\kurema\Documents\Software Data\GitHub\BookViewerApp3 codebase based on best match to current usage at 2021/11/09
+# You can modify the rules from these initially generated values to suit your own policies
+# You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.cs]
+end_of_line = lf
+csharp_style_namespace_declarations=file_scoped:suggestion

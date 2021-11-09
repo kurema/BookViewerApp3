@@ -7,107 +7,106 @@ using System.Windows.Input;
 
 using BookViewerApp.Helper;
 
-namespace kurema.FileExplorerControl.Models.FileItems
+namespace kurema.FileExplorerControl.Models.FileItems;
+
+[Obsolete]
+public class HistoryItem : IFileItem
 {
+    public HistoryStorage.HistoryInfo Content;
 
-    [Obsolete]
-    public class HistoryItem : IFileItem
+    public HistoryItem(HistoryStorage.HistoryInfo content)
     {
-        public HistoryStorage.HistoryInfo Content;
+        Content = content ?? throw new ArgumentNullException(nameof(content));
+    }
 
-        public HistoryItem(HistoryStorage.HistoryInfo content)
+    public string Name => Content.Name;
+
+    public string Path => Content.Path;
+
+    public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
+
+    public DateTimeOffset DateCreated
+    {
+        get
         {
-            Content = content ?? throw new ArgumentNullException(nameof(content));
-        }
-
-        public string Name => Content.Name;
-
-        public string Path => Content.Path;
-
-        public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
-
-        public DateTimeOffset DateCreated {
-            get
+            try
             {
-                try
-                {
-                    return Content.Date;
-                }
-                catch
-                {
-                    return new DateTimeOffset();
-                }
+                return Content.Date;
+            }
+            catch
+            {
+                return new DateTimeOffset();
             }
         }
+    }
 
-        public bool IsFolder => false;
+    public bool IsFolder => false;
 
-        public ICommand DeleteCommand => new DelegateCommand(async (_) =>
+    public ICommand DeleteCommand => new DelegateCommand(async (_) =>
+    {
+        if (!string.IsNullOrWhiteSpace(Content.Id)) await HistoryStorage.DeleteHistoryById(Content.Id);
+        else if (!string.IsNullOrWhiteSpace(Content.Path)) await HistoryStorage.DeleteHistoryByPath(Content.Path);
+        await HistoryStorage.Content.SaveAsync();
+        LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
+        LibraryStorage.GarbageCollectToken();
+    }, a => !(a is bool b && b == true));
+
+    public ICommand RenameCommand => new InvalidCommand();
+
+    public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+
+    public object Tag { get; set; }
+
+    public Task<ObservableCollection<IFileItem>> GetChildren()
+    {
+        return Task.FromResult<ObservableCollection<IFileItem>>(null);
+    }
+
+    public async Task<ulong?> GetSizeAsync()
+    {
+        var file = await GetFile();
+        if (file is null) return null;
+        return (await file.GetBasicPropertiesAsync())?.Size;
+    }
+
+    public void Open()
+    {
+        return;
+    }
+
+    private Windows.Storage.StorageFile StorageCache = null;
+
+    public async Task<Windows.Storage.StorageFile> GetFile()
+    {
+        if (StorageCache != null) return StorageCache;
+        StorageCache = await Content.GetFile();
+        if (StorageCache is null)
         {
+            //Content.CurrentlyInaccessible = true;
             if (!string.IsNullOrWhiteSpace(Content.Id)) await HistoryStorage.DeleteHistoryById(Content.Id);
             else if (!string.IsNullOrWhiteSpace(Content.Path)) await HistoryStorage.DeleteHistoryByPath(Content.Path);
-            await HistoryStorage.Content.SaveAsync();
             LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
-            LibraryStorage.GarbageCollectToken();
-        }, a => !(a is bool b && b == true));
-
-        public ICommand RenameCommand => new InvalidCommand();
-
-        public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
-
-        public object Tag { get; set; }
-
-        public Task<ObservableCollection<IFileItem>> GetChildren()
-        {
-            return Task.FromResult<ObservableCollection<IFileItem>>(null);
+            await HistoryStorage.Content.SaveAsync();
         }
-
-        public async Task<ulong?> GetSizeAsync()
-        {
-            var file = await GetFile();
-            if (file is null) return null;
-            return (await file.GetBasicPropertiesAsync())?.Size;
-        }
-
-        public void Open()
-        {
-            return;
-        }
-
-        private Windows.Storage.StorageFile StorageCache = null;
-
-        public async Task<Windows.Storage.StorageFile> GetFile()
-        {
-            if (StorageCache != null) return StorageCache;
-            StorageCache = await Content.GetFile();
-            if (StorageCache is null)
-            {
-                //Content.CurrentlyInaccessible = true;
-                if (!string.IsNullOrWhiteSpace(Content.Id)) await HistoryStorage.DeleteHistoryById(Content.Id);
-                else if (!string.IsNullOrWhiteSpace(Content.Path)) await HistoryStorage.DeleteHistoryByPath(Content.Path);
-                LibraryStorage.OnLibraryUpdateRequest(LibraryStorage.LibraryKind.History);
-                await HistoryStorage.Content.SaveAsync();
-            }
-            return StorageCache;
-        }
-
-        public async Task<Stream> OpenStreamForReadAsync()
-        {
-            var file = await GetFile();
-            if (file is null) return null;
-            return await file.OpenStreamForReadAsync();
-        }
-
-        public async Task<Stream> OpenStreamForWriteAsync()
-        {
-            var file = await GetFile();
-            if (file is null) return null;
-            return await file.OpenStreamForWriteAsync();
-        }
-
-        public event EventHandler Updated;
-
-        public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
-
+        return StorageCache;
     }
+
+    public async Task<Stream> OpenStreamForReadAsync()
+    {
+        var file = await GetFile();
+        if (file is null) return null;
+        return await file.OpenStreamForReadAsync();
+    }
+
+    public async Task<Stream> OpenStreamForWriteAsync()
+    {
+        var file = await GetFile();
+        if (file is null) return null;
+        return await file.OpenStreamForWriteAsync();
+    }
+
+    public event EventHandler Updated;
+
+    public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
 }

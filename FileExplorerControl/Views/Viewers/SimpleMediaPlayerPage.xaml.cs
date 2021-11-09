@@ -17,39 +17,38 @@ using System.Threading.Tasks;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
-namespace kurema.FileExplorerControl.Views.Viewers
+namespace kurema.FileExplorerControl.Views.Viewers;
+
+/// <summary>
+/// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
+/// </summary>
+public sealed partial class SimpleMediaPlayerPage : Page
 {
-    /// <summary>
-    /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
-    /// </summary>
-    public sealed partial class SimpleMediaPlayerPage : Page
+    public SimpleMediaPlayerPage()
     {
-        public SimpleMediaPlayerPage()
+        this.InitializeComponent();
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        mediaPlayerMain.MediaPlayer.Dispose();
+
+        base.OnNavigatedFrom(e);
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is Windows.Media.Playback.IMediaPlaybackSource source)
         {
-            this.InitializeComponent();
+            mediaPlayerMain.Source = source;
+            return;
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            mediaPlayerMain.MediaPlayer.Dispose();
+        base.OnNavigatedTo(e);
+    }
 
-            base.OnNavigatedFrom(e);
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (e.Parameter is Windows.Media.Playback.IMediaPlaybackSource source)
-            {
-                mediaPlayerMain.Source = source;
-                return;
-            }
-
-            base.OnNavigatedTo(e);
-        }
-
-        public static Task<string[]> GetAvailableExtensionsAsync()
-        {
-            return Task.FromResult(new[] { ".MP4", ".MP3", ".FLAC", ".WMA", ".WMV", ".WAV" });
-        }
+    public static Task<string[]> GetAvailableExtensionsAsync()
+    {
+        return Task.FromResult(new[] { ".MP4", ".MP3", ".FLAC", ".WMA", ".WMV", ".WAV" });
     }
 }

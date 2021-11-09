@@ -7,34 +7,33 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace kurema.FileExplorerControl.Helper
+namespace kurema.FileExplorerControl.Helper;
+
+public static class UIHelper
 {
-    public static class UIHelper
+    //public static Style MenuFlyoutPresenterStyleBasic
+    //{
+    //    get
+    //    {
+    //        var result= new Style()
+    //        {
+    //            TargetType = typeof(MenuFlyoutPresenter),
+    //        };
+    //        result.Setters.Add(new Setter(Control.BackgroundProperty,));
+
+    //    }
+    //}
+
+    public static async Task OpenRename(Models.FileItems.IFileItem file)
     {
-        //public static Style MenuFlyoutPresenterStyleBasic
-        //{
-        //    get
-        //    {
-        //        var result= new Style()
-        //        {
-        //            TargetType = typeof(MenuFlyoutPresenter),
-        //        };
-        //        result.Setters.Add(new Setter(Control.BackgroundProperty,));
-
-        //    }
-        //}
-
-        public static async  Task OpenRename(Models.FileItems.IFileItem file)
+        var dialog = new ContentDialog()
         {
-            var dialog = new ContentDialog()
-            {
-                Content = new Views.RenamePage()
-            };
-            {
-                var loader = Application.ResourceLoader.Loader;
-                dialog.CloseButtonText = loader.GetString("Command/OK");
-            }
-            await dialog.ShowAsync();
+            Content = new Views.RenamePage()
+        };
+        {
+            var loader = Application.ResourceLoader.Loader;
+            dialog.CloseButtonText = loader.GetString("Command/OK");
         }
+        await dialog.ShowAsync();
     }
 }
