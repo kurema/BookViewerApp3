@@ -14,8 +14,8 @@ public class BookInfoStorage
     private static Windows.Storage.StorageFolder DataFolderRoaming { get { return Functions.GetSaveFolderRoaming(); } }
     private static Windows.Storage.StorageFolder DataFolderLocal { get { return Functions.GetSaveFolderLocal(); } }
 
-    static System.Threading.SemaphoreSlim fileRoamingSemaphore = new System.Threading.SemaphoreSlim(1, 1);
-    static System.Threading.SemaphoreSlim fileLocalSemaphore = new System.Threading.SemaphoreSlim(1, 1);
+    static readonly System.Threading.SemaphoreSlim fileRoamingSemaphore = new(1, 1);
+    static readonly System.Threading.SemaphoreSlim fileLocalSemaphore = new(1, 1);
 
     internal static async Task<Windows.Storage.StorageFile> GetDataFileRoamingAsync()
     {
@@ -54,11 +54,9 @@ public class BookInfoStorage
         await sem.WaitAsync();
         try
         {
-            using (var s = (await file.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream())
-            {
-                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
-                return serializer.Deserialize(s) as BookInfo[];
-            }
+            using var s = (await file.OpenAsync(Windows.Storage.FileAccessMode.Read)).AsStream();
+            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
+            return serializer.Deserialize(s) as BookInfo[];
         }
         catch
         {
@@ -95,11 +93,9 @@ public class BookInfoStorage
         try
         {
             var f = await DataFolderRoaming.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-            using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream())
-            {
-                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
-                serializer.Serialize(s, items);
-            }
+            using var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream();
+            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
+            serializer.Serialize(s, items);
         }
         catch
         {
@@ -117,11 +113,9 @@ public class BookInfoStorage
         try
         {
             var f = await DataFolderLocal.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-            using (var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream())
-            {
-                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
-                serializer.Serialize(s, items);
-            }
+            using var s = (await f.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)).AsStream();
+            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(BookInfo[]));
+            serializer.Serialize(s, items);
         }
         catch
         {
@@ -184,7 +178,7 @@ public class BookInfoStorage
     public class BookInfo
     {
         public string ID = "";
-        public List<BookmarkItem> Bookmarks = new List<BookmarkItem>();
+        public List<BookmarkItem> Bookmarks = new();
 
         public DateTime ReadTimeFirst = DateTime.MinValue;
         private DateTime ReadTimeThis;
