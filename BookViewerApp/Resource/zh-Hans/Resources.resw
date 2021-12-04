@@ -94,7 +94,7 @@
     <value>环境</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>切换全屏模式</value>
+    <value>切换全屏模式。</value>
   </data>
   <data name="BookmarkBasic.Title" xml:space="preserve">
     <value>书签</value>
@@ -109,7 +109,7 @@
     <value>标题</value>
   </data>
   <data name="SwitchBookshelfToggle.ToolTipService.ToolTip" xml:space="preserve">
-    <value>切换书架</value>
+    <value>切换书架。</value>
   </data>
   <data name="Welcome_HowToConfigure" xml:space="preserve">
     <value>如何打开配置页面</value>
@@ -118,37 +118,37 @@
     <value>如何使用</value>
   </data>
   <data name="Welcome_OpenMenu" xml:space="preserve">
-    <value>打开其他功能</value>
+    <value>打开其他功能。</value>
   </data>
   <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
     <value>打开书本时将全屏模式设置为打开。</value>
   </data>
   <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
-    <value>将全屏设置为默认值。</value>
+    <value>将全屏设置为默认值</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
     <value>打开一本新书时，默认为右装订。</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>从右到左为标准。</value>
+    <value>从右到左为标准</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
     <value>自动打开您上次阅读的页面。</value>
   </data>
   <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
-    <value>自动打开最后阅读的页面。</value>
+    <value>自动打开最后阅读的页面</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Description" xml:space="preserve">
     <value>在书籍查看器中显示转到最右/最左按钮。</value>
   </data>
   <data name="Setting_ShowRightmostAndLeftmost.Title" xml:space="preserve">
-    <value>显示转到最右边/最左边的按钮。</value>
+    <value>显示转到最右边/最左边的按钮</value>
   </data>
   <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
     <value>在云端同步书签。</value>
   </data>
   <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
-    <value>同步书签。</value>
+    <value>同步书签</value>
   </data>
   <data name="Setting_TileHeight.Description" xml:space="preserve">
     <value>书架中的书瓦高度。</value>
@@ -166,7 +166,7 @@
     <value>背景的亮度。 100：白色，0：黑色。 （与黑暗主题相反）</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
-    <value>背景的亮度。</value>
+    <value>背景的亮度</value>
   </data>
   <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
     <value>在图书查看器上使用滚动动画。</value>
@@ -211,7 +211,7 @@
     <value>书本查看器中的菜单显示时间</value>
   </data>
   <data name="Setting_WebHomePage.Description" xml:space="preserve">
-    <value>主页</value>
+    <value>主页。</value>
   </data>
   <data name="Setting_WebHomePage.Title" xml:space="preserve">
     <value>主页</value>
