@@ -131,7 +131,7 @@ public sealed partial class FileExplorerControl : Page
 
     public FileExplorerContentControl ContentControl => content;
 
-    private async void treeview_ItemInvoked(winui.TreeView sender, winui.TreeViewItemInvokedEventArgs args)
+    private async void Treeview_ItemInvoked(winui.TreeView sender, winui.TreeViewItemInvokedEventArgs args)
     {
         if (args.InvokedItem is winui.TreeViewNode tvn && tvn.Content is ViewModels.FileItemViewModel vm)
         {
@@ -140,7 +140,7 @@ public sealed partial class FileExplorerControl : Page
         }
     }
 
-    private void address_FocusLostRequested(object sender, EventArgs e)
+    private void Address_FocusLostRequested(object sender, EventArgs e)
     {
         address.Opacity = 0;
         address.IsHitTestVisible = false;
@@ -151,7 +151,7 @@ public sealed partial class FileExplorerControl : Page
         address_text.SelectAll();
     }
 
-    private void address_text_FocusDisengaged(object sender, RoutedEventArgs e)
+    private void Address_text_FocusDisengaged(object sender, RoutedEventArgs e)
     {
         address.Opacity = 1;
         address.IsHitTestVisible = true;
@@ -159,49 +159,49 @@ public sealed partial class FileExplorerControl : Page
         address_text.IsHitTestVisible = false;
     }
 
-    private void RadioButton_Checked(object sender, RoutedEventArgs e)
-    {
-        if (sender is RadioButton rd)
-        {
-            if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
-            {
-                fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(rd.Tag.ToString(), fevm.Content.Item.Order?.KeyIsAscending ?? true);
-            }
-        }
-    }
+    //private void RadioButton_Checked(object sender, RoutedEventArgs e)
+    //{
+    //    if (sender is RadioButton rd)
+    //    {
+    //        if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+    //        {
+    //            fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(rd.Tag.ToString(), fevm.Content.Item.Order?.KeyIsAscending ?? true);
+    //        }
+    //    }
+    //}
 
-    private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
-    {
-        if (sender is ToggleButton rd)
-        {
-            if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item != null)
-            {
-                fevm.Content.Item.Order = new ViewModels.FileItemViewModel.OrderStatus();
-            }
-        }
-    }
+    //private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
+    //{
+    //    if (sender is ToggleButton rd)
+    //    {
+    //        if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item != null)
+    //        {
+    //            fevm.Content.Item.Order = new ViewModels.FileItemViewModel.OrderStatus();
+    //        }
+    //    }
+    //}
 
-    private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
-    {
-        if (sender is ToggleButton tb)
-        {
-            if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
-            {
-                fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() == "Ascending");
-            }
-        }
-    }
+    //private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+    //{
+    //    if (sender is ToggleButton tb)
+    //    {
+    //        if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+    //        {
+    //            fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() == "Ascending");
+    //        }
+    //    }
+    //}
 
-    private void CheckBox_Unchecked_1(object sender, RoutedEventArgs e)
-    {
-        if (sender is ToggleButton tb)
-        {
-            if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
-            {
-                fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() != "Ascending");
-            }
-        }
-    }
+    //private void CheckBox_Unchecked_1(object sender, RoutedEventArgs e)
+    //{
+    //    if (sender is ToggleButton tb)
+    //    {
+    //        if (this.DataContext is ViewModels.FileExplorerViewModel fevm && fevm?.Content?.Item.Order != null)
+    //        {
+    //            fevm.Content.Item.Order = fevm.Content.Item.Order.GetBasicOrder(fevm.Content.Item.Order.Key, tb.Tag.ToString() != "Ascending");
+    //        }
+    //    }
+    //}
 
     private void UserControl_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
     {
@@ -212,6 +212,17 @@ public sealed partial class FileExplorerControl : Page
         {
             var menu = new MenuFlyout();
             foreach (var item in Models.MenuCommand.GetMenuFlyoutItems(vm.Item.MenuCommands)) menu.Items.Add(item);
+
+            if (vm.Item?.IsFolder is true)
+            {
+                var item = new MenuFlyoutItem()
+                {
+                    //ToDo: Fix and translate.
+                    Text = "Rename",
+                };
+                item.Click += async (sender, e) => await Helper.UIHelper.OpenRename(null);
+                menu.Items.Add(item);
+            }
             {
                 var item = new MenuFlyoutItem()
                 {
@@ -275,7 +286,7 @@ public sealed partial class FileExplorerControl : Page
 
     public System.Windows.Input.ICommand AddressRequesteCommand { get; set; }
 
-    private void address_text_KeyDown(object sender, KeyRoutedEventArgs e)
+    private void Address_text_KeyDown(object sender, KeyRoutedEventArgs e)
     {
         var address = address_text.Text;
         if (e.Key == Windows.System.VirtualKey.Enter)

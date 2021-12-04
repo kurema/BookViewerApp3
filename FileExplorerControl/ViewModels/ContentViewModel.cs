@@ -71,17 +71,12 @@ public class ContentViewModel : INotifyPropertyChanged
     {
         get
         {
-            switch (ContentStyle)
+            return ContentStyle switch
             {
-                case ContentStyles.Detail:
-                    return true;
-                case ContentStyles.List:
-                case ContentStyles.Icon:
-                case ContentStyles.IconWide:
-                    return false;
-                default:
-                    return false;
-            }
+                ContentStyles.Detail => true,
+                ContentStyles.List or ContentStyles.Icon or ContentStyles.IconWide => false,
+                _ => false,
+            };
         }
     }
 
@@ -89,17 +84,12 @@ public class ContentViewModel : INotifyPropertyChanged
     {
         get
         {
-            switch (ContentStyle)
+            return ContentStyle switch
             {
-                case ContentStyles.Detail:
-                case ContentStyles.List:
-                    return false;
-                case ContentStyles.Icon:
-                case ContentStyles.IconWide:
-                    return true;
-                default:
-                    return false;
-            }
+                ContentStyles.Detail or ContentStyles.List => false,
+                ContentStyles.Icon or ContentStyles.IconWide => true,
+                _ => false,
+            };
         }
     }
 
@@ -134,7 +124,7 @@ public class ContentViewModel : INotifyPropertyChanged
     }
 
     private ICommand _RefreshCommand;
-    public ICommand RefreshCommand => _RefreshCommand = _RefreshCommand ?? new Helper.DelegateCommand(
+    public ICommand RefreshCommand => _RefreshCommand ??= new Helper.DelegateCommand(
         async (a) => await Item?.UpdateChildren(),
         (a) => Item != null
         );
@@ -143,7 +133,7 @@ public class ContentViewModel : INotifyPropertyChanged
     private ICommand _LaunchCommand;
     public ICommand LaunchCommand
     {
-        get => _LaunchCommand = _LaunchCommand ?? new Helper.DelegateCommand(async (parameter) =>
+        get => _LaunchCommand ??= new Helper.DelegateCommand(async (parameter) =>
 {
 if (Item?.Content is Models.FileItems.StorageFileItem storage && storage.Content is Windows.Storage.IStorageFolder folder)
 {
@@ -154,7 +144,7 @@ await Windows.System.Launcher.LaunchFolderAsync(folder);
     }
 
     private ICommand _HistoryShiftCommand;
-    public ICommand HistoryShiftCommand => _HistoryShiftCommand = _HistoryShiftCommand ?? new Helper.DelegateCommand(
+    public ICommand HistoryShiftCommand => _HistoryShiftCommand ??= new Helper.DelegateCommand(
         (a) =>
         {
             this.SelectedHistory += int.Parse(a.ToString());
@@ -167,7 +157,7 @@ await Windows.System.Launcher.LaunchFolderAsync(folder);
 
     private ICommand _SetContentStyleCommand;
 
-    public ICommand SetContentStyleCommand => _SetContentStyleCommand = _SetContentStyleCommand ?? new Helper.DelegateCommand(
+    public ICommand SetContentStyleCommand => _SetContentStyleCommand ??= new Helper.DelegateCommand(
         a =>
         {
             var atxt = a.ToString();
@@ -197,7 +187,7 @@ await Windows.System.Launcher.LaunchFolderAsync(folder);
 
 
     private ICommand _GoUpCommand;
-    public ICommand GoUpCommand => _GoUpCommand = _GoUpCommand ?? new Helper.DelegateCommand(
+    public ICommand GoUpCommand => _GoUpCommand ??= new Helper.DelegateCommand(
         async (a) =>
         {
             if (Item.Parent.Children is null) await Item.Parent.UpdateChildren();
@@ -210,7 +200,7 @@ await Windows.System.Launcher.LaunchFolderAsync(folder);
         );
 
     private ICommand _GoToCommand;
-    public ICommand GoToCommand => _GoToCommand = _GoToCommand ?? new Helper.DelegateCommand(
+    public ICommand GoToCommand => _GoToCommand ??= new Helper.DelegateCommand(
         async a =>
         {
             if (a is FileItemViewModel vm)
@@ -351,7 +341,7 @@ await Windows.System.Launcher.LaunchFolderAsync(folder);
         private ICommand _ShiftCommand;
         private ContentViewModel parent;
 
-        public ICommand ShiftCommand => _ShiftCommand = _ShiftCommand ?? new Helper.DelegateCommand(
+        public ICommand ShiftCommand => _ShiftCommand ??= new Helper.DelegateCommand(
             a =>
             {
                 if (Parent?.Item?.Order is null) return;

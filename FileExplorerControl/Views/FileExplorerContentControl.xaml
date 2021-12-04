@@ -53,7 +53,7 @@
                            
                            Sorting="DataGrid_Sorting"
                            
-                           LoadingRow="dataGrid_LoadingRow"
+                           LoadingRow="DataGrid_LoadingRow"
                            
                            x:Name="dataGrid"
                            >

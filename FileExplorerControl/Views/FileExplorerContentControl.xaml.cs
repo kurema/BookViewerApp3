@@ -53,38 +53,34 @@ public sealed partial class FileExplorerContentControl : UserControl
     {
         if (args.NewValue is ViewModels.ContentViewModel vm)
         {
-            System.ComponentModel.PropertyChangedEventHandler OrderChange = (s, e) =>
-                  {
-                      if (e.PropertyName == nameof(vm.Item.Order))
-                      {
-                          foreach (var column in dataGrid.Columns)
-                          {
-                              if (vm.Item.Order.Key == column.Tag as string && !string.IsNullOrEmpty(column.Tag as string))
-                              {
-                                  column.SortDirection = vm.Item.Order.KeyIsAscending ? Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Ascending : Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Descending;
-                              }
-                              else
-                              {
-                                  column.SortDirection = null;
-                              }
-                          }
-                      }
-                  };
+            void OrderChange(object s, System.ComponentModel.PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == nameof(vm.Item.Order))
+                {
+                    foreach (var column in dataGrid.Columns)
+                    {
+                        if (vm.Item.Order.Key == column.Tag as string && !string.IsNullOrEmpty(column.Tag as string))
+                        {
+                            column.SortDirection = vm.Item.Order.KeyIsAscending ? Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Ascending : Microsoft.Toolkit.Uwp.UI.Controls.DataGridSortDirection.Descending;
+                        }
+                        else
+                        {
+                            column.SortDirection = null;
+                        }
+                    }
+                }
+            }
             vm.DialogDelete = async (arg, canDeleteComplete) =>
             {
                 var dialog = new DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete };
                 dialog.DataContext = arg;
                 var result = await dialog.ShowAsync();
-                switch (result)
+                return result switch
                 {
-                    case ContentDialogResult.Primary:
-                        return (true, false);
-                    case ContentDialogResult.Secondary:
-                        return (true, true);
-                    case ContentDialogResult.None:
-                    default:
-                        return (false, false);
-                }
+                    ContentDialogResult.Primary => (true, false),
+                    ContentDialogResult.Secondary => (true, true),
+                    _ => (false, false),
+                };
             };
 
 
@@ -136,7 +132,7 @@ public sealed partial class FileExplorerContentControl : UserControl
     {
         if (this.DataContext is ViewModels.ContentViewModel vm)
         {
-            if (!(action is null)) await action.Invoke(vm);
+            if (action is not null) await action.Invoke(vm);
         }
     }
 
@@ -202,13 +198,13 @@ public sealed partial class FileExplorerContentControl : UserControl
         }
     }
 
-    private void StackPanel_LostFocus(object sender, RoutedEventArgs e)
-    {
-        if (((sender as StackPanel).Parent as FlyoutPresenter).Parent is Popup f)
-        {
-            f.IsOpen = false;
-        }
-    }
+    //private void StackPanel_LostFocus(object sender, RoutedEventArgs e)
+    //{
+    //    if (((sender as StackPanel).Parent as FlyoutPresenter).Parent is Popup f)
+    //    {
+    //        f.IsOpen = false;
+    //    }
+    //}
 
     private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
     {
@@ -238,15 +234,6 @@ public sealed partial class FileExplorerContentControl : UserControl
                 //}
                 menu.Items.Add(item);
             }
-            if (vm.IsFolder)
-            {
-                var item = new MenuFlyoutItem()
-                {
-                    Text = "Rename",
-                };
-                item.Click += Item_Click_Rename;
-                menu.Items.Add(item);
-            }
             {
                 var item = new MenuFlyoutItem()
                 {
@@ -272,11 +259,6 @@ public sealed partial class FileExplorerContentControl : UserControl
 
             args.Handled = true;
         }
-    }
-
-    private async void Item_Click_Rename(object sender, RoutedEventArgs e)
-    {
-        await Helper.UIHelper.OpenRename(null);
     }
 
     //private async void items_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
@@ -305,7 +287,7 @@ public sealed partial class FileExplorerContentControl : UserControl
     //    args.Handled = true;
     //}
 
-    private void dataGrid_LoadingRow(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridRowEventArgs e)
+    private void DataGrid_LoadingRow(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridRowEventArgs e)
     {
         e.Row.ContextRequested += Button_ContextRequested;
         //e.Row.Tapped += async (s, e2) =>

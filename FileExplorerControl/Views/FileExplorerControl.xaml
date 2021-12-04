@@ -384,7 +384,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Background="Transparent"
                          BorderBrush="Transparent" BorderThickness="0"
-                         x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="address_text_KeyDown">
+                         x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="Address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="Address_text_KeyDown">
                     <TextBox.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>
@@ -408,7 +408,7 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="address_FocusLostRequested"/>
+                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="Address_FocusLostRequested"/>
                 <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}" Background="Transparent">
                     <SymbolIcon Symbol="Share"/>
                 </Button>
@@ -428,7 +428,7 @@
             <Rectangle Grid.Column="1" Fill="{ThemeResource SystemControlAltHighAcrylicElementBrush}"/>
             <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0" Margin="0,0,8,0">
                 <ui:TreeView 
-                CanReorderItems="False" CanDragItems="False" x:Name="treeview"  SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding" ItemInvoked="treeview_ItemInvoked"
+                CanReorderItems="False" CanDragItems="False" x:Name="treeview"  SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding" ItemInvoked="Treeview_ItemInvoked"
                   >
                     <ui:TreeView.ItemTemplate>
                         <DataTemplate>

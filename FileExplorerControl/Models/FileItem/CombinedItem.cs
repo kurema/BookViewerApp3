@@ -18,13 +18,13 @@ public class CombinedItem : IFileItem
         string commonName = null;
         foreach (var item in Contents)
         {
-            commonName = commonName ?? item.Name;
+            commonName ??= item.Name;
             if (string.Compare(commonName, item.Name, true) != 0)
                 goto named;
         }
         this.Name = commonName;
     named:;
-        this.Name = this.Name ?? "Combined";
+        this.Name ??= "Combined";
 
         //Contents.CollectionChanged += (s, e) => {
         //    void Item_ChildrenUpdated(object sender, EventArgs e2) => OnChildrenUpdated();
