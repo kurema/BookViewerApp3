@@ -9,7 +9,6 @@
     Background="Transparent"
     
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    Width="800"
     >
 
     <!--https://github.com/microsoft/PowerToys/blob/master/src/modules/powerrename/PowerRenameUILib/MainWindow.xaml-->
@@ -24,14 +23,14 @@
         </Grid.RowDefinitions>
         
         <StackPanel>
-            <AutoSuggestBox />
+            <AutoSuggestBox PlaceholderText="Search for" />
             <CheckBox Content="Use regular expressions"/>
             <CheckBox Content="Match all occurences"/>
             <CheckBox Content="Case sensitive" />
             <MenuFlyoutSeparator Margin="10" />
-            <AutoSuggestBox />
+            <AutoSuggestBox PlaceholderText="Replace with" />
         </StackPanel>
-        <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" >
+        <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" IsReadOnly="True">
             <controls:DataGrid.Columns>
                 <controls:DataGridCheckBoxColumn />
                 <controls:DataGridTextColumn Tag="Original" Binding="{Binding Original}" Header="Original"/>

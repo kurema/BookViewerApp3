@@ -26,7 +26,6 @@
         <Style TargetType="FlyoutPresenter" x:Name="FlyoutPresenterStyleBasic">
             <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}" />
         </Style>
-
     </Page.Resources>
 
     <Grid>

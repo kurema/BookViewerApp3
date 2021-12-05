@@ -28,7 +28,9 @@ public static class UIHelper
     {
         var dialog = new ContentDialog()
         {
-            Content = new Views.RenamePage()
+            Content = new Views.RenamePage(),
+            FullSizeDesired = true,
+            MaxWidth=double.PositiveInfinity,
         };
         {
             var loader = Application.ResourceLoader.Loader;
