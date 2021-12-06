@@ -12,7 +12,6 @@
             <!--<Style TargetType="FlyoutPresenter">
                 <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}"/>
             </Style>-->
-            <x:Double x:Key="ContentDialogMaxWidth">99999</x:Double>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

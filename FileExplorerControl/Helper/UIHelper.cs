@@ -26,11 +26,11 @@ public static class UIHelper
 
     public static async Task OpenRename(Models.FileItems.IFileItem file)
     {
+        //Size of ContentDialog has a problem. Not my fault.
         var dialog = new ContentDialog()
         {
             Content = new Views.RenamePage(),
             FullSizeDesired = true,
-            MaxWidth=double.PositiveInfinity,
         };
         {
             var loader = Application.ResourceLoader.Loader;

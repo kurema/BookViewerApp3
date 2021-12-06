@@ -5,11 +5,15 @@
     xmlns:local="using:kurema.FileExplorerControl.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:kurema.FileExplorerControl.ViewModels"
     mc:Ignorable="d"
     Background="Transparent"
     
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     >
+    <Page.DataContext>
+        <vm:RenameViewModel />
+    </Page.DataContext>
 
     <!--https://github.com/microsoft/PowerToys/blob/master/src/modules/powerrename/PowerRenameUILib/MainWindow.xaml-->
     <Grid ColumnSpacing="8">

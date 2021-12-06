@@ -14,8 +14,7 @@ public class IntToStringValueConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         var text = (parameter?.ToString() ?? "").Split(':');
-        int cnt = 0;
-        int.TryParse(value?.ToString() ?? "0", out cnt);
+        int.TryParse(value?.ToString() ?? "0", out int cnt);
         return text[Math.Max(0, Math.Min(text.Length - 1, cnt))];
     }
 
@@ -237,7 +236,7 @@ public class UlongToHumanReadableSizeConverter : IValueConverter
             return i.ToString("0 B");
         }
         // Divide by 1024 to get fractional value
-        readable = (readable / 1024);
+        readable /= 1024;
         // Return formatted number with suffix
         return readable.ToString("0.### ") + suffix;
     }
@@ -245,8 +244,7 @@ public class UlongToHumanReadableSizeConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         if (value is null) return "";
-        long num;
-        if (long.TryParse(value.ToString(), out num))
+        if (long.TryParse(value.ToString(), out long num))
         {
             return GetBytesReadable(num);
         }
