@@ -27,18 +27,18 @@
         </Grid.RowDefinitions>
         
         <StackPanel>
-            <AutoSuggestBox PlaceholderText="Search for" />
-            <CheckBox Content="Use regular expressions"/>
-            <CheckBox Content="Match all occurences"/>
-            <CheckBox Content="Case sensitive" />
+            <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal}" />
+            <CheckBox Content="Use regular expressions" IsChecked="{Binding IsRegex}"/>
+            <CheckBox Content="Match all occurences" IsChecked="{Binding MatchAllOccurence}"/>
+            <CheckBox Content="Case sensitive"  IsChecked="{Binding IsCaseSensitive}"/>
             <MenuFlyoutSeparator Margin="10" />
-            <AutoSuggestBox PlaceholderText="Replace with" />
+            <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed}" />
         </StackPanel>
-        <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" IsReadOnly="True">
+        <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" ItemsSource="{Binding Files}">
             <controls:DataGrid.Columns>
-                <controls:DataGridCheckBoxColumn />
-                <controls:DataGridTextColumn Tag="Original" Binding="{Binding Original}" Header="Original"/>
-                <controls:DataGridTextColumn Tag="Renamed" Binding="{Binding Renamed}" Header="Renamed"/>
+                <controls:DataGridCheckBoxColumn Binding="{Binding IsEnabled}" />
+                <controls:DataGridTextColumn Tag="Original" Binding="{Binding File.Title}" Header="Original"/>
+                <controls:DataGridTextColumn Tag="Renamed" Binding="{Binding NameRenamed}" Header="Renamed"/>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>
