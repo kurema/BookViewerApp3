@@ -18,14 +18,15 @@
     <!--https://github.com/microsoft/PowerToys/blob/master/src/modules/powerrename/PowerRenameUILib/MainWindow.xaml-->
     <Grid ColumnSpacing="8">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="286" />
+            <!--<ColumnDefinition Width="Auto" MinWidth="286" />-->
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel>
             <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal}" />
             <CheckBox Content="Use regular expressions" IsChecked="{Binding IsRegex}"/>
@@ -33,13 +34,109 @@
             <CheckBox Content="Case sensitive"  IsChecked="{Binding IsCaseSensitive}"/>
             <MenuFlyoutSeparator Margin="10" />
             <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed}" />
+            <TextBlock Text="Apply to" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}"/>
+            <ComboBox SelectedIndex="0">
+                <ComboBox.Items>
+                    <ComboBoxItem Content="Filename + extension" />
+                    <ComboBoxItem Content="Filename only" />
+                    <ComboBoxItem Content="Extension only" />
+                </ComboBox.Items>
+            </ComboBox>
+            <TextBlock Text="Text formattiong" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ToggleButton Content="aa" Grid.Column="0" />
+                <ToggleButton Content="AA" Grid.Column="1" />
+                <ToggleButton Content="Aa" Grid.Column="2" />
+                <ToggleButton Content="Aa Aa" Grid.Column="3" />
+            </Grid>
         </StackPanel>
-        <controls:DataGrid Grid.Column="1" Grid.RowSpan="2" ItemsSource="{Binding Files}">
-            <controls:DataGrid.Columns>
-                <controls:DataGridCheckBoxColumn Binding="{Binding IsEnabled}" />
-                <controls:DataGridTextColumn Tag="Original" Binding="{Binding File.Title}" Header="Original"/>
-                <controls:DataGridTextColumn Tag="Renamed" Binding="{Binding NameRenamed}" Header="Renamed"/>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+
+        <Grid Grid.Column="1" Grid.RowSpan="2" BorderThickness="1" CornerRadius="8" BorderBrush="{ThemeResource SystemControlTransientBorderBrush}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView Grid.Row="1" ItemsSource="{Binding Files}" MinWidth="300">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="IsTabStop" Value="False" />
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="MinHeight" Value="0"/>
+                        <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <StackPanel Orientation="Vertical">
+                                        <ContentPresenter />
+                                        <Rectangle Height="1" Margin="0,0,0,0" Opacity="0.8" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="28">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border HorizontalAlignment="Stretch" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" Margin="0,0,0,-1" BorderBrush="{ThemeResource SystemControlTransientBorderBrush}" VerticalAlignment="Stretch" />
+
+                            <TextBlock Text="{Binding NameRenamed, Mode=OneWay}" Grid.Column="1" FontWeight="Bold" FontSize="12" VerticalAlignment="Center" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Margin="10,0,0,0" MinWidth="0" Width="28" Height="28" IsChecked="{Binding IsEnabled, Mode=TwoWay}" VerticalAlignment="Center" Content=""/>
+
+                                <TextBlock Text="{Binding File.Title, Mode=OneWay}" Grid.Column="2" FontSize="12" VerticalAlignment="Center" />
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid Height="34">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border HorizontalAlignment="Stretch" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" Margin="0,0,0,-1" BorderBrush="{ThemeResource SystemControlTransientBorderBrush}" VerticalAlignment="Stretch" />
+
+                <TextBlock Grid.Column="1" FontWeight="Medium" FontSize="12" VerticalAlignment="Center" >
+                    <Run Text="Renamed" /><Run Text=" (" /><Run Text="?" /><Run Text=")"/>
+                </TextBlock>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <CheckBox Margin="10,0,0,0" MinWidth="0" Width="28" Height="28" VerticalAlignment="Center" Content="" IsChecked="{Binding SelectAllToggle,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Column="2" FontWeight="Medium" FontSize="12" VerticalAlignment="Center" >
+                        <Run Text="Original" /><Run Text=" (" /><Run Text="{Binding Files.Count}" /><Run Text=")"/>
+                    </TextBlock>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

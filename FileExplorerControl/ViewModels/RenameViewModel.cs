@@ -44,6 +44,39 @@ public class RenameViewModel : INotifyPropertyChanged
         {
             if (item.RenameCommand?.CanExecute("sample.txt") is true) Files.Add(new RenameItemViewModel(item));
         }
+        {
+            _SelectAllToggle = true;
+            OnPropertyChanged(nameof(SelectAllToggle));
+        }
+    }
+
+
+    private System.Windows.Input.ICommand _SelectAllCommand;
+    public System.Windows.Input.ICommand SelectAllCommand => _SelectAllCommand ??= new Helper.DelegateCommand((parameter) =>
+    {
+        bool p = true;
+        if (parameter is bool param1) p = param1;
+        else if (bool.TryParse(parameter?.ToString() ?? "", out bool param2)) p = param2;
+        SelectAll(p);
+    });
+
+    public void SelectAll(bool p)
+    {
+        foreach (var item in Files) item.IsEnabled = p;
+    }
+
+
+    private bool _SelectAllToggle = true;
+    public bool SelectAllToggle
+    {
+        get => _SelectAllToggle;
+        set
+        {
+            SetProperty(ref _SelectAllToggle, value, onChanged: () =>
+            {
+                SelectAll(value);
+            });
+        }
     }
 
 
@@ -78,13 +111,13 @@ public class RenameItemViewModel : INotifyPropertyChanged
     private FileItemViewModel _File;
     public FileItemViewModel File { get => _File; set => SetProperty(ref _File, value); }
 
-    private string _NameRenamed;
+    private string _NameRenamed = "";
     public string NameRenamed { get => _NameRenamed; set => SetProperty(ref _NameRenamed, value); }
 
-    private bool _HasErrors;
+    private bool _HasErrors = false;
     public bool HasErrors { get => _HasErrors; set => SetProperty(ref _HasErrors, value); }
 
-    private string _ErrorMessage;
+    private string _ErrorMessage = "";
 
     public RenameItemViewModel(Models.FileItems.IFileItem file)
     {
