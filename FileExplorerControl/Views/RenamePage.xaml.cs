@@ -26,4 +26,9 @@ public sealed partial class RenamePage : Page
     {
         this.InitializeComponent();
     }
+
+    private async void MenuFlyoutItem_Click_Help_Regex(object sender, RoutedEventArgs e)
+    {
+        await Windows.System.Launcher.LaunchUriAsync(new Uri("https://aka.ms/powertoysRegExHelp"));
+    }
 }

@@ -27,15 +27,21 @@ public static class UIHelper
     public static async Task OpenRename(Models.FileItems.IFileItem file)
     {
         //Size of ContentDialog has a problem. Not my fault.
-        var dialog = new ContentDialog()
-        {
-            Content = new Views.RenamePage(),
-            FullSizeDesired = true,
-        };
-        {
-            var loader = Application.ResourceLoader.Loader;
-            dialog.CloseButtonText = loader.GetString("Command/OK");
-        }
-        await dialog.ShowAsync();
+        //var dialog = new ContentDialog()
+        //{
+        //    Content = new Views.RenamePage(),
+        //    FullSizeDesired = true,
+        //};
+        //{
+        //    var loader = Application.ResourceLoader.Loader;
+        //    dialog.CloseButtonText = loader.GetString("Command/OK");
+        //}
+        //await dialog.ShowAsync();
+
+        var newWindow = await Windows.UI.WindowManagement.AppWindow.TryCreateAsync();
+        var newPage = new Views.RenamePage();
+        Windows.UI.Xaml.Hosting.ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
+
+        await newWindow.TryShowAsync();
     }
 }
