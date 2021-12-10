@@ -77,7 +77,15 @@ public class BookManager
             await book.Load(stream, fileName, async (a) =>
             {
                 var dialog = new Views.PasswordRequestContentDialog();
-                var result = await dialog.ShowAsync();
+                Windows.UI.Xaml.Controls.ContentDialogResult result;
+                try
+                {
+                    result = await dialog.ShowAsync();
+                }
+                catch
+                {
+                    throw;
+                }
                 if (result == Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
                 {
                     return (dialog.Password, dialog.Remember);

@@ -411,6 +411,12 @@ public sealed partial class BookFixed3Viewer : Page
             Binding.PageSelectedDisplay = page;
         };
 
-        await dialog.ShowAsync();
+        try
+        {
+            await dialog.ShowAsync();
+        }
+        catch
+        {
+        }
     }
 }

@@ -16,7 +16,6 @@
     </Page.DataContext>
 
     <!--https://github.com/microsoft/PowerToys/blob/master/src/modules/powerrename/PowerRenameUILib/MainWindow.xaml-->
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,19 +24,22 @@
 
         <MenuBar Grid.ColumnSpan="2">
             <MenuBarItem Title="File">
-                <MenuFlyoutSubItem Text="Templates">
-
+                <MenuFlyoutSubItem Text="Presets...">
                 </MenuFlyoutSubItem>
+                <MenuFlyoutSubItem Text="Load...">
+                </MenuFlyoutSubItem>
+                <MenuFlyoutItem Text="Save" />
             </MenuBarItem>
             <MenuBarItem Title="Mode">
                 <ToggleMenuFlyoutItem IsChecked="True" Text="Replace" IsEnabled="False"/>
             </MenuBarItem>
             <MenuBarItem Title="Help">
                 <MenuFlyoutItem Text="RegEx help" Click="MenuFlyoutItem_Click_Help_Regex"/>
+                <MenuFlyoutItem Text="About" Click="MenuFlyoutItem_Click_Help_About"/>
             </MenuBarItem>
         </MenuBar>
-        
-        <Grid ColumnSpacing="8" HorizontalAlignment="Stretch" Margin="15" Grid.Row="1">
+
+        <Grid ColumnSpacing="8" HorizontalAlignment="Stretch" Margin="15,0,15,15" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="286" />
                 <!--<ColumnDefinition Width="Auto" />-->
@@ -48,35 +50,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0">
-                <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal}" />
-                <CheckBox Content="Use regular expressions" IsChecked="{Binding IsRegex}"/>
-                <CheckBox Content="Match all occurences" IsChecked="{Binding MatchAllOccurence}"/>
-                <CheckBox Content="Case sensitive"  IsChecked="{Binding IsCaseSensitive}"/>
-                <MenuFlyoutSeparator Margin="10" />
-                <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed}" />
-                <TextBlock Text="Apply to" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}"/>
-                <ComboBox SelectedIndex="0">
-                    <ComboBox.Items>
-                        <ComboBoxItem Content="Filename + extension" />
-                        <ComboBoxItem Content="Filename only" />
-                        <ComboBoxItem Content="Extension only" />
-                    </ComboBox.Items>
-                </ComboBox>
-                <TextBlock Text="Text formattiong" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <ToggleButton Content="aa" Grid.Column="0" />
-                    <ToggleButton Content="AA" Grid.Column="1" />
-                    <ToggleButton Content="Aa" Grid.Column="2" />
-                    <ToggleButton Content="Aa Aa" Grid.Column="3" />
-                </Grid>
-            </StackPanel>
+            <local:RenameRegexControl DataContext="{Binding ContentRegex,Mode=TwoWay}" />
 
             <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" CornerRadius="8" BorderBrush="{ThemeResource SystemControlTransientBorderBrush}"  HorizontalAlignment="Stretch"
               Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">

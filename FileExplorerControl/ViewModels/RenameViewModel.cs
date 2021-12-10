@@ -10,28 +10,8 @@ using System.Collections;
 
 namespace kurema.FileExplorerControl.ViewModels;
 
-public class RenameViewModel : INotifyPropertyChanged
+public class RenameViewModel : BaseViewModel
 {
-    #region INotifyPropertyChanged
-    protected bool SetProperty<T>(ref T backingStore, T value,
-        [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
-        System.Action onChanged = null)
-    {
-        if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
-            return false;
-
-        backingStore = value;
-        onChanged?.Invoke();
-        OnPropertyChanged(propertyName);
-        return true;
-    }
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    #endregion
-
     public ObservableCollection<RenameItemViewModel> Files { get; } = new();
 
     public async Task LoadFolder(Models.FileItems.IFileItem fileItem)
@@ -80,6 +60,19 @@ public class RenameViewModel : INotifyPropertyChanged
     }
 
 
+
+    private RenameRegexViewModel _ContentRegex = new RenameRegexViewModel();
+    public RenameRegexViewModel ContentRegex { get => _ContentRegex; set => SetProperty(ref _ContentRegex, value); }
+
+
+    public RenameViewModel()
+    {
+        Files.Add(new RenameItemViewModel(new Models.FileItems.FileItemPlaceHolder()));
+    }
+}
+
+public class RenameRegexViewModel : BaseViewModel
+{
     private bool _IsRegex;
     public bool IsRegex { get => _IsRegex; set => SetProperty(ref _IsRegex, value); }
 
@@ -96,17 +89,10 @@ public class RenameViewModel : INotifyPropertyChanged
     public string NameOriginal { get => _NameOriginal; set => SetProperty(ref _NameOriginal, value); }
 
     private string _NameRenamed = "";
-
-    public RenameViewModel()
-    {
-        Files.Add(new RenameItemViewModel(new Models.FileItems.FileItemPlaceHolder()));
-    }
-
     public string NameRenamed { get => _NameRenamed; set => SetProperty(ref _NameRenamed, value); }
-
 }
 
-public class RenameItemViewModel : INotifyPropertyChanged
+public class RenameItemViewModel : BaseViewModel
 {
     private FileItemViewModel _File;
     public FileItemViewModel File { get => _File; set => SetProperty(ref _File, value); }
@@ -130,26 +116,4 @@ public class RenameItemViewModel : INotifyPropertyChanged
 
 
     public string ErrorMessage { get => _ErrorMessage; set => SetProperty(ref _ErrorMessage, value); }
-
-    #region INotifyPropertyChanged
-    protected bool SetProperty<T>(ref T backingStore, T value,
-        [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "",
-        System.Action onChanged = null)
-    {
-        if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(backingStore, value))
-            return false;
-
-        backingStore = value;
-        onChanged?.Invoke();
-        OnPropertyChanged(propertyName);
-        return true;
-    }
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-    protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-    {
-        PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-    }
-    #endregion
-
 }

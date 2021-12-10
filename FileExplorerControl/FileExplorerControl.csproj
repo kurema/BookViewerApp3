@@ -144,6 +144,7 @@
     <Compile Include="Models\FileItem\IFileItem.cs" />
     <Compile Include="Models\FileItem\StorageFileItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ContentViewModel.cs" />
     <Compile Include="ViewModels\FileExplorerViewModel.cs" />
     <Compile Include="ViewModels\FileItemViewModel.cs" />
@@ -172,6 +173,9 @@
     </Compile>
     <Compile Include="Views\RenamePage.xaml.cs">
       <DependentUpon>RenamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RenameRegexControl.xaml.cs">
+      <DependentUpon>RenameRegexControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Viewers\SimpleMediaPlayerPage.xaml.cs">
       <DependentUpon>SimpleMediaPlayerPage.xaml</DependentUpon>
@@ -228,6 +232,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RenamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RenameRegexControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

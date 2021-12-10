@@ -74,7 +74,15 @@ public sealed partial class FileExplorerContentControl : UserControl
             {
                 var dialog = new DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete };
                 dialog.DataContext = arg;
-                var result = await dialog.ShowAsync();
+                Windows.UI.Xaml.Controls.ContentDialogResult result;
+                try
+                {
+                    result = await dialog.ShowAsync();
+                }
+                catch
+                {
+                    return (false, false);
+                }
                 return result switch
                 {
                     ContentDialogResult.Primary => (true, false),
@@ -194,7 +202,11 @@ public sealed partial class FileExplorerContentControl : UserControl
             //dialog.SecondaryButtonClick += (s2, e2) =>
             //{
             //};
-            await dialog.ShowAsync();
+            try
+            {
+                await dialog.ShowAsync();
+            }
+            catch { }
         }
     }
 

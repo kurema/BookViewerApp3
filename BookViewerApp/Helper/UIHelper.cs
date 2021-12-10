@@ -90,7 +90,7 @@ public static partial class UIHelper
         var owned = LicenseManager.IsActive(product);
         if (owned)
         {
-            await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/AlreadyPurchased/Message"), loader.GetString("Info/Purchase/Message/AlreadyPurchased/Title"))).ShowAsync();
+            try { await new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/AlreadyPurchased/Message"), loader.GetString("Info/Purchase/Message/AlreadyPurchased/Title")).ShowAsync(); } catch { }
         }
         else
         {
@@ -102,10 +102,10 @@ public static partial class UIHelper
                 switch (result.Status)
                 {
                     case Windows.ApplicationModel.Store.ProductPurchaseStatus.Succeeded:
-                        await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/Purchased/Message"), loader.GetString("Info/Purchase/Message/Purchased/Title"))).ShowAsync();
+                        try { await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/Purchased/Message"), loader.GetString("Info/Purchase/Message/Purchased/Title"))).ShowAsync(); } catch { }
                         break;
                     case Windows.ApplicationModel.Store.ProductPurchaseStatus.AlreadyPurchased:
-                        await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/AlreadyPurchased/Message"), loader.GetString("Info/Purchase/Message/AlreadyPurchased/Title"))).ShowAsync();
+                        try { await (new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Purchase/Message/AlreadyPurchased/Message"), loader.GetString("Info/Purchase/Message/AlreadyPurchased/Title"))).ShowAsync(); } catch { }
                         break;
                     case Windows.ApplicationModel.Store.ProductPurchaseStatus.NotFulfilled:
                         break;

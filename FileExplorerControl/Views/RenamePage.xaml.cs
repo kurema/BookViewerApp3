@@ -31,4 +31,27 @@ public sealed partial class RenamePage : Page
     {
         await Windows.System.Launcher.LaunchUriAsync(new Uri("https://aka.ms/powertoysRegExHelp"));
     }
+
+    private async void MenuFlyoutItem_Click_Help_About(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog()
+        {
+            XamlRoot=this.XamlRoot,
+        };
+        {
+            var stack = new StackPanel();
+            stack.Children.Add(new TextBlock() { Text = "This tool was modeled after PowerRename (PowerToys family).\nTry PowerRename if you like this." ,TextWrapping= TextWrapping.Wrap});
+            stack.Children.Add(new HyperlinkButton() { Content = "PowerToys", NavigateUri = new Uri("https://docs.microsoft.com/windows/powertoys/install") });
+            dialog.Content = stack;
+        }
+        {
+            var loader = Application.ResourceLoader.Loader;
+            dialog.CloseButtonText = loader.GetString("Command/OK");
+        }
+        try
+        {
+            await dialog.ShowAsync();
+        }
+        catch { }
+    }
 }

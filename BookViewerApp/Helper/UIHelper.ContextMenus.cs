@@ -102,8 +102,8 @@ public static partial class UIHelper
             var commandsToAdd = libs.Select(a => new MenuCommand(a.title, new DelegateCommand(async b =>
             {
                 var tokenLf = await tokenLfGetter?.Invoke();
-                    //await Managers.BookManager.GetTokenFromPathOrRegister(content);
-                    if (a.Items is null) a.Items = new object[0];
+                //await Managers.BookManager.GetTokenFromPathOrRegister(content);
+                if (a.Items is null) a.Items = new object[0];
                 if (tokenLf != null && a.Items.Any(c => (c as Storages.Library.libraryLibraryFolder)?.Compare(tokenLf) == true))
                 {
                     var message = Managers.ResourceManager.Loader.GetString("ContextMenu/StorageFolder/AddToLibrary/AlreadyRegistered/MessageDialog/Message");
@@ -111,7 +111,11 @@ public static partial class UIHelper
                     var dlg = new Windows.UI.Popups.MessageDialog($"{message}", title);
                     dlg.Commands.Add(new Windows.UI.Popups.UICommand(Managers.ResourceManager.Loader.GetString("Word/OK"), null, "ok"));
                     dlg.DefaultCommandIndex = 0;
-                    var res = await dlg.ShowAsync();
+                    try
+                    {
+                        var res = await dlg.ShowAsync();
+                    }
+                    catch { }
                     return;
                 }
                 {
@@ -172,7 +176,13 @@ public static partial class UIHelper
                                 page.Book = book;
                                 dialog.Content = page;
                                 dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/Close");
-                                await dialog.ShowAsync();
+                                try
+                                {
+                                    await dialog.ShowAsync();
+                                }
+                                catch
+                                {
+                                }
                                 file.OnUpdate();
                             })));
                         }
@@ -229,7 +239,13 @@ public static partial class UIHelper
                         new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
                         {
                             var dialog = new Views.BookmarkContentDialog();
-                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                            ContentDialogResult result;
+                            try
+                            {
+                                result = await dialog.ShowAsync();
+                            }
+                            catch { return; }
+                            if (result == ContentDialogResult.Primary)
                             {
                                 var items = container?.Content?.Items?.ToList() ?? new List<object>();
                                 items.Add(dialog.GetLibraryBookmark());
@@ -253,7 +269,14 @@ public static partial class UIHelper
                                     AddressBookmark = bookmarkItem.Content.url,
                                     TitleBookmark = bookmarkItem.Content.title,
                                 };
-                                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+
+                                ContentDialogResult result;
+                                try
+                                {
+                                    result = await dialog.ShowAsync();
+                                }
+                                catch { return; }
+                                if (result == ContentDialogResult.Primary)
                                 {
                                     bookmarkItem.Content.url = dialog.AddressBookmark;
                                     bookmarkItem.Content.title = dialog.TitleBookmark;
@@ -293,7 +316,13 @@ public static partial class UIHelper
                         new MenuCommand(GetResourceTitle("Word/New/Bookmark"), new DelegateCommand(async a =>
                         {
                             var dialog = new Views.BookmarkContentDialog();
-                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                            ContentDialogResult result;
+                            try
+                            {
+                                result = await dialog.ShowAsync();
+                            }
+                            catch { return; }
+                            if (result == ContentDialogResult.Primary)
                             {
                                 Storages.LibraryStorage.OperateBookmark(b =>
                                 {
@@ -430,7 +459,14 @@ public static partial class UIHelper
                     {
                         DataContext = vm
                     };
-                    await dialog.ShowAsync();
+                    try
+                    {
+                        await dialog.ShowAsync();
+                    }
+                    catch
+                    {
+                        return;
+                    }
                     await Storages.LibraryStorage.Content.SaveAsync();
                 })));
 
@@ -470,7 +506,11 @@ public static partial class UIHelper
                     {
                         DataContext = vm,
                     };
-                    await dialog.ShowAsync();
+                    try
+                    {
+                        await dialog.ShowAsync();
+                    }
+                    catch { }
                     await Storages.LibraryStorage.Content.SaveAsync();
                 })));
 

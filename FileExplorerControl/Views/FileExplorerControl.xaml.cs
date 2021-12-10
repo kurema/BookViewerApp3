@@ -252,7 +252,11 @@ public sealed partial class FileExplorerControl : Page
             }
 
             dialog.Content = new PropertyControl();
-            await dialog.ShowAsync();
+            try
+            {
+                await dialog.ShowAsync();
+            }
+            catch { }
         }
     }
 

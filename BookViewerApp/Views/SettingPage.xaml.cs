@@ -115,7 +115,15 @@ namespace BookViewerApp.Views
             var dlg = new Windows.UI.Popups.MessageDialog(loader.GetString("Info/Debug/DeleteThumbnails/Dialog/Message"), loader.GetString("Info/Debug/DeleteThumbnails/Title"));
             dlg.Commands.Add(new Windows.UI.Popups.UICommand(loader.GetString("Word/OK")) { Id = "ok" });
             dlg.Commands.Add(new Windows.UI.Popups.UICommand(loader.GetString("Word/Cancel")) { Id = "cancel" });
-            var result = await dlg.ShowAsync();
+            Windows.UI.Popups.IUICommand result;
+            try
+            {
+                result = await dlg.ShowAsync();
+            }
+            catch
+            {
+                return;
+            }
             if (result.Id?.ToString() == "ok")
             {
                 try
@@ -250,7 +258,11 @@ namespace BookViewerApp.Views
                 })
             };
             dialog.Content = control;
-            await dialog.ShowAsync();
+            try
+            {
+                await dialog.ShowAsync();
+            }
+            catch { }
         }
 
         public class SettingEnumItemViewModel
