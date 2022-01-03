@@ -47,7 +47,7 @@ public class TokenLibraryItem : IFileItem
 
     public ICommand DeleteCommand { get; set; } = new Helper.DelegateCommand(a => { }, a => false);
 
-    public ICommand RenameCommand { get => renameCommand = renameCommand ?? new Helper.DelegateCommand(a => Content.title = a.ToString(), a => Content != null); set => renameCommand = value; }
+    public ICommand RenameCommand { get => renameCommand ??= new Helper.DelegateCommand(a => Content.title = a.ToString(), a => Content != null); set => renameCommand = value; }
     public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
     public string FileTypeDescription => BookViewerApp.Helper.UIHelper.GetFileTypeDescription(ContentFileItem?.Content) ?? "";

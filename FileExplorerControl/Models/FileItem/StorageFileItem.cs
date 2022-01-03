@@ -132,7 +132,7 @@ public class StorageFileItem : IFileItem
     {
         get
         {
-            return _RenameCommand = _RenameCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+            return _RenameCommand ??= new Helper.DelegateAsyncCommand(async (parameter) =>
             {
                 if (Content is null) return;
                 if (parameter is null) return;
@@ -155,7 +155,7 @@ public class StorageFileItem : IFileItem
     private ICommand _DeleteCommand;
     public ICommand DeleteCommand
     {
-        get => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateAsyncCommand(async (parameter) =>
+        get => _DeleteCommand ??= new Helper.DelegateAsyncCommand(async (parameter) =>
             {
                 if (parameter is bool complete)
                 {

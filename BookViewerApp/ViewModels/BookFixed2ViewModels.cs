@@ -82,7 +82,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
     public ICommand PageMaxCommand { get { return _PageMaxCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.Pages.Count - 1, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
 
 
-    public Commands.ICommandEventRaiseable ShiftBookCommand { get { return _ShiftBookCommand = _ShiftBookCommand ?? new Commands.ShiftSelectedBook(this); } }
+    public Commands.ICommandEventRaiseable ShiftBookCommand { get { return _ShiftBookCommand ??= new Commands.ShiftSelectedBook(this); } }
 
     public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
     private string _Title = "";
@@ -750,7 +750,7 @@ public class PageViewModel : INotifyPropertyChanged, IPageViewModel
 
 
     private ICommand? _MoveCommand = null;
-    public ICommand MoveCommand => _MoveCommand = _MoveCommand ?? new DelegateCommand((parameter) =>
+    public ICommand MoveCommand => _MoveCommand ??= new DelegateCommand((parameter) =>
     {
         var split = parameter.ToString().Split(',');
         if (split.Length >= 2)
@@ -795,7 +795,7 @@ public class PageViewModel : INotifyPropertyChanged, IPageViewModel
     private ICommand? _ZoomFactorMultiplyCommand = null;
     public ICommand ZoomFactorMultiplyCommand
     {
-        get => _ZoomFactorMultiplyCommand = _ZoomFactorMultiplyCommand ?? new DelegateCommand((a) =>
+        get => _ZoomFactorMultiplyCommand ??= new DelegateCommand((a) =>
         {
             var d = double.Parse(a.ToString());
             OnZoomRequested(ZoomFactor * (float)d);

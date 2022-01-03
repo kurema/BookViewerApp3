@@ -107,7 +107,7 @@ public class BrowserControlViewModel : INotifyPropertyChanged
     {
         get
         {
-            return _OpenDownloadDirectoryCommand = _OpenDownloadDirectoryCommand ?? new Helper.DelegateCommand(async (_) =>
+            return _OpenDownloadDirectoryCommand ??= new Helper.DelegateCommand(async (_) =>
             {
                 var folder = await FolderProvider?.Invoke();
                 await Windows.System.Launcher.LaunchFolderAsync(folder);
@@ -228,13 +228,13 @@ public class BrowserControlViewModel : INotifyPropertyChanged
 
 
     private Commands.GoBackForwardCommand _GoBackForwardCommand;
-    public Commands.GoBackForwardCommand GoBackForwardCommand => _GoBackForwardCommand = _GoBackForwardCommand ?? new Commands.GoBackForwardCommand(this);
+    public Commands.GoBackForwardCommand GoBackForwardCommand => _GoBackForwardCommand ??= new Commands.GoBackForwardCommand(this);
 
     private Commands.ReloadCommand _ReloadCommand;
-    public Commands.ReloadCommand ReloadCommand => _ReloadCommand = _ReloadCommand ?? new Commands.ReloadCommand(this);
+    public Commands.ReloadCommand ReloadCommand => _ReloadCommand ??= new Commands.ReloadCommand(this);
 
     private Commands.NavigateCommand _NavigateCommand;
-    public Commands.NavigateCommand NavigateCommand => _NavigateCommand = _NavigateCommand ?? new Commands.NavigateCommand(this);
+    public Commands.NavigateCommand NavigateCommand => _NavigateCommand ??= new Commands.NavigateCommand(this);
 
     public class Commands
     {

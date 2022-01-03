@@ -68,7 +68,7 @@ public class StorageContent<T> where T : class
 
     public T GetNew() => GetNewDelegate != null ? GetNewDelegate() : default;
 
-    internal async Task<T> GetContentAsync() => Content = Content ?? await DeserializeAsync() ?? GetNew();
+    internal async Task<T> GetContentAsync() => Content ??= await DeserializeAsync() ?? GetNew();
 
     internal async Task SaveAsync()
     {

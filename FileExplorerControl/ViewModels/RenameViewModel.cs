@@ -61,7 +61,7 @@ public class RenameViewModel : BaseViewModel
 
 
 
-    private RenameRegexViewModel _ContentRegex = new RenameRegexViewModel();
+    private RenameRegexViewModel _ContentRegex = new();
     public RenameRegexViewModel ContentRegex { get => _ContentRegex; set => SetProperty(ref _ContentRegex, value); }
 
 

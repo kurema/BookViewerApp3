@@ -26,7 +26,7 @@ public class IconProviderDefault : IIconProvider
         }
         if (item?.IsFolder == true)
         {
-            return Task.FromResult<Func<ImageSource>>(() => IconSmallCache = IconSmallCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png")));
+            return Task.FromResult<Func<ImageSource>>(() => IconSmallCache ??= new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png")));
         }
         return Task.FromResult<Func<ImageSource>>(null);
     }
@@ -39,7 +39,7 @@ public class IconProviderDefault : IIconProvider
         }
         if (item?.IsFolder == true)
         {
-            return Task.FromResult<Func<ImageSource>>(() => IconLargeCache = IconLargeCache ?? new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png")));
+            return Task.FromResult<Func<ImageSource>>(() => IconLargeCache ??= new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png")));
         }
         return Task.FromResult<Func<ImageSource>>(null);
     }
@@ -53,10 +53,10 @@ public class IconProviderDefault : IIconProvider
 
         foreach (var item in iconProviders)
         {
-            small = small ?? await item.GetIconSmall(file, cancellationToken);
-            large = large ?? await item.GetIconLarge(file, cancellationToken);
-            smallDefault = smallDefault ?? item.DefaultIconSmall;
-            largeDefault = largeDefault ?? item.DefaultIconLarge;
+            small ??= await item.GetIconSmall(file, cancellationToken);
+            large ??= await item.GetIconLarge(file, cancellationToken);
+            smallDefault ??= item.DefaultIconSmall;
+            largeDefault ??= item.DefaultIconLarge;
         }
 
         return ((small ?? smallDefault)?.Invoke(), (large ?? largeDefault)?.Invoke());

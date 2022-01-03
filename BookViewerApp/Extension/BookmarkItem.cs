@@ -52,10 +52,10 @@ public class StorageBookmarkItem : IStorageBookmark
 
     private ICommand _DeleteCommand;
 
-    public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => !(a is bool b && b == true) && ActionDelete != null && !IsReadOnly);
+    public ICommand DeleteCommand => _DeleteCommand ??= new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => !(a is bool b && b == true) && ActionDelete != null && !IsReadOnly);
 
     private ICommand _RenameCommand;
-    public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
+    public ICommand RenameCommand => _RenameCommand ??= new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
 
     public Task<ObservableCollection<IFileItem>> GetChildren()
     {
@@ -148,10 +148,10 @@ public class StorageBookmarkContainer : IStorageBookmark
     public bool IsFolder => true;
 
     private ICommand _DeleteCommand;
-    public ICommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => !(a is bool b && b == true) && ActionDelete != null && !IsReadOnly);
+    public ICommand DeleteCommand => _DeleteCommand ??= new Helper.DelegateCommand(a => ActionDelete?.Invoke(), a => !(a is bool b && b == true) && ActionDelete != null && !IsReadOnly);
 
     private ICommand _RenameCommand;
-    public ICommand RenameCommand => _RenameCommand = _RenameCommand ?? new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
+    public ICommand RenameCommand => _RenameCommand ??= new Helper.DelegateCommand((a) => this.Name = a.ToString(), a => !IsReadOnly);
 
     public Action ActionDelete { get; set; }
     public Action<string> ActionOpen { get; set; }

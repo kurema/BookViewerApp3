@@ -311,7 +311,7 @@ namespace BookViewerApp.Storages
                 await action(null);
                 return;
             }
-            bookmarksRoaming = bookmarksRoaming ?? new Library.libraryBookmarks();
+            bookmarksRoaming ??= new Library.libraryBookmarks();
             var bookmarks = (bookmarksRoaming.Items ?? new object[0]).ToList();
             await action(bookmarks);
             bookmarksRoaming.Items = bookmarks.ToArray();

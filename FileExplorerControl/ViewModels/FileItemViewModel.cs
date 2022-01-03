@@ -105,7 +105,7 @@ public partial class FileItemViewModel : INotifyPropertyChanged
     public Models.MenuCommand[] MenuCommands => Content?.MenuCommandsProvider?.Invoke(Content) ?? new Models.MenuCommand[0];
 
     private Helper.DelegateCommand _DeleteCommand;
-    public Helper.DelegateCommand DeleteCommand => _DeleteCommand = _DeleteCommand ?? new Helper.DelegateCommand(async (parameter) =>
+    public Helper.DelegateCommand DeleteCommand => _DeleteCommand ??= new Helper.DelegateCommand(async (parameter) =>
     {
         async Task<(bool, bool)> checkDelete(bool canDeleteComplete)
         {

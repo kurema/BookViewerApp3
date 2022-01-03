@@ -100,6 +100,8 @@
 
                                     <CheckBox Margin="10,0,0,0" MinWidth="0" Width="28" Height="28" IsChecked="{Binding IsEnabled, Mode=TwoWay}" VerticalAlignment="Center" Content=""/>
 
+                                    <Image Width="16" Margin="4,0,4,0" Source="ms-appx:///FileExplorerControl/res/RenameTool/file.png" Grid.Column="1"/>
+
                                     <TextBlock Text="{Binding File.Title, Mode=OneWay}" Grid.Column="2" FontSize="12" VerticalAlignment="Center" />
                                 </Grid>
                             </Grid>
@@ -127,6 +129,7 @@
                         </Grid.ColumnDefinitions>
 
                         <CheckBox Margin="10,0,0,0" MinWidth="0" Width="28" Height="28" VerticalAlignment="Center" Content="" IsChecked="{Binding SelectAllToggle,Mode=TwoWay}"/>
+                        <Image Width="16" Margin="4,0,4,0" Source="ms-appx:///FileExplorerControl/res/RenameTool/file.png" Grid.Column="1"/>
 
                         <TextBlock Grid.Column="2" FontWeight="Medium" FontSize="12" VerticalAlignment="Center" >
                         <Run Text="Original" /><Run Text=" (" /><Run Text="{Binding Files.Count}" /><Run Text=")"/>
