@@ -204,7 +204,7 @@ public static class Functions
     public static IEnumerable<T> SortByArchiveEntry<T>(IEnumerable<T> entries, Func<T, string> titleProvider)
     {
         bool SortCover(T a) => !IsCover(titleProvider(a));
-        NaturalSort.NaturalList SortNatural(T a) => new NaturalSort.NaturalList(titleProvider(a));
+        NaturalSort.NaturalList SortNatural(T a) => new(titleProvider(a));
 
         if ((bool)Storages.SettingStorage.GetValue("SortNaturalOrder"))
         {

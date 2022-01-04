@@ -73,7 +73,7 @@ public class BrowserControlViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(this.Uri));
     }
 
-    private ObservableCollection<DownloadItemViewModel> _Downloads = new ObservableCollection<DownloadItemViewModel>();
+    private ObservableCollection<DownloadItemViewModel> _Downloads = new();
     public ObservableCollection<DownloadItemViewModel> Downloads { get => _Downloads; set => SetProperty(ref _Downloads, value); }
 
     public ObservableCollection<IBookmarkItem> BookmarkCurrent { get; } = new ObservableCollection<IBookmarkItem>();

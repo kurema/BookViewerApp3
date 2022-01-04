@@ -55,7 +55,7 @@ public class FileItemPlaceHolder : IFileItem
 
     public string FileTypeDescription => "";
 
-    public DateTimeOffset DateCreated => new DateTimeOffset();
+    public DateTimeOffset DateCreated => new();
 
     public bool IsFolder => false;
 

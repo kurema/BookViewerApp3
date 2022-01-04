@@ -13,7 +13,7 @@ public class StorageContent<T> where T : class
     public T Content { get; set; } = null;
     public string FileName { get; }
 
-    private System.Threading.SemaphoreSlim Semaphore = new System.Threading.SemaphoreSlim(1, 1);
+    private System.Threading.SemaphoreSlim Semaphore = new(1, 1);
 
     public StorageContent(SavePlaces savePlace, string fileName, Func<T> getNewDelegate = null)
     {

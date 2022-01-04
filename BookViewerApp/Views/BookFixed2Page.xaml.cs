@@ -230,8 +230,8 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
 
     private System.Threading.CancellationTokenSource CancellationTokenSource1;
     private System.Threading.CancellationTokenSource CancellationTokenSource2;
-    private System.Threading.SemaphoreSlim Semaphore1 = new System.Threading.SemaphoreSlim(1, 1);
-    private System.Threading.SemaphoreSlim Semaphore2 = new System.Threading.SemaphoreSlim(1, 1);
+    private System.Threading.SemaphoreSlim Semaphore1 = new(1, 1);
+    private System.Threading.SemaphoreSlim Semaphore2 = new(1, 1);
 
     private void UpdateCancellationTokenSource(ref System.Threading.CancellationTokenSource tokenSource)
     {

@@ -95,7 +95,7 @@ namespace BookViewerApp.ViewModels
                 OnPropertyChanged(nameof(TitleID));
             }
         }
-        private ObservableCollection<BookContainerViewModel> _Containers = new ObservableCollection<BookContainerViewModel>();
+        private ObservableCollection<BookContainerViewModel> _Containers = new();
 
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -187,7 +187,7 @@ namespace BookViewerApp.ViewModels
             OnPropertyChanged(nameof(TitleID));
         }
 
-        private ObservableCollection<IItemViewModel> _Books = new ObservableCollection<IItemViewModel>();
+        private ObservableCollection<IItemViewModel> _Books = new();
 
         public void Add(IItemViewModel item)
         {

@@ -38,7 +38,7 @@ public sealed partial class FileExplorerAddressBarControl : UserControl
             {
                 elem.DataContext = cfile;
                 elem.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                var temp = elem.DesiredSize;
+                _ = elem.DesiredSize;
                 list.Add(elem);
             }
 

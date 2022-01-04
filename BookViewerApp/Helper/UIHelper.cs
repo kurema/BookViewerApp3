@@ -75,8 +75,8 @@ public static partial class UIHelper
     public static string GetFileTypeDescription(Windows.Storage.IStorageItem item)
     {
         if (item is null) return null;
-        var ext = Path.GetExtension(item.Path);
-        if (item is Windows.Storage.StorageFolder f)
+        _ = Path.GetExtension(item.Path);
+        if (item is Windows.Storage.StorageFolder)
         {
             return kurema.FileExplorerControl.Application.ResourceLoader.Loader.GetString("FileType/Folder");
         }

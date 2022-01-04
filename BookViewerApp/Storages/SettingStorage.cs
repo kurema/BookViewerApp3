@@ -362,7 +362,7 @@ public class SettingStorage
             public string GetStringGeneral(object value)
             {
                 if (!(value is T)) return null;
-                System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
+                System.Xml.Serialization.XmlSerializer xs = new(value.GetType());
                 using System.IO.TextWriter tw = new System.IO.StringWriter();
                 xs.Serialize(tw, value);
                 return tw.ToString();
@@ -370,7 +370,7 @@ public class SettingStorage
 
             public bool TryGetTypeGeneral(string value, out object result)
             {
-                System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(value.GetType());
+                System.Xml.Serialization.XmlSerializer xs = new(value.GetType());
                 using System.IO.TextReader tr = new System.IO.StringReader(value);
                 System.Xml.XmlReader xr;
                 try

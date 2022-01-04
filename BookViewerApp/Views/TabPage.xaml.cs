@@ -35,7 +35,7 @@ namespace BookViewerApp.Views;
 /// </summary>
 public sealed partial class TabPage : Page
 {
-    public winui.Controls.TabView Control => this.tabView;
+    public winui.Controls.TabView Control => this.TabViewMain;
 
     private const string DataIdentifier = "MainTabItem";
 
@@ -45,7 +45,7 @@ public sealed partial class TabPage : Page
         this.InitializeComponent();
     }
 
-    //ToDo: Delete when tabView_TabItemsChanged no more need this.
+    //ToDo: Delete when TabViewMain_TabItemsChanged no more need this.
     public AppWindow RootAppWindow = null;
 
     void SetupWindow(AppWindow window)
@@ -126,7 +126,7 @@ public sealed partial class TabPage : Page
 
     public void OpenTabBook(Stream stream)
     {
-        var (frame, newTab) = OpenTab("BookViewer");
+        var (frame, _) = OpenTab("BookViewer");
         frame.Navigate(typeof(BookFixed3Viewer), stream);
     }
 
@@ -187,13 +187,13 @@ public sealed partial class TabPage : Page
 
     public void OpenTabSetting()
     {
-        var (frame, newTab) = OpenTab("Setting");
+        var (frame, _) = OpenTab("Setting");
         frame?.Navigate(typeof(SettingPage));
     }
 
     public void OpenTabBookshelf()
     {
-        var (frame, newTab) = OpenTab("Bookshelf");
+        var (frame, _) = OpenTab("Bookshelf");
         frame?.Navigate(typeof(Bookshelf.NavigationPage));
     }
 
@@ -204,29 +204,29 @@ public sealed partial class TabPage : Page
         var titleString = UIHelper.GetTitleByResource(titleId);
         newTab.Header = string.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
 
-        Frame frame = new Frame();
+        Frame frame = new();
         newTab.Content = frame;
 
-        tabView.TabItems.Add(newTab);
-        tabView.SelectedItem = newTab;
+        TabViewMain.TabItems.Add(newTab);
+        TabViewMain.SelectedItem = newTab;
 
         frame.Focus(FocusState.Programmatic);
 
         return (frame, newTab);
     }
 
-    private void TabView_AddTabButtonClick(winui.Controls.TabView sender, object args)
+    private void TabViewMain_AddTabButtonClick(winui.Controls.TabView sender, object args)
     {
         OpenTabExplorer();
     }
 
-    private async void TabView_TabCloseRequested(winui.Controls.TabView sender, winui.Controls.TabViewTabCloseRequestedEventArgs args)
+    private async void TabViewMain_TabCloseRequested(winui.Controls.TabView sender, winui.Controls.TabViewTabCloseRequestedEventArgs args)
     {
-        if (RootAppWindow == null && tabView.TabItems.Count == 1)
+        if (RootAppWindow == null && TabViewMain.TabItems.Count == 1)
         {
             OpenTabExplorer();
             await CloseTab(args.Tab);
-            tabView.SelectedIndex = 0;
+            TabViewMain.SelectedIndex = 0;
         }
         else
         {
@@ -247,10 +247,10 @@ public sealed partial class TabPage : Page
 
         if (tab.IsClosable)
         {
-            tabView.TabItems.Remove(tab);
+            TabViewMain.TabItems.Remove(tab);
         }
 
-        if (tabView.TabItems.Count == 0)
+        if (TabViewMain.TabItems.Count == 0)
         {
             //https://github.com/microsoft/Xaml-Controls-Gallery/blob/master/XamlControlsGallery/TabViewPages/TabViewWindowingSamplePage.xaml.cs
             //This is far from smartness. But this is in microsoft repo.
@@ -283,68 +283,68 @@ public sealed partial class TabPage : Page
     #region keyAccelerator
     //二回発火するのと、WebView使ってると機能していないみたいなんでオフにしました。
 
-    private DateTimeOffset LastKeyboardActionDateTime = new DateTimeOffset();
-    private void NewTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-    {
-        var sec = DateTimeOffset.UtcNow - LastKeyboardActionDateTime;
-        if ((DateTimeOffset.UtcNow - LastKeyboardActionDateTime).TotalSeconds > 0.2)
-        {
-            OpenTabWeb();
-            LastKeyboardActionDateTime = DateTimeOffset.UtcNow;
-        }
-    }
+    //private DateTimeOffset LastKeyboardActionDateTime = new();
+    //private void NewTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+    //{
+    //    _ = DateTimeOffset.UtcNow - LastKeyboardActionDateTime;
+    //    if ((DateTimeOffset.UtcNow - LastKeyboardActionDateTime).TotalSeconds > 0.2)
+    //    {
+    //        OpenTabWeb();
+    //        LastKeyboardActionDateTime = DateTimeOffset.UtcNow;
+    //    }
+    //}
 
-    private async void CloseSelectedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-    {
-        if ((DateTimeOffset.UtcNow - LastKeyboardActionDateTime).TotalSeconds > 0.2)
-        {
-            await CloseTab(((winui.Controls.TabViewItem)tabView?.SelectedItem));
-            LastKeyboardActionDateTime = DateTimeOffset.UtcNow;
-        }
-    }
+    //private async void CloseSelectedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+    //{
+    //    if ((DateTimeOffset.UtcNow - LastKeyboardActionDateTime).TotalSeconds > 0.2)
+    //    {
+    //        await CloseTab(((winui.Controls.TabViewItem)TabViewMain?.SelectedItem));
+    //        LastKeyboardActionDateTime = DateTimeOffset.UtcNow;
+    //    }
+    //}
 
-    private void NavigateToNumberedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-    {
-        int tabToSelect = 0;
+    //private void NavigateToNumberedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+    //{
+    //    int tabToSelect = 0;
 
-        switch (sender.Key)
-        {
-            case Windows.System.VirtualKey.Number1:
-                tabToSelect = 0;
-                break;
-            case Windows.System.VirtualKey.Number2:
-                tabToSelect = 1;
-                break;
-            case Windows.System.VirtualKey.Number3:
-                tabToSelect = 2;
-                break;
-            case Windows.System.VirtualKey.Number4:
-                tabToSelect = 3;
-                break;
-            case Windows.System.VirtualKey.Number5:
-                tabToSelect = 4;
-                break;
-            case Windows.System.VirtualKey.Number6:
-                tabToSelect = 5;
-                break;
-            case Windows.System.VirtualKey.Number7:
-                tabToSelect = 6;
-                break;
-            case Windows.System.VirtualKey.Number8:
-                tabToSelect = 7;
-                break;
-            case Windows.System.VirtualKey.Number9:
-                // Select the last tab
-                tabToSelect = tabView.TabItems.Count - 1;
-                break;
-        }
+    //    switch (sender.Key)
+    //    {
+    //        case Windows.System.VirtualKey.Number1:
+    //            tabToSelect = 0;
+    //            break;
+    //        case Windows.System.VirtualKey.Number2:
+    //            tabToSelect = 1;
+    //            break;
+    //        case Windows.System.VirtualKey.Number3:
+    //            tabToSelect = 2;
+    //            break;
+    //        case Windows.System.VirtualKey.Number4:
+    //            tabToSelect = 3;
+    //            break;
+    //        case Windows.System.VirtualKey.Number5:
+    //            tabToSelect = 4;
+    //            break;
+    //        case Windows.System.VirtualKey.Number6:
+    //            tabToSelect = 5;
+    //            break;
+    //        case Windows.System.VirtualKey.Number7:
+    //            tabToSelect = 6;
+    //            break;
+    //        case Windows.System.VirtualKey.Number8:
+    //            tabToSelect = 7;
+    //            break;
+    //        case Windows.System.VirtualKey.Number9:
+    //            // Select the last tab
+    //            tabToSelect = TabViewMain.TabItems.Count - 1;
+    //            break;
+    //    }
 
-        // Only select the tab if it is in the list
-        if (tabToSelect < tabView.TabItems.Count)
-        {
-            tabView.SelectedIndex = tabToSelect;
-        }
-    }
+    //    // Only select the tab if it is in the list
+    //    if (tabToSelect < TabViewMain.TabItems.Count)
+    //    {
+    //        TabViewMain.SelectedIndex = tabToSelect;
+    //    }
+    //}
     #endregion
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -374,11 +374,11 @@ public sealed partial class TabPage : Page
 
     public void AddItemToTabs(winui.Controls.TabViewItem tab)
     {
-        tabView.TabItems.Add(tab);
-        tabView.SelectedItem = tab;
+        TabViewMain.TabItems.Add(tab);
+        TabViewMain.SelectedItem = tab;
     }
 
-    private async void tabView_TabDroppedOutside(winui.Controls.TabView sender, winui.Controls.TabViewTabDroppedOutsideEventArgs e)
+    private async void TabViewMain_TabDroppedOutside(winui.Controls.TabView sender, winui.Controls.TabViewTabDroppedOutsideEventArgs e)
     {
         //{
         //    CloseTab(e.Tab);
@@ -417,7 +417,7 @@ public sealed partial class TabPage : Page
         }
     }
 
-    private void tabView_TabItemsChanged(winui.Controls.TabView sender, IVectorChangedEventArgs args)
+    private void TabViewMain_TabItemsChanged(winui.Controls.TabView sender, IVectorChangedEventArgs args)
     {
         ////This is buggy when you exit FullScreen.
         //if (sender.TabItems.Count == 0)
@@ -444,10 +444,9 @@ public sealed partial class TabPage : Page
         //}
     }
 
-    private async void tabView_TabStripDrop(object sender, DragEventArgs e)
+    private async void TabViewMain_TabStripDrop(object sender, DragEventArgs e)
     {
-        object obj;
-        if (e.DataView.Properties.TryGetValue(DataIdentifier, out obj))
+        if (e.DataView.Properties.TryGetValue(DataIdentifier, out object obj))
         {
             if (obj is null) return;
             var destinationTabView = sender as winui.Controls.TabView;
@@ -489,7 +488,7 @@ public sealed partial class TabPage : Page
         }
     }
 
-    private void tabView_TabStripDragOver(object sender, DragEventArgs e)
+    private void TabViewMain_TabStripDragOver(object sender, DragEventArgs e)
     {
         if (e.DataView.Properties.ContainsKey(DataIdentifier))
         {
@@ -497,10 +496,10 @@ public sealed partial class TabPage : Page
         }
     }
 
-    private void tabView_TabDragStarting(winui.Controls.TabView sender, winui.Controls.TabViewTabDragStartingEventArgs args)
+    private void TabViewMain_TabDragStarting(winui.Controls.TabView sender, winui.Controls.TabViewTabDragStartingEventArgs args)
     {
         //Closing main window causes a problem. So disable it.
-        if (this.tabView.TabItems.Count <= 1 && RootAppWindow is null) return;
+        if (this.TabViewMain.TabItems.Count <= 1 && RootAppWindow is null) return;
 
         var firstItem = args.Tab;
         args.Data.Properties.Add(DataIdentifier, firstItem);

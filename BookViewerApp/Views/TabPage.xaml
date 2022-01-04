@@ -15,11 +15,11 @@
     <Page.Resources>
         <ValueConverter:LocalizeConverter x:Name="localizeVC"/>
     </Page.Resources>
-    <controls:TabView AddTabButtonClick="TabView_AddTabButtonClick" TabCloseRequested="TabView_TabCloseRequested" TabDroppedOutside="tabView_TabDroppedOutside" TabItemsChanged="tabView_TabItemsChanged"
-                      TabStripDrop="tabView_TabStripDrop" TabStripDragOver="tabView_TabStripDragOver" TabDragStarting="tabView_TabDragStarting"
+    <controls:TabView AddTabButtonClick="TabViewMain_AddTabButtonClick" TabCloseRequested="TabViewMain_TabCloseRequested" TabDroppedOutside="TabViewMain_TabDroppedOutside" TabItemsChanged="TabViewMain_TabItemsChanged"
+                      TabStripDrop="TabViewMain_TabStripDrop" TabStripDragOver="TabViewMain_TabStripDragOver" TabDragStarting="TabViewMain_TabDragStarting"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       CanReorderTabs="True" CanDragTabs="True" 
-                      x:Name="tabView"
+                      x:Name="TabViewMain"
                       >
         <!--<controls:TabView.KeyboardAccelerators>
             <KeyboardAccelerator Key="T" Modifiers="Control" Invoked="NewTabKeyboardAccelerator_Invoked" />

@@ -86,7 +86,7 @@ namespace BookViewerApp.Books
             var result = new List<TocItem>();
             foreach (var item in list)
             {
-                TocItem tocItem = new TocItem();
+                TocItem tocItem = new();
                 if (item is Hashtable itemd)
                 {
                     if (itemd.ContainsKey("Named") && itemd["Named"] is string named)

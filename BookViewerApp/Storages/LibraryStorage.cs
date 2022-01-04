@@ -16,15 +16,15 @@ namespace BookViewerApp.Storages
 {
     public static class LibraryStorage
     {
-        public static StorageContent<Library.library> Content = new StorageContent<Library.library>(StorageContent<Library.library>.SavePlaces.Local, "Library.xml", () => new Library.library());
+        public static StorageContent<Library.library> Content = new(StorageContent<Library.library>.SavePlaces.Local, "Library.xml", () => new Library.library());
 
         public static event Windows.Foundation.TypedEventHandler<object?, LibraryKind>? LibraryUpdateRequest;
         public static void OnLibraryUpdateRequest(LibraryKind kind) => LibraryUpdateRequest?.Invoke(null, kind);
 
-        public static StorageContent<Library.bookmarks_library> LocalBookmark = new StorageContent<Library.bookmarks_library>(StorageContent<Library.bookmarks_library>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
+        public static StorageContent<Library.bookmarks_library> LocalBookmark = new(StorageContent<Library.bookmarks_library>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
 
 
-        public static StorageContent<Library.libraryBookmarks> RoamingBookmarks = new StorageContent<Library.libraryBookmarks>(StorageContent<Library.libraryBookmarks>.SavePlaces.Roaming, "Bookmarks.xml", () => new Library.libraryBookmarks());
+        public static StorageContent<Library.libraryBookmarks> RoamingBookmarks = new(StorageContent<Library.libraryBookmarks>.SavePlaces.Roaming, "Bookmarks.xml", () => new Library.libraryBookmarks());
 
         public enum LibraryKind
         {

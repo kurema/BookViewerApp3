@@ -31,7 +31,7 @@ public sealed partial class PropertyControl : UserControl
         var text = (sender as Button)?.DataContext?.ToString();
         if (!string.IsNullOrEmpty(text))
         {
-            DataPackage dataPackage = new DataPackage();
+            DataPackage dataPackage = new();
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
             dataPackage.SetText(text);
             Clipboard.SetContent(dataPackage);

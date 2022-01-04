@@ -9,7 +9,7 @@ namespace BookViewerApp.Storages;
 [Obsolete]
 public static class HistoryStorage
 {
-    public static StorageContent<HistoryInfo[]> Content = new StorageContent<HistoryInfo[]>(StorageContent<HistoryInfo[]>.SavePlaces.Local, "Histories.xml", () => new HistoryInfo[0]);
+    public static StorageContent<HistoryInfo[]> Content = new(StorageContent<HistoryInfo[]>.SavePlaces.Local, "Histories.xml", () => new HistoryInfo[0]);
 
     public static int FutureAccessListMargin = 50;
 

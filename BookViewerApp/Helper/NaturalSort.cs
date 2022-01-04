@@ -10,7 +10,7 @@ public class NaturalSort
 {
     public class NaturalList : IComparable<NaturalList>
     {
-        private List<NaturalMember> Content = new List<NaturalMember>();
+        private List<NaturalMember> Content = new();
 
         public int CompareTo(NaturalList other)
         {
@@ -29,7 +29,7 @@ public class NaturalSort
 
         public NaturalList(string arg)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             bool? isnumber = null;
             for (int i = 0; i < arg.Count(); i++)
             {
@@ -79,8 +79,7 @@ public class NaturalSort
         public NaturalMember(string arg)
         {
             Content = arg;
-            int result;
-            if (Int32.TryParse(arg, out result))
+            if (Int32.TryParse(arg, out int result))
             {
                 Number = result;
                 Kind = NaturalKind.Number;

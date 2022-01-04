@@ -84,7 +84,7 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 
     private void ListView_SelectBookmark(object sender, ItemClickEventArgs e)
     {
-        if (e.OriginalSource is ListView view)
+        if (e.OriginalSource is ListView)
         {
             if (e.ClickedItem is ViewModels.BookmarkViewModel model)
             {
@@ -144,7 +144,7 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 
     private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (!(sender is ListView view)) return;
+        if (!(sender is ListView)) return;
         if (e.AddedItems.Count != 1) return;
         if (!(e.AddedItems[0] is kurema.FileExplorerControl.Models.FileItems.StorageFileItem file)) return;
         if (Binding is null) return;

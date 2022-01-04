@@ -9,7 +9,7 @@ namespace BookViewerApp.ViewModels;
 
 public class Bookshelf2NavigationViewModel
 {
-    private ObservableCollection<Bookshelf2NavigationItemViewModel> _MenuItems = new ObservableCollection<Bookshelf2NavigationItemViewModel>()
+    private ObservableCollection<Bookshelf2NavigationItemViewModel> _MenuItems = new()
     {
     };
     public ObservableCollection<Bookshelf2NavigationItemViewModel> MenuItems { get => _MenuItems; }

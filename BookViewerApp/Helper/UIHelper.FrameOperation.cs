@@ -146,9 +146,8 @@ public static partial class UIHelper
                         control.AddressRequesteCommand = new DelegateCommand(async (address) =>
                         {
                             if (string.IsNullOrWhiteSpace(address?.ToString())) return;
-                            Uri uriResult;
                             var tab = GetCurrentTabPage(control);
-                            if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
+                            if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out Uri uriResult))
                             {
                                 if (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) await tab.OpenTabWebPreferedBrowser(address?.ToString());
                                 if (uriResult.IsFile)
@@ -163,9 +162,8 @@ public static partial class UIHelper
                         }, address =>
                         {
                             if (string.IsNullOrWhiteSpace(address?.ToString())) return false;
-                            Uri uriResult;
                             var tab = GetCurrentTabPage(control);
-                            if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out uriResult))
+                            if (Uri.TryCreate(address?.ToString() ?? "", UriKind.Absolute, out Uri uriResult))
                             {
                                 if (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) return true;
                                 if (uriResult.IsFile)

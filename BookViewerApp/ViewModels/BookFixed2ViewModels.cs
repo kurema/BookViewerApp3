@@ -259,7 +259,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 
     private Books.PageOptionsControl? OptionCache;
 
-    private ObservableCollection<TocEntryViewModes> _Toc = new ObservableCollection<TocEntryViewModes>();
+    private ObservableCollection<TocEntryViewModes> _Toc = new();
     public ObservableCollection<TocEntryViewModes> Toc { get => _Toc; set { _Toc = value; OnPropertyChanged(nameof(Toc)); } }
 
 
@@ -390,7 +390,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
         get { return _Pages; }
         set { _Pages = value; OnPropertyChanged(nameof(Pages)); PageSelected = 0; }
     }
-    private ObservableCollection<PageViewModel> _Pages = new ObservableCollection<PageViewModel>();
+    private ObservableCollection<PageViewModel> _Pages = new();
 
     public IEnumerable<PageViewModel> PagesOriginal
     {
@@ -688,7 +688,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
     }
 
 
-    private ObservableCollection<BookmarkViewModel> _Bookmarks = new ObservableCollection<BookmarkViewModel>();
+    private ObservableCollection<BookmarkViewModel> _Bookmarks = new();
 
     private void BookmarksSort()
     {
@@ -755,8 +755,7 @@ public class PageViewModel : INotifyPropertyChanged, IPageViewModel
         var split = parameter.ToString().Split(',');
         if (split.Length >= 2)
         {
-            float x, y;
-            if (float.TryParse(split[0], out x) && float.TryParse(split[1], out y))
+            if (float.TryParse(split[0], out float x) && float.TryParse(split[1], out float y))
             {
                 OnMoveRequested(x, y);
             }
@@ -941,8 +940,7 @@ public class Commands
 
         public bool CanExecute(object? parameter)
         {
-            int number = 0;
-            int.TryParse(parameter?.ToString(), out number);
+            int.TryParse(parameter?.ToString(), out int number);
             int result = GetPage(model, number);
             if (CheckSamePage != null && CheckSamePage(model) == result) return false;
             return model.PageWithinRange(result);
@@ -950,8 +948,7 @@ public class Commands
 
         public void Execute(object? parameter)
         {
-            int number = 0;
-            int.TryParse(parameter?.ToString(), out number);
+            int.TryParse(parameter?.ToString(), out int number);
             SetPage(model, GetPage(model, number));
         }
     }
@@ -1118,7 +1115,7 @@ public class TocEntryViewModes : INotifyPropertyChanged
     public int Page { get => _Page; set => SetProperty(ref _Page, value); }
 
 
-    private ObservableCollection<TocEntryViewModes> _Children = new ObservableCollection<TocEntryViewModes>();
+    private ObservableCollection<TocEntryViewModes> _Children = new();
 
     public TocEntryViewModes()
     {

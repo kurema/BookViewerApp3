@@ -37,7 +37,7 @@ public partial class FileItemViewModel : INotifyPropertyChanged
     }
     #endregion
 
-    private CancellationTokenSource _IconCancellationTokenSource = new CancellationTokenSource();
+    private CancellationTokenSource _IconCancellationTokenSource = new();
     public CancellationTokenSource IconCancellationTokenSource { get => _IconCancellationTokenSource; set { SetProperty(ref _IconCancellationTokenSource, value); } }
 
     private IFileItem _Content;
@@ -90,7 +90,7 @@ public partial class FileItemViewModel : INotifyPropertyChanged
          => Children?.Where(a => a.IsFolder).ToArray() ?? new FileItemViewModel[0];
     public FileItemViewModel[] Files => Children?.Where(a => !a.IsFolder).ToArray() ?? new FileItemViewModel[0];
 
-    private OrderStatus _Order = new OrderStatus();
+    private OrderStatus _Order = new();
     public OrderStatus Order
     {
         get => _Order; set

@@ -60,8 +60,7 @@ public sealed class TextToDoubleConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        double result;
-        if (double.TryParse(value.ToString(), out result))
+        if (double.TryParse(value.ToString(), out double result))
         {
             return (double)result;
         }

@@ -37,7 +37,7 @@ public static class LicenseManager
         Initialize().ConfigureAwait(false);
     }
 
-    static SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+    static SemaphoreSlim semaphore = new(1, 1);
 
     static bool initialized = false;
 

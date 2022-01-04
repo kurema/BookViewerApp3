@@ -156,7 +156,7 @@ public sealed partial class BrowserControl : Page, IDisposable
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         if (e.Parameter is null) return;
-        else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs arg)
+        else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
         {
         }
         else if (e.Parameter is string s)
@@ -170,7 +170,7 @@ public sealed partial class BrowserControl : Page, IDisposable
 
     private async void listViewBookmarks_ItemClick(object sender, ItemClickEventArgs e)
     {
-        if (sender is ItemsControl list && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem && DataContext is ViewModels.BrowserControlViewModel vm)
+        if (sender is ItemsControl && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem && DataContext is ViewModels.BrowserControlViewModel vm)
         {
             if (bookmarkItem.IsFolder)
             {
@@ -179,8 +179,7 @@ public sealed partial class BrowserControl : Page, IDisposable
             }
             else
             {
-                Uri uri;
-                if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out uri))
+                if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out Uri uri))
                 {
                     webView.Navigate(uri);
                 }

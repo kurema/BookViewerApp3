@@ -8,5 +8,5 @@ namespace BookViewerApp.Managers;
 
 public static class ResourceManager
 {
-    public static readonly Windows.ApplicationModel.Resources.ResourceLoader Loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+    public static readonly Windows.ApplicationModel.Resources.ResourceLoader Loader = new();
 }

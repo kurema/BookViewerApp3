@@ -18,7 +18,7 @@ namespace BookViewerApp.ViewModels;
 
 public class Bookshelf2BookViewModel : Helper.ViewModelBase
 {
-    private kurema.FileExplorerControl.ViewModels.FileItemViewModel _File = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.FileItemPlaceHolder());
+    private kurema.FileExplorerControl.ViewModels.FileItemViewModel _File = new(new kurema.FileExplorerControl.Models.FileItems.FileItemPlaceHolder());
     public kurema.FileExplorerControl.ViewModels.FileItemViewModel File { get => _File; set => SetProperty(ref _File, value); }
 
     protected async Task GetFromBookInfoStorageAsync(string ID, long PageSize)

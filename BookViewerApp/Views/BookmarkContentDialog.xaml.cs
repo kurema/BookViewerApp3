@@ -32,8 +32,7 @@ public sealed partial class BookmarkContentDialog : ContentDialog
     {
         string GetHost(string address)
         {
-            Uri uri;
-            if (Uri.TryCreate(address, UriKind.Absolute, out uri))
+            if (Uri.TryCreate(address, UriKind.Absolute, out Uri uri))
             {
                 return uri.Host;
             }
@@ -42,9 +41,8 @@ public sealed partial class BookmarkContentDialog : ContentDialog
 
         if (a is BookmarkContentDialog dialog)
         {
-            Uri uri1;
             if (string.IsNullOrWhiteSpace(dialog.TitleBookmark) || GetHost(b.OldValue.ToString()) == dialog.TitleBookmark) dialog.TitleBookmark = GetHost(b.NewValue.ToString());
-            dialog.IsPrimaryButtonEnabled = Uri.TryCreate(b.NewValue.ToString(), UriKind.Absolute, out uri1) && (uri1.Scheme == Uri.UriSchemeHttp || uri1.Scheme == Uri.UriSchemeHttps);
+            dialog.IsPrimaryButtonEnabled = Uri.TryCreate(b.NewValue.ToString(), UriKind.Absolute, out Uri uri1) && (uri1.Scheme == Uri.UriSchemeHttp || uri1.Scheme == Uri.UriSchemeHttps);
         }
     })));
 

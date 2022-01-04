@@ -402,7 +402,7 @@ namespace BookViewerApp.Views
                 }
             }
 
-            SettingEnumItemViewModel GetEnumViewModel(Enum item, string typeName) => new SettingEnumItemViewModel(item, target.StringResourceKey + "/Enums/" + typeName);
+            SettingEnumItemViewModel GetEnumViewModel(Enum item, string typeName) => new(item, target.StringResourceKey + "/Enums/" + typeName);
 
             public SettingEnumItemViewModel SelectedEnum
             {

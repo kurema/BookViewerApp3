@@ -14,7 +14,7 @@ public static class ThumbnailManager
 {
     private async static Task<Windows.Storage.StorageFolder> GetDataFolder() => await Functions.GetSaveFolderLocalCache().CreateFolderAsync("thumbnail", Windows.Storage.CreationCollisionOption.OpenIfExists);
 
-    private static System.Threading.SemaphoreSlim SemaphoreFetchThumbnail = new System.Threading.SemaphoreSlim(1, 1);
+    private static System.Threading.SemaphoreSlim SemaphoreFetchThumbnail = new(1, 1);
 
     public const int ThumbnailSize = 600;
 

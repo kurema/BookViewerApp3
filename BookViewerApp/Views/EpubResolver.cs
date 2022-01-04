@@ -50,8 +50,8 @@ public class EpubResolver : Windows.Web.IUriToStreamResolver
 
     public string PathHome { get; }
 
-    public static EpubResolver GetResolverBasic(IStorageFile file) => new EpubResolver(file, "/contents/book.epub", "^/reader/", "ms-appx:///res/reader/", "/reader/index.html");
-    public static EpubResolver GetResolverBibi(IStorageFile file) => new EpubResolver(file, "/bibi-bookshelf/book.epub", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book.epub");
+    public static EpubResolver GetResolverBasic(IStorageFile file) => new(file, "/contents/book.epub", "^/reader/", "ms-appx:///res/reader/", "/reader/index.html");
+    public static EpubResolver GetResolverBibi(IStorageFile file) => new(file, "/bibi-bookshelf/book.epub", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book.epub");
 
     protected async Task<IInputStream> GetContent(Uri uri)
     {
