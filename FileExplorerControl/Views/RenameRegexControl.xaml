@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:kurema.FileExplorerControl.ViewModels"
+    xmlns:vc="using:kurema.FileExplorerControl.Helper.ValueConverters"
     
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -13,6 +14,9 @@
     <UserControl.DataContext>
         <vm:RenameRegexViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <vc:StringTableCaseFormatTypeConverter x:Key="vc_stcftc"/>
+    </UserControl.Resources>
 
     <StackPanel>
         <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal,Mode=TwoWay}" />
@@ -37,10 +41,10 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <ToggleButton Content="aa" Grid.Column="0" />
-            <ToggleButton Content="AA" Grid.Column="1" />
-            <ToggleButton Content="Aa" Grid.Column="2" />
-            <ToggleButton Content="Aa Aa" Grid.Column="3" />
+            <ToggleButton Content="aa" Grid.Column="0" IsChecked="{Binding CaseFormat,Converter={StaticResource vc_stcftc},ConverterParameter=Lowercase:True:Normal:False::False,Mode=TwoWay}" />
+            <ToggleButton Content="AA" Grid.Column="1" IsChecked="{Binding CaseFormat,Converter={StaticResource vc_stcftc},ConverterParameter=Uppercase:True:Normal:False::False,Mode=TwoWay}" />
+            <ToggleButton Content="Aa" Grid.Column="2" IsChecked="{Binding CaseFormat,Converter={StaticResource vc_stcftc},ConverterParameter=TitleCase:True:Normal:False::False,Mode=TwoWay}" />
+            <ToggleButton Content="Aa Aa" Grid.Column="3" IsChecked="{Binding CaseFormat,Converter={StaticResource vc_stcftc},ConverterParameter=CapitalizeEachWord:True:Normal:False::False,Mode=TwoWay}" />
         </Grid>
     </StackPanel>
 </UserControl>

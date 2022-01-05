@@ -90,6 +90,15 @@ public class RenameRegexViewModel : BaseViewModel
 
     private string _NameRenamed = "";
     public string NameRenamed { get => _NameRenamed; set => SetProperty(ref _NameRenamed, value); }
+
+    private CaseFormatType _CaseFormat;
+    public CaseFormatType CaseFormat { get => _CaseFormat; set => SetProperty(ref _CaseFormat, value); }
+
+
+    public enum CaseFormatType
+    {
+        Normal, Lowercase, Uppercase, TitleCase, CapitalizeEachWord
+    }
 }
 
 public class RenameItemViewModel : BaseViewModel

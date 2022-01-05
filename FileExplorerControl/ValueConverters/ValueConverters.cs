@@ -51,6 +51,53 @@ public class BoolToStringConverter : IValueConverter
     }
 }
 
+public class StringTableConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        return GetTableValue(parameter?.ToString(), value?.ToString(), false);
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        return GetTableValue(parameter?.ToString(), value?.ToString(), true);
+    }
+
+    public static string GetTableValue(string table, string value, bool reverse)
+    {
+        if (string.IsNullOrWhiteSpace(table) || string.IsNullOrEmpty(value)) return "";
+        var text = table.Split(':');
+        var @default = "";
+        for (int i = 0; i + 1 < text.Length; i += 2)
+        {
+            var k = text[i];
+            var v = text[i + 1];
+            if (reverse) (k, v) = (v, k);
+            if (k == value) return v;
+            if (k == "" && !reverse) @default = v;
+        }
+        return @default;
+    }
+}
+
+public class StringTableEnumConverter<T> : IValueConverter where T : Enum
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        return StringTableConverter.GetTableValue(parameter?.ToString(), value?.ToString(), false);
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        var result = StringTableConverter.GetTableValue(parameter?.ToString(), value?.ToString(), true);
+        return Enum.Parse(typeof(T), result);
+    }
+}
+
+public class StringTableCaseFormatTypeConverter : StringTableEnumConverter<ViewModels.RenameRegexViewModel.CaseFormatType>
+{
+}
+
 public class EqualConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
