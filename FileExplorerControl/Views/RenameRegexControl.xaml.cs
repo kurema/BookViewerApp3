@@ -18,8 +18,17 @@ using Windows.UI.Xaml.Navigation;
 namespace kurema.FileExplorerControl.Views;
 public sealed partial class RenameRegexControl : UserControl
 {
+    Dictionary<ViewModels.RenameRegexViewModel.NameTargetType, string> NameTargets { get; } =new();
+
     public RenameRegexControl()
     {
         this.InitializeComponent();
+
+        NameTargets = new()
+        {
+            { ViewModels.RenameRegexViewModel.NameTargetType.Full, "Filename + extension" },
+            { ViewModels.RenameRegexViewModel.NameTargetType.FilenameOnly, "Filename only" },
+            { ViewModels.RenameRegexViewModel.NameTargetType.ExtensionOnly, "Extension only" },
+        };
     }
 }

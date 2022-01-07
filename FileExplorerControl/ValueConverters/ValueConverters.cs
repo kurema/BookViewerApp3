@@ -60,6 +60,7 @@ public class StringTableConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
+        //targetType does not seem to be correct. why?
         return GetTableValue(parameter?.ToString(), value?.ToString(), true);
     }
 

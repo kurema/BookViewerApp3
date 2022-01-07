@@ -94,10 +94,17 @@ public class RenameRegexViewModel : BaseViewModel
     private CaseFormatType _CaseFormat;
     public CaseFormatType CaseFormat { get => _CaseFormat; set => SetProperty(ref _CaseFormat, value); }
 
+    private NameTargetType _NameTarget = NameTargetType.Full;
+    public NameTargetType NameTarget { get => _NameTarget; set => SetProperty(ref _NameTarget, value); }
 
     public enum CaseFormatType
     {
         Normal, Lowercase, Uppercase, TitleCase, CapitalizeEachWord
+    }
+
+    public enum NameTargetType
+    {
+        Full = 1, FilenameOnly, ExtensionOnly
     }
 }
 

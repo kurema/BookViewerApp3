@@ -26,13 +26,8 @@
         <MenuFlyoutSeparator Margin="10" />
         <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed,Mode=TwoWay}" />
         <TextBlock Text="Apply to" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}"/>
-        <ComboBox SelectedIndex="0">
-            <ComboBox.Items>
-                <ComboBoxItem Content="Filename + extension" />
-                <ComboBoxItem Content="Filename only" />
-                <ComboBoxItem Content="Extension only" />
-            </ComboBox.Items>
-        </ComboBox>
+        <!--https://atmarkit.itmedia.co.jp/ait/articles/1711/08/news018.html-->
+        <ComboBox x:Name="ComboBoxNameTarget" SelectedIndex="0" ItemsSource="{x:Bind NameTargets}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding NameTarget,Mode=TwoWay}"/>
         <TextBlock Text="Text formattiong" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}" />
         <Grid>
             <Grid.ColumnDefinitions>
