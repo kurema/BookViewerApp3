@@ -386,6 +386,7 @@ public sealed partial class BookFixed3Viewer : Page
         var panel = new SettingPanelControl();
         var dialog = new ContentDialog()
         {
+            XamlRoot=this.XamlRoot,
             Content = new ScrollViewer()
             {
                 Content = panel

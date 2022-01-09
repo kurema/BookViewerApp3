@@ -61,22 +61,23 @@ public class BookManager
         return GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
     }
 
-    public static async Task<IBook> GetBookFromFile(IStorageFile file)
+    public static async Task<IBook> GetBookFromFile(IStorageFile file, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntryPdf = false)
     {
         var type = await GetBookTypeByStorageFile(file);
         if (type is null) return null;
-        return await GetBookFromFile(file, (BookType)type);
+        return await GetBookFromFile(file, (BookType)type, xamlRoot, skipPasswordEntryPdf);
     }
 
 
-    public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string fileName)
+    public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntry = false)
     {
         var book = new PdfBook();
         try
         {
             await book.Load(stream, fileName, async (a) =>
             {
-                var dialog = new Views.PasswordRequestContentDialog();
+                if (skipPasswordEntry) throw new Exception("Password entry is skipped.");
+                var dialog = new Views.PasswordRequestContentDialog() { XamlRoot = xamlRoot };
                 Windows.UI.Xaml.Controls.ContentDialogResult result;
                 try
                 {
@@ -132,7 +133,7 @@ public class BookManager
         return book;
     }
 
-    public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type)
+    public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntryPdf = false)
     {
         switch (type)
         {
@@ -145,7 +146,7 @@ public class BookManager
 
 
     Pdf:;
-        return await GetBookPdf(await file.OpenReadAsync(), file.Name);
+        return await GetBookPdf(await file.OpenReadAsync(), file.Name, xamlRoot, skipPasswordEntryPdf);
     Zip:;
         return await GetBookZip((await file.OpenReadAsync()).AsStream());
     SharpCompress:;

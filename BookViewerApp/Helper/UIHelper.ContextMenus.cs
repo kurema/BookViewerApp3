@@ -170,7 +170,7 @@ public static partial class UIHelper
                             list.Add(new MenuCommand(GetResourceTitle("Book/SelectThumbnail"), new DelegateCommand(async (_) =>
                             {
                                 var dialog = new ContentDialog();
-                                var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;
+                                var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;//XamlRoot should be specified here...
                                 if (book is null) return;
                                 var page = new Views.ThumbnailSelectionPage();
                                 page.Book = book;

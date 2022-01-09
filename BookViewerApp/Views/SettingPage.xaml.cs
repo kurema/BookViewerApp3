@@ -247,7 +247,8 @@ namespace BookViewerApp.Views
 
             var dialog = new ContentDialog
             {
-                CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK")
+                CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK"),
+                XamlRoot=this.XamlRoot,
             };
             var control = new LicenseControl
             {

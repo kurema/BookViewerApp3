@@ -13,6 +13,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
+
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace kurema.FileExplorerControl.Views;
@@ -25,6 +29,47 @@ public sealed partial class RenamePage : Page
     public RenamePage()
     {
         this.InitializeComponent();
+    }
+
+    void SetupWindow()
+    {
+        {
+            // Extend into the titlebar
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
+
+            Window.Current.SetTitleBar(CustomDragRegion);
+        }
+    }
+
+    private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+    {
+        if (FlowDirection == FlowDirection.LeftToRight)
+        {
+            CustomDragRegion.MinWidth = sender.SystemOverlayRightInset;
+            //ShellTitlebarInset.MinWidth = sender.SystemOverlayLeftInset;
+        }
+        else
+        {
+            CustomDragRegion.MinWidth = sender.SystemOverlayLeftInset;
+            //ShellTitlebarInset.MinWidth = sender.SystemOverlayRightInset;
+        }
+
+        CustomDragRegion.Height = sender.Height;
+        //CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        SetupWindow();
+
+        base.OnNavigatedTo(e);
     }
 
     private async void MenuFlyoutItem_Click_Help_Regex(object sender, RoutedEventArgs e)

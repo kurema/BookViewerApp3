@@ -22,22 +22,29 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <MenuBar Grid.ColumnSpan="2">
-            <MenuBarItem Title="File">
-                <MenuFlyoutSubItem Text="Presets...">
-                </MenuFlyoutSubItem>
-                <MenuFlyoutSubItem Text="Load...">
-                </MenuFlyoutSubItem>
-                <MenuFlyoutItem Text="Save" />
-            </MenuBarItem>
-            <MenuBarItem Title="Mode">
-                <ToggleMenuFlyoutItem IsChecked="True" Text="Replace" IsEnabled="False"/>
-            </MenuBarItem>
-            <MenuBarItem Title="Help">
-                <MenuFlyoutItem Text="RegEx help" Click="MenuFlyoutItem_Click_Help_Regex"/>
-                <MenuFlyoutItem Text="About" Click="MenuFlyoutItem_Click_Help_About"/>
-            </MenuBarItem>
-        </MenuBar>
+        <Grid Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1" x:Name="CustomDragRegion" Background="Transparent" />
+            <MenuBar>
+                <MenuBarItem Title="File">
+                    <MenuFlyoutSubItem Text="Presets...">
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSubItem Text="Load...">
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem Text="Save" />
+                </MenuBarItem>
+                <MenuBarItem Title="Mode">
+                    <ToggleMenuFlyoutItem IsChecked="True" Text="Replace" IsEnabled="False"/>
+                </MenuBarItem>
+                <MenuBarItem Title="Help">
+                    <MenuFlyoutItem Text="RegEx help" Click="MenuFlyoutItem_Click_Help_Regex"/>
+                    <MenuFlyoutItem Text="About" Click="MenuFlyoutItem_Click_Help_About"/>
+                </MenuBarItem>
+            </MenuBar>
+        </Grid>
 
         <Grid ColumnSpacing="8" HorizontalAlignment="Stretch" Margin="15,0,15,15" Grid.Row="1">
             <Grid.ColumnDefinitions>

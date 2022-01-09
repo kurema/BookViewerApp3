@@ -245,6 +245,7 @@ public sealed partial class FileExplorerControl : Page
             var dialog = new ContentDialog()
             {
                 DataContext = vm,
+                XamlRoot=this.XamlRoot,
             };
             {
                 var loader = Application.ResourceLoader.Loader;

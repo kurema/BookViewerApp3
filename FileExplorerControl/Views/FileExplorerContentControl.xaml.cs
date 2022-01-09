@@ -72,7 +72,7 @@ public sealed partial class FileExplorerContentControl : UserControl
             }
             vm.DialogDelete = async (arg, canDeleteComplete) =>
             {
-                var dialog = new DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete };
+                var dialog = new DeleteContentDialog() { IsSecondaryButtonEnabled = canDeleteComplete, XamlRoot = this.XamlRoot };
                 dialog.DataContext = arg;
                 Windows.UI.Xaml.Controls.ContentDialogResult result;
                 try
@@ -190,6 +190,7 @@ public sealed partial class FileExplorerContentControl : UserControl
             var dialog = new ContentDialog()
             {
                 DataContext = vm1,
+                XamlRoot = this.XamlRoot,
                 //IsSecondaryButtonEnabled=true,
                 //SecondaryButtonText="Float",
             };
