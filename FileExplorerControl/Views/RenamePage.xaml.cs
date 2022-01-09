@@ -36,7 +36,7 @@ public sealed partial class RenamePage : Page
     {
         var dialog = new ContentDialog()
         {
-            XamlRoot=this.XamlRoot,
+            XamlRoot=this.XamlRoot,// You need this for AppWindow. Now not.
         };
         {
             var stack = new StackPanel();
