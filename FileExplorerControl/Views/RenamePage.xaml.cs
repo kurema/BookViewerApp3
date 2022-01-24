@@ -29,6 +29,16 @@ public sealed partial class RenamePage : Page
     public RenamePage()
     {
         this.InitializeComponent();
+
+        foreach (var item in Windows.System.UserProfile.GlobalizationPreferences.Languages)
+        {
+            var culture = new System.Globalization.CultureInfo(item);
+            MenuBarItemRegion.Items.Add(new ToggleMenuFlyoutItem()
+            {
+                Tag = culture,
+                Text = culture.DisplayName,
+            });
+        }
     }
 
     void SetupWindow()
@@ -53,16 +63,15 @@ public sealed partial class RenamePage : Page
         if (FlowDirection == FlowDirection.LeftToRight)
         {
             CustomDragRegion.MinWidth = sender.SystemOverlayRightInset;
-            //ShellTitlebarInset.MinWidth = sender.SystemOverlayLeftInset;
+            ShellTitlebarInset.MinWidth = sender.SystemOverlayLeftInset;
         }
         else
         {
             CustomDragRegion.MinWidth = sender.SystemOverlayLeftInset;
-            //ShellTitlebarInset.MinWidth = sender.SystemOverlayRightInset;
+            ShellTitlebarInset.MinWidth = sender.SystemOverlayRightInset;
         }
 
-        CustomDragRegion.Height = sender.Height;
-        //CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
+        CustomDragRegion.Height = ShellTitlebarInset.Height = sender.Height;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -81,11 +90,11 @@ public sealed partial class RenamePage : Page
     {
         var dialog = new ContentDialog()
         {
-            XamlRoot=this.XamlRoot,// You need this for AppWindow. Now not.
+            XamlRoot = this.XamlRoot,// You need this for AppWindow. Now not.
         };
         {
             var stack = new StackPanel();
-            stack.Children.Add(new TextBlock() { Text = "This tool was modeled after PowerRename (PowerToys family).\nTry PowerRename if you like this." ,TextWrapping= TextWrapping.Wrap});
+            stack.Children.Add(new TextBlock() { Text = "This tool was modeled after PowerRename (PowerToys family).\nTry PowerRename if you like this.", TextWrapping = TextWrapping.Wrap });
             stack.Children.Add(new HyperlinkButton() { Content = "PowerToys", NavigateUri = new Uri("https://docs.microsoft.com/windows/powertoys/install") });
             dialog.Content = stack;
         }

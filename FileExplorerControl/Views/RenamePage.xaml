@@ -28,22 +28,36 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" x:Name="CustomDragRegion" Background="Transparent" />
-            <MenuBar>
-                <MenuBarItem Title="File">
-                    <MenuFlyoutSubItem Text="Presets...">
-                    </MenuFlyoutSubItem>
-                    <MenuFlyoutSubItem Text="Load...">
-                    </MenuFlyoutSubItem>
-                    <MenuFlyoutItem Text="Save" />
-                </MenuBarItem>
-                <MenuBarItem Title="Mode">
-                    <ToggleMenuFlyoutItem IsChecked="True" Text="Replace" IsEnabled="False"/>
-                </MenuBarItem>
-                <MenuBarItem Title="Help">
-                    <MenuFlyoutItem Text="RegEx help" Click="MenuFlyoutItem_Click_Help_Regex"/>
-                    <MenuFlyoutItem Text="About" Click="MenuFlyoutItem_Click_Help_About"/>
-                </MenuBarItem>
-            </MenuBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="ShellTitlebarInset" Background="Transparent" />
+                <MenuBar Grid.Column="1">
+                    <MenuBarItem Title="File">
+                        <MenuFlyoutSubItem Text="Presets...">
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem Text="Load...">
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutItem Text="Save" />
+                    </MenuBarItem>
+                    <MenuBarItem Title="Mode">
+                        <ToggleMenuFlyoutItem IsChecked="True" Text="Replace" IsEnabled="False"/>
+                    </MenuBarItem>
+                    <MenuBarItem Title="Setting">
+                        <MenuFlyoutSubItem Text="Date format" Name="MenuBarItemRegion">
+                            <ToggleMenuFlyoutItem Text="Default" IsChecked="False" />
+                            <MenuFlyoutSeparator />
+                        </MenuFlyoutSubItem>
+                    </MenuBarItem>
+                    <MenuBarItem Title="Help">
+                        <MenuFlyoutItem Text="RegEx help" Click="MenuFlyoutItem_Click_Help_Regex"/>
+                        <MenuFlyoutItem Text="About" Click="MenuFlyoutItem_Click_Help_About"/>
+                    </MenuBarItem>
+                </MenuBar>
+            </Grid>
         </Grid>
 
         <Grid ColumnSpacing="8" HorizontalAlignment="Stretch" Margin="15,0,15,15" Grid.Row="1">
