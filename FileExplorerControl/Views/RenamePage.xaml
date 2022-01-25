@@ -48,7 +48,7 @@
                     </MenuBarItem>
                     <MenuBarItem Title="Setting">
                         <MenuFlyoutSubItem Text="Date format" Name="MenuBarItemRegion">
-                            <ToggleMenuFlyoutItem Text="Default" IsChecked="False" />
+                            <ToggleMenuFlyoutItem Text="Default" IsChecked="True" />
                             <MenuFlyoutSeparator />
                         </MenuFlyoutSubItem>
                     </MenuBarItem>

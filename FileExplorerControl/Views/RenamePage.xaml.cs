@@ -30,15 +30,32 @@ public sealed partial class RenamePage : Page
     {
         this.InitializeComponent();
 
-        foreach (var item in Windows.System.UserProfile.GlobalizationPreferences.Languages)
-        {
-            var culture = new System.Globalization.CultureInfo(item);
-            MenuBarItemRegion.Items.Add(new ToggleMenuFlyoutItem()
-            {
-                Tag = culture,
-                Text = culture.DisplayName,
-            });
-        }
+        var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+         {
+             {
+                 //Add DateTime format
+                 foreach (var item in Windows.System.UserProfile.GlobalizationPreferences.Languages)
+                 {
+                     var culture = new System.Globalization.CultureInfo(item);
+                     MenuBarItemRegion.Items.Add(new ToggleMenuFlyoutItem()
+                     {
+                         Tag = culture,
+                         Text = culture.DisplayName,
+                     });
+                 }
+                 MenuBarItemRegion.Items.Add(new MenuFlyoutSeparator());
+                 var others = new MenuFlyoutSubItem() { Text = "Others" };
+                 MenuBarItemRegion.Items.Add(others);
+                 foreach (var item in System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))
+                 {
+                     others.Items.Add(new ToggleMenuFlyoutItem()
+                     {
+                         Tag = item,
+                         Text = item.DisplayName,
+                     });
+                 }
+             }
+         });
     }
 
     void SetupWindow()
