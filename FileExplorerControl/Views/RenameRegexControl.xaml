@@ -19,12 +19,77 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal,Mode=TwoWay}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal,Mode=TwoWay}" />
+            <Button Grid.Column="1" FontFamily="{ThemeResource SymbolThemeFontFamily}" VerticalAlignment="Center" Visibility="{Binding IsRegex}" Height="40" Width="28"  Padding="0"
+                    BorderBrush="Transparent" Background="Transparent" Content="&#xE946;" HorizontalAlignment="Center">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <StackPanel>
+                            <TextBlock Text="RegEx help" FontWeight="SemiBold" />
+                            <ListView IsItemClickEnabled="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind ShortcutsRegEx}" SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border CornerRadius="4" Padding="8" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="{ThemeResource ButtonBorderThemeBrush}" Background="{ThemeResource ButtonBackgroundThemeBrush}">
+                                                <TextBlock FontFamily="Consolas" Foreground="{ThemeResource ButtonForeground}" Text="{Binding Code}" />
+                                            </Border>
+                                            <TextBlock Text="{Binding Description}" Grid.Column="1" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <HyperlinkButton Content="More about RegEx" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
         <CheckBox Content="Use regular expressions" IsChecked="{Binding IsRegex,Mode=TwoWay}"/>
         <CheckBox Content="Match all occurences" IsChecked="{Binding MatchAllOccurence,Mode=TwoWay}"/>
         <CheckBox Content="Case sensitive"  IsChecked="{Binding IsCaseSensitive,Mode=TwoWay}"/>
         <MenuFlyoutSeparator Margin="10" />
-        <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed,Mode=TwoWay}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed,Mode=TwoWay}" />
+            <Button Grid.Column="1" FontFamily="{ThemeResource SymbolThemeFontFamily}" VerticalAlignment="Center" Height="40" Width="28"  Padding="0"
+                    BorderBrush="Transparent" Background="Transparent" Content="&#xE946;" HorizontalAlignment="Center">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <StackPanel>
+                            <TextBlock Text="Available variables" FontWeight="SemiBold" />
+                            <ListView IsItemClickEnabled="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind ShortcutsWords}" SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border CornerRadius="4" Padding="8" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="{ThemeResource ButtonBorderThemeBrush}" Background="{ThemeResource ButtonBackgroundThemeBrush}">
+                                                <TextBlock FontFamily="Consolas" Foreground="{ThemeResource ButtonForeground}" Text="{Binding Code}" />
+                                            </Border>
+                                            <TextBlock Text="{Binding Description}" Grid.Column="1" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
         <TextBlock Text="Apply to" Margin="0,12,0,8" Foreground="{ThemeResource SystemColorGrayTextBrush}"/>
         <!--https://atmarkit.itmedia.co.jp/ait/articles/1711/08/news018.html-->
         <ComboBox x:Name="ComboBoxNameTarget" SelectedIndex="0" ItemsSource="{x:Bind NameTargets}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding NameTarget,Mode=TwoWay}"/>

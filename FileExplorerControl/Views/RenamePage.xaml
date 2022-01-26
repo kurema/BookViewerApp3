@@ -48,7 +48,8 @@
                     </MenuBarItem>
                     <MenuBarItem Title="Setting">
                         <MenuFlyoutSubItem Text="Date format" Name="MenuBarItemRegion">
-                            <ToggleMenuFlyoutItem Text="Default" IsChecked="True" />
+                            <ToggleMenuFlyoutItem Text="Default" IsChecked="True" Tag="Default"/>
+                            <ToggleMenuFlyoutItem Text="Standard (en)" Tag="Standard" />
                             <MenuFlyoutSeparator />
                         </MenuFlyoutSubItem>
                     </MenuBarItem>
@@ -71,7 +72,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <local:RenameRegexControl DataContext="{Binding ContentRegex,Mode=TwoWay}" />
             </ScrollViewer>
 

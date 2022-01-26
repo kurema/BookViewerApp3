@@ -18,17 +18,48 @@ using Windows.UI.Xaml.Navigation;
 namespace kurema.FileExplorerControl.Views;
 public sealed partial class RenameRegexControl : UserControl
 {
-    Dictionary<ViewModels.RenameRegexViewModel.NameTargetType, string> NameTargets { get; } =new();
+    Dictionary<ViewModels.RenameRegexViewModel.NameTargetType, string> NameTargets { get; } = new();
+
+    ShortcutEntry[] ShortcutsRegEx { get; }
+    ShortcutEntry[] ShortcutsWords { get; }
 
     public RenameRegexControl()
     {
-        this.InitializeComponent();
-
         NameTargets = new()
         {
             { ViewModels.RenameRegexViewModel.NameTargetType.Full, "Filename + extension" },
             { ViewModels.RenameRegexViewModel.NameTargetType.FilenameOnly, "Filename only" },
             { ViewModels.RenameRegexViewModel.NameTargetType.ExtensionOnly, "Extension only" },
         };
+
+        ShortcutsRegEx = new ShortcutEntry[]
+        {
+            new(".","Mathes any letter."),
+            new(@"\d","Metches any number."),
+        };
+
+        ShortcutsWords = new ShortcutEntry[]
+        {
+            new("$d","day")
+        };
+
+        this.InitializeComponent();
+    }
+
+    private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+
+    }
+
+    public class ShortcutEntry
+    {
+        public ShortcutEntry(string code, string description)
+        {
+            Code = code;
+            Description = description;
+        }
+
+        public string Code { get; }
+        public string Description { get; }
     }
 }
