@@ -24,8 +24,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal,Mode=TwoWay}" />
-            <Button Grid.Column="1" FontFamily="{ThemeResource SymbolThemeFontFamily}" VerticalAlignment="Center" Visibility="{Binding IsRegex}" Height="40" Width="28"  Padding="0"
+            <AutoSuggestBox PlaceholderText="Search for" Text="{Binding NameOriginal,Mode=TwoWay}" VerticalAlignment="Center" Height="35"/>
+            <Button Grid.Column="1" FontFamily="{ThemeResource SymbolThemeFontFamily}" VerticalAlignment="Center" Visibility="{Binding IsRegex}" Height="35" Width="28"  Padding="0"
                     BorderBrush="Transparent" Background="Transparent" Content="&#xE946;" HorizontalAlignment="Center">
                 <Button.Flyout>
                     <Flyout Placement="Bottom">
@@ -47,7 +47,7 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                            <HyperlinkButton Content="More about RegEx" />
+                            <HyperlinkButton Content="More about RegEx" NavigateUri="https://aka.ms/powertoysRegExHelp" />
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
@@ -62,8 +62,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed,Mode=TwoWay}" />
-            <Button Grid.Column="1" FontFamily="{ThemeResource SymbolThemeFontFamily}" VerticalAlignment="Center" Height="40" Width="28"  Padding="0"
+            <AutoSuggestBox PlaceholderText="Replace with" Text="{Binding NameRenamed,Mode=TwoWay}" VerticalAlignment="Center" Height="35"/>
+            <Button Grid.Column="1" FontFamily="{ThemeResource SymbolThemeFontFamily}" VerticalAlignment="Center" Height="35" Width="28"  Padding="0"
                     BorderBrush="Transparent" Background="Transparent" Content="&#xE946;" HorizontalAlignment="Center">
                 <Button.Flyout>
                     <Flyout Placement="Bottom">

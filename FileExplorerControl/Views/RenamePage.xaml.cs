@@ -26,6 +26,8 @@ namespace kurema.FileExplorerControl.Views;
 /// </summary>
 public sealed partial class RenamePage : Page
 {
+    MenuFlyoutSubItem MenuFlyoutSubItemDateFormatOthers;
+
     public RenamePage()
     {
         this.InitializeComponent();
@@ -37,22 +39,26 @@ public sealed partial class RenamePage : Page
                  foreach (var item in Windows.System.UserProfile.GlobalizationPreferences.Languages)
                  {
                      var culture = new System.Globalization.CultureInfo(item);
-                     MenuBarItemRegion.Items.Add(new ToggleMenuFlyoutItem()
+                     var menu = new ToggleMenuFlyoutItem()
                      {
                          Tag = culture,
                          Text = culture.DisplayName,
-                     });
+                     };
+                     menu.Click += ToggleMenuFlyoutItem_Click_Region;
+                     MenuBarItemRegion.Items.Add(menu);
                  }
                  MenuBarItemRegion.Items.Add(new MenuFlyoutSeparator());
-                 var others = new MenuFlyoutSubItem() { Text = "Others" };
+                 var others = MenuFlyoutSubItemDateFormatOthers = new MenuFlyoutSubItem() { Text = "Others" };
                  MenuBarItemRegion.Items.Add(others);
                  foreach (var item in System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))
                  {
-                     others.Items.Add(new ToggleMenuFlyoutItem()
+                     var menu = new ToggleMenuFlyoutItem()
                      {
                          Tag = item,
                          Text = item.DisplayName,
-                     });
+                     };
+                     menu.Click += ToggleMenuFlyoutItem_Click_Region;
+                     others.Items.Add(menu);
                  }
              }
          });
@@ -124,5 +130,38 @@ public sealed partial class RenamePage : Page
             await dialog.ShowAsync();
         }
         catch { }
+    }
+
+    private void ToggleMenuFlyoutItem_Click_Region(object sender, RoutedEventArgs e)
+    {
+        var tag = (sender as FrameworkElement)?.Tag;
+        UpdateRegionToggle(tag);
+        switch (tag)
+        {
+            case "Default": break;
+            case "Standard": break;
+            case System.Globalization.CultureInfo culture: break;
+        }
+    }
+
+    private void UpdateRegionToggle(object tag)
+    {
+        if (tag is null) return;
+        foreach (var item in MenuBarItemRegion.Items)
+        {
+            if (item is ToggleMenuFlyoutItem flyoutItem)
+            {
+                if (flyoutItem.Tag.Equals(tag) && !flyoutItem.IsChecked) flyoutItem.IsChecked = true;
+                else if (!flyoutItem.Tag.Equals(tag) && flyoutItem.IsChecked) flyoutItem.IsChecked = false;
+            }
+        }
+        foreach(var item in MenuFlyoutSubItemDateFormatOthers.Items)
+        {
+            if (item is ToggleMenuFlyoutItem flyoutItem)
+            {
+                if (flyoutItem.Tag.Equals(tag) && !flyoutItem.IsChecked) flyoutItem.IsChecked = true;
+                else if (!flyoutItem.Tag.Equals(tag) && flyoutItem.IsChecked) flyoutItem.IsChecked = false;
+            }
+        }
     }
 }
