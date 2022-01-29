@@ -60,6 +60,8 @@ public class RenameViewModel : BaseViewModel
     }
 
 
+    private System.Globalization.CultureInfo _CalendarCulture;
+    public System.Globalization.CultureInfo CalendarCulture { get => _CalendarCulture; set => SetProperty(ref _CalendarCulture, value); }
 
     private RenameRegexViewModel _ContentRegex = new();
     public RenameRegexViewModel ContentRegex { get => _ContentRegex; set => SetProperty(ref _ContentRegex, value); }
@@ -73,7 +75,7 @@ public class RenameViewModel : BaseViewModel
 
 public class RenameRegexViewModel : BaseViewModel
 {
-    private bool _IsRegex;
+    private bool _IsRegex = true;
     public bool IsRegex { get => _IsRegex; set => SetProperty(ref _IsRegex, value); }
 
 

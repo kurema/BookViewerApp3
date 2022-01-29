@@ -49,7 +49,7 @@
                     <MenuBarItem Title="Setting">
                         <MenuFlyoutSubItem Text="Date format" Name="MenuBarItemRegion">
                             <ToggleMenuFlyoutItem Text="Default" IsChecked="True" Tag="Default" Click="ToggleMenuFlyoutItem_Click_Region"/>
-                            <ToggleMenuFlyoutItem Text="Standard (en)" Tag="Standard" Click="ToggleMenuFlyoutItem_Click_Region"/>
+                            <ToggleMenuFlyoutItem Text="Standard" Tag="Standard" Click="ToggleMenuFlyoutItem_Click_Region"/>
                             <MenuFlyoutSeparator />
                         </MenuFlyoutSubItem>
                     </MenuBarItem>

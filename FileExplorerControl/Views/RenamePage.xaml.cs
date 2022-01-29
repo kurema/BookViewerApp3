@@ -28,6 +28,8 @@ public sealed partial class RenamePage : Page
 {
     MenuFlyoutSubItem MenuFlyoutSubItemDateFormatOthers;
 
+    ViewModels.RenameViewModel DataContextCasted => this.DataContext as ViewModels.RenameViewModel;
+
     public RenamePage()
     {
         this.InitializeComponent();
@@ -113,7 +115,7 @@ public sealed partial class RenamePage : Page
     {
         var dialog = new ContentDialog()
         {
-            XamlRoot = this.XamlRoot,// You need this for AppWindow. Now not.
+            //XamlRoot = this.XamlRoot,// You need this for AppWindow. Now not.
         };
         {
             var stack = new StackPanel();
@@ -134,13 +136,22 @@ public sealed partial class RenamePage : Page
 
     private void ToggleMenuFlyoutItem_Click_Region(object sender, RoutedEventArgs e)
     {
+        if (DataContextCasted is null) return;
         var tag = (sender as FrameworkElement)?.Tag;
         UpdateRegionToggle(tag);
         switch (tag)
         {
-            case "Default": break;
-            case "Standard": break;
-            case System.Globalization.CultureInfo culture: break;
+            case "Default": DataContextCasted.CalendarCulture = null; break;
+            /*
+             * InvariantCulture is actually a US culture, not at all invariant. It's only culture with DD-MM-YYYY format.
+             * But it's not a problem here. So I use InvariantCulture.
+             */
+            case "Standard":
+                DataContextCasted.CalendarCulture =
+                    //System.Globalization.CultureInfo.GetCultureInfo("en-GB");
+                    System.Globalization.CultureInfo.InvariantCulture;
+                break;
+            case System.Globalization.CultureInfo culture: DataContextCasted.CalendarCulture = culture; break;
         }
     }
 
@@ -155,7 +166,7 @@ public sealed partial class RenamePage : Page
                 else if (!flyoutItem.Tag.Equals(tag) && flyoutItem.IsChecked) flyoutItem.IsChecked = false;
             }
         }
-        foreach(var item in MenuFlyoutSubItemDateFormatOthers.Items)
+        foreach (var item in MenuFlyoutSubItemDateFormatOthers.Items)
         {
             if (item is ToggleMenuFlyoutItem flyoutItem)
             {
