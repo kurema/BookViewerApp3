@@ -17,7 +17,7 @@ public static partial class UIHelper
 {
     public static class FrameOperation
     {
-        public static void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        public static async void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
         {
             if (file is null) return;
             if (sender is null) return;
@@ -25,11 +25,12 @@ public static partial class UIHelper
             var tabPage = GetCurrentTabPage(sender);
 
             var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
-            var resolver = epubType switch
+            EpubResolverAbstract resolver = epubType switch
             {
-                SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolver.GetResolverBibi(file),
-                SettingStorage.SettingEnums.EpubViewerType.EpubJsReader => EpubResolver.GetResolverBasic(file),
-                _ => EpubResolver.GetResolverBibi(file),
+                //SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolverFile.GetResolverBibi(file),
+                SettingStorage.SettingEnums.EpubViewerType.Bibi => await EpubResolverZip.GetResolverBibi(file),
+                SettingStorage.SettingEnums.EpubViewerType.EpubJsReader => EpubResolverFile.GetResolverBasic(file),
+                _ => EpubResolverFile.GetResolverBibi(file),
             };
             frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), null);
 

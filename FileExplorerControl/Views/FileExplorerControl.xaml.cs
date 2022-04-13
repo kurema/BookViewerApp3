@@ -215,13 +215,13 @@ public sealed partial class FileExplorerControl : Page
 
             if (vm.Item?.IsFolder is true)
             {
-                var item = new MenuFlyoutItem()
-                {
-                    //ToDo: Fix and translate.
-                    Text = "Rename",
-                };
-                item.Click += async (sender, e) => await Helper.UIHelper.OpenRename(null);
-                menu.Items.Add(item);
+                //var item = new MenuFlyoutItem()
+                //{
+                //    //ToDo: Fix and translate.
+                //    Text = "Rename",
+                //};
+                //item.Click += async (sender, e) => await Helper.UIHelper.OpenRename(null);
+                //menu.Items.Add(item);
             }
             {
                 var item = new MenuFlyoutItem()
