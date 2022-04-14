@@ -95,8 +95,7 @@ public sealed partial class BrowserControl : Page, IDisposable
 
     private async void webView_UnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
     {
-        var dataContext = DataContext as ViewModels.BrowserControlViewModel;
-        if (dataContext is null) return;
+        if (DataContext is not ViewModels.BrowserControlViewModel dataContext) return;
 
         if (UnviewableContentIdentifiedOverride != null)
         {
@@ -246,7 +245,7 @@ public sealed partial class BrowserControl : Page, IDisposable
 
     private void Button_Click_ToggleCollapsed(object sender, RoutedEventArgs e)
     {
-        if (!(DataContext is ViewModels.BrowserControlViewModel vm)) return;
+        if (DataContext is not ViewModels.BrowserControlViewModel vm) return;
         vm.ControllerCollapsed = !vm.ControllerCollapsed;
     }
 }

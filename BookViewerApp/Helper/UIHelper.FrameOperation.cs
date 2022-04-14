@@ -40,7 +40,7 @@ public static partial class UIHelper
 
                 Uri uri = content.Control.BuildLocalStreamUri("epub", resolver.PathHome);
                 content.Control.NavigateToLocalStreamUri(uri, resolver);
-                if (!(tabPage is null))
+                if (tabPage is not null)
                 {
                     content.Control.NewWindowRequested += async (s, e) =>
                     {
@@ -123,7 +123,7 @@ public static partial class UIHelper
                 var (frame, sender) = frameProvider();
                 OpenEpub(frame, file, sender);
             }
-            else if (!(type is null))
+            else if (type is not null)
             {
                 var (frame, _) = frameProvider();
                 frame.Navigate(typeof(BookFixed3Viewer), file);

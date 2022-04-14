@@ -54,6 +54,8 @@ public class EpubResolverZip : EpubResolverAbstract
 
     public ZipArchive Zip { get; private set; }
 
+    private System.Threading.SemaphoreSlim Semaphore = new(1, 1);
+
     protected async override Task<IInputStream> GetContent(Uri uri)
     {
         var invalid = "Invalid Path";
@@ -77,43 +79,53 @@ public class EpubResolverZip : EpubResolverAbstract
                     ?? Zip.Entries.FirstOrDefault(a => a.FullName.ToLowerInvariant() == pathFile);
                 if (entry is null)
                 {
-                    // Should I avoid *.ttf file not exist error?
-                    // It's easy. Just return random ttf file.
-                    // No. Because the error only occur only when zip is decoded by javascript.
                     throw new Exception(invalid);
                 }
 
-                var stream = entry.Open();
-                var ms = new InMemoryRandomAccessStream();
-                var buf = new byte[entry.Length];
-                await stream.ReadAsync(buf, 0, buf.Length);
-                stream.Close();
-                stream.Dispose();
-                await ms.WriteAsync(buf.AsBuffer());
-                ms.Seek(0);
+                // Note:
+                // 1. At first I was like
+                //    ```cs
+                //    await stream.ReadAsync(buf, 0, buf.Length);
+                //    await ms.WriteAsync(buf.AsBuffer());
+                //    ```
+                //    but some image seems to be corrupt, which means loading is not complete.
+                // 2. Then I did ``while(true){}``. Then some image are complete and others are not.
+                // 3. Lastly I use Semaphore. It's good now.
+                //    It seems only one thread can access same zip file at one time.
+                await Semaphore.WaitAsync();
+                try
+                {
+                    var stream = entry.Open();
+                    if (!stream.CanRead) throw new FileLoadException();
+                    var ms = new InMemoryRandomAccessStream
+                    {
+                        Size = (ulong)entry.Length
+                    };
+                    ms.Seek(0);
+                    const int bufSize = 4096;
+                    var buf = new byte[bufSize];
+                    while (true)
+                    {
+                        int len = await stream.ReadAsync(buf, 0, bufSize);
+                        if (len <= 0) break;
+                        await ms.WriteAsync(buf.AsBuffer(0, len));
+                    }
+                    stream.Close();
+                    stream.Dispose();
+                    ms.Seek(0);
+                    return ms;
+                }
+                finally
+                {
+                    Semaphore.Release();
+                }
 
-                return ms;
-                //using (var stream = entry.Open())
+                ////Debug: Read a text file.
+                //ms.Seek(0);
+                //using (var s = ms.AsStream())
+                //using (var sr = new StreamReader(s))
                 //{
-                //    int lenBuf = 4096;
-                //    var buf = new byte[lenBuf];
-                //    var ms = new InMemoryRandomAccessStream();
-                //    while (stream.CanRead)
-                //    {
-                //        int len = await stream.ReadAsync(buf, 0, lenBuf);
-                //        await ms.WriteAsync(buf.AsBuffer(0, len, len));
-                //    }
-
-                //    //ms.Seek(0);
-                //    //using (var s = ms.AsStream())
-                //    //using (var sr = new StreamReader(s))
-                //    //{
-                //    //    var stt = sr.ReadToEnd();
-                //    //}
-
-                //    ms.Seek(0);
-
-                //    return ms;
+                //    var stt = sr.ReadToEnd();
                 //}
             }
             throw new Exception(invalid);
