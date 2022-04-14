@@ -65,7 +65,7 @@ public class PageOptions : IPageOptions
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
+    protected virtual void OnPropertyChanged(string name) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
 }
 
 public class PageOptionsControl : IPageOptions
@@ -91,7 +91,7 @@ public class PageOptionsControl : IPageOptions
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged(string name) { if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name)); }
+    protected virtual void OnPropertyChanged(string name) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
 
     public PageOptionsControl(Windows.UI.Xaml.Controls.Control control)
     {

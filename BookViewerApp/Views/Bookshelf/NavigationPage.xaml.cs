@@ -33,7 +33,7 @@ namespace BookViewerApp.Views.Bookshelf
 
         private async void SetUpItems()
         {
-            if (!(this.DataContext is ViewModels.Bookshelf2NavigationViewModel vm)) return;
+            if (this.DataContext is not ViewModels.Bookshelf2NavigationViewModel vm) return;
             vm.MenuItems.Clear();
             var items = await Storages.LibraryStorage.GetItemLibrary()?.GetChildren();
             if (items is null) return;
@@ -74,7 +74,7 @@ namespace BookViewerApp.Views.Bookshelf
 
         private void OpenItem(Bookshelf2NavigationItemViewModel vm)
         {
-            if (!(vm.Tag is kurema.FileExplorerControl.Models.FileItems.IFileItem file)) return;
+            if (vm.Tag is not kurema.FileExplorerControl.Models.FileItems.IFileItem file) return;
             FrameMain.Navigate(typeof(BookshelfPageFileItem), file);
         }
 
@@ -85,7 +85,7 @@ namespace BookViewerApp.Views.Bookshelf
                 FrameMain.Navigate(typeof(SettingPage));
                 return;
             }
-            if (!(args.SelectedItem is Bookshelf2NavigationItemViewModel itemVM)) return;
+            if (args.SelectedItem is not Bookshelf2NavigationItemViewModel itemVM) return;
             itemVM.Open();
         }
     }
@@ -101,7 +101,7 @@ namespace BookViewerApp.Views.TemplateSelectors
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (!(item is Bookshelf2NavigationItemViewModel vm)) return base.SelectTemplateCore(item);
+            if (item is not Bookshelf2NavigationItemViewModel vm) return base.SelectTemplateCore(item);
 
             switch (vm.ItemKind)
             {

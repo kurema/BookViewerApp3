@@ -92,6 +92,7 @@ public class EpubResolverZip : EpubResolverAbstract
                 // 2. Then I did ``while(true){}``. Then some image are complete and others are not.
                 // 3. Lastly I use Semaphore. It's good now.
                 //    It seems only one thread can access same zip file at one time.
+                //    Cons: Progress (like "3/52 Items Loaded.") does not display correctly. But I ignore. 
                 await Semaphore.WaitAsync();
                 try
                 {

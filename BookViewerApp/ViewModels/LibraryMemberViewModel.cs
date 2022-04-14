@@ -66,13 +66,13 @@ public class LibraryMemberViewModel : INotifyPropertyChanged
         get => _Content;
         set
         {
-            if (!(_Content is null)) value.PropertyChanged -= Value_PropertyChanged;
+            if (_Content is not null) value.PropertyChanged -= Value_PropertyChanged;
 
             SetProperty(ref _Content, value);
             OnPropertyChanged(nameof(Title));
             OnPropertyChanged(nameof(Items));
 
-            if (!(value is null)) value.PropertyChanged += Value_PropertyChanged;
+            if (value is not null) value.PropertyChanged += Value_PropertyChanged;
         }
     }
 

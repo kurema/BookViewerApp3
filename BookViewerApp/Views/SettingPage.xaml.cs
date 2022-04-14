@@ -483,7 +483,7 @@ namespace BookViewerApp.Views
 
             protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
             {
-                if (!(item is SettingPage.SettingViewModel itemVM)) return base.SelectTemplateCore(item, container);
+                if (item is not SettingPage.SettingViewModel itemVM) return base.SelectTemplateCore(item, container);
                 if (itemVM.Type == typeof(bool))
                 {
                     return TemplateBool;

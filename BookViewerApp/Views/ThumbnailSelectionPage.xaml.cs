@@ -57,7 +57,7 @@ public sealed partial class ThumbnailSelectionPage : Page
         if (Book is null) return;
         int size = Managers.ThumbnailManager.ThumbnailSize;
         if (!GetIfPageIsInRange(CurrentPage)) return;
-        if (!(ImageCropper.Source is Windows.UI.Xaml.Media.Imaging.WriteableBitmap wbmp)) return;
+        if (ImageCropper.Source is not Windows.UI.Xaml.Media.Imaging.WriteableBitmap wbmp) return;
         await Book.GetPage(CurrentPage).SetBitmapAsync(wbmp, size * 2, size * 2);
         ImageCropper.Reset();
 

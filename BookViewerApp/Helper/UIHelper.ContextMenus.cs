@@ -55,7 +55,7 @@ public static partial class UIHelper
         {
             var list = new List<MenuCommand>();
 
-            if (item is TokenLibraryItem token && !(token.Content is null))
+            if (item is TokenLibraryItem token && token.Content is not null)
             {
                 if (token.Content is null) return list.ToArray();
                 list.Add(new MenuCommand(GetResourceTitle("Folders/UnregisterFolder"), new kurema.FileExplorerControl.Helper.DelegateAsyncCommand(async _ =>
@@ -82,7 +82,7 @@ public static partial class UIHelper
                     path = token.Content.path ?? "",
                     token = token.Content.token
                 }), token.Name);
-                if (!(result is null)) list.Add(result);
+                if (result is not null) list.Add(result);
 
             }
             return list.ToArray();
@@ -158,7 +158,7 @@ public static partial class UIHelper
                 if (file.IsFolder)
                 {
                     var result = GetAddLibraryMenu(file?.Content, file.Path);
-                    if (!(result is null)) list.Add(result);
+                    if (result is not null) list.Add(result);
                 }
                 else
                 {

@@ -361,7 +361,7 @@ public class SettingStorage
 
             public string GetStringGeneral(object value)
             {
-                if (!(value is T)) return null;
+                if (value is not T) return null;
                 System.Xml.Serialization.XmlSerializer xs = new(value.GetType());
                 using System.IO.TextWriter tw = new System.IO.StringWriter();
                 xs.Serialize(tw, value);

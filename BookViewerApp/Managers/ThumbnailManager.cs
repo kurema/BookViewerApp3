@@ -98,7 +98,7 @@ public static class ThumbnailManager
         try
         {
             if (cancellationToken.IsCancellationRequested) return null;
-            if (!(storageItem is Windows.Storage.IStorageFile f)) return null;
+            if (storageItem is not Windows.Storage.IStorageFile f) return null;
             var book = await BookManager.GetBookFromFile(f, skipPasswordEntryPdf: true);
             if (string.IsNullOrEmpty(book?.ID)) return book;
             Storages.PathStorage.AddOrReplace(f.Path, book.ID, (book as Books.IBookFixed)?.PageCount);

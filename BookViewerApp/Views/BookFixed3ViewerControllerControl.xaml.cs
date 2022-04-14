@@ -144,9 +144,9 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 
     private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (!(sender is ListView)) return;
+        if (sender is not ListView) return;
         if (e.AddedItems.Count != 1) return;
-        if (!(e.AddedItems[0] is kurema.FileExplorerControl.Models.FileItems.StorageFileItem file)) return;
+        if (e.AddedItems[0] is not kurema.FileExplorerControl.Models.FileItems.StorageFileItem file) return;
         if (Binding is null) return;
         FrameworkElement current = this;
 

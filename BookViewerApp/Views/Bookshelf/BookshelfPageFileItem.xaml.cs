@@ -40,7 +40,7 @@ public sealed partial class BookshelfPageFileItem : Page
 
         StackPanelMain.Children.Clear();
 
-        if (!(args.NewValue is IFileItem vm)) return;
+        if (args.NewValue is not IFileItem vm) return;
         if (!vm.IsFolder) return;
         args.Handled = true;
 

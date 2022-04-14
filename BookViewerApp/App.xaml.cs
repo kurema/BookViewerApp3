@@ -61,7 +61,7 @@ sealed partial class App : Application
 #endif
         // ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、
         // ウィンドウがアクティブであることだけを確認してください
-        if (!(Window.Current.Content is Frame rootFrame))
+        if (Window.Current.Content is not Frame rootFrame)
         {
             // ナビゲーション コンテキストとして動作するフレームを作成し、最初のページに移動します
             rootFrame = new Frame();

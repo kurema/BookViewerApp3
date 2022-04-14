@@ -66,7 +66,7 @@ public class BookRowPanel : Panel
                     if (a is BookInfo bi2) return bi2;
                 return null;
             }
-            ).Where(a => !(a is null)).Select(a => a.ShadowTarget).ToArray();
+            ).Where(a => a is not null).Select(a => a.ShadowTarget).ToArray();
     //Children.OfType<BookInfo>().Select(a => a.ShadowTarget).ToArray();
 
     protected override Size MeasureOverride(Size availableSize)

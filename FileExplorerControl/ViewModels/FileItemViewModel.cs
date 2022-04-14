@@ -188,10 +188,10 @@ public partial class FileItemViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(IconLarge));
             }
 
-            if (!(_IconProviders is null)) _IconProviders.CollectionChanged -= IconUpdate;
+            if (_IconProviders is not null) _IconProviders.CollectionChanged -= IconUpdate;
             SetProperty(ref _IconProviders, value);
             IconUpdate(this, null);
-            if (!(_IconProviders is null)) _IconProviders.CollectionChanged += IconUpdate;
+            if (_IconProviders is not null) _IconProviders.CollectionChanged += IconUpdate;
         }
     }
 

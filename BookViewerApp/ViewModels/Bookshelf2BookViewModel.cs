@@ -24,7 +24,7 @@ public class Bookshelf2BookViewModel : Helper.ViewModelBase
     protected async Task GetFromBookInfoStorageAsync(string ID, long PageSize)
     {
         var bookInfo = await BookInfoStorage.GetBookInfoByIDAsync(ID);
-        if (!(bookInfo is null))
+        if (bookInfo is not null)
         {
             switch (bookInfo.PageDirection)
             {

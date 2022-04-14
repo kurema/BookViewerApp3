@@ -151,7 +151,7 @@ public class SpreadPagePanel : Panel
 
             for (int i = 0; i < Math.Min(cCount, count); i++)
             {
-                if (!(Children[i] is Image))
+                if (Children[i] is not Image)
                 {
                     Children[i] = ChildrenCache[i] = ChildrenCache[i] ?? GetImage();
                 }
@@ -261,7 +261,7 @@ public class SpreadPagePanel : Panel
 
             var rect = GetFilledItemSize(w, h, w1 / 2.0, h1);
 
-            if (Children.Count != 1 || !(Children[0] is Windows.UI.Xaml.Shapes.Rectangle rectangle))
+            if (Children.Count != 1 || Children[0] is not Windows.UI.Xaml.Shapes.Rectangle rectangle)
             {
                 Children.Clear();
                 rectangle = new Windows.UI.Xaml.Shapes.Rectangle();
@@ -287,7 +287,7 @@ public class SpreadPagePanel : Panel
 
             var rect = GetFilledItemSize(w, h, w1 / 2.0, h1);
 
-            if (Children.Count != 1 || !(Children[0] is Windows.UI.Xaml.Shapes.Rectangle rectangle))
+            if (Children.Count != 1 || Children[0] is not Windows.UI.Xaml.Shapes.Rectangle rectangle)
             {
                 Children.Clear();
                 rectangle = new Windows.UI.Xaml.Shapes.Rectangle();

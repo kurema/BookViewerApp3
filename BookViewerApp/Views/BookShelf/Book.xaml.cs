@@ -49,7 +49,7 @@ public sealed partial class Book : UserControl
 
     static private void SourcePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs args)
     {
-        if (!(d is Book db)) return;
+        if (d is not Book db) return;
         if (args.NewValue is Windows.UI.Xaml.Media.Imaging.BitmapSource sn)
         {
             db.Aspect = GetAspect(sn);
@@ -105,7 +105,7 @@ public sealed partial class Book : UserControl
         {
             Aspect = aspect;
             FrameworkElement? element = this;
-            for (int i = 0; i < 3 && !(element is null); i++)
+            for (int i = 0; i < 3 && element is not null; i++)
             {
                 element.InvalidateMeasure();
                 element = element.Parent as FrameworkElement;

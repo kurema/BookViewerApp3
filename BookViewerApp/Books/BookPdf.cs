@@ -434,7 +434,7 @@ namespace BookViewerApp.Books
         {
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await RenderToStreamAsync(stream, width, height);
-            if(!(image is null)) await image.SetSourceAsync(stream);
+            if(image is not null) await image.SetSourceAsync(stream);
         }
     }
 }

@@ -175,16 +175,12 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
                 bool defaultRev = (bool)SettingStorage.GetValue("DefaultPageReverse");
                 if ((bool)SettingStorage.GetValue("RespectPageDirectionInfo") && value is Books.IDirectionProvider dp)
                 {
-                    switch (dp.Direction)
+                    return dp.Direction switch
                     {
-                        case Books.Direction.L2R:
-                            return false;
-                        case Books.Direction.R2L:
-                            return true;
-                        case Books.Direction.Default:
-                        default:
-                            return defaultRev;
-                    }
+                        Books.Direction.L2R => false,
+                        Books.Direction.R2L => true,
+                        _ => defaultRev,
+                    };
                 }
                 else
                 {
@@ -522,7 +518,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
                 break;
             case SpreadPagePanel.ModeEnum.Spread:
                 {
-                    if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
+                    if (this.PageSelectedViewModel is not PageViewModel pageView) return;
                     var pagesList = PagesOriginal.ToList();
                     var excluded = new List<PageViewModel>();
                     bool pageOverridePreviousSingle = false;
@@ -569,7 +565,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
                 break;
             case SpreadPagePanel.ModeEnum.Single:
                 {
-                    if (!(this.PageSelectedViewModel is PageViewModel pageView)) return;
+                    if (this.PageSelectedViewModel is not PageViewModel pageView) return;
                     int lastIndex = -1;
                     foreach (var item in PagesOriginal)
                     {
@@ -923,7 +919,7 @@ public class Commands
     {
 
         public event EventHandler? CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+        public void OnCanExecuteChanged() { CanExecuteChanged?.Invoke(this, new EventArgs()); }
         private BookViewModel model;
 
         public PageSetGeneralCommand(BookViewModel model, Func<BookViewModel, int, int> getPage, Action<BookViewModel, int> setPage, Func<BookViewModel, int>? checkSamePage = null)
@@ -956,7 +952,7 @@ public class Commands
     public class AddCurrentPageToBookmark : ICommandEventRaiseable
     {
         public event EventHandler? CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+        public void OnCanExecuteChanged() { CanExecuteChanged?.Invoke(this, new EventArgs()); }
 
         private BookViewModel model;
 
@@ -983,7 +979,7 @@ public class Commands
     public class ShiftSelectedBook : ICommandEventRaiseable
     {
         public event EventHandler? CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+        public void OnCanExecuteChanged() { CanExecuteChanged?.Invoke(this, new EventArgs()); }
 
         public bool CanExecute(object parameter)
         {
@@ -1000,8 +996,8 @@ public class Commands
             var index = model.ContainerItems.IndexOf(model.FileItem) + shift;
             if (!(0 <= index && index < model.ContainerItems.Count)) return;
 
-            if (!(model.ContainerItems[index] is kurema.FileExplorerControl.Models.FileItems.StorageFileItem result)) return;
-            if (!(result.Content is Windows.Storage.IStorageFile content)) return;
+            if (model.ContainerItems[index] is not kurema.FileExplorerControl.Models.FileItems.StorageFileItem result) return;
+            if (result.Content is not Windows.Storage.IStorageFile content) return;
             model.FileItem = result;
             model.Initialize(content);
         }
@@ -1017,7 +1013,7 @@ public class Commands
     public class CommandBase : ICommandEventRaiseable
     {
         public event EventHandler? CanExecuteChanged;
-        public void OnCanExecuteChanged() { if (CanExecuteChanged != null) CanExecuteChanged(this, new EventArgs()); }
+        public void OnCanExecuteChanged() { CanExecuteChanged?.Invoke(this, new EventArgs()); }
 
         private Func<object?, bool> CanExecuteFunc;
         private Action<object?> ExecuteAction;

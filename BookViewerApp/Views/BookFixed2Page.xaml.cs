@@ -146,7 +146,7 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
 
         UpdateSourceIfRequired();
 
-        if (!(DataContext is PageViewModel pv)) return;
+        if (DataContext is not PageViewModel pv) return;
         spreadPanel.InvalidateArrange();
         if (spreadPanel.ActualWidth == 0 || spreadPanel.ActualHeight == 0) pv.AspectCanvas = -1;
         else pv.AspectCanvas = spreadPanel.ActualWidth / spreadPanel.ActualHeight;
@@ -154,7 +154,7 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
 
     private async void UpdateSourceIfRequired()
     {
-        if (!(DataContext is PageViewModel pv)) return;
+        if (DataContext is not PageViewModel pv) return;
 
         if (await pv?.Content?.UpdateRequiredAsync(this.ActualWidth, this.ActualHeight) == true)
         {
@@ -200,7 +200,7 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
                     else
                     {
                         UpdateCancellationTokenSource(ref CancellationTokenSource2);
-                        if (!(spreadPanel.Source2 is Windows.UI.Xaml.Media.Imaging.BitmapImage source2)) spreadPanel.Source2 = source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                        if (spreadPanel.Source2 is not Windows.UI.Xaml.Media.Imaging.BitmapImage source2) spreadPanel.Source2 = source2 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
                         dc.NextPage.SetImageNoWait(source2, CancellationTokenSource2.Token, Semaphore2, this.ActualWidth, this.ActualHeight);
                     }
                 }
@@ -210,7 +210,7 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
             {
                 UpdateCancellationTokenSource(ref CancellationTokenSource1);
                 //Note: dc.Sourceを使うと複数ページに同じBitmapSourceが適用されるバグがあった。
-                if (!(spreadPanel.Source1 is Windows.UI.Xaml.Media.Imaging.BitmapImage)) spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+                if (spreadPanel.Source1 is not Windows.UI.Xaml.Media.Imaging.BitmapImage) spreadPanel.Source1 = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
                 dc.SetImageNoWait(spreadPanel.Source1 as Windows.UI.Xaml.Media.Imaging.BitmapImage, CancellationTokenSource1.Token, Semaphore1, this.ActualWidth, this.ActualHeight);
             }
 
@@ -282,14 +282,12 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
 
     private async void ScrollViewer_OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
     {
-
         if (e.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Mouse)
         {
             //これなんでだっけ？
             await Task.Delay(100);
         }
-        var scrollViewer = sender as ScrollViewer;
-        if (scrollViewer is null) return;
+        if (sender is not ScrollViewer scrollViewer) return;
 
         var doubleTapPoint = e.GetPosition(scrollViewer);
         if (scrollViewer.ZoomFactor != 1.0)
