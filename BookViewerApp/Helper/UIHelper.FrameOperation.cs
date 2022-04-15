@@ -25,12 +25,12 @@ public static partial class UIHelper
             var tabPage = GetCurrentTabPage(sender);
 
             var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
-            EpubResolverAbstract resolver = epubType switch
+            EpubResolverBase resolver = epubType switch
             {
                 //SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolverFile.GetResolverBibi(file),
-                SettingStorage.SettingEnums.EpubViewerType.Bibi => await EpubResolverZip.GetResolverBibi(file),
-                SettingStorage.SettingEnums.EpubViewerType.EpubJsReader => EpubResolverFile.GetResolverBasic(file),
-                _ => EpubResolverFile.GetResolverBibi(file),
+                SettingStorage.SettingEnums.EpubViewerType.Bibi => await EpubResolverBase.GetResolverBibiZip(file),
+                SettingStorage.SettingEnums.EpubViewerType.EpubJsReader => EpubResolverBase.GetResolverBasicFile(file),
+                _ => await EpubResolverBase.GetResolverBibiZip(file),
             };
             frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), null);
 

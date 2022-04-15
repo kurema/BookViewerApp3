@@ -14,7 +14,7 @@ using Windows.Storage;
 
 namespace BookViewerApp.Views;
 
-public abstract class EpubResolverAbstract : Windows.Web.IUriToStreamResolver
+public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 {
     public event EventHandler Loaded;
     private void OnLoaded(EventArgs e)
@@ -35,9 +35,15 @@ public abstract class EpubResolverAbstract : Windows.Web.IUriToStreamResolver
     public string PathHome { get; protected set; }
 
     protected abstract Task<IInputStream> GetContent(Uri uri);
+
+    public static async Task<EpubResolverZip> GetResolverBibiZip(IStorageFile file) 
+        => new EpubResolverZip(new ZipArchive((await file.OpenReadAsync()).AsStream()), "/bibi-bookshelf/book/", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book");
+    public static EpubResolverFile GetResolverBasicFile(IStorageFile file) => new(file, "/contents/book.epub", "^/reader/", "ms-appx:///res/reader/", "/reader/index.html");
+    public static EpubResolverFile GetResolverBibiFile(IStorageFile file) => new(file, "/bibi-bookshelf/book.epub", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book.epub");
+
 }
 
-public class EpubResolverZip : EpubResolverAbstract
+public class EpubResolverZip : EpubResolverBase
 {
     public EpubResolverZip(ZipArchive zip, string pathEpub, string pathReader, string pathReaderLocal, string pathHome)
     {
@@ -47,10 +53,6 @@ public class EpubResolverZip : EpubResolverAbstract
         PathReaderLocal = pathReaderLocal ?? throw new ArgumentNullException(nameof(pathReaderLocal));
         PathHome = pathHome ?? throw new ArgumentNullException(nameof(pathHome));
     }
-
-    public static async Task<EpubResolverZip> GetResolverBibi(IStorageFile file) => new EpubResolverZip(
-        new ZipArchive((await file.OpenReadAsync()).AsStream())
-        , "/bibi-bookshelf/book/", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book");
 
     public ZipArchive Zip { get; private set; }
 
@@ -135,7 +137,7 @@ public class EpubResolverZip : EpubResolverAbstract
     }
 }
 
-public class EpubResolverFile : EpubResolverAbstract
+public class EpubResolverFile : EpubResolverBase
 {
     public EpubResolverFile(IStorageFile file, string pathEpub, string pathReader, string pathReaderLocal, string pathHome)
     {
@@ -151,9 +153,6 @@ public class EpubResolverFile : EpubResolverAbstract
     //https://stackoverflow.com/questions/59185615/how-to-make-a-custom-response-to-my-webview-with-a-iuritostreamresolver
 
     public IStorageFile File { get; private set; }
-
-    public static EpubResolverFile GetResolverBasic(IStorageFile file) => new(file, "/contents/book.epub", "^/reader/", "ms-appx:///res/reader/", "/reader/index.html");
-    public static EpubResolverFile GetResolverBibi(IStorageFile file) => new(file, "/bibi-bookshelf/book.epub", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book.epub");
 
     protected override async Task<IInputStream> GetContent(Uri uri)
     {
