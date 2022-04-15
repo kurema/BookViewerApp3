@@ -477,7 +477,7 @@
 様々な機能が追加された新バージョンをお試しください。</value>
   </data>
   <data name="Migration.Dialog.Title" xml:space="preserve">
-    <value>アプリ更新のお知らせ</value>
+    <value>アプリ更新のお知らせ。</value>
   </data>
   <data name="Migration.General.Title" xml:space="preserve">
     <value>BookViewer3を取得する</value>
