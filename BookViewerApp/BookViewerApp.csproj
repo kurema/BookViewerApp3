@@ -352,6 +352,7 @@
       <DependentUpon>BookshelfPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BookshelfViewModels.cs" />
+    <Compile Include="Views\FlipViewEx.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
@@ -521,19 +522,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="iTextSharp.LGPLv2.Core">
-      <Version>1.7.5</Version>
+      <Version>1.8.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.13</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.7.1</Version>
+      <Version>2.8.0</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
-      <Version>0.31.0</Version>
+      <Version>0.32.1</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
-      <Version>6.0.3</Version>
+      <Version>6.0.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -547,6 +548,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="EpubProviders\" />
     <Folder Include="res\bibi\bibi-bookshelf\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

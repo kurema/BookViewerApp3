@@ -260,7 +260,11 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
 
     private void scrollViewer_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
-        if (e.Pointer?.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse &&
+        if (scrollViewer.ZoomFactor == 1.0)
+        {
+            e.Handled = false;
+        }
+        else if (e.Pointer?.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse &&
             e.Pointer?.IsInContact == true)
         {
             //Workaround. PointerPressed not fired in some case.

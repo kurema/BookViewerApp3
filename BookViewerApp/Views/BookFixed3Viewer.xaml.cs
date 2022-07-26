@@ -420,4 +420,13 @@ public sealed partial class BookFixed3Viewer : Page
         {
         }
     }
+
+    private void flipView_PointerMoved(object sender, PointerRoutedEventArgs e)
+    {
+        if (sender is not FlipViewEx flip) return;
+        if(e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && e.Pointer?.IsInContact== true)
+        {
+            //flip.ScrollHorizontal(0.1);
+        }
+    }
 }

@@ -39,10 +39,11 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="{Binding IsControlPinned, Converter={StaticResource BoolToStringConverter},ConverterParameter=0:Auto}"/>
             </Grid.RowDefinitions>
-            <FlipView TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
+            <local:FlipViewEx TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
                   FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" 
                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       ContextRequested="flipView_ContextRequested"
+                              PointerMoved="flipView_PointerMoved"
                       >
                 <FlipView.Resources>
                     <MenuFlyout x:Key="ContextFlyout">
@@ -71,7 +72,7 @@
                         <local:BookFixed2Page DataContext="{Binding}"/>
                     </DataTemplate>
                 </FlipView.ItemTemplate>
-            </FlipView>
+            </local:FlipViewEx>
             <ProgressBar Grid.Row="1" Opacity="0"/>
         </Grid>
         <local:BookFixed3ViewerControllerControl x:Name="ViewerController" DataContext="{Binding}" Grid.Row="2" Grid.RowSpan="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
