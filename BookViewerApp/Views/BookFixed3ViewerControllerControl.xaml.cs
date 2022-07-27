@@ -80,6 +80,7 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
         {
             VisualStateManager.GoToState(this, "ControlPanelFadeOut", true);
         }
+        IsControlVisible = visibility;
     }
 
     private void ListView_SelectBookmark(object sender, ItemClickEventArgs e)
@@ -174,4 +175,16 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
     //        Binding.PageSelectedViewModel.ZoomRequest((float)((sender as Slider).Value / 100.0));
     //    }
     //}
+
+    //public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register(
+    //    nameof(HorizontalOffset), typeof(float), typeof(FlipViewEx), new PropertyMetadata(0.0f, (s, e) =>
+    //    {
+    //        if (s is not FlipViewEx ex) return;
+    //        if (e.NewValue is not float f) return;
+    //    }));
+
+    public static readonly DependencyProperty IsControlVisibleProperty = DependencyProperty.Register(
+        nameof(IsControlVisible), typeof(bool), typeof(BookFixed3ViewerControllerControl), new PropertyMetadata(true));
+
+    public bool IsControlVisible { get => (bool)GetValue(IsControlVisibleProperty); set => SetValue(IsControlVisibleProperty, value); }
 }

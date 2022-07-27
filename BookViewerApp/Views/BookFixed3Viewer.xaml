@@ -46,6 +46,7 @@
                   PointerMoved="flipView_PointerMoved" PointerPressed="flipView_PointerPressed"
                   PointerCanceled="flipView_PointerCanceled" PointerCaptureLost="flipView_PointerCanceled" PointerReleased="flipView_PointerReleased"
                       >
+                <!-- PrevNextButtonVisibility="{Binding ElementName=ViewerController,Path=IsControlVisible}" -->
                 <FlipView.Resources>
                     <MenuFlyout x:Key="ContextFlyout">
                         <MenuFlyout.MenuFlyoutPresenterStyle>

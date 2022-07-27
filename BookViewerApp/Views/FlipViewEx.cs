@@ -12,7 +12,7 @@ public class FlipViewEx : FlipView
 {
     public FlipViewEx()
     {
-        
+
     }
 
     protected override void OnApplyTemplate()
@@ -23,12 +23,15 @@ public class FlipViewEx : FlipView
         if (GetTemplateChild("NextButtonHorizontal") is Button next) next.Opacity = 0.5;
     }
 
-    //public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register(
-    //    nameof(HorizontalOffset), typeof(float), typeof(FlipViewEx), new PropertyMetadata(0.0f, (s, e) =>
-    //    {
-    //        if (s is not FlipViewEx ex) return;
-    //        if (e.NewValue is not float f) return;
-    //    }));
+
+    public static readonly DependencyProperty PrevNextButtonVisibilityProperty = DependencyProperty.Register(nameof(PrevNextButtonVisibility)
+        , typeof(Visibility), typeof(FlipViewEx), new PropertyMetadata(Visibility.Visible, (s, e) =>
+        {
+            if (s is not FlipViewEx ex) return;
+            if (e.NewValue is not Visibility v) return;
+            if (ex.GetTemplateChild("PreviousButtonHorizontal") is Button prev) prev.Visibility = v;
+            if (ex.GetTemplateChild("NextButtonHorizontal") is Button next) next.Visibility = v;
+        }));
 
     public Visibility PrevNextButtonVisibility
     {
@@ -40,8 +43,7 @@ public class FlipViewEx : FlipView
         }
         set
         {
-            if (GetTemplateChild("PreviousButtonHorizontal") is Button prev) prev.Visibility=value;
-            if (GetTemplateChild("NextButtonHorizontal") is Button next) next.Visibility=value;
+            SetValue(PrevNextButtonVisibilityProperty,value);
         }
     }
 

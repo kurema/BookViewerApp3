@@ -427,7 +427,7 @@ public sealed partial class BookFixed3Viewer : Page
     {
         e.Handled = false;
         if (sender is not FlipViewEx flip) return;
-        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor == 1.0)
         {
             if (e.Pointer.IsInContact)
             {
@@ -449,7 +449,7 @@ public sealed partial class BookFixed3Viewer : Page
     {
         e.Handled = false;
         if (sender is not FlipViewEx flip) return;
-        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor==1.0)
         {
             if (e.Pointer.IsInContact)
             {
@@ -507,7 +507,7 @@ public sealed partial class BookFixed3Viewer : Page
     {
         e.Handled = false;
         if (sender is not FlipViewEx flip) return;
-        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor == 1.0)
         {
             _LastPoint = null;
             PlayPageAnimation(flip);
@@ -520,12 +520,16 @@ public sealed partial class BookFixed3Viewer : Page
     {
         e.Handled = false;
         if (sender is not FlipViewEx flip) return;
-        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor == 1.0)
         {
             _LastPoint = null;
             PlayPageAnimation(flip);
             flip.ReleasePointerCapture(e.Pointer);
-            flip.Focus(FocusState.Programmatic);
+            try
+            {
+                flip.Focus(FocusState.Programmatic);
+            }
+            catch { }
             e.Handled = true;
         }
     }
