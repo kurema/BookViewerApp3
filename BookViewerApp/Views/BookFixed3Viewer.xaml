@@ -41,9 +41,10 @@
             </Grid.RowDefinitions>
             <local:FlipViewEx TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
                   FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" 
-                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      ContextRequested="flipView_ContextRequested"
-                              PointerMoved="flipView_PointerMoved"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  ContextRequested="flipView_ContextRequested"
+                  PointerMoved="flipView_PointerMoved" PointerPressed="flipView_PointerPressed"
+                  PointerCanceled="flipView_PointerCanceled" PointerCaptureLost="flipView_PointerCanceled" PointerReleased="flipView_PointerReleased"
                       >
                 <FlipView.Resources>
                     <MenuFlyout x:Key="ContextFlyout">

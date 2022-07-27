@@ -22,6 +22,8 @@ using BookViewerApp.Managers;
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
 
+using Windows.UI.Xaml.Media.Animation;
+
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace BookViewerApp.Views;
@@ -386,7 +388,7 @@ public sealed partial class BookFixed3Viewer : Page
         var panel = new SettingPanelControl();
         var dialog = new ContentDialog()
         {
-            XamlRoot=this.XamlRoot,
+            XamlRoot = this.XamlRoot,
             Content = new ScrollViewer()
             {
                 Content = panel
@@ -423,10 +425,108 @@ public sealed partial class BookFixed3Viewer : Page
 
     private void flipView_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
+        e.Handled = false;
         if (sender is not FlipViewEx flip) return;
-        if(e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && e.Pointer?.IsInContact== true)
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
         {
-            //flip.ScrollHorizontal(0.1);
+            if (e.Pointer.IsInContact)
+            {
+                var point = e.GetCurrentPoint(flip);
+                if (_LastPoint is null) _LastPoint = point;
+                var offset = flip.HorizontalOffset + ((float)(point.Position.X - _LastPoint.Position.X));
+                if (flip.SelectedIndex == 0) offset = Math.Min(offset, (float)(flip.ActualWidth*0.3));
+                if (flip.SelectedIndex == flip.Items.Count - 1) offset = Math.Max(offset, -(float)(flip.ActualWidth * 0.3));
+                flip.HorizontalOffset = offset;
+                _LastPoint = point;
+                e.Handled = true;
+            }
+        }
+    }
+
+    Windows.UI.Input.PointerPoint _LastPoint = null;
+
+    private void flipView_PointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+        e.Handled = false;
+        if (sender is not FlipViewEx flip) return;
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        {
+            if (e.Pointer.IsInContact)
+            {
+                flip.CapturePointer(e.Pointer);
+                var point = e.GetCurrentPoint(flip);
+                _LastPoint = point;
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void PlayPageAnimation(FlipViewEx flip)
+    {
+        // I gave up animation. Sorry.
+
+        //var doubleAnime = new DoubleAnimationUsingKeyFrames();
+        //Storyboard.SetTarget(doubleAnime, flipView);
+        //Storyboard.SetTargetProperty(doubleAnime, nameof(flipView.HorizontalOffset));
+        //doubleAnime.KeyFrames.Add(new EasingDoubleKeyFrame()
+        //{
+        //    KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0.0)),
+        //    Value = flipView.HorizontalOffset
+        //});
+        //doubleAnime.KeyFrames.Add(new EasingDoubleKeyFrame()
+        //{
+        //    KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0.3)),
+        //    Value = 0
+        //});
+        //Storyboard storyboard = new();
+        //TimelineDelegate timeline = new TimelineDelegate()
+        //{
+        //    Duration=new Duration(TimeSpan.FromSeconds(0.3)),
+        //}
+        //storyboard.Children.Add(doubleAnime);
+        //storyboard.Begin();
+
+        var anime = flip.UseTouchAnimationsForAllNavigation;
+        flip.UseTouchAnimationsForAllNavigation = false;
+        flip.SelectedIndex =
+            Math.Max(0, Math.Min(flip.Items.Count - 1,
+            (flip.SelectedIndex - GetSnapResult(flip.HorizontalOffset / flip.ActualWidth, 0.3))));
+        flip.HorizontalOffset = 0;
+        flip.UseTouchAnimationsForAllNavigation = anime;
+    }
+
+    private static int GetSnapResult(double diff, double minimumX)
+    {
+        var abs = Math.Abs(diff);
+        var floor = Math.Floor(abs);
+        if (abs - floor > minimumX) floor++;
+        return (int)floor * (diff >= 0 ? 1 : -1);
+    }
+
+    private void flipView_PointerCanceled(object sender, PointerRoutedEventArgs e)
+    {
+        e.Handled = false;
+        if (sender is not FlipViewEx flip) return;
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        {
+            _LastPoint = null;
+            PlayPageAnimation(flip);
+            flip.ReleasePointerCapture(e.Pointer);
+            e.Handled = true;
+        }
+    }
+
+    private void flipView_PointerReleased(object sender, PointerRoutedEventArgs e)
+    {
+        e.Handled = false;
+        if (sender is not FlipViewEx flip) return;
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse)
+        {
+            _LastPoint = null;
+            PlayPageAnimation(flip);
+            flip.ReleasePointerCapture(e.Pointer);
+            flip.Focus(FocusState.Programmatic);
+            e.Handled = true;
         }
     }
 }

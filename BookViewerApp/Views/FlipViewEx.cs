@@ -12,6 +12,7 @@ public class FlipViewEx : FlipView
 {
     public FlipViewEx()
     {
+        
     }
 
     protected override void OnApplyTemplate()
@@ -22,18 +23,49 @@ public class FlipViewEx : FlipView
         if (GetTemplateChild("NextButtonHorizontal") is Button next) next.Opacity = 0.5;
     }
 
-    public void ScrollHorizontal(float offset)
+    //public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register(
+    //    nameof(HorizontalOffset), typeof(float), typeof(FlipViewEx), new PropertyMetadata(0.0f, (s, e) =>
+    //    {
+    //        if (s is not FlipViewEx ex) return;
+    //        if (e.NewValue is not float f) return;
+    //    }));
+
+    public Visibility PrevNextButtonVisibility
     {
-        if (GetTemplateChild("ScrollingHost") is ScrollViewer scroll)
+        get
         {
-            if(scroll.Content is UIElement content)
+            if (GetTemplateChild("PreviousButtonHorizontal") is Button prev) return prev.Visibility;
+            if (GetTemplateChild("NextButtonHorizontal") is Button next) return next.Visibility;
+            return Visibility.Visible;
+        }
+        set
+        {
+            if (GetTemplateChild("PreviousButtonHorizontal") is Button prev) prev.Visibility=value;
+            if (GetTemplateChild("NextButtonHorizontal") is Button next) next.Visibility=value;
+        }
+    }
+
+    public float HorizontalOffset
+    {
+        get
+        {
+            if (GetTemplateChild("ScrollingHost") is ScrollViewer scroll)
             {
-                //メモ：
-                //マウス移動分Translationを調整すれば良いんだけど、Releaseした時どうすんの？
-                //自前アニメーションは正直怠い。
-                //アニメーション省略は違和感が大きい。
-                //明日自前アニメでやるか…。
-                content.Translation = new System.Numerics.Vector3(offset, 0, 0);
+                if (scroll.Content is UIElement content)
+                {
+                    return content.Translation.X;
+                }
+            }
+            return 0;
+        }
+        set
+        {
+            if (GetTemplateChild("ScrollingHost") is ScrollViewer scroll)
+            {
+                if (scroll.Content is UIElement content)
+                {
+                    content.Translation = new System.Numerics.Vector3(value, 0, 0);
+                }
             }
         }
     }
