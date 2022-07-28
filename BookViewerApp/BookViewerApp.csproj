@@ -550,6 +550,7 @@
   <ItemGroup>
     <Folder Include="EpubProviders\" />
     <Folder Include="res\bibi\bibi-bookshelf\" />
+    <Folder Include="res\pdfjs\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

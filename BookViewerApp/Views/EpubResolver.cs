@@ -16,8 +16,10 @@ namespace BookViewerApp.Views;
 
 public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 {
+    public const string InvalidPathMessage = "404 Not Found: The path is invalid.";
+
     public event EventHandler Loaded;
-    private void OnLoaded(EventArgs e)
+    protected void OnLoaded(EventArgs e)
     {
         Loaded?.Invoke(this, e);
     }
@@ -36,12 +38,84 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 
     protected abstract Task<IInputStream> GetContent(Uri uri);
 
-    public static async Task<EpubResolverZip> GetResolverBibiZip(IStorageFile file) 
+    public static async Task<EpubResolverZip> GetResolverBibiZip(IStorageFile file)
         => new EpubResolverZip(new ZipArchive((await file.OpenReadAsync()).AsStream()), "/bibi-bookshelf/book/", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book");
     public static EpubResolverFile GetResolverBasicFile(IStorageFile file) => new(file, "/contents/book.epub", "^/reader/", "ms-appx:///res/reader/", "/reader/index.html");
     public static EpubResolverFile GetResolverBibiFile(IStorageFile file) => new(file, "/bibi-bookshelf/book.epub", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book.epub");
 
+    //Pdf.js do not work on edgeHTML. It's sad.
+    //public static async Task<EpubResolverStorageAndZip> GetResolverPdfJs(IStorageFile file)
+    //    => new EpubResolverStorageAndZip(file, new ZipArchive((await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/pdfjs/pdfjs.zip"))).OpenReadAsync()).AsStream())
+    //        , "/book.pdf", "^/pdfjs/", "/pdfjs/web/viewer.html?file=/book.pdf");
+
+
+    public async Task<IInputStream> GetContentBasic(Uri uri, Func<string, Task<IInputStream>> actionLocal, Func<Task<IInputStream>> actionZip)
+    {
+        if (uri is null) throw new Exception(InvalidPathMessage);
+        if (PathReader.IsMatch(uri.LocalPath))
+        {
+            var pathTail = PathReader.Replace(uri.LocalPath, "");
+            pathTail = string.IsNullOrWhiteSpace(pathTail) ? "index.html" : pathTail;
+            return await actionLocal(pathTail);
+        }
+        if (uri.LocalPath.ToLowerInvariant().StartsWith(PathEpub))
+        {
+            return await actionZip();
+        }
+        throw new Exception(InvalidPathMessage);
+    }
+
+    public static async Task<IInputStream> ReadZipFile(ZipArchive zip, string pathFile, System.Threading.SemaphoreSlim semaphore)
+    {
+        if (zip is null) throw new ArgumentNullException(nameof(zip));
+        if (semaphore is null) throw new ArgumentNullException(nameof(semaphore));
+        string pathFileLower = pathFile.ToLowerInvariant();
+        var entry = zip.Entries.FirstOrDefault(a => a.FullName == pathFile) ?? zip.Entries.FirstOrDefault(a => a.FullName.ToLowerInvariant() == pathFileLower);
+        if (entry is null)
+        {
+            throw new Exception(InvalidPathMessage);
+        }
+        // Note:
+        // 1. At first I was like
+        //    ```cs
+        //    await stream.ReadAsync(buf, 0, buf.Length);
+        //    await ms.WriteAsync(buf.AsBuffer());
+        //    ```
+        //    but some image seems to be corrupt, which means loading is not complete.
+        // 2. Then I did ``while(true){}``. Then some image are complete and others are not.
+        // 3. Lastly I use Semaphore. It's good now.
+        //    It seems only one thread can access same zip file at one time.
+        //    Cons: Progress (like "3/52 Items Loaded.") does not display correctly. But I ignore. 
+        await semaphore.WaitAsync();
+        try
+        {
+            var stream = entry.Open();
+            if (!stream.CanRead) throw new FileLoadException();
+            var ms = new InMemoryRandomAccessStream
+            {
+                Size = (ulong)entry.Length
+            };
+            ms.Seek(0);
+            const int bufSize = 4096;
+            var buf = new byte[bufSize];
+            while (true)
+            {
+                int len = await stream.ReadAsync(buf, 0, bufSize);
+                if (len <= 0) break;
+                await ms.WriteAsync(buf.AsBuffer(0, len));
+            }
+            stream.Close();
+            stream.Dispose();
+            ms.Seek(0);
+            return ms;
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    }
 }
+
 
 public class EpubResolverZip : EpubResolverBase
 {
@@ -60,80 +134,78 @@ public class EpubResolverZip : EpubResolverBase
 
     protected async override Task<IInputStream> GetContent(Uri uri)
     {
-        var invalid = "Invalid Path";
-        if (uri is null) throw new Exception(invalid);
-        try
+        return await GetContentBasic(uri, async (pathTail) =>
         {
-            if (PathReader.IsMatch(uri.LocalPath))
-            {
-                var pathTail = PathReader.Replace(uri.LocalPath, "");
-                pathTail = string.IsNullOrWhiteSpace(pathTail) ? "index.html" : pathTail;
-                var f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine(PathReaderLocal, pathTail)));
-                return await f.OpenAsync(FileAccessMode.Read);
-            }
-            if (uri.LocalPath.ToLowerInvariant().StartsWith(PathEpub))
-            {
-                if (Zip is null) throw new NullReferenceException(nameof(Zip));
-                string pathFile = uri.LocalPath.Substring(PathEpub.Length);
-                string pathFileLower = uri.LocalPath.Substring(PathEpub.Length).ToLowerInvariant();
-                // Does Zip has "abc.html" and "AbC.HtMl" entries at the same time. I don't know but just in case.
-                var entry = Zip.Entries.FirstOrDefault(a => a.FullName == pathFile)
-                    ?? Zip.Entries.FirstOrDefault(a => a.FullName.ToLowerInvariant() == pathFile);
-                if (entry is null)
-                {
-                    throw new Exception(invalid);
-                }
-
-                // Note:
-                // 1. At first I was like
-                //    ```cs
-                //    await stream.ReadAsync(buf, 0, buf.Length);
-                //    await ms.WriteAsync(buf.AsBuffer());
-                //    ```
-                //    but some image seems to be corrupt, which means loading is not complete.
-                // 2. Then I did ``while(true){}``. Then some image are complete and others are not.
-                // 3. Lastly I use Semaphore. It's good now.
-                //    It seems only one thread can access same zip file at one time.
-                //    Cons: Progress (like "3/52 Items Loaded.") does not display correctly. But I ignore. 
-                await Semaphore.WaitAsync();
-                try
-                {
-                    var stream = entry.Open();
-                    if (!stream.CanRead) throw new FileLoadException();
-                    var ms = new InMemoryRandomAccessStream
-                    {
-                        Size = (ulong)entry.Length
-                    };
-                    ms.Seek(0);
-                    const int bufSize = 4096;
-                    var buf = new byte[bufSize];
-                    while (true)
-                    {
-                        int len = await stream.ReadAsync(buf, 0, bufSize);
-                        if (len <= 0) break;
-                        await ms.WriteAsync(buf.AsBuffer(0, len));
-                    }
-                    stream.Close();
-                    stream.Dispose();
-                    ms.Seek(0);
-                    return ms;
-                }
-                finally
-                {
-                    Semaphore.Release();
-                }
-
-                ////Debug: Read a text file.
-                //ms.Seek(0);
-                //using (var s = ms.AsStream())
-                //using (var sr = new StreamReader(s))
-                //{
-                //    var stt = sr.ReadToEnd();
-                //}
-            }
-            throw new Exception(invalid);
+            var f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Path.Combine(PathReaderLocal, pathTail)));
+            return await f.OpenAsync(FileAccessMode.Read);
+        }, async () =>
+        {
+            string pathFile = uri.LocalPath.Substring(PathEpub.Length);
+            return await ReadZipFile(Zip, pathFile, Semaphore);
         }
-        catch (Exception) { throw; }
+        );
+    }
+}
+
+public class EpubResolverZipDouble : EpubResolverBase
+{
+    public EpubResolverZipDouble(ZipArchive zip, ZipArchive zipReader, string pathEpub, string pathReader, string pathHome)
+    {
+        Zip = zip ?? throw new ArgumentNullException(nameof(zip));
+        ZipReader = zipReader ?? throw new ArgumentNullException(nameof(zipReader));
+        PathEpub = pathEpub ?? throw new ArgumentNullException(nameof(pathEpub));
+        PathReader = new System.Text.RegularExpressions.Regex(pathReader, System.Text.RegularExpressions.RegexOptions.IgnoreCase) ?? throw new ArgumentNullException(nameof(pathReader));
+        PathReaderLocal = "";
+        PathHome = pathHome ?? throw new ArgumentNullException(nameof(pathHome));
+    }
+
+    public ZipArchive Zip { get; private set; }
+    public ZipArchive ZipReader { get; private set; }
+
+    private System.Threading.SemaphoreSlim Semaphore = new(1, 1);
+    private System.Threading.SemaphoreSlim SemaphoreReader = new(1, 1);
+
+    protected async override Task<IInputStream> GetContent(Uri uri)
+    {
+        return await GetContentBasic(uri, async (pathTail) =>
+        {
+            return await ReadZipFile(ZipReader, pathTail, SemaphoreReader);
+        }, async () =>
+        {
+            string pathFile = uri.LocalPath.Substring(PathEpub.Length);
+            return await ReadZipFile(Zip, pathFile, Semaphore);
+        }
+        );
+    }
+}
+
+public class EpubResolverStorageAndZip : EpubResolverBase
+{
+    public EpubResolverStorageAndZip(IStorageFile file, ZipArchive zipReader, string pathEpub, string pathReader, string pathHome)
+    {
+        File = file ?? throw new ArgumentNullException(nameof(file));
+        ZipReader = zipReader ?? throw new ArgumentNullException(nameof(zipReader));
+        PathEpub = pathEpub ?? throw new ArgumentNullException(nameof(pathEpub));
+        PathReader = new System.Text.RegularExpressions.Regex(pathReader, System.Text.RegularExpressions.RegexOptions.IgnoreCase) ?? throw new ArgumentNullException(nameof(pathReader));
+        PathReaderLocal = "";
+        PathHome = pathHome ?? throw new ArgumentNullException(nameof(pathHome));
+    }
+
+    public IStorageFile File { get; private set; }
+    public ZipArchive ZipReader { get; private set; }
+
+    private System.Threading.SemaphoreSlim SemaphoreReader = new(1, 1);
+
+    protected async override Task<IInputStream> GetContent(Uri uri)
+    {
+        return await GetContentBasic(uri, async (pathTail) =>
+        {
+            return await ReadZipFile(ZipReader, pathTail, SemaphoreReader);
+        }, async () =>
+        {
+            return await File.OpenReadAsync();
+        }
+        );
     }
 }
 
@@ -156,8 +228,7 @@ public class EpubResolverFile : EpubResolverBase
 
     protected override async Task<IInputStream> GetContent(Uri uri)
     {
-        var invalid = "Invalid Path";
-        if (uri is null) throw new Exception(invalid);
+        if (uri is null) throw new Exception(InvalidPathMessage);
         try
         {
             //Security!
@@ -170,10 +241,10 @@ public class EpubResolverFile : EpubResolverBase
             }
             if (uri.LocalPath.ToLowerInvariant() == PathEpub)
             {
-                if (File is null) throw new Exception(invalid);
+                if (File is null) throw new Exception(InvalidPathMessage);
                 return await File.OpenReadAsync();
             }
-            throw new Exception(invalid);
+            throw new Exception(InvalidPathMessage);
         }
         catch (Exception) { throw; }
     }

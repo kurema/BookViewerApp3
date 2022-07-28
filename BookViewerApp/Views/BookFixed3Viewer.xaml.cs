@@ -431,11 +431,13 @@ public sealed partial class BookFixed3Viewer : Page
         {
             if (e.Pointer.IsInContact)
             {
+                const double extraFlipLength = 0.3;
+
                 var point = e.GetCurrentPoint(flip);
                 if (_LastPoint is null) _LastPoint = point;
                 var offset = flip.HorizontalOffset + ((float)(point.Position.X - _LastPoint.Position.X));
-                if (flip.SelectedIndex == 0) offset = Math.Min(offset, (float)(flip.ActualWidth*0.3));
-                if (flip.SelectedIndex == flip.Items.Count - 1) offset = Math.Max(offset, -(float)(flip.ActualWidth * 0.3));
+                if (flip.SelectedIndex == 0) offset = Math.Min(offset, (float)(flip.ActualWidth * extraFlipLength));
+                if (flip.SelectedIndex == flip.Items.Count - 1) offset = Math.Max(offset, -(float)(flip.ActualWidth * extraFlipLength));
                 flip.HorizontalOffset = offset;
                 _LastPoint = point;
                 e.Handled = true;
@@ -449,7 +451,7 @@ public sealed partial class BookFixed3Viewer : Page
     {
         e.Handled = false;
         if (sender is not FlipViewEx flip) return;
-        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor==1.0)
+        if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor == 1.0)
         {
             if (e.Pointer.IsInContact)
             {
@@ -461,7 +463,7 @@ public sealed partial class BookFixed3Viewer : Page
         }
     }
 
-    private void PlayPageAnimation(FlipViewEx flip)
+    private async void PlayPageAnimation(FlipViewEx flip)
     {
         // I gave up animation. Sorry.
 
@@ -486,21 +488,44 @@ public sealed partial class BookFixed3Viewer : Page
         //storyboard.Children.Add(doubleAnime);
         //storyboard.Begin();
 
-        var anime = flip.UseTouchAnimationsForAllNavigation;
-        flip.UseTouchAnimationsForAllNavigation = false;
-        flip.SelectedIndex =
-            Math.Max(0, Math.Min(flip.Items.Count - 1,
-            (flip.SelectedIndex - GetSnapResult(flip.HorizontalOffset / flip.ActualWidth, 0.3))));
-        flip.HorizontalOffset = 0;
-        flip.UseTouchAnimationsForAllNavigation = anime;
+        await SemaphorePageAnimation.WaitAsync();
+        try
+        {
+            var anime = flip.UseTouchAnimationsForAllNavigation;
+            flip.UseTouchAnimationsForAllNavigation = false;
+            //flip.SelectedIndex = Math.Max(0, Math.Min(flip.Items.Count - 1, (flip.SelectedIndex - GetSnapResult(flip.HorizontalOffset / flip.ActualWidth, 0.3))));
+            var result = Math.Max(0, Math.Min(flip.Items.Count - 1, flip.SelectedIndex - GetSnapResult(flip.HorizontalOffset / flip.ActualWidth, ScrollDetectionWidthRelative)));
+            var target = -(result - flip.SelectedIndex) * flip.ActualWidth;
+            var diff = target - flip.HorizontalOffset;
+            while (true)
+            {
+                //This is rough implementation of animation. But that's fine.
+                if (diff == 0) break;
+                var offset = flip.HorizontalOffset + Math.Sign(diff) * (float)flip.ActualWidth * 0.08f;
+                if (diff > 0 ? offset > target : target > offset) break;
+                flip.HorizontalOffset = offset;
+                await Task.Delay(16);
+            }
+            flip.SelectedIndex = result;
+            flip.HorizontalOffset = 0;
+            flip.UseTouchAnimationsForAllNavigation = anime;
+        }
+        finally
+        {
+            SemaphorePageAnimation.Release();
+        }
     }
+
+    public const double ScrollDetectionWidthRelative = 0.25;
+
+    private System.Threading.SemaphoreSlim SemaphorePageAnimation = new(1, 1);
 
     private static int GetSnapResult(double diff, double minimumX)
     {
         var abs = Math.Abs(diff);
         var floor = Math.Floor(abs);
         if (abs - floor > minimumX) floor++;
-        return (int)floor * (diff >= 0 ? 1 : -1);
+        return (int)floor * Math.Sign(diff);
     }
 
     private void flipView_PointerCanceled(object sender, PointerRoutedEventArgs e)

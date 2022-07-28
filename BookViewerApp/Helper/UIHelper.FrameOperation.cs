@@ -17,6 +17,39 @@ public static partial class UIHelper
 {
     public static class FrameOperation
     {
+        //public static async void OpenPdfJs(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        //{
+        //    if (file is null) return;
+        //    if (sender is null) return;
+        //    SetTitleByResource(sender, "PdfJs");
+        //    var tabPage = GetCurrentTabPage(sender);
+
+        //    var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
+        //    EpubResolverBase resolver = await EpubResolverBase.GetResolverPdfJs(file);
+        //    frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), null);
+
+        //    if (frame.Content is kurema.BrowserControl.Views.BrowserControl content)
+        //    {
+        //        OpenBrowser_BookmarkSetViewModel(content?.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel);
+
+        //        Uri uri = content.Control.BuildLocalStreamUri("pdfjs", resolver.PathHome);
+        //        content.Control.NavigateToLocalStreamUri(uri, resolver);
+        //        if (tabPage is not null)
+        //        {
+        //            content.Control.NewWindowRequested += async (s, e) =>
+        //            {
+        //                await tabPage.OpenTabWebPreferedBrowser(e.Uri.ToString());
+        //                e.Handled = true;
+        //            };
+        //        }
+        //        if (content.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm)
+        //        {
+        //            vm.ControllerCollapsed = true;
+        //        }
+        //    }
+        //    HistoryManager.AddEntry(file);
+        //}
+
         public static async void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
         {
             if (file is null) return;
