@@ -367,7 +367,7 @@ public static partial class UIHelper
 
         }
 
-        public async static void OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
+        public static void OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
         {
             void UpdateWebView2Events(Microsoft.Web.WebView2.Core.CoreWebView2 core)
             {

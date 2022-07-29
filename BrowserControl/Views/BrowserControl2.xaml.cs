@@ -21,7 +21,7 @@ namespace kurema.BrowserControl.Views;
 /// <summary>
 /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
 /// </summary>
-public sealed partial class BrowserControl2 : Page
+public sealed partial class BrowserControl2 : Page, IDisposable
 {
     public Microsoft.UI.Xaml.Controls.WebView2 WebView2 => webView;
 
@@ -32,25 +32,21 @@ public sealed partial class BrowserControl2 : Page
         if (DataContext is ViewModels.BrowserControl2ViewModel vm)
         {
             //vm.ActionNavigate = (s) => webView.NavigateToString(s);
-            vm.PropertyChanged += (s, e) =>
-            {
-                if(e.PropertyName is nameof(vm.Source))
-                {
-
-                }
-            };
         }
 
-        Task.Run(async () =>
+        webView.CoreWebView2Initialized += async (s, e) =>
+        //Task.Run(async () =>
         {
             await webView.EnsureCoreWebView2Async();
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             webView.CoreWebView2.ContainsFullScreenElementChanged += CoreWebView2_ContainsFullScreenElementChanged;
-        });
-        
+        };
+
     }
 
     private void CoreWebView2_ContainsFullScreenElementChanged(Microsoft.Web.WebView2.Core.CoreWebView2 sender, object args)
     {
+        //Does not seems to working.
         var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
         if (sender?.ContainsFullScreenElement == true && !v.IsFullScreenMode)
@@ -210,5 +206,10 @@ public sealed partial class BrowserControl2 : Page
             webView.GoForward();
         }
         catch { }
+    }
+
+    public void Dispose()
+    {
+        webView.Close();
     }
 }

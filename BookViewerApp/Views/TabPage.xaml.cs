@@ -163,17 +163,25 @@ public sealed partial class TabPage : Page
     public void OpenTabWeb(string uri)
     {
         var (frame, newTab) = OpenTab("Browser");
-        //UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
-        //{
-        //    newTab.Header = title;
-        //}
-        //);
-        UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
+
+        UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
         {
             newTab.Header = title;
         }
-);
+        );
 
+        //try
+        //{
+        //    //https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
+        //    var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
+        //    UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
+        //    {
+        //        newTab.Header = title;
+        //    });
+        //}
+        //catch(Exception ex)
+        //{
+        //}
     }
 
     public async System.Threading.Tasks.Task OpenTabWebPreferedBrowser(string uri)
