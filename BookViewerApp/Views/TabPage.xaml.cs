@@ -163,11 +163,17 @@ public sealed partial class TabPage : Page
     public void OpenTabWeb(string uri)
     {
         var (frame, newTab) = OpenTab("Browser");
-        UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
+        //UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
+        //{
+        //    newTab.Header = title;
+        //}
+        //);
+        UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
         {
             newTab.Header = title;
         }
-        );
+);
+
     }
 
     public async System.Threading.Tasks.Task OpenTabWebPreferedBrowser(string uri)

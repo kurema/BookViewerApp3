@@ -339,7 +339,7 @@ public static partial class UIHelper
             }
         }
 
-        private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.BrowserControlViewModel viewModel)
+        private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.IBrowserControl2ViewModel viewModel)
         {
             if (viewModel is null) return;
             var bookmark = LibraryStorage.GetItemBookmarks((_, _2) => { });
@@ -365,6 +365,58 @@ public static partial class UIHelper
                 })?.Where(a => a != null);
             });
 
+        }
+
+        public async static void OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
+        {
+            void UpdateWebView2Events(Microsoft.Web.WebView2.Core.CoreWebView2 core)
+            {
+                core.NewWindowRequested += (s, e) =>
+                {
+                    OpenTabWeb?.Invoke(e.Uri.ToString());
+                    e.Handled = true;
+                };
+                core.DocumentTitleChanged += (s, e) =>
+                {
+                    UpdateTitle(core.DocumentTitle);
+                };
+                core.DownloadStarting += (s, e) =>
+                {
+
+                };
+            }
+
+            frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), uri);
+
+            if ((frame.Content as kurema.BrowserControl.Views.BrowserControl2)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm && vm != null)
+            {
+                OpenBrowser_BookmarkSetViewModel(vm);
+
+                vm.OpenDownloadDirectoryCommand = new DelegateCommand(async (_) =>
+                {
+                    var folder = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Download", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                    await Windows.System.Launcher.LaunchFolderAsync(folder);
+                });
+
+                if (SettingStorage.GetValue("WebHomePage") is string homepage)
+                {
+                    vm.HomePage = homepage;
+                }
+                if (SettingStorage.GetValue("WebSearchEngine") is string searchEngine)
+                {
+                    vm.SearchEngine = searchEngine;
+                }
+            }
+
+            if (frame?.Content is kurema.BrowserControl.Views.BrowserControl2 content)
+            {
+                //await content.WebView2.EnsureCoreWebView2Async();
+
+                content.WebView2.CoreWebView2Initialized += (s, e) =>
+                {
+                    UpdateWebView2Events(content.WebView2.CoreWebView2);
+                };
+            }
         }
 
         public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
