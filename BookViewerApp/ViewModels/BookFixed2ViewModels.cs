@@ -33,6 +33,21 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
             (PageVisualSetCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
             (PageVisualMaxCommand as Commands.ICommandEventRaiseable)?.OnCanExecuteChanged();
         };
+
+        {
+            SlideShowTimer = new DispatcherTimer();
+            SlideShowTimer.Tick += (_, _) =>
+            {
+                var value = PageSelected + 1;
+                if ((value < Pages.Count) && (PagesCount > 0)) PageSelected = value;
+                else
+                {
+                    SlideShowTimer.Stop();
+                    OnPropertyChanged(nameof(SlideShowEnabled));
+                }
+            };
+            SlideShowTimer.Interval = TimeSpan.FromSeconds(20);
+        }
     }
 
     private Commands.ICommandEventRaiseable? _PageVisualAddCommand;
@@ -45,6 +60,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
     private Commands.ICommandEventRaiseable? _ShiftBookCommand;
     private ICommand? _ToggleFullScreenCommand;
     private ICommand? _GoToHomeCommand;
+    private ICommand? _ToggleSlideShow;
 
     public ObservableCollection<kurema.FileExplorerControl.Models.FileItems.IFileItem> ContainerItems { get; } = new ObservableCollection<kurema.FileExplorerControl.Models.FileItems.IFileItem>();
 
@@ -80,6 +96,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 
     public ICommand PageSetCommand { get { return _PageSetCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => b, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
     public ICommand PageMaxCommand { get { return _PageMaxCommand ??= new Commands.PageSetGeneralCommand(this, (a, b) => a.Pages.Count - 1, (a, b) => a.PageSelected = b, a => a.PageSelected); } }
+    public ICommand ToggleSlideShow { get { return _ToggleSlideShow ??= new DelegateCommand(_ => { SlideShowEnabled = !SlideShowEnabled; }); } }
 
 
     public Commands.ICommandEventRaiseable ShiftBookCommand { get { return _ShiftBookCommand ??= new Commands.ShiftSelectedBook(this); } }
@@ -207,8 +224,8 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
             {
                 var p = value.GetPage(page);
                 if (p is null) throw new ArgumentOutOfRangeException();
-                    //if (p is Books.PdfPage pdf) pdf.Option = option;// Is this OK?
-                    return p;
+                //if (p is Books.PdfPage pdf) pdf.Option = option;// Is this OK?
+                return p;
             }), this));
             if (i > 0) pages[(int)i - 1].NextPage = pages[(int)i];
         }
@@ -258,6 +275,28 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
     private ObservableCollection<TocEntryViewModes> _Toc = new();
     public ObservableCollection<TocEntryViewModes> Toc { get => _Toc; set { _Toc = value; OnPropertyChanged(nameof(Toc)); } }
 
+    public double SlideShowSeconds
+    {
+        get => SlideShowTimer.Interval.TotalSeconds;
+        set
+        {
+            SlideShowTimer.Interval = TimeSpan.FromSeconds(value);
+            OnPropertyChanged(nameof(SlideShowSeconds));
+        }
+    }
+
+    public bool SlideShowEnabled
+    {
+        get => SlideShowTimer.IsEnabled;
+        set
+        {
+            if (SlideShowEnabled == value) return;
+            if (value) SlideShowTimer.Start(); else SlideShowTimer.Stop();
+            OnPropertyChanged(nameof(SlideShowEnabled));
+        }
+    }
+
+    private DispatcherTimer SlideShowTimer;
 
     public bool Loading { get { return _Loading; } set { _Loading = value; OnPropertyChanged(nameof(Loading)); } }
     private bool _Loading = true;

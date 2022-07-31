@@ -12,6 +12,7 @@
     xmlns:BookFixed2ViewModel="using:BookViewerApp.ViewModels"
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     xmlns:Windows10version1903="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     >
     <UserControl.DataContext>
         <BookFixed2ViewModel:BookViewModel/>
@@ -601,6 +602,43 @@
                                         </Flyout>
                                     </Button.Flyout>
                                 </Button>
+                                <!--<Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" AllowFocusOnInteraction="True">
+                                    <SymbolIcon Symbol="SlideShow" />
+                                    <Button.Flyout>
+                                        <Flyout Placement="Top">
+                                            <StackPanel>
+                                                <TextBlock Text="Interval (sec):"/>
+                                                <TextBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                                                <Button Content="Start" Command="{Binding ToggleSlideShow}" HorizontalAlignment="Stretch"/>
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>-->
+                                <!-- ToDo: Tooltip -->
+                                <AppBarToggleButton Icon="SlideShow" AllowFocusOnInteraction="True" IsChecked="{Binding SlideShowEnabled,Mode=TwoWay}" Style="{StaticResource AppBarToggleButtonStyle}">
+                                    <AppBarToggleButton.ContextFlyout>
+                                        <Flyout Placement="Top">
+                                            <StackPanel>
+                                                <TextBlock Text="Interval (sec):"/>
+
+                                                <TextBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                                            </StackPanel>
+                                        </Flyout>
+                                    </AppBarToggleButton.ContextFlyout>
+                                </AppBarToggleButton>
+                                <!--<ToggleButton  AllowFocusOnInteraction="True"
+                                              IsChecked="{Binding SlideShowEnabled}">
+                                    <SymbolIcon Symbol="SlideShow" />
+                                    <ToggleButton.ContextFlyout>
+                                        <Flyout Placement="Top">
+                                            <StackPanel>
+                                                <TextBlock Text="Interval (sec):"/>
+                                                
+                                                <TextBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                                            </StackPanel>
+                                        </Flyout>
+                                    </ToggleButton.ContextFlyout>
+                                </ToggleButton>-->
 
                                 <Button 
                                     Template="{StaticResource ButtonTemplate}"

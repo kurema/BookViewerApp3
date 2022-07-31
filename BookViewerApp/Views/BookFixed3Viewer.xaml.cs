@@ -434,13 +434,19 @@ public sealed partial class BookFixed3Viewer : Page
                 const double extraFlipLength = 0.3;
 
                 var point = e.GetCurrentPoint(flip);
-                if (_LastPoint is null) _LastPoint = point;
-                var offset = flip.HorizontalOffset + ((float)(point.Position.X - _LastPoint.Position.X));
-                if (flip.SelectedIndex == 0) offset = Math.Min(offset, (float)(flip.ActualWidth * extraFlipLength));
-                if (flip.SelectedIndex == flip.Items.Count - 1) offset = Math.Max(offset, -(float)(flip.ActualWidth * extraFlipLength));
-                flip.HorizontalOffset = offset;
-                _LastPoint = point;
-                e.Handled = true;
+                if (point.Properties.IsLeftButtonPressed)
+                {
+                    if (_LastPoint is null) _LastPoint = point;
+                    var offset = flip.HorizontalOffset + ((float)(point.Position.X - _LastPoint.Position.X));
+                    if (flip.SelectedIndex == 0) offset = Math.Min(offset, (float)(flip.ActualWidth * extraFlipLength));
+                    if (flip.SelectedIndex == flip.Items.Count - 1) offset = Math.Max(offset, -(float)(flip.ActualWidth * extraFlipLength));
+                    flip.HorizontalOffset = offset;
+                    _LastPoint = point;
+                    e.Handled = true;
+                }
+                else
+                {
+                }
             }
         }
     }
@@ -457,16 +463,21 @@ public sealed partial class BookFixed3Viewer : Page
             {
                 flip.CapturePointer(e.Pointer);
                 var point = e.GetCurrentPoint(flip);
-                _LastPoint = point;
-                e.Handled = true;
+                if (point.Properties.IsLeftButtonPressed)
+                {
+                    _LastPoint = point;
+                    e.Handled = true;
+                }
+                else if (point.Properties.IsRightButtonPressed)
+                {
+                    //ViewerController.SetControlPanelVisibility(true);
+                }
             }
         }
     }
 
     private async void PlayPageAnimation(FlipViewEx flip)
     {
-        // I gave up animation. Sorry.
-
         //var doubleAnime = new DoubleAnimationUsingKeyFrames();
         //Storyboard.SetTarget(doubleAnime, flipView);
         //Storyboard.SetTargetProperty(doubleAnime, nameof(flipView.HorizontalOffset));
