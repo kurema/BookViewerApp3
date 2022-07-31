@@ -121,7 +121,7 @@
     <value>Sincronização de marcadores de livros</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>Alternar o modo ecrã inteiro.</value>
+    <value>Alternar o modo ecrã inteiro</value>
   </data>
   <data name="ClearThisBookshelf.Label" xml:space="preserve">
     <value>Limpar esta prateleira</value>
@@ -655,5 +655,12 @@ Também pode desativar a geração de miniaturas no separador Explorador com a d
   </data>
   <data name="Browser.Addon.DarkMode" xml:space="preserve">
     <value>Modo escuro</value>
+  </data>
+  <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
+    <value>Reproduzir slideshow
+Clique direito para configurar</value>
+  </data>
+  <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
+    <value>Intervalo (seg):</value>
   </data>
 </root>

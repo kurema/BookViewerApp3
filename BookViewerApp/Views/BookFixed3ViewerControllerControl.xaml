@@ -602,44 +602,19 @@
                                         </Flyout>
                                     </Button.Flyout>
                                 </Button>
-                                <!--<Button Template="{StaticResource ButtonTemplate}" Style="{StaticResource ButtonStyle}" AllowFocusOnInteraction="True">
-                                    <SymbolIcon Symbol="SlideShow" />
-                                    <Button.Flyout>
-                                        <Flyout Placement="Top">
-                                            <StackPanel>
-                                                <TextBlock Text="Interval (sec):"/>
-                                                <TextBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
-                                                <Button Content="Start" Command="{Binding ToggleSlideShow}" HorizontalAlignment="Stretch"/>
-                                            </StackPanel>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>-->
-                                <!-- ToDo: Tooltip -->
-                                <AppBarToggleButton Icon="SlideShow" AllowFocusOnInteraction="True" IsChecked="{Binding SlideShowEnabled,Mode=TwoWay}" Style="{StaticResource AppBarToggleButtonStyle}">
+                                <AppBarToggleButton Icon="SlideShow" AllowFocusOnInteraction="True" IsChecked="{Binding SlideShowEnabled,Mode=TwoWay}" Style="{StaticResource AppBarToggleButtonStyle}"
+                                                    ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.SlideShow.ToolTip.Message, Mode=OneTime}"
+                                                    >
                                     <AppBarToggleButton.ContextFlyout>
                                         <Flyout Placement="Top">
-                                            <StackPanel>
-                                                <TextBlock Text="Interval (sec):"/>
-
-                                                <TextBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                                            <StackPanel MinWidth="130">
+                                                <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.SlideShow.Interval.Label, Mode=OneTime}"/>
+                                                <Slider Value="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Minimum="1" Maximum="120" />
+                                                <winui:NumberBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
                                             </StackPanel>
                                         </Flyout>
                                     </AppBarToggleButton.ContextFlyout>
                                 </AppBarToggleButton>
-                                <!--<ToggleButton  AllowFocusOnInteraction="True"
-                                              IsChecked="{Binding SlideShowEnabled}">
-                                    <SymbolIcon Symbol="SlideShow" />
-                                    <ToggleButton.ContextFlyout>
-                                        <Flyout Placement="Top">
-                                            <StackPanel>
-                                                <TextBlock Text="Interval (sec):"/>
-                                                
-                                                <TextBox Text="{Binding SlideShowSeconds,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" HorizontalAlignment="Stretch"/>
-                                            </StackPanel>
-                                        </Flyout>
-                                    </ToggleButton.ContextFlyout>
-                                </ToggleButton>-->
-
                                 <Button 
                                     Template="{StaticResource ButtonTemplate}"
                                               Style='{StaticResource ButtonStyle}'

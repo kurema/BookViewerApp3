@@ -94,7 +94,7 @@
     <value>环境</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>切换全屏模式。</value>
+    <value>切换全屏模式</value>
   </data>
   <data name="BookmarkBasic.Title" xml:space="preserve">
     <value>书签</value>
@@ -657,5 +657,12 @@
   </data>
   <data name="Browser.Addon.DarkMode" xml:space="preserve">
     <value>暗模式</value>
+  </data>
+  <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
+    <value>播放幻灯片
+右键更改设置</value>
+  </data>
+  <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
+    <value>间隔 (秒):</value>
   </data>
 </root>

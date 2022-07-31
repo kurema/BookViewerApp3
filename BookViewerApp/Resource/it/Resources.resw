@@ -121,7 +121,7 @@
     <value>Sincronizza segnalibri</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>Schermo intero.</value>
+    <value>Schermo intero</value>
   </data>
   <data name="ClearThisBookshelf.Label" xml:space="preserve">
     <value>Pulisci lo scaffale</value>
@@ -657,5 +657,12 @@ Puoi anche disabilitare la generazione di miniature nella scheda Explorer con l'
   </data>
   <data name="Browser.Addon.DarkMode" xml:space="preserve">
     <value>Modalità scura</value>
+  </data>
+  <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
+    <value>Riproduzione di una presentazione
+Cliccare con il tasto destro del mouse per configurare</value>
+  </data>
+  <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
+    <value>Intervallo (sec):</value>
   </data>
 </root>

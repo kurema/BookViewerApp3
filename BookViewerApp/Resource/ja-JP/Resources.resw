@@ -121,7 +121,7 @@
     <value>栞を同期する</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>全画面モード切替。</value>
+    <value>全画面モード切替</value>
   </data>
   <data name="ClearThisBookshelf.Label" xml:space="preserve">
     <value>本棚を削除</value>
@@ -661,5 +661,12 @@
   </data>
   <data name="Browser.Addon.DarkMode" xml:space="preserve">
     <value>ダークモード</value>
+  </data>
+  <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
+    <value>スライドショー再生
+右クリックで設定</value>
+  </data>
+  <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
+    <value>再生間隔 (秒):</value>
   </data>
 </root>

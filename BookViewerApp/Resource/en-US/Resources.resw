@@ -226,7 +226,7 @@
     <value>Sync bookmarks of books</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>Toggle full screen mode.</value>
+    <value>Toggle full screen mode</value>
   </data>
   <data name="ClearThisBookshelf.Label" xml:space="preserve">
     <value>Clear this bookshelf</value>
@@ -760,5 +760,12 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   </data>
   <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
     <value>Apply the dark mode settings to the Epub viewer. (Experimental)</value>
+  </data>
+  <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
+    <value>Play slideshow
+Right click to configure</value>
+  </data>
+  <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
+    <value>Interval (sec):</value>
   </data>
 </root>
