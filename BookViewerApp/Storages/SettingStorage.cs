@@ -53,6 +53,7 @@ public class SettingStorage
         public const string DefaultBrowserExternal = "DefaultBrowserExternal";
         public const string EpubViewerDarkMode = "EpubViewerDarkMode";
         public const string ViewerSlideshowLastTimeSpan = "ViewerSlideshowLastTimeSpan";
+        public const string BrowserUseWebView2 = "BrowserUseWebView2";
     }
 
     private static SettingInstance[] _SettingInstances = null;
@@ -94,6 +95,7 @@ public class SettingStorage
                         new SettingInstance(SettingKeys.DefaultBrowserExternal,false,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance(SettingKeys.EpubViewerDarkMode,false, new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance(SettingKeys.ViewerSlideshowLastTimeSpan,20.0,new TypeConverters.DoubleConverter(),group:"Viewer",isVisible:false),
+                        new SettingInstance(SettingKeys.BrowserUseWebView2,false,new TypeConverters.BoolConverter(),group:"Browser"),
                 };
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw
@@ -156,7 +158,8 @@ public class SettingStorage
 
         public bool IsVisible { get; set; }
 
-        private Windows.Storage.ApplicationDataContainer Setting => (IsLocal ? LocalSettings : RoamingSettings);
+        private Windows.Storage.ApplicationDataContainer Setting => IsLocal ? LocalSettings : RoamingSettings;
+        private Windows.Storage.ApplicationDataContainer SettingAlternative => IsLocal ? RoamingSettings: LocalSettings;
 
         public Type GetGenericType()
         {
@@ -206,11 +209,14 @@ public class SettingStorage
 
         public object GetValue()
         {
-            if (Setting.Values.TryGetValue(Key, out object data) == false)
+            if (!Setting.Values.TryGetValue(Key, out object data))
             {
-                return DefaultValue;
+                if(!SettingAlternative.Values.TryGetValue(Key, out data))
+                {
+                    return DefaultValue;
+                }
             }
-            else
+            
             {
                 if (Converter.TryGetTypeGeneral(data.ToString(), out object result))
                 {

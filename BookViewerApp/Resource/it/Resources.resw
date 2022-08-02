@@ -665,4 +665,10 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
     <value>Intervallo (sec):</value>
   </data>
+  <data name="Setting_BrowserUseWebView2.Title" xml:space="preserve">
+    <value>Utilizzare un browser moderno (Anteprima)</value>
+  </data>
+  <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
+    <value>Utilizzare il motore basato su Chorimum (WebView2) per il browser. È instabile e pieno di problemi. Se si utilizza Windows 10, è necessario installare manualmente il runtime come amministratore.</value>
+  </data>
 </root>

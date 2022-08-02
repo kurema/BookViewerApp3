@@ -663,4 +663,10 @@ Clique direito para configurar</value>
   <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
     <value>Intervalo (seg):</value>
   </data>
+  <data name="Setting_BrowserUseWebView2.Title" xml:space="preserve">
+    <value>Utilizar um navegador moderno (Preview)</value>
+  </data>
+  <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
+    <value>Utilize o motor baseado em Chorimum (WebView2) para o navegador. É instável e com falhas. Se estiver a utilizar o Windows 10, tem de instalar manualmente o tempo de execução como administrador.</value>
+  </data>
 </root>

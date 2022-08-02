@@ -768,4 +768,10 @@ Right click to configure</value>
   <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
     <value>Interval (sec):</value>
   </data>
+  <data name="Setting_BrowserUseWebView2.Title" xml:space="preserve">
+    <value>Use modern browser (Preview)</value>
+  </data>
+  <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
+    <value>Use Chorimum based engine (WebView2) for browser. It's unstable and glitchy. If you are using Windows 10, you have to manually install runtime as administrator.</value>
+  </data>
 </root>

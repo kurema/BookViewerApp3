@@ -665,4 +665,10 @@
   <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
     <value>间隔 (秒):</value>
   </data>
+  <data name="Setting_BrowserUseWebView2.Title" xml:space="preserve">
+    <value>使用现代浏览器 (预览)</value>
+  </data>
+  <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
+    <value>使用基于Chorimum引擎（WebView2）的浏览器。它是不稳定的，而且有小毛病。如果你使用的是Windows 10，你必须以管理员身份手动安装运行时间。</value>
+  </data>
 </root>

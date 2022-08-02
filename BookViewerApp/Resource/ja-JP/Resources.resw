@@ -669,4 +669,10 @@
   <data name="Viewer.SlideShow.Interval.Label" xml:space="preserve">
     <value>再生間隔 (秒):</value>
   </data>
+  <data name="Setting_BrowserUseWebView2.Title" xml:space="preserve">
+    <value>新しいブラウザエンジンを使用する (プレビュー)</value>
+  </data>
+  <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
+    <value>ブラウザにはChorimumベースのエンジン(WebView2)を使用します。現時点で不安定です。Windows10をお使いの場合、ランタイムを管理者権限でインストールする必要があります。</value>
+  </data>
 </root>

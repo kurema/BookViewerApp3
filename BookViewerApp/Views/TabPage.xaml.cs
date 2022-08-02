@@ -170,17 +170,23 @@ public sealed partial class TabPage : Page
         //}
         //);
 
-        try
+        if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserUseWebView2))
         {
-            //https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
-            var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
-            if (string.IsNullOrEmpty(version)) throw new Exception();
-            UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
+            try
             {
-                newTab.Header = title;
-            });
+                //https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
+                //var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
+                //if (string.IsNullOrEmpty(version)) throw new Exception();
+                UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
+                {
+                    newTab.Header = title;
+                });
+                return;
+            }
+            catch
+            {
+            }
         }
-        catch
         {
             UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
             {

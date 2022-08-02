@@ -24,7 +24,7 @@
       </container>
       <container title="About BookViewer3">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
-        <!--<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />-->
+        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
         <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
       </container>
@@ -67,16 +67,16 @@
       </container>
       <container title="アプリについて">
         <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
-        <!--<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />-->
+        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />
         <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
         <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
       </container>
       <container title="作者について">
         <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
         <bookmark url="https://github.com/kurema" title="GitHub" />
-        <bookmark url="https://www.amazon.co.jp/-/e/B077X71C4C/tag=kurema05-22" title="Kindle" />
+        <bookmark url="https://www.amazon.co.jp/-/e/B077X71C4C/tag=kurema_bv3-22" title="Kindle" />
         <bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
-        <bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV/tag=kurema05-22" title="欲しいものリスト" />
+        <bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV/tag=kurema_bv3-22" title="欲しいものリスト" />
       </container>
     </bookmarks>
   </multilingual>
