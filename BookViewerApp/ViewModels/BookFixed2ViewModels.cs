@@ -46,7 +46,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
                     OnPropertyChanged(nameof(SlideShowEnabled));
                 }
             };
-            SlideShowTimer.Interval = TimeSpan.FromSeconds(20);
+            SlideShowTimer.Interval = TimeSpan.FromSeconds((double)SettingStorage.GetValue(SettingStorage.SettingKeys.ViewerSlideshowLastTimeSpan));
         }
     }
 
@@ -282,6 +282,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
         {
             SlideShowTimer.Interval = TimeSpan.FromSeconds(value);
             OnPropertyChanged(nameof(SlideShowSeconds));
+            SettingStorage.SetValue(SettingStorage.SettingKeys.ViewerSlideshowLastTimeSpan, value);
         }
     }
 

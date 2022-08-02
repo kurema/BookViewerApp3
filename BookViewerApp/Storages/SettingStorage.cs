@@ -19,6 +19,42 @@ public class SettingStorage
     public static Windows.Storage.ApplicationDataContainer LocalSettings { get { return Windows.Storage.ApplicationData.Current.LocalSettings; } }
     public static Windows.Storage.ApplicationDataContainer RoamingSettings { get { return Windows.Storage.ApplicationData.Current.RoamingSettings; } }
 
+    public static class SettingKeys
+    {
+        public const string DefaultSpreadType = "DefaultSpreadType";
+        public const string DefaultFullScreen = "DefaultFullScreen";
+        public const string SaveLastReadPage = "SaveLastReadPage";
+        public const string DefaultPageReverse = "DefaultPageReverse";
+        public const string RememberPageDirection = "RememberPageDirection";
+        public const string RespectPageDirectionInfo = "RespectPageDirectionInfo";
+        public const string ShowRightmostAndLeftmost = "ShowRightmostAndLeftmost";
+        public const string SyncBookmarks = "SyncBookmarks";
+        public const string TileWidth = "TileWidth";
+        public const string TileHeight = "TileHeight";
+        public const string BackgroundBrightness = "BackgroundBrightness";
+        public const string ScrollAnimation = "ScrollAnimation";
+        public const string FolderNameToExclude = "FolderNameToExclude";
+        public const string BookNameTrim = "BookNameTrim";
+        public const string SortNaturalOrder = "SortNaturalOrder";
+        public const string SortCoverComesFirst = "SortCoverComesFirst";
+        public const string ZoomButtonShowTimespan = "ZoomButtonShowTimespan";
+        public const string CommandBarShowTimespan = "CommandBarShowTimespan";
+        public const string WebHomePage = "WebHomePage";
+        public const string WebSearchEngine = "WebSearchEngine";
+        public const string ShowPresetBookmarks = "ShowPresetBookmarks";
+        public const string ExplorerContentStyle = "ExplorerContentStyle";
+        public const string ExplorerIconSize = "ExplorerIconSize";
+        public const string ShowHistories = "ShowHistories";
+        public const string MaximumHistoryCount = "MaximumHistoryCount";
+        public const string EpubViewerType = "EpubViewerType";
+        public const string PdfRenderScaling = "PdfRenderScaling";
+        public const string ShowBookmarkFavicon = "ShowBookmarkFavicon";
+        public const string FetchThumbnailsBackground = "FetchThumbnailsBackground";
+        public const string DefaultBrowserExternal = "DefaultBrowserExternal";
+        public const string EpubViewerDarkMode = "EpubViewerDarkMode";
+        public const string ViewerSlideshowLastTimeSpan = "ViewerSlideshowLastTimeSpan";
+    }
+
     private static SettingInstance[] _SettingInstances = null;
     public static SettingInstance[] SettingInstances
     {
@@ -26,37 +62,38 @@ public class SettingStorage
         {
             return _SettingInstances ??= new SettingInstance[]
                 {
-                        new SettingInstance("DefaultSpreadType",Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
-                        new SettingInstance("DefaultFullScreen",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("SaveLastReadPage",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("DefaultPageReverse",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("RememberPageDirection",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("RespectPageDirectionInfo",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("ShowRightmostAndLeftmost",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("SyncBookmarks",true,new TypeConverters.BoolConverter(),group:"Cloud"),
-                        new SettingInstance("TileWidth",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false) {Minimum=0,Maximum=1000 },
-                        new SettingInstance("TileHeight",300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum=0,Maximum=1000 },
-                        new SettingInstance("BackgroundBrightness",90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){Minimum=0,Maximum=100 },
-                        new SettingInstance("ScrollAnimation",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("FolderNameToExclude",null,new TypeConverters.RegexConverter(),group:"Library",isVisible:false),
-                        new SettingInstance("BookNameTrim",null,new TypeConverters.RegexConverter(),group:"Library",isVisible:false),
-                        new SettingInstance("SortNaturalOrder",true,new TypeConverters.BoolConverter(),group:"Viewer"),//PerfectViewerが対応したのでデフォルトをtrueにしておきます
-                        new SettingInstance("SortCoverComesFirst",false,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        new SettingInstance("ZoomButtonShowTimespan",4.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
-                        new SettingInstance("CommandBarShowTimespan",0.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){Minimum = 0,Maximum = 10},
-                        new SettingInstance("WebHomePage","https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
-                        new SettingInstance("WebSearchEngine","http://www.google.com/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
-                        new SettingInstance("ShowPresetBookmarks",true,new TypeConverters.BoolConverter(),group:"Explorer"),
-                        new SettingInstance("ExplorerContentStyle",kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
-                        new SettingInstance("ExplorerIconSize",75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),
-                        new SettingInstance("ShowHistories",true,new TypeConverters.BoolConverter(),group:"Explorer"),
-                        new SettingInstance("MaximumHistoryCount",100,new TypeConverters.IntConverter(),group:"Explorer",isVisible:false){Minimum = 0,Maximum = 500},//MRUで履歴を管理するようにしたので非表示にしました。
-                        new SettingInstance("EpubViewerType",SettingEnums.EpubViewerType.Bibi, new TypeConverters.EnumConverter<SettingEnums.EpubViewerType>(),group:"Viewer"),
-                        new SettingInstance("PdfRenderScaling",true,new TypeConverters.BoolConverter(),group:"Viewer"),
-                        //new SettingInstance("ShowBookmarkFavicon",false,new TypeConverters.BoolConverter(),group:"Explorer"),
-                        new SettingInstance("FetchThumbnailsBackground",true,new TypeConverters.BoolConverter(),group:"Explorer"),
-                        new SettingInstance("DefaultBrowserExternal",false,new TypeConverters.BoolConverter(),group:"Explorer"),
-                        new SettingInstance("EpubViewerDarkMode",false, new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.DefaultSpreadType,Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.DefaultFullScreen,false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.SaveLastReadPage,true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.DefaultPageReverse,false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.RememberPageDirection,true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.RespectPageDirectionInfo,true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.ShowRightmostAndLeftmost,false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.SyncBookmarks,true,new TypeConverters.BoolConverter(),group:"Cloud"),
+                        new SettingInstance(SettingKeys.TileWidth,300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false) { Minimum=0, Maximum=1000 },
+                        new SettingInstance(SettingKeys.TileHeight,300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){ Minimum=0, Maximum=1000 },
+                        new SettingInstance(SettingKeys.BackgroundBrightness,90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){ Minimum=0, Maximum=100 },
+                        new SettingInstance(SettingKeys.ScrollAnimation,true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.FolderNameToExclude,null,new TypeConverters.RegexConverter(),group:"Library",isVisible:false),
+                        new SettingInstance(SettingKeys.BookNameTrim,null,new TypeConverters.RegexConverter(),group:"Library",isVisible:false),
+                        new SettingInstance(SettingKeys.SortNaturalOrder,true,new TypeConverters.BoolConverter(),group:"Viewer"),//PerfectViewerが対応したのでデフォルトをtrueにしておきます
+                        new SettingInstance(SettingKeys.SortCoverComesFirst,false,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.ZoomButtonShowTimespan,4.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){ Minimum = 0, Maximum = 10},
+                        new SettingInstance(SettingKeys.CommandBarShowTimespan,0.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){ Minimum = 0, Maximum = 10},
+                        new SettingInstance(SettingKeys.WebHomePage,"https://www.google.com/",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance(SettingKeys.WebSearchEngine,"http://www.google.com/search?q=%s",new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance(SettingKeys.ShowPresetBookmarks,true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance(SettingKeys.ExplorerContentStyle,kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles.Icon,new TypeConverters.EnumConverter<kurema.FileExplorerControl.ViewModels.ContentViewModel.ContentStyles>(),group:"Explorer",isVisible:false),
+                        new SettingInstance(SettingKeys.ExplorerIconSize,75.0,new TypeConverters.DoubleConverter(),group:"Explorer",isVisible:false),
+                        new SettingInstance(SettingKeys.ShowHistories,true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance(SettingKeys.MaximumHistoryCount,100,new TypeConverters.IntConverter(),group:"Explorer",isVisible:false){ Minimum = 0, Maximum = 500},//MRUで履歴を管理するようにしたので非表示にしました。
+                        new SettingInstance(SettingKeys.EpubViewerType,SettingEnums.EpubViewerType.Bibi, new TypeConverters.EnumConverter<SettingEnums.EpubViewerType>(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.PdfRenderScaling,true,new TypeConverters.BoolConverter(),group:"Viewer"),
+                        //new SettingInstance(SettingKeys.ShowBookmarkFavicon,false,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance(SettingKeys.FetchThumbnailsBackground,true,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance(SettingKeys.DefaultBrowserExternal,false,new TypeConverters.BoolConverter(),group:"Explorer"),
+                        new SettingInstance(SettingKeys.EpubViewerDarkMode,false, new TypeConverters.BoolConverter(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.ViewerSlideshowLastTimeSpan,20.0,new TypeConverters.DoubleConverter(),group:"Viewer",isVisible:false),
                 };
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw
