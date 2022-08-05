@@ -136,18 +136,32 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 
         if (content is null)
         {
-            args.Response = sender.Environment.CreateWebResourceResponse(null, 404, "Not Found", "");
-            deferral.Complete();
+            try
+            {
+                args.Response = sender.Environment.CreateWebResourceResponse(null, 404, "Not Found", "");
+            }
+            catch { }
+            finally
+            {
+                deferral.Complete();
+            }
             return;
         }
         else if (content is IRandomAccessStream random)
         {
-            var ext = Path.GetExtension(uri.LocalPath);
-            var mimetype = MimeTypes.MimeTypeMap.GetMimeType(ext);
-            var header = new StringBuilder();
-            if (!string.IsNullOrEmpty(mimetype) && string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
-            args.Response = sender.Environment.CreateWebResourceResponse(random, 200, "OK", header.ToString());
-            deferral.Complete();
+            try
+            {
+                var ext = Path.GetExtension(uri.LocalPath);
+                var mimetype = MimeTypes.MimeTypeMap.GetMimeType(ext);
+                var header = new StringBuilder();
+                if (!string.IsNullOrEmpty(mimetype) && string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
+                args.Response = sender.Environment.CreateWebResourceResponse(random, 200, "OK", header.ToString());
+            }
+            catch { }
+            finally
+            {
+                deferral.Complete();
+            }
             return;
         }
         else

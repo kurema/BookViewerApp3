@@ -657,7 +657,7 @@
     <value>Windows設定で「既定のアプリモード」がダークになっている場合、Epubビュワーで色を反転します。</value>
   </data>
   <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
-    <value>Epubビュワーにダークモードを適用 (実験的)</value>
+    <value>Epubビュワーにダークモードを適用 (プレビュー)</value>
   </data>
   <data name="Browser.Addon.DarkMode" xml:space="preserve">
     <value>ダークモード</value>

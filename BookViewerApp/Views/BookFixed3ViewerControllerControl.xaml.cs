@@ -85,17 +85,9 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 
     private void ListView_SelectBookmark(object sender, ItemClickEventArgs e)
     {
-        if (e.OriginalSource is ListView)
-        {
-            if (e.ClickedItem is ViewModels.BookmarkViewModel model)
-            {
-                if (this.DataContext is ViewModels.BookViewModel v)
-                {
-                    //Should I add 1? Tested. No.
-                    v.PageSelectedDisplay = model.Page;
-                }
-            }
-        }
+        if (e.OriginalSource is not ListView || e.ClickedItem is not ViewModels.BookmarkViewModel model || this.DataContext is not ViewModels.BookViewModel v) return;
+        //Should I add 1? Tested. No.
+        v.PageSelectedDisplay = model.Page;
     }
 
     private void PageInfoElement_Tapped(object sender, TappedRoutedEventArgs e)

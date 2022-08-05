@@ -653,7 +653,7 @@
     <value>如果應用程序設置為暗模式，則 Epub 查看器也將處於暗模式。</value>
   </data>
   <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
-    <value>將暗模式設置應用於 Epub 查看器。（實驗選項）</value>
+    <value>將暗模式設置應用於 Epub 查看器。 (實驗選項)</value>
   </data>
   <data name="Browser.Addon.DarkMode" xml:space="preserve">
     <value>暗模式</value>
