@@ -17,38 +17,182 @@ public static partial class UIHelper
 {
     public static class FrameOperation
     {
-        //public static async void OpenPdfJs(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
-        //{
-        //    if (file is null) return;
-        //    if (sender is null) return;
-        //    SetTitleByResource(sender, "PdfJs");
-        //    var tabPage = GetCurrentTabPage(sender);
+        public static async void OpenPdfJs(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        {
+            if (file is null) return;
+            if (sender is null) return;
+            SetTitleByResource(sender, "PdfJs");
+            var tabPage = GetCurrentTabPage(sender);
 
-        //    var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
-        //    EpubResolverBase resolver = await EpubResolverBase.GetResolverPdfJs(file);
-        //    frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), null);
+            EpubResolverBase resolver = await EpubResolverBase.GetResolverPdfJs(file);
+            frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
 
-        //    if (frame.Content is kurema.BrowserControl.Views.BrowserControl content)
-        //    {
-        //        OpenBrowser_BookmarkSetViewModel(content?.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel);
+            if (frame.Content is not kurema.BrowserControl.Views.BrowserControl2 content) return;
+            if (content.DataContext is not kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm) return;
+            if (tabPage is null) return;
 
-        //        Uri uri = content.Control.BuildLocalStreamUri("pdfjs", resolver.PathHome);
-        //        content.Control.NavigateToLocalStreamUri(uri, resolver);
-        //        if (tabPage is not null)
-        //        {
-        //            content.Control.NewWindowRequested += async (s, e) =>
-        //            {
-        //                await tabPage.OpenTabWebPreferedBrowser(e.Uri.ToString());
-        //                e.Handled = true;
-        //            };
-        //        }
-        //        if (content.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm)
-        //        {
-        //            vm.ControllerCollapsed = true;
-        //        }
-        //    }
-        //    HistoryManager.AddEntry(file);
-        //}
+            {
+                OpenBrowser_BookmarkSetViewModel(vm);
+
+                var uri = resolver.GetUri(resolver.PathHome);
+                await content.WebView2.EnsureCoreWebView2Async();
+                content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
+                vm.SourceString = uri;
+                vm.ControllerCollapsed = true;
+
+                content.WebView2.CoreWebView2Initialized += (s, e) =>
+                {
+                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    {
+                        await tabPage.OpenTabWebPreferedBrowser(a);
+                    }, (_) => { });
+                };
+            }
+            HistoryManager.AddEntry(file);
+        }
+
+        public static async void OpenSingleFile(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        {
+            if (file is null) return;
+            if (sender is null) return;
+            //SetTitleByResource(sender, "PdfJs");
+            var tabPage = GetCurrentTabPage(sender);
+
+            frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
+
+            if (frame.Content is not kurema.BrowserControl.Views.BrowserControl2 content) return;
+            if (content.DataContext is not kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm) return;
+            if (tabPage is null) return;
+
+            {
+                OpenBrowser_BookmarkSetViewModel(vm);
+
+                var uri = $"https://file.example/{System.IO.Path.GetFileName(file.Name)}";
+                await content.WebView2.EnsureCoreWebView2Async();
+                content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                content.WebView2.CoreWebView2.WebResourceRequested += async (sender, args) =>
+                {
+                    if (args.Request.Uri.ToUpper() != uri.ToUpper()) return;
+                    var deferral = args.GetDeferral();
+                    var ext = Path.GetExtension(file.Name);
+                    var mimetype = MimeTypes.MimeTypeMap.GetMimeType(ext);
+                    var header = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(mimetype) && string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
+                    args.Response = sender.Environment.CreateWebResourceResponse(await file.OpenReadAsync(), 200, "OK", header.ToString());
+                    deferral.Complete();
+                    return;
+                };
+                vm.SourceString = uri;
+                vm.ControllerCollapsed = true;
+
+                content.WebView2.CoreWebView2Initialized += (s, e) =>
+                {
+                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    {
+                        await tabPage.OpenTabWebPreferedBrowser(a);
+                    }, (_) => { });
+                };
+            }
+            HistoryManager.AddEntry(file);
+        }
+
+        public static async void OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        {
+            if (file is null) return;
+            if (sender is null) return;
+            SetTitleByResource(sender, "Epub");
+            var tabPage = GetCurrentTabPage(sender);
+
+            var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
+            EpubResolverBase resolver = epubType switch
+            {
+                //SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolverFile.GetResolverBibi(file),
+                SettingStorage.SettingEnums.EpubViewerType.Bibi => await EpubResolverBase.GetResolverBibiZip(file),
+                SettingStorage.SettingEnums.EpubViewerType.EpubJsReader => EpubResolverBase.GetResolverBasicFile(file),
+                _ => await EpubResolverBase.GetResolverBibiZip(file),
+            };
+            frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
+
+            if (frame.Content is not kurema.BrowserControl.Views.BrowserControl2 content) return;
+            if (content.DataContext is not kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm) return;
+            if (tabPage is null) return;
+
+            OpenBrowser_BookmarkSetViewModel(vm);
+
+            var uri = resolver.GetUri(resolver.PathHome);
+            await content.WebView2.EnsureCoreWebView2Async();
+            //https://github.com/MicrosoftEdge/WebView2Feedback/issues/372
+            //https://web.biz-prog.net/praxis/webview/response.html
+            content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+            content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
+            //content.WebView2.CoreWebView2.WebResourceResponseReceived += CoreWebView2_WebResourceResponseReceived;
+            vm.SourceString = uri;
+
+            vm.ControllerCollapsed = true;
+            {
+                {
+                    //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
+                    var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                    var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
+
+                    async Task applyDarkMode()
+                    {
+                        if (checkbox.IsChecked ?? false)
+                        {
+                            //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi)
+                            await content.WebView2.CoreWebView2.ExecuteScriptAsync(@"if(document.body.style.background===""""){document.body.style.background='white';}");
+                            await content.WebView2.CoreWebView2.ExecuteScriptAsync(@"document.body.style.filter='invert(100%) hue-rotate(180deg)';");
+                        }
+                        else
+                        {
+                            //if (epubType == SettingStorage.SettingEnums.EpubViewerType.Bibi) 
+                            await content.WebView2.CoreWebView2.ExecuteScriptAsync(@"if(document.body.style.background===""white""){document.body.style.background='';}");
+                            await content.WebView2.CoreWebView2.ExecuteScriptAsync(@"document.body.style.filter='none';");
+                        }
+                    }
+
+                    checkbox.Checked += async (s, e) => { await applyDarkMode(); };
+                    checkbox.Unchecked += async (s, e) => { await applyDarkMode(); };
+                    content.WebView2.NavigationCompleted += async (s, e) => { await applyDarkMode(); };
+                    content.AddOnSpace.Add(checkbox);
+                }
+                {
+                    content.AddOnSpace.Add(OpenEpub_GetDarkmodeCheckBox());
+                }
+                content.WebView2.CoreWebView2Initialized += (s, e) =>
+                {
+                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    {
+                        await tabPage.OpenTabWebPreferedBrowser(a);
+                    }, (_) => { });
+                };
+            }
+            HistoryManager.AddEntry(file);
+        }
+
+        public static void OpenEpubPreferedEngine(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        {
+            if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserUseWebView2))
+            {
+                try
+                {
+                    //https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
+                    var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
+                    if (string.IsNullOrEmpty(version)) throw new Exception();
+                    OpenEpub2(frame, file, sender);
+                    return;
+                }
+                catch
+                {
+                }
+            }
+            else
+            {
+                OpenEpub(frame, file, sender);
+                return;
+            }
+        }
 
         public static async void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
         {
@@ -113,16 +257,7 @@ public static partial class UIHelper
                         content.AddOnSpace.Add(checkbox);
                     }
                     {
-                        var checkbox = new CheckBox()
-                        {
-                            Content = ResourceManager.Loader.GetString("Setting_EpubViewerDarkMode/Title"),
-                            IsChecked = (bool)SettingStorage.GetValue("EpubViewerDarkMode"),
-                            HorizontalAlignment = HorizontalAlignment.Stretch,
-                        };
-                        ToolTipService.SetToolTip(checkbox, ResourceManager.Loader.GetString("Setting_EpubViewerDarkMode/Description"));
-                        checkbox.Checked += (s, e) => SettingStorage.SetValue("EpubViewerDarkMode", true);
-                        checkbox.Unchecked += (s, e) => SettingStorage.SetValue("EpubViewerDarkMode", false);
-                        content.AddOnSpace.Add(checkbox);
+                        content.AddOnSpace.Add(OpenEpub_GetDarkmodeCheckBox());
                     }
                 }
 
@@ -133,7 +268,20 @@ public static partial class UIHelper
                 //};
             }
             HistoryManager.AddEntry(file);
-            //await HistoryStorage.AddHistory(file, null);
+        }
+
+        private static CheckBox OpenEpub_GetDarkmodeCheckBox()
+        {
+            var checkbox = new CheckBox()
+            {
+                Content = ResourceManager.Loader.GetString("Setting_EpubViewerDarkMode/Title"),
+                IsChecked = (bool)SettingStorage.GetValue("EpubViewerDarkMode"),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+            ToolTipService.SetToolTip(checkbox, ResourceManager.Loader.GetString("Setting_EpubViewerDarkMode/Description"));
+            checkbox.Checked += (s, e) => SettingStorage.SetValue("EpubViewerDarkMode", true);
+            checkbox.Unchecked += (s, e) => SettingStorage.SetValue("EpubViewerDarkMode", false);
+            return checkbox;
         }
 
         public static async Task<bool> OpenBookPicked(Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null)
@@ -154,8 +302,13 @@ public static partial class UIHelper
             if (type == BookManager.BookType.Epub)
             {
                 var (frame, sender) = frameProvider();
-                OpenEpub(frame, file, sender);
+                OpenEpubPreferedEngine(frame, file, sender);
             }
+            //else if (type is BookManager.BookType.Pdf)
+            //{
+            //    var (frame, sender) = frameProvider();
+            //    OpenSingleFile(frame, file, sender);
+            //}
             else if (type is not null)
             {
                 var (frame, _) = frameProvider();
@@ -270,12 +423,12 @@ public static partial class UIHelper
                                         var file = await hm.GetFile();
                                         if (file != null) tab.OpenTabBook(file);
                                     }
-                                        //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
-                                        //{
-                                        //    var file = await hi.GetFile();
-                                        //    if (file != null) tab.OpenTabBook(file);
-                                        //}
-                                        else
+                                    //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                    //{
+                                    //    var file = await hi.GetFile();
+                                    //    if (file != null) tab.OpenTabBook(file);
+                                    //}
+                                    else
                                     {
                                         var stream = fileitem?.OpenStreamForReadAsync();
                                         if (stream != null)
@@ -284,17 +437,17 @@ public static partial class UIHelper
                                 }
                             }
 
-                                //var codecQuery = new Windows.Media.Core.CodecQuery();
-                                //var queryResults= await codecQuery.FindAllAsync(Windows.Media.Core.CodecKind.Video,Windows.Media.Core.CodecCategory.Decoder,"");
-                                //foreach(var item in queryResults)
-                                //{
-                                //    System.Diagnostics.Debug.WriteLine(item.DisplayName);
-                                //    foreach (var item2 in item.Subtypes)
-                                //    {
-                                //        System.Diagnostics.Debug.WriteLine(item2);
-                                //    }
-                                //}
-                                if ((await kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage.GetAvailableExtensionsAsync()).Contains(Path.GetExtension(fileitem?.Name ?? "").ToUpperInvariant()))
+                            //var codecQuery = new Windows.Media.Core.CodecQuery();
+                            //var queryResults= await codecQuery.FindAllAsync(Windows.Media.Core.CodecKind.Video,Windows.Media.Core.CodecCategory.Decoder,"");
+                            //foreach(var item in queryResults)
+                            //{
+                            //    System.Diagnostics.Debug.WriteLine(item.DisplayName);
+                            //    foreach (var item2 in item.Subtypes)
+                            //    {
+                            //        System.Diagnostics.Debug.WriteLine(item2);
+                            //    }
+                            //}
+                            if ((await kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage.GetAvailableExtensionsAsync()).Contains(Path.GetExtension(fileitem?.Name ?? "").ToUpperInvariant()))
                             {
                                 var tab = GetCurrentTabPage(control);
                                 if (tab != null)
@@ -339,7 +492,7 @@ public static partial class UIHelper
             }
         }
 
-        private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.IBrowserControl2ViewModel viewModel)
+        private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.IBrowserControlViewModel viewModel)
         {
             if (viewModel is null) return;
             var bookmark = LibraryStorage.GetItemBookmarks((_, _2) => { });
@@ -367,25 +520,24 @@ public static partial class UIHelper
 
         }
 
+        public static void OpenBrowser2_UpdateCoreEvents(Microsoft.Web.WebView2.Core.CoreWebView2 core, Action<string> OpenTabWeb, Action<string> UpdateTitle)
+        {
+            core.NewWindowRequested += (s, e) =>
+            {
+                OpenTabWeb?.Invoke(e.Uri.ToString());
+                e.Handled = true;
+            };
+            core.DocumentTitleChanged += (s, e) =>
+            {
+                UpdateTitle(core.DocumentTitle);
+            };
+            core.DownloadStarting += (s, e) =>
+            {
+            };
+        }
+
         public static void OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
         {
-            void UpdateWebView2Events(Microsoft.Web.WebView2.Core.CoreWebView2 core)
-            {
-                core.NewWindowRequested += (s, e) =>
-                {
-                    OpenTabWeb?.Invoke(e.Uri.ToString());
-                    e.Handled = true;
-                };
-                core.DocumentTitleChanged += (s, e) =>
-                {
-                    UpdateTitle(core.DocumentTitle);
-                };
-                core.DownloadStarting += (s, e) =>
-                {
-
-                };
-            }
-
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), uri);
 
             if ((frame.Content as kurema.BrowserControl.Views.BrowserControl2)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm && vm != null)
@@ -414,7 +566,7 @@ public static partial class UIHelper
 
                 content.WebView2.CoreWebView2Initialized += (s, e) =>
                 {
-                    UpdateWebView2Events(content.WebView2.CoreWebView2);
+                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
                 };
             }
         }

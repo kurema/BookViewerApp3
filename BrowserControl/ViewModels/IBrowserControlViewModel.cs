@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Windows.Storage;
 
 namespace kurema.BrowserControl.ViewModels;
-public interface IBrowserControl2ViewModel
+public interface IBrowserControlViewModel
 {
     ObservableCollection<IBookmarkItem> BookmarkAddFolders { get; }
     ObservableCollection<IBookmarkItem> BookmarkCurrent { get; }

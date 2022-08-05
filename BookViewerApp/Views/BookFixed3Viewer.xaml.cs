@@ -301,7 +301,7 @@ public sealed partial class BookFixed3Viewer : Page
                 var tab = UIHelper.GetCurrentTabPage(this);
                 if (tab is null) return;
                 var (frame, newTab) = tab.OpenTab("BookViewer");
-                UIHelper.FrameOperation.OpenEpub(frame, file, newTab);
+                UIHelper.FrameOperation.OpenEpubPreferedEngine(frame, file, newTab);
             }
             else
             {

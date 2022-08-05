@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace kurema.BrowserControl.ViewModels;
 
-public class BrowserControlViewModel : INotifyPropertyChanged, IBrowserControl2ViewModel
+public class BrowserControlViewModel : INotifyPropertyChanged, IBrowserControlViewModel
 {
     #region INotifyPropertyChanged
     protected bool SetProperty<T>(ref T backingStore, T value,

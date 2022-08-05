@@ -24,6 +24,7 @@ namespace kurema.BrowserControl.Views;
 public sealed partial class BrowserControl2 : Page, IDisposable
 {
     public Microsoft.UI.Xaml.Controls.WebView2 WebView2 => webView;
+    public UIElementCollection AddOnSpace => PanelOthers.Children;
 
     public BrowserControl2()
     {

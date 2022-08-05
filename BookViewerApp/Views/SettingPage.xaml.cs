@@ -61,12 +61,8 @@ namespace BookViewerApp.Views
                 foreach (var item in SettingPanel.GetGroupsContainer())
                 {
                     if (item.Content is not IGrouping<string, SettingPage.SettingViewModel> ig) continue;
-                    StackTocAdd(Managers.ResourceManager.Loader.GetString($"Setting/Group/{ig.Key}"), () => item);
+                    StackTocAdd(Managers.ResourceManager.Loader.GetString($"Setting/Group/{ig.Key}"), () => item,marginLeft:15);
                 }
-                //foreach (var item in collection)
-                //{
-                //    StackTocAdd(item.Key, () => listView.GroupHeaderContainerFromItem(item.FirstOrDefault()), Windows.UI.Text.FontWeights.Bold);
-                //}
                 foreach (var item in listView.GetGroupsContainer())
                 {
                     if (item.Content is not IGrouping<string, ViewModels.ListItemViewModel> ig) continue;
@@ -76,10 +72,10 @@ namespace BookViewerApp.Views
             }
         }
 
-        private void StackTocAdd(string title, Func<DependencyObject> elementProvider, Windows.UI.Text.FontWeight? fontWeight = null)
+        private void StackTocAdd(string title, Func<DependencyObject> elementProvider, Windows.UI.Text.FontWeight? fontWeight = null, double marginLeft = 0)
         {
             var lvi = new ListViewItem();
-            lvi.Content = new TextBlock() { Text = title, FontWeight = fontWeight ?? Windows.UI.Text.FontWeights.Normal };
+            lvi.Content = new TextBlock() { Text = title, FontWeight = fontWeight ?? Windows.UI.Text.FontWeights.Normal, Margin = new Thickness(marginLeft, 0, 0, 0) };
             lvi.Tapped += (_, _) =>
             {
                 if (elementProvider?.Invoke() is not UIElement elementUI) return;

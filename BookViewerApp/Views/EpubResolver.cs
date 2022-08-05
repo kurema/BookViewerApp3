@@ -18,6 +18,11 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 {
     public const string InvalidPathMessage = "404 Not Found: The path is invalid.";
 
+    //Used for WebView2
+    public virtual string Host { get; set; } = "resolver.example";
+
+    public string GetUri(string path) => $"http://{Host}{path}";
+
     public event EventHandler Loaded;
     protected void OnLoaded(EventArgs e)
     {
@@ -43,10 +48,10 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
     public static EpubResolverFile GetResolverBasicFile(IStorageFile file) => new(file, "/contents/book.epub", "^/reader/", "ms-appx:///res/reader/", "/reader/index.html");
     public static EpubResolverFile GetResolverBibiFile(IStorageFile file) => new(file, "/bibi-bookshelf/book.epub", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book.epub");
 
-    //Pdf.js do not work on edgeHTML. It's sad.
-    //public static async Task<EpubResolverStorageAndZip> GetResolverPdfJs(IStorageFile file)
-    //    => new EpubResolverStorageAndZip(file, new ZipArchive((await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/pdfjs/pdfjs.zip"))).OpenReadAsync()).AsStream())
-    //        , "/book.pdf", "^/pdfjs/", "/pdfjs/web/viewer.html?file=/book.pdf");
+    //Pdf.js do not work on edgeHTML.
+    public static async Task<EpubResolverStorageAndZip> GetResolverPdfJs(IStorageFile file)
+        => new EpubResolverStorageAndZip(file, new ZipArchive((await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/pdfjs/pdfjs.zip"))).OpenReadAsync()).AsStream())
+            , "/book.pdf", "^/pdfjs/", "/pdfjs/web/viewer.html?file=/book.pdf");
 
 
     public async Task<IInputStream> GetContentBasic(Uri uri, Func<string, Task<IInputStream>> actionLocal, Func<Task<IInputStream>> actionZip)
@@ -65,7 +70,7 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
         throw new Exception(InvalidPathMessage);
     }
 
-    public static async Task<IInputStream> ReadZipFile(ZipArchive zip, string pathFile, System.Threading.SemaphoreSlim semaphore)
+    public static async Task<InMemoryRandomAccessStream> ReadZipFile(ZipArchive zip, string pathFile, System.Threading.SemaphoreSlim semaphore)
     {
         if (zip is null) throw new ArgumentNullException(nameof(zip));
         if (semaphore is null) throw new ArgumentNullException(nameof(semaphore));
@@ -112,6 +117,48 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
         finally
         {
             semaphore.Release();
+        }
+    }
+
+    public async void WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
+    {
+        if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uri) || uri.Host.ToUpperInvariant() != Host.ToUpperInvariant()) return;
+        var deferral = args.GetDeferral();
+        IInputStream content;
+        try
+        {
+            content = await GetContent(uri);
+        }
+        catch
+        {
+            content = null;
+        }
+
+        if (content is null)
+        {
+            args.Response = sender.Environment.CreateWebResourceResponse(null, 404, "Not Found", "");
+            deferral.Complete();
+            return;
+        }
+        else if (content is IRandomAccessStream random)
+        {
+            var ext = Path.GetExtension(uri.LocalPath);
+            var mimetype = MimeTypes.MimeTypeMap.GetMimeType(ext);
+            var header = new StringBuilder();
+            if (!string.IsNullOrEmpty(mimetype) && string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
+            args.Response = sender.Environment.CreateWebResourceResponse(random, 200, "OK", header.ToString());
+            deferral.Complete();
+            return;
+        }
+        else
+        {
+            throw new NotImplementedException();
+            //const int bufSize = 4096;
+            //var buffer = new Windows.Storage.Streams.Buffer(bufSize);
+            //while (true)
+            //{
+            //    await content.ReadAsync(buffer, bufSize, InputStreamOptions.ReadAhead);
+            //}
         }
     }
 }
