@@ -28,7 +28,7 @@
     </UserControl.Resources>
 
     <!--<ItemsControl Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ItemsSource="{Binding Source={StaticResource settingSource}}" >-->
-    <ItemsControl ItemsSource="{Binding Source={StaticResource settingSource}}">
+    <ItemsControl ItemsSource="{Binding Source={StaticResource settingSource}}" x:Name="itemsControlMain">
         <ItemsControl.Resources>
             <!--<Style TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="WrapWholeWords" />

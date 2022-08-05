@@ -35,4 +35,26 @@ public sealed partial class SimpleListViewControl : UserControl
         var command = ((sender as FrameworkElement)?.DataContext as ViewModels.ListItemViewModel)?.OpenCommand;
         if (command?.CanExecute(sender) == true) command.Execute(sender);
     }
+
+    public DependencyObject GroupHeaderContainerFromItem(object item)
+    {
+        if (item is null) return itemsControlMain;
+        var a = itemsControlMain.ContainerFromItem(item);
+        return a;
+        //if(a is null) return itemsControlMain;
+        //try
+        //{
+        //    var b = itemsControlMain.GroupHeaderContainerFromItemContainer(a);
+        //    return b;
+        //}catch(Exception e)
+        //{
+        //    return a;
+        //}
+    }
+
+    public IEnumerable<GroupItem> GetGroupsContainer()
+    {
+        if (itemsControlMain.ItemsPanelRoot is not Panel stackPanel) return new GroupItem[0];
+        return stackPanel.Children.Select(a => a as GroupItem);
+    }
 }

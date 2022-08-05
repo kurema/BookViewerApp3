@@ -8,19 +8,23 @@
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     mc:Ignorable="d"
     
+    SizeChanged="Main_SizeChanged"
+    
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     >
     <Page.Resources>
-
         <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
         <ValueConverter:LocalizeFormatConverter x:Key="vc_lf"/>
         <ValueConverter:LocalizeConverter x:Key="vc_local"/>
     </Page.Resources>
-    <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel MaxWidth="800" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource vc_local},ConverterParameter=Setting/Label}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
-            <local:SettingPanelControl  x:Name="SettingPanel" DataContext="{Binding}" />
-            <local:SimpleListViewControl x:Name="listView"/>
-        </StackPanel>
-    </ScrollViewer>
+    <Grid>
+        <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollViewerMain">
+            <StackPanel MaxWidth="800" HorizontalAlignment="Center" Name="StackPanelMain">
+                <TextBlock x:Name="TextBlockSettingHeader" Text="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource vc_local},ConverterParameter=Setting/Label}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
+                <local:SettingPanelControl  x:Name="SettingPanel" DataContext="{Binding}" />
+                <local:SimpleListViewControl x:Name="listView"/>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel x:Name="StackToc" Margin="15" HorizontalAlignment="Left" />
+    </Grid>
 </Page>

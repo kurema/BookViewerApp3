@@ -25,4 +25,10 @@ public sealed partial class SettingPanelControl : UserControl
     {
         this.InitializeComponent();
     }
+
+    public IEnumerable<GroupItem> GetGroupsContainer()
+    {
+        if (itemsControlMain.ItemsPanelRoot is not Panel stackPanel) return new GroupItem[0];
+        return stackPanel.Children.Select(a => a as GroupItem);
+    }
 }

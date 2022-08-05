@@ -52,6 +52,43 @@ namespace BookViewerApp.Views
             listView.Source = collection;
             var purchased = (await GetPurchaseItems()).GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
             if (purchased.Count() >= 1) collection.Insert(Math.Max(collection.Count - 1, 0), purchased.First());
+
+            {
+                StackToc.Children.Clear();
+                {
+                    StackTocAdd(Managers.ResourceManager.Loader.GetString("Setting/Label"), () => TextBlockSettingHeader, Windows.UI.Text.FontWeights.Bold);
+                }
+                foreach (var item in SettingPanel.GetGroupsContainer())
+                {
+                    if (item.Content is not IGrouping<string, SettingPage.SettingViewModel> ig) continue;
+                    StackTocAdd(Managers.ResourceManager.Loader.GetString($"Setting/Group/{ig.Key}"), () => item);
+                }
+                //foreach (var item in collection)
+                //{
+                //    StackTocAdd(item.Key, () => listView.GroupHeaderContainerFromItem(item.FirstOrDefault()), Windows.UI.Text.FontWeights.Bold);
+                //}
+                foreach (var item in listView.GetGroupsContainer())
+                {
+                    if (item.Content is not IGrouping<string, ViewModels.ListItemViewModel> ig) continue;
+                    StackTocAdd(ig.Key, () => item, Windows.UI.Text.FontWeights.Bold);
+                }
+                Main_SizeChanged_General(this.ActualWidth);
+            }
+        }
+
+        private void StackTocAdd(string title, Func<DependencyObject> elementProvider, Windows.UI.Text.FontWeight? fontWeight = null)
+        {
+            var lvi = new ListViewItem();
+            lvi.Content = new TextBlock() { Text = title, FontWeight = fontWeight ?? Windows.UI.Text.FontWeights.Normal };
+            lvi.Tapped += (_, _) =>
+            {
+                if (elementProvider?.Invoke() is not UIElement elementUI) return;
+                var transform = TextBlockSettingHeader.TransformToVisual(elementUI);
+                var point = transform.TransformPoint(new Point(0, 0));
+                ScrollViewerMain.ChangeView(null, -point.Y, null);
+            };
+            StackToc.Children.Add(lvi);
+
         }
 
         public async Task<IEnumerable<ViewModels.ListItemViewModel>> GetPurchaseItems()
@@ -248,7 +285,7 @@ namespace BookViewerApp.Views
             var dialog = new ContentDialog
             {
                 CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/OK"),
-                XamlRoot=this.XamlRoot,
+                XamlRoot = this.XamlRoot,
             };
             var control = new LicenseControl
             {
@@ -467,6 +504,24 @@ namespace BookViewerApp.Views
             UIHelper.SetTitleByResource(this, "Setting");
         }
 
+        private void Main_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Main_SizeChanged_General(e.NewSize.Width);
+        }
+
+        private void Main_SizeChanged_General(double width)
+        {
+            if (width >= 800 + 150 * 2)
+            {
+                StackToc.Visibility = Visibility.Visible;
+                StackToc.Width = (width - SettingPanel.ActualWidth) / 2.0 - StackToc.Margin.Left - StackToc.Margin.Right;
+            }
+            else
+            {
+                StackToc.Visibility = Visibility.Collapsed;
+            }
+
+        }
     }
 
     namespace TemplateSelectors

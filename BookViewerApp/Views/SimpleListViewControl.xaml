@@ -15,7 +15,7 @@
         <CollectionViewSource x:Name="itemsSource" IsSourceGrouped="True"/>
         <ValueConverter:StringNullOrEmptyConverter x:Name="vc_sne"/>
     </UserControl.Resources>
-    <ItemsControl ItemsSource="{Binding Source={StaticResource itemsSource}}" >
+    <ItemsControl ItemsSource="{Binding Source={StaticResource itemsSource}}" x:Name="itemsControlMain" >
         <ItemsControl.GroupStyle>
             <GroupStyle>
                 <GroupStyle.HeaderTemplate>
