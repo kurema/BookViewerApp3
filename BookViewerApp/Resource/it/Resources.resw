@@ -671,4 +671,16 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
     <value>Utilizzare il motore basato su Chorimum (WebView2) per il browser. È instabile e pieno di problemi. Se si utilizza Windows 10, è necessario installare manualmente il runtime come amministratore.</value>
   </data>
+  <data name="Bookmark.New.Title" xml:space="preserve">
+    <value>Nuovo segnalibro</value>
+  </data>
+  <data name="Bookmark.Add.Title" xml:space="preserve">
+    <value>Aggiungi un segnalibro</value>
+  </data>
+  <data name="Bookmark.Delete.Title" xml:space="preserve">
+    <value>Cancellare il segnalibro</value>
+  </data>
+  <data name="Viewer.SlideShow.Title" xml:space="preserve">
+    <value>Presentazione</value>
+  </data>
 </root>

@@ -774,4 +774,16 @@ Right click to configure</value>
   <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
     <value>Use Chorimum based engine (WebView2) for browser. It's unstable and glitchy. If you are using Windows 10, you have to manually install runtime as administrator.</value>
   </data>
+  <data name="Bookmark.New.Title" xml:space="preserve">
+    <value>New Bookmark</value>
+  </data>
+  <data name="Bookmark.Add.Title" xml:space="preserve">
+    <value>Add Bookmark</value>
+  </data>
+  <data name="Bookmark.Delete.Title" xml:space="preserve">
+    <value>Delete Bookmark</value>
+  </data>
+  <data name="Viewer.SlideShow.Title" xml:space="preserve">
+    <value>Slideshow</value>
+  </data>
 </root>

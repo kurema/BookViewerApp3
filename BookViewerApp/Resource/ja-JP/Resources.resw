@@ -675,4 +675,16 @@
   <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
     <value>ブラウザにはChorimumベースのエンジン(WebView2)を使用します。現時点で不安定です。Windows10をお使いの場合、ランタイムを管理者権限でインストールする必要があります。</value>
   </data>
+  <data name="Bookmark.New.Title" xml:space="preserve">
+    <value>新しい栞</value>
+  </data>
+  <data name="Bookmark.Add.Title" xml:space="preserve">
+    <value>栞を追加</value>
+  </data>
+  <data name="Bookmark.Delete.Title" xml:space="preserve">
+    <value>栞を削除</value>
+  </data>
+  <data name="Viewer.SlideShow.Title" xml:space="preserve">
+    <value>スライドショー</value>
+  </data>
 </root>

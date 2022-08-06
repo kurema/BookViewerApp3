@@ -669,4 +669,16 @@ Clique direito para configurar</value>
   <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
     <value>Utilize o motor baseado em Chorimum (WebView2) para o navegador. É instável e com falhas. Se estiver a utilizar o Windows 10, tem de instalar manualmente o tempo de execução como administrador.</value>
   </data>
+  <data name="Bookmark.New.Title" xml:space="preserve">
+    <value>Novo Bookmark</value>
+  </data>
+  <data name="Bookmark.Add.Title" xml:space="preserve">
+    <value>Adicionar Bookmark</value>
+  </data>
+  <data name="Bookmark.Delete.Title" xml:space="preserve">
+    <value>Eliminar Marcador de Favoritos</value>
+  </data>
+  <data name="Viewer.SlideShow.Title" xml:space="preserve">
+    <value>Slideshow</value>
+  </data>
 </root>
