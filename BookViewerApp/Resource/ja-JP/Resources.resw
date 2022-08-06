@@ -687,4 +687,7 @@
   <data name="Viewer.SlideShow.Title" xml:space="preserve">
     <value>スライドショー</value>
   </data>
+  <data name="Word.Toc" xml:space="preserve">
+    <value>目次</value>
+  </data>
 </root>

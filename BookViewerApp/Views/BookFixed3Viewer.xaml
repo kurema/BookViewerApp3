@@ -61,6 +61,7 @@
                         <ToggleMenuFlyoutItem IsChecked="{Binding SlideShowEnabled,Mode=TwoWay}" FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.SlideShow.Title, Mode=OneTime}" Icon="Slideshow" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutSubItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Bookmarks.Label, Mode=OneTime}" Icon="Bookmarks" Tag="Bookmark" IsEnabled="False" />
+                        <MenuFlyoutSubItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Toc, Mode=OneTime}"  Tag="Toc" />
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageTop.Label, Mode=OneTime}"  Command="{Binding PageSetCommand}" CommandParameter="0" />
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageEnd.Label, Mode=OneTime}"  Command="{Binding PageMaxCommand}" />
                         <MenuFlyoutSeparator/>

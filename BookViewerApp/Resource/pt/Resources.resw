@@ -681,4 +681,7 @@ Clique direito para configurar</value>
   <data name="Viewer.SlideShow.Title" xml:space="preserve">
     <value>Slideshow</value>
   </data>
+  <data name="Word.Toc" xml:space="preserve">
+    <value>Índice</value>
+  </data>
 </root>

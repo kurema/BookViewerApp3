@@ -790,4 +790,7 @@ Right click to configure</value>
     <value>PDF.js</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="Word.Toc" xml:space="preserve">
+    <value>Table of contents</value>
+  </data>
 </root>

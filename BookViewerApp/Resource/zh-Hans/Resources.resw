@@ -683,4 +683,7 @@
   <data name="Viewer.SlideShow.Title" xml:space="preserve">
     <value>幻灯片</value>
   </data>
+  <data name="Word.Toc" xml:space="preserve">
+    <value>目录</value>
+  </data>
 </root>
