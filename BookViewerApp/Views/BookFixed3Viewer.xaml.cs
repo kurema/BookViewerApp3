@@ -311,12 +311,36 @@ public sealed partial class BookFixed3Viewer : Page
         }
     }
 
+    public static void AddItemFromToc(IEnumerable<TocEntryViewModes> items,MenuFlyoutSubItem menuToAdd,BookViewModel vm)
+    {
+        //Toc in ContextMenu is strange. Isn't it?
+        foreach(var item in items)
+        {
+            if (item.Children.Count > 0)
+            {
+                var menu = new MenuFlyoutSubItem() { Text = item.Title };
+                AddItemFromToc(item.Children, menu,vm);
+                menuToAdd.Items.Add(menu);
+            }
+            else
+            {
+                var menu = new MenuFlyoutItem() { Text = item.Title };
+                menu.Click += (_, _) =>
+                {
+                    vm.PageSelectedDisplay = item.Page;
+                };
+                menuToAdd.Items.Add(menu);
+            }
+        }
+    }
+
     private void flipView_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
     {
         var option = new FlyoutShowOptions();
         if (args.TryGetPosition(this, out Point p)) option.Position = p;
         if (sender is not FrameworkElement fe || fe.Resources["ContextFlyout"] is not MenuFlyout menuFlyout) return;
-        if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "Bookmark") is MenuFlyoutSubItem menuBookmark && Binding is not null)
+        if (Binding is null) return;
+        if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "Bookmark") is MenuFlyoutSubItem menuBookmark)
         {
             //Changes to MenuFlyoutSubItem.Items don't update UI #1652
             //https://github.com/microsoft/microsoft-ui-xaml/issues/1652
@@ -337,7 +361,7 @@ public sealed partial class BookFixed3Viewer : Page
                 menu.Click += (_, _) => Binding.PageSelectedDisplay = item.Page;
                 menuBookmark.Items.Add(menu);
             }
-            
+
             {
                 if (menuBookmark.Items.Count > 0) menuBookmark.Items.Add(new MenuFlyoutSeparator());
                 if (string.IsNullOrEmpty(Binding.CurrentBookmarkName))
@@ -356,6 +380,67 @@ public sealed partial class BookFixed3Viewer : Page
                         Text = ResourceManager.Loader.GetString("Bookmark/Delete/Title")
                     };
                     menu.Click += (_, _) => Binding.CurrentBookmarkName = string.Empty;
+                    menuBookmark.Items.Add(menu);
+                }
+            }
+        }
+
+        if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "OpenWith") is MenuFlyoutSubItem menuOpenWith)
+        {
+            //Changes to MenuFlyoutSubItem.Items don't update UI #1652
+            //https://github.com/microsoft/microsoft-ui-xaml/issues/1652
+            //workaround start here
+            var index = menuFlyout.Items.IndexOf(menuOpenWith);
+            menuBookmark = new MenuFlyoutSubItem() { Text = menuOpenWith.Text, FlowDirection = menuOpenWith.FlowDirection, Tag = menuOpenWith.Tag };
+            menuFlyout.Items[index] = menuBookmark;
+            //end here
+
+            menuOpenWith.Items.Clear();
+            menuOpenWith.IsEnabled = false;
+            if (Binding.FileItem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi && sfi.Content is Windows.Storage.IStorageFile isf)
+            {
+                menuOpenWith.IsEnabled = true;
+
+                if (Path.GetExtension(Binding.FileItem?.Name).ToUpperInvariant() == ".PDF")
+                {
+                    if (kurema.BrowserControl.Helper.Functions.IsWebView2Supported)
+                    {
+                        var tab = UIHelper.GetCurrentTabPage(this);
+                        {
+                            var menu = new MenuFlyoutItem()
+                            {
+                                Text = ResourceManager.Loader.GetString("TabHeader/PdfJs"),
+                            };
+                            menu.Click += (_, _) =>
+                            {
+                                tab.OpenTabPdfJs(isf);
+                            };
+                            menuBookmark.Items.Add(menu);
+                        }
+                        {
+                            var menu = new MenuFlyoutItem()
+                            {
+                                Text = ResourceManager.Loader.GetString("TabHeader/Browser"),
+                            };
+                            menu.Click += (_, _) =>
+                            {
+                                tab.OpenTabBrowser(isf);
+                            };
+                            menuBookmark.Items.Add(menu);
+                        }
+                        menuBookmark.Items.Add(new MenuFlyoutSeparator());
+                    }
+                }
+
+                {
+                    var menu = new MenuFlyoutItem()
+                    {
+                        Text = ResourceManager.LoaderFileExplorer.GetString("ContextMenu/OpenWith/Choose")
+                    };
+                    menu.Click += async (_, _) =>
+                    {
+                        await Windows.System.Launcher.LaunchFileAsync(isf, new Windows.System.LauncherOptions() { DisplayApplicationPicker = true });
+                    };
                     menuBookmark.Items.Add(menu);
                 }
             }

@@ -110,6 +110,19 @@ public sealed partial class TabPage : Page
         foreach (var item in files) OpenTabBook(item);
     }
 
+    public void OpenTabPdfJs(Windows.Storage.IStorageFile file)
+    {
+        if (file is null) return;
+        var (frame, newTab) = OpenTab("PdfJs");
+        UIHelper.FrameOperation.OpenPdfJs(frame, file, newTab);
+    }
+
+    public void OpenTabBrowser(Windows.Storage.IStorageFile file)
+    {
+        if (file is null) return;
+        var (frame, newTab) = OpenTab("Browser");
+        UIHelper.FrameOperation.OpenSingleFile(frame, file, newTab);
+    }
 
     public void OpenTabBook(Windows.Storage.IStorageItem file)
     {

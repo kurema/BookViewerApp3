@@ -132,6 +132,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Helper\Functions.cs" />
     <Compile Include="Helper\ValueConverters.cs" />
     <Compile Include="ViewModels\BrowserControl2ViewModel.cs" />
     <Compile Include="ViewModels\BrowserControlViewModel.cs" />

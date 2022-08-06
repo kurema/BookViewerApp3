@@ -186,4 +186,10 @@
   <data name="Table.Size" xml:space="preserve">
     <value>Size:</value>
   </data>
+  <data name="ContextMenu.OpenWith.Choose" xml:space="preserve">
+    <value>Choose program...</value>
+  </data>
+  <data name="ContextMenu.OpenWith.Title" xml:space="preserve">
+    <value>Open with</value>
+  </data>
 </root>

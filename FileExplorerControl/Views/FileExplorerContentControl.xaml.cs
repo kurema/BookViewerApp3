@@ -221,7 +221,6 @@ public sealed partial class FileExplorerContentControl : UserControl
 
     private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
     {
-
         if (sender is FrameworkElement f && f.DataContext is ViewModels.FileItemViewModel vm)
         {
             var menu = new MenuFlyout();

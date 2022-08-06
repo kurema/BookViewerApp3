@@ -186,4 +186,10 @@
   <data name="Header.Size" xml:space="preserve">
     <value>大小</value>
   </data>
+  <data name="ContextMenu.OpenWith.Choose" xml:space="preserve">
+    <value>选择程序...</value>
+  </data>
+  <data name="ContextMenu.OpenWith.Title" xml:space="preserve">
+    <value>打开与</value>
+  </data>
 </root>

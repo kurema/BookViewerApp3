@@ -201,28 +201,4 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
         }
         flyout.ShowAt(sender, option);
     }
-
-    //private void Grid_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
-    //{
-    //    var option = new FlyoutShowOptions();
-    //    if (args.TryGetPosition(sender, out Point p)) option.Position = p;
-    //    if ((sender as FrameworkElement)?.DataContext is not ViewModels.BookmarkViewModel vm) return;
-    //    var flyout = new MenuFlyout();
-    //    {
-    //        var item = new MenuFlyoutItem() { Text= Managers.ResourceManager.Loader.GetString("Bookmark/Delete/Title") };
-    //        item.Click += (_, _) =>
-    //        {
-    //            Binding.Bookmarks.Remove(vm);
-    //        };
-    //        flyout.Items.Add(item);
-    //    }
-    //    flyout.ShowAt(sender, option);
-    //}
-
-    //private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
-    //{
-    //    if (sender is not MenuFlyoutItem item) return;
-    //    //if ((sender as FrameworkElement)?.DataContext is not ViewModels.BookmarkViewModel vm) return;
-    //    //Binding.Bookmarks.Remove(vm);
-    //}
 }

@@ -68,7 +68,7 @@ namespace BookViewerApp.Views.Bookshelf
                 ItemKind = Bookshelf2NavigationItemViewModel.ItemType.Item,
                 Icon = new FontIcon() { FontFamily = new FontFamily("Segoe MDL2 Assets"), Glyph = "\uF738", },
                 OpenAction = OpenItem,
-                Tag = Storages.LibraryStorage.GetItemHistoryMRU(new Helper.InvalidCommand()),
+                Tag = Storages.LibraryStorage.GetItemHistoryMRU(new Helper.InvalidCommand(), () => Helper.UIHelper.GetCurrentTabPage(this)),
             });
         }
 

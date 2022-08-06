@@ -68,7 +68,7 @@ public static partial class UIHelper
             {
                 OpenBrowser_BookmarkSetViewModel(vm);
 
-                var uri = $"https://file.example/{System.IO.Path.GetFileName(file.Name)}";
+                var uri = $"https://file.example/{System.Web.HttpUtility.UrlEncode(System.IO.Path.GetFileName(file.Name))}";
                 await content.WebView2.EnsureCoreWebView2Async();
                 content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                 content.WebView2.CoreWebView2.WebResourceRequested += async (sender, args) =>
@@ -385,7 +385,7 @@ public static partial class UIHelper
                                     await OpenWebExternal(a);
                                     break;
                             }
-                        }, control.AddressRequesteCommand
+                        }, control.AddressRequesteCommand, () => { return GetCurrentTabPage(control); }
                         );
 
                         //var fv = new kurema.FileExplorerControl.ViewModels.FileItemViewModel(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(folder));

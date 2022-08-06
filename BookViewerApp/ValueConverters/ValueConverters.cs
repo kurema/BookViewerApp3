@@ -215,10 +215,15 @@ public sealed class BoolToStringConverter : IValueConverter
 
 public sealed class LocalizeConverter : IValueConverter
 {
+    public const string FileExplorerPrefix = "FileExplorerControl/";
+
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         string resourceId = parameter as string;
-        return !string.IsNullOrEmpty(resourceId) ? Managers.ResourceManager.Loader.GetString(resourceId.Replace('.', '/')) : DependencyProperty.UnsetValue;
+        if (string.IsNullOrEmpty(resourceId)) return DependencyProperty.UnsetValue;
+        resourceId = resourceId.Replace('.', '/');
+        if (resourceId.StartsWith(FileExplorerPrefix)) return Managers.ResourceManager.LoaderFileExplorer.GetString(resourceId.Replace(FileExplorerPrefix, ""));
+        return Managers.ResourceManager.Loader.GetString(resourceId);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

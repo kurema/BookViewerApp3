@@ -786,4 +786,8 @@ Right click to configure</value>
   <data name="Viewer.SlideShow.Title" xml:space="preserve">
     <value>Slideshow</value>
   </data>
+  <data name="TabHeader.PdfJs" xml:space="preserve">
+    <value>PDF.js</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

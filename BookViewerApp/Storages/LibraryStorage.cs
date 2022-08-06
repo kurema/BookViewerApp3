@@ -55,7 +55,7 @@ namespace BookViewerApp.Storages
             };
         }
 
-        public static ContainerDelegateItem? GetItemHistoryMRU(System.Windows.Input.ICommand PathRequestCommand)
+        public static ContainerDelegateItem? GetItemHistoryMRU(System.Windows.Input.ICommand PathRequestCommand, Func<Views.TabPage> tabPageProvider)
         {
             if (!(bool)SettingStorage.GetValue("ShowHistories")) return null;
             return new ContainerDelegateItem(GetItem_GetWord("Histories"), "/History", (_) =>
@@ -65,7 +65,7 @@ namespace BookViewerApp.Storages
                 //一度のみ。原因不明。
                 return Task.FromResult<IEnumerable<IFileItem>>(Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
                 {
-                    MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand)
+                    MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand,tabPageProvider)
                 }).OrderByDescending(a => a.DateCreated));
             })
             {
@@ -123,12 +123,12 @@ namespace BookViewerApp.Storages
             };
         }
 
-        public static ContainerDelegateItem GetItemFolders()
+        public static ContainerDelegateItem GetItemFolders(Func<Views.TabPage> tabPageProvider)
         {
             return new ContainerDelegateItem(GetItem_GetWord("Folders"), "/Folders", async (sender) =>
             {
                 var library = await Content.GetContentAsync();
-                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken, UIHelper.ContextMenus.MenuStorage))))?.Where(a => a != null)?.ToArray() ?? Array.Empty<TokenLibraryItem>();
+                var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken, UIHelper.ContextMenus.MenuStorage(tabPageProvider)))))?.Where(a => a != null)?.ToArray() ?? Array.Empty<TokenLibraryItem>();
                 foreach (var item in list) item.Parent = sender;
                 return list;
             })
@@ -211,14 +211,14 @@ namespace BookViewerApp.Storages
             Auto, Internal, External
         }
 
-        public static ContainerItem GetItem(Action<string, BookmarkActionType> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand)
+        public static ContainerItem GetItem(Action<string, BookmarkActionType> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand,Func<Views.TabPage> tabPageProvider)
         {
             var result = new ObservableCollection<IFileItem>();
 
-            var itemFolder = GetItemFolders();
+            var itemFolder = GetItemFolders(tabPageProvider);
             var itemLibrary = GetItemLibrary();
             //var itemHistory = GetItemHistory(PathRequestCommand);
-            var itemHistory = GetItemHistoryMRU(PathRequestCommand);
+            var itemHistory = GetItemHistoryMRU(PathRequestCommand,tabPageProvider);
             var itemBookmark = GetItemBookmarks(bookmarkAction);
 
             result.Add(itemFolder);

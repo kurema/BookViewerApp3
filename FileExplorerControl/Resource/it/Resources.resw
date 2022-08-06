@@ -81,4 +81,10 @@
   <data name="FileType.Combined" xml:space="preserve">
     <value>Contenitore combinato</value>
   </data>
+  <data name="ContextMenu.OpenWith.Choose" xml:space="preserve">
+    <value>Scegliere il programma...</value>
+  </data>
+  <data name="ContextMenu.OpenWith.Title" xml:space="preserve">
+    <value>Aprire con</value>
+  </data>
 </root>

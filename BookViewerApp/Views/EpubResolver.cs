@@ -120,6 +120,8 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
         }
     }
 
+    //private System.Threading.SemaphoreSlim SemaphoreWebResource = new(1, 1);
+
     public async void WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
     {
         if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uri) || uri.Host.ToUpperInvariant() != Host.ToUpperInvariant()) return;
@@ -154,7 +156,7 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
                 var ext = Path.GetExtension(uri.LocalPath);
                 var mimetype = MimeTypes.MimeTypeMap.GetMimeType(ext);
                 var header = new StringBuilder();
-                if (!string.IsNullOrEmpty(mimetype) && string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
+                if (!string.IsNullOrEmpty(mimetype) && !string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
                 args.Response = sender.Environment.CreateWebResourceResponse(random, 200, "OK", header.ToString());
             }
             catch { }

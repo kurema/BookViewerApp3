@@ -149,48 +149,84 @@ public static partial class UIHelper
             return new MenuCommand(GetResourceTitle("StorageFolder/AddToLibrary"), libsToAdd.ToArray());
         }
 
-        public static MenuCommand[] MenuStorage(IFileItem item)
+        public static Func<IFileItem, MenuCommand[]> MenuStorage(Func<Views.TabPage> tabPageProvider)
         {
-            var list = new List<MenuCommand>();
-
-            if (item is StorageFileItem file)
+            return (item) =>
             {
-                if (file.IsFolder)
+                var list = new List<MenuCommand>();
+
+                if (item is StorageFileItem file)
                 {
-                    var result = GetAddLibraryMenu(file?.Content, file.Path);
-                    if (result is not null) list.Add(result);
-                }
-                else
-                {
-                    var bookType = Managers.BookManager.GetBookTypeByPath(file.Path);
-                    if (bookType != null && bookType != Managers.BookManager.BookType.Epub)
+                    if (file.IsFolder)
                     {
-                        if (file.Content is Windows.Storage.IStorageFile sfile)
+                        var result = GetAddLibraryMenu(file?.Content, file.Path);
+                        if (result is not null) list.Add(result);
+                    }
+                    else
+                    {
+                        var bookType = Managers.BookManager.GetBookTypeByPath(file.Path);
+                        if (bookType != null && bookType != Managers.BookManager.BookType.Epub)
                         {
-                            list.Add(new MenuCommand(GetResourceTitle("Book/SelectThumbnail"), new DelegateCommand(async (_) =>
+                            if (file.Content is Windows.Storage.IStorageFile sfile)
                             {
-                                var dialog = new ContentDialog();
-                                var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;//XamlRoot should be specified here...
-                                if (book is null) return;
-                                var page = new Views.ThumbnailSelectionPage();
-                                page.Book = book;
-                                dialog.Content = page;
-                                dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/Close");
-                                try
+                                list.Add(new MenuCommand(GetResourceTitle("Book/SelectThumbnail"), new DelegateCommand(async (_) =>
                                 {
-                                    await dialog.ShowAsync();
-                                }
-                                catch
-                                {
-                                }
-                                file.OnUpdate();
-                            })));
+                                    var dialog = new ContentDialog();
+                                    var book = await Managers.BookManager.GetBookFromFile(sfile) as Books.IBookFixed;//XamlRoot should be specified here...
+                                    if (book is null) return;
+                                    var page = new Views.ThumbnailSelectionPage();
+                                    page.Book = book;
+                                    dialog.Content = page;
+                                    dialog.CloseButtonText = Managers.ResourceManager.Loader.GetString("Word/Close");
+                                    try
+                                    {
+                                        await dialog.ShowAsync();
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    file.OnUpdate();
+                                })));
+                            }
                         }
+                        {
+                            var list2 = new List<MenuCommand>();
+
+                            if (System.IO.Path.GetExtension(file.Path).ToUpperInvariant() == ".PDF")
+                            {
+                                if (kurema.BrowserControl.Helper.Functions.IsWebView2Supported)
+                                {
+                                    list2.Add(new MenuCommand(Managers.ResourceManager.Loader.GetString("TabHeader/PdfJs"), new DelegateCommand(_ =>
+                                    {
+                                        var tab = tabPageProvider?.Invoke();
+                                        if (tab is null) return;
+                                        if (file?.Content is not Windows.Storage.IStorageFile f) return;
+                                        tab.OpenTabPdfJs(f);
+                                    })));
+                                    list2.Add(new MenuCommand(Managers.ResourceManager.Loader.GetString("TabHeader/Browser"), new DelegateCommand(_ =>
+                                    {
+                                        var tab = tabPageProvider?.Invoke();
+                                        if (tab is null) return;
+                                        if (file?.Content is not Windows.Storage.IStorageFile f) return;
+                                        tab.OpenTabBrowser(f);
+                                    })));
+                                }
+                            }
+                            {
+                                list2.Add(new MenuCommand(Managers.ResourceManager.LoaderFileExplorer.GetString("ContextMenu/OpenWith/Choose"), new DelegateCommand(async _ =>
+                                {
+                                    if (file?.Content is not Windows.Storage.IStorageFile f) return;
+                                    await Windows.System.Launcher.LaunchFileAsync(f, new Windows.System.LauncherOptions() { DisplayApplicationPicker = true });
+                                })));
+                            }
+                            list.Add(new MenuCommand(Managers.ResourceManager.LoaderFileExplorer.GetString("ContextMenu/OpenWith/Title"), list2.ToArray()));
+                        }
+
                     }
                 }
-            }
 
-            return list.ToArray();
+                return list.ToArray();
+            };
         }
 
         public static MenuCommand[] MenuHistories(IFileItem item)
@@ -367,40 +403,74 @@ public static partial class UIHelper
 
         }
 
-        public static Func<IFileItem, MenuCommand[]> GetMenuHistoryMRU(System.Windows.Input.ICommand pathRequestCommand)
+        public static Func<IFileItem, MenuCommand[]> GetMenuHistoryMRU(System.Windows.Input.ICommand pathRequestCommand, Func<Views.TabPage> tabPageProvider)
         {
             return (item) =>
             {
-                if (item is HistoryMRUItem item1 && item1.IsParentAccessible)
+                var result = new List<MenuCommand>();
+                if (item is HistoryMRUItem item1)
                 {
-                    var result = new List<MenuCommand>();
-                    result.Add(new MenuCommand(GetResourceTitle("Histories/OpenParent"), new DelegateCommand(async a =>
+                    if (item1.IsParentAccessible)
                     {
-                        try
+                        var command = new MenuCommand(GetResourceTitle("Histories/OpenParent"), new DelegateCommand(async a =>
                         {
-                            var file = await item1.GetFile();
-                            if (file is null)
+                            try
                             {
-                                item1.IsParentAccessible = false;
-                                return;
+                                var file = await item1.GetFile();
+                                if (file is null)
+                                {
+                                    item1.IsParentAccessible = false;
+                                    return;
+                                }
+                                var parent = await file.GetParentAsync();
+                                if (parent is null)
+                                {
+                                    item1.IsParentAccessible = false;
+                                    return;
+                                }
+                                if (pathRequestCommand?.CanExecute(parent.Path) == true) pathRequestCommand.Execute(parent.Path);
                             }
-                            var parent = await file.GetParentAsync();
-                            if (parent is null)
-                            {
-                                item1.IsParentAccessible = false;
-                                return;
-                            }
-                            if (pathRequestCommand?.CanExecute(parent.Path) == true) pathRequestCommand.Execute(parent.Path);
-                        }
-                        catch { }
-                    })));
+                            catch { }
+                        }));
+                        result.Add(command);
+                    }
+                    {
+                        var list = new List<MenuCommand>();
 
-                    return result.ToArray();
+                        if (System.IO.Path.GetExtension(item1.Name).ToUpperInvariant() == ".PDF")
+                        {
+                            if (kurema.BrowserControl.Helper.Functions.IsWebView2Supported)
+                            {
+                                list.Add(new MenuCommand(Managers.ResourceManager.Loader.GetString("TabHeader/PdfJs"), new DelegateCommand(async _ =>
+                                {
+                                    var tab = tabPageProvider?.Invoke();
+                                    if (tab is null) return;
+                                    var file = await item1.GetFile();
+                                    if (file is null) return;
+                                    tab.OpenTabPdfJs(file);
+                                })));
+                                list.Add(new MenuCommand(Managers.ResourceManager.Loader.GetString("TabHeader/Browser"), new DelegateCommand(async _ =>
+                                {
+                                    var tab = tabPageProvider?.Invoke();
+                                    if (tab is null) return;
+                                    var file = await item1.GetFile();
+                                    if (file is null) return;
+                                    tab.OpenTabBrowser(file);
+                                })));
+                            }
+                        }
+                        {
+                            list.Add(new MenuCommand(Managers.ResourceManager.LoaderFileExplorer.GetString("ContextMenu/OpenWith/Choose"), new DelegateCommand(async _ =>
+                            {
+                                var file = await item1.GetFile();
+                                if (file is null) return;
+                                await Windows.System.Launcher.LaunchFileAsync(file, new Windows.System.LauncherOptions() { DisplayApplicationPicker = true });
+                            })));
+                        }
+                        result.Add(new MenuCommand(Managers.ResourceManager.LoaderFileExplorer.GetString("ContextMenu/OpenWith/Title"), list.ToArray()));
+                    }
                 }
-                else
-                {
-                    return new MenuCommand[0];
-                }
+                return result.ToArray();
             };
         }
 
