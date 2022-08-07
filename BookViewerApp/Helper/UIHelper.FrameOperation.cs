@@ -98,14 +98,14 @@ public static partial class UIHelper
             //HistoryManager.AddEntry(file);
         }
 
-        public static async void OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        public static async void OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
         {
             if (file is null) return;
             if (sender is null) return;
             SetTitleByResource(sender, "Epub");
             var tabPage = GetCurrentTabPage(sender);
 
-            var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
+            epubType ??= SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
             EpubResolverBase resolver = epubType switch
             {
                 //SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolverFile.GetResolverBibi(file),
@@ -173,7 +173,7 @@ public static partial class UIHelper
             HistoryManager.AddEntry(file);
         }
 
-        public static void OpenEpubPreferedEngine(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        public static void OpenEpubPreferedEngine(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
         {
             if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserUseWebView2))
             {
@@ -182,7 +182,7 @@ public static partial class UIHelper
                     //https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
                     var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
                     if (string.IsNullOrEmpty(version)) throw new Exception();
-                    OpenEpub2(frame, file, sender);
+                    OpenEpub2(frame, file, sender, epubType);
                     return;
                 }
                 catch
@@ -191,19 +191,19 @@ public static partial class UIHelper
             }
             else
             {
-                OpenEpub(frame, file, sender);
+                OpenEpub(frame, file, sender, epubType);
                 return;
             }
         }
 
-        public static async void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+        public static async void OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
         {
             if (file is null) return;
             if (sender is null) return;
             SetTitleByResource(sender, "Epub");
             var tabPage = GetCurrentTabPage(sender);
 
-            var epubType = SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
+            epubType ??= SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
             EpubResolverBase resolver = epubType switch
             {
                 //SettingStorage.SettingEnums.EpubViewerType.Bibi => EpubResolverFile.GetResolverBibi(file),
@@ -294,7 +294,7 @@ public static partial class UIHelper
             return true;
         }
 
-        public async static void OpenBook(Windows.Storage.IStorageFile file, Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null)
+        public async static void OpenBook(Windows.Storage.IStorageFile file, Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
         {
             if (file is null) return;
             if (frameProvider is null) return;
@@ -304,7 +304,7 @@ public static partial class UIHelper
             if (type == BookManager.BookType.Epub)
             {
                 var (frame, sender) = frameProvider();
-                OpenEpubPreferedEngine(frame, file, sender);
+                OpenEpubPreferedEngine(frame, file, sender, epubType);
             }
             //else if (type is BookManager.BookType.Pdf)
             //{

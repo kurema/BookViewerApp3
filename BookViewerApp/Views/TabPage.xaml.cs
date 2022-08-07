@@ -124,16 +124,16 @@ public sealed partial class TabPage : Page
         UIHelper.FrameOperation.OpenSingleFile(frame, file, newTab);
     }
 
-    public void OpenTabBook(Windows.Storage.IStorageItem file)
+    public void OpenTabBook(Windows.Storage.IStorageItem file, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
     {
         if (file is Windows.Storage.IStorageFile item)
         {
             UIHelper.FrameOperation.OpenBook(item, () => OpenTab("BookViewer"), () =>
              {
-                     //Dialog:Open dangerous file?
-                     //Open.
-                     //Or just ignore.
-                 });
+                 //Dialog:Open dangerous file?
+                 //Open.
+                 //Or just ignore.
+             }, epubType);
         }
     }
 
