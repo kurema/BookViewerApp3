@@ -71,9 +71,14 @@ namespace BookViewerApp.Books
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 try
                 {
+                    //現状日本語の場合はZIPファイルをCP932で読むという雑なハックをしているが、たまにUTF-8の場合もある。
+                    //事前に調べる方法はなさそうだし、パフォーマンスに影響が出る処理を入れたくはない。
+                    //なのでこのまま。ほとんどの日本語ファイルはCP932なので妥協。
+                    //ちなみにこれはソートと目次機能で使われる。ソートに影響はないはず。
                     Content = new ZipArchive(stream, ZipArchiveMode.Read, false,
                         System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ?
                         Encoding.GetEncoding(932) : Encoding.UTF8);
+                    //Content = new ZipArchive(stream, ZipArchiveMode.Read, false);
                     DisposableStream = stream;
                     OnLoaded(new EventArgs());
                 }

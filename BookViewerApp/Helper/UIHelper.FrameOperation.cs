@@ -21,7 +21,7 @@ public static partial class UIHelper
         {
             if (file is null) return;
             if (sender is null) return;
-            SetTitleByResource(sender, "PdfJs");
+            SetTitle(sender, Path.GetFileNameWithoutExtension(file.Name));
             var tabPage = GetCurrentTabPage(sender);
 
             EpubResolverBase resolver = await EpubResolverBase.GetResolverPdfJs(file);
@@ -32,6 +32,14 @@ public static partial class UIHelper
             if (tabPage is null) return;
 
             {
+                content.WebView2.CoreWebView2Initialized += (s, e) =>
+                {
+                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    {
+                        await tabPage.OpenTabWebPreferedBrowser(a);
+                    }, t => SetTitle(sender, t));
+                };
+
                 OpenBrowser_BookmarkSetViewModel(vm);
 
                 var uri = resolver.GetUri(resolver.PathHome);
@@ -40,14 +48,6 @@ public static partial class UIHelper
                 content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
                 vm.SourceString = uri;
                 vm.ControllerCollapsed = true;
-
-                content.WebView2.CoreWebView2Initialized += (s, e) =>
-                {
-                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
-                    {
-                        await tabPage.OpenTabWebPreferedBrowser(a);
-                    }, (_) => { });
-                };
             }
             HistoryManager.AddEntry(file);
         }
@@ -56,7 +56,7 @@ public static partial class UIHelper
         {
             if (file is null) return;
             if (sender is null) return;
-            //SetTitleByResource(sender, "PdfJs");
+            SetTitle(sender, Path.GetFileNameWithoutExtension(file.Name));
             var tabPage = GetCurrentTabPage(sender);
 
             frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
@@ -66,6 +66,14 @@ public static partial class UIHelper
             if (tabPage is null) return;
 
             {
+                content.WebView2.CoreWebView2Initialized += (s, e) =>
+                {
+                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    {
+                        await tabPage.OpenTabWebPreferedBrowser(a);
+                    }, t => SetTitle(sender, t));
+                };
+
                 OpenBrowser_BookmarkSetViewModel(vm);
 
                 var uri = $"https://file.example/{System.Web.HttpUtility.UrlEncode(System.IO.Path.GetFileName(file.Name))}";
@@ -85,14 +93,6 @@ public static partial class UIHelper
                 };
                 vm.SourceString = uri;
                 vm.ControllerCollapsed = true;
-
-                content.WebView2.CoreWebView2Initialized += (s, e) =>
-                {
-                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
-                    {
-                        await tabPage.OpenTabWebPreferedBrowser(a);
-                    }, (_) => { });
-                };
             }
             HistoryManager.AddEntry(file);
         }
@@ -119,6 +119,14 @@ public static partial class UIHelper
             if (tabPage is null) return;
 
             OpenBrowser_BookmarkSetViewModel(vm);
+
+            content.WebView2.CoreWebView2Initialized += (s, e) =>
+            {
+                OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                {
+                    await tabPage.OpenTabWebPreferedBrowser(a);
+                }, t => SetTitle(sender, t));
+            };
 
             var uri = resolver.GetUri(resolver.PathHome);
             await content.WebView2.EnsureCoreWebView2Async();
@@ -160,13 +168,6 @@ public static partial class UIHelper
                 {
                     content.AddOnSpace.Add(OpenEpub_GetDarkmodeCheckBox());
                 }
-                content.WebView2.CoreWebView2Initialized += (s, e) =>
-                {
-                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
-                    {
-                        await tabPage.OpenTabWebPreferedBrowser(a);
-                    }, (_) => { });
-                };
             }
             HistoryManager.AddEntry(file);
         }

@@ -37,8 +37,6 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
     }
     #endregion
 
-    //public Action ActionEnsureNavigate { get; set; }
-
     public ObservableCollection<IBookmarkItem> BookmarkCurrent { get; } = new ObservableCollection<IBookmarkItem>();
     public ObservableCollection<IBookmarkItem> BookmarkAddFolders { get; } = new ObservableCollection<IBookmarkItem>();
 
@@ -63,7 +61,6 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
             });
         }
     }
-
 
     private Uri _Source;
     public Uri Source
@@ -145,14 +142,16 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
             {
                 if (Uri.TryCreate(value, UriKind.Absolute, out var result))
                 {
-                    if (result.Scheme.ToUpperInvariant() is "HTTP" or "HTTPS")
-                    {
-                        this.Source = result;
-                    }
-                    else
-                    {
-                        SetUriString(value);
-                    }
+                    this.Source = result;
+                    //Disallow edge:// or other random schemes.
+                    //if (result.Scheme.ToUpperInvariant() is "HTTP" or "HTTPS")
+                    //{
+                    //    this.Source = result;
+                    //}
+                    //else
+                    //{
+                    //    SetUriString(value);
+                    //}
                 }
                 else
                 {

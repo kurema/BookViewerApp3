@@ -443,7 +443,7 @@
     <value>サードパーティー情報</value>
   </data>
   <data name="Info.Info.BeSponsor.Title" xml:space="preserve">
-    <value>支援する。</value>
+    <value>支援する</value>
   </data>
   <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
     <value>GitHub Sponsorsを開く</value>
