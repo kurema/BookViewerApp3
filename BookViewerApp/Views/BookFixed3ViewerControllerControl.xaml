@@ -402,7 +402,7 @@
                         </Grid>
                     </Border>
 
-                    <Border x:Name="BookReaderControls_Command_Border"
+                    <Border x:Name="BookReaderControls_Command_Border" SizeChanged="BookReaderControls_Command_Border_SizeChanged"
                                     Grid.Row="2">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -697,6 +697,16 @@
                                     <SymbolIcon Symbol="FullScreen"/>
                                 </AppBarButton>
                                 <!--</CommandBar.PrimaryCommands>-->
+                                <Button Style='{StaticResource ButtonStyle}'  x:Name="BookReaderControlsCommandBar_Right_More_Button" Visibility="Collapsed">
+                                    <SymbolIcon Symbol="More" />
+                                    <Button.Flyout>
+                                        <Flyout Placement="Top">
+                                            <StackPanel x:Name="BookReaderControlsCommandBar_Right_More_StackPanel" Orientation="Horizontal">
+                                                
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
                             </StackPanel>
                         </Grid>
                     </Border>

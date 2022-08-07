@@ -49,7 +49,8 @@ public static partial class UIHelper
                 vm.SourceString = uri;
                 vm.ControllerCollapsed = true;
             }
-            HistoryManager.AddEntry(file);
+            //ID can not be saved properly here. It cause thumbnail problem in the history page of Filer.
+            //HistoryManager.AddEntry(file);
         }
 
         public static async void OpenSingleFile(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
@@ -94,7 +95,7 @@ public static partial class UIHelper
                 vm.SourceString = uri;
                 vm.ControllerCollapsed = true;
             }
-            HistoryManager.AddEntry(file);
+            //HistoryManager.AddEntry(file);
         }
 
         public static async void OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)

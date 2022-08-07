@@ -201,4 +201,46 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
         }
         flyout.ShowAt(sender, option);
     }
+
+    private void BookReaderControls_Command_Border_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        if (BookReaderControls_Command_Border.Child is not Grid g) return;
+        var panel = BookReaderControlsCommandBar_Right;
+        var buttonSize = panel.Children[0].ActualSize.X;
+        var extra = panel.ActualWidth - g.ColumnDefinitions[2].ActualWidth - buttonSize * 0.5;
+        if (BookReaderControlsCommandBar_Right_More_Button.Visibility == Visibility.Collapsed) extra += buttonSize;
+
+        int count = (int)Math.Ceiling(extra / buttonSize);
+
+        if (count + BookReaderControlsCommandBar_Right_More_StackPanel.Children.Count == 1)
+        {
+            while (BookReaderControlsCommandBar_Right_More_StackPanel.Children.Count != 0)
+            {
+                var element = BookReaderControlsCommandBar_Right_More_StackPanel.Children[BookReaderControlsCommandBar_Right_More_StackPanel.Children.Count - 1];
+                BookReaderControlsCommandBar_Right_More_StackPanel.Children.Remove(element);
+                panel.Children.Insert(0, element);
+            }
+        }
+        else if (count > 0)
+        {
+            for (int i = 0; i < count && panel.Children.Count > 1; i++)
+            {
+                var element = panel.Children[0];
+                if (element == BookReaderControlsCommandBar_Right_More_Button) break;
+                panel.Children.Remove(element);
+                BookReaderControlsCommandBar_Right_More_StackPanel.Children.Add(element);
+            }
+        }
+        else if (count < 0)
+        {
+            for (int i = 0; i > count && BookReaderControlsCommandBar_Right_More_StackPanel.Children.Count > 0; i--)
+            {
+                var element = BookReaderControlsCommandBar_Right_More_StackPanel.Children[BookReaderControlsCommandBar_Right_More_StackPanel.Children.Count - 1];
+                BookReaderControlsCommandBar_Right_More_StackPanel.Children.Remove(element);
+                panel.Children.Insert(0, element);
+            }
+        }
+
+        BookReaderControlsCommandBar_Right_More_Button.Visibility = BookReaderControlsCommandBar_Right_More_StackPanel.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
 }
