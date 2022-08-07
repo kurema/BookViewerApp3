@@ -111,9 +111,9 @@ public partial class FileItemViewModel : INotifyPropertyChanged
         {
             if (ParentContent?.DialogDelete != null)
             {
-                var result = await ParentContent?.DialogDelete(this, canDeleteComplete);
-                if (result.delete == false) return (false, false);
-                return (result.delete, result.completeDelete);
+                var (delete, completeDelete) = await ParentContent?.DialogDelete(this, canDeleteComplete);
+                if (delete == false) return (false, false);
+                return (delete, completeDelete);
             }
             return (true, false);
         }

@@ -67,7 +67,7 @@ namespace BookViewerApp.Books
 {
     public class ImagePageStream : IPageFixed
     {
-        private IRandomAccessStream stream;
+        private readonly IRandomAccessStream stream;
 
         public ImagePageStream(IRandomAccessStream stream)
         {

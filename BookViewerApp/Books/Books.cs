@@ -114,7 +114,7 @@ public class PageOptionsControl : IPageOptions
 
 public class VirtualPage : IPageFixed, Helper.IDisposableBasic
 {
-    private Func<IPageFixed> accessor;
+    private readonly Func<IPageFixed> accessor;
 
     private IPageFixed? PageCache = null;
 

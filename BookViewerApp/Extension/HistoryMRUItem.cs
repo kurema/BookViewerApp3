@@ -16,8 +16,8 @@ public class HistoryMRUItem : IFileItem
         this.Token = access.Token;
     }
 
-    BookViewerApp.Managers.HistoryManager.Metadata Content;
-    string Token;
+    readonly BookViewerApp.Managers.HistoryManager.Metadata Content;
+    readonly string Token;
 
     public bool IsParentAccessible { get; set; } = true;
 

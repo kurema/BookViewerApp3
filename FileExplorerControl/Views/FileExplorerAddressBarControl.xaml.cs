@@ -33,8 +33,7 @@ public sealed partial class FileExplorerAddressBarControl : UserControl
         var cfile = file;
         while (true)
         {
-            var elem = AddressItemDataTemplate.LoadContent() as FrameworkElement;
-            if (elem != null)
+            if (AddressItemDataTemplate.LoadContent() is FrameworkElement elem)
             {
                 elem.DataContext = cfile;
                 elem.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));

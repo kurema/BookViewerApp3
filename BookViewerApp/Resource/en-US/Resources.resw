@@ -537,6 +537,7 @@ Are you sure to unregister?</value>
   </data>
   <data name="Info.Info.BeSponsor.Title" xml:space="preserve">
     <value>Be a sponsor!</value>
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="Info.Info.Contributors" xml:space="preserve">
     <value>Contributors</value>
@@ -580,6 +581,7 @@ This includes tabs, Fluent Design, integrated filer and numerous bug fixes.</val
   </data>
   <data name="Migration.Dialog.Title" xml:space="preserve">
     <value>The new app is released!</value>
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="Migration.General.Title" xml:space="preserve">
     <value>Update to BookViewer3</value>
@@ -603,6 +605,7 @@ I wish you good luck.</value>
   </data>
   <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
     <value>Thank you for supporting me!</value>
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
     <value>The funds you provide make it possible for kurema to continue the work! It gives me power to keep going.
@@ -610,6 +613,8 @@ I wish you good luck.</value>
   </data>
   <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
     <value>Thank you for your purchase!</value>
+    
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="Info.Purchase.Title" xml:space="preserve">
     <value>Donate</value>
@@ -640,9 +645,11 @@ I wish you good luck.</value>
   </data>
   <data name="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" xml:space="preserve">
     <value>Bibi</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" xml:space="preserve">
     <value>Epub.js Reader</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="Setting_EpubViewerType.Title" xml:space="preserve">
     <value>Epub display engine</value>
@@ -685,6 +692,7 @@ I wish you good luck.</value>
   </data>
   <data name="Setting.ToolTip.Message" xml:space="preserve">
     <value>Default: {2}</value>
+    <comment>@MutedRule(StringFormat)</comment>
   </data>
   <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
     <value>Remember the page orientation of each book.</value>

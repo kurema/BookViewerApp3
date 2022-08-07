@@ -605,6 +605,9 @@
                                 <AppBarToggleButton Icon="SlideShow" AllowFocusOnInteraction="True" IsChecked="{Binding SlideShowEnabled,Mode=TwoWay}" Style="{StaticResource AppBarToggleButtonStyle}"
                                                     ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.SlideShow.ToolTip.Message, Mode=OneTime}"
                                                     >
+                                    <AppBarToggleButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="F5" Modifiers="None"/>
+                                    </AppBarToggleButton.KeyboardAccelerators>
                                     <AppBarToggleButton.ContextFlyout>
                                         <Flyout Placement="Top">
                                             <StackPanel MinWidth="130">

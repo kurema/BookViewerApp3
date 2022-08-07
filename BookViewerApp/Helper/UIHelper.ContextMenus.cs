@@ -470,7 +470,6 @@ public static partial class UIHelper
             }
         }
 
-
         public static Func<IFileItem, MenuCommand[]> GetMenuHistory(System.Windows.Input.ICommand pathRequestCommand)
         {
             return (item) =>

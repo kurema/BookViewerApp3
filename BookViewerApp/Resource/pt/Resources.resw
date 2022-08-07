@@ -536,12 +536,6 @@ Desejo-vos boa sorte.</value>
   <data name="Setting_EpubViewerType.Title" xml:space="preserve">
     <value>Motor de visualização Epub</value>
   </data>
-  <data name="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" xml:space="preserve">
-    <value>Bibi</value>
-  </data>
-  <data name="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" xml:space="preserve">
-    <value>Epub.js Reader</value>
-  </data>
   <data name="Setting_DefaultSpreadType.Description" xml:space="preserve">
     <value>Selecione o layout da página.</value>
   </data>

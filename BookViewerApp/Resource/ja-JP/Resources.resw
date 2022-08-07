@@ -540,12 +540,6 @@
   <data name="Setting_EpubViewerType.Title" xml:space="preserve">
     <value>Epub表示エンジン</value>
   </data>
-  <data name="Setting_EpubViewerType.Enums.EpubViewerType.Bibi.Title" xml:space="preserve">
-    <value>Bibi</value>
-  </data>
-  <data name="Setting_EpubViewerType.Enums.EpubViewerType.EpubJsReader.Title" xml:space="preserve">
-    <value>Epub.js Reader</value>
-  </data>
   <data name="Setting_DefaultSpreadType.Description" xml:space="preserve">
     <value>ページの見開き設定。</value>
   </data>

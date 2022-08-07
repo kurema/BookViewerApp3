@@ -159,7 +159,7 @@ namespace BookViewerApp.Books
             await Load(stream, file.Name, passwordRequestedCallback, defaultPassword);
         }
 
-        public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream,string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
+        public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
         {
             string? password = null;
             bool passSave = false;
@@ -421,9 +421,10 @@ namespace BookViewerApp.Books
             {
                 DestinationWidth = width
             };
-            if(croppedRegionRelative.HasValue)
+            if (croppedRegionRelative.HasValue)
             {
-                pdfOption.SourceRect = croppedRegionRelative.Value;
+                pdfOption.SourceRect
+                    = new Windows.Foundation.Rect(croppedRegionRelative.Value.X * Content.Size.Width, croppedRegionRelative.Value.Y * Content.Size.Height, croppedRegionRelative.Value.Width * Content.Size.Width, croppedRegionRelative.Value.Height * Content.Size.Height);
             }
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await Content.RenderToStreamAsync(stream, pdfOption);
@@ -434,7 +435,7 @@ namespace BookViewerApp.Books
         {
             var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
             await RenderToStreamAsync(stream, width, height);
-            if(image is not null) await image.SetSourceAsync(stream);
+            if (image is not null) await image.SetSourceAsync(stream);
         }
     }
 }

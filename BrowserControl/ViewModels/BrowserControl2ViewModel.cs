@@ -72,6 +72,9 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
         }
     }
 
+    //This is not currently used.
+    private string _LastErrorStatus = null;
+    public string LastErrorStatus { get => _LastErrorStatus; set => SetProperty(ref _LastErrorStatus, value); }
 
     private ICommand _OpenDownloadDirectoryCommand;
     public ICommand OpenDownloadDirectoryCommand
@@ -87,12 +90,23 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
         set { _OpenDownloadDirectoryCommand = value; }
     }
 
+    private ICommand _NavigateCommand;
+    public ICommand NavigateCommand
+    {
+        get
+        {
+            return _NavigateCommand ??= new Helper.DelegateCommand((a) => SourceString = a?.ToString(), a => !string.IsNullOrEmpty(a?.ToString()));
+        }
+    }
+
     private Func<Task<Windows.Storage.StorageFolder>> _FolderProvider = async () => await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Download", Windows.Storage.CreationCollisionOption.OpenIfExists);
     public Func<Task<Windows.Storage.StorageFolder>> FolderProvider { get => _FolderProvider; set => SetProperty(ref _FolderProvider, value); }
 
     private string _HomePage;
     public string HomePage { get => _HomePage; set => SetProperty(ref _HomePage, value); }
 
+    private string _Title;
+    public string Title { get => _Title; set => SetProperty(ref _Title, value); }
 
     private string _SearchEngine = "https://www.google.com/search?q=%s";
     public string SearchEngine { get => _SearchEngine; set => SetProperty(ref _SearchEngine, value); }

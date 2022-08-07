@@ -41,8 +41,15 @@ public sealed partial class BrowserControl2 : Page, IDisposable
             await webView.EnsureCoreWebView2Async();
             webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             webView.CoreWebView2.ContainsFullScreenElementChanged += CoreWebView2_ContainsFullScreenElementChanged;
+            webView.CoreWebView2.DocumentTitleChanged += CoreWebView2_DocumentTitleChanged;
         };
+    }
 
+
+    private void CoreWebView2_DocumentTitleChanged(Microsoft.Web.WebView2.Core.CoreWebView2 sender, object args)
+    {
+        if (DataContext is not ViewModels.BrowserControl2ViewModel vm) return;
+        vm.Title = webView.CoreWebView2.DocumentTitle;
     }
 
     private void CoreWebView2_ContainsFullScreenElementChanged(Microsoft.Web.WebView2.Core.CoreWebView2 sender, object args)

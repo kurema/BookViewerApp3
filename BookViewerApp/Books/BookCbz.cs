@@ -40,7 +40,7 @@ namespace BookViewerApp.Books
                 {
                     result += Functions.CombineStringAndDouble(item.Name, item.Length);
                 }
-                return Functions.GetHash(result);
+                return _IDCache = Functions.GetHash(result);
             }
         }
 
@@ -155,7 +155,7 @@ namespace BookViewerApp.Books
 {
     public class CbzPage : IPageFixed, IDisposableBasic
     {
-        private ZipArchiveEntry Content;
+        private readonly ZipArchiveEntry Content;
 
         public CbzPage(ZipArchiveEntry entry)
         {
@@ -164,10 +164,8 @@ namespace BookViewerApp.Books
             {
                 MemoryStreamProvider = async (th) =>
                   {
-                      using (var s = Content.Open())
-                      {
-                          return await th.GetMemoryStreamAsync(s);
-                      }
+                      using var s = Content.Open();
+                      return await th.GetMemoryStreamAsync(s);
                   }
             };
         }
@@ -190,10 +188,8 @@ namespace BookViewerApp.Books
             if (Cache is null) return;
             try
             {
-                using (var fileThumb = await file.OpenAsync(FileAccessMode.ReadWrite))
-                {
-                    await Functions.ResizeImage((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream(), fileThumb, width, croppedRegionRelative: croppedRegionRelative, extractAction: () => { Content.ExtractToFile(file.Path, true); });
-                }
+                using var fileThumb = await file.OpenAsync(FileAccessMode.ReadWrite);
+                await Functions.ResizeImage((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream(), fileThumb, width, croppedRegionRelative: croppedRegionRelative, extractAction: () => { Content.ExtractToFile(file.Path, true); });
             }
             catch (Exception)
             {
