@@ -678,4 +678,13 @@ Clique direito para configurar</value>
   <data name="Word.Toc" xml:space="preserve">
     <value>Índice</value>
   </data>
+  <data name="Word.Reset" xml:space="preserve">
+    <value>Repor</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Description" xml:space="preserve">
+    <value>Anular o valor de User-Agent. Funciona apenas com o WebView2. Deixe em branco para o valor por defeito.</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
+    <value>User-Agent (WebView2)</value>
+  </data>
 </root>

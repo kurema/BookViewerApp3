@@ -680,4 +680,13 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Word.Toc" xml:space="preserve">
     <value>Indice</value>
   </data>
+  <data name="Word.Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Description" xml:space="preserve">
+    <value>Sovrascrivere il valore User-Agent. Funziona solo con WebView2. Lasciare vuoto il valore predefinito.</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
+    <value>User-Agent (WebView2)</value>
+  </data>
 </root>

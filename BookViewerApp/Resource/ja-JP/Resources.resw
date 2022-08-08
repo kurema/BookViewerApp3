@@ -684,4 +684,13 @@
   <data name="Word.Toc" xml:space="preserve">
     <value>目次</value>
   </data>
+  <data name="Word.Reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Description" xml:space="preserve">
+    <value>User-Agentを上書きします。WebView2でのみ動作します。空白でデフォルトになります。</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
+    <value>User-Agent (WebView2)</value>
+  </data>
 </root>

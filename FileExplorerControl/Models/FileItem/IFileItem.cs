@@ -42,6 +42,11 @@ public interface IIconProviderProvider
     IconProviders.IIconProvider Icon { get; set; }
 }
 
+public interface IContentFileItemProvider
+{
+    StorageFileItem ContentFileItem { get; }
+}
+
 public class FileItemPlaceHolder : IFileItem
 {
     public string Name =>

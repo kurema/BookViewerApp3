@@ -134,12 +134,18 @@ public class ContentViewModel : INotifyPropertyChanged
     public ICommand LaunchCommand
     {
         get => _LaunchCommand ??= new Helper.DelegateCommand(async (parameter) =>
-{
-if (Item?.Content is Models.FileItems.StorageFileItem storage && storage.Content is Windows.Storage.IStorageFolder folder)
-{
-await Windows.System.Launcher.LaunchFolderAsync(folder);
-}
-}, (_) => Item?.Content is Models.FileItems.StorageFileItem);
+        {
+            if (Item?.Content is Models.FileItems.StorageFileItem storage && storage.Content is Windows.Storage.IStorageFolder folder)
+            {
+                await Windows.System.Launcher.LaunchFolderAsync(folder);
+                return;
+            }
+            if(Item?.Content is Models.FileItems.IContentFileItemProvider contentFI && contentFI.ContentFileItem?.Content is Windows.Storage.IStorageFolder folder2)
+            {
+                await Windows.System.Launcher.LaunchFolderAsync(folder2);
+                return;
+            }
+        }, (_) => Item?.Content is Models.FileItems.StorageFileItem or Models.FileItems.IContentFileItemProvider);
         set => _LaunchCommand = value;
     }
 

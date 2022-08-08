@@ -411,32 +411,33 @@ public static partial class UIHelper
                         {
                             e2?.Content?.Open();
                             var fileitem = e2?.Content;
+                            var tab = GetCurrentTabPage(control);
+                            if (tab is null) return;
                             if (BookManager.AvailableExtensionsArchive.Contains(Path.GetExtension(fileitem?.Name ?? "").ToLowerInvariant()))
                             {
-                                var tab = GetCurrentTabPage(control);
-                                if (tab != null)
+
+                                if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
                                 {
-                                    if (fileitem is kurema.FileExplorerControl.Models.FileItems.StorageFileItem sfi)
-                                    {
-                                        tab.OpenTabBook(sfi.Content);
-                                    }
-                                    else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
-                                    {
-                                        var file = await hm.GetFile();
-                                        if (file != null) tab.OpenTabBook(file);
-                                    }
-                                    //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
-                                    //{
-                                    //    var file = await hi.GetFile();
-                                    //    if (file != null) tab.OpenTabBook(file);
-                                    //}
-                                    else
-                                    {
-                                        var stream = fileitem?.OpenStreamForReadAsync();
-                                        if (stream != null)
-                                            tab.OpenTabBook(stream);
-                                    }
+                                    tab.OpenTabBook(sfi.Content);
                                 }
+                                else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryMRUItem hm)
+                                {
+                                    var file = await hm.GetFile();
+                                    if (file != null) tab.OpenTabBook(file);
+                                }
+                                //else if (fileitem is kurema.FileExplorerControl.Models.FileItems.HistoryItem hi)
+                                //{
+                                //    var file = await hi.GetFile();
+                                //    if (file != null) tab.OpenTabBook(file);
+                                //}
+                                else
+                                {
+                                    var stream = fileitem?.OpenStreamForReadAsync();
+                                    if (stream != null)
+                                        tab.OpenTabBook(stream);
+                                }
+                                return;
+
                             }
 
                             //var codecQuery = new Windows.Media.Core.CodecQuery();
@@ -451,11 +452,14 @@ public static partial class UIHelper
                             //}
                             if ((await kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage.GetAvailableExtensionsAsync()).Contains(Path.GetExtension(fileitem?.Name ?? "").ToUpperInvariant()))
                             {
-                                var tab = GetCurrentTabPage(control);
-                                if (tab != null)
-                                {
-                                    tab.OpenTabMedia(fileitem);
-                                }
+                                tab.OpenTabMedia(fileitem);
+                                return;
+                            }
+                            if ((fileitem as kurema.FileExplorerControl.Models.FileItems.StorageFileItem)?.Content is Windows.Storage.IStorageFile isf)
+                            {
+                                //Should I warn before opening? And I think it's annoying to open random file by mistake.
+                                await Windows.System.Launcher.LaunchFileAsync(isf);
+                                return;
                             }
                         };
 
@@ -566,10 +570,30 @@ public static partial class UIHelper
             {
                 //await content.WebView2.EnsureCoreWebView2Async();
 
+                void updateUserAgent()
+                {
+                    var ua = (string)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserUserAgent);
+                    if (!string.IsNullOrWhiteSpace(ua))
+                    {
+                        content.WebView2.CoreWebView2.Settings.UserAgent = ua;
+                    }
+                    else
+                    {
+                        content.WebView2.CoreWebView2.Settings.UserAgent = content.UserAgentOriginal;
+                    }
+                }
+
                 content.WebView2.CoreWebView2Initialized += (s, e) =>
                 {
+                    content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
                     OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
+                    updateUserAgent();
                 };
+                {
+                    var addonUA = new Views.BrowserAddOn.UserAgentOverride();
+                    addonUA.UserAgentUpdated += (_, _) => { updateUserAgent(); content?.WebView2?.Reload(); };
+                    content.AddOnSpace.Add(addonUA);
+                }
             }
         }
 

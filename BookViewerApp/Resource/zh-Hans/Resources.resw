@@ -680,4 +680,13 @@
   <data name="Word.Toc" xml:space="preserve">
     <value>目录</value>
   </data>
+  <data name="Word.Reset" xml:space="preserve">
+    <value>复位</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Description" xml:space="preserve">
+    <value>覆盖User-Agent值。它只适用于WebView2。默认值留空。</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
+    <value>User-Agent (WebView2)</value>
+  </data>
 </root>

@@ -54,6 +54,7 @@ public class SettingStorage
         public const string EpubViewerDarkMode = "EpubViewerDarkMode";
         public const string ViewerSlideshowLastTimeSpan = "ViewerSlideshowLastTimeSpan";
         public const string BrowserUseWebView2 = "BrowserUseWebView2";
+        public const string BrowserUserAgent = "BrowserUserAgent";
     }
 
     private static SettingInstance[] _SettingInstances = null;
@@ -96,6 +97,7 @@ public class SettingStorage
                         new SettingInstance(SettingKeys.EpubViewerDarkMode,false, new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance(SettingKeys.ViewerSlideshowLastTimeSpan,20.0,new TypeConverters.DoubleConverter(),group:"Viewer",isVisible:false),
                         new SettingInstance(SettingKeys.BrowserUseWebView2,false,new TypeConverters.BoolConverter(),group:"Browser"),
+                        new SettingInstance(SettingKeys.BrowserUserAgent,string.Empty,new TypeConverters.StringConverter(),group:"Browser"),
                 };
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw
@@ -110,7 +112,6 @@ public class SettingStorage
 
             //Sample:
             //if ((bool)Storages.SettingStorage.GetValue("")){}
-
         }
     }
 

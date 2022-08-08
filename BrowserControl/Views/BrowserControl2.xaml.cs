@@ -45,6 +45,9 @@ public sealed partial class BrowserControl2 : Page, IDisposable
         };
     }
 
+    //This is ugly.
+    //https://github.com/MicrosoftEdge/WebView2Feedback/issues/122#issuecomment-1207530153
+    public string UserAgentOriginal { get; set; } = null;
 
     private void CoreWebView2_DocumentTitleChanged(Microsoft.Web.WebView2.Core.CoreWebView2 sender, object args)
     {

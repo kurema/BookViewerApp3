@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace kurema.FileExplorerControl.Models.FileItems;
 
-public class TokenLibraryItem : IFileItem
+public class TokenLibraryItem : IFileItem, IContentFileItemProvider
 {
     private ICommand renameCommand;
 

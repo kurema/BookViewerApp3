@@ -801,4 +801,17 @@ Right click to configure</value>
   <data name="Word.Toc" xml:space="preserve">
     <value>Table of contents</value>
   </data>
+  <data name="Word.Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Browser.Addon.UserAgent.Title" xml:space="preserve">
+    <value>User-Agent</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="Setting_BrowserUserAgent.Description" xml:space="preserve">
+    <value>Override the User-Agent value. It works only with WebView2. Leave blank for default value.</value>
+  </data>
+  <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
+    <value>User-Agent override (WebView2)</value>
+  </data>
 </root>
