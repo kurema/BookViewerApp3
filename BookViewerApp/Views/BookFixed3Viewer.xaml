@@ -78,5 +78,8 @@
             <ProgressBar Grid.Row="1" Opacity="0"/>
         </Grid>
         <local:BookFixed3ViewerControllerControl x:Name="ViewerController" DataContext="{Binding}" Grid.Row="2" Grid.RowSpan="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <StackPanel Grid.RowSpan="3" Visibility="Collapsed">
+            
+        </StackPanel>
     </Grid>
 </Page>

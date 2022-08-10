@@ -57,7 +57,7 @@ public sealed partial class BrowserControl2 : Page, IDisposable
 
     private void CoreWebView2_ContainsFullScreenElementChanged(Microsoft.Web.WebView2.Core.CoreWebView2 sender, object args)
     {
-        //Does not seems to working.
+        //Does not seems to be working.
         var v = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
         if (sender?.ContainsFullScreenElement == true && !v.IsFullScreenMode)

@@ -107,9 +107,10 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
     public bool IsControlPinned { get => _IsControlPinned; set { _IsControlPinned = value; OnPropertyChanged(nameof(IsControlPinned)); } }
     private bool _IsControlPinned = false;
 
-
     private SpreadPagePanel.ModeEnum _SpreadMode = SpreadPagePanel.ModeEnum.Default;
     public SpreadPagePanel.ModeEnum SpreadMode { get => _SpreadMode; set { _SpreadMode = value; OnPropertyChanged(nameof(SpreadMode)); } }
+
+    //public CompositionEffectViewModel Composition { get; } = new();
 
     public async Task UpdateContainerInfo(Windows.Storage.IStorageFile value)
     {

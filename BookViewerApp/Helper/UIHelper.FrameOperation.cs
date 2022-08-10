@@ -41,12 +41,12 @@ public static partial class UIHelper
                 };
 
                 OpenBrowser_BookmarkSetViewModel(vm);
-
                 var uri = resolver.GetUri(resolver.PathHome);
                 await content.WebView2.EnsureCoreWebView2Async();
                 content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                 content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
                 vm.SourceString = uri;
+                vm.HomePage = uri;
                 vm.ControllerCollapsed = true;
             }
             //ID can not be saved properly here. It cause thumbnail problem in the history page of Filer.
@@ -93,6 +93,7 @@ public static partial class UIHelper
                     return;
                 };
                 vm.SourceString = uri;
+                vm.HomePage = uri;
                 vm.ControllerCollapsed = true;
             }
             //HistoryManager.AddEntry(file);
@@ -137,6 +138,7 @@ public static partial class UIHelper
             content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
             //content.WebView2.CoreWebView2.WebResourceResponseReceived += CoreWebView2_WebResourceResponseReceived;
             vm.SourceString = uri;
+            vm.HomePage = uri;
 
             vm.ControllerCollapsed = true;
             {
@@ -230,6 +232,11 @@ public static partial class UIHelper
                 if (content.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm)
                 {
                     vm.ControllerCollapsed = true;
+                    if (SettingStorage.GetValue("WebHomePage") is string homepage)
+                    {
+                        vm.HomePage = homepage;
+                    }
+                    //vm.HomePage = uri.ToString();
                 }
                 {
                     {
