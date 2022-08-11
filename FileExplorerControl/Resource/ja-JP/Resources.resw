@@ -87,4 +87,7 @@
   <data name="ContextMenu.OpenWith.Choose" xml:space="preserve">
     <value>プログラムを選択...</value>
   </data>
+  <data name="Search.Placeholder" xml:space="preserve">
+    <value>検索</value>
+  </data>
 </root>

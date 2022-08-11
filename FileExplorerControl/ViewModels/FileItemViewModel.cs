@@ -165,16 +165,38 @@ public partial class FileItemViewModel : INotifyPropertyChanged
     {
         get
         {
-            return Order?.OrderDelegate is null || _Children is null ? _Children : Order?.OrderDelegate(_Children);
+            if (_Children is null) return null;
+            var r = string.IsNullOrWhiteSpace(SearchWord) ? _Children : _Children.Where(a =>
+            {
+                var title = a.Title?.ToUpperInvariant();
+                if (title is null) return true;
+                return SearchWord.Split(' ', '　', '&', '＆').Select(a => a.ToUpperInvariant()).All(b => title.Contains(b));
+            });
+            return Order?.OrderDelegate is null ? r : Order?.OrderDelegate(r);
         }
         private set
         {
             _Children = value;
+            _SearchWord = string.Empty;
             OnPropertyChanged(nameof(Children));
             OnPropertyChanged(nameof(Files));
             OnPropertyChanged(nameof(Folders));
         }
     }
+
+
+    private string _SearchWord = string.Empty;
+    public string SearchWord
+    {
+        get => _SearchWord; set
+        {
+            SetProperty(ref _SearchWord, value);
+            OnPropertyChanged(nameof(Children));
+            OnPropertyChanged(nameof(Files));
+            OnPropertyChanged(nameof(Folders));
+        }
+    }
+
 
     private ObservableCollection<IIconProvider> _IconProviders = null;
 

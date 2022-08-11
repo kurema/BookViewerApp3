@@ -336,6 +336,9 @@
     <Compile Include="Views\Bookshelf\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BrowserAddOn\AdBlockerSetting.xaml.cs">
+      <DependentUpon>AdBlockerSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BrowserAddOn\UserAgentOverride.xaml.cs">
       <DependentUpon>UserAgentOverride.xaml</DependentUpon>
     </Compile>
@@ -456,6 +459,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Bookshelf\NavigationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BrowserAddOn\AdBlockerSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

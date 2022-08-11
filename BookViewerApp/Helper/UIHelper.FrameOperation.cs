@@ -43,7 +43,8 @@ public static partial class UIHelper
                 OpenBrowser_BookmarkSetViewModel(vm);
                 var uri = resolver.GetUri(resolver.PathHome);
                 await content.WebView2.EnsureCoreWebView2Async();
-                content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                //https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2.addwebresourcerequestedfilter?view=webview2-dotnet-1.0.1293.44
+                content.WebView2.CoreWebView2.AddWebResourceRequestedFilter($"*://{resolver.Host}/*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                 content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
                 vm.SourceString = uri;
                 vm.HomePage = uri;
@@ -79,7 +80,7 @@ public static partial class UIHelper
 
                 var uri = $"https://file.example/{System.Web.HttpUtility.UrlEncode(System.IO.Path.GetFileName(file.Name))}";
                 await content.WebView2.EnsureCoreWebView2Async();
-                content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                content.WebView2.CoreWebView2.AddWebResourceRequestedFilter(uri, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                 content.WebView2.CoreWebView2.WebResourceRequested += async (sender, args) =>
                 {
                     if (args.Request.Uri.ToUpper() != uri.ToUpper()) return;
@@ -134,7 +135,7 @@ public static partial class UIHelper
             await content.WebView2.EnsureCoreWebView2Async();
             //https://github.com/MicrosoftEdge/WebView2Feedback/issues/372
             //https://web.biz-prog.net/praxis/webview/response.html
-            content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+            content.WebView2.CoreWebView2.AddWebResourceRequestedFilter($"*://{resolver.Host}/*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
             content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
             //content.WebView2.CoreWebView2.WebResourceResponseReceived += CoreWebView2_WebResourceResponseReceived;
             vm.SourceString = uri;

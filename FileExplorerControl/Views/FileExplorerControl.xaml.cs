@@ -311,4 +311,16 @@ public sealed partial class FileExplorerControl : Page
             e.Handled = false;
         }
     }
+
+    private void Page_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if(e.Key == Windows.System.VirtualKey.F && Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+        {
+            buttonMenu.Flyout.ShowAt(buttonMenu);
+            searchBox.Focus(FocusState.Keyboard);
+            e.Handled = true;
+            return;
+        }
+        e.Handled = false;
+    }
 }

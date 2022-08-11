@@ -92,15 +92,6 @@ public sealed partial class BookFixed3Viewer : Page
                 await Binding?.UpdatePages(this.Dispatcher);
             }
         };
-
-        {
-            //Binding.Composition.Target = flipView;
-            //var c = Windows.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(flipView).Compositor;
-            //var v = c.CreateSpriteVisual();
-            //v.Brush = c.CreateColorBrush(Colors.AliceBlue);
-            //v.Size = new System.Numerics.Vector2(100, 100);
-            //Windows.UI.Xaml.Hosting.ElementCompositionPreview.SetElementChildVisual(flipView, v);
-        }
     }
 
     private string OriginalTitle;

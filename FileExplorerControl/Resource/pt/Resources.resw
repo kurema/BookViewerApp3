@@ -192,4 +192,7 @@
   <data name="ContextMenu.OpenWith.Title" xml:space="preserve">
     <value>Abrir com</value>
   </data>
+  <data name="Search.Placeholder" xml:space="preserve">
+    <value>Pesquisa</value>
+  </data>
 </root>
