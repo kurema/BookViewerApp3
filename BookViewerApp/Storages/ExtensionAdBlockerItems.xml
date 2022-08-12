@@ -1,0 +1,5 @@
+<xsd xmlns='http://microsoft.com/dotnet/tools/xsd/'>
+  <generateClasses language='CS' namespace='BookViewerApp.Storages.ExtensionAdBlockerItems' options="properties">
+    <schema>ExtensionAdBlockerItems.xsd</schema>
+  </generateClasses>
+</xsd>

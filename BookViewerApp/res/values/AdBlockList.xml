@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<items xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/ExtensionAdBlockerItems.xsd">
+	<group>
+		<title language="en">Ad</title>
+		<title language="ja">広告</title>
+		<item filename="easylist.txt" project="https://easylist.to/" license="https://easylist.to/pages/licence.html" source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
+	</group>
+</items>

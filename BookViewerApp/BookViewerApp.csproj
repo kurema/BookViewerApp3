@@ -206,6 +206,7 @@
     <Content Include="res\reader\js\libs\signals.min.js" />
     <Content Include="res\reader\js\reader.min.js" />
     <Content Include="res\reader\robots.txt" />
+    <Content Include="res\values\AdBlockList.xml" />
     <Content Include="res\values\Bookmark.xml" />
     <Content Include="res\values\Licenses.xml" />
     <Content Include="res\values\WindowsStoreProxy.xml" Condition="'$(Configuration)' == 'Debug'" />
@@ -238,6 +239,9 @@
     <Content Include="res\reader\img\upload.svg" />
     <PRIResource Include="Resource\pt\Resources.resw" />
     <Content Include="res\pdfjs\pdfjs.zip" />
+    <None Include="Storages\ExtensionAdBlockerItems.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Storages\Licenses.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -276,10 +280,14 @@
     <Compile Include="Helper\UIHelper.IconProviders.cs" />
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
+    <Compile Include="Managers\ExtensionAdBlockerManager.cs" />
     <Compile Include="Managers\FaviconManager.cs" />
     <Compile Include="Managers\HistoryManager.cs" />
     <Compile Include="Managers\LicenseManager.cs" />
     <Compile Include="Managers\ResourceManager.cs" />
+    <Compile Include="Storages\ExtensionAdBlockerItems.cs">
+      <DependentUpon>ExtensionAdBlockerItems.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Storages\HistoryStorage.cs" />
     <Compile Include="Storages\Library.cs">
       <DependentUpon>Library.xsd</DependentUpon>
@@ -536,6 +544,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DistillNET">
+      <Version>1.6.6</Version>
+    </PackageReference>
     <PackageReference Include="iTextSharp.LGPLv2.Core">
       <Version>1.8.0</Version>
     </PackageReference>

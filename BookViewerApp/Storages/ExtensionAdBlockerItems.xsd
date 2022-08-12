@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ExtensionAdBlockItems"
+    targetNamespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/ExtensionAdBlockerItems.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/ExtensionAdBlockerItems.xsd"
+    xmlns:mstns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/ExtensionAdBlockerItems.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+	<xs:element name="items">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="group">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="title" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="language" type="xs:language" default="en" use="optional"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="title" type="xs:string"/>
+									<xs:attribute name="filename" type="xs:string"/>
+									<xs:attribute name="source" type="xs:anyURI"/>
+									<xs:attribute name="project" type="xs:anyURI"/>
+									<xs:attribute name="license" type="xs:anyURI"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
