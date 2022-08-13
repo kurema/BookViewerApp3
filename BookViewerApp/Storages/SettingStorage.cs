@@ -55,6 +55,7 @@ public class SettingStorage
         public const string ViewerSlideshowLastTimeSpan = "ViewerSlideshowLastTimeSpan";
         public const string BrowserUseWebView2 = "BrowserUseWebView2";
         public const string BrowserUserAgent = "BrowserUserAgent";
+        public const string BrowserAdBlockEnabled = "BrowserAdBlockEnabled";
     }
 
     private static SettingInstance[] _SettingInstances = null;
@@ -98,6 +99,7 @@ public class SettingStorage
                         new SettingInstance(SettingKeys.ViewerSlideshowLastTimeSpan,20.0,new TypeConverters.DoubleConverter(),group:"Viewer",isVisible:false),
                         new SettingInstance(SettingKeys.BrowserUseWebView2,false,new TypeConverters.BoolConverter(),group:"Browser"),
                         new SettingInstance(SettingKeys.BrowserUserAgent,string.Empty,new TypeConverters.StringConverter(),group:"Browser"),
+                        new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                 };
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw
@@ -160,7 +162,7 @@ public class SettingStorage
         public bool IsVisible { get; set; }
 
         private Windows.Storage.ApplicationDataContainer Setting => IsLocal ? LocalSettings : RoamingSettings;
-        private Windows.Storage.ApplicationDataContainer SettingAlternative => IsLocal ? RoamingSettings: LocalSettings;
+        private Windows.Storage.ApplicationDataContainer SettingAlternative => IsLocal ? RoamingSettings : LocalSettings;
 
         public Type GetGenericType()
         {
@@ -212,12 +214,12 @@ public class SettingStorage
         {
             if (!Setting.Values.TryGetValue(Key, out object data))
             {
-                if(!SettingAlternative.Values.TryGetValue(Key, out data))
+                if (!SettingAlternative.Values.TryGetValue(Key, out data))
                 {
                     return DefaultValue;
                 }
             }
-            
+
             {
                 if (Converter.TryGetTypeGeneral(data.ToString(), out object result))
                 {

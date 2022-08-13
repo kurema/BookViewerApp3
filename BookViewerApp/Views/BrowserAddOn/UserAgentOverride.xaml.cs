@@ -21,6 +21,7 @@ public sealed partial class UserAgentOverride : UserControl
     public UserAgentOverride()
     {
         this.InitializeComponent();
+        ResetUA();
     }
 
     public event EventHandler UserAgentUpdated;
@@ -35,7 +36,6 @@ public sealed partial class UserAgentOverride : UserControl
 
     private void ResetUA()
     {
-        var ua = (string)Storages.SettingStorage.GetValue(Storages.SettingStorage.SettingKeys.BrowserUserAgent);
-        textBoxUA.Text = ua;
+        textBoxUA.Text = (string)Storages.SettingStorage.GetValue(Storages.SettingStorage.SettingKeys.BrowserUserAgent);
     }
 }

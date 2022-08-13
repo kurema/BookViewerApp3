@@ -3,6 +3,6 @@
 	<group>
 		<title language="en">Ad</title>
 		<title language="ja">広告</title>
-		<item filename="easylist.txt" project="https://easylist.to/" license="https://easylist.to/pages/licence.html" source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
+		<item filename="easylist.adb" project="https://easylist.to/" license="https://easylist.to/pages/licence.html" source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
 	</group>
 </items>
