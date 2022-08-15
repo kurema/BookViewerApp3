@@ -36,27 +36,37 @@ public static class ExtensionAdBlockerManager
     public const int FiltersCacheSize = 20;
     private static Dictionary<string, (DateTime, DistillNET.UrlFilter[])> FiltersCache = new();
     private static Dictionary<string, (DateTime, DistillNET.UrlFilter[])> FiltersWhitelistCache = new();
+    private static DistillNET.UrlFilter[]? FiltersCacheGlobal = null;
+    private static DistillNET.UrlFilter[]? FiltersWhitelistCacheGlobal = null;
 
     public static void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
     {
         if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
+        if (Filter is null) return;
         if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
+        if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
         if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
-        var domain = uri.Host.ToUpperInvariant();
-        if (DomainsWhitelist.BinarySearch(domain) >= 0) return;
+        var domain = uri.Host;
+        if (DomainsWhitelist.BinarySearch(domain.ToUpperInvariant()) >= 0) return;
         var headers = new System.Collections.Specialized.NameValueCollection();
         foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
-        if (!IsBlocked(uri, domain, headers)) return;
+        if (!IsBlocked(uriReq, domain, headers)) return;
         args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
     }
 
     public static bool IsBlocked(Uri uri, string domain, System.Collections.Specialized.NameValueCollection rawHeaders)
     {
         if (Filter is null) return false;
+        FiltersCacheGlobal ??= Filter?.GetFiltersForDomain()?.ToArray();
+        FiltersWhitelistCacheGlobal ??= Filter?.GetWhitelistFiltersForDomain()?.ToArray();
+        if (FiltersCacheGlobal is null) return false;
+        if (FiltersWhitelistCacheGlobal is null) return false;
         DistillNET.UrlFilter[] filters = LoadFilters(domain);
         DistillNET.UrlFilter[] filtersWhite = LoadWhitelistFilters(domain);
         foreach (var item in filtersWhite) if (item.IsMatch(uri, rawHeaders)) return false;
-        foreach (var item in filters) if (item.IsMatch(uri, rawHeaders)) return true;
+        foreach (var item in FiltersWhitelistCacheGlobal) if (item.IsMatch(uri, rawHeaders)) return false;
+        foreach (var item in filters) if (!string.IsNullOrWhiteSpace(item.OriginalRule) && item.IsMatch(uri, rawHeaders)) return true;
+        foreach (var item in FiltersCacheGlobal) if (!string.IsNullOrWhiteSpace(item.OriginalRule) && item.IsMatch(uri, rawHeaders)) return true;
         return false;
     }
 
@@ -70,6 +80,11 @@ public static class ExtensionAdBlockerManager
         cache.Add(domain, (DateTime.Now, filters));
         if (cache.Count > FiltersCacheSize) cache.Remove(cache.OrderBy(a => a.Value).First().Key);
         return filters;
+    }
+
+    public static async Task<DistillNET.FilterDbCollection?> LoadRules()
+    {
+        return await LoadRulesFromDb() ?? await LoadRulesFromText();
     }
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRulesFromDb()
@@ -93,6 +108,7 @@ public static class ExtensionAdBlockerManager
         foreach (var file in await folder.GetFilesAsync())
         {
             if (Path.GetFileName(file.Path) is FileNameWhiteList or FileNameUser or FileNameDb) continue;
+            if (Path.GetExtension(file.Path).ToUpperInvariant() != ".TXT") continue;
             try
             {
                 var stream = await file.OpenReadAsync();

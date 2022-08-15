@@ -585,7 +585,7 @@ public static partial class UIHelper
                     {
                         content.WebView2.CoreWebView2.Settings.UserAgent = ua;
                     }
-                    else
+                    else if (content.UserAgentOriginal is not null)
                     {
                         content.WebView2.CoreWebView2.Settings.UserAgent = content.UserAgentOriginal;
                     }
@@ -595,12 +595,16 @@ public static partial class UIHelper
                 {
                     content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
                     OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
+                    //content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                    //content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
                     updateUserAgent();
                 };
+
                 {
                     var addonUA = new Views.BrowserAddOn.UserAgentOverride();
                     addonUA.UserAgentUpdated += (_, _) => { updateUserAgent(); content?.WebView2?.Reload(); };
                     content.AddOnSpace.Add(addonUA);
+                    //await ExtensionAdBlockerManager.LoadRules();
                 }
             }
         }

@@ -23,6 +23,8 @@ using BookViewerApp.Storages;
 using BookViewerApp.Views;
 
 using Windows.UI.Xaml.Media.Animation;
+using Microsoft.Toolkit.Uwp.UI;
+using Windows.Foundation.Metadata;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -60,17 +62,28 @@ public sealed partial class BookFixed3Viewer : Page
             }
         };
 
-        var brSet = (double)SettingStorage.GetValue("BackgroundBrightness");
-        var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 *
-                         255.0);
-        var color = new Color() { A = 255, B = br, G = br, R = br };
-        this.Background = new AcrylicBrush()
+        var bgItem = SettingStorage.SettingInstances.FirstOrDefault(a => a.Key == SettingStorage.SettingKeys.BackgroundBrightness);
+        var brSet = (double)bgItem.GetValue();
+
+        if (brSet == (double)bgItem.DefaultValue && Environment.OSVersion.Version.Build >= 22000)
         {
-            BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
-            TintColor = color,
-            FallbackColor = color,
-            TintOpacity = 0.8
-        };
+            //I think it's better to use ApiInformation. But what's the correct argument?
+            //ApiInformation.IsApiContractPresent("");
+            this.Background = new SolidColorBrush(Colors.Transparent);
+            Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+        }
+        else
+        {
+            var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 * 255.0);
+            var color = new Color() { A = 255, B = br, G = br, R = br };
+            this.Background = new AcrylicBrush()
+            {
+                BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
+                TintColor = color,
+                FallbackColor = color,
+                TintOpacity = 0.8
+            };
+        }
 
         flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
