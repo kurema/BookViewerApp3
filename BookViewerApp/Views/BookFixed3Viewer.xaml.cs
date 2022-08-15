@@ -64,25 +64,23 @@ public sealed partial class BookFixed3Viewer : Page
 
         var bgItem = SettingStorage.SettingInstances.FirstOrDefault(a => a.Key == SettingStorage.SettingKeys.BackgroundBrightness);
         var brSet = (double)bgItem.GetValue();
-
-        if (brSet == (double)bgItem.DefaultValue && Environment.OSVersion.Version.Build >= 22000)
+        if (brSet == (int)bgItem.Maximum && Environment.OSVersion.Version.Build >= 22000)
         {
             //I think it's better to use ApiInformation. But what's the correct argument?
             //ApiInformation.IsApiContractPresent("");
             this.Background = new SolidColorBrush(Colors.Transparent);
             Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+
+            //BackdropMaterial does not work on AppWindow.
+            this.Loaded += (s, e) =>
+            {
+                var tab = Helper.UIHelper.GetCurrentTabPage(this);
+                if (tab?.RootAppWindow is not null) SetDefaultBackground();
+            };
         }
         else
         {
-            var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 * 255.0);
-            var color = new Color() { A = 255, B = br, G = br, R = br };
-            this.Background = new AcrylicBrush()
-            {
-                BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
-                TintColor = color,
-                FallbackColor = color,
-                TintOpacity = 0.8
-            };
+            SetDefaultBackground(brSet);
         }
 
         flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
@@ -104,6 +102,20 @@ public sealed partial class BookFixed3Viewer : Page
             {
                 await Binding?.UpdatePages(this.Dispatcher);
             }
+        };
+    }
+
+    private void SetDefaultBackground(double? brightness = null)
+    {
+        var brSet = brightness ?? (double)SettingStorage.GetValue(SettingStorage.SettingKeys.BackgroundBrightness);
+        var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 * 255.0);
+        var color = new Color() { A = 255, B = br, G = br, R = br };
+        this.Background = new AcrylicBrush()
+        {
+            BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
+            TintColor = color,
+            FallbackColor = color,
+            TintOpacity = 0.8
         };
     }
 
