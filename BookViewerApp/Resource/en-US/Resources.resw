@@ -256,8 +256,7 @@
     <value>[Top]</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
-    <value>Brightness of background. 100:White, 0:Black. (Opposite in dark theme)
-A value of 100 on Windows 11 enables Mica.</value>
+    <value>Brightness of background. 100:White, 0:Black. (Opposite in dark theme)</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
     <value>Brightness of background</value>
@@ -814,5 +813,29 @@ Right click to configure</value>
   </data>
   <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
     <value>User-Agent override (WebView2)</value>
+  </data>
+  <data name="Setting_Theme.Description" xml:space="preserve">
+    <value>The theme of the App. If you don't like Mica background on Windows 11, pick Acrylic.</value>
+  </data>
+  <data name="Setting_Theme.Title" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.Auto.Title" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.Light.Title" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.Dark.Title" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.AcrylicAuto.Title" xml:space="preserve">
+    <value>Acrylic Auto</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.AcrylicLight.Title" xml:space="preserve">
+    <value>Acrylic Light</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.AcrylicDark.Title" xml:space="preserve">
+    <value>Acrylic Dark</value>
   </data>
 </root>

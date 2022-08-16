@@ -151,8 +151,7 @@
     <value>[Inizio]</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
-    <value>Luminosità dello sfondo. 100:Bianco, 0:Nero. (Opposite in dark theme)
-Un valore di 100 su Windows 11 abilita Mica.</value>
+    <value>Luminosità dello sfondo. 100:Bianco, 0:Nero. (Opposite in dark theme)</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
     <value>Luminosità sfondo</value>

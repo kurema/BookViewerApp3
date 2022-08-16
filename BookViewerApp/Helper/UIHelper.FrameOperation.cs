@@ -100,6 +100,17 @@ public static partial class UIHelper
             //HistoryManager.AddEntry(file);
         }
 
+        private static bool OpenEpub_CurrentDarkMode()
+        {
+            return (bool)SettingStorage.GetValue("EpubViewerDarkMode") &&
+                UIHelper.GetCurrentElementTheme() switch
+                {
+                    ElementTheme.Dark => true,
+                    ElementTheme.Light => false,
+                    _ => Application.Current.RequestedTheme == ApplicationTheme.Dark,
+                };
+        }
+
         public static async void OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
         {
             if (file is null) return;
@@ -145,7 +156,7 @@ public static partial class UIHelper
             {
                 {
                     //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
-                    var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                    var defaultDark = OpenEpub_CurrentDarkMode();
                     var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
 
                     async Task applyDarkMode()
@@ -242,7 +253,7 @@ public static partial class UIHelper
                 {
                     {
                         //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
-                        var defaultDark = (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                        var defaultDark = OpenEpub_CurrentDarkMode();
                         var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
 
                         async Task applyDarkMode()

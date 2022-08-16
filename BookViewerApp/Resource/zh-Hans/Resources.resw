@@ -163,8 +163,7 @@
     <value>书瓦宽度</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
-    <value>背景的亮度。 100：白色，0：黑色。 （与黑暗主题相反）
-Windows 11 上的值 100 启用 Mica。</value>
+    <value>背景的亮度。 100：白色，0：黑色。 （与黑暗主题相反）</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
     <value>背景的亮度</value>

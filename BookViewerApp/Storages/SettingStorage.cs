@@ -11,6 +11,8 @@ using Windows.UI.Xaml.Data;
 using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Microsoft.Extensions.Primitives;
+using BookViewerApp.Helper;
 
 namespace BookViewerApp.Storages;
 
@@ -56,6 +58,7 @@ public class SettingStorage
         public const string BrowserUseWebView2 = "BrowserUseWebView2";
         public const string BrowserUserAgent = "BrowserUserAgent";
         public const string BrowserAdBlockEnabled = "BrowserAdBlockEnabled";
+        public const string Theme = "Theme";
     }
 
     private static SettingInstance[] _SettingInstances = null;
@@ -100,6 +103,7 @@ public class SettingStorage
                         new SettingInstance(SettingKeys.BrowserUseWebView2,false,new TypeConverters.BoolConverter(),group:"Browser"),
                         new SettingInstance(SettingKeys.BrowserUserAgent,string.Empty,new TypeConverters.StringConverter(),group:"Browser"),
                         new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
+                        new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.Auto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
                 };
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw
@@ -114,6 +118,7 @@ public class SettingStorage
 
             //Sample:
             //if ((bool)Storages.SettingStorage.GetValue("")){}
+            //if (Storages.SettingStorage.GetValue(Storages.SettingStorage.SettingKeys.Theme) is not Storages.SettingStorage.SettingEnums.Theme) return;
         }
     }
 
@@ -140,6 +145,11 @@ public class SettingStorage
         {
             Bibi, EpubJsReader
         }
+
+        public enum Theme
+        {
+            Auto, Light, Dark, AcrylicAuto, AcrylicLight, AcrylicDark,
+        }
     }
 
     public class SettingInstance
@@ -160,6 +170,7 @@ public class SettingStorage
         public string GroupName { get; set; }
 
         public bool IsVisible { get; set; }
+        public event EventHandler ValueChanged;
 
         private Windows.Storage.ApplicationDataContainer Setting => IsLocal ? LocalSettings : RoamingSettings;
         private Windows.Storage.ApplicationDataContainer SettingAlternative => IsLocal ? RoamingSettings : LocalSettings;
@@ -169,7 +180,7 @@ public class SettingStorage
             return Converter.GetConvertType();
         }
 
-        public SettingInstance(string Key, object DefaultValue, ITypeConverter Converter, bool IsLocal = true, Func<object, bool> CheckValid = null, string group = "", bool isVisible = true)
+        public SettingInstance(string Key, object DefaultValue, ITypeConverter Converter, bool IsLocal = true, Func<object, bool> CheckValid = null, string group = "", bool isVisible = true, Action<SettingInstance> onChangedAction = null)
         {
             this.Key = Key;
             this.StringResourceKey = "Setting_" + Key;
@@ -179,7 +190,7 @@ public class SettingStorage
             this.IsValidObject = CheckValid ?? new Func<object, bool>((a) => { return Converter.TryGetTypeGeneral(a.ToString(), out object result); });
             this.GroupName = group;
             this.IsVisible = isVisible;
-
+            if (onChangedAction is not null) this.ValueChanged += (s, _) => onChangedAction(s as SettingInstance);
         }
 
         public void SetValue(object Value)
@@ -188,6 +199,7 @@ public class SettingStorage
 
             Setting.CreateContainer(Key, Windows.Storage.ApplicationDataCreateDisposition.Always);
             Setting.Values[Key] = Converter.GetStringGeneral(Value);
+            ValueChanged?.Invoke(this, new EventArgs());
         }
 
         public void SetValueAsString(string Value)

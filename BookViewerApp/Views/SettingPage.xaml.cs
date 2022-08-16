@@ -61,7 +61,7 @@ namespace BookViewerApp.Views
                 foreach (var item in SettingPanel.GetGroupsContainer())
                 {
                     if (item.Content is not IGrouping<string, SettingPage.SettingViewModel> ig) continue;
-                    StackTocAdd(Managers.ResourceManager.Loader.GetString($"Setting/Group/{ig.Key}"), () => item,marginLeft:15);
+                    StackTocAdd(Managers.ResourceManager.Loader.GetString($"Setting/Group/{ig.Key}"), () => item, marginLeft: 15);
                 }
                 foreach (var item in listView.GetGroupsContainer())
                 {
@@ -69,6 +69,16 @@ namespace BookViewerApp.Views
                     StackTocAdd(ig.Key, () => item, Windows.UI.Text.FontWeights.Bold);
                 }
                 Main_SizeChanged_General(this.ActualWidth);
+            }
+
+            {
+                var tab = UIHelper.GetCurrentTabPage(this);
+                var theme = (SettingStorage.SettingEnums.Theme)SettingStorage.GetValue(SettingStorage.SettingKeys.Theme);
+                if (tab?.RootAppWindow is null && UIHelper.GetUseMica())
+                {
+                    this.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
+                    Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+                }
             }
         }
 
@@ -84,7 +94,6 @@ namespace BookViewerApp.Views
                 ScrollViewerMain.ChangeView(null, -point.Y, null);
             };
             StackToc.Children.Add(lvi);
-
         }
 
         public async Task<IEnumerable<ViewModels.ListItemViewModel>> GetPurchaseItems()

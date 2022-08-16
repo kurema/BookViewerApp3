@@ -25,6 +25,7 @@ using BookViewerApp.Views;
 using Windows.UI.Xaml.Media.Animation;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.Foundation.Metadata;
+using static BookViewerApp.Storages.SettingStorage;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -62,25 +63,21 @@ public sealed partial class BookFixed3Viewer : Page
             }
         };
 
-        var bgItem = SettingStorage.SettingInstances.FirstOrDefault(a => a.Key == SettingStorage.SettingKeys.BackgroundBrightness);
-        var brSet = (double)bgItem.GetValue();
-        if (brSet == (int)bgItem.Maximum && Environment.OSVersion.Version.Build >= 22000)
+        if (UIHelper.GetUseMica() && Environment.OSVersion.Version.Build >= 22000)
         {
-            //I think it's better to use ApiInformation. But what's the correct argument?
-            //ApiInformation.IsApiContractPresent("");
             this.Background = new SolidColorBrush(Colors.Transparent);
             Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
 
             //BackdropMaterial does not work on AppWindow.
             this.Loaded += (s, e) =>
             {
-                var tab = Helper.UIHelper.GetCurrentTabPage(this);
+                var tab = UIHelper.GetCurrentTabPage(this);
                 if (tab?.RootAppWindow is not null) SetDefaultBackground();
             };
         }
         else
         {
-            SetDefaultBackground(brSet);
+            SetDefaultBackground();
         }
 
         flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");

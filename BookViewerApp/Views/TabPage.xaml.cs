@@ -25,6 +25,8 @@ using Windows.UI.WindowManagement;
 
 using BookViewerApp.Helper;
 using BookViewerApp.Storages;
+using static BookViewerApp.Storages.SettingStorage;
+using Microsoft.UI.Xaml.Controls;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -43,6 +45,27 @@ public sealed partial class TabPage : Page
     public TabPage()
     {
         this.InitializeComponent();
+
+        {
+            this.RequestedTheme = UIHelper.GetCurrentElementTheme();
+            var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
+            if (theme is not null) theme.ValueChanged += Theme_ValueChanged;
+        }
+    }
+
+    private void Theme_ValueChanged(object sender, EventArgs e)
+    {
+        var theme= UIHelper.GetCurrentElementTheme();
+        this.RequestedTheme = theme;
+        foreach(var item in Control.TabItems)
+        {
+            if (item is not TabViewItem itemTvi) continue;
+            itemTvi.RequestedTheme = theme;
+            if( itemTvi.Content is FrameworkElement content)
+            {
+                content.RequestedTheme = theme;
+            }
+        }
     }
 
     //ToDo: Delete when TabViewMain_TabItemsChanged no more need this.
@@ -250,6 +273,7 @@ public sealed partial class TabPage : Page
         TabViewMain.SelectedItem = newTab;
 
         frame.Focus(FocusState.Programmatic);
+        frame.RequestedTheme = UIHelper.GetCurrentElementTheme();
 
         return (frame, newTab);
     }
@@ -409,6 +433,14 @@ public sealed partial class TabPage : Page
 
         SetupWindow(null);
 
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
+        if (theme is not null) theme.ValueChanged -= Theme_ValueChanged;
+
+        base.OnNavigatedFrom(e);
     }
 
     public void AddItemToTabs(winui.Controls.TabViewItem tab)
