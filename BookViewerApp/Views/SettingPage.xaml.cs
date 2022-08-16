@@ -74,7 +74,7 @@ namespace BookViewerApp.Views
             {
                 var tab = UIHelper.GetCurrentTabPage(this);
                 var theme = (SettingStorage.SettingEnums.Theme)SettingStorage.GetValue(SettingStorage.SettingKeys.Theme);
-                if (tab?.RootAppWindow is null && UIHelper.GetUseMica())
+                if (tab?.RootAppWindow is null && Managers.ThemeManager.IsMica)
                 {
                     this.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
                     Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);

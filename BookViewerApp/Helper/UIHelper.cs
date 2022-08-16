@@ -126,37 +126,6 @@ public static partial class UIHelper
         }
     }
 
-    public static ElementTheme GetCurrentElementTheme()
-    {
-        if (GetValue(SettingKeys.Theme) is not SettingEnums.Theme theme) return ElementTheme.Default;
-        switch (theme)
-        {
-            case SettingEnums.Theme.Light:
-            case SettingEnums.Theme.AcrylicLight:
-                return ElementTheme.Light;
-            case SettingEnums.Theme.Dark:
-            case SettingEnums.Theme.AcrylicDark:
-                return ElementTheme.Dark;
-            default:
-            case SettingEnums.Theme.AcrylicAuto:
-            case SettingEnums.Theme.Auto:
-                return ElementTheme.Default;
-        }
-    }
-
-    public static bool GetUseMica()
-    {
-        var theme = (SettingEnums.Theme)GetValue(SettingKeys.Theme);
-        return theme switch
-        {
-            SettingEnums.Theme.Auto or SettingEnums.Theme.Light or SettingEnums.Theme.Dark => true,
-            SettingEnums.Theme.AcrylicAuto or SettingEnums.Theme.AcrylicLight or SettingEnums.Theme.AcrylicDark => false,
-            _ => false,
-        } && Environment.OSVersion.Version.Build >= 22000;
-        //I think it's better to use ApiInformation. But what's the correct argument?
-        //ApiInformation.IsApiContractPresent("");
-    }
-
     public static async Task OpenWebExternal(string address)
     {
         if (Uri.TryCreate(address, UriKind.Absolute, out var uri)) await Windows.System.Launcher.LaunchUriAsync(uri);

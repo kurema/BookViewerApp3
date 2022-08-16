@@ -100,16 +100,7 @@ public static partial class UIHelper
             //HistoryManager.AddEntry(file);
         }
 
-        private static bool OpenEpub_CurrentDarkMode()
-        {
-            return (bool)SettingStorage.GetValue("EpubViewerDarkMode") &&
-                UIHelper.GetCurrentElementTheme() switch
-                {
-                    ElementTheme.Dark => true,
-                    ElementTheme.Light => false,
-                    _ => Application.Current.RequestedTheme == ApplicationTheme.Dark,
-                };
-        }
+        private static bool OpenEpub_CurrentDarkMode() => (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Managers.ThemeManager.IsDarkTheme;
 
         public static async void OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
         {

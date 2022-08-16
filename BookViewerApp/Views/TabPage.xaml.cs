@@ -27,6 +27,7 @@ using BookViewerApp.Helper;
 using BookViewerApp.Storages;
 using static BookViewerApp.Storages.SettingStorage;
 using Microsoft.UI.Xaml.Controls;
+using BookViewerApp.Managers;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -47,7 +48,7 @@ public sealed partial class TabPage : Page
         this.InitializeComponent();
 
         {
-            this.RequestedTheme = UIHelper.GetCurrentElementTheme();
+            this.RequestedTheme = ThemeManager.CurrentElementTheme;
             var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
             if (theme is not null) theme.ValueChanged += Theme_ValueChanged;
         }
@@ -55,7 +56,7 @@ public sealed partial class TabPage : Page
 
     private void Theme_ValueChanged(object sender, EventArgs e)
     {
-        var theme= UIHelper.GetCurrentElementTheme();
+        var theme= ThemeManager.CurrentElementTheme;
         this.RequestedTheme = theme;
         foreach(var item in Control.TabItems)
         {
@@ -273,7 +274,7 @@ public sealed partial class TabPage : Page
         TabViewMain.SelectedItem = newTab;
 
         frame.Focus(FocusState.Programmatic);
-        frame.RequestedTheme = UIHelper.GetCurrentElementTheme();
+        frame.RequestedTheme = ThemeManager.CurrentElementTheme;
 
         return (frame, newTab);
     }

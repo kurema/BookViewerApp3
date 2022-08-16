@@ -63,7 +63,7 @@ public sealed partial class BookFixed3Viewer : Page
             }
         };
 
-        if (UIHelper.GetUseMica() && Environment.OSVersion.Version.Build >= 22000)
+        if (ThemeManager.IsMica)
         {
             this.Background = new SolidColorBrush(Colors.Transparent);
             Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
@@ -104,8 +104,8 @@ public sealed partial class BookFixed3Viewer : Page
 
     private void SetDefaultBackground(double? brightness = null)
     {
-        var brSet = brightness ?? (double)SettingStorage.GetValue(SettingStorage.SettingKeys.BackgroundBrightness);
-        var br = (byte)((Application.Current.RequestedTheme == ApplicationTheme.Dark ? 1 - brSet : brSet) / 100.0 * 255.0);
+        var brSet = brightness ?? (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
+        var br = (byte)((ThemeManager.IsDarkTheme ? 1 - brSet : brSet) / 100.0 * 255.0);
         var color = new Color() { A = 255, B = br, G = br, R = br };
         this.Background = new AcrylicBrush()
         {
