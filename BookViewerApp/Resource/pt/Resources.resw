@@ -687,4 +687,31 @@ Clique direito para configurar</value>
   <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
     <value>User-Agent (WebView2)</value>
   </data>
+  <data name="Setting_Theme.Description" xml:space="preserve">
+    <value>O tema do Apêndice. Se não gosta de fundo Mica no Windows 11, escolha Acrílico.</value>
+  </data>
+  <data name="Setting_Theme.Title" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.Auto.Title" xml:space="preserve">
+    <value>Automático</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.Light.Title" xml:space="preserve">
+    <value>Luz</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.Dark.Title" xml:space="preserve">
+    <value>Escuro</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.AcrylicAuto.Title" xml:space="preserve">
+    <value>Acrílico - Automático</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.AcrylicLight.Title" xml:space="preserve">
+    <value>Acrílico - Luz</value>
+  </data>
+  <data name="Setting_Theme.Enums.Theme.AcrylicDark.Title" xml:space="preserve">
+    <value>Acrílico - Escuro</value>
+  </data>
+  <data name="Word.Screenshot" xml:space="preserve">
+    <value>Imagem do ecrã</value>
+  </data>
 </root>

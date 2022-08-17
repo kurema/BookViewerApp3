@@ -180,9 +180,7 @@
     <Content Include="res\bibi\bibi\resources\scripts\polyfills\intersection-observer.js" />
     <Content Include="res\bibi\bibi\resources\styles\bibi.css" />
     <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
-    <Content Include="res\cover\shincho.png" />
-    <Content Include="res\epub\META-INF\container.xml" />
-    <Content Include="res\epub\OPS\main.html" />
+    <Content Include="res\cover\sample.png" />
     <Content Include="res\Icon\icon_bookmark_l.png" />
     <Content Include="res\Icon\icon_bookmark_s.png" />
     <Content Include="res\Icon\icon_book_l.png" />
@@ -212,9 +210,6 @@
     <Content Include="res\values\WindowsStoreProxy.xml" Condition="'$(Configuration)' == 'Debug'" />
     <None Include="BookViewerApp_TemporaryKey.pfx" />
     <None Include="BookViewerApp_TemporaryKey_GitHub.pfx" />
-    <Content Include="res\epub\mimetype" />
-    <Content Include="res\epub\OPS\nav.xhtml" />
-    <Content Include="res\epub\OPS\package.opf" />
     <Content Include="res\reader\font\fontello.eot" />
     <Content Include="res\reader\font\fontello.svg" />
     <Content Include="res\reader\font\fontello.ttf" />
@@ -348,6 +343,12 @@
     <Compile Include="Views\BrowserAddOn\AdBlockerSetting.xaml.cs">
       <DependentUpon>AdBlockerSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BrowserAddOn\CaptureContentDialog.xaml.cs">
+      <DependentUpon>CaptureContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BrowserAddOn\CaptureControl.xaml.cs">
+      <DependentUpon>CaptureControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BrowserAddOn\UserAgentOverride.xaml.cs">
       <DependentUpon>UserAgentOverride.xaml</DependentUpon>
     </Compile>
@@ -472,6 +473,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BrowserAddOn\AdBlockerSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BrowserAddOn\CaptureContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BrowserAddOn\CaptureControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

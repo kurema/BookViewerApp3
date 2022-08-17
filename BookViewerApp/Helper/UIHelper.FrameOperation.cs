@@ -607,6 +607,16 @@ public static partial class UIHelper
                     addonUA.UserAgentUpdated += (_, _) => { updateUserAgent(); content?.WebView2?.Reload(); };
                     content.AddOnSpace.Add(addonUA);
                     //await ExtensionAdBlockerManager.LoadRules();
+                    content.AddOnSpace.Add(new Views.BrowserAddOn.CaptureControl()
+                    {
+                        WriteToStreamAction = async (s) =>
+                        {
+                            if (s is null) return;
+                            await content.WebView2.EnsureCoreWebView2Async();
+                            await content.WebView2.CoreWebView2.CapturePreviewAsync(Microsoft.Web.WebView2.Core.CoreWebView2CapturePreviewImageFormat.Png, s);
+                        },
+                        XamlRootProvider = () => content.XamlRoot,
+                    });
                 }
             }
         }

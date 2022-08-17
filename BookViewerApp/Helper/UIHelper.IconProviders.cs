@@ -56,7 +56,7 @@ public static partial class UIHelper
         public static Task<(Func<ImageSource> Small, Func<ImageSource> Large)> BookIconsBookshelf(IFileItem file, CancellationToken cancel, Windows.UI.Core.CoreDispatcher dispatcher)
         {
             //ToDo: Add book cover and fix this.
-            return BookIcons(file, cancel, dispatcher, new Uri("ms-appx:///res/cover/shincho.png"), new Uri("ms-appx:///res/cover/shincho.png"));
+            return BookIcons(file, cancel, dispatcher, new Uri("ms-appx:///res/cover/sample.png"), new Uri("ms-appx:///res/cover/sample.png"));
         }
 
 

@@ -830,12 +830,19 @@ Right click to configure</value>
     <value>Dark</value>
   </data>
   <data name="Setting_Theme.Enums.Theme.AcrylicAuto.Title" xml:space="preserve">
-    <value>Acrylic Auto</value>
+    <value>Acrylic - Auto</value>
   </data>
   <data name="Setting_Theme.Enums.Theme.AcrylicLight.Title" xml:space="preserve">
-    <value>Acrylic Light</value>
+    <value>Acrylic - Light</value>
   </data>
   <data name="Setting_Theme.Enums.Theme.AcrylicDark.Title" xml:space="preserve">
-    <value>Acrylic Dark</value>
+    <value>Acrylic - Dark</value>
+  </data>
+  <data name="Word.Screenshot" xml:space="preserve">
+    <value>Screenshot</value>
+  </data>
+  <data name="Browser.Addon.Screenshot.Filename" xml:space="preserve">
+    <value>screenshot</value>
+    <comment>@Invariant</comment>
   </data>
 </root>
