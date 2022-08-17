@@ -26,6 +26,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.Foundation.Metadata;
 using static BookViewerApp.Storages.SettingStorage;
+using Windows.Media.Devices;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -63,6 +64,7 @@ public sealed partial class BookFixed3Viewer : Page
             }
         };
 
+        var brSet = (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
         if (ThemeManager.IsMica)
         {
             this.Background = new SolidColorBrush(Colors.Transparent);
@@ -74,10 +76,15 @@ public sealed partial class BookFixed3Viewer : Page
                 var tab = UIHelper.GetCurrentTabPage(this);
                 if (tab?.RootAppWindow is not null) SetDefaultBackground();
             };
+
+            brightnessLayer.Background = new SolidColorBrush(ThemeManager.IsDarkTheme ? Colors.White : Colors.Black);
+            brightnessLayer.Opacity = (1 - brSet / 100);
+            brightnessLayer.Visibility = Visibility.Visible;
         }
         else
         {
-            SetDefaultBackground();
+            brightnessLayer.Visibility = Visibility.Collapsed;
+            SetDefaultBackground(brSet);
         }
 
         flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
@@ -105,7 +112,7 @@ public sealed partial class BookFixed3Viewer : Page
     private void SetDefaultBackground(double? brightness = null)
     {
         var brSet = brightness ?? (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
-        var br = (byte)((ThemeManager.IsDarkTheme ? 1 - brSet : brSet) / 100.0 * 255.0);
+        var br = (byte)((ThemeManager.IsDarkTheme ? 100 - brSet : brSet) / 100.0 * 255.0);
         var color = new Color() { A = 255, B = br, G = br, R = br };
         this.Background = new AcrylicBrush()
         {

@@ -13,7 +13,7 @@ public static class ThemeManager
     {
         get
         {
-            return CurrentElementTheme switch
+            return AsElementTheme switch
             {
                 ElementTheme.Dark => true,
                 ElementTheme.Light => false,
@@ -22,7 +22,7 @@ public static class ThemeManager
         }
     }
 
-    public static ElementTheme CurrentElementTheme
+    public static ElementTheme AsElementTheme
     {
         get
         {

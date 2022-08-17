@@ -48,7 +48,7 @@ public sealed partial class TabPage : Page
         this.InitializeComponent();
 
         {
-            this.RequestedTheme = ThemeManager.CurrentElementTheme;
+            this.RequestedTheme = ThemeManager.AsElementTheme;
             var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
             if (theme is not null) theme.ValueChanged += Theme_ValueChanged;
         }
@@ -56,7 +56,7 @@ public sealed partial class TabPage : Page
 
     private void Theme_ValueChanged(object sender, EventArgs e)
     {
-        var theme= ThemeManager.CurrentElementTheme;
+        var theme= ThemeManager.AsElementTheme;
         this.RequestedTheme = theme;
         foreach(var item in Control.TabItems)
         {
@@ -274,7 +274,7 @@ public sealed partial class TabPage : Page
         TabViewMain.SelectedItem = newTab;
 
         frame.Focus(FocusState.Programmatic);
-        frame.RequestedTheme = ThemeManager.CurrentElementTheme;
+        frame.RequestedTheme = ThemeManager.AsElementTheme;
 
         return (frame, newTab);
     }

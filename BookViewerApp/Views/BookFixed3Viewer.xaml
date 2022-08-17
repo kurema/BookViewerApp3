@@ -41,6 +41,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="{Binding IsControlPinned, Converter={StaticResource BoolToStringConverter},ConverterParameter=0:Auto}"/>
             </Grid.RowDefinitions>
+            <Grid x:Name="brightnessLayer" Grid.RowSpan="2" Visibility="Collapsed" />
             <local:FlipViewEx TabIndex="0" x:Name="flipView" ItemsSource="{Binding Path=Pages}" SelectedIndex="{Binding Path=PageSelected,Mode=TwoWay}" Background="{x:Null}"
                   FlowDirection="{Binding Reversed, Converter={StaticResource BoolToFlowDirectionConverter}}" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
