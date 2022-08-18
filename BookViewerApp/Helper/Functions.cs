@@ -84,12 +84,12 @@ public static class Functions
         }
     }
 
-    public static async Task ResizeImage(Windows.Storage.Streams.IRandomAccessStream origin, Windows.Storage.Streams.IRandomAccessStream result, uint maxSize, Rect? croppedRegionRelative = null, Action extractAction = null)
+    public static async Task ResizeImage(Windows.Storage.Streams.IRandomAccessStream origin, Windows.Storage.Streams.IRandomAccessStream result, uint maxSize, Rect? croppedRegionRelative = null, Action extractAction = null, Guid? encoderId = null)
     {
         var clop = croppedRegionRelative ?? new Rect(0, 0, 1, 1);
 
         var decoder = await BitmapDecoder.CreateAsync(origin);
-        var softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+        using var softwareBitmap = await decoder.GetSoftwareBitmapAsync();
 
         double scale = (double)maxSize / Math.Max(decoder.PixelWidth * clop.Width, decoder.PixelHeight * clop.Height);
 
@@ -97,7 +97,7 @@ public static class Functions
             {
                 { "ImageQuality", new BitmapTypedValue(0.5, PropertyType.Single) }
             };
-        var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, result);
+        var encoder = await BitmapEncoder.CreateAsync(encoderId ?? BitmapEncoder.JpegEncoderId, result);
         encoder.SetSoftwareBitmap(softwareBitmap);
 
         if (scale >= 1 && !croppedRegionRelative.HasValue)

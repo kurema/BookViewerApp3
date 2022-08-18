@@ -60,7 +60,6 @@ public sealed partial class ThumbnailSelectionPage : Page
         if (ImageCropper.Source is not Windows.UI.Xaml.Media.Imaging.WriteableBitmap wbmp) return;
         await Book.GetPage(CurrentPage).SetBitmapAsync(wbmp, size * 2, size * 2);
         ImageCropper.Reset();
-
     }
 
     private bool GetIfPageIsInRange(long target) => target >= 0 && target < Book.PageCount;

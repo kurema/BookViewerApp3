@@ -11,7 +11,7 @@ using Windows.Storage.AccessCache;
 
 namespace BookViewerApp.Managers;
 
-public class BookManager
+public static class BookManager
 {
     public static BookType? GetBookTypeByPath(string path)
     {
@@ -163,8 +163,6 @@ public class BookManager
     }
 
     public static string[] AvailableExtensionsArchive { get { return new string[] { ".pdf", ".zip", ".cbz", ".rar", ".cbr", ".7z", ".cb7", ".epub" }; } }
-
-    public static string[] AvailableExtensionsImage { get { return new string[] { ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".tiff", ".tif", ".hdp", ".wdp", ".jxr", ".avif" }; } }
 
     public static bool IsEpub(IStorageFile file)
     {

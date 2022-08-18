@@ -28,8 +28,15 @@
             <v:AcrylicButtonControl Icon="Copy" Margin="0" Click="{x:Bind Copy}"/>
             <v:AcrylicButtonControl Icon="Download" Margin="0" Click="{x:Bind Save}"/>
             <v:AcrylicButtonControl Icon="Refresh" Margin="0" Click="{x:Bind Refresh}"/>
+            <v:AcrylicButtonControl Margin="0" Click="{x:Bind ToggleCropper}">
+                <v:AcrylicButtonControl.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF407;"/>
+                </v:AcrylicButtonControl.Icon>
+            </v:AcrylicButtonControl>
         </StackPanel>
-        <!--<controls:ImageCropper Grid.Row="1" x:Name="cropper" />-->
+        <controls:ImageCropper Grid.Row="1" x:Name="cropper" HorizontalAlignment="Stretch" ThumbPlacement="All" Visibility="Collapsed" Width="500" Height="500"/>
+        <!--<ScrollViewer  ZoomMode="Enabled"  HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+        </ScrollViewer>-->
         <Image x:Name="image" Grid.Row="1" />
         <!--<ScrollViewer ZoomMode="Enabled"  HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
         </ScrollViewer>-->

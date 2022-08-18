@@ -635,6 +635,23 @@ public static partial class UIHelper
                   {
                       OpenTabBook?.Invoke(e);
                   };
+
+
+                {
+                    content.AddOnSpace.Add(new Views.BrowserAddOn.CaptureControl()
+                    {
+                        WriteToStreamAction = async (s) =>
+                        {
+                            if (s is null) return;
+                            try
+                            {
+                                if (content.Control.IsLoaded) await content.Control.CapturePreviewToStreamAsync(s);
+                            }
+                            catch { }
+                        },
+                        XamlRootProvider = () => content.XamlRoot,
+                    });
+                }
             }
 
             if ((frame.Content as kurema.BrowserControl.Views.BrowserControl)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)

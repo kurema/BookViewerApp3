@@ -67,7 +67,7 @@ namespace BookViewerApp.Books
                     {
                         if (!entry.IsDirectory && !entry.IsEncrypted)
                         {
-                            if (BookManager.AvailableExtensionsImage.Contains(Path.GetExtension(entry.Key).ToLowerInvariant()))
+                            if (ImageManager.AvailableExtensionsRead.Contains(Path.GetExtension(entry.Key).ToLowerInvariant()))
                             {
                                 entries.Add(entry);
                             }

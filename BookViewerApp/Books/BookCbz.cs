@@ -89,7 +89,7 @@ namespace BookViewerApp.Books
             if (Content is null) { return; }
 
             var entries = new List<ZipArchiveEntry>();
-            string[] supportedFile = BookManager.AvailableExtensionsImage;
+            string[] supportedFile = ImageManager.AvailableExtensionsRead;
             var cm = Content.Mode;
             var files = Content.Entries;
             foreach (var file in files)
