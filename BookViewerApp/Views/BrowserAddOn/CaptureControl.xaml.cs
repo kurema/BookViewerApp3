@@ -39,6 +39,10 @@ public sealed partial class CaptureControl : UserControl
         {
             content.XamlRoot = XamlRootProvider?.Invoke();
         }
-        await content.ShowAsync();
+        try
+        {
+            await content.ShowAsync();
+        }
+        catch { }
     }
 }

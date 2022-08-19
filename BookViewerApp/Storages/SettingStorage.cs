@@ -69,6 +69,7 @@ public class SettingStorage
             return _SettingInstances ??= new SettingInstance[]
                 {
                         new SettingInstance(SettingKeys.DefaultSpreadType,Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.Auto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
                         new SettingInstance(SettingKeys.DefaultFullScreen,false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance(SettingKeys.SaveLastReadPage,true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance(SettingKeys.DefaultPageReverse,false,new TypeConverters.BoolConverter(),group:"Viewer"),
@@ -103,7 +104,6 @@ public class SettingStorage
                         new SettingInstance(SettingKeys.BrowserUseWebView2,false,new TypeConverters.BoolConverter(),group:"Browser"),
                         new SettingInstance(SettingKeys.BrowserUserAgent,string.Empty,new TypeConverters.StringConverter(),group:"Browser"),
                         new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
-                        new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.Auto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
                 };
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw

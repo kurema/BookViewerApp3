@@ -597,6 +597,7 @@ public static partial class UIHelper
                 {
                     content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
                     OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
+                    // Uncomment here to enable AdBlocker
                     //content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                     //content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
                     updateUserAgent();
@@ -612,11 +613,16 @@ public static partial class UIHelper
                         WriteToStreamAction = async (s) =>
                         {
                             if (s is null) return;
-                            await content.WebView2.EnsureCoreWebView2Async();
-                            await content.WebView2.CoreWebView2.CapturePreviewAsync(Microsoft.Web.WebView2.Core.CoreWebView2CapturePreviewImageFormat.Png, s);
+                            try
+                            {
+                                await content.WebView2.EnsureCoreWebView2Async();
+                                await content.WebView2.CoreWebView2.CapturePreviewAsync(Microsoft.Web.WebView2.Core.CoreWebView2CapturePreviewImageFormat.Png, s);
+                            }
+                            catch { }
                         },
                         XamlRootProvider = () => content.XamlRoot,
                     });
+                    // Uncomment here to enable AdBlocker
                     //try
                     //{
                     //    await ExtensionAdBlockerManager.LoadRules();

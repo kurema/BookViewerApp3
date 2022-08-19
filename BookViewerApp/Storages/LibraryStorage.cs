@@ -51,7 +51,7 @@ namespace BookViewerApp.Storages
                     , () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_library_l.png"))),
                 Tag = LibraryKind.Library,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
-                MenuCommandsProvider=UIHelper.ContextMenus.MenuLibraryContainer
+                MenuCommandsProvider = UIHelper.ContextMenus.MenuLibraryContainer
             };
         }
 
@@ -63,10 +63,12 @@ namespace BookViewerApp.Storages
                 //Issue:
                 //同じファイルが重複登録されるバグを確認。
                 //一度のみ。原因不明。
-                return Task.FromResult<IEnumerable<IFileItem>>(Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
-                {
-                    MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand,tabPageProvider)
-                }).OrderByDescending(a => a.DateCreated));
+                return Task.FromResult<IEnumerable<IFileItem>>(
+                    (bool)SettingStorage.GetValue(SettingStorage.SettingKeys.ShowHistories) ?
+                    Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
+                    {
+                        MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand, tabPageProvider)
+                    }).OrderByDescending(a => a.DateCreated) : new IFileItem[0]);
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
@@ -211,19 +213,19 @@ namespace BookViewerApp.Storages
             Auto, Internal, External
         }
 
-        public static ContainerItem GetItem(Action<string, BookmarkActionType> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand,Func<Views.TabPage> tabPageProvider)
+        public static ContainerItem GetItem(Action<string, BookmarkActionType> bookmarkAction, System.Windows.Input.ICommand PathRequestCommand, Func<Views.TabPage> tabPageProvider)
         {
             var result = new ObservableCollection<IFileItem>();
 
             var itemFolder = GetItemFolders(tabPageProvider);
             var itemLibrary = GetItemLibrary();
             //var itemHistory = GetItemHistory(PathRequestCommand);
-            var itemHistory = GetItemHistoryMRU(PathRequestCommand,tabPageProvider);
+            var itemHistory = GetItemHistoryMRU(PathRequestCommand, tabPageProvider);
             var itemBookmark = GetItemBookmarks(bookmarkAction);
 
             result.Add(itemFolder);
             result.Add(itemLibrary);
-            if(itemHistory!=null) result.Add(itemHistory);
+            if (itemHistory != null) result.Add(itemHistory);
             result.Add(itemBookmark);
 
             Managers.HistoryManager.Updated += (s, e) =>
@@ -430,7 +432,7 @@ namespace BookViewerApp.Storages
                     switch (item)
                     {
                         case libraryBookmarksContainer container:
-                            list.Add(container.AsFileItem((a)=>action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));
+                            list.Add(container.AsFileItem((a) => action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));
                             break;
                         case libraryBookmarksContainerBookmark bookmark:
                             list.Add(bookmark.AsFileItem((a) => action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));

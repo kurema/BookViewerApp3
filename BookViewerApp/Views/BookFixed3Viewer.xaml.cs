@@ -64,27 +64,10 @@ public sealed partial class BookFixed3Viewer : Page
             }
         };
 
-        var brSet = (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
-        if (ThemeManager.IsMica)
         {
-            this.Background = new SolidColorBrush(Colors.Transparent);
-            Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
-
-            //BackdropMaterial does not work on AppWindow.
-            this.Loaded += (s, e) =>
-            {
-                var tab = UIHelper.GetCurrentTabPage(this);
-                if (tab?.RootAppWindow is not null) SetDefaultBackground();
-            };
-
-            brightnessLayer.Background = new SolidColorBrush(ThemeManager.IsDarkTheme ? Colors.White : Colors.Black);
-            brightnessLayer.Opacity = (1 - brSet / 100);
-            brightnessLayer.Visibility = Visibility.Visible;
-        }
-        else
-        {
-            brightnessLayer.Visibility = Visibility.Collapsed;
-            SetDefaultBackground(brSet);
+            UpdateBackground();
+            var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
+            if (theme is not null) theme.ValueChanged += Theme_ValueChanged;
         }
 
         flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
@@ -107,6 +90,47 @@ public sealed partial class BookFixed3Viewer : Page
                 await Binding?.UpdatePages(this.Dispatcher);
             }
         };
+    }
+
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    {
+        {
+            var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
+            if (theme is not null) theme.ValueChanged -= Theme_ValueChanged;
+        }
+
+        base.OnNavigatingFrom(e);
+    }
+
+    private void Theme_ValueChanged(object sender, EventArgs e)
+    {
+        UpdateBackground();
+    }
+
+    private void UpdateBackground()
+    {
+        var brSet = (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
+        if (ThemeManager.IsMica)
+        {
+            this.Background = new SolidColorBrush(Colors.Transparent);
+            Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+
+            //BackdropMaterial does not work on AppWindow.
+            this.Loaded += (s, e) =>
+            {
+                var tab = UIHelper.GetCurrentTabPage(this);
+                if (tab?.RootAppWindow is not null) SetDefaultBackground();
+            };
+
+            brightnessLayer.Background = new SolidColorBrush(ThemeManager.IsDarkTheme ? Colors.White : Colors.Black);
+            brightnessLayer.Opacity = (1 - brSet / 100);
+            brightnessLayer.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            brightnessLayer.Visibility = Visibility.Collapsed;
+            SetDefaultBackground(brSet);
+        }
     }
 
     private void SetDefaultBackground(double? brightness = null)
@@ -593,6 +617,7 @@ public sealed partial class BookFixed3Viewer : Page
             this.Binding.UpdateSettings();
             await this.Binding.UpdatePages(this.Dispatcher);
             Binding.PageSelectedDisplay = page;
+            UpdateBackground();
         };
 
         try
