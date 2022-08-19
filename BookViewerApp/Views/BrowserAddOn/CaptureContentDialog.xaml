@@ -26,7 +26,7 @@
 
         <StackPanel Orientation="Horizontal">
             <v:AcrylicButtonControl Icon="Copy" Margin="0" Click="{x:Bind Copy}"/>
-            <v:AcrylicButtonControl Icon="Download" Margin="0" Click="{x:Bind Save}"/>
+            <v:AcrylicButtonControl Icon="Save" Margin="0" Click="{x:Bind Save}"/>
             <v:AcrylicButtonControl Icon="Refresh" Margin="0" Click="{x:Bind Refresh}"/>
             <v:AcrylicButtonControl Margin="0" Click="{x:Bind ToggleCropper}">
                 <v:AcrylicButtonControl.Icon>
@@ -58,14 +58,14 @@
             
             <InkToolbar TargetInkCanvas="{x:Bind inkCanvas}" x:Name="inkToolBar" />
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1">
-                <Button Style="{ThemeResource ButtonRevealStyle}" Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomOut">
+                <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomOut" BorderThickness="0">
                     <SymbolIcon Symbol="ZoomOut" />
-                </Button>
-                <Button Style="{ThemeResource ButtonRevealStyle}" Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomIn">
+                </RepeatButton>
+                <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomIn" BorderThickness="0">
                     <SymbolIcon Symbol="ZoomIn" />
-                </Button>
+                </RepeatButton>
             </StackPanel>
-            <ScrollViewer x:Name="inkScrollViewer" ZoomMode="Enabled" Grid.Row="1" HorizontalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
+            <ScrollViewer x:Name="inkScrollViewer" ZoomMode="Enabled" Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"  Grid.ColumnSpan="2" SizeChanged="inkScrollViewer_SizeChanged">
                 <Grid  x:Name="inkParent">
                     <Image x:Name="inkCanvasBackground"/>
                     <InkCanvas x:Name="inkCanvas" />

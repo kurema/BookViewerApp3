@@ -174,6 +174,23 @@ public static partial class UIHelper
                 {
                     content.AddOnSpace.Add(OpenEpub_GetDarkmodeCheckBox());
                 }
+                {
+                    content.AddOnSpace.Add(new NavigationViewItemSeparator());
+                    content.AddOnSpace.Add(new Views.BrowserAddOn.CaptureControl()
+                    {
+                        WriteToStreamAction = async (s) =>
+                        {
+                            if (s is null) return;
+                            try
+                            {
+                                await content.WebView2.EnsureCoreWebView2Async();
+                                await content.WebView2.CoreWebView2.CapturePreviewAsync(Microsoft.Web.WebView2.Core.CoreWebView2CapturePreviewImageFormat.Png, s);
+                            }
+                            catch { }
+                        },
+                        XamlRootProvider = () => content.XamlRoot,
+                    });
+                }
             }
             HistoryManager.AddEntry(file);
         }
@@ -270,6 +287,22 @@ public static partial class UIHelper
                     }
                     {
                         content.AddOnSpace.Add(OpenEpub_GetDarkmodeCheckBox());
+                    }
+                    {
+                        content.AddOnSpace.Add(new NavigationViewItemSeparator());
+                        content.AddOnSpace.Add(new Views.BrowserAddOn.CaptureControl()
+                        {
+                            WriteToStreamAction = async (s) =>
+                            {
+                                if (s is null) return;
+                                try
+                                {
+                                    if (content.Control.IsLoaded) await content.Control.CapturePreviewToStreamAsync(s);
+                                }
+                                catch { }
+                            },
+                            XamlRootProvider = () => content.XamlRoot,
+                        });
                     }
                 }
 

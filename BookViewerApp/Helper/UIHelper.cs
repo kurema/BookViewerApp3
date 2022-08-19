@@ -169,4 +169,39 @@ public static partial class UIHelper
         await result.UpdateChildren();
         return result;
     }
+
+    public static void ChangeViewWithKeepCurrentCenter(ScrollViewer sv, float zoomFactor)
+    {
+        double originalCenterX;
+        if (sv.ViewportWidth < sv.ExtentWidth)
+        {
+            double eCenterX = sv.HorizontalOffset + sv.ViewportWidth / 2;
+            originalCenterX = eCenterX / sv.ZoomFactor;
+        }
+        else
+        {
+            double eCenterX = sv.HorizontalOffset + sv.ExtentWidth / 2;
+            originalCenterX = eCenterX / sv.ZoomFactor;
+        }
+
+        double originalCenterY;
+        if (sv.ViewportHeight < sv.ExtentHeight)
+        {
+            double eCenterY = sv.VerticalOffset + sv.ViewportHeight / 2;
+            originalCenterY = eCenterY / sv.ZoomFactor;
+        }
+        else
+        {
+            double eCenterY = sv.VerticalOffset + sv.ExtentHeight / 2;
+            originalCenterY = eCenterY / sv.ZoomFactor;
+        }
+
+
+        double newExtentCenterX = originalCenterX * zoomFactor;
+        double newExtentCenterY = originalCenterY * zoomFactor;
+
+        double newExtentOffsetX = newExtentCenterX - sv.ViewportWidth / 2;
+        double newExtentOffsetY = newExtentCenterY - sv.ViewportHeight / 2;
+        sv.ChangeView(newExtentOffsetX, newExtentOffsetY, zoomFactor, true);
+    }
 }

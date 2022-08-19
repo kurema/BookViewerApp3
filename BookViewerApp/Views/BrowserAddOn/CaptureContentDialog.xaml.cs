@@ -1,4 +1,5 @@
-﻿using BookViewerApp.Managers;
+﻿using BookViewerApp.Helper;
+using BookViewerApp.Managers;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.Web.WebView2.Core;
@@ -120,8 +121,9 @@ public sealed partial class CaptureContentDialog : ContentDialog
                     await bmi.SetSourceAsync(CurrentStream);
                     inkParent.Width = bmi.PixelWidth;
                     inkParent.Height = bmi.PixelHeight;
-                    float factor = (float)Math.Min(inkScrollViewer.ActualWidth / bmi.PixelWidth, inkScrollViewer.ActualHeight / bmi.PixelHeight);
-                    inkScrollViewer.ChangeView(null, null, factor);
+                    float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / bmi.PixelWidth, inkScrollViewer.ViewportHeight / bmi.PixelHeight);
+                    inkScrollViewer.ChangeView(null, null, factor, true);
+                    inkScrollViewer.MinZoomFactor = factor;
                     return;
                 }
         }
@@ -238,7 +240,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
 
     private void Zoom(float x)
     {
-        inkScrollViewer.ChangeView(null, null, inkScrollViewer.ZoomFactor + x);
+        UIHelper.ChangeViewWithKeepCurrentCenter(inkScrollViewer, inkScrollViewer.ZoomFactor * x);
     }
 
     private void ToggleCropper()
@@ -260,13 +262,15 @@ public sealed partial class CaptureContentDialog : ContentDialog
         };
     }
 
-    private void Button_Click_ZoomIn(object sender, RoutedEventArgs e)
-    {
-        Zoom(0.1f);
-    }
+    private void Button_Click_ZoomIn(object sender, RoutedEventArgs e) => Zoom(1.1f);
 
-    private void Button_Click_ZoomOut(object sender, RoutedEventArgs e)
+    private void Button_Click_ZoomOut(object sender, RoutedEventArgs e) => Zoom(1 / 1.1f);
+
+    private void inkScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        Zoom(-0.1f);
+        if (inkParent.Width == 0 || inkParent.Height == 0 || double.IsNaN(inkParent.Width) || double.IsNaN(inkParent.Height)) return;
+        float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / inkParent.Width, inkScrollViewer.ViewportHeight / inkParent.Height);
+        if (double.IsNaN(factor)) return;
+        inkScrollViewer.MinZoomFactor = factor;
     }
 }

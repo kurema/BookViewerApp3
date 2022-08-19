@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using BookViewerApp.ViewModels;
+using BookViewerApp.Helper;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -62,7 +63,7 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
                             scrollViewer.MinZoomFactor);
 
                         var currentFactor = this.ZoomFactor;
-                        changeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
+                        UIHelper.ChangeViewWithKeepCurrentCenter(scrollViewer, resultFactor);
                             //ズーム時は移動量は無視される。
                             //You can't zoom and move.
                         }
@@ -100,40 +101,7 @@ public sealed partial class BookFixed2Page : UserControl, INotifyPropertyChanged
         };
     }
 
-    private void changeViewWithKeepCurrentCenter(ScrollViewer sv, float zoomFactor)
-    {
-        double originalCenterX;
-        if (sv.ViewportWidth < sv.ExtentWidth)
-        {
-            double eCenterX = sv.HorizontalOffset + sv.ViewportWidth / 2;
-            originalCenterX = eCenterX / sv.ZoomFactor;
-        }
-        else
-        {
-            double eCenterX = sv.HorizontalOffset + sv.ExtentWidth / 2;
-            originalCenterX = eCenterX / sv.ZoomFactor;
-        }
 
-        double originalCenterY;
-        if (sv.ViewportHeight < sv.ExtentHeight)
-        {
-            double eCenterY = sv.VerticalOffset + sv.ViewportHeight / 2;
-            originalCenterY = eCenterY / sv.ZoomFactor;
-        }
-        else
-        {
-            double eCenterY = sv.VerticalOffset + sv.ExtentHeight / 2;
-            originalCenterY = eCenterY / sv.ZoomFactor;
-        }
-
-
-        double newExtentCenterX = originalCenterX * zoomFactor;
-        double newExtentCenterY = originalCenterY * zoomFactor;
-
-        double newExtentOffsetX = newExtentCenterX - sv.ViewportWidth / 2;
-        double newExtentOffsetY = newExtentCenterY - sv.ViewportHeight / 2;
-        sv.ChangeView(newExtentOffsetX, newExtentOffsetY, zoomFactor, true);
-    }
 
 
     private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
