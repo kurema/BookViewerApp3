@@ -56,13 +56,13 @@ public sealed partial class TabPage : Page
 
     private void Theme_ValueChanged(object sender, EventArgs e)
     {
-        var theme= ThemeManager.AsElementTheme;
+        var theme = ThemeManager.AsElementTheme;
         this.RequestedTheme = theme;
-        foreach(var item in Control.TabItems)
+        foreach (var item in Control.TabItems)
         {
             if (item is not TabViewItem itemTvi) continue;
             itemTvi.RequestedTheme = theme;
-            if( itemTvi.Content is FrameworkElement content)
+            if (itemTvi.Content is FrameworkElement content)
             {
                 content.RequestedTheme = theme;
             }
@@ -167,6 +167,13 @@ public sealed partial class TabPage : Page
         frame.Navigate(typeof(BookFixed3Viewer), stream);
     }
 
+    public (Frame, TabViewItem) OpenTab(string titleId, Type sourcePageType, object parameter)
+    {
+        var result = OpenTab(titleId);
+        result.Item1.Navigate(sourcePageType, parameter);
+        return result;
+    }
+
     public async void OpenTabBook(System.Threading.Tasks.Task<Stream> stream)
     {
         OpenTabBook(await stream);
@@ -197,7 +204,7 @@ public sealed partial class TabPage : Page
     }
 
 
-    public void OpenTabWeb(string uri)
+    public async void OpenTabWeb(string uri)
     {
         var (frame, newTab) = OpenTab("Browser");
 
@@ -214,7 +221,7 @@ public sealed partial class TabPage : Page
                 //https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
                 //var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
                 //if (string.IsNullOrEmpty(version)) throw new Exception();
-                UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
+                await UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
                 {
                     newTab.Header = title;
                 });

@@ -552,7 +552,7 @@ public static partial class UIHelper
             };
         }
 
-        public static void OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
+        public static async Task OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), uri);
 
@@ -606,7 +606,7 @@ public static partial class UIHelper
                     var addonUA = new Views.BrowserAddOn.UserAgentOverride();
                     addonUA.UserAgentUpdated += (_, _) => { updateUserAgent(); content?.WebView2?.Reload(); };
                     content.AddOnSpace.Add(addonUA);
-                    //await ExtensionAdBlockerManager.LoadRules();
+                    content.AddOnSpace.Add(new NavigationViewItemSeparator());
                     content.AddOnSpace.Add(new Views.BrowserAddOn.CaptureControl()
                     {
                         WriteToStreamAction = async (s) =>
@@ -617,6 +617,12 @@ public static partial class UIHelper
                         },
                         XamlRootProvider = () => content.XamlRoot,
                     });
+                    //try
+                    //{
+                    //    await ExtensionAdBlockerManager.LoadRules();
+                    //    content.AddOnSpace.Add(new Views.BrowserAddOn.AdBlockerControl());
+                    //}
+                    //catch { }
                 }
             }
         }

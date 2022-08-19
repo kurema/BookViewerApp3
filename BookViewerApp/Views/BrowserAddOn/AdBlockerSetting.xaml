@@ -9,7 +9,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Pivot>
-        
+        <PivotItem Header="Filters">
+            
+        </PivotItem>
+        <PivotItem Header="Custom filters">
+            
+        </PivotItem>
+        <PivotItem Header="Trusted Sites">
+            
+        </PivotItem>
     </Pivot>
-
 </Page>
