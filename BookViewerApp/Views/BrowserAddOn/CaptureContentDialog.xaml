@@ -45,32 +45,6 @@
         <Image x:Name="image" Grid.Row="1" />
         <!--<ScrollViewer ZoomMode="Enabled"  HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
         </ScrollViewer>-->
-        <Grid Visibility="Collapsed" x:Name="inkPanel" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <InkToolbar TargetInkCanvas="{x:Bind inkCanvas}" x:Name="inkToolBar" />
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1">
-                <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomOut" BorderThickness="0">
-                    <SymbolIcon Symbol="ZoomOut" />
-                </RepeatButton>
-                <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomIn" BorderThickness="0">
-                    <SymbolIcon Symbol="ZoomIn" />
-                </RepeatButton>
-            </StackPanel>
-            <ScrollViewer x:Name="inkScrollViewer" ZoomMode="Enabled" Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"  Grid.ColumnSpan="2" SizeChanged="inkScrollViewer_SizeChanged">
-                <Grid  x:Name="inkParent">
-                    <Image x:Name="inkCanvasBackground"/>
-                    <InkCanvas x:Name="inkCanvas" />
-                </Grid>
-            </ScrollViewer>
-        </Grid>
+        <v:InkAnnotationPage Visibility="Collapsed"  x:Name="inkAnnotation" Grid.Row="1"/>
     </Grid>
 </ContentDialog>

@@ -57,18 +57,18 @@ public sealed partial class CaptureContentDialog : ContentDialog
                 case Modes.Crop:
                     cropper.Visibility = Visibility.Visible;
                     image.Visibility = Visibility.Collapsed;
-                    inkPanel.Visibility = Visibility.Collapsed;
+                    inkAnnotation.Visibility = Visibility.Collapsed;
                     break;
                 case Modes.Ink:
                     cropper.Visibility = Visibility.Collapsed;
                     image.Visibility = Visibility.Collapsed;
-                    inkPanel.Visibility = Visibility.Visible;
+                    inkAnnotation.Visibility = Visibility.Visible;
                     break;
                 default:
                 case Modes.Basic:
                     cropper.Visibility = Visibility.Collapsed;
                     image.Visibility = Visibility.Visible;
-                    inkPanel.Visibility = Visibility.Collapsed;
+                    inkAnnotation.Visibility = Visibility.Collapsed;
                     break;
             }
             LoadSource();
@@ -113,41 +113,19 @@ public sealed partial class CaptureContentDialog : ContentDialog
                 break;
             case Modes.Ink:
                 {
-                    if (inkCanvasBackground.Source is not BitmapImage bmi)
-                    {
-                        inkCanvasBackground.Source = bmi = new BitmapImage();
-                    }
-                    CurrentStream.Seek(0);
-                    await bmi.SetSourceAsync(CurrentStream);
-                    inkParent.Width = bmi.PixelWidth;
-                    inkParent.Height = bmi.PixelHeight;
-                    float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / bmi.PixelWidth, inkScrollViewer.ViewportHeight / bmi.PixelHeight);
-                    inkScrollViewer.ChangeView(null, null, factor, true);
-                    inkScrollViewer.MinZoomFactor = factor;
+                    await inkAnnotation.SetSouceAsync(CurrentStream);
                     return;
                 }
         }
     }
 
-    private async Task<CanvasRenderTarget> GetCanvasRenderTarget()
-    {
-        //https://stackoverflow.com/questions/43390816/uwp-how-can-i-attach-an-image-to-an-inkcanvas
-        var device = CanvasDevice.GetSharedDevice();
-        var target = new CanvasRenderTarget(device, (float)inkCanvasBackground.ActualWidth, (float)inkCanvasBackground.ActualHeight, 96);
-        using var ds = target.CreateDrawingSession();
-        ds.Clear(Windows.UI.Colors.White);
-        var image = await CanvasBitmap.LoadAsync(device, CurrentStream);
-        ds.DrawImage(image);
-        ds.DrawInk(inkCanvas.InkPresenter.StrokeContainer.GetStrokes());
-        return target;
-    }
+
 
     public CaptureContentDialog()
     {
         this.InitializeComponent();
 
         cropper.Source = new WriteableBitmap(500, 500);
-        inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Touch | Windows.UI.Core.CoreInputDeviceTypes.Pen;
     }
 
     public async Task Refresh()
@@ -197,7 +175,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
                     await cropper.SaveAsync(stream, ImageManager.GetBitmapFileFormatFromExtension(Path.GetExtension(file.Path)) ?? BitmapFileFormat.Png);
                     break;
                 case Modes.Ink:
-                    await (await GetCanvasRenderTarget()).SaveAsync(stream, ImageManager.GetCanvasBitmapFileFormatFromExtension(Path.GetExtension(file.Path)) ?? CanvasBitmapFileFormat.Png);
+                    await (await inkAnnotation.GetCanvasRenderTarget()).SaveAsync(stream, ImageManager.GetCanvasBitmapFileFormatFromExtension(Path.GetExtension(file.Path)) ?? CanvasBitmapFileFormat.Png);
                     break;
             }
         }
@@ -228,7 +206,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
                 case Modes.Ink:
                     {
                         var ms = new InMemoryRandomAccessStream();
-                        await (await GetCanvasRenderTarget()).SaveAsync(ms, CanvasBitmapFileFormat.Png);
+                        await (await inkAnnotation.GetCanvasRenderTarget()).SaveAsync(ms, CanvasBitmapFileFormat.Png);
                         package.SetBitmap(RandomAccessStreamReference.CreateFromStream(ms));
                     }
                     break;
@@ -238,10 +216,6 @@ public sealed partial class CaptureContentDialog : ContentDialog
         catch { }
     }
 
-    private void Zoom(float x)
-    {
-        UIHelper.ChangeViewWithKeepCurrentCenter(inkScrollViewer, inkScrollViewer.ZoomFactor * x);
-    }
 
     private void ToggleCropper()
     {
@@ -262,15 +236,5 @@ public sealed partial class CaptureContentDialog : ContentDialog
         };
     }
 
-    private void Button_Click_ZoomIn(object sender, RoutedEventArgs e) => Zoom(1.1f);
 
-    private void Button_Click_ZoomOut(object sender, RoutedEventArgs e) => Zoom(1 / 1.1f);
-
-    private void inkScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        if (inkParent.Width == 0 || inkParent.Height == 0 || double.IsNaN(inkParent.Width) || double.IsNaN(inkParent.Height)) return;
-        float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / inkParent.Width, inkScrollViewer.ViewportHeight / inkParent.Height);
-        if (double.IsNaN(factor)) return;
-        inkScrollViewer.MinZoomFactor = factor;
-    }
 }

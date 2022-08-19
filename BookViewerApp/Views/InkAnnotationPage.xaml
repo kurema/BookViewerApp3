@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="BookViewerApp.Views.InkAnnotationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookViewerApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="inkPanel">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <InkToolbar TargetInkCanvas="{x:Bind inkCanvas}" x:Name="inkToolBar" />
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1">
+            <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomOut" BorderThickness="0">
+                <SymbolIcon Symbol="ZoomOut" />
+            </RepeatButton>
+            <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomIn" BorderThickness="0">
+                <SymbolIcon Symbol="ZoomIn" />
+            </RepeatButton>
+        </StackPanel>
+        <ScrollViewer x:Name="inkScrollViewer" ZoomMode="Enabled" Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"  Grid.ColumnSpan="2" SizeChanged="inkScrollViewer_SizeChanged">
+            <Grid  x:Name="inkParent">
+                <Image x:Name="inkCanvasBackground"/>
+                <InkCanvas x:Name="inkCanvas" />
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

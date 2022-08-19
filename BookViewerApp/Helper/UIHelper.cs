@@ -172,6 +172,7 @@ public static partial class UIHelper
 
     public static void ChangeViewWithKeepCurrentCenter(ScrollViewer sv, float zoomFactor)
     {
+        zoomFactor = Math.Min(zoomFactor, sv.MaxZoomFactor);
         double originalCenterX;
         if (sv.ViewportWidth < sv.ExtentWidth)
         {

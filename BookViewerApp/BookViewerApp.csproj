@@ -380,6 +380,9 @@
     <Compile Include="ViewModels\InfoPageViewModel.cs" />
     <Compile Include="Storages\LicenseStorage.cs" />
     <Compile Include="Helper\NaturalSort.cs" />
+    <Compile Include="Views\InkAnnotationPage.xaml.cs">
+      <DependentUpon>InkAnnotationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LibraryManagerControl.xaml.cs">
       <DependentUpon>LibraryManagerControl.xaml</DependentUpon>
     </Compile>
@@ -517,6 +520,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InkAnnotationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
