@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -312,11 +313,12 @@ public sealed partial class FileExplorerControl : Page
         }
     }
 
-    private void Page_KeyDown(object sender, KeyRoutedEventArgs e)
+    private async void Page_KeyDown(object sender, KeyRoutedEventArgs e)
     {
         if(e.Key == Windows.System.VirtualKey.F && Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
         {
             buttonMenu.Flyout.ShowAt(buttonMenu);
+            await Task.Delay(100);
             searchBox.Focus(FocusState.Keyboard);
             e.Handled = true;
             return;

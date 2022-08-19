@@ -54,6 +54,32 @@ public static class ImageManager
         }
     }
 
+    public static Microsoft.Graphics.Canvas.CanvasBitmapFileFormat? GetCanvasBitmapFileFormatFromExtension(string ext)
+    {
+        ext = ext.ToLowerInvariant();
+        switch (ext)
+        {
+            case Extensions.Jpeg1:
+            case Extensions.Jpeg2:
+                return Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Jpeg;
+            case Extensions.Png:
+                return Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Png;
+            case Extensions.Bitmap:
+                return Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Bmp;
+            case Extensions.JpegXr1:
+            case Extensions.JpegXr2:
+            case Extensions.JpegXr3:
+                return Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.JpegXR;
+            case Extensions.Gif:
+                return Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Gif;
+            case Extensions.Tiff1:
+            case Extensions.Tiff2:
+                return Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Tiff;
+            default:
+                return null;
+        }
+    }
+
     public static Guid? GetBitmapEncoderGuidFromExtension(string ext)
     {
         ext = ext.ToLowerInvariant();
@@ -84,10 +110,10 @@ public static class ImageManager
     {
         return new[] {
             ("PNG",new[]{Extensions.Png}),
-            ("Jpeg",new[]{Extensions.Jpeg1,Extensions.Jpeg2}),
-            ("Bitmap",new[]{Extensions.Bitmap}),
-            ("Gif",new[]{Extensions.Gif}),
-            ("Tiff",new[]{Extensions.Tiff1,Extensions.Tiff2}),
+            ("JPEG",new[]{Extensions.Jpeg1,Extensions.Jpeg2}),
+            ("Windows bitmap",new[]{Extensions.Bitmap}),
+            ("GIF",new[]{Extensions.Gif}),
+            ("TIFF",new[]{Extensions.Tiff1,Extensions.Tiff2}),
             ("JPEG XR",new[]{Extensions.JpegXr1,Extensions.JpegXr2,Extensions.JpegXr3}),
         };
     }

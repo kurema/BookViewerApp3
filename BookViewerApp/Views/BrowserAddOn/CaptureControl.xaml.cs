@@ -29,7 +29,7 @@ public sealed partial class CaptureControl : UserControl
         this.InitializeComponent();
     }
 
-    private async void AppBarButton_Click(object sender, RoutedEventArgs e)
+    public async void Capture()
     {
         if (WriteToStreamAction is null) return;
         var ms = new InMemoryRandomAccessStream();

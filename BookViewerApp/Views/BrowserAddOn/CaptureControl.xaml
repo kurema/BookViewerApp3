@@ -8,7 +8,9 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <Button HorizontalAlignment="Stretch" Click="AppBarButton_Click">
-        <SymbolIcon Symbol="Camera"/>
-    </Button>
+    <StackPanel>
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Tapped="{x:Bind Capture}"  CornerRadius="0" Style="{ThemeResource ButtonRevealStyle}" Background="Transparent">
+            <SymbolIcon Symbol="Camera" HorizontalAlignment="Center"/>
+        </Button>
+    </StackPanel>
 </UserControl>

@@ -128,9 +128,6 @@
                 <Button.Flyout>
                     <Flyout>
                         <StackPanel>
-                            <TextBox HorizontalAlignment="Stretch" Text="{Binding Content.Item.SearchWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{x:Bind Converter={StaticResource vc_local},ConverterParameter='Search/Placeholder',Mode=OneTime}"
-                                     x:Name="searchBox"/>
-                            <NavigationViewItemSeparator HorizontalAlignment="Stretch" />
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -375,6 +372,10 @@
                                 </ItemsControl>
                             </Grid>
                             <StackPanel x:Name="pageMenuStack" Orientation="Vertical"/>
+                            <NavigationViewItemSeparator HorizontalAlignment="Stretch" />
+                            <TextBox HorizontalAlignment="Stretch" Text="{Binding Content.Item.SearchWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{x:Bind Converter={StaticResource vc_local},ConverterParameter='Search/Placeholder',Mode=OneTime}"
+                                     x:Name="searchBox"/>
+ 
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>

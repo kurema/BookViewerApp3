@@ -24,8 +24,8 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Browser.Addon.UserAgent.Title, Mode=OneTime}" FontWeight="Bold"/>
-        <TextBox x:Name="textBoxUA" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" />
-        <Button Grid.Column="0" Grid.Row="2" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Reset, Mode=OneTime}" Click="{x:Bind ResetUA}" HorizontalAlignment="Stretch"/>
-        <Button Grid.Column="1" Grid.Row="2" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.OK, Mode=OneTime}" Click="Button_Click_Ok" HorizontalAlignment="Stretch"/>
+        <TextBox x:Name="textBoxUA" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" CornerRadius="0" />
+        <Button CornerRadius="0" Style="{ThemeResource ButtonRevealStyle}" Background="Transparent" Grid.Column="0" Grid.Row="2" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Reset, Mode=OneTime}" Click="{x:Bind ResetUA}" HorizontalAlignment="Stretch"/>
+        <Button CornerRadius="0" Style="{ThemeResource ButtonRevealStyle}" Background="Transparent" Grid.Column="1" Grid.Row="2" Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.OK, Mode=OneTime}" Click="Button_Click_Ok" HorizontalAlignment="Stretch"/>
     </Grid>
 </UserControl>
