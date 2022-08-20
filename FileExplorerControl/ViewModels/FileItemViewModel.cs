@@ -168,9 +168,9 @@ public partial class FileItemViewModel : INotifyPropertyChanged
             if (_Children is null) return null;
             var r = string.IsNullOrWhiteSpace(SearchWord) ? _Children : _Children.Where(a =>
             {
-                var title = a.Title?.ToUpperInvariant();
-                if (title is null) return true;
-                return SearchWord.Split(' ', '　', '&', '＆').Select(a => a.ToUpperInvariant()).All(b => title.Contains(b));
+                if (a.Title is null) return true;
+                var pathFile = a.Path is null ? string.Empty : System.IO.Path.GetFileName(a.Path);
+                return SearchWord.Split(' ', '　', '&', '＆').All(b => a.Title.Contains(b, StringComparison.OrdinalIgnoreCase) || (!string.IsNullOrWhiteSpace(pathFile) && pathFile.Contains(b, StringComparison.OrdinalIgnoreCase)));
             });
             return Order?.OrderDelegate is null ? r : Order?.OrderDelegate(r);
         }

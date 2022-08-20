@@ -55,9 +55,20 @@ public sealed partial class CaptureContentDialog : ContentDialog
             switch (_Mode)
             {
                 case Modes.Crop:
-                    cropper.Visibility = Visibility.Visible;
-                    image.Visibility = Visibility.Collapsed;
-                    inkAnnotation.Visibility = Visibility.Collapsed;
+                    {
+                        double w = double.IsNaN(image.ActualWidth) ? inkAnnotation.ActualWidth : image.ActualWidth;
+                        double h = double.IsNaN(image.ActualHeight) ? inkAnnotation.ActualHeight : image.ActualHeight;
+
+                        cropper.Visibility = Visibility.Visible;
+                        image.Visibility = Visibility.Collapsed;
+                        inkAnnotation.Visibility = Visibility.Collapsed;
+
+                        if(!double.IsNaN(w) && !double.IsNaN(h))
+                        {
+                            cropper.Width = w;
+                            cropper.Height = h;
+                        }
+                    }
                     break;
                 case Modes.Ink:
                     cropper.Visibility = Visibility.Collapsed;
