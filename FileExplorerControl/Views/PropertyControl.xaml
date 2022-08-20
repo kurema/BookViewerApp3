@@ -20,7 +20,7 @@
         <vc:CanRenameToBoolConverter x:Key="vc_rename"/>
     </UserControl.Resources>
 
-    <Grid RowSpacing="5">
+    <Grid RowSpacing="5" ColumnSpacing="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
