@@ -295,6 +295,7 @@
     </Compile>
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
+    <Compile Include="ViewModels\AdBlockerSettingViewModel.cs" />
     <Compile Include="ViewModels\Bookshelf2BookViewModel.cs" />
     <Compile Include="ViewModels\Bookshelf2NavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Bookshelf2NavigationViewModel.cs" />

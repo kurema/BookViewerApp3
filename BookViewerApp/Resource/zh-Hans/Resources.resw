@@ -716,4 +716,22 @@
   <data name="Word.Screenshot" xml:space="preserve">
     <value>屏幕截图</value>
   </data>
+  <data name="TabHeader.AdBlocker" xml:space="preserve">
+    <value>广告拦截器</value>
+  </data>
+  <data name="Extension.AdBlocker.Title" xml:space="preserve">
+    <value>广告拦截器</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Header" xml:space="preserve">
+    <value>过滤器</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Header" xml:space="preserve">
+    <value>自定义过滤器</value>
+  </data>
+  <data name="Extension.AdBlocker.TrustedSites.Header" xml:space="preserve">
+    <value>受信任的网站</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Header" xml:space="preserve">
+    <value>信息</value>
+  </data>
 </root>

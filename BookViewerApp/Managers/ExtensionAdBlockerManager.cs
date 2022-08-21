@@ -21,7 +21,8 @@ public static class ExtensionAdBlockerManager
     //If users download manually, I think it's safe.
     public static StorageContent<Storages.ExtensionAdBlockerItems.items> LocalLists = new(StorageContent<Storages.ExtensionAdBlockerItems.items>.SavePlaces.InstalledLocation, "ms-appx:///res/values/AdBlockList.xml", () => new());
 
-    private async static Task<StorageFolder> GetDataFolder() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocalCache().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
+    private async static Task<StorageFolder> GetDataFolderCache() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocalCache().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
+    private async static Task<StorageFolder> GetDataFolderLocal() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocal().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
 
     private static StorageFolder? _DataDolder;
 
@@ -89,7 +90,7 @@ public static class ExtensionAdBlockerManager
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRulesFromDb()
     {
-        var folder = await GetDataFolder();
+        var folder = await GetDataFolderCache();
         if (!await folder.FileExistsAsync(FileNameDb)) return null;
         try
         {
@@ -103,7 +104,7 @@ public static class ExtensionAdBlockerManager
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRulesFromText()
     {
-        var folder = await GetDataFolder();
+        var folder = await GetDataFolderCache();
         var collection = new DistillNET.FilterDbCollection(Path.Combine(folder.Path, FileNameDb), true, false);
         foreach (var file in await folder.GetFilesAsync())
         {
@@ -129,7 +130,7 @@ public static class ExtensionAdBlockerManager
     {
         try
         {
-            var folder = await GetDataFolder();
+            var folder = await GetDataFolderCache();
             var file = await folder.GetFileAsync(filename);
             if (!file.IsAvailable) return;
             await file.RenameAsync($"{filename}.old", NameCollisionOption.ReplaceExisting);
@@ -145,7 +146,7 @@ public static class ExtensionAdBlockerManager
 
         try
         {
-            var folder = await GetDataFolder();
+            var folder = await GetDataFolderCache();
             var file = await folder.CreateFileAsync($"{item.filename}.dl", CreationCollisionOption.ReplaceExisting);
             if (file is null) return false;
             var stream = await file.OpenAsync(FileAccessMode.ReadWrite);

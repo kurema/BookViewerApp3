@@ -213,8 +213,12 @@ public static partial class UIHelper
             }
             else
             {
-                OpenEpub(frame, file, sender, epubType);
-                return;
+                try
+                {
+                    OpenEpub(frame, file, sender, epubType);
+                    return;
+                }
+                catch { }
             }
         }
 
@@ -631,8 +635,10 @@ public static partial class UIHelper
                     content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
                     OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
                     // Uncomment here to enable AdBlocker
-                    //content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
-                    //content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
+#if DEBUG
+                    content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                    content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
+#endif
                     updateUserAgent();
                 };
 
@@ -656,12 +662,15 @@ public static partial class UIHelper
                         XamlRootProvider = () => content.XamlRoot,
                     });
                     // Uncomment here to enable AdBlocker
-                    //try
-                    //{
-                    //    await ExtensionAdBlockerManager.LoadRules();
-                    //    content.AddOnSpace.Add(new Views.BrowserAddOn.AdBlockerControl());
-                    //}
-                    //catch { }
+#if DEBUG
+                    content.AddOnSpace.Add(new NavigationViewItemSeparator());
+                    try
+                    {
+                        await ExtensionAdBlockerManager.LoadRules();
+                        content.AddOnSpace.Add(new Views.BrowserAddOn.AdBlockerControl());
+                    }
+                    catch { }
+#endif
                 }
             }
         }

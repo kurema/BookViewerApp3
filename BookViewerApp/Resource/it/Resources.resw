@@ -716,4 +716,22 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Word.Screenshot" xml:space="preserve">
     <value>Schermata</value>
   </data>
+  <data name="TabHeader.AdBlocker" xml:space="preserve">
+    <value>Blocco degli annunci</value>
+  </data>
+  <data name="Extension.AdBlocker.Title" xml:space="preserve">
+    <value>Blocco degli annunci</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Header" xml:space="preserve">
+    <value>Filtri</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Header" xml:space="preserve">
+    <value>Filtri personalizzati</value>
+  </data>
+  <data name="Extension.AdBlocker.TrustedSites.Header" xml:space="preserve">
+    <value>Siti affidabili</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Header" xml:space="preserve">
+    <value>Info</value>
+  </data>
 </root>

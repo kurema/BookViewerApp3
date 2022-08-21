@@ -7,9 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
-
+    d:DesignWidth="400"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    >
+    <UserControl.Resources >
+        <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+    </UserControl.Resources>
     <StackPanel>
+        <TextBlock FontWeight="Bold" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Title'}"/>
         <CheckBox x:Name="checkBoxEnabled" Content="Enabled" IsChecked="{x:Bind IsAdBlockerEnabled,Mode=TwoWay}" />
         <Button HorizontalAlignment="Stretch" Content="Configure" Click="{x:Bind OpenConfig}" />
     </StackPanel>

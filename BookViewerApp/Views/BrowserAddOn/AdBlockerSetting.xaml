@@ -6,17 +6,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    
+     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    >
+    <UserControl.Resources>
+        <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+    </UserControl.Resources>
     <Pivot>
-        <PivotItem Header="Filters">
-            
+        <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">
+            <TextBlock Text="Hello"/>
         </PivotItem>
-        <PivotItem Header="Custom filters">
-            
+        <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Header'}">
         </PivotItem>
-        <PivotItem Header="Trusted Sites">
-            
+        <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
+        </PivotItem>
+        <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
         </PivotItem>
     </Pivot>
 </Page>
