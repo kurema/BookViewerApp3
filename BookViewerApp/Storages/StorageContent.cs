@@ -8,6 +8,11 @@ using BookViewerApp.Helper;
 
 namespace BookViewerApp.Storages;
 
+public enum SavePlaces
+{
+    Local, Roaming, LocalCache, InstalledLocation
+}
+
 public class StorageContent<T> where T : class
 {
     public T Content { get; set; } = null;
@@ -22,10 +27,6 @@ public class StorageContent<T> where T : class
         GetNewDelegate = getNewDelegate;
     }
 
-    public enum SavePlaces
-    {
-        Local, Roaming, LocalCache, InstalledLocation
-    }
 
     private Windows.Storage.StorageFolder DataFolder
     {

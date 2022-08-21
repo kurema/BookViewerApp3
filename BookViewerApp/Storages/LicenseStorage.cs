@@ -12,7 +12,7 @@ namespace BookViewerApp.Storages;
 
 public class LicenseStorage
 {
-    public static StorageContent<Licenses.licenses> LocalLicense = new(StorageContent<Licenses.licenses>.SavePlaces.InstalledLocation, "ms-appx:///res/values/Licenses.xml", () => new Licenses.licenses());
+    public static StorageContent<Licenses.licenses> LocalLicense = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/Licenses.xml", () => new Licenses.licenses());
 
     [Obsolete]
     public static string? CurrentLicense { get => LocalLicense.Content?.firstparty?[0]?.license?.term; }

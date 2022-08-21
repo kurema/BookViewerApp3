@@ -19,10 +19,11 @@ public static class ExtensionAdBlockerManager
 {
     //Stay away from GPL!
     //If users download manually, I think it's safe.
-    public static StorageContent<Storages.ExtensionAdBlockerItems.items> LocalLists = new(StorageContent<Storages.ExtensionAdBlockerItems.items>.SavePlaces.InstalledLocation, "ms-appx:///res/values/AdBlockList.xml", () => new());
+    public static StorageContent<Storages.ExtensionAdBlockerItems.items> LocalLists = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/AdBlockList.xml", () => new());
 
     private async static Task<StorageFolder> GetDataFolderCache() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocalCache().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
     private async static Task<StorageFolder> GetDataFolderLocal() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocal().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
+
 
     private static StorageFolder? _DataDolder;
 

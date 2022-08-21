@@ -1,8 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <items xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/ExtensionAdBlockerItems.xsd">
 	<group>
-		<title language="en">Ad</title>
+		<title language="en" default="true">Ad</title>
 		<title language="ja">広告</title>
-		<item filename="easylist.txt" project="https://easylist.to/" license="https://easylist.to/pages/licence.html" source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
+		<item filename="easylist.txt" 
+			  project_source="https://easylist.to/"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
+		<item filename="uBlocks.filters.txt"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt" title="uBlock filters"/>
 	</group>
 </items>

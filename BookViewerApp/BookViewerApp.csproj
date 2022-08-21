@@ -285,6 +285,7 @@
     <Compile Include="Storages\ExtensionAdBlockerItems.cs">
       <DependentUpon>ExtensionAdBlockerItems.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Storages\ExtensionAdBlockerItemsExtension.cs" />
     <Compile Include="Storages\HistoryStorage.cs" />
     <Compile Include="Storages\Library.cs">
       <DependentUpon>Library.xsd</DependentUpon>

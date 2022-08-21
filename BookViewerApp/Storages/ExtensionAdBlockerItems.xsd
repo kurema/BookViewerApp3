@@ -12,22 +12,19 @@
 				<xs:element name="group">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="title" minOccurs="0" maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:simpleContent>
-										<xs:extension base="xs:string">
-											<xs:attribute name="language" type="xs:language" default="en" use="optional"/>
-										</xs:extension>
-									</xs:simpleContent>
-								</xs:complexType>
-							</xs:element>
+							<xs:element ref="title" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
-									<xs:attribute name="title" type="xs:string"/>
+									<xs:sequence>
+										<xs:element ref="title" minOccurs="0" maxOccurs="unbounded" />
+									</xs:sequence>
+									<xs:attribute name="title" type="xs:string" use="optional"/>
 									<xs:attribute name="filename" type="xs:string"/>
 									<xs:attribute name="source" type="xs:anyURI"/>
-									<xs:attribute name="project" type="xs:anyURI"/>
-									<xs:attribute name="license" type="xs:anyURI"/>
+									<xs:attribute name="project_source" type="xs:anyURI"/>
+									<xs:attribute name="license_source" type="xs:anyURI"/>
+									<xs:attribute name="license_summary" type="xs:string"/>
+									<xs:attribute name="info_source" type="xs:anyURI" use="optional"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -36,4 +33,16 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:element name="title" >
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="language" type="xs:language" default="en" use="optional"/>
+					<xs:attribute name="default" type="xs:boolean" default="false" use="optional"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

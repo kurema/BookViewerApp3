@@ -49,13 +49,13 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         "sionAdBlockerItems.xsd")]
     public partial class itemsGroup {
         
-        private itemsGroupTitle[] titleField;
+        private title[] titleField;
         
         private itemsGroupItem[] itemField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("title")]
-        public itemsGroupTitle[] title {
+        public title[] title {
             get {
                 return this.titleField;
             }
@@ -83,14 +83,19 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
         "sionAdBlockerItems.xsd")]
-    public partial class itemsGroupTitle {
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
+        "sionAdBlockerItems.xsd", IsNullable=false)]
+    public partial class title {
         
         private string languageField;
         
+        private bool defaultField;
+        
         private string valueField;
         
-        public itemsGroupTitle() {
+        public title() {
             this.languageField = "en";
+            this.defaultField = false;
         }
         
         /// <remarks/>
@@ -102,6 +107,18 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.languageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool @default {
+            get {
+                return this.defaultField;
+            }
+            set {
+                this.defaultField = value;
             }
         }
         
@@ -126,24 +143,41 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         "sionAdBlockerItems.xsd")]
     public partial class itemsGroupItem {
         
-        private string titleField;
+        private title[] titleField;
+        
+        private string title1Field;
         
         private string filenameField;
         
         private string sourceField;
         
-        private string projectField;
+        private string project_sourceField;
         
-        private string licenseField;
+        private string license_sourceField;
+        
+        private string license_summaryField;
+        
+        private string info_sourceField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string title {
+        [System.Xml.Serialization.XmlElementAttribute("title")]
+        public title[] title {
             get {
                 return this.titleField;
             }
             set {
                 this.titleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute("title")]
+        public string title1 {
+            get {
+                return this.title1Field;
+            }
+            set {
+                this.title1Field = value;
             }
         }
         
@@ -171,23 +205,45 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
-        public string project {
+        public string project_source {
             get {
-                return this.projectField;
+                return this.project_sourceField;
             }
             set {
-                this.projectField = value;
+                this.project_sourceField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
-        public string license {
+        public string license_source {
             get {
-                return this.licenseField;
+                return this.license_sourceField;
             }
             set {
-                this.licenseField = value;
+                this.license_sourceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string license_summary {
+            get {
+                return this.license_summaryField;
+            }
+            set {
+                this.license_summaryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
+        public string info_source {
+            get {
+                return this.info_sourceField;
+            }
+            set {
+                this.info_sourceField = value;
             }
         }
     }
