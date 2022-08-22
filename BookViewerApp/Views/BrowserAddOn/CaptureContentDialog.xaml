@@ -39,12 +39,15 @@
                 </v:AcrylicButtonControl.Icon>
             </v:AcrylicButtonControl>
         </StackPanel>
-        <controls:ImageCropper Grid.Row="1" x:Name="cropper" HorizontalAlignment="Stretch" ThumbPlacement="All" Visibility="Collapsed" Width="500" Height="500"/>
+        <Grid Grid.Row="1" x:Name="cropperPanel" Visibility="Collapsed">
+            <controls:ImageCropper x:Name="cropper" HorizontalAlignment="Stretch" ThumbPlacement="All" Width="500" Height="500"/>
+            <v:AcrylicButtonControl Icon="Accept" HorizontalAlignment="Right" VerticalAlignment="Top" Click="{x:Bind AcceptCropper}" Margin="0"/>
+        </Grid>
         <!--<ScrollViewer  ZoomMode="Enabled"  HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
         </ScrollViewer>-->
         <Image x:Name="image" Grid.Row="1" />
         <!--<ScrollViewer ZoomMode="Enabled"  HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
         </ScrollViewer>-->
-        <v:InkAnnotationPage Visibility="Collapsed"  x:Name="inkAnnotation" Grid.Row="1"/>
+        <v:InkAnnotationPage Visibility="Collapsed"  x:Name="inkAnnotation" Grid.Row="1" Accepted="{x:Bind AcceptInkCanvs}"/>
     </Grid>
 </ContentDialog>

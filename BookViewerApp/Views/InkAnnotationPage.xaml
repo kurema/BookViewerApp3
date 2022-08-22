@@ -21,16 +21,22 @@
 
         <InkToolbar TargetInkCanvas="{x:Bind inkCanvas}" x:Name="inkToolBar" />
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1">
+            <ToggleButton Background="Transparent" CornerRadius="0" BorderThickness="0" IsChecked="{x:Bind TouchToDraw,Mode=TwoWay}">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE815;"/>
+            </ToggleButton>
             <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomOut" BorderThickness="0">
                 <SymbolIcon Symbol="ZoomOut" />
             </RepeatButton>
             <RepeatButton Background="Transparent" CornerRadius="0" Click="Button_Click_ZoomIn" BorderThickness="0">
                 <SymbolIcon Symbol="ZoomIn" />
             </RepeatButton>
+            <Button Background="Transparent" Click="Button_Click" BorderThickness="0" CornerRadius="0">
+                <SymbolIcon Symbol="Accept" />
+            </Button>
         </StackPanel>
         <ScrollViewer x:Name="inkScrollViewer" ZoomMode="Enabled" Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"  Grid.ColumnSpan="2" SizeChanged="inkScrollViewer_SizeChanged">
             <Grid  x:Name="inkParent">
-                <Image x:Name="inkCanvasBackground"/>
+                <Image x:Name="inkCanvasBackground" SizeChanged="inkCanvasBackground_SizeChanged"/>
                 <InkCanvas x:Name="inkCanvas" />
             </Grid>
         </ScrollViewer>

@@ -59,7 +59,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
                         double w = double.IsNaN(image.ActualWidth) ? inkAnnotation.ActualWidth : image.ActualWidth;
                         double h = double.IsNaN(image.ActualHeight) ? inkAnnotation.ActualHeight : image.ActualHeight;
 
-                        cropper.Visibility = Visibility.Visible;
+                        cropperPanel.Visibility = Visibility.Visible;
                         image.Visibility = Visibility.Collapsed;
                         inkAnnotation.Visibility = Visibility.Collapsed;
 
@@ -71,13 +71,13 @@ public sealed partial class CaptureContentDialog : ContentDialog
                     }
                     break;
                 case Modes.Ink:
-                    cropper.Visibility = Visibility.Collapsed;
+                    cropperPanel.Visibility = Visibility.Collapsed;
                     image.Visibility = Visibility.Collapsed;
                     inkAnnotation.Visibility = Visibility.Visible;
                     break;
                 default:
                 case Modes.Basic:
-                    cropper.Visibility = Visibility.Collapsed;
+                    cropperPanel.Visibility = Visibility.Collapsed;
                     image.Visibility = Visibility.Visible;
                     inkAnnotation.Visibility = Visibility.Collapsed;
                     break;
@@ -129,8 +129,6 @@ public sealed partial class CaptureContentDialog : ContentDialog
                 }
         }
     }
-
-
 
     public CaptureContentDialog()
     {
@@ -233,8 +231,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
         Mode = Mode switch
         {
             Modes.Crop => Modes.Basic,
-            Modes.Ink => Modes.Basic,
-            Modes.Basic or _ => Modes.Crop,
+            _ => Modes.Crop,
         };
     }
 
@@ -247,5 +244,28 @@ public sealed partial class CaptureContentDialog : ContentDialog
         };
     }
 
+    private async Task AcceptCropper()
+    {
+        try
+        {
+            var ms = new InMemoryRandomAccessStream();
+            await cropper.SaveAsync(ms, BitmapFileFormat.Png);
+            CurrentStream = ms;
+            Mode = Modes.Basic;
+        }
+        catch { }
+    }
 
+    private async void AcceptInkCanvs()
+    {
+        try
+        {
+            var ms = new InMemoryRandomAccessStream();
+            await (await inkAnnotation.GetCanvasRenderTarget()).SaveAsync(ms, CanvasBitmapFileFormat.Png);
+            inkAnnotation.Clear();
+            CurrentStream = ms;
+            Mode = Modes.Basic;
+        }
+        catch { }
+    }
 }

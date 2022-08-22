@@ -34,7 +34,7 @@ public static partial class UIHelper
             {
                 content.WebView2.CoreWebView2Initialized += (s, e) =>
                 {
-                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, async (a) =>
                     {
                         await tabPage.OpenTabWebPreferedBrowser(a);
                     }, t => SetTitle(sender, t));
@@ -70,7 +70,7 @@ public static partial class UIHelper
             {
                 content.WebView2.CoreWebView2Initialized += (s, e) =>
                 {
-                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                    OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, async (a) =>
                     {
                         await tabPage.OpenTabWebPreferedBrowser(a);
                     }, t => SetTitle(sender, t));
@@ -127,7 +127,7 @@ public static partial class UIHelper
 
             content.WebView2.CoreWebView2Initialized += (s, e) =>
             {
-                OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, async (a) =>
+                OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, async (a) =>
                 {
                     await tabPage.OpenTabWebPreferedBrowser(a);
                 }, t => SetTitle(sender, t));
@@ -548,7 +548,7 @@ public static partial class UIHelper
         private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.IBrowserControlViewModel viewModel)
         {
             if (viewModel is null) return;
-            var bookmark = LibraryStorage.GetItemBookmarks((_, _2) => { });
+            var bookmark = LibraryStorage.GetItemBookmarks((_, _) => { });
             viewModel.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", (bmNew) =>
             {
                 LibraryStorage.OperateBookmark(a =>
@@ -573,7 +573,7 @@ public static partial class UIHelper
 
         }
 
-        public static void OpenBrowser2_UpdateCoreEvents(Microsoft.Web.WebView2.Core.CoreWebView2 core, Action<string> OpenTabWeb, Action<string> UpdateTitle)
+        public static void OpenBrowser2_UpdateCoreStuffs(Microsoft.Web.WebView2.Core.CoreWebView2 core, Action<string> OpenTabWeb, Action<string> UpdateTitle)
         {
             core.NewWindowRequested += (s, e) =>
             {
@@ -586,6 +586,13 @@ public static partial class UIHelper
             };
             core.DownloadStarting += (s, e) =>
             {
+                e.Handled = false;
+            };
+            core.Profile.PreferredColorScheme = ThemeManager.AsElementTheme switch
+            {
+                ElementTheme.Light => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Light,
+                ElementTheme.Dark => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Dark,
+                ElementTheme.Default or _ => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Auto,
             };
         }
 
@@ -633,7 +640,7 @@ public static partial class UIHelper
                 content.WebView2.CoreWebView2Initialized += (s, e) =>
                 {
                     content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
-                    OpenBrowser2_UpdateCoreEvents(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
+                    OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
                     // Uncomment here to enable AdBlocker
 #if DEBUG
                     content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
@@ -689,7 +696,6 @@ public static partial class UIHelper
                   {
                       OpenTabBook?.Invoke(e);
                   };
-
 
                 {
                     content.AddOnSpace.Add(new Views.BrowserAddOn.CaptureControl()

@@ -39,11 +39,6 @@ public sealed partial class InkAnnotationPage : Page
             stream.Seek(0);
             await bmi.SetSourceAsync(stream);
             CurrentStream = stream;
-            inkParent.Width = bmi.PixelWidth;
-            inkParent.Height = bmi.PixelHeight;
-            float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / bmi.PixelWidth, inkScrollViewer.ViewportHeight / bmi.PixelHeight);
-            inkScrollViewer.ChangeView(null, null, factor, true);
-            inkScrollViewer.MinZoomFactor = factor;
         }
         catch { }
     }
@@ -61,12 +56,29 @@ public sealed partial class InkAnnotationPage : Page
         return target;
     }
 
+    public void Clear()
+    {
+        inkCanvas.InkPresenter.StrokeContainer.Clear();
+    }
+
     public InkAnnotationPage()
     {
         this.InitializeComponent();
 
         inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Touch | Windows.UI.Core.CoreInputDeviceTypes.Pen;
     }
+
+    private bool TouchToDraw
+    {
+        get => inkCanvas.InkPresenter.InputDeviceTypes.HasFlag(Windows.UI.Core.CoreInputDeviceTypes.Touch);
+        set
+        {
+            inkCanvas.InkPresenter.InputDeviceTypes = value ?
+            inkCanvas.InkPresenter.InputDeviceTypes | Windows.UI.Core.CoreInputDeviceTypes.Touch
+            : inkCanvas.InkPresenter.InputDeviceTypes & ~Windows.UI.Core.CoreInputDeviceTypes.Touch;
+        }
+    }
+
     private void Zoom(float x)
     {
         UIHelper.ChangeViewWithKeepCurrentCenter(inkScrollViewer, inkScrollViewer.ZoomFactor * x);
@@ -79,8 +91,26 @@ public sealed partial class InkAnnotationPage : Page
     private void inkScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         if (inkParent.Width == 0 || inkParent.Height == 0 || double.IsNaN(inkParent.Width) || double.IsNaN(inkParent.Height)) return;
-        float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / inkParent.Width, inkScrollViewer.ViewportHeight / inkParent.Height);
+        if (inkCanvasBackground.Source is not BitmapImage bmi) return;
+        float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / bmi.PixelWidth, inkScrollViewer.ViewportHeight / bmi.PixelHeight);
         if (double.IsNaN(factor)) return;
+        inkScrollViewer.MinZoomFactor = factor;
+    }
+
+    public event EventHandler Accepted;
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        Accepted?.Invoke(this, new EventArgs());
+    }
+
+    private void inkCanvasBackground_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        if (inkCanvasBackground.Source is not BitmapImage bmi) return;
+        inkParent.Width = bmi.PixelWidth;
+        inkParent.Height = bmi.PixelHeight;
+        float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / bmi.PixelWidth, inkScrollViewer.ViewportHeight / bmi.PixelHeight);
+        inkScrollViewer.ChangeView(null, null, factor, true);
         inkScrollViewer.MinZoomFactor = factor;
     }
 }
