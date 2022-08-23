@@ -11,6 +11,7 @@
     SizeChanged="Main_SizeChanged"
     
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    Loaded="SettingPage_Loaded"
     >
     <Page.Resources>
         <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>

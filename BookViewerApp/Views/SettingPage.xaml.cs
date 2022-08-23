@@ -27,7 +27,7 @@ namespace BookViewerApp.Views
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class SettingPage : Page
+    public sealed partial class SettingPage : Page, IThemeChangedListener
     {
         public SettingPage()
         {
@@ -42,8 +42,6 @@ namespace BookViewerApp.Views
             }
             //this.SettingPanel.ItemsSource = src;
             SettingPanel.SettingSource.Source = src.GroupBy(a => a.Group);
-
-            this.Loaded += SettingPage_Loaded;
         }
 
         private async void SettingPage_Loaded(object sender, RoutedEventArgs e)
@@ -71,12 +69,34 @@ namespace BookViewerApp.Views
                 Main_SizeChanged_General(this.ActualWidth);
             }
 
+            UpdateBackdropMaterial();
+        }
+
+        private void UpdateBackdropMaterial()
+        {
+            var tab = UIHelper.GetCurrentTabPage(this);
+            bool result = tab?.RootAppWindow is null && Managers.ThemeManager.IsMica;
+            if (this.Parent is not Frame f)
             {
-                var tab = UIHelper.GetCurrentTabPage(this);
-                if (tab?.RootAppWindow is null && Managers.ThemeManager.IsMica)
+
+                Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, result);
+            }
+            else
+            {
+                Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(f, result);
+                if (this.Background is AcrylicBrush acrylicBrush)
                 {
-                    //this.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
-                    Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+                    if (result)
+                    {
+                        acrylicBrush.Opacity = 0;
+                        //this.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
+                    }
+                    else
+                    {
+                        acrylicBrush.Opacity = 100;
+                        //this.Background = (Brush)Application.Current.Resources["SystemControlAcrylicWindowBrush"];
+                        //this.Background = (Brush)this.Resources["SystemControlAcrylicWindowBrush"];
+                    }
                 }
             }
         }
@@ -526,6 +546,8 @@ namespace BookViewerApp.Views
             }
 
         }
+
+        public void OnThemeChanged() => UpdateBackdropMaterial();
     }
 
     namespace TemplateSelectors

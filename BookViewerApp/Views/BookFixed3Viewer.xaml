@@ -15,6 +15,7 @@
     
     SizeChanged="Page_SizeChanged"
     KeyDown="Page_KeyDown"
+    Loaded="Page_Loaded"
     >
     <Page.DataContext>
         <BookFixed2ViewModel:BookViewModel/>

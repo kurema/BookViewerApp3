@@ -78,6 +78,10 @@ public sealed partial class TabPage : Page
                         ElementTheme.Default or _ => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Auto,
                     };
                 }
+                if(f.Content is IThemeChangedListener listener)
+                {
+                    listener?.OnThemeChanged();
+                }
             }
         }
     }

@@ -385,6 +385,7 @@
     <Compile Include="Views\InkAnnotationPage.xaml.cs">
       <DependentUpon>InkAnnotationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IThemeChangedListener.cs" />
     <Compile Include="Views\LibraryManagerControl.xaml.cs">
       <DependentUpon>LibraryManagerControl.xaml</DependentUpon>
     </Compile>

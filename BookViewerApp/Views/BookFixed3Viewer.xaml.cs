@@ -35,7 +35,7 @@ namespace BookViewerApp.Views;
 /// <summary>
 /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
 /// </summary>
-public sealed partial class BookFixed3Viewer : Page
+public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 {
     private BookViewModel Binding => (BookViewModel)this.DataContext;
 
@@ -64,12 +64,6 @@ public sealed partial class BookFixed3Viewer : Page
             }
         };
 
-        {
-            UpdateBackground();
-            var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
-            if (theme is not null) theme.ValueChanged += Theme_ValueChanged;
-        }
-
         flipView.UseTouchAnimationsForAllNavigation = (bool)SettingStorage.GetValue("ScrollAnimation");
 
         if (Binding != null)
@@ -92,28 +86,18 @@ public sealed partial class BookFixed3Viewer : Page
         };
     }
 
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-    {
-        {
-            var theme = SettingInstances.FirstOrDefault(a => a.Key == SettingKeys.Theme);
-            if (theme is not null) theme.ValueChanged -= Theme_ValueChanged;
-        }
-
-        base.OnNavigatingFrom(e);
-    }
-
-    private void Theme_ValueChanged(object sender, EventArgs e)
-    {
-        UpdateBackground();
-    }
-
     private void UpdateBackground()
     {
         var brSet = (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
         if (ThemeManager.IsMica)
         {
-            //this.Background = new SolidColorBrush(Colors.Transparent);
-            Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+
+            if (this.Parent is not Frame f) Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+            else
+            {
+                Background = new SolidColorBrush(Colors.Transparent);
+                Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(f, true);
+            }
 
             //BackdropMaterial does not work on AppWindow.
             this.Loaded += (s, e) =>
@@ -775,5 +759,15 @@ public sealed partial class BookFixed3Viewer : Page
             catch { }
             e.Handled = true;
         }
+    }
+
+    private void Page_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateBackground();
+    }
+
+    public void OnThemeChanged()
+    {
+        UpdateBackground();
     }
 }
