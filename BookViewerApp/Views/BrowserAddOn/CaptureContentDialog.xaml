@@ -24,21 +24,25 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <v:AcrylicButtonControl Icon="Copy" Margin="0" Click="{x:Bind Copy}"/>
-            <v:AcrylicButtonControl Icon="Save" Margin="0" Click="{x:Bind Save}"/>
-            <v:AcrylicButtonControl Icon="Refresh" Margin="0" Click="{x:Bind Refresh}"/>
-            <v:AcrylicButtonControl Margin="0" Click="{x:Bind ToggleCropper}">
-                <v:AcrylicButtonControl.Icon>
+        <CommandBar HorizontalAlignment="Left" >
+            <AppBarButton Icon="Copy" Click="{x:Bind Copy}" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter=Word.Copy}" />
+            <AppBarButton Icon="Save" Click="{x:Bind Save}" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter=Word.Save}"/>
+            <AppBarButton Icon="AllApps" Click="{x:Bind SelectApp}" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter=FileExplorerControl.ContextMenu.OpenWith.Choose}"/>
+            <AppBarSeparator />
+            <AppBarButton Icon="Refresh" Click="{x:Bind Refresh}" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter=Word.Refresh}"/>
+            <AppBarSeparator />
+            <AppBarButton Click="{x:Bind ToggleCropper}" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter=Extension.Capture.AppBar.Crop}">
+                <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF407;"/>
-                </v:AcrylicButtonControl.Icon>
-            </v:AcrylicButtonControl>
-            <v:AcrylicButtonControl Margin="0"  Click="{x:Bind ToggleInkCanvas}">
-                <v:AcrylicButtonControl.Icon>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Margin="0"  Click="{x:Bind ToggleInkCanvas}" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter=Extension.Capture.AppBar.Draw}">
+                <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC87;"/>
-                </v:AcrylicButtonControl.Icon>
-            </v:AcrylicButtonControl>
-        </StackPanel>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+
         <Grid Grid.Row="1" x:Name="cropperPanel" Visibility="Collapsed">
             <controls:ImageCropper x:Name="cropper" HorizontalAlignment="Stretch" ThumbPlacement="All" Width="500" Height="500"/>
             <v:AcrylicButtonControl Icon="Accept" HorizontalAlignment="Right" VerticalAlignment="Top" Click="{x:Bind AcceptCropper}" Margin="0"/>

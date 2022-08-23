@@ -734,4 +734,22 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Extension.AdBlocker.Info.Header" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>Risparmiare</value>
+  </data>
+  <data name="Word.Share" xml:space="preserve">
+    <value>Condividi</value>
+  </data>
+  <data name="Word.Copy" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="Word.Refresh" xml:space="preserve">
+    <value>Ricarica</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
+    <value>Disegno</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
+    <value>Ritagliare</value>
+  </data>
 </root>

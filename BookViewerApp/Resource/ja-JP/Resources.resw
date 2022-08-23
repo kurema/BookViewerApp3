@@ -738,4 +738,22 @@
   <data name="Extension.AdBlocker.TrustedSites.Header" xml:space="preserve">
     <value>信頼するサイト</value>
   </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Word.Share" xml:space="preserve">
+    <value>シェア</value>
+  </data>
+  <data name="Word.Copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="Word.Refresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
+    <value>インク</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
+    <value>トリミング</value>
+  </data>
 </root>

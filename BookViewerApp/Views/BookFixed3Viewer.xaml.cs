@@ -112,7 +112,7 @@ public sealed partial class BookFixed3Viewer : Page
         var brSet = (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
         if (ThemeManager.IsMica)
         {
-            this.Background = new SolidColorBrush(Colors.Transparent);
+            //this.Background = new SolidColorBrush(Colors.Transparent);
             Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
 
             //BackdropMaterial does not work on AppWindow.
@@ -135,6 +135,7 @@ public sealed partial class BookFixed3Viewer : Page
 
     private void SetDefaultBackground(double? brightness = null)
     {
+        Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, false);
         var brSet = brightness ?? (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
         var br = (byte)((ThemeManager.IsDarkTheme ? 100 - brSet : brSet) / 100.0 * 255.0);
         var color = new Color() { A = 255, B = br, G = br, R = br };

@@ -864,4 +864,22 @@ Right click to configure</value>
   <data name="Extension.AdBlocker.Info.Header" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Word.Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="Word.Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Word.Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
+    <value>Trim</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
+    <value>Draw</value>
+  </data>
 </root>

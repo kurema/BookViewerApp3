@@ -110,7 +110,7 @@ public sealed partial class InkAnnotationPage : Page
         inkParent.Width = bmi.PixelWidth;
         inkParent.Height = bmi.PixelHeight;
         float factor = (float)Math.Min(inkScrollViewer.ViewportWidth / bmi.PixelWidth, inkScrollViewer.ViewportHeight / bmi.PixelHeight);
-        inkScrollViewer.ChangeView(null, null, factor, true);
         inkScrollViewer.MinZoomFactor = factor;
+        inkScrollViewer.ChangeView(null, null, factor, true);
     }
 }

@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Imaging;
 using Windows.Graphics.Printing3D;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -63,7 +64,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
                         image.Visibility = Visibility.Collapsed;
                         inkAnnotation.Visibility = Visibility.Collapsed;
 
-                        if(!double.IsNaN(w) && !double.IsNaN(h))
+                        if (!double.IsNaN(w) && !double.IsNaN(h))
                         {
                             cropper.Width = w;
                             cropper.Height = h;
@@ -164,31 +165,37 @@ public sealed partial class CaptureContentDialog : ContentDialog
             picker.SuggestedFileName = ResourceManager.Loader.GetString("Browser/Addon/Screenshot/Filename");
             var file = await picker.PickSaveFileAsync();
             if (file is null) return;
-            using var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
-            CurrentStream.Seek(0);
-            switch (Mode)
-            {
-                case Modes.Basic:
-                    var format = ImageManager.GetBitmapEncoderGuidFromExtension(Path.GetExtension(file.Path)) ?? BitmapEncoder.PngEncoderId;
-                    if (format == BitmapEncoder.PngEncoderId) await RandomAccessStream.CopyAsync(CurrentStream, stream);
-                    else
-                    {
-                        var decoder = await BitmapDecoder.CreateAsync(CurrentStream);
-                        using var softwareBmp = await decoder.GetSoftwareBitmapAsync();
-                        var encoder = await BitmapEncoder.CreateAsync(format, stream);
-                        encoder.SetSoftwareBitmap(softwareBmp);
-                        await encoder.FlushAsync();
-                    }
-                    break;
-                case Modes.Crop:
-                    await cropper.SaveAsync(stream, ImageManager.GetBitmapFileFormatFromExtension(Path.GetExtension(file.Path)) ?? BitmapFileFormat.Png);
-                    break;
-                case Modes.Ink:
-                    await (await inkAnnotation.GetCanvasRenderTarget()).SaveAsync(stream, ImageManager.GetCanvasBitmapFileFormatFromExtension(Path.GetExtension(file.Path)) ?? CanvasBitmapFileFormat.Png);
-                    break;
-            }
+            using var stream = await file.OpenAsync(FileAccessMode.ReadWrite);
+            await SaveToStream(stream, file.Path);
         }
         catch { }
+    }
+
+    public async Task SaveToStream(IRandomAccessStream stream, string path = "screenshot.png")
+    {
+        CurrentStream.Seek(0);
+        switch (Mode)
+        {
+            case Modes.Basic:
+                var format = ImageManager.GetBitmapEncoderGuidFromExtension(Path.GetExtension(path)) ?? BitmapEncoder.PngEncoderId;
+                if (format == BitmapEncoder.PngEncoderId) await RandomAccessStream.CopyAsync(CurrentStream, stream);
+                else
+                {
+                    var decoder = await BitmapDecoder.CreateAsync(CurrentStream);
+                    using var softwareBmp = await decoder.GetSoftwareBitmapAsync();
+                    var encoder = await BitmapEncoder.CreateAsync(format, stream);
+                    encoder.SetSoftwareBitmap(softwareBmp);
+                    await encoder.FlushAsync();
+                }
+                break;
+            case Modes.Crop:
+                await cropper.SaveAsync(stream, ImageManager.GetBitmapFileFormatFromExtension(Path.GetExtension(path)) ?? BitmapFileFormat.Png);
+                break;
+            case Modes.Ink:
+                await (await inkAnnotation.GetCanvasRenderTarget()).SaveAsync(stream, ImageManager.GetCanvasBitmapFileFormatFromExtension(Path.GetExtension(path)) ?? CanvasBitmapFileFormat.Png);
+                break;
+        }
+        await stream.FlushAsync();
     }
 
     public async Task Copy()
@@ -267,5 +274,22 @@ public sealed partial class CaptureContentDialog : ContentDialog
             Mode = Modes.Basic;
         }
         catch { }
+    }
+
+    public async Task SelectApp()
+    {
+        try
+        {
+            var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Screenshots", CreationCollisionOption.OpenIfExists);
+            var file = await folder.CreateFileAsync("screenshot.png", CreationCollisionOption.GenerateUniqueName);
+            using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                await SaveToStream(stream, file.Path);
+            }
+            await Windows.System.Launcher.LaunchFileAsync(file, new Windows.System.LauncherOptions() { DisplayApplicationPicker = true });
+        }
+        catch
+        {
+        }
     }
 }

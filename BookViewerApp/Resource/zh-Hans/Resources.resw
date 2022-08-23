@@ -734,4 +734,22 @@
   <data name="Extension.AdBlocker.Info.Header" xml:space="preserve">
     <value>信息</value>
   </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>拯救</value>
+  </data>
+  <data name="Word.Share" xml:space="preserve">
+    <value>分享</value>
+  </data>
+  <data name="Word.Copy" xml:space="preserve">
+    <value>拷贝</value>
+  </data>
+  <data name="Word.Refresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
+    <value>画</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
+    <value>修剪</value>
+  </data>
 </root>

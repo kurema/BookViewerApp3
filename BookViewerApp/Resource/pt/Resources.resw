@@ -732,4 +732,22 @@ Clique direito para configurar</value>
   <data name="Extension.AdBlocker.Info.Header" xml:space="preserve">
     <value>Informação</value>
   </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Word.Share" xml:space="preserve">
+    <value>Partilhar</value>
+  </data>
+  <data name="Word.Copy" xml:space="preserve">
+    <value>Cópia</value>
+  </data>
+  <data name="Word.Refresh" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
+    <value>Desenho</value>
+  </data>
+  <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
+    <value>Aparar</value>
+  </data>
 </root>

@@ -54,7 +54,7 @@ public sealed partial class TabPage : Page
         }
     }
 
-    private void Theme_ValueChanged(object sender, EventArgs e)
+    private async void Theme_ValueChanged(object sender, EventArgs e)
     {
         var theme = ThemeManager.AsElementTheme;
         this.RequestedTheme = theme;
@@ -65,6 +65,19 @@ public sealed partial class TabPage : Page
             if (itemTvi.Content is FrameworkElement content)
             {
                 content.RequestedTheme = theme;
+            }
+            if (itemTvi.Content is Frame f)
+            {
+                if (f.Content is kurema.BrowserControl.Views.BrowserControl2 contentWb2)
+                {
+                    await contentWb2.WebView2.EnsureCoreWebView2Async();
+                    contentWb2.WebView2.CoreWebView2.Profile.PreferredColorScheme = ThemeManager.AsElementTheme switch
+                    {
+                        ElementTheme.Light => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Light,
+                        ElementTheme.Dark => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Dark,
+                        ElementTheme.Default or _ => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Auto,
+                    };
+                }
             }
         }
     }
