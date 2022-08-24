@@ -814,7 +814,7 @@ Right click to configure</value>
   <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
     <value>User-Agent override (WebView2)</value>
   </data>
-  <data name="Setting_Theme.Description" xml:space="preserve">
+  <data name="Setting_Theme.DescriptionOld" xml:space="preserve">
     <value>The theme of the App. If you don't like Mica background on Windows 11, pick Acrylic.</value>
   </data>
   <data name="Setting_Theme.Title" xml:space="preserve">
@@ -881,5 +881,8 @@ Right click to configure</value>
   </data>
   <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
     <value>Draw</value>
+  </data>
+  <data name="Setting_Theme.Description" xml:space="preserve">
+    <value>The theme of the App.</value>
   </data>
 </root>

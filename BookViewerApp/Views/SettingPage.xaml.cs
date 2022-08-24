@@ -84,19 +84,22 @@ namespace BookViewerApp.Views
             else
             {
                 Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(f, result);
-                if (this.Background is AcrylicBrush acrylicBrush)
+                if (result)
                 {
-                    if (result)
+                    this.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
+                }
+                else
+                {
+                    bool isDark = Managers.ThemeManager.IsDarkTheme;
+                    var SystemChromeAltMediumHighColor = isDark ? new Windows.UI.Color() { A = 0xCC, R = 0x1F, G = 0x1F, B = 0x1F } : new Windows.UI.Color() { A = 0xCC, R = 0xFF, G = 0xFF, B = 0xFF };
+                    var SystemChromeAltHighColor = isDark ? new Windows.UI.Color() { A = 0xFF, R = 0x1C, G = 0x1C, B = 0x1C } : Windows.UI.Colors.White;
+                    this.Background = new AcrylicBrush()
                     {
-                        acrylicBrush.Opacity = 0;
-                        //this.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
-                    }
-                    else
-                    {
-                        acrylicBrush.Opacity = 100;
-                        //this.Background = (Brush)Application.Current.Resources["SystemControlAcrylicWindowBrush"];
-                        //this.Background = (Brush)this.Resources["SystemControlAcrylicWindowBrush"];
-                    }
+                        BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
+                        TintColor = SystemChromeAltHighColor,
+                        TintOpacity = 0.8,
+                        FallbackColor = SystemChromeAltMediumHighColor
+                    };
                 }
             }
         }

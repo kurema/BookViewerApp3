@@ -58,6 +58,7 @@ public sealed partial class TabPage : Page
     {
         var theme = ThemeManager.AsElementTheme;
         this.RequestedTheme = theme;
+        //BackdropMaterial.SetApplyToRootOrPageBackground(this, ThemeManager.IsMica);
         foreach (var item in Control.TabItems)
         {
             if (item is not TabViewItem itemTvi) continue;

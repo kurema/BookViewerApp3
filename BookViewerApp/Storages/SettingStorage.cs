@@ -69,7 +69,7 @@ public class SettingStorage
             return _SettingInstances ??= new SettingInstance[]
                 {
                         new SettingInstance(SettingKeys.DefaultSpreadType,Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
-                        new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.Auto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
+                        new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.AcrylicAuto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
                         new SettingInstance(SettingKeys.DefaultFullScreen,false,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance(SettingKeys.SaveLastReadPage,true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         new SettingInstance(SettingKeys.DefaultPageReverse,false,new TypeConverters.BoolConverter(),group:"Viewer"),
@@ -148,7 +148,8 @@ public class SettingStorage
 
         public enum Theme
         {
-            Auto, Light, Dark, AcrylicAuto, AcrylicLight, AcrylicDark,
+            //Auto, Light, Dark,
+            AcrylicAuto, AcrylicLight, AcrylicDark,
         }
     }
 

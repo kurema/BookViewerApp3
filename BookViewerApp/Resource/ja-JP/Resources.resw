@@ -693,7 +693,7 @@
   <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
     <value>User-Agent (WebView2)</value>
   </data>
-  <data name="Setting_Theme.Description" xml:space="preserve">
+  <data name="Setting_Theme.DescriptionOld" xml:space="preserve">
     <value>アプリのテーマ。Windows 11でMica背景にしない場合、アクリル系を選んでください。</value>
   </data>
   <data name="Setting_Theme.Title" xml:space="preserve">
@@ -755,5 +755,8 @@
   </data>
   <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
     <value>トリミング</value>
+  </data>
+  <data name="Setting_Theme.Description" xml:space="preserve">
+    <value>アプリのテーマ。</value>
   </data>
 </root>
