@@ -327,6 +327,9 @@ public class SettingStorage
 
         public class EnumConverter<T> : ITypeConverter where T : Enum
         {
+            private Array enumValuesCache = null;
+            private Type typeCache = null;
+
             public Type GetConvertType()
             {
                 return typeof(T);
@@ -339,10 +342,11 @@ public class SettingStorage
 
             public bool TryGetTypeGeneral(string value, out object result)
             {
-                var values = typeof(T).GetEnumValues();
+                typeCache ??= typeof(T);
+                var values = enumValuesCache ??= typeCache.GetEnumValues();
                 foreach (var t in values)
                 {
-                    var name = Enum.GetName(typeof(T), t);
+                    var name = Enum.GetName(typeCache, t);
                     if (name == value)
                     {
                         result = (T)t;

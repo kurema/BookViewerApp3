@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -24,5 +25,10 @@ public sealed partial class AdBlockerSetting : Page
     public AdBlockerSetting()
     {
         this.InitializeComponent();
+
+        if (DataContext is ViewModels.AdBlockerSettingViewModel vm)
+        {
+            Task.Run(async () => await vm.LoadFilterList());
+        }
     }
 }

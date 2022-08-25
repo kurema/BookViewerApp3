@@ -24,6 +24,7 @@ public class AdBlockerSettingViewModel : Helper.ViewModelBase
         var filter = await Managers.ExtensionAdBlockerManager.LocalLists.GetContentAsync();
         //ToDo: Update IsEnabled
         FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a)) ?? new AdBlockerSettingFilterGroupViewModel[0]);
+        OnPropertyChanged(nameof(FilterList));
      }
 }
 

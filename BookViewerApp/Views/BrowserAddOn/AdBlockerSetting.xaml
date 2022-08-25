@@ -6,18 +6,41 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     
-     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
+    xmlns:vm="using:BookViewerApp.ViewModels"
     >
-    <UserControl.Resources>
+    <Page.DataContext>
+        <vm:AdBlockerSettingViewModel />
+    </Page.DataContext>
+    <Page.Resources>
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
-    </UserControl.Resources>
+        <CollectionViewSource x:Name="FiltersSource" Source="{Binding FilterList}" IsSourceGrouped="True" />
+    </Page.Resources>
     <Pivot>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">
             <TextBlock Text="Hello"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Header'}">
+            <ListView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource FiltersSource}}" >
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}" FontWeight="Bold" />
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Title}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
         </PivotItem>
