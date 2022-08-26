@@ -26,9 +26,16 @@ public sealed partial class AdBlockerSetting : Page
     {
         this.InitializeComponent();
 
+        //https://docs.microsoft.com/en-us/archive/msdn-magazine/2014/april/mvvm-multithreading-and-dispatching-in-mvvm-applications
+        //You can not Task.Run() here.
+        LoadFilters();
+    }
+
+    public async void LoadFilters()
+    {
         if (DataContext is ViewModels.AdBlockerSettingViewModel vm)
         {
-            Task.Run(async () => await vm.LoadFilterList());
+            await vm.LoadFilterList();
         }
     }
 }

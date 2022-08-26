@@ -25,7 +25,7 @@ public class AdBlockerSettingViewModel : Helper.ViewModelBase
         //ToDo: Update IsEnabled
         FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a)) ?? new AdBlockerSettingFilterGroupViewModel[0]);
         OnPropertyChanged(nameof(FilterList));
-     }
+    }
 }
 
 public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlockerSettingFilterViewModel>

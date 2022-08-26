@@ -23,7 +23,7 @@
             <TextBlock Text="Hello"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Header'}">
-            <ListView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource FiltersSource}}" >
+            <ListView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource FiltersSource}}" SelectionMode="None">
                 <ListView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
@@ -35,8 +35,10 @@
                 </ListView.GroupStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Title}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding IsEnabled}" >
+                                <TextBlock Text="{Binding Title}"/>
+                            </CheckBox>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
