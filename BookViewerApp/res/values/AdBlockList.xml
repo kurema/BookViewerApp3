@@ -14,4 +14,22 @@
 			  license_summary="GNU General Public License v3.0"
 			  source="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt" title="uBlock filters"/>
 	</group>
+	<group>
+		<title language="en" default="true">Versatile</title>
+		<title language="ja">多目的</title>
+		<item filename="peterlowe.blocklist.txt"
+			  title="Peter Lowe’s Ad and tracking server list"
+			  source="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblock&amp;showintro=1&amp;mimetype=plaintext"
+			  project_source="https://pgl.yoyo.org/adservers/"
+			  />
+	</group>
+	<group>
+		<title language="en" default="true">Privacy</title>
+		<title language="ja">プライバシー</title>
+		<item filename="easyprivacy.txt"
+			  project_source="https://easylist.to/"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://easylist.to/easylist/easyprivacy.txt" title="EasyPrivacy"/>
+	</group>
 </items>

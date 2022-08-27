@@ -1,4 +1,5 @@
-﻿using BookViewerApp.Storages.ExtensionAdBlockerItems;
+﻿using BookViewerApp.Helper;
+using BookViewerApp.Storages.ExtensionAdBlockerItems;
 using kurema.FileExplorerControl.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,82 @@ using System.Windows.Input;
 
 #nullable enable
 namespace BookViewerApp.ViewModels;
-public class AdBlockerSettingViewModel : Helper.ViewModelBase
+public class AdBlockerSettingViewModel : ViewModelBase
 {
     public AdBlockerSettingViewModel()
     {
+        RefreshCommand = new DelegateCommand(async _ => await RefreshSelectedAsync(), _ =>
+        {
+            if (RefreshAll) return true;
+            foreach (var g in this.FilterList)
+            {
+                foreach (var i in g)
+                {
+                    if (i.IsRefreshRequested && i.IsEnabled) return true;
+                }
+            }
+            return false;
+        });
     }
 
     public ObservableCollection<AdBlockerSettingFilterGroupViewModel> FilterList { get; private set; } = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>();
+
+    public async Task<bool> RefreshSelectedAsync()
+    {
+        bool success = true;
+        foreach (var g in FilterList)
+        {
+            foreach (var i in g)
+            {
+                if (i.IsEnabled && (i.IsRefreshRequested || RefreshAll))
+                {
+                    bool successLocal = await Managers.ExtensionAdBlockerManager.TryDownloadList(i.GetContent());
+                    if (successLocal)
+                    {
+                        i.IsRefreshRequested = false;
+                    }
+                    success &= successLocal;
+                }
+            }
+        }
+        if (success) RefreshAll = false;
+        await Managers.ExtensionAdBlockerManager.LoadRulesFromText();
+        return success;
+    }
 
     public async Task LoadFilterList()
     {
         var filter = await Managers.ExtensionAdBlockerManager.LocalLists.GetContentAsync();
         //ToDo: Update IsEnabled
-        FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a)) ?? new AdBlockerSettingFilterGroupViewModel[0]);
+        FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a) { Parent = this }) ?? new AdBlockerSettingFilterGroupViewModel[0]);
+        foreach (var g in FilterList)
+        {
+            foreach (var i in g)
+            {
+                var c = i.GetContent();
+                var b = await Managers.ExtensionAdBlockerManager.IsItemLoaded(c);
+                i.IsLoaded = b;
+                i.IsEnabled = b;
+            }
+        }
         OnPropertyChanged(nameof(FilterList));
+    }
+
+
+    private bool _RefreshAll = false;
+    public bool RefreshAll
+    {
+        get => _RefreshAll; set
+        {
+            SetProperty(ref _RefreshAll, value);
+            CheckRefreshCommandCanExecuteChange();
+        }
+    }
+
+    public DelegateCommand RefreshCommand { get; }
+    public void CheckRefreshCommandCanExecuteChange()
+    {
+        RefreshCommand?.OnCanExecuteChanged();
     }
 }
 
@@ -73,6 +136,7 @@ public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlock
 
     public AdBlockerSettingFilterGroupViewModel(itemsGroup content) : base(content.item.Select(a => new AdBlockerSettingFilterViewModel(a)))
     {
+        foreach (var item in this) item.Parent = this;
         this.content = content ?? throw new ArgumentNullException(nameof(content));
     }
 
@@ -84,6 +148,18 @@ public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlock
             return content;
         }
     }
+
+
+    private AdBlockerSettingViewModel? _Parent;
+    public AdBlockerSettingViewModel? Parent
+    {
+        get => _Parent; set
+        {
+            _Parent = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Parent)));
+        }
+    }
+
 }
 
 public class AdBlockerSettingFilterViewModel : BaseViewModel
@@ -93,7 +169,7 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
     public AdBlockerSettingFilterViewModel(itemsGroupItem content)
     {
         this.content = content ?? throw new ArgumentNullException(nameof(content));
-        ReloadCommang = new Helper.DelegateCommand(async _ =>
+        ReloadSingleCommang = new Helper.DelegateCommand(async _ =>
         {
             await Managers.ExtensionAdBlockerManager.TryDownloadList(content);
             await Managers.ExtensionAdBlockerManager.LoadRulesFromText();
@@ -102,10 +178,35 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
 
     public itemsGroupItem GetContent() => content;
 
-    public ICommand ReloadCommang { get; }
+    public ICommand ReloadSingleCommang { get; }
 
     private bool _IsEnabled;
-    public bool IsEnabled { get => _IsEnabled; set => SetProperty(ref _IsEnabled, value); }
+    public bool IsEnabled
+    {
+        get => _IsEnabled; set
+        {
+            SetProperty(ref _IsEnabled, value);
+            Parent?.Parent?.CheckRefreshCommandCanExecuteChange();
+        }
+    }
+
+    private bool _IsRefreshRequested;
+    public bool IsRefreshRequested
+    {
+        get => _IsRefreshRequested; set
+        {
+            SetProperty(ref _IsRefreshRequested, value);
+            Parent?.Parent?.CheckRefreshCommandCanExecuteChange();
+        }
+    }
+
+
+    private bool _IsLoaded;
+    public bool IsLoaded { get => _IsLoaded; set => SetProperty(ref _IsLoaded, value); }
+
+
+    private AdBlockerSettingFilterGroupViewModel? _Parent;
+    public AdBlockerSettingFilterGroupViewModel? Parent { get => _Parent; set => SetProperty(ref _Parent, value); }
 
 
     public string Title

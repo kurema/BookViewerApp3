@@ -21,11 +21,12 @@ public static class ExtensionAdBlockerManager
     //If users download manually, I think it's safe.
     public static StorageContent<Storages.ExtensionAdBlockerItems.items> LocalLists = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/AdBlockList.xml", () => new());
 
-    private async static Task<StorageFolder> GetDataFolderCache() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocalCache().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
-    private async static Task<StorageFolder> GetDataFolderLocal() => _DataDolder ??= await Helper.Functions.GetSaveFolderLocal().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
+    private async static Task<StorageFolder> GetDataFolderCache() => _DataFolderCache ??= await Helper.Functions.GetSaveFolderLocalCache().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
+    private async static Task<StorageFolder> GetDataFolderLocal() => _DataFolderLocal ??= await Helper.Functions.GetSaveFolderLocal().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
 
 
-    private static StorageFolder? _DataDolder;
+    private static StorageFolder? _DataFolderCache;
+    private static StorageFolder? _DataFolderLocal;
 
     public const string FileNameWhiteList = "whitelist.txt";
     public const string FileNameUser = "user.txt";
@@ -52,7 +53,17 @@ public static class ExtensionAdBlockerManager
         if (DomainsWhitelist.BinarySearch(domain.ToUpperInvariant()) >= 0) return;
         var headers = new System.Collections.Specialized.NameValueCollection();
         foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
-        if (!IsBlocked(uriReq, domain, headers)) return;
+
+        switch (args.ResourceContext)
+        {
+            case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
+                headers.Add("X-Requested-With", "XmlHttpRequest");
+                break;
+            case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
+                headers.Add("Content-Type", "script");
+                break;
+        }
+        if (!IsBlocked(uriReq, uriReq.Host, headers)) return;
         args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
     }
 
@@ -72,6 +83,14 @@ public static class ExtensionAdBlockerManager
         return false;
     }
 
+    public static void ResetCache()
+    {
+        FiltersCacheGlobal = null;
+        FiltersWhitelistCacheGlobal = null;
+        FiltersCache.Clear();
+        FiltersWhitelistCache.Clear();
+    }
+
     public static DistillNET.UrlFilter[] LoadFilters(string domain) => LoadFiltersCommon(domain, FiltersCache, (domain) => Filter?.GetFiltersForDomain(domain));
     public static DistillNET.UrlFilter[] LoadWhitelistFilters(string domain) => LoadFiltersCommon(domain, FiltersWhitelistCache, (domain) => Filter?.GetWhitelistFiltersForDomain(domain));
     private static DistillNET.UrlFilter[] LoadFiltersCommon(string domain, Dictionary<string, (DateTime, DistillNET.UrlFilter[])> cache, Func<string, IEnumerable<DistillNET.UrlFilter>?> getFiltersForDomain)
@@ -86,7 +105,7 @@ public static class ExtensionAdBlockerManager
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRules()
     {
-        return await LoadRulesFromDb() ?? await LoadRulesFromText();
+        return await LoadRulesFromDb() ?? (await LoadRulesFromText()).result;
     }
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRulesFromDb()
@@ -103,10 +122,26 @@ public static class ExtensionAdBlockerManager
         }
     }
 
-    public static async Task<DistillNET.FilterDbCollection?> LoadRulesFromText()
+    public static async Task<(DistillNET.FilterDbCollection? result, bool success)> LoadRulesFromText()
     {
+        bool success = true;
         var folder = await GetDataFolderCache();
-        var collection = new DistillNET.FilterDbCollection(Path.Combine(folder.Path, FileNameDb), true, false);
+        Filter?.Dispose();
+        Filter = null;
+        for (int i = 0; i < 2; i++)
+        {
+            try
+            {
+                Filter = new DistillNET.FilterDbCollection(Path.Combine(folder.Path, FileNameDb), true, false);
+                break;
+            }
+            catch
+            {
+                Filter = null;
+                await Task.Delay(1000);
+            }
+        }
+        if (Filter is null) return (null, false);
         foreach (var file in await folder.GetFilesAsync())
         {
             if (Path.GetFileName(file.Path) is FileNameWhiteList or FileNameUser or FileNameDb) continue;
@@ -116,15 +151,16 @@ public static class ExtensionAdBlockerManager
                 var stream = await file.OpenReadAsync();
                 if (stream is null) continue;
                 using var streamNative = stream.AsStream();
-                var result = collection.ParseStoreRulesFromStream(streamNative, 1);
+                var result = Filter.ParseStoreRulesFromStream(streamNative, 1);
             }
             catch
             {
+                success = false;
             }
         }
-        collection.FinalizeForRead();
-        Filter = collection;
-        return collection;
+        Filter.FinalizeForRead();
+        ResetCache();
+        return (Filter, success);
     }
 
     public static async Task RemoveRuleFile(string filename)
@@ -166,5 +202,11 @@ public static class ExtensionAdBlockerManager
         {
             return false;
         }
+    }
+
+    public static async Task<bool> IsItemLoaded(Storages.ExtensionAdBlockerItems.itemsGroupItem item)
+    {
+        var cache = await GetDataFolderCache();
+        return await cache.FileExistsAsync(item.filename);
     }
 }
