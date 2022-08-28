@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Sources;
@@ -59,33 +60,6 @@ public static class ExtensionAdBlockerManager
         if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
         var domain = uri.Host.ToUpperInvariant();
         if (DomainsWhitelist.BinarySearch(domain) >= 0) return;
-        //YouTube specific ad blocking.
-        if (args.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase) && args.Request.Content is null &&
-            (uriReq.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase)
-            || uriReq.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase)
-            || uriReq.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase))
-            && (uriReq.LocalPath.Equals("/watch", StringComparison.InvariantCultureIgnoreCase)
-            || uriReq.LocalPath.StartsWith("/shorts/", StringComparison.InvariantCultureIgnoreCase)
-            || uriReq.LocalPath.Equals("/live", StringComparison.InvariantCultureIgnoreCase)))
-        {
-            var d = args.GetDeferral();
-            var client = CommonHttpClient;
-            var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
-            message.Headers.Clear();
-            foreach (var item in args.Request.Headers) message.Headers.Add(item.Key, item.Value);
-            var response = await client.SendRequestAsync(message);
-            var input = await response.Content.ReadAsStringAsync();
-            Regex.Replace(input, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});var meta", (a) =>
-            {
-                var json= System.Text.Json.JsonDocument.Parse(a.Captures[1].Value);
-                return a.Value;
-            });
-            var ms = new InMemoryRandomAccessStream();
-            var dw = new DataWriter(ms);
-            dw.WriteString(input);
-            args.Response = sender.Environment.CreateWebResourceResponse(ms, (int)response.StatusCode, response.ReasonPhrase, response.Headers.ToString());
-            d.Complete();
-        }
         var headers = new System.Collections.Specialized.NameValueCollection();
         foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
         switch (args.ResourceContext)
@@ -97,7 +71,11 @@ public static class ExtensionAdBlockerManager
                 headers.Add("Content-Type", "script");
                 break;
         }
-        if (!IsBlocked(uriReq, uriReq.Host, headers)) return;
+        if (!IsBlocked(uriReq, uriReq.Host, headers))
+        {
+            await YouTube.WebView2WebResourceRequested(sender, args);
+            return;
+        }
         args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
     }
 
@@ -257,5 +235,147 @@ public static class ExtensionAdBlockerManager
     {
         var cache = await GetDataFolderCache();
         return await cache.FileExistsAsync(item.filename);
+    }
+
+    public static class YouTube
+    {
+        public static async Task WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
+        {
+            if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
+            if (uriReq.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase) || uriReq.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase) || uriReq.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase))
+            {
+                //YouTube specific ad blocking.
+                if ((uriReq.LocalPath.Equals("/watch", StringComparison.InvariantCultureIgnoreCase)
+                    || uriReq.LocalPath.StartsWith("/shorts/", StringComparison.InvariantCultureIgnoreCase)
+                    || uriReq.LocalPath.Equals("/live", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    //var d = args.GetDeferral();
+                    //var client = CommonHttpClient;
+                    //var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
+                    //message.Method = args.Request.Method?.ToUpperInvariant() switch
+                    //{
+                    //    "POST" => HttpMethod.Post,
+                    //    "PUT" => HttpMethod.Put,
+                    //    "DELETE" => HttpMethod.Delete,
+                    //    "HEAD" => HttpMethod.Head,
+                    //    "PATCH" => HttpMethod.Patch,
+                    //    "OPTIONS" => HttpMethod.Options,
+                    //    "GET" => HttpMethod.Get,
+                    //    _ => HttpMethod.Get,
+                    //};
+                    //if (args.Request.Content is not null) message.Content = new HttpStreamContent(args.Request.Content);
+                    //message.Headers.Clear();
+                    //foreach (var item in args.Request.Headers) message.Headers.Add(item.Key, item.Value);
+                    //var response = await client.SendRequestAsync(message);
+                    //var text = await response.Content.ReadAsStringAsync();
+                    //text = Regex.Replace(text, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});", (a) =>
+                    //{
+                    //    var json = JsonSerializer.Deserialize<Dictionary<string, object>>(a.Groups[1].Value);
+                    //    if (json is null) return a.Value;
+                    //    if (json.ContainsKey("playerAds")) json.Remove("playerAds");
+                    //    if (json.ContainsKey("adPlacements")) json.Remove("adPlacements");
+                    //    return a.Value.Replace(a.Groups[1].Value, JsonSerializer.Serialize(json));
+                    //});
+                    //var ms = new InMemoryRandomAccessStream();
+                    //using var dw = new DataWriter(ms);
+                    //dw.WriteString(text);
+                    //await dw.StoreAsync();
+                    //await ms.FlushAsync();
+                    //ms.Seek(0);
+                    //args.Response = sender.Environment.CreateWebResourceResponse(ms, (int)response.StatusCode, response.ReasonPhrase, response.Headers.ToString());
+                    //d.Complete();
+                    //return;
+
+                    await WebView2WebResourceRequestedCommon(sender, args, text =>
+                    {
+                        return Regex.Replace(text, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});", (a) =>
+                        {
+                            return a.Value.Replace(a.Groups[1].Value, RemoveAdsFromJson(a.Groups[1].Value));
+                        });
+                    });
+
+                }
+                else if (uriReq.LocalPath.Equals("/youtubei/v1/player", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    await WebView2WebResourceRequestedCommon(sender, args, text => RemoveAdsFromJson(text));
+                }
+            }
+
+        }
+
+        public static async Task WebView2WebResourceRequestedCommon(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args, Func<string, string> removeAdsFunction)
+        {
+            if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
+            var d = args.GetDeferral();
+            var client = CommonHttpClient;
+            var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
+            message.Method = args.Request.Method?.ToUpperInvariant() switch
+            {
+                "POST" => HttpMethod.Post,
+                "PUT" => HttpMethod.Put,
+                "DELETE" => HttpMethod.Delete,
+                "HEAD" => HttpMethod.Head,
+                "PATCH" => HttpMethod.Patch,
+                "OPTIONS" => HttpMethod.Options,
+                "GET" => HttpMethod.Get,
+                _ => HttpMethod.Get,
+            };
+            if (args.Request.Content is not null)
+            {
+                message.Content = new HttpStreamContent(args.Request.Content);
+                foreach (var item in args.Request.Headers)
+                {
+                    try
+                    {
+                        message.Content.Headers.Add(item.Key, item.Value);
+                    }
+                    catch { }
+                }
+            }
+            message.Headers.Clear();
+            foreach (var item in args.Request.Headers)
+            {
+                try
+                {
+                    message.Headers.Add(item.Key, item.Value);
+                }
+                catch { }
+            }
+
+            var response = await client.SendRequestAsync(message);
+            var text = await response.Content.ReadAsStringAsync();
+            text = removeAdsFunction?.Invoke(text) ?? text;
+            var ms = new InMemoryRandomAccessStream();
+            using var dw = new DataWriter(ms);
+            dw.WriteString(text);
+            await dw.StoreAsync();
+            await ms.FlushAsync();
+            ms.Seek(0);
+            var hs = new StringBuilder();
+            foreach (var h in response.Headers)
+            {
+                hs.AppendLine($"{h.Key}:{h.Value}");
+            }
+            if (response.StatusCode == Windows.Web.Http.HttpStatusCode.Ok) args.Response = sender.Environment.CreateWebResourceResponse(ms, 200, "OK", hs.ToString());
+            //args.Response = sender.Environment.CreateWebResourceResponse(ms, (int)response.StatusCode, response.ReasonPhrase, hs.ToString());
+            d.Complete();
+            return;
+        }
+
+        public static string RemoveAdsFromJson(string text)
+        {
+            try
+            {
+                var json = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
+                if (json is not null)
+                {
+                    if (json.ContainsKey("playerAds")) json.Remove("playerAds");
+                    if (json.ContainsKey("adPlacements")) json.Remove("adPlacements");
+                    text = JsonSerializer.Serialize(json);
+                }
+            }
+            catch { }
+            return text;
+        }
     }
 }
