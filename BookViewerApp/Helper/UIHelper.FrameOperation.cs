@@ -641,10 +641,19 @@ public static partial class UIHelper
                 {
                     content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
                     OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
-                    // Uncomment here to enable AdBlocker
 #if DEBUG
                     content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                     content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
+                    //content.WebView2.NavigationCompleted += (s, e) =>
+                    //{
+                    //    if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled) || !e.IsSuccess) return;
+                    //    var host = content.WebView2.Source.Host.ToUpperInvariant();
+                    //    if (!(host.EndsWith("YOUTUBE.COM") || host.EndsWith("YOUTUBEKIDS.COM") || host.EndsWith("YOUTUBE-NOCOOKIE.COM"))) return;
+                    //};
+                    //https://twitter.com/Yuki27183/status/1563497517417111552
+                    //https://github.com/uBlockOrigin/uAssets/blob/master/filters/filters.txt#L131
+                    //https://www.reddit.com/r/uBlockOrigin/comments/ggcmkp/ads_attempt_to_launch_on_youtube_but_give_an/
+                    //await content.WebView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("if(location.host.toUpperCase().endsWith(\"YOUTUBE.COM\")){ytInitialPlayerResponse.adPlacements = undefined;\nplayerResponse.adPlacements = undefined;}");
 #endif
                     updateUserAgent();
                 };

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
+#nullable enable
 namespace BookViewerApp.Views.BrowserAddOn;
 /// <summary>
 /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
@@ -29,6 +30,12 @@ public sealed partial class AdBlockerSetting : Page
         //https://docs.microsoft.com/en-us/archive/msdn-magazine/2014/april/mvvm-multithreading-and-dispatching-in-mvvm-applications
         //You can not Task.Run() here.
         LoadFilters();
+        OpenWebCommand = new Helper.DelegateCommand(async address =>
+        {
+            var tab = Helper.UIHelper.GetCurrentTabPage(this);
+            if (tab is null) return;
+            await tab.OpenTabWebPreferedBrowser(address?.ToString());
+        }, address => Uri.TryCreate(address?.ToString(), UriKind.Absolute, out var _));
     }
 
     public async void LoadFilters()
@@ -38,4 +45,6 @@ public sealed partial class AdBlockerSetting : Page
             await vm.LoadFilterList();
         }
     }
+
+    public Helper.DelegateCommand OpenWebCommand { get; }
 }

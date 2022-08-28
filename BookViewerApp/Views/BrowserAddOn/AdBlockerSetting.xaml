@@ -11,6 +11,7 @@
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     xmlns:vm="using:BookViewerApp.ViewModels"
     xmlns:v="using:BookViewerApp.Views"
+    x:Name="main"
     >
     <Page.DataContext>
         <vm:AdBlockerSettingViewModel />
@@ -27,9 +28,8 @@
             <ListView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource FiltersSource}}" SelectionMode="None">
                 <ListView.Header>
                     <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                        <AppBarButton Icon="Accept" Label="Save" />
-                        <AppBarButton Icon="Refresh" Label="Refresh now" Command="{Binding RefreshCommand}" />
-                        <AppBarToggleButton Icon="Delete" Label="Delete all cache" IsChecked="{Binding RefreshAll,Mode=TwoWay}"/>
+                        <AppBarButton Icon="Accept" Label="Apply" Command="{Binding RefreshCommand}" />
+                        <AppBarToggleButton Icon="Refresh" Label="Refresh all" IsChecked="{Binding RefreshAll,Mode=TwoWay}"/>
                     </CommandBar>
                 </ListView.Header>
                 <ListView.GroupStyle>
@@ -49,8 +49,8 @@
                             </CheckBox>
                             <CommandBar DefaultLabelPosition="Collapsed">
                                 <AppBarToggleButton Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay}" IsEnabled="{Binding IsEnabled,Mode=OneWay}"/>
-                                <AppBarButton Icon="World" ToolTipService.ToolTip="{Binding ProjectSource}" ToolTipService.Placement="Bottom"/>
-                                <AppBarButton Icon="Document" ToolTipService.ToolTip="{Binding LicenseSummary}" ToolTipService.Placement="Top"/>
+                                <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}" ToolTipService.Placement="Bottom"/>
+                                <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}" ToolTipService.Placement="Top"/>
                             </CommandBar>
                         </StackPanel>
                     </DataTemplate>

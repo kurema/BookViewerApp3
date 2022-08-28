@@ -319,7 +319,9 @@ namespace BookViewerApp.Views
                 Source = source,
                 OpenWebCommand = new DelegateCommand(async address =>
                 {
-                    await UIHelper.GetCurrentTabPage(this)?.OpenTabWebPreferedBrowser(address?.ToString());
+                    var tab = UIHelper.GetCurrentTabPage(this);
+                    if (tab is null) return;
+                    await tab.OpenTabWebPreferedBrowser(address?.ToString());
                 })
             };
             dialog.Content = control;

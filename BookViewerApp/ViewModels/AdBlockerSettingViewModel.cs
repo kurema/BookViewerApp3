@@ -24,6 +24,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 foreach (var i in g)
                 {
                     if (i.IsRefreshRequested && i.IsEnabled) return true;
+                    if (i.IsEnabled != i.IsLoaded) return true;
                 }
             }
             return false;
@@ -39,14 +40,19 @@ public class AdBlockerSettingViewModel : ViewModelBase
         {
             foreach (var i in g)
             {
-                if (i.IsEnabled && (i.IsRefreshRequested || RefreshAll))
+                if (i.IsEnabled && (i.IsRefreshRequested || RefreshAll || !(i.IsLoaded = await Managers.ExtensionAdBlockerManager.IsItemLoaded(i.GetContent()))))
                 {
                     bool successLocal = await Managers.ExtensionAdBlockerManager.TryDownloadList(i.GetContent());
                     if (successLocal)
                     {
                         i.IsRefreshRequested = false;
+                        i.IsLoaded = true;
                     }
                     success &= successLocal;
+                }
+                if (!i.IsEnabled)
+                {
+                    if (await Managers.ExtensionAdBlockerManager.TryRemoveList(i.GetContent())) i.IsLoaded = false;
                 }
             }
         }
@@ -186,6 +192,7 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         get => _IsEnabled; set
         {
             SetProperty(ref _IsEnabled, value);
+            if (value && !IsLoaded) IsRefreshRequested = true;
             Parent?.Parent?.CheckRefreshCommandCanExecuteChange();
         }
     }

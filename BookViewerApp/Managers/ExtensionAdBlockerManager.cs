@@ -1,16 +1,21 @@
 ﻿using BookViewerApp.Storages;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Sources;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.Web.Http;
+using Windows.Web.Http.Headers;
 
 #nullable enable
 
@@ -42,18 +47,47 @@ public static class ExtensionAdBlockerManager
     private static DistillNET.UrlFilter[]? FiltersCacheGlobal = null;
     private static DistillNET.UrlFilter[]? FiltersWhitelistCacheGlobal = null;
 
-    public static void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
+    private static HttpClient? _CommonHttpClient;
+    public static HttpClient CommonHttpClient => _CommonHttpClient ??= new HttpClient();
+
+    public static async void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
     {
         if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
         if (Filter is null) return;
         if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
         if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
         if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
-        var domain = uri.Host;
-        if (DomainsWhitelist.BinarySearch(domain.ToUpperInvariant()) >= 0) return;
+        var domain = uri.Host.ToUpperInvariant();
+        if (DomainsWhitelist.BinarySearch(domain) >= 0) return;
+        //YouTube specific ad blocking.
+        if (args.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase) && args.Request.Content is null &&
+            (uriReq.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase)
+            || uriReq.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase)
+            || uriReq.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase))
+            && (uriReq.LocalPath.Equals("/watch", StringComparison.InvariantCultureIgnoreCase)
+            || uriReq.LocalPath.StartsWith("/shorts/", StringComparison.InvariantCultureIgnoreCase)
+            || uriReq.LocalPath.Equals("/live", StringComparison.InvariantCultureIgnoreCase)))
+        {
+            var d = args.GetDeferral();
+            var client = CommonHttpClient;
+            var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
+            message.Headers.Clear();
+            foreach (var item in args.Request.Headers) message.Headers.Add(item.Key, item.Value);
+            var response = await client.SendRequestAsync(message);
+            var input = await response.Content.ReadAsStringAsync();
+            Regex.Replace(input, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});var meta", (a) =>
+            {
+                var json= System.Text.Json.JsonDocument.Parse(a.Captures[1].Value);
+                return a.Value;
+            });
+            var ms = new InMemoryRandomAccessStream();
+            var dw = new DataWriter(ms);
+            dw.WriteString(input);
+            args.Response = sender.Environment.CreateWebResourceResponse(ms, (int)response.StatusCode, response.ReasonPhrase, response.Headers.ToString());
+            d.Complete();
+        }
         var headers = new System.Collections.Specialized.NameValueCollection();
         foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
-
         switch (args.ResourceContext)
         {
             case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
@@ -122,58 +156,73 @@ public static class ExtensionAdBlockerManager
         }
     }
 
+    private static System.Threading.SemaphoreSlim SemaphoreLoadFromText = new(1, 1);
+
     public static async Task<(DistillNET.FilterDbCollection? result, bool success)> LoadRulesFromText()
     {
-        bool success = true;
-        var folder = await GetDataFolderCache();
-        Filter?.Dispose();
-        Filter = null;
-        for (int i = 0; i < 2; i++)
+        await SemaphoreLoadFromText.WaitAsync();
+        try
         {
-            try
+            bool success = true;
+            var folder = await GetDataFolderCache();
+            Filter?.Dispose();
+            Filter = null;
+            for (int i = 0; i < 2; i++)
             {
-                Filter = new DistillNET.FilterDbCollection(Path.Combine(folder.Path, FileNameDb), true, false);
-                break;
+                try
+                {
+                    Filter = new DistillNET.FilterDbCollection(Path.Combine(folder.Path, FileNameDb), true, false);
+                    break;
+                }
+                catch
+                {
+                    Filter = null;
+                    await Task.Delay(1000);
+                }
             }
-            catch
+            if (Filter is null) return (null, false);
+            foreach (var file in await folder.GetFilesAsync())
             {
-                Filter = null;
-                await Task.Delay(1000);
+                if (Path.GetFileName(file.Path) is FileNameWhiteList or FileNameUser or FileNameDb) continue;
+                if (Path.GetExtension(file.Path).ToUpperInvariant() != ".TXT") continue;
+                try
+                {
+                    var stream = await file.OpenReadAsync();
+                    if (stream is null) continue;
+                    using var streamNative = stream.AsStream();
+                    var result = Filter.ParseStoreRulesFromStream(streamNative, 1);
+                }
+                catch
+                {
+                    success = false;
+                }
             }
+            Filter.FinalizeForRead();
+            ResetCache();
+            return (Filter, success);
         }
-        if (Filter is null) return (null, false);
-        foreach (var file in await folder.GetFilesAsync())
+        finally
         {
-            if (Path.GetFileName(file.Path) is FileNameWhiteList or FileNameUser or FileNameDb) continue;
-            if (Path.GetExtension(file.Path).ToUpperInvariant() != ".TXT") continue;
-            try
-            {
-                var stream = await file.OpenReadAsync();
-                if (stream is null) continue;
-                using var streamNative = stream.AsStream();
-                var result = Filter.ParseStoreRulesFromStream(streamNative, 1);
-            }
-            catch
-            {
-                success = false;
-            }
+            SemaphoreLoadFromText.Release();
         }
-        Filter.FinalizeForRead();
-        ResetCache();
-        return (Filter, success);
     }
 
-    public static async Task RemoveRuleFile(string filename)
+    public static async Task<bool> TryRemoveList(Storages.ExtensionAdBlockerItems.itemsGroupItem item)
     {
+        string? filename = item?.filename;
+        if (filename is null) return false;
         try
         {
             var folder = await GetDataFolderCache();
             var file = await folder.GetFileAsync(filename);
-            if (!file.IsAvailable) return;
-            await file.RenameAsync($"{filename}.old", NameCollisionOption.ReplaceExisting);
+            if (!file.IsAvailable) return false;
+            //await file.RenameAsync($"{filename}.old", NameCollisionOption.ReplaceExisting);
+            await file.DeleteAsync();
+            return true;
         }
         catch
         {
+            return false;
         }
     }
 
