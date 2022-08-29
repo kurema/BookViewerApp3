@@ -637,18 +637,6 @@ public static partial class UIHelper
                     }
                 }
 
-                content.WebView2.CoreWebView2Initialized += async (s, e) =>
-                {
-                    content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
-                    OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
-#if DEBUG
-                    content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
-                    content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
-                    await content.WebView2.CoreWebView2.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
-#endif
-                    updateUserAgent();
-                };
-
                 {
                     var addonUA = new Views.BrowserAddOn.UserAgentOverride();
                     addonUA.UserAgentUpdated += (_, _) => { updateUserAgent(); content?.WebView2?.Reload(); };
@@ -668,7 +656,6 @@ public static partial class UIHelper
                         },
                         XamlRootProvider = () => content.XamlRoot,
                     });
-                    // Uncomment here to enable AdBlocker
 #if DEBUG
                     content.AddOnSpace.Add(new NavigationViewItemSeparator());
                     try
@@ -678,9 +665,46 @@ public static partial class UIHelper
                     }
                     catch { }
 #endif
+                    {
+                        void WebView2InitalizedOperation()
+                        {
+                            content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
+                            OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
+#if DEBUG
+                            content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                            content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
+                            //content.WebView2.CoreWebView2.NavigationStarting += CoreWebView2_NavigationStarting;
+#endif
+                            updateUserAgent();
+                        }
+
+                        await content.WebView2.EnsureCoreWebView2Async();
+                        WebView2InitalizedOperation();
+                        content.WebView2.CoreWebView2Initialized += (_, _) => WebView2InitalizedOperation();
+                    }
                 }
             }
         }
+
+        private static async void CoreWebView2_NavigationStarting(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs args)
+        {
+            if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out var uri)) return;
+            if (!(uri.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase) || uri.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase) || uri.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase))) return;
+            if (!uri.LocalPath.Equals("/watch")) return;
+            //await sender.ExecuteScriptAsync("console.log(document.readyState);\nvar script = document.createElement(\"script\");\nscript.textContent = \"(\" + function(a, b) {\nconsole.log(document.readyState);\n}.toString() + \")(window, document)\";\ndocument.documentElement.appendChild(script);\n");
+            await sender.ExecuteScriptAsync("window.addEventListener('load', (event) => {\n\nif (raw_player_response && \"object\" === typeof raw_player_response) {\ndelete raw_player_response.playerAds;\ndelete raw_player_response.adPlacements;\nplayer_response = JSON.stringify(raw_player_response);\n}else if (player_response && \"string\" === typeof player_response) {\nvar j = JSON.parse(player_response);\ndelete j.playerAds;\ndelete j.adPlacements;\nplayer_response = JSON.stringify(j);\n}\n});");
+        }
+
+        private static async void CoreWebView2_NavigationCompleted(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
+        {
+            if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out var uri)) return;
+            if (!(uri.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase) || uri.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase) || uri.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase))) return;
+            if (!uri.LocalPath.Equals("/watch")) return;
+            await sender.ExecuteScriptAsync("window.addEventListener('load', (event) => {\n\nif (raw_player_response && \"object\" === typeof raw_player_response) {\ndelete raw_player_response.playerAds;\ndelete raw_player_response.adPlacements;\nplayer_response = JSON.stringify(raw_player_response);\n}else if (player_response && \"string\" === typeof player_response) {\nvar j = JSON.parse(player_response);\ndelete j.playerAds;\ndelete j.adPlacements;\nplayer_response = JSON.stringify(j);\n}\n});");
+            await sender.ExecuteScriptAsync("var script = document.createElement(\"script\");\nscript.textContent = \"(\" + function(a, b) {\nconsole.log(document.readyState);\n}.toString() + \")(window, document)\";\ndocument.documentElement.appendChild(script);\nscript.remove();");
+            await sender.ExecuteScriptAsync("console.log(\"hi\");ytInitialPlayerResponse.adPlacements = undefined;\nytInitialPlayerResponse.playerAds = undefined;\nwindow.addEventListener('load', (event) => {\nytInitialPlayerResponse.adPlacements = undefined;\nytInitialPlayerResponse.playerAds = undefined;\n});");
+        }
+
 
         public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
         {

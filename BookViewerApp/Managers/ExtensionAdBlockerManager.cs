@@ -4,6 +4,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -29,7 +30,6 @@ public static class ExtensionAdBlockerManager
 
     private async static Task<StorageFolder> GetDataFolderCache() => _DataFolderCache ??= await Helper.Functions.GetSaveFolderLocalCache().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
     private async static Task<StorageFolder> GetDataFolderLocal() => _DataFolderLocal ??= await Helper.Functions.GetSaveFolderLocal().CreateFolderAsync("AdBlocker", CreationCollisionOption.OpenIfExists);
-
 
     private static StorageFolder? _DataFolderCache;
     private static StorageFolder? _DataFolderLocal;
@@ -242,50 +242,11 @@ public static class ExtensionAdBlockerManager
         public static async Task WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
         {
             if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
-            if (uriReq.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase) || uriReq.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase) || uriReq.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase))
+            if (IsUriYouTube(uriReq))
             {
                 //YouTube specific ad blocking.
-                if ((uriReq.LocalPath.Equals("/watch", StringComparison.InvariantCultureIgnoreCase)
-                    || uriReq.LocalPath.StartsWith("/shorts/", StringComparison.InvariantCultureIgnoreCase)
-                    || uriReq.LocalPath.Equals("/live", StringComparison.InvariantCultureIgnoreCase)))
+                if (IsUriWatchPage(uriReq))
                 {
-                    //var d = args.GetDeferral();
-                    //var client = CommonHttpClient;
-                    //var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
-                    //message.Method = args.Request.Method?.ToUpperInvariant() switch
-                    //{
-                    //    "POST" => HttpMethod.Post,
-                    //    "PUT" => HttpMethod.Put,
-                    //    "DELETE" => HttpMethod.Delete,
-                    //    "HEAD" => HttpMethod.Head,
-                    //    "PATCH" => HttpMethod.Patch,
-                    //    "OPTIONS" => HttpMethod.Options,
-                    //    "GET" => HttpMethod.Get,
-                    //    _ => HttpMethod.Get,
-                    //};
-                    //if (args.Request.Content is not null) message.Content = new HttpStreamContent(args.Request.Content);
-                    //message.Headers.Clear();
-                    //foreach (var item in args.Request.Headers) message.Headers.Add(item.Key, item.Value);
-                    //var response = await client.SendRequestAsync(message);
-                    //var text = await response.Content.ReadAsStringAsync();
-                    //text = Regex.Replace(text, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});", (a) =>
-                    //{
-                    //    var json = JsonSerializer.Deserialize<Dictionary<string, object>>(a.Groups[1].Value);
-                    //    if (json is null) return a.Value;
-                    //    if (json.ContainsKey("playerAds")) json.Remove("playerAds");
-                    //    if (json.ContainsKey("adPlacements")) json.Remove("adPlacements");
-                    //    return a.Value.Replace(a.Groups[1].Value, JsonSerializer.Serialize(json));
-                    //});
-                    //var ms = new InMemoryRandomAccessStream();
-                    //using var dw = new DataWriter(ms);
-                    //dw.WriteString(text);
-                    //await dw.StoreAsync();
-                    //await ms.FlushAsync();
-                    //ms.Seek(0);
-                    //args.Response = sender.Environment.CreateWebResourceResponse(ms, (int)response.StatusCode, response.ReasonPhrase, response.Headers.ToString());
-                    //d.Complete();
-                    //return;
-
                     await WebView2WebResourceRequestedCommon(sender, args, text =>
                     {
                         return Regex.Replace(text, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});", (a) =>
@@ -300,8 +261,11 @@ public static class ExtensionAdBlockerManager
                     await WebView2WebResourceRequestedCommon(sender, args, text => RemoveAdsFromJson(text));
                 }
             }
-
         }
+
+        public static bool IsUriYouTube(Uri uriReq) => uriReq.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase) || uriReq.Host.EndsWith("youtubekids.com", StringComparison.InvariantCultureIgnoreCase) || uriReq.Host.EndsWith("youtube-nocookie.com", StringComparison.InvariantCultureIgnoreCase);
+
+        public static bool IsUriWatchPage(Uri uriReq) => uriReq.LocalPath.Equals("/watch", StringComparison.InvariantCultureIgnoreCase) || uriReq.LocalPath.StartsWith("/shorts/", StringComparison.InvariantCultureIgnoreCase) || uriReq.LocalPath.Equals("/live", StringComparison.InvariantCultureIgnoreCase);
 
         public static async Task WebView2WebResourceRequestedCommon(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args, Func<string, string> removeAdsFunction)
         {
