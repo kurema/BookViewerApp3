@@ -124,7 +124,25 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 
     public async void WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
     {
-        if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uri) || uri.Host.ToUpperInvariant() != Host.ToUpperInvariant()) return;
+        ////For security reason, we should deny access from other host.
+        ////But the problem is, sender.Source is not updated when first page is requested.
+        //if (Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uriSource))
+        //{
+        //    if (!string.IsNullOrEmpty(uriSource.Host) && !uriSource.Host.Equals(Host, StringComparison.InvariantCultureIgnoreCase)) return;
+        //}
+        {
+            //Referer is easy option. But the problem is,
+            //1. Referer may be disabled for privacy in the future.
+            //2. First page do not have Referer but that's fine. Just ignore and continue.
+            //3. If there's link to the PathHome, it's denied. It's unlikely to happen but against the intention.
+            //But that's fine for now. And it looks like working fine. It's better than nothing.
+            var hRef = args.Request.Headers.FirstOrDefault(a => a.Key == "Referer").Value;
+            if (!string.IsNullOrEmpty(hRef) && Uri.TryCreate(hRef, UriKind.Absolute, out var uriRef))
+            {
+                if (!uriRef.Host.Equals(Host, StringComparison.InvariantCultureIgnoreCase)) return;
+            }
+        }
+        if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uri) || !uri.Host.Equals(Host, StringComparison.InvariantCultureIgnoreCase)) return;
         var deferral = args.GetDeferral();
         IInputStream content;
         try

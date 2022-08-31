@@ -79,7 +79,7 @@ public sealed partial class TabPage : Page
                         ElementTheme.Default or _ => Microsoft.Web.WebView2.Core.CoreWebView2PreferredColorScheme.Auto,
                     };
                 }
-                if(f.Content is IThemeChangedListener listener)
+                if (f.Content is IThemeChangedListener listener)
                 {
                     listener?.OnThemeChanged();
                 }
@@ -298,7 +298,7 @@ public sealed partial class TabPage : Page
         TabViewMain.TabItems.Add(newTab);
         TabViewMain.SelectedItem = newTab;
 
-        frame.Focus(FocusState.Programmatic);
+        frame.Loaded += (_, _) => frame.Focus(FocusState.Programmatic);
         frame.RequestedTheme = ThemeManager.AsElementTheme;
 
         return (frame, newTab);

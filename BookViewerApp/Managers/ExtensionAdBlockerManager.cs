@@ -55,8 +55,8 @@ public static class ExtensionAdBlockerManager
     {
         if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
         if (Filter is null) return;
-        if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
         if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
+        if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
         if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
         var domain = uri.Host.ToUpperInvariant();
         if (DomainsWhitelist.BinarySearch(domain) >= 0) return;
