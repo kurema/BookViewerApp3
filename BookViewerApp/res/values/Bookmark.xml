@@ -1,83 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <bookmarks_library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd">
-  <multilingual>
-    <bookmarks default="true" title="BookViewer3">
-      <container title="Search">
-        <bookmark url="https://www.google.com/" title="Google" />
-        <bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
-        <bookmark url="https://www.bing.com/" title="Bing" />
-      </container>
-      <container title="Free books">
-        <bookmark url="https://www.gutenberg.org/" title="Project Gutenberg" />
-        <bookmark url="https://archive.org/" title="Internet Archive" />
-        <bookmark url="https://books.google.com/" title="Google Books" />
-      </container>
-      <container title="Bookshelves">
-        <bookmark url="https://play.google.com/books" title="Google Play" />
-      </container>
-      <container title="For students">
-        <bookmark url="https://www.ebsco.com/" title="EBSCOhost" />
-        <bookmark url="http://ovidsp.dc2.ovid.com/" title="Ovid" />
-        <bookmark url="https://www.sciencedirect.com/browse/journals-and-books" title="ScienceDirect" />
-        <bookmark url="https://link.springer.com/" title="Springer eBooks" />
-        <bookmark url="https://onlinelibrary.wiley.com/action/showPublications" title="Wiley Online Library" />
-      </container>
-      <container title="About BookViewer3">
-        <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
-        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />
-        <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
-        <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
-      </container>
-      <container title="About kurema">
-        <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
-        <bookmark url="https://github.com/kurema" title="GitHub" />
-        <bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
-        <bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV/tag=kurema05-22" title="Wishlist" />
-      </container>
-    </bookmarks>
-    <bookmarks language="ja" title="BookViewer3">
-      <container title="検索エンジン">
-        <bookmark url="https://www.google.co.jp/" title="Google" />
-        <bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
-        <bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
-        <bookmark url="https://www.bing.com/" title="Bing" />
-      </container>
-      <container title="無料書籍">
-        <bookmark url="https://www.aozora.gr.jp/" title="青空文庫" />
-        <bookmark url="https://www.gutenberg.org/" title="プロジェクト・グーテンベルク" />
-        <bookmark url="https://archive.org/" title="インターネットアーカイブ" />
-        <bookmark url="https://books.google.co.jp/" title="Google ブックス" />
-      </container>
-      <container title="本棚">
-        <bookmark url="https://play.google.com/books" title="Google Play" />
-        <bookmark url="https://book.dmm.com/library/" title="DMM電子書籍" />
-        <bookmark url="https://www.amazon.co.jp/kindle-dbs/library/manga" title="Kindleマンガ" />
-      </container>
-      <container title="学生向け">
-        <bookmark url="https://github.com/kurema/BookViewerApp3/wiki/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%90%91%E3%81%91%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9" title="Wikiを参照" />
-        <bookmark url="https://www.ebsco.com/" title="EBSCOhost" />
-        <bookmark url="https://elib.maruzen.co.jp/" title="Maruzen eBook Library" />
-        <!--<bookmark url="https://kinoden.kinokuniya.co.jp/" title="KinoDen" />-->
-        <bookmark url="http://ovidsp.dc2.ovid.com/" title="Ovid" />
-        <bookmark url="https://japanknowledge.com/" title="JapanKnowledge" />
-        <bookmark url="https://www.sciencedirect.com/browse/journals-and-books" title="ScienceDirect" />
-        <bookmark url="https://link.springer.com/" title="Springer eBooks" />
-        <bookmark url="https://onlinelibrary.wiley.com/action/showPublications" title="Wiley Online Library" />
-        <bookmark url="https://ci.nii.ac.jp/books/" title="CiNii Books" />
-      </container>
-      <container title="アプリについて">
-        <bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
-        <bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />
-        <bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
-        <bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
-      </container>
-      <container title="作者について">
-        <bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
-        <bookmark url="https://github.com/kurema" title="GitHub" />
-        <bookmark url="https://www.amazon.co.jp/-/e/B077X71C4C/tag=kurema_bv3-22" title="Kindle" />
-        <bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
-        <bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV/tag=kurema_bv3-22" title="欲しいものリスト" />
-      </container>
-    </bookmarks>
-  </multilingual>
+	<multilingual>
+		<bookmarks default="true" title="BookViewer3">
+			<container title="Search">
+				<bookmark url="https://www.google.com/" title="Google" />
+				<bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
+				<bookmark url="https://www.bing.com/" title="Bing" />
+			</container>
+			<container title="Free books">
+				<bookmark url="https://www.gutenberg.org/" title="Project Gutenberg" />
+				<bookmark url="https://archive.org/" title="Internet Archive" />
+				<bookmark url="https://books.google.com/" title="Google Books" />
+			</container>
+			<container title="Bookshelves">
+				<bookmark url="https://play.google.com/books" title="Google Play" />
+				<bookmark url="https://read.amazon.com/kindle-library?tag=kurema_bv3-20" title="Kindle" />
+			</container>
+			<container title="For students">
+				<bookmark url="https://www.ebsco.com/" title="EBSCOhost" />
+				<bookmark url="http://ovidsp.dc2.ovid.com/" title="Ovid" />
+				<bookmark url="https://www.sciencedirect.com/browse/journals-and-books" title="ScienceDirect" />
+				<bookmark url="https://link.springer.com/" title="Springer eBooks" />
+				<bookmark url="https://onlinelibrary.wiley.com/action/showPublications" title="Wiley Online Library" />
+			</container>
+			<container title="About BookViewer3">
+				<bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHub Repository" />
+				<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.en.html" title="Introduction" />
+				<bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
+				<bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
+			</container>
+			<container title="About kurema">
+				<bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
+				<bookmark url="https://github.com/kurema" title="GitHub" />
+				<bookmark url="https://www.amazon.com/-/e/B0788KZJ55?tag=kurema_bv3-20" title="Kindle" />
+				<bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
+				<bookmark url="https://www.amazon.com/hz/wishlist/ls/KC5BG6DDLC92?tag=kurema_bv3-22" title="Wishlist" />
+			</container>
+		</bookmarks>
+		<bookmarks language="ja" title="BookViewer3">
+			<container title="検索エンジン">
+				<bookmark url="https://www.google.co.jp/" title="Google" />
+				<bookmark url="https://www.yahoo.co.jp/" title="Yahoo!" />
+				<bookmark url="https://duckduckgo.com/" title="DuckDuckGo" />
+				<bookmark url="https://www.bing.com/" title="Bing" />
+			</container>
+			<container title="無料書籍">
+				<bookmark url="https://www.aozora.gr.jp/" title="青空文庫" />
+				<bookmark url="https://www.gutenberg.org/" title="プロジェクト・グーテンベルク" />
+				<bookmark url="https://archive.org/" title="インターネットアーカイブ" />
+				<bookmark url="https://books.google.co.jp/" title="Google ブックス" />
+			</container>
+			<container title="本棚">
+				<bookmark url="https://play.google.com/books" title="Google Play" />
+				<bookmark url="https://book.dmm.com/library/" title="DMM電子書籍" />
+				<bookmark url="https://read.amazon.co.jp/kindle-library?tag=kurema_bv3-22" title="Kindle" />
+			</container>
+			<container title="学生向け">
+				<bookmark url="https://github.com/kurema/BookViewerApp3/wiki/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%90%91%E3%81%91%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9" title="Wikiを参照" />
+				<bookmark url="https://www.ebsco.com/" title="EBSCOhost" />
+				<bookmark url="https://elib.maruzen.co.jp/" title="Maruzen eBook Library" />
+				<!--<bookmark url="https://kinoden.kinokuniya.co.jp/" title="KinoDen" />-->
+				<bookmark url="http://ovidsp.dc2.ovid.com/" title="Ovid" />
+				<bookmark url="https://japanknowledge.com/" title="JapanKnowledge" />
+				<bookmark url="https://www.sciencedirect.com/browse/journals-and-books" title="ScienceDirect" />
+				<bookmark url="https://link.springer.com/" title="Springer eBooks" />
+				<bookmark url="https://onlinelibrary.wiley.com/action/showPublications" title="Wiley Online Library" />
+				<bookmark url="https://ci.nii.ac.jp/books/" title="CiNii Books" />
+			</container>
+			<container title="アプリについて">
+				<bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
+				<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />
+				<bookmark url="https://github.com/kurema/BookViewerApp3/wiki" title="GitHub Wiki" />
+				<bookmark url="https://discord.gg/tKwuhcc" title="Discord" />
+			</container>
+			<container title="作者について">
+				<bookmark url="https://twitter.com/kurema_makoto" title="Twitter" />
+				<bookmark url="https://github.com/kurema" title="GitHub" />
+				<bookmark url="https://www.amazon.co.jp/-/e/B077X71C4C?tag=kurema_bv3-22" title="Kindle" />
+				<bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
+				<bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV?tag=kurema_bv3-22" title="欲しいものリスト" />
+			</container>
+		</bookmarks>
+	</multilingual>
 </bookmarks_library>
