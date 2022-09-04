@@ -30,7 +30,7 @@ namespace BookViewerApp.Storages.Library {
         
         private libraryLibrary[] librariesField;
         
-        private libraryBookmarks bookmarksField;
+        private bookmarks bookmarksField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("folder", IsNullable=false)]
@@ -57,7 +57,7 @@ namespace BookViewerApp.Storages.Library {
         }
         
         /// <remarks/>
-        public libraryBookmarks bookmarks {
+        public bookmarks bookmarks {
             get {
                 return this.bookmarksField;
             }
@@ -125,6 +125,242 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.pathField = value;
                 this.RaisePropertyChanged("path");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd", IsNullable=false)]
+    public partial class bookmarks : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private object[] itemsField;
+        
+        private string languageField;
+        
+        private bool defaultField;
+        
+        private string titleField;
+        
+        public bookmarks() {
+            this.languageField = "en";
+            this.defaultField = false;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(bookmarksContainerBookmark))]
+        [System.Xml.Serialization.XmlElementAttribute("container", typeof(bookmarksContainer))]
+        public object[] Items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                this.itemsField = value;
+                this.RaisePropertyChanged("Items");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="language")]
+        [System.ComponentModel.DefaultValueAttribute("en")]
+        public string language {
+            get {
+                return this.languageField;
+            }
+            set {
+                this.languageField = value;
+                this.RaisePropertyChanged("language");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool @default {
+            get {
+                return this.defaultField;
+            }
+            set {
+                this.defaultField = value;
+                this.RaisePropertyChanged("default");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd")]
+    public partial class bookmarksContainerBookmark : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string urlField;
+        
+        private string titleField;
+        
+        private System.DateTime createdField;
+        
+        private bool createdFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
+        public string url {
+            get {
+                return this.urlField;
+            }
+            set {
+                this.urlField = value;
+                this.RaisePropertyChanged("url");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime created {
+            get {
+                return this.createdField;
+            }
+            set {
+                this.createdField = value;
+                this.RaisePropertyChanged("created");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createdSpecified {
+            get {
+                return this.createdFieldSpecified;
+            }
+            set {
+                this.createdFieldSpecified = value;
+                this.RaisePropertyChanged("createdSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd")]
+    public partial class bookmarksContainer : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private object[] itemsField;
+        
+        private string titleField;
+        
+        private System.DateTime createdField;
+        
+        private bool createdFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(bookmarksContainerBookmark))]
+        [System.Xml.Serialization.XmlElementAttribute("container", typeof(bookmarksContainer))]
+        public object[] Items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                this.itemsField = value;
+                this.RaisePropertyChanged("Items");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime created {
+            get {
+                return this.createdField;
+            }
+            set {
+                this.createdField = value;
+                this.RaisePropertyChanged("created");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createdSpecified {
+            get {
+                return this.createdFieldSpecified;
+            }
+            set {
+                this.createdFieldSpecified = value;
+                this.RaisePropertyChanged("createdSpecified");
             }
         }
         
@@ -363,220 +599,21 @@ namespace BookViewerApp.Storages.Library {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
         "ry.xsd")]
-    public partial class libraryBookmarks : object, System.ComponentModel.INotifyPropertyChanged {
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd", IsNullable=false)]
+    public partial class bookmarks_library : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private object[] itemsField;
-        
-        private string languageField;
-        
-        private bool defaultField;
-        
-        private string titleField;
-        
-        public libraryBookmarks() {
-            this.languageField = "en";
-            this.defaultField = false;
-        }
+        private bookmarks[] multilingualField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(libraryBookmarksContainerBookmark))]
-        [System.Xml.Serialization.XmlElementAttribute("container", typeof(libraryBookmarksContainer))]
-        public object[] Items {
+        [System.Xml.Serialization.XmlArrayItemAttribute("bookmarks", IsNullable=false)]
+        public bookmarks[] multilingual {
             get {
-                return this.itemsField;
+                return this.multilingualField;
             }
             set {
-                this.itemsField = value;
-                this.RaisePropertyChanged("Items");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="language")]
-        [System.ComponentModel.DefaultValueAttribute("en")]
-        public string language {
-            get {
-                return this.languageField;
-            }
-            set {
-                this.languageField = value;
-                this.RaisePropertyChanged("language");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool @default {
-            get {
-                return this.defaultField;
-            }
-            set {
-                this.defaultField = value;
-                this.RaisePropertyChanged("default");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string title {
-            get {
-                return this.titleField;
-            }
-            set {
-                this.titleField = value;
-                this.RaisePropertyChanged("title");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-        "ry.xsd")]
-    public partial class libraryBookmarksContainerBookmark : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string urlField;
-        
-        private string titleField;
-        
-        private System.DateTime createdField;
-        
-        private bool createdFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
-        public string url {
-            get {
-                return this.urlField;
-            }
-            set {
-                this.urlField = value;
-                this.RaisePropertyChanged("url");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string title {
-            get {
-                return this.titleField;
-            }
-            set {
-                this.titleField = value;
-                this.RaisePropertyChanged("title");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public System.DateTime created {
-            get {
-                return this.createdField;
-            }
-            set {
-                this.createdField = value;
-                this.RaisePropertyChanged("created");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool createdSpecified {
-            get {
-                return this.createdFieldSpecified;
-            }
-            set {
-                this.createdFieldSpecified = value;
-                this.RaisePropertyChanged("createdSpecified");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-        "ry.xsd")]
-    public partial class libraryBookmarksContainer : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private object[] itemsField;
-        
-        private string titleField;
-        
-        private System.DateTime createdField;
-        
-        private bool createdFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(libraryBookmarksContainerBookmark))]
-        [System.Xml.Serialization.XmlElementAttribute("container", typeof(libraryBookmarksContainer))]
-        public object[] Items {
-            get {
-                return this.itemsField;
-            }
-            set {
-                this.itemsField = value;
-                this.RaisePropertyChanged("Items");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string title {
-            get {
-                return this.titleField;
-            }
-            set {
-                this.titleField = value;
-                this.RaisePropertyChanged("title");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public System.DateTime created {
-            get {
-                return this.createdField;
-            }
-            set {
-                this.createdField = value;
-                this.RaisePropertyChanged("created");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool createdSpecified {
-            get {
-                return this.createdFieldSpecified;
-            }
-            set {
-                this.createdFieldSpecified = value;
-                this.RaisePropertyChanged("createdSpecified");
+                this.multilingualField = value;
+                this.RaisePropertyChanged("multilingual");
             }
         }
         

@@ -67,6 +67,33 @@
 				<bookmark url="https://onlinelibrary.wiley.com/action/showPublications" title="Wiley Online Library" />
 				<bookmark url="https://ci.nii.ac.jp/books/" title="CiNii Books" />
 			</container>
+			<container title="一般">
+				<container title="動画">
+					<bookmark url="https://www.youtube.com/" title="YouTube"/>
+					<bookmark url="https://www.nicovideo.jp/video_top" title="ニコニコ動画"/>
+					<bookmark url="https://www.dailymotion.com/jp" title="Dailymotion"/>
+					<bookmark url="http://video.fc2.com/" title="FC2動画"/>
+					<bookmark url="https://tver.jp/" title="TVer"/>
+					<bookmark url="https://gyao.yahoo.co.jp/" title="GYAO!"/>
+					<bookmark url="https://www.tiktok.com/" title="Tiktok"/>
+				</container>
+				<container title="SNS">
+					<bookmark url="https://twitter.com/" title="Twitter"/>
+					<bookmark url="https://www.facebook.com/" title="facebook"/>
+					<bookmark url="https://www.instagram.com/" title="Instagram"/>
+					<bookmark url="https://mixi.jp/" title="mixi"/>
+					<bookmark url="https://line.me/ja/" title="LINE"/>
+				</container>
+				<container title="開発">
+					<bookmark url="https://github.com/" title="GitHub"/>
+					<bookmark url="https://qiita.com/" title="Qiita"/>
+					<bookmark url="https://zenn.dev/" title="Zenn"/>
+					<bookmark url="https://visualstudio.microsoft.com/ja/" title="Visual Studio"/>
+					<bookmark url="https://docs.microsoft.com/ja-jp/" title="Microsoft Docs"/>
+					<bookmark url="https://developer.android.com/" title="Android"/>
+					<bookmark url="https://developer.apple.com/jp/" title="Apple"/>
+				</container>
+			</container>
 			<container title="アプリについて">
 				<bookmark url="https://github.com/kurema/BookViewerApp3" title="GitHubレポジトリ" />
 				<bookmark url="https://kurema.github.io/BookViewerApp3/introduction.ja.html" title="紹介ページ" />

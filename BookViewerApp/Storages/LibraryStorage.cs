@@ -24,7 +24,7 @@ namespace BookViewerApp.Storages
         public static StorageContent<Library.bookmarks_library> LocalBookmark = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
 
 
-        public static StorageContent<Library.libraryBookmarks> RoamingBookmarks = new(SavePlaces.Roaming, "Bookmarks.xml", () => new Library.libraryBookmarks());
+        public static StorageContent<Library.bookmarks> RoamingBookmarks = new(SavePlaces.Roaming, "Bookmarks.xml", () => new Library.bookmarks());
 
         public enum LibraryKind
         {
@@ -313,7 +313,7 @@ namespace BookViewerApp.Storages
                 await action(null);
                 return;
             }
-            bookmarksRoaming ??= new Library.libraryBookmarks();
+            bookmarksRoaming ??= new Library.bookmarks();
             var bookmarks = (bookmarksRoaming.Items ?? new object[0]).ToList();
             await action(bookmarks);
             bookmarksRoaming.Items = bookmarks.ToArray();
@@ -384,23 +384,41 @@ namespace BookViewerApp.Storages
 #nullable disable
     namespace Library
     {
-        [Serializable()]
-        [System.Xml.Serialization.XmlType(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-    "ry.xsd")]
-        [System.Xml.Serialization.XmlRoot(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-        "ry.xsd", IsNullable = false)]
+    //    [Serializable()]
+    //    [System.Xml.Serialization.XmlType(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+    //"ry.xsd")]
+    //    [System.Xml.Serialization.XmlRoot(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+    //    "ry.xsd", IsNullable = false)]
+    //    public partial class bookmarks_library
+    //    {
+    //        [System.Xml.Serialization.XmlArrayItem("bookmarks", IsNullable = false)]
+    //        [System.Xml.Serialization.XmlArray(ElementName = "multilingual")]
+    //        public libraryBookmarks[] bookmarks;
+
+    //        public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
+    //        {
+    //            if (bookmarks is null) return null;
+    //            libraryBookmarks defaultBookmarks = null;
+    //            libraryBookmarks languageMatchedBookmarks = null;
+    //            foreach (var item in bookmarks)
+    //            {
+    //                if (item.@default) defaultBookmarks = item;
+    //                if (item.language == culture.Name) return item;
+    //                if (item.language == culture.TwoLetterISOLanguageName) languageMatchedBookmarks = item;
+    //            }
+    //            return languageMatchedBookmarks ?? defaultBookmarks;
+    //        }
+    //    }
+
         public partial class bookmarks_library
         {
-            [System.Xml.Serialization.XmlArrayItem("bookmarks", IsNullable = false)]
-            [System.Xml.Serialization.XmlArray(ElementName = "multilingual")]
-            public libraryBookmarks[] bookmarks;
 
-            public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
+            public bookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
             {
-                if (bookmarks is null) return null;
-                libraryBookmarks defaultBookmarks = null;
-                libraryBookmarks languageMatchedBookmarks = null;
-                foreach (var item in bookmarks)
+                if (multilingual is null) return null;
+                bookmarks defaultBookmarks = null;
+                bookmarks languageMatchedBookmarks = null;
+                foreach (var item in multilingual)
                 {
                     if (item.@default) defaultBookmarks = item;
                     if (item.language == culture.Name) return item;
@@ -419,9 +437,7 @@ namespace BookViewerApp.Storages
             }
         }
 
-        [System.Xml.Serialization.XmlRoot(ElementName = "bookmarks", Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-            "ry.xsd", IsNullable = false)]
-        public partial class libraryBookmarks
+        public partial class bookmarks
         {
             public IFileItem[] AsFileItem(Action<string, LibraryStorage.BookmarkActionType> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
@@ -431,10 +447,10 @@ namespace BookViewerApp.Storages
                 {
                     switch (item)
                     {
-                        case libraryBookmarksContainer container:
+                        case bookmarksContainer container:
                             list.Add(container.AsFileItem((a) => action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));
                             break;
-                        case libraryBookmarksContainerBookmark bookmark:
+                        case bookmarksContainerBookmark bookmark:
                             list.Add(bookmark.AsFileItem((a) => action?.Invoke(a, LibraryStorage.BookmarkActionType.Auto), isReadOnly, menuCommandProvider));
                             break;
                     }
@@ -443,7 +459,7 @@ namespace BookViewerApp.Storages
             }
         }
 
-        public partial class libraryBookmarksContainer
+        public partial class bookmarksContainer
         {
             public StorageBookmarkContainer AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
@@ -451,7 +467,7 @@ namespace BookViewerApp.Storages
             }
         }
 
-        public partial class libraryBookmarksContainerBookmark
+        public partial class bookmarksContainerBookmark
         {
             public StorageBookmarkItem AsFileItem(Action<string> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {

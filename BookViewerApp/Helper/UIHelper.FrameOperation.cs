@@ -553,7 +553,7 @@ public static partial class UIHelper
             {
                 LibraryStorage.OperateBookmark(a =>
                 {
-                    a?.Add(new Storages.Library.libraryBookmarksContainerBookmark() { created = DateTime.Now, title = bmNew.Title, url = bmNew.Address });
+                    a?.Add(new Storages.Library.bookmarksContainerBookmark() { created = DateTime.Now, title = bmNew.Title, url = bmNew.Address });
                     return Task.CompletedTask;
                 });
             }, async () =>

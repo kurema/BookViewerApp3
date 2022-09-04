@@ -239,7 +239,7 @@ public static partial class UIHelper
                         new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
                         {
                             var items = container?.Content?.Items?.ToList() ?? new List<object>();
-                            items.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
+                            items.Add(new Storages.Library.bookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
                             container.Content.Items = items.ToArray();
                             await container.GetChildren();
                         })),
@@ -316,7 +316,7 @@ public static partial class UIHelper
                         {
                             Storages.LibraryStorage.OperateBookmark(b =>
                             {
-                                b?.Add(new Storages.Library.libraryBookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
+                                b?.Add(new Storages.Library.bookmarksContainer() { created = DateTime.Now, title = Managers.ResourceManager.Loader.GetString("ContextMenu/Word/NewContaiener/Title") });
                                 return Task.CompletedTask;
                             });
                         })),

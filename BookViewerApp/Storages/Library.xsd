@@ -6,76 +6,92 @@
     xmlns:mstns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Library.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
-  <!--
+	<!--
   How to compile
   1. Tools→Command Line→Developer Command Prompt
   2.
 cd BookViewerApp\Storages
 xsd.exe Library.xsd /c /edb /e:library /l:CS /n:BookViewerApp.Storages.Library
   -->
-  
-  <xs:element name="library" >
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="folders">
-          <xs:complexType>
-            <xs:choice maxOccurs="unbounded" minOccurs="0">
-              <xs:element name="folder">
-                <xs:complexType>
-                  <xs:attribute name="token" type="xs:string" />
-                  <xs:attribute name ="title" type="xs:string" />
-                  <xs:attribute name="path" type="xs:string"/>
-                </xs:complexType>
-              </xs:element>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="libraries">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="library">
-                <xs:complexType>
-                  <xs:choice minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="folder">
-                      <xs:complexType>
-                        <xs:attribute name="token" type="xs:string"/>
-                        <xs:attribute name="path" type="xs:string"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="network">
-                      <xs:complexType>
-                        <xs:attribute name="protocol" type="xs:string"/>
-                        <xs:attribute name="path" type="xs:string"/>
-                        <xs:attribute name="auth_id" type="xs:string"/>
-                        <xs:attribute name="auth_pass_encoded" type="xs:string"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="archive">
-                      <xs:complexType>
-                        <xs:attribute name="token" type="xs:string"/>
-                        <xs:attribute name="path" type="xs:string" use="optional"/>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:choice>
-                  <xs:attribute name="title" type="xs:string" />
-                </xs:complexType>
-              </xs:element>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="bookmarks">
-          <xs:complexType>
-            <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:attribute name="language" type="xs:language" use="optional" default="en"/>
-            <xs:attribute name="default" type="xs:boolean" use="optional" default="false"/>
-            <xs:attribute name="title" type="xs:string" use="optional" />
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
 
-  <!--<xs:element name="bookmark_resource">
+	<xs:element name="library" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="folders">
+					<xs:complexType>
+						<xs:choice maxOccurs="unbounded" minOccurs="0">
+							<xs:element name="folder">
+								<xs:complexType>
+									<xs:attribute name="token" type="xs:string" />
+									<xs:attribute name ="title" type="xs:string" />
+									<xs:attribute name="path" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="libraries">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="library">
+								<xs:complexType>
+									<xs:choice minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="folder">
+											<xs:complexType>
+												<xs:attribute name="token" type="xs:string"/>
+												<xs:attribute name="path" type="xs:string"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="network">
+											<xs:complexType>
+												<xs:attribute name="protocol" type="xs:string"/>
+												<xs:attribute name="path" type="xs:string"/>
+												<xs:attribute name="auth_id" type="xs:string"/>
+												<xs:attribute name="auth_pass_encoded" type="xs:string"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="archive">
+											<xs:complexType>
+												<xs:attribute name="token" type="xs:string"/>
+												<xs:attribute name="path" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+									<xs:attribute name="title" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="bookmarks"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="bookmarks_library">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="multilingual">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="bookmarks" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="bookmarks">
+		<xs:complexType>
+			<xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:attribute name="language" type="xs:language" use="optional" default="en"/>
+			<xs:attribute name="default" type="xs:boolean" use="optional" default="false"/>
+			<xs:attribute name="title" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<!--<xs:element name="bookmark_resource">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="bookmarks" minOccurs="0" maxOccurs="unbounded">
@@ -88,23 +104,23 @@ xsd.exe Library.xsd /c /edb /e:library /l:CS /n:BookViewerApp.Storages.Library
     </xs:complexType>
   </xs:element>-->
 
-  <xs:group name="bookmark_group">
-    <xs:choice>
-      <xs:element name="container">
-        <xs:complexType>
-          <xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
-          <xs:attribute name="title" type="xs:string"/>
-          <xs:attribute name="created" type="xs:dateTime"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="bookmark">
-        <xs:complexType>
-          <xs:attribute name="url" type="xs:anyURI"/>
-          <xs:attribute name="title" type="xs:string"/>
-          <xs:attribute name="created" type="xs:dateTime"/>
-        </xs:complexType>
-      </xs:element>
-    </xs:choice>
-  </xs:group>
+	<xs:group name="bookmark_group">
+		<xs:choice>
+			<xs:element name="container">
+				<xs:complexType>
+					<xs:group ref="bookmark_group" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:attribute name="title" type="xs:string"/>
+					<xs:attribute name="created" type="xs:dateTime"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="bookmark">
+				<xs:complexType>
+					<xs:attribute name="url" type="xs:anyURI"/>
+					<xs:attribute name="title" type="xs:string"/>
+					<xs:attribute name="created" type="xs:dateTime"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
 
 </xs:schema>

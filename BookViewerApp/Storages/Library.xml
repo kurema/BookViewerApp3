@@ -1,0 +1,5 @@
+<xsd xmlns='http://microsoft.com/dotnet/tools/xsd/'>
+  <generateClasses language='CS' namespace='BookViewerApp.Storages.Library' options="properties enableDataBinding">
+    <schema>Library.xsd</schema>
+  </generateClasses>
+</xsd>

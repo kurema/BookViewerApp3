@@ -13,9 +13,9 @@ namespace kurema.FileExplorerControl.Models.FileItems;
 
 public class StorageBookmarkItem : IStorageBookmark
 {
-    public libraryBookmarksContainerBookmark Content;
+    public bookmarksContainerBookmark Content;
 
-    public StorageBookmarkItem(libraryBookmarksContainerBookmark content)
+    public StorageBookmarkItem(bookmarksContainerBookmark content)
     {
         Content = content ?? throw new ArgumentNullException(nameof(content));
     }
@@ -113,9 +113,9 @@ public interface IStorageBookmark : IFileItem
 
 public class StorageBookmarkContainer : IStorageBookmark
 {
-    public libraryBookmarksContainer Content;
+    public bookmarksContainer Content;
 
-    public StorageBookmarkContainer(libraryBookmarksContainer content)
+    public StorageBookmarkContainer(bookmarksContainer content)
     {
         Content = content ?? throw new ArgumentNullException(nameof(content));
     }
@@ -178,10 +178,10 @@ public class StorageBookmarkContainer : IStorageBookmark
             IStorageBookmark bookmark = null;
             switch (item)
             {
-                case libraryBookmarksContainer bc:
+                case bookmarksContainer bc:
                     bookmark = new StorageBookmarkContainer(bc);
                     break;
-                case libraryBookmarksContainerBookmark bcb:
+                case bookmarksContainerBookmark bcb:
                     bookmark = new StorageBookmarkItem(bcb);
                     break;
             }
@@ -235,7 +235,7 @@ public class StorageBookmarkContainer : IStorageBookmark
         var items = Content.Items?.ToList() ?? new List<object>();
         if (!content.IsFolder)
         {
-            items.Add(new libraryBookmarksContainerBookmark()
+            items.Add(new bookmarksContainerBookmark()
             {
                 created = DateTime.Now,
                 title = content.Title,

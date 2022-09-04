@@ -63,9 +63,9 @@ public sealed partial class BookmarkContentDialog : ContentDialog
         this.IsPrimaryButtonEnabled = false;
     }
 
-    public Storages.Library.libraryBookmarksContainerBookmark GetLibraryBookmark()
+    public Storages.Library.bookmarksContainerBookmark GetLibraryBookmark()
     {
-        return new Storages.Library.libraryBookmarksContainerBookmark()
+        return new Storages.Library.bookmarksContainerBookmark()
         {
             created = DateTime.Now,
             createdSpecified = true,

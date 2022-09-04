@@ -19,7 +19,7 @@
 		<title language="ja">多目的</title>
 		<item filename="peterlowe.blocklist.txt"
 			  title="Peter Lowe’s Ad and tracking server list"
-			  source="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblock&amp;showintro=1&amp;mimetype=plaintext"
+			  source="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&amp;showintro=0"
 			  project_source="https://pgl.yoyo.org/adservers/"
 			  />
 	</group>
