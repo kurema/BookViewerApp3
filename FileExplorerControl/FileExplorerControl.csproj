@@ -198,6 +198,9 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.1</Version>
     </PackageReference>
+    <PackageReference Include="Zipangu">
+      <Version>1.1.8</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="res\RenameTool\file.png" />

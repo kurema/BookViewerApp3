@@ -20,26 +20,50 @@
         </Grid.RowDefinitions>
         <MenuBar>
             <MenuBarItem Title="File">
-                <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePosition,Mode=OneWay}" />
+                <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" />
                 <MenuFlyoutItem Text="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" />
-                <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePosition,Mode=OneWay}" />
+                <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" />
                 <MenuFlyoutItem Text="Save Copy As..." />
                 <MenuFlyoutItem Text="Reload" />
             </MenuBarItem>
             <MenuBarItem Title="Edit">
+                <MenuFlyoutItem Text="Cut and append to ClipBoard" Click="{x:Bind CutAndAppendToClipboard}" />
+                <MenuFlyoutItem Text="Copy and append to ClipBoard" Click="{x:Bind CopyAndAppendToClipboard}" />
                 <MenuFlyoutSubItem Text="Convert">
-                    <MenuFlyoutItem Text="UPPER CASE"/>
-                    <MenuFlyoutItem Text="lower case"/>
-                    <MenuFlyoutItem Text="UPPER CASE (U.S.)"/>
-                    <MenuFlyoutItem Text="lower case (U.S.)"/>
+                    <MenuFlyoutItem Text="UPPER CASE" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCase"/>
+                    <MenuFlyoutItem Text="lower case" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCase"/>
+                    <MenuFlyoutItem Text="UPPER CASE (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCaseInvariant"/>
+                    <MenuFlyoutItem Text="lower case (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCaseInvariant"/>
+                    <MenuFlyoutItem Text="Wide" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiWide"/>
+                    <MenuFlyoutItem Text="Narrow" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiNarrow"/>
+                    <MenuFlyoutItem Text="Wide (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowWide"/>
+                    <MenuFlyoutItem Text="Narrow (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowNarrow"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
-                    <MenuFlyoutItem Text="全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
+                    <MenuFlyoutItem Text="Indent" Click="MenuFlyoutItem_Click_Convert" Tag="Indent"/>
+                    <MenuFlyoutItem Text="Unindent" Click="MenuFlyoutItem_Click_Convert" Tag="Unindent"/>
+                    <MenuFlyoutItem Text="Tab → Spaces x8" Click="MenuFlyoutItem_Click_Convert" Tag="TabToSpaces"/>
+                    <MenuFlyoutItem Text="Spaces x8 → Tab" Click="MenuFlyoutItem_Click_Convert" Tag="SpacesToTab"/>
+                    <MenuFlyoutSeparator Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"/>
+                    <!--<MenuFlyoutItem Text="ﾊﾝｶｸ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />-->
+                    <MenuFlyoutItem Text="全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                                     Click="MenuFlyoutItem_Click_Convert" Tag="JpAllKanaToHiragana"/>
+                    <MenuFlyoutItem Text="全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                                     Click="MenuFlyoutItem_Click_Convert" Tag="JpAllKanaToKatakana"/>
+                    <MenuFlyoutItem Text="全角カタカナ → 全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                                     Click="MenuFlyoutItem_Click_Convert" Tag="JpKatakanaToHiragana"/>
+                    <MenuFlyoutItem Text="全角ひらがな → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                                     Click="MenuFlyoutItem_Click_Convert" Tag="JpHiraganaToKatakana"/>
+                    <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                                     Click="MenuFlyoutItem_Click_Convert" Tag="JpHalfKatakanaToHiragana"/>
+                    <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                                     Click="MenuFlyoutItem_Click_Convert" Tag="JpHalfKatakanaToKatakana"/>
                 </MenuFlyoutSubItem>
             </MenuBarItem>
         </MenuBar>
-        <TextBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" AcceptsReturn="True" IsSpellCheckEnabled="{x:Bind IsSpellCheckEnabled,Mode=OneWay}"
-                 ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+        <TextBox
+            x:Name="MainTextBox"
+            VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" AcceptsReturn="True" IsSpellCheckEnabled="{x:Bind IsSpellCheckEnabled,Mode=OneWay}"
+            ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
                  >
 
         </TextBox>

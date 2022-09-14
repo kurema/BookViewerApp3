@@ -59,10 +59,10 @@
             </ListView>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
-            <fv:TextEditorPage CanChageSavePosition="False" IsSpellCheckEnabled="False" />
+            <fv:TextEditorPage CanChageSavePath="False" IsSpellCheckEnabled="False" />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
-            <fv:TextEditorPage CanChageSavePosition="False" IsSpellCheckEnabled="False" />
+            <fv:TextEditorPage CanChageSavePath="False" IsSpellCheckEnabled="False" />
         </PivotItem>
     </Pivot>
 </Page>
