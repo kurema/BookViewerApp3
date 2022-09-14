@@ -253,8 +253,8 @@ public static class ExtensionAdBlockerManager
             }
             {
                 var folder = await GetDataFolderLocal();
-                var file = await folder.GetFileAsync(FileNameUser);
-                if (file is not null) success &= await LoadFilterFile(file);
+                var file = await folder.TryGetItemAsync(FileNameUser);
+                if (file is StorageFile f) success &= await LoadFilterFile(f);
             }
             Filter.FinalizeForRead();
             ResetCache();

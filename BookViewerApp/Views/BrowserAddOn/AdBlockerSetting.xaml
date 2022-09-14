@@ -11,6 +11,7 @@
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     xmlns:vm="using:BookViewerApp.ViewModels"
     xmlns:v="using:BookViewerApp.Views"
+    xmlns:fv="using:kurema.FileExplorerControl.Views.Viewers"
     x:Name="main"
     >
     <Page.DataContext>
@@ -58,8 +59,10 @@
             </ListView>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
+            <fv:TextEditorPage CanChageSavePosition="False" IsSpellCheckEnabled="False" />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
+            <fv:TextEditorPage CanChageSavePosition="False" IsSpellCheckEnabled="False" />
         </PivotItem>
     </Pivot>
 </Page>

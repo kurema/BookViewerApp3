@@ -34,13 +34,56 @@ public class BoolToStringConverter : IValueConverter
         {
             return b ? text[0] : text[1];
         }
-        else if (value is null && text.Length < 3)
+        else if (value is null && text.Length >= 3)
         {
             return text[2];
         }
         else
         {
             throw new ArgumentException();
+        }
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        string[] text = parameter.ToString().Split(':');
+        return text[0] == value.ToString();
+    }
+}
+
+public class BoolToEnumConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        string[] text = parameter.ToString().Split(':');
+        if (text.Length < 2) throw new ArgumentException();
+        string result;
+        if (value is bool b)
+        {
+            result = b ? text[0] : text[1];
+        }
+        else if (value is null && text.Length >= 3)
+        {
+            result = text[2];
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
+        if (targetType.IsEnum)
+        {
+            foreach (Enum item in targetType.GetEnumValues())
+            {
+                if(item.ToString().Equals(result, StringComparison.InvariantCulture))
+                {
+                    return item;
+                }
+            }
+            throw new ArgumentException();
+        }
+        else
+        {
+            return result;
         }
     }
 

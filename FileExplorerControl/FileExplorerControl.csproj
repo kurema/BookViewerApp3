@@ -180,6 +180,9 @@
     <Compile Include="Views\Viewers\SimpleMediaPlayerPage.xaml.cs">
       <DependentUpon>SimpleMediaPlayerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Viewers\TextEditorPage.xaml.cs">
+      <DependentUpon>TextEditorPage.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\FileExplorerControl.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +248,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Viewers\SimpleMediaPlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Viewers\TextEditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
