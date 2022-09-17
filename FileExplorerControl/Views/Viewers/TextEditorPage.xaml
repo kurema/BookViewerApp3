@@ -11,6 +11,7 @@
     >
     <Page.Resources>
         <vc:BoolToEnumConverter x:Key="vc_b2e"/>
+        <vc:EnumToBoolConverter x:Key="vc_e2b"/>
     </Page.Resources>
 
     <Grid>
@@ -27,9 +28,17 @@
                 <MenuFlyoutItem Text="Reload" />
             </MenuBarItem>
             <MenuBarItem Title="Edit">
-                <MenuFlyoutItem Text="Cut and append to ClipBoard" Click="{x:Bind CutAndAppendToClipboard}" />
-                <MenuFlyoutItem Text="Copy and append to ClipBoard" Click="{x:Bind CopyAndAppendToClipboard}" />
-                <MenuFlyoutSubItem Text="Convert">
+                <!-- IsEnabled="{Binding ElementName=MainTextBox,Path=CanUndo,Mode=OneWay}" -->
+                <MenuFlyoutItem Text="Undo" Click="{x:Bind MainTextBox.Undo}"/>
+                <MenuFlyoutItem Text="Redo" Click="{x:Bind MainTextBox.Redo}"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Cut" Click="{x:Bind MainTextBox.CutSelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                <MenuFlyoutItem Text="Copy" Click="{x:Bind MainTextBox.CopySelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                <MenuFlyoutItem Text="Cut and append to ClipBoard" Click="{x:Bind CutAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                <MenuFlyoutItem Text="Copy and append to ClipBoard" Click="{x:Bind CopyAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                <MenuFlyoutItem Text="Paste" Click="{x:Bind MainTextBox.PasteFromClipboard}"/>
+                <MenuFlyoutItem Text="Delete" Click="MenuFlyoutItem_Click" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                <MenuFlyoutSubItem Text="Convert" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}">
                     <MenuFlyoutItem Text="UPPER CASE" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCase"/>
                     <MenuFlyoutItem Text="lower case" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCase"/>
                     <MenuFlyoutItem Text="UPPER CASE (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCaseInvariant"/>
@@ -58,14 +67,39 @@
                     <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpHalfKatakanaToKatakana"/>
                 </MenuFlyoutSubItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Select All" Click="{x:Bind MainTextBox.SelectAll}" />
+            </MenuBarItem>
+            <MenuBarItem Title="View">
+                <ToggleMenuFlyoutItem Text="Word Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
+                <!-- WrapWholeWords throws exception. So it's disabled. -->
+                <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/4144 -->
+                <!--<MenuFlyoutSubItem Text="Word Wrap">
+                    <ToggleMenuFlyoutItem Text="No Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=NoWrap:Wrap,Mode=TwoWay}" />
+                    <ToggleMenuFlyoutItem Text="Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
+                    <ToggleMenuFlyoutItem Text="Wrap Whole Words" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=WrapWholeWords:NoWrap,Mode=TwoWay}" />
+                </MenuFlyoutSubItem>-->
+                <MenuFlyoutSubItem Text="Fontsize">
+                    <MenuFlyoutItem Text="9" Tag="9" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="10" Tag="10" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="11" Tag="11" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="12" Tag="12" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="13" Tag="13" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="14" Tag="14" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="15" Tag="15" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="18" Tag="18" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="24" Tag="24" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="36" Tag="36" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="48" Tag="48" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="64" Tag="64" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    <MenuFlyoutItem Text="72" Tag="72" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                </MenuFlyoutSubItem>
             </MenuBarItem>
         </MenuBar>
         <TextBox
-            x:Name="MainTextBox"
+            x:Name="MainTextBox" SelectionChanged="MainTextBox_SelectionChanged"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" AcceptsReturn="True" IsSpellCheckEnabled="{x:Bind IsSpellCheckEnabled,Mode=OneWay}"
             ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 >
-
-        </TextBox>
+                 />
     </Grid>
 </Page>

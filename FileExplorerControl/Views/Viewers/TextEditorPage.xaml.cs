@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using Zipangu;
+using static System.Net.Mime.MediaTypeNames;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -51,6 +52,17 @@ public sealed partial class TextEditorPage : Page
     }
 
     public static readonly DependencyProperty IsSpellCheckEnabledProperty = DependencyProperty.Register("IsSpellCheckEnabled", typeof(bool), typeof(TextEditorPage), new PropertyMetadata(true));
+
+
+
+    public bool SelectionNotEmpty
+    {
+        get { return (bool)GetValue(SelectionNotEmptyProperty); }
+        set { SetValue(SelectionNotEmptyProperty, value); }
+    }
+
+    public static readonly DependencyProperty SelectionNotEmptyProperty = DependencyProperty.Register("SelectionNotEmpty", typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
+
 
 
     public bool IsJapanese
@@ -162,5 +174,23 @@ public sealed partial class TextEditorPage : Page
         }
         MainTextBox.Text = MainTextBox.Text.Remove(s, l).Insert(s, text);
         MainTextBox.Select(s, text.Length);
+    }
+
+    private void MainTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+    {
+        if (sender is not TextBox tb) return;
+        SelectionNotEmpty = tb.SelectionLength > 0;
+    }
+
+    private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+    {
+        MainTextBox.Text = MainTextBox.Text.Remove(MainTextBox.SelectionStart, MainTextBox.SelectionLength);
+    }
+
+    private void MenuFlyoutItem_Click_ChangeFontSize(object sender, RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement fe) return;
+        if (!double.TryParse(fe.Tag.ToString(),out double fontsize)) return;
+        MainTextBox.FontSize = fontsize;
     }
 }

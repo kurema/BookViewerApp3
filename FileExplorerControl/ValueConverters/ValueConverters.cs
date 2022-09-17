@@ -74,7 +74,7 @@ public class BoolToEnumConverter : IValueConverter
         {
             foreach (Enum item in targetType.GetEnumValues())
             {
-                if(item.ToString().Equals(result, StringComparison.InvariantCulture))
+                if (item.ToString().Equals(result, StringComparison.InvariantCulture))
                 {
                     return item;
                 }
@@ -92,6 +92,14 @@ public class BoolToEnumConverter : IValueConverter
         string[] text = parameter.ToString().Split(':');
         return text[0] == value.ToString();
     }
+}
+
+public class EnumToBoolConverter : IValueConverter
+{
+    readonly BoolToEnumConverter Reverse = new BoolToEnumConverter();
+
+    public object Convert(object value, Type targetType, object parameter, string language) => Reverse.ConvertBack(value, targetType, parameter, language);
+    public object ConvertBack(object value, Type targetType, object parameter, string language) => Reverse.Convert(value, targetType, parameter, language);
 }
 
 public class StringTableConverter : IValueConverter
