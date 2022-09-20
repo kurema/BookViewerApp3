@@ -21,11 +21,11 @@
         </Grid.RowDefinitions>
         <MenuBar>
             <MenuBarItem Title="File">
-                <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" />
-                <MenuFlyoutItem Text="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" />
-                <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" />
-                <MenuFlyoutItem Text="Save Copy As..." />
-                <MenuFlyoutItem Text="Reload" />
+                <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}" />
+                <MenuFlyoutItem Text="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}" />
+                <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
+                <MenuFlyoutItem Text="Save Copy As..." Click="{x:Bind SaveAsCopy}" />
+                <MenuFlyoutItem Text="Reload" Click="{x:Bind Load}" />
             </MenuBarItem>
             <MenuBarItem Title="Edit">
                 <!-- IsEnabled="{Binding ElementName=MainTextBox,Path=CanUndo,Mode=OneWay}" -->

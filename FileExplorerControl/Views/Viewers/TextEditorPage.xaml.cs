@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -72,6 +73,87 @@ public sealed partial class TextEditorPage : Page
     }
 
     public static readonly DependencyProperty IsJapaneseProperty = DependencyProperty.Register(nameof(IsJapanese), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
+
+    public Models.FileItems.IFileItem File { get; set; }
+
+    public System.Text.Encoding Encoding { get; set; } = null;
+
+    public Action<Windows.Storage.Pickers.FileSavePicker> DefaultSetupDialog { get; set; } = null;
+
+    public async Task Load()
+    {
+        if (File is null) return;
+        using var stream = await File.OpenStreamForReadAsync();
+        if (stream is null) return;
+        using var sr = new StreamReader(stream, Encoding ?? System.Text.Encoding.UTF8);
+        var text = await sr.ReadToEndAsync();
+        if (text is null) return;
+        MainTextBox.Text = text;
+    }
+
+    public async Task Save()
+    {
+        await SaveGeneral(File, Encoding);
+    }
+
+    public async Task SaveGeneral(Models.FileItems.IFileItem file, System.Text.Encoding encoding)
+    {
+        if (file is null) return;
+        using var stream = await file.OpenStreamForWriteAsync();
+        if (stream is null) return;
+        var text = MainTextBox.Text;
+        using var sw = new StreamWriter(stream, encoding ?? System.Text.Encoding.UTF8);
+        await sw.WriteAsync(text);
+        sw.Close();
+        stream.Close();
+    }
+
+    public async Task Open()
+    {
+        var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+        openPicker.SuggestedStartLocation= Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+        openPicker.FileTypeFilter.Add(".txt");
+        var file = await openPicker.PickSingleFileAsync();
+        if (file is null) return;
+        File = new Models.FileItems.StorageFileItem(file);
+        await Load();
+    }
+
+    public async Task SaveAsGeneral(Action<Windows.Storage.Pickers.FileSavePicker> setupDialog, bool saveCopy = false)
+    {
+        var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+        if (setupDialog is not null)
+        {
+            setupDialog(savePicker);
+        }
+        else
+        {
+            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            savePicker.SuggestedFileName = "New Text";
+        }
+        var file = await savePicker.PickSaveFileAsync();
+        if (file is null) return;
+        if (saveCopy)
+        {
+            await SaveGeneral(new Models.FileItems.StorageFileItem(file), Encoding);
+        }
+        else
+        {
+            File = new Models.FileItems.StorageFileItem(file);
+            await Save();
+        }
+    }
+
+    public async Task SaveAs()
+    {
+        await SaveAsGeneral(DefaultSetupDialog);
+    }
+
+    public async Task SaveAsCopy()
+    {
+        await SaveAsGeneral(DefaultSetupDialog, true);
+    }
 
     public TextEditorPage()
     {
@@ -190,7 +272,7 @@ public sealed partial class TextEditorPage : Page
     private void MenuFlyoutItem_Click_ChangeFontSize(object sender, RoutedEventArgs e)
     {
         if (sender is not FrameworkElement fe) return;
-        if (!double.TryParse(fe.Tag.ToString(),out double fontsize)) return;
+        if (!double.TryParse(fe.Tag.ToString(), out double fontsize)) return;
         MainTextBox.FontSize = fontsize;
     }
 }
