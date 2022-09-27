@@ -19,83 +19,94 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <MenuBar>
-            <MenuBarItem Title="File">
-                <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}" />
-                <MenuFlyoutItem Text="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}" />
-                <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
-                <MenuFlyoutItem Text="Save Copy As..." Click="{x:Bind SaveAsCopy}" />
-                <MenuFlyoutItem Text="Reload" Click="{x:Bind Load}" />
-            </MenuBarItem>
-            <MenuBarItem Title="Edit">
-                <!-- IsEnabled="{Binding ElementName=MainTextBox,Path=CanUndo,Mode=OneWay}" -->
-                <MenuFlyoutItem Text="Undo" Click="{x:Bind MainTextBox.Undo}"/>
-                <MenuFlyoutItem Text="Redo" Click="{x:Bind MainTextBox.Redo}"/>
-                <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="Cut" Click="{x:Bind MainTextBox.CutSelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                <MenuFlyoutItem Text="Copy" Click="{x:Bind MainTextBox.CopySelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                <MenuFlyoutItem Text="Cut and append to ClipBoard" Click="{x:Bind CutAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                <MenuFlyoutItem Text="Copy and append to ClipBoard" Click="{x:Bind CopyAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                <MenuFlyoutItem Text="Paste" Click="{x:Bind MainTextBox.PasteFromClipboard}"/>
-                <MenuFlyoutItem Text="Delete" Click="MenuFlyoutItem_Click" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                <MenuFlyoutSubItem Text="Convert" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}">
-                    <MenuFlyoutItem Text="UPPER CASE" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCase"/>
-                    <MenuFlyoutItem Text="lower case" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCase"/>
-                    <MenuFlyoutItem Text="UPPER CASE (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCaseInvariant"/>
-                    <MenuFlyoutItem Text="lower case (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCaseInvariant"/>
-                    <MenuFlyoutItem Text="Wide" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiWide"/>
-                    <MenuFlyoutItem Text="Narrow" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiNarrow"/>
-                    <MenuFlyoutItem Text="Wide (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowWide"/>
-                    <MenuFlyoutItem Text="Narrow (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowNarrow"/>
+        <StackPanel Orientation="Horizontal">
+            <MenuBar>
+                <MenuBarItem Title="File">
+                    <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}" />
+                    <MenuFlyoutItem Text="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}" />
+                    <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
+                    <MenuFlyoutItem Text="Save Copy As..." Click="{x:Bind SaveAsCopy}" />
+                    <MenuFlyoutItem Text="Reload" Click="{x:Bind Load}" />
+                </MenuBarItem>
+                <MenuBarItem Title="Edit">
+                    <!-- IsEnabled="{Binding ElementName=MainTextBox,Path=CanUndo,Mode=OneWay}" -->
+                    <MenuFlyoutItem Text="Undo" Click="{x:Bind MainTextBox.Undo}"/>
+                    <MenuFlyoutItem Text="Redo" Click="{x:Bind MainTextBox.Redo}"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="Indent" Click="MenuFlyoutItem_Click_Convert" Tag="Indent"/>
-                    <MenuFlyoutItem Text="Unindent" Click="MenuFlyoutItem_Click_Convert" Tag="Unindent"/>
-                    <MenuFlyoutItem Text="Tab → Spaces x8" Click="MenuFlyoutItem_Click_Convert" Tag="TabToSpaces"/>
-                    <MenuFlyoutItem Text="Spaces x8 → Tab" Click="MenuFlyoutItem_Click_Convert" Tag="SpacesToTab"/>
-                    <MenuFlyoutSeparator Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"/>
-                    <!--<MenuFlyoutItem Text="ﾊﾝｶｸ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />-->
-                    <MenuFlyoutItem Text="全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                    <MenuFlyoutItem Text="Cut" Click="{x:Bind MainTextBox.CutSelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="Copy" Click="{x:Bind MainTextBox.CopySelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="Cut and append to ClipBoard" Click="{x:Bind CutAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="Copy and append to ClipBoard" Click="{x:Bind CopyAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="Paste" Click="{x:Bind MainTextBox.PasteFromClipboard}"/>
+                    <MenuFlyoutItem Text="Delete" Click="MenuFlyoutItem_Click" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutSubItem Text="Convert" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}">
+                        <MenuFlyoutItem Text="UPPER CASE" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCase"/>
+                        <MenuFlyoutItem Text="lower case" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCase"/>
+                        <MenuFlyoutItem Text="UPPER CASE (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCaseInvariant"/>
+                        <MenuFlyoutItem Text="lower case (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCaseInvariant"/>
+                        <MenuFlyoutItem Text="Wide" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiWide"/>
+                        <MenuFlyoutItem Text="Narrow" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiNarrow"/>
+                        <MenuFlyoutItem Text="Wide (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowWide"/>
+                        <MenuFlyoutItem Text="Narrow (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowNarrow"/>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Text="Indent" Click="MenuFlyoutItem_Click_Convert" Tag="Indent"/>
+                        <MenuFlyoutItem Text="Unindent" Click="MenuFlyoutItem_Click_Convert" Tag="Unindent"/>
+                        <MenuFlyoutItem Text="Tab → Spaces x8" Click="MenuFlyoutItem_Click_Convert" Tag="TabToSpaces"/>
+                        <MenuFlyoutItem Text="Spaces x8 → Tab" Click="MenuFlyoutItem_Click_Convert" Tag="SpacesToTab"/>
+                        <MenuFlyoutSeparator Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"/>
+                        <!--<MenuFlyoutItem Text="ﾊﾝｶｸ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />-->
+                        <MenuFlyoutItem Text="全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpAllKanaToHiragana"/>
-                    <MenuFlyoutItem Text="全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                        <MenuFlyoutItem Text="全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpAllKanaToKatakana"/>
-                    <MenuFlyoutItem Text="全角カタカナ → 全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                        <MenuFlyoutItem Text="全角カタカナ → 全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpKatakanaToHiragana"/>
-                    <MenuFlyoutItem Text="全角ひらがな → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                        <MenuFlyoutItem Text="全角ひらがな → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpHiraganaToKatakana"/>
-                    <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                        <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpHalfKatakanaToHiragana"/>
-                    <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
+                        <MenuFlyoutItem Text="ｶﾀｶﾅ → 全角カタカナ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpHalfKatakanaToKatakana"/>
-                </MenuFlyoutSubItem>
-                <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="Select All" Click="{x:Bind MainTextBox.SelectAll}" />
-            </MenuBarItem>
-            <MenuBarItem Title="View">
-                <ToggleMenuFlyoutItem Text="Word Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
-                <!-- WrapWholeWords throws exception. So it's disabled. -->
-                <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/4144 -->
-                <!--<MenuFlyoutSubItem Text="Word Wrap">
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem Text="Select All" Click="{x:Bind MainTextBox.SelectAll}" />
+                </MenuBarItem>
+                <MenuBarItem Title="View">
+                    <ToggleMenuFlyoutItem Text="Word Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
+                    <!-- WrapWholeWords throws exception. So it's disabled. -->
+                    <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/4144 -->
+                    <!--<MenuFlyoutSubItem Text="Word Wrap">
                     <ToggleMenuFlyoutItem Text="No Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=NoWrap:Wrap,Mode=TwoWay}" />
                     <ToggleMenuFlyoutItem Text="Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
                     <ToggleMenuFlyoutItem Text="Wrap Whole Words" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=WrapWholeWords:NoWrap,Mode=TwoWay}" />
                 </MenuFlyoutSubItem>-->
-                <MenuFlyoutSubItem Text="Fontsize">
-                    <MenuFlyoutItem Text="9" Tag="9" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="10" Tag="10" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="11" Tag="11" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="12" Tag="12" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="13" Tag="13" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="14" Tag="14" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="15" Tag="15" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="18" Tag="18" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="24" Tag="24" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="36" Tag="36" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="48" Tag="48" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="64" Tag="64" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                    <MenuFlyoutItem Text="72" Tag="72" Click="MenuFlyoutItem_Click_ChangeFontSize" />
-                </MenuFlyoutSubItem>
-            </MenuBarItem>
-        </MenuBar>
+                    <MenuFlyoutSubItem Text="Fontsize">
+                        <MenuFlyoutItem Text="9" Tag="9" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="10" Tag="10" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="11" Tag="11" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="12" Tag="12" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="13" Tag="13" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="14" Tag="14" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="15" Tag="15" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="18" Tag="18" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="24" Tag="24" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="36" Tag="36" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="48" Tag="48" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="64" Tag="64" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="72" Tag="72" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                    </MenuFlyoutSubItem>
+                </MenuBarItem>
+            </MenuBar>
+            <CommandBar DefaultLabelPosition="Collapsed">
+                <AppBarButton Icon="OpenFile" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}"/>
+                <AppBarButton Icon="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}"/>
+                <AppBarButton Icon="SaveLocal" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
+                <AppBarButton Icon="Refresh" Click="{x:Bind Load}" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Undo" Click="{x:Bind MainTextBox.Undo}"/>
+                <AppBarButton Icon="Redo" Click="{x:Bind MainTextBox.Redo}"/>
+            </CommandBar>
+        </StackPanel>
         <TextBox
             x:Name="MainTextBox" SelectionChanged="MainTextBox_SelectionChanged"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" AcceptsReturn="True" IsSpellCheckEnabled="{x:Bind IsSpellCheckEnabled,Mode=OneWay}"

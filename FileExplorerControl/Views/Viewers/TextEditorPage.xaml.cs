@@ -130,7 +130,7 @@ public sealed partial class TextEditorPage : Page
         {
             savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
             savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            savePicker.SuggestedFileName = "New Text";
+            savePicker.SuggestedFileName = File?.Name ?? "New Text";
         }
         var file = await savePicker.PickSaveFileAsync();
         if (file is null) return;
