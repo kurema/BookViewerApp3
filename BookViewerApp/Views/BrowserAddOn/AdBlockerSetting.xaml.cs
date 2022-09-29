@@ -36,7 +36,16 @@ public sealed partial class AdBlockerSetting : Page
             if (tab is null) return;
             await tab.OpenTabWebPreferedBrowser(address?.ToString());
         }, address => Uri.TryCreate(address?.ToString(), UriKind.Absolute, out var _));
+
+        async void LoadTextEditors()
+        {
+            await textEditorCustomFilters.LoadFile(await Managers.ExtensionAdBlockerManager.GetCustomFiltersFileAsync(true));
+            await textEditorTrustedSites.LoadFile(await Managers.ExtensionAdBlockerManager.GetWhiteListFileAsync(true));
+        }
+
+        LoadTextEditors();
     }
+
 
     public async void LoadFilters()
     {
@@ -47,4 +56,9 @@ public sealed partial class AdBlockerSetting : Page
     }
 
     public Helper.DelegateCommand OpenWebCommand { get; }
+
+    private void textEditorCustomFilters_SavingFile(kurema.FileExplorerControl.Views.Viewers.TextEditorPage sender, kurema.FileExplorerControl.Views.Viewers.TextEditorPage.SavingFileEventArgs args)
+    {
+        args.Cancel("It's not implemented");
+    }
 }

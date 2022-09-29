@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Protection.PlayReady;
+using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,6 +23,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using Zipangu;
+using static kurema.FileExplorerControl.Views.Viewers.TextEditorPage;
 using static System.Net.Mime.MediaTypeNames;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
@@ -80,25 +85,45 @@ public sealed partial class TextEditorPage : Page
 
     public Action<Windows.Storage.Pickers.FileSavePicker> DefaultSetupDialog { get; set; } = null;
 
-    public async Task Load()
+    public async Task<bool> Load()
     {
-        if (File is null) return;
+        if (File is null) return false;
         using var stream = await File.OpenStreamForReadAsync();
-        if (stream is null) return;
+        if (stream is null) return false;
         using var sr = new StreamReader(stream, Encoding ?? System.Text.Encoding.UTF8);
         var text = await sr.ReadToEndAsync();
-        if (text is null) return;
+        if (text is null) return false;
         MainTextBox.Text = text;
+        return true;
+    }
+
+    public async Task<bool> LoadFile(IStorageFile file)
+    {
+        if (file is null) return false;
+        var fileitem = new Models.FileItems.StorageFileItem(file);
+        File = fileitem;
+        return await Load();
     }
 
     public async Task Save()
     {
-        await SaveGeneral(File, Encoding);
+        await SaveGeneral(File, Encoding, SaveMode.Save);
     }
 
-    public async Task SaveGeneral(Models.FileItems.IFileItem file, System.Text.Encoding encoding)
+    public async Task SaveGeneral(Models.FileItems.IFileItem file, System.Text.Encoding encoding, SaveMode saveMode)
     {
         if (file is null) return;
+        var ea = new SavingFileEventArgs(file, saveMode);
+        SavingFile?.Invoke(this, ea);
+        if (!ea.ContinueSaving)
+        {
+            if (ea.ErrorMessage is not null)
+            {
+                var dialog = new MessageDialog(ea.ErrorMessage);
+                await dialog.ShowAsync();
+            }
+            return;
+        }
         using var stream = await file.OpenStreamForWriteAsync();
         if (stream is null) return;
         var text = MainTextBox.Text;
@@ -111,7 +136,7 @@ public sealed partial class TextEditorPage : Page
     public async Task Open()
     {
         var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
-        openPicker.SuggestedStartLocation= Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+        openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
         openPicker.FileTypeFilter.Add(".txt");
         var file = await openPicker.PickSingleFileAsync();
         if (file is null) return;
@@ -119,7 +144,7 @@ public sealed partial class TextEditorPage : Page
         await Load();
     }
 
-    public async Task SaveAsGeneral(Action<Windows.Storage.Pickers.FileSavePicker> setupDialog, bool saveCopy = false)
+    public async Task SaveAsGeneral(Action<Windows.Storage.Pickers.FileSavePicker> setupDialog, SaveMode saveMode, bool saveCopy = false)
     {
         var savePicker = new Windows.Storage.Pickers.FileSavePicker();
         if (setupDialog is not null)
@@ -136,7 +161,7 @@ public sealed partial class TextEditorPage : Page
         if (file is null) return;
         if (saveCopy)
         {
-            await SaveGeneral(new Models.FileItems.StorageFileItem(file), Encoding);
+            await SaveGeneral(new Models.FileItems.StorageFileItem(file), Encoding, saveMode);
         }
         else
         {
@@ -147,12 +172,12 @@ public sealed partial class TextEditorPage : Page
 
     public async Task SaveAs()
     {
-        await SaveAsGeneral(DefaultSetupDialog);
+        await SaveAsGeneral(DefaultSetupDialog, SaveMode.SaveAs);
     }
 
     public async Task SaveAsCopy()
     {
-        await SaveAsGeneral(DefaultSetupDialog, true);
+        await SaveAsGeneral(DefaultSetupDialog, SaveMode.SaveAsCopy, true);
     }
 
     public TextEditorPage()
@@ -274,5 +299,36 @@ public sealed partial class TextEditorPage : Page
         if (sender is not FrameworkElement fe) return;
         if (!double.TryParse(fe.Tag.ToString(), out double fontsize)) return;
         MainTextBox.FontSize = fontsize;
+
+    }
+
+    public delegate void GenericsEventHandler<T>(TextEditorPage sender, T args);
+    public event GenericsEventHandler<SavingFileEventArgs> SavingFile;
+
+    public class SavingFileEventArgs : EventArgs
+    {
+        public SavingFileEventArgs(Models.FileItems.IFileItem file, SaveMode mode)
+        {
+            Mode = mode;
+            File = file ?? throw new ArgumentNullException(nameof(file));
+        }
+
+        public bool ContinueSaving { get; set; } = true;
+        public void Cancel(string errorMesasge = null)
+        {
+            ContinueSaving = false;
+            ErrorMessage = errorMesasge;
+        }
+
+        public string ErrorMessage { get; set; }
+
+        public SaveMode Mode { get; }
+
+        public Models.FileItems.IFileItem File { get; }
+    }
+
+    public enum SaveMode
+    {
+        Save, SaveAs, SaveAsCopy,
     }
 }

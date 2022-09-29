@@ -98,9 +98,9 @@
                 </MenuBarItem>
             </MenuBar>
             <CommandBar DefaultLabelPosition="Collapsed">
-                <AppBarButton Icon="OpenFile" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}"/>
-                <AppBarButton Icon="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}"/>
-                <AppBarButton Icon="SaveLocal" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
+                <AppBarButton Icon="OpenFile" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Open}"/>
+                <AppBarButton Icon="Save" Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" />
+                <AppBarButton Icon="SaveLocal" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind SaveAs}" />
                 <AppBarButton Icon="Refresh" Click="{x:Bind Load}" />
                 <AppBarSeparator />
                 <AppBarButton Icon="Undo" Click="{x:Bind MainTextBox.Undo}"/>

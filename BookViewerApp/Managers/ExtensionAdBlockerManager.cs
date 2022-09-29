@@ -60,7 +60,7 @@ public static class ExtensionAdBlockerManager
         UserWhitelist.Add(upper);
         try
         {
-            var file = await LoadUserWhitelistFile();
+            var file = await GetWhiteListFileAsync();
             await FileIO.AppendLinesAsync(file, new[] { domain.ToLowerInvariant() });
             return true;
         }
@@ -77,7 +77,7 @@ public static class ExtensionAdBlockerManager
         UserWhitelist.Remove(upper);
         try
         {
-            var file = await LoadUserWhitelistFile();
+            var file = await GetWhiteListFileAsync();
             var text = string.Join('\n', UserWhitelist.Select(a => a.ToLowerInvariant()));
             await FileIO.WriteTextAsync(file, text, Windows.Storage.Streams.UnicodeEncoding.Utf8);
             return true;
@@ -88,19 +88,13 @@ public static class ExtensionAdBlockerManager
         }
     }
 
-    private static async Task<StorageFile?> LoadUserWhitelistFile()
-    {
-        var folder = await GetDataFolderLocal();
-        if (folder is null) return null;
-        return await folder.GetFileAsync(FileNameWhiteList);
-    }
 
     public static async Task LoadUserWhitelist()
     {
         UserWhitelist.Clear();
         try
         {
-            var file = await LoadUserWhitelistFile();
+            var file = await GetWhiteListFileAsync();
             if (file is null) return;
             var text = await FileIO.ReadTextAsync(file, Windows.Storage.Streams.UnicodeEncoding.Utf8);
             var list = text.Split('\n', '\r').Where(a => !a.StartsWith("#") && !string.IsNullOrWhiteSpace(a)).Select(a => a.ToUpperInvariant()).ToArray();
@@ -252,9 +246,8 @@ public static class ExtensionAdBlockerManager
                 }
             }
             {
-                var folder = await GetDataFolderLocal();
-                var file = await folder.TryGetItemAsync(FileNameUser);
-                if (file is StorageFile f) success &= await LoadFilterFile(f);
+                var file = await GetCustomFiltersFileAsync();
+                if (file is not null) success &= await LoadFilterFile(file);
             }
             Filter.FinalizeForRead();
             ResetCache();
@@ -263,6 +256,23 @@ public static class ExtensionAdBlockerManager
         finally
         {
             SemaphoreLoadFromText.Release();
+        }
+    }
+
+    public static async Task<StorageFile?> GetCustomFiltersFileAsync(bool create = false) => await GetDataFolderFileAsync(FileNameUser, create);
+    public static async Task<StorageFile?> GetWhiteListFileAsync(bool create = false) => await GetDataFolderFileAsync(FileNameWhiteList, create);
+
+    private static async Task<StorageFile?> GetDataFolderFileAsync(string fileName, bool create)
+    {
+        var folder = await GetDataFolderLocal();
+        if (folder is null) return null;
+        if (create)
+        {
+            return await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
+        }
+        else
+        {
+            return await folder.TryGetItemAsync(fileName) as StorageFile;
         }
     }
 
