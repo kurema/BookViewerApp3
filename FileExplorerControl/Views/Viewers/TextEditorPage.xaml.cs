@@ -99,6 +99,7 @@ public sealed partial class TextEditorPage : Page
 
     public async Task<bool> LoadFile(IStorageFile file)
     {
+        //x:bind cannot use overload.
         if (file is null) return false;
         var fileitem = new Models.FileItems.StorageFileItem(file);
         File = fileitem;

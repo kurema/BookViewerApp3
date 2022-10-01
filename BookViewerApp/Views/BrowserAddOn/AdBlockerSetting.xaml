@@ -22,9 +22,6 @@
         <CollectionViewSource x:Name="FiltersSource" Source="{Binding FilterList}" IsSourceGrouped="True" />
     </Page.Resources>
     <Pivot>
-        <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">
-            <TextBlock Text="Hello"/>
-        </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Header'}">
             <ListView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource FiltersSource}}" SelectionMode="None">
                 <ListView.Header>
@@ -63,6 +60,18 @@
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
             <fv:TextEditorPage x:Name="textEditorTrustedSites" CanChageSavePath="False" IsSpellCheckEnabled="False" />
+        </PivotItem>
+        <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">
+            <ScrollViewer>
+                <StackPanel>
+                    <RichTextBlock>
+                        <Paragraph>
+                            <Bold FontSize="38">How this work?</Bold>
+                        </Paragraph>
+                        <Paragraph>This is the embbeded ad blocker.</Paragraph>
+                    </RichTextBlock>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
     </Pivot>
 </Page>
