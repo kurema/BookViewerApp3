@@ -308,7 +308,7 @@ public static class ExtensionAdBlockerManager
 
             //var wc = new WebClient();
             //wc.DownloadFileAsync(uri, System.IO.Path.Combine(path, item.filename));
-            var hc = new HttpClient();
+            var hc = CommonHttpClient;
             var result = await hc.TryGetAsync(uri);
             if (!result.Succeeded) return false;
             result.ResponseMessage.EnsureSuccessStatusCode();
@@ -398,6 +398,7 @@ public static class ExtensionAdBlockerManager
             }
 
             var response = await client.SendRequestAsync(message);
+            if (!response.IsSuccessStatusCode) return;
             var text = await response.Content.ReadAsStringAsync();
             text = removeAdsFunction?.Invoke(text) ?? text;
             var ms = new InMemoryRandomAccessStream();

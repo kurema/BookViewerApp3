@@ -61,4 +61,15 @@ public sealed partial class AdBlockerSetting : Page
     {
         args.Cancel("It's not implemented");
     }
+
+    private void Button_Click_Open(object sender, RoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.Tag?.ToString() is not string s || Uri.TryCreate(s.ToString(), UriKind.Absolute, out var targetUri)) return;
+        
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
