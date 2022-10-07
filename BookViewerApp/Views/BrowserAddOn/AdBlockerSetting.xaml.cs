@@ -62,14 +62,23 @@ public sealed partial class AdBlockerSetting : Page
         args.Cancel("It's not implemented");
     }
 
-    private void Button_Click_Open(object sender, RoutedEventArgs e)
+    private void Button_Click_Open_Document(object sender, RoutedEventArgs e)
     {
-        if ((sender as FrameworkElement)?.Tag?.ToString() is not string s || Uri.TryCreate(s.ToString(), UriKind.Absolute, out var targetUri)) return;
-        
+        //if ((sender as FrameworkElement)?.Tag?.ToString() is not string s || Uri.TryCreate(s.ToString(), UriKind.Absolute, out var targetUri)) return;
+        OpenWebCommand?.Execute("https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md");
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private async void Button_Click(object sender, RoutedEventArgs e)
     {
-
+        if ((sender as FrameworkElement)?.Tag?.ToString() is not string s) return;
+        switch (s)
+        {
+            case "Cache":
+                await Windows.System.Launcher.LaunchFolderAsync(await Managers.ExtensionAdBlockerManager.GetDataFolderCache());
+                return;
+            case "Local":
+                await Windows.System.Launcher.LaunchFolderAsync(await Managers.ExtensionAdBlockerManager.GetDataFolderLocal());
+                return;
+        }
     }
 }

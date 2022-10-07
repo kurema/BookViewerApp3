@@ -70,7 +70,7 @@
                             <Setter Property="Margin" Value="0" />
                         </Style>
                         <Style TargetType="TextBlock" x:Key="InfoHeader">
-                            <Setter Property="FontSize" Value="38" />
+                            <Setter Property="FontSize" Value="32" />
                             <Setter Property="FontWeight" Value="Bold" />
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
@@ -91,20 +91,27 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.ColumnSpan="2">
-                        <TextBlock Text="You have to download filter before you use." FontWeight="Bold" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
+                        <TextBlock Text="You have to download filters before you use." FontWeight="Bold" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
                     </StackPanel>
                     <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="1" />
                     <TextBlock Text="Document" FontWeight="Bold" Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="2" />
                     <TextBlock Text="Open this to get general informations." Style="{StaticResource InfoLabel}" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="3"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="World" Click="Button_Click_Open" Tag="https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md" Grid.Column="0" Grid.Row="3"/>
+                    <v:AcrylicButtonControl Margin="0" Icon="World" Click="Button_Click_Open_Document" Tag="https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md" Grid.Column="0" Grid.Row="3"/>
                     <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="4" />
                     <TextBlock Text="Folders"  Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="5"/>
-                    <TextBlock Text="Open the filters folder." Style="{StaticResource InfoLabel}"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="6"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="Folder" Grid.Row="6" />
-                    <TextBlock Text="Open the setting folder." Style="{StaticResource InfoLabel}"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="7"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="Folder" Grid.Row="7" />
+                    <TextBlock Text="Open the setting folder." Style="{StaticResource InfoLabel}"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="6"/>
+                    <v:AcrylicButtonControl Margin="0" Icon="Folder" Grid.Row="6" Click="Button_Click" Tag="Local" />
+                    <TextBlock Text="Open the filters folder." Style="{StaticResource InfoLabel}"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="7"/>
+                    <v:AcrylicButtonControl Margin="0" Icon="Folder" Grid.Row="7" Click="Button_Click" Tag="Cache" />
+                    <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="8" />
+                    <TextBlock Text="Code" FontWeight="Bold" Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="9" />
+                    <TextBlock Text="View the source code of AdBlocker." Style="{StaticResource InfoLabel}" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="10"/>
+                    <v:AcrylicButtonControl Margin="0" Icon="World" Command="{x:Bind OpenWebCommand}" CommandParameter="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Managers/ExtensionAdBlockerManager.cs" Grid.Column="0" Grid.Row="10"/>
                 </Grid>
 
                 <!--<StackPanel>
