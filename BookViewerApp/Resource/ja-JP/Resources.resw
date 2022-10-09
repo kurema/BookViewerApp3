@@ -759,4 +759,13 @@
   <data name="Setting_Theme.Description" xml:space="preserve">
     <value>アプリのテーマ。</value>
   </data>
+  <data name="Info.More.Title" xml:space="preserve">
+    <value>その他の設定</value>
+  </data>
+  <data name="Info.More.OpenAdBlockerSetting.Title" xml:space="preserve">
+    <value>AdBlockerダッシュボードを開く</value>
+  </data>
+  <data name="Info.More.OpenAdBlockerSetting.Description" xml:space="preserve">
+    <value>フィルターのダウンロードとローカル設定の更新</value>
+  </data>
 </root>

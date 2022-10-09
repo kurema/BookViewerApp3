@@ -755,4 +755,13 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Setting_Theme.Description" xml:space="preserve">
     <value>Il tema dell'applicazione.</value>
   </data>
+  <data name="Info.More.Title" xml:space="preserve">
+    <value>Altre impostazioni</value>
+  </data>
+  <data name="Info.More.OpenAdBlockerSetting.Title" xml:space="preserve">
+    <value>Aprire il cruscotto di AdBlocker</value>
+  </data>
+  <data name="Info.More.OpenAdBlockerSetting.Description" xml:space="preserve">
+    <value>Scaricare i filtri e aggiornare le impostazioni locali</value>
+  </data>
 </root>
