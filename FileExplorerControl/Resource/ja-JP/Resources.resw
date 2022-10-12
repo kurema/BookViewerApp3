@@ -90,4 +90,103 @@
   <data name="Search.Placeholder" xml:space="preserve">
     <value>検索</value>
   </data>
+  <data name="Word.Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Word.SaveAs" xml:space="preserve">
+    <value>名前を付けて保存...</value>
+  </data>
+  <data name="Word.SaveCopyAs" xml:space="preserve">
+    <value>別名で保存...</value>
+  </data>
+  <data name="Word.Reload" xml:space="preserve">
+    <value>再読み込み</value>
+  </data>
+  <data name="Word.Undo" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="Word.Redo" xml:space="preserve">
+    <value>やり直し</value>
+  </data>
+  <data name="Word.Clipboard.Copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="Word.Clipboard.Cut" xml:space="preserve">
+    <value>切り取り</value>
+  </data>
+  <data name="Word.Clipboard.CutAndAppend" xml:space="preserve">
+    <value>追加切り取り</value>
+  </data>
+  <data name="Word.Clipboard.CopyAndAppend" xml:space="preserve">
+    <value>追加コピー</value>
+  </data>
+  <data name="Word.Clipboard.Paste" xml:space="preserve">
+    <value>貼り付け</value>
+  </data>
+  <data name="TextEditor.Edit.Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="TextEditor.Edit.SelectAll" xml:space="preserve">
+    <value>すべて選択</value>
+  </data>
+  <data name="TextEditor.View.WordWrap" xml:space="preserve">
+    <value>右端で折り返す</value>
+  </data>
+  <data name="TextEditor.View.FontSize" xml:space="preserve">
+    <value>文字サイズ</value>
+  </data>
+  <data name="TextEditor.Convert.Title" xml:space="preserve">
+    <value>変換</value>
+  </data>
+  <data name="TextEditor.Convert.Indent" xml:space="preserve">
+    <value>インデント</value>
+  </data>
+  <data name="TextEditor.Convert.Unindent" xml:space="preserve">
+    <value>逆インデント</value>
+  </data>
+  <data name="TextEditor.Convert.TabToSpace" xml:space="preserve">
+    <value>タブ → スペースx8</value>
+  </data>
+  <data name="TextEditor.Convert.SpaceToTab" xml:space="preserve">
+    <value>スペースx8 → タブ</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidthArrow" xml:space="preserve">
+    <value>全角 (矢印)</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidth" xml:space="preserve">
+    <value>全角</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidthArrow" xml:space="preserve">
+    <value>半角 (矢印)</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidth" xml:space="preserve">
+    <value>半角</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCase" xml:space="preserve">
+    <value>lower case</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCaseUS" xml:space="preserve">
+    <value>lower case (U.S.)</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCase" xml:space="preserve">
+    <value>UPPER CASE</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCaseUS" xml:space="preserve">
+    <value>UPPER CASE (U.S.)</value>
+  </data>
+  <data name="TextEditor.Edit.Title" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="TextEditor.File.Title" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="TextEditor.View.Title" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="TextEditor.Help.Title" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
 </root>

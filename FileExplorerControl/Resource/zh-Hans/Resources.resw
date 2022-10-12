@@ -195,4 +195,103 @@
   <data name="Search.Placeholder" xml:space="preserve">
     <value>搜索</value>
   </data>
+  <data name="Word.Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>拯救</value>
+  </data>
+  <data name="Word.SaveAs" xml:space="preserve">
+    <value>Save As...</value>
+  </data>
+  <data name="Word.SaveCopyAs" xml:space="preserve">
+    <value>将副本保存为...</value>
+  </data>
+  <data name="Word.Reload" xml:space="preserve">
+    <value>重新加载</value>
+  </data>
+  <data name="Word.Undo" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="Word.Redo" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="Word.Clipboard.Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Word.Clipboard.Cut" xml:space="preserve">
+    <value>削减</value>
+  </data>
+  <data name="Word.Clipboard.CutAndAppend" xml:space="preserve">
+    <value>剪切并附加到剪贴板上</value>
+  </data>
+  <data name="Word.Clipboard.CopyAndAppend" xml:space="preserve">
+    <value>复制并附加到剪贴板上</value>
+  </data>
+  <data name="Word.Clipboard.Paste" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="TextEditor.Edit.Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="TextEditor.Edit.SelectAll" xml:space="preserve">
+    <value>选择所有</value>
+  </data>
+  <data name="TextEditor.View.WordWrap" xml:space="preserve">
+    <value>词包</value>
+  </data>
+  <data name="TextEditor.View.FontSize" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="TextEditor.Convert.Title" xml:space="preserve">
+    <value>转换</value>
+  </data>
+  <data name="TextEditor.Convert.Indent" xml:space="preserve">
+    <value>缩进</value>
+  </data>
+  <data name="TextEditor.Convert.Unindent" xml:space="preserve">
+    <value>取消缩进</value>
+  </data>
+  <data name="TextEditor.Convert.TabToSpace" xml:space="preserve">
+    <value>标签 → 空白 x8</value>
+  </data>
+  <data name="TextEditor.Convert.SpaceToTab" xml:space="preserve">
+    <value>空白 x8 → 标签</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidthArrow" xml:space="preserve">
+    <value>全角 (箭头)</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidth" xml:space="preserve">
+    <value>全角</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidthArrow" xml:space="preserve">
+    <value>半角 (箭头)</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidth" xml:space="preserve">
+    <value>半角</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCase" xml:space="preserve">
+    <value>lower case</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCaseUS" xml:space="preserve">
+    <value>lower case (U.S.)</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCase" xml:space="preserve">
+    <value>UPPER CASE</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCaseUS" xml:space="preserve">
+    <value>UPPER CASE (U.S.)</value>
+  </data>
+  <data name="TextEditor.Edit.Title" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="TextEditor.File.Title" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="TextEditor.View.Title" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="TextEditor.Help.Title" xml:space="preserve">
+    <value>帮助</value>
+  </data>
 </root>

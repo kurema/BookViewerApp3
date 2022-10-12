@@ -12,6 +12,7 @@
     <Page.Resources>
         <vc:BoolToEnumConverter x:Key="vc_b2e"/>
         <vc:EnumToBoolConverter x:Key="vc_e2b"/>
+        <vc:LocalizeConverter x:Key="vc_loc" />
     </Page.Resources>
 
     <Grid>
@@ -21,38 +22,38 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <MenuBar>
-                <MenuBarItem Title="File">
-                    <MenuFlyoutItem Text="Open" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}" />
-                    <MenuFlyoutItem Text="Save" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}" />
-                    <MenuFlyoutItem Text="Save As..." IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
-                    <MenuFlyoutItem Text="Save Copy As..." Click="{x:Bind SaveAsCopy}" />
-                    <MenuFlyoutItem Text="Reload" Click="{x:Bind Load}" />
+                <MenuBarItem Title="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.File.Title}">
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind Open}" />
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}" IsEnabled="{x:Bind CanOverwrite,Mode=OneWay}" Click="{x:Bind Save}" />
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}" IsEnabled="{x:Bind CanChageSavePath,Mode=OneWay}" Click="{x:Bind SaveAs}" />
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveCopyAs}" Click="{x:Bind SaveAsCopy}" />
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" Click="{x:Bind Load}" />
                 </MenuBarItem>
-                <MenuBarItem Title="Edit">
+                <MenuBarItem Title="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.Title}">
                     <!-- IsEnabled="{Binding ElementName=MainTextBox,Path=CanUndo,Mode=OneWay}" -->
-                    <MenuFlyoutItem Text="Undo" Click="{x:Bind MainTextBox.Undo}"/>
-                    <MenuFlyoutItem Text="Redo" Click="{x:Bind MainTextBox.Redo}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="Cut" Click="{x:Bind MainTextBox.CutSelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                    <MenuFlyoutItem Text="Copy" Click="{x:Bind MainTextBox.CopySelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                    <MenuFlyoutItem Text="Cut and append to ClipBoard" Click="{x:Bind CutAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                    <MenuFlyoutItem Text="Copy and append to ClipBoard" Click="{x:Bind CopyAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                    <MenuFlyoutItem Text="Paste" Click="{x:Bind MainTextBox.PasteFromClipboard}"/>
-                    <MenuFlyoutItem Text="Delete" Click="MenuFlyoutItem_Click" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
-                    <MenuFlyoutSubItem Text="Convert" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}">
-                        <MenuFlyoutItem Text="UPPER CASE" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCase"/>
-                        <MenuFlyoutItem Text="lower case" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCase"/>
-                        <MenuFlyoutItem Text="UPPER CASE (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCaseInvariant"/>
-                        <MenuFlyoutItem Text="lower case (U.S.)" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCaseInvariant"/>
-                        <MenuFlyoutItem Text="Wide" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiWide"/>
-                        <MenuFlyoutItem Text="Narrow" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiNarrow"/>
-                        <MenuFlyoutItem Text="Wide (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowWide"/>
-                        <MenuFlyoutItem Text="Narrow (Arrow)" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowNarrow"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Clipboard.Cut}" Click="{x:Bind MainTextBox.CutSelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Clipboard.Copy}" Click="{x:Bind MainTextBox.CopySelectionToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Clipboard.CutAndAppend}" Click="{x:Bind CutAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Clipboard.CopyAndAppend}" Click="{x:Bind CopyAndAppendToClipboard}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Clipboard.Paste}" Click="{x:Bind MainTextBox.PasteFromClipboard}"/>
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.Delete}" Click="MenuFlyoutItem_Click" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}"/>
+                    <MenuFlyoutSubItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.Title}" IsEnabled="{x:Bind SelectionNotEmpty, Mode=OneWay}">
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.UpperCase}" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCase"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.LowerCase}" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCase"/>
+                        <MenuFlyoutItem Visibility="{x:Bind IsToUpperLowerStarange,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.UpperCaseUS}" Click="MenuFlyoutItem_Click_Convert" Tag="UpperCaseInvariant"/>
+                        <MenuFlyoutItem Visibility="{x:Bind IsToUpperLowerStarange,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.LowerCaseUS}" Click="MenuFlyoutItem_Click_Convert" Tag="LowerCaseInvariant"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.FullWidth}" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiWide"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.HalfWidth}" Click="MenuFlyoutItem_Click_Convert" Tag="AsciiNarrow"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.FullWidthArrow}" Visibility="Collapsed" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowWide"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.HalfWidthArrow}" Visibility="Collapsed" Click="MenuFlyoutItem_Click_Convert" Tag="ArrowNarrow"/>
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Indent" Click="MenuFlyoutItem_Click_Convert" Tag="Indent"/>
-                        <MenuFlyoutItem Text="Unindent" Click="MenuFlyoutItem_Click_Convert" Tag="Unindent"/>
-                        <MenuFlyoutItem Text="Tab → Spaces x8" Click="MenuFlyoutItem_Click_Convert" Tag="TabToSpaces"/>
-                        <MenuFlyoutItem Text="Spaces x8 → Tab" Click="MenuFlyoutItem_Click_Convert" Tag="SpacesToTab"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.Indent}" Click="MenuFlyoutItem_Click_Convert" Tag="Indent"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.Unindent}" Click="MenuFlyoutItem_Click_Convert" Tag="Unindent"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.TabToSpace}" Click="MenuFlyoutItem_Click_Convert" Tag="TabToSpaces"/>
+                        <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Convert.SpaceToTab}" Click="MenuFlyoutItem_Click_Convert" Tag="SpacesToTab"/>
                         <MenuFlyoutSeparator Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"/>
                         <!--<MenuFlyoutItem Text="ﾊﾝｶｸ" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />-->
                         <MenuFlyoutItem Text="全角ひらがな" Visibility="{x:Bind IsJapanese,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"
@@ -69,10 +70,10 @@
                                      Click="MenuFlyoutItem_Click_Convert" Tag="JpHalfKatakanaToKatakana"/>
                     </MenuFlyoutSubItem>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="Select All" Click="{x:Bind MainTextBox.SelectAll}" />
+                    <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.SelectAll}" Click="{x:Bind MainTextBox.SelectAll}" />
                 </MenuBarItem>
-                <MenuBarItem Title="View">
-                    <ToggleMenuFlyoutItem Text="Word Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
+                <MenuBarItem Title="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.View.Title}">
+                    <ToggleMenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.View.WordWrap}" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
                     <!-- WrapWholeWords throws exception. So it's disabled. -->
                     <!-- https://github.com/microsoft/microsoft-ui-xaml/issues/4144 -->
                     <!--<MenuFlyoutSubItem Text="Word Wrap">
@@ -80,7 +81,7 @@
                     <ToggleMenuFlyoutItem Text="Wrap" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
                     <ToggleMenuFlyoutItem Text="Wrap Whole Words" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=WrapWholeWords:NoWrap,Mode=TwoWay}" />
                 </MenuFlyoutSubItem>-->
-                    <MenuFlyoutSubItem Text="Fontsize">
+                    <MenuFlyoutSubItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.View.FontSize}">
                         <MenuFlyoutItem Text="9" Tag="9" Click="MenuFlyoutItem_Click_ChangeFontSize" />
                         <MenuFlyoutItem Text="10" Tag="10" Click="MenuFlyoutItem_Click_ChangeFontSize" />
                         <MenuFlyoutItem Text="11" Tag="11" Click="MenuFlyoutItem_Click_ChangeFontSize" />
@@ -98,13 +99,13 @@
                 </MenuBarItem>
             </MenuBar>
             <CommandBar DefaultLabelPosition="Collapsed">
-                <AppBarButton Icon="OpenFile" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Open}"/>
-                <AppBarButton Icon="Save" Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" />
-                <AppBarButton Icon="SaveLocal" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind SaveAs}" />
-                <AppBarButton Icon="Refresh" Click="{x:Bind Load}" />
+                <AppBarButton Icon="OpenFile" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Open}"/>
+                <AppBarButton Icon="Save" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}" Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" />
+                <AppBarButton Icon="SaveLocal" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind SaveAs}" />
+                <AppBarButton Icon="Refresh" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" Click="{x:Bind Load}" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Undo" Click="{x:Bind MainTextBox.Undo}"/>
-                <AppBarButton Icon="Redo" Click="{x:Bind MainTextBox.Redo}"/>
+                <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}"/>
+                <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}"/>
             </CommandBar>
         </StackPanel>
         <TextBox

@@ -90,4 +90,103 @@
   <data name="Search.Placeholder" xml:space="preserve">
     <value>Ricerca</value>
   </data>
+  <data name="Word.Open" xml:space="preserve">
+    <value>Apri</value>
+  </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>Risparmiare</value>
+  </data>
+  <data name="Word.SaveAs" xml:space="preserve">
+    <value>Salva con nome...</value>
+  </data>
+  <data name="Word.SaveCopyAs" xml:space="preserve">
+    <value>Salva copia con nome...</value>
+  </data>
+  <data name="Word.Reload" xml:space="preserve">
+    <value>Ricarica</value>
+  </data>
+  <data name="Word.Undo" xml:space="preserve">
+    <value>Annullamento</value>
+  </data>
+  <data name="Word.Redo" xml:space="preserve">
+    <value>Rifare</value>
+  </data>
+  <data name="Word.Clipboard.Copy" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="Word.Clipboard.Cut" xml:space="preserve">
+    <value>Tagliare</value>
+  </data>
+  <data name="Word.Clipboard.CutAndAppend" xml:space="preserve">
+    <value>Tagliare e aggiungere alla ClipBoard</value>
+  </data>
+  <data name="Word.Clipboard.CopyAndAppend" xml:space="preserve">
+    <value>Copiare e aggiungere alla ClipBoard</value>
+  </data>
+  <data name="Word.Clipboard.Paste" xml:space="preserve">
+    <value>Incolla</value>
+  </data>
+  <data name="TextEditor.Edit.Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="TextEditor.Edit.SelectAll" xml:space="preserve">
+    <value>Seleziona tutti</value>
+  </data>
+  <data name="TextEditor.View.WordWrap" xml:space="preserve">
+    <value>Avvolgimenti di parole</value>
+  </data>
+  <data name="TextEditor.View.FontSize" xml:space="preserve">
+    <value>Dimensione del carattere</value>
+  </data>
+  <data name="TextEditor.Convert.Title" xml:space="preserve">
+    <value>Convertire</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCase" xml:space="preserve">
+    <value>CASO SUPERIORE</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCaseUS" xml:space="preserve">
+    <value>MAIUSCOLO (U.S.)</value>
+  </data>
+  <data name="TextEditor.Convert.Indent" xml:space="preserve">
+    <value>Rientro</value>
+  </data>
+  <data name="TextEditor.Convert.Unindent" xml:space="preserve">
+    <value>Unindent</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidthArrow" xml:space="preserve">
+    <value>Larghezza piena (freccia)</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidth" xml:space="preserve">
+    <value>Larghezza piena</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidthArrow" xml:space="preserve">
+    <value>Larghezza dimezzata (freccia)</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidth" xml:space="preserve">
+    <value>Larghezza dimezzata</value>
+  </data>
+  <data name="TextEditor.Convert.TabToSpace" xml:space="preserve">
+    <value>Tab → Spazio x8</value>
+  </data>
+  <data name="TextEditor.Convert.SpaceToTab" xml:space="preserve">
+    <value>Spazio x8 → Tab</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCase" xml:space="preserve">
+    <value>minuscolo</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCaseUS" xml:space="preserve">
+    <value>minuscolo (Stati Uniti)</value>
+  </data>
+  <data name="TextEditor.Edit.Title" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="TextEditor.File.Title" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="TextEditor.View.Title" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="TextEditor.Help.Title" xml:space="preserve">
+    <value>Aiuto</value>
+  </data>
 </root>

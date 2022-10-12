@@ -79,6 +79,21 @@ public sealed partial class TextEditorPage : Page
 
     public static readonly DependencyProperty IsJapaneseProperty = DependencyProperty.Register(nameof(IsJapanese), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
 
+    public bool IsToUpperLowerStarange
+    {
+        get
+        {
+            var abcChar = new char[26];
+            for(byte i = 0; i < 26; i++)
+            {
+                abcChar[i] = (char)('a' + i);
+            }
+            var abc = new string(abcChar);
+            var ABC = abc.ToUpperInvariant();
+            return (abc.ToUpper() != abc.ToUpperInvariant()) || (ABC.ToLower() != ABC.ToLowerInvariant());
+        }
+    }
+
     public Models.FileItems.IFileItem File { get; set; }
 
     public System.Text.Encoding Encoding { get; set; } = null;

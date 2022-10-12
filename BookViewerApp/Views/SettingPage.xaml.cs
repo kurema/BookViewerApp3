@@ -48,8 +48,13 @@ namespace BookViewerApp.Views
         {
             var collection = new System.Collections.ObjectModel.ObservableCollection<IGrouping<string, ViewModels.ListItemViewModel>>(GetOptionalItems().GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag)));
             listView.Source = collection;
-            var purchased = (await GetPurchaseItems()).GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag));
-            if (purchased.Count() >= 1) collection.Insert(Math.Max(collection.Count - 1, 0), purchased.First());
+            var purchaseList = (await GetPurchaseItems()).ToList();
+            {
+                var tabpage = UIHelper.GetCurrentTabPage(this);
+                var loader = Managers.ResourceManager.Loader;
+                purchaseList.Add(new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor/Title"), loader.GetString("Info/Info/BeSponsor/Description"), new OpenWebCommand(tabpage, "https://github.com/sponsors/kurema/")) { GroupTag = "Info/Purchase/Title" });
+            }
+            if (purchaseList.Count() >= 1) collection.Insert(Math.Max(collection.Count - 1, 0), purchaseList.GroupBy(a => Managers.ResourceManager.Loader.GetString(a.GroupTag)).First());
 
             {
                 StackToc.Children.Clear();
@@ -159,7 +164,6 @@ namespace BookViewerApp.Views
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Privacy/Title"), loader.GetString("Info/Info/Privacy/Description"), new OpenWebCommand(tabpage, "https://github.com/kurema/BookViewerApp3/blob/master/PrivacyPolicy.md")) { GroupTag = "Info/Info/Title" },
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), loader.GetString("Info/Info/ThirdParty/Description"), new DelegateCommand(async _ => await OpenLicenseContentDialogThirdParty())) { GroupTag = "Info/Info/Title" },
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Contributors"), loader.GetString("Info/Info/ShowContributors/Description"), new DelegateCommand(async _ => await OpenLicenseContentDialogContributors())) { GroupTag = "Info/Info/Title" },
-                new ViewModels.ListItemViewModel(loader.GetString("Info/Info/BeSponsor/Title"), loader.GetString("Info/Info/BeSponsor/Description"), new OpenWebCommand(tabpage, "https://github.com/sponsors/kurema/")) { GroupTag = "Info/Info/Title" },
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ReleaseNotes/Title"), string.Format(loader.GetString("Info/Info/ReleaseNotes/Description"), VersionText), new OpenWebCommand(tabpage, "https://github.com/kurema/BookViewerApp3/releases")) { GroupTag = "Info/Info/Title" },
             }.ToList();
 
