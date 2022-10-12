@@ -47,11 +47,18 @@ public class AdBlockerSettingViewModel : ViewModelBase
                     {
                         i.IsRefreshRequested = false;
                         i.IsLoaded = true;
+                        //ToDo: Fix Update
+                        i.Message = "Success";
+                    }
+                    else
+                    {
+                        i.Message = "Fail";
                     }
                     success &= successLocal;
                 }
                 if (!i.IsEnabled)
                 {
+                    i.Message = string.Empty;
                     if (await Managers.ExtensionAdBlockerManager.TryRemoveList(i.GetContent())) i.IsLoaded = false;
                 }
             }
@@ -236,6 +243,11 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+
+    private string _Message = string.Empty;
+    public string Message { get => _Message; set => SetProperty(ref _Message, value); }
+
 
     public string LicenseSource
     {

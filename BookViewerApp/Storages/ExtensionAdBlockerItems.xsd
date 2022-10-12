@@ -25,6 +25,7 @@
 									<xs:attribute name="license_source" type="xs:anyURI"/>
 									<xs:attribute name="license_summary" type="xs:string"/>
 									<xs:attribute name="info_source" type="xs:anyURI" use="optional"/>
+									<xs:attribute name="recommended" type="xs:boolean" use="optional" default="false" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>

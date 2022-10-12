@@ -99,13 +99,16 @@
                 </MenuBarItem>
             </MenuBar>
             <CommandBar DefaultLabelPosition="Collapsed">
-                <AppBarButton Icon="OpenFile" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Open}"/>
-                <AppBarButton Icon="Save" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}" Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" />
-                <AppBarButton Icon="SaveLocal" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}" Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind SaveAs}" />
-                <AppBarButton Icon="Refresh" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" Click="{x:Bind Load}" />
+                <AppBarButton Icon="OpenFile" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}"
+                              Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Open}"/>
+                <AppBarButton Icon="Save" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}"
+                              Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" />
+                <AppBarButton Icon="SaveLocal" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}"
+                              Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind SaveAs}" />
+                <AppBarButton Icon="Refresh" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" Click="{x:Bind Load}" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}"/>
-                <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}"/>
+                <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}"/>
+                <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}"/>
             </CommandBar>
         </StackPanel>
         <TextBox

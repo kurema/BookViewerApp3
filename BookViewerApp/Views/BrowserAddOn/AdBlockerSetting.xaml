@@ -50,6 +50,7 @@
                                 <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}" ToolTipService.Placement="Bottom"/>
                                 <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}" ToolTipService.Placement="Top"/>
                             </CommandBar>
+                            <TextBlock Text="{Binding Message}" VerticalAlignment="Center" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

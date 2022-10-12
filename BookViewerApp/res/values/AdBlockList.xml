@@ -3,12 +3,12 @@
 	<group>
 		<title language="en" default="true">Ad</title>
 		<title language="ja">広告</title>
-		<item filename="easylist.txt" 
+		<item filename="easylist.txt" recommended="true"
 			  project_source="https://easylist.to/"
 			  license_source="https://easylist.to/pages/licence.html"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
-		<item filename="uBlocks.filters.txt"
+		<item filename="uBlocks.filters.txt" recommended="true"
 			  project_source="https://github.com/uBlockOrigin/uAssets"
 			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
 			  license_summary="GNU General Public License v3.0"
@@ -17,7 +17,7 @@
 	<group>
 		<title language="en" default="true">Versatile</title>
 		<title language="ja">多目的</title>
-		<item filename="peterlowe.blocklist.txt"
+		<item filename="peterlowe.blocklist.txt" recommended="true"
 			  title="Peter Lowe’s Ad and tracking server list"
 			  source="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&amp;showintro=0"
 			  project_source="https://pgl.yoyo.org/adservers/"

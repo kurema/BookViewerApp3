@@ -159,6 +159,12 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         private string info_sourceField;
         
+        private bool recommendedField;
+        
+        public itemsGroupItem() {
+            this.recommendedField = false;
+        }
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("title")]
         public title[] title {
@@ -244,6 +250,18 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.info_sourceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool recommended {
+            get {
+                return this.recommendedField;
+            }
+            set {
+                this.recommendedField = value;
             }
         }
     }
