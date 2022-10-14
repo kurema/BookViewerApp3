@@ -13,21 +13,7 @@
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="title" minOccurs="0" maxOccurs="unbounded"/>
-							<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element ref="title" minOccurs="0" maxOccurs="unbounded" />
-									</xs:sequence>
-									<xs:attribute name="title" type="xs:string" use="optional"/>
-									<xs:attribute name="filename" type="xs:string"/>
-									<xs:attribute name="source" type="xs:anyURI"/>
-									<xs:attribute name="project_source" type="xs:anyURI"/>
-									<xs:attribute name="license_source" type="xs:anyURI"/>
-									<xs:attribute name="license_summary" type="xs:string"/>
-									<xs:attribute name="info_source" type="xs:anyURI" use="optional"/>
-									<xs:attribute name="recommended" type="xs:boolean" use="optional" default="false" />
-								</xs:complexType>
-							</xs:element>
+							<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -35,7 +21,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="title" >
+	<xs:element name="title">
 		<xs:complexType>
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
@@ -43,6 +29,44 @@
 					<xs:attribute name="default" type="xs:boolean" default="false" use="optional"/>
 				</xs:extension>
 			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="item">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="title" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="title" type="xs:string" use="optional"/>
+			<xs:attribute name="filename" type="xs:string"/>
+			<xs:attribute name="source" type="xs:anyURI"/>
+			<xs:attribute name="project_source" type="xs:anyURI" use="optional"/>
+			<xs:attribute name="license_source" type="xs:anyURI" use="optional"/>
+			<xs:attribute name="license_summary" type="xs:string" use="optional"/>
+			<xs:attribute name="info_source" type="xs:anyURI" use="optional"/>
+			<xs:attribute name="recommended" type="xs:boolean" use="optional" default="false" />
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="status">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="filters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="selected">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 

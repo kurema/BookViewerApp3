@@ -276,7 +276,7 @@ public static class ExtensionAdBlockerManager
         }
     }
 
-    public static async Task<bool> TryRemoveList(Storages.ExtensionAdBlockerItems.itemsGroupItem item)
+    public static async Task<bool> TryRemoveList(Storages.ExtensionAdBlockerItems.item item)
     {
         string? filename = item?.filename;
         if (filename is null) return false;
@@ -295,7 +295,7 @@ public static class ExtensionAdBlockerManager
         }
     }
 
-    public static async Task<bool> TryDownloadList(Storages.ExtensionAdBlockerItems.itemsGroupItem item)
+    public static async Task<bool> TryDownloadList(Storages.ExtensionAdBlockerItems.item item)
     {
         if (!Uri.TryCreate(item.source, UriKind.Absolute, out var uri)) return false;
 
@@ -322,7 +322,7 @@ public static class ExtensionAdBlockerManager
         }
     }
 
-    public static async Task<bool> IsItemLoaded(Storages.ExtensionAdBlockerItems.itemsGroupItem item)
+    public static async Task<bool> IsItemLoaded(Storages.ExtensionAdBlockerItems.item item)
     {
         var cache = await GetDataFolderCache();
         return await cache.FileExistsAsync(item.filename);

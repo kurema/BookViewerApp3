@@ -51,7 +51,7 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         private title[] titleField;
         
-        private itemsGroupItem[] itemField;
+        private item[] itemField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("title")]
@@ -66,7 +66,7 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("item")]
-        public itemsGroupItem[] item {
+        public item[] item {
             get {
                 return this.itemField;
             }
@@ -141,7 +141,9 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
         "sionAdBlockerItems.xsd")]
-    public partial class itemsGroupItem {
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
+        "sionAdBlockerItems.xsd", IsNullable=false)]
+    public partial class item {
         
         private title[] titleField;
         
@@ -161,7 +163,7 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         private bool recommendedField;
         
-        public itemsGroupItem() {
+        public item() {
             this.recommendedField = false;
         }
         
@@ -262,6 +264,44 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.recommendedField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
+        "sionAdBlockerItems.xsd")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
+        "sionAdBlockerItems.xsd", IsNullable=false)]
+    public partial class status {
+        
+        private item[] filtersField;
+        
+        private item[] selectedField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("item", IsNullable=false)]
+        public item[] filters {
+            get {
+                return this.filtersField;
+            }
+            set {
+                this.filtersField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("item", IsNullable=false)]
+        public item[] selected {
+            get {
+                return this.selectedField;
+            }
+            set {
+                this.selectedField = value;
             }
         }
     }

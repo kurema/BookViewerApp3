@@ -47,18 +47,17 @@ public class AdBlockerSettingViewModel : ViewModelBase
                     {
                         i.IsRefreshRequested = false;
                         i.IsLoaded = true;
-                        //ToDo: Fix Update
-                        i.Message = "Success";
+                        i.DownloadStatus = AdBlockerSettingFilterViewModel.DownloadSuccessStatus.Success;
                     }
                     else
                     {
-                        i.Message = "Fail";
+                        i.DownloadStatus = AdBlockerSettingFilterViewModel.DownloadSuccessStatus.Fail;
                     }
                     success &= successLocal;
                 }
                 if (!i.IsEnabled)
                 {
-                    i.Message = string.Empty;
+                    i.DownloadStatus = AdBlockerSettingFilterViewModel.DownloadSuccessStatus.NoMessage;
                     if (await Managers.ExtensionAdBlockerManager.TryRemoveList(i.GetContent())) i.IsLoaded = false;
                 }
             }
@@ -177,9 +176,9 @@ public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlock
 
 public class AdBlockerSettingFilterViewModel : BaseViewModel
 {
-    private itemsGroupItem content;
+    private item content;
 
-    public AdBlockerSettingFilterViewModel(itemsGroupItem content)
+    public AdBlockerSettingFilterViewModel(item content)
     {
         this.content = content ?? throw new ArgumentNullException(nameof(content));
         ReloadSingleCommang = new Helper.DelegateCommand(async _ =>
@@ -189,7 +188,7 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         });
     }
 
-    public itemsGroupItem GetContent() => content;
+    public item GetContent() => content;
 
     public ICommand ReloadSingleCommang { get; }
 
@@ -244,9 +243,29 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         }
     }
 
+    public bool Recommended
+    {
+        get => content.recommended;
+        set
+        {
+            Recommended = value;
+            OnPropertyChanged();
+        }
+    }
+
 
     private string _Message = string.Empty;
     public string Message { get => _Message; set => SetProperty(ref _Message, value); }
+
+
+    private DownloadSuccessStatus _DownloadStatus;
+    public DownloadSuccessStatus DownloadStatus { get => _DownloadStatus; set => SetProperty(ref _DownloadStatus, value); }
+
+
+    public enum DownloadSuccessStatus
+    {
+        NoMessage, Success, Fail
+    }
 
 
     public string LicenseSource

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     
     xmlns:ValueConverter="using:BookViewerApp.ValueConverters"
     xmlns:vm="using:BookViewerApp.ViewModels"
@@ -19,6 +20,8 @@
     </Page.DataContext>
     <Page.Resources>
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+        <ValueConverter:StringChangeConverter x:Key="StringChangeConverter" />
+        <ValueConverter:BoolToStringConverter x:Key="Bool2StringConverter" />
         <CollectionViewSource x:Name="FiltersSource" Source="{Binding FilterList}" IsSourceGrouped="True" />
     </Page.Resources>
     <Pivot>
@@ -43,13 +46,18 @@
                     <DataTemplate x:DataType="vm:AdBlockerSettingFilterViewModel">
                         <StackPanel Orientation="Horizontal">
                             <CheckBox IsChecked="{Binding IsEnabled,Mode=TwoWay}" >
-                                <TextBlock Text="{Binding Title}"/>
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <muxc:InfoBadge Margin="0,0,5,0" Style="{StaticResource AttentionIconInfoBadgeStyle}" Visibility="{Binding Recommended,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"/>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </StackPanel>
                             </CheckBox>
                             <CommandBar DefaultLabelPosition="Collapsed">
                                 <AppBarToggleButton Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay}" IsEnabled="{Binding IsEnabled,Mode=OneWay}"/>
                                 <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}" ToolTipService.Placement="Bottom"/>
                                 <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}" ToolTipService.Placement="Top"/>
                             </CommandBar>
+                            <muxc:InfoBadge Style="{StaticResource SuccessIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Success:Visible}"/>
+                            <muxc:InfoBadge Style="{StaticResource CriticalIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Fail:Visible}" />
                             <TextBlock Text="{Binding Message}" VerticalAlignment="Center" />
                         </StackPanel>
                     </DataTemplate>
@@ -100,7 +108,7 @@
                         <TextBlock Text="You have to download filters before you use." FontWeight="Bold" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
                     </StackPanel>
                     <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="1" />
-                    <TextBlock Text="Document" FontWeight="Bold" Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="2" />
+                    <TextBlock Text="Documents" FontWeight="Bold" Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="2" />
                     <TextBlock Text="Open this to get general informations." Style="{StaticResource InfoLabel}" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="3"/>
                     <v:AcrylicButtonControl Margin="0" Icon="World" Click="Button_Click_Open_Document" Tag="https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md" Grid.Column="0" Grid.Row="3"/>
                     <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="4" />

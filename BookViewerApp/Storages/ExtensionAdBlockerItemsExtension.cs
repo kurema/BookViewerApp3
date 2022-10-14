@@ -29,7 +29,7 @@ partial class itemsGroup
     }
 }
 
-partial class itemsGroupItem
+partial class item
 {
     public string GetTitleForCulture(CultureInfo culture = null)
     {
