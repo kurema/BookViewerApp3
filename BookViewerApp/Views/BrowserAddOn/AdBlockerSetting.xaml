@@ -72,8 +72,8 @@
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">
             <ScrollViewer>
-                <Grid>
-                    <Grid.Resources>
+                <StackPanel>
+                    <StackPanel.Resources>
                         <Style TargetType="v:AcrylicButtonControl">
                             <Setter Property="VerticalAlignment" Value="Top" />
                             <Setter Property="Margin" Value="0" />
@@ -86,43 +86,33 @@
                         <Style TargetType="TextBlock" x:Key="InfoLabel">
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.ColumnSpan="2">
+                    </StackPanel.Resources>
+                    <StackPanel>
                         <TextBlock Text="You have to download filters before you use." FontWeight="Bold" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
                     </StackPanel>
-                    <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="1" />
-                    <TextBlock Text="Documents" FontWeight="Bold" Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="2" />
-                    <TextBlock Text="Open this to get general informations." Style="{StaticResource InfoLabel}" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="3"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="World" Click="Button_Click_Open_Document" Tag="https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md" Grid.Column="0" Grid.Row="3"/>
-                    <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="4" />
-                    <TextBlock Text="Folders"  Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="5"/>
-                    <TextBlock Text="Open the setting folder." Style="{StaticResource InfoLabel}"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="6"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="Folder" Grid.Row="6" Click="Button_Click" Tag="Local" />
-                    <TextBlock Text="Open the filters folder." Style="{StaticResource InfoLabel}"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="7"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="Folder" Grid.Row="7" Click="Button_Click" Tag="Cache" />
-                    <NavigationViewItemSeparator Grid.ColumnSpan="2" Grid.Row="8" />
-                    <TextBlock Text="Code" FontWeight="Bold" Style="{StaticResource InfoHeader}" Grid.ColumnSpan="2" Grid.Row="9" />
-                    <TextBlock Text="View the source code of AdBlocker." Style="{StaticResource InfoLabel}" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="10"/>
-                    <v:AcrylicButtonControl Margin="0" Icon="World" Command="{x:Bind OpenWebCommand}" CommandParameter="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Managers/ExtensionAdBlockerManager.cs" Grid.Column="0" Grid.Row="10"/>
-                </Grid>
-
+                    <NavigationViewItemSeparator />
+                    <TextBlock Text="Documents" FontWeight="Bold" Style="{StaticResource InfoHeader}" />
+                    <StackPanel Orientation="Horizontal">
+                        <v:AcrylicButtonControl Margin="0" Icon="World" Click="Button_Click_Open_Document" Tag="https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md"/>
+                        <TextBlock Text="Open this to get general informations." Style="{StaticResource InfoLabel}"/>
+                    </StackPanel>
+                    <NavigationViewItemSeparator/>
+                    <TextBlock Text="Folders"  Style="{StaticResource InfoHeader}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <v:AcrylicButtonControl Margin="0" Icon="Folder" Click="Button_Click" Tag="Local" />
+                        <TextBlock Text="Open the setting folder." Style="{StaticResource InfoLabel}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <v:AcrylicButtonControl Margin="0" Icon="Folder" Click="Button_Click" Tag="Cache" />
+                        <TextBlock Text="Open the filters folder." Style="{StaticResource InfoLabel}"/>
+                    </StackPanel>
+                    <NavigationViewItemSeparator/>
+                    <TextBlock Text="Code" FontWeight="Bold" Style="{StaticResource InfoHeader}" />
+                    <StackPanel Orientation="Horizontal">
+                        <v:AcrylicButtonControl Margin="0" Icon="World" Command="{x:Bind OpenWebCommand}" CommandParameter="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Managers/ExtensionAdBlockerManager.cs"/>
+                        <TextBlock Text="View the source code of AdBlocker." Style="{StaticResource InfoLabel}"/>
+                    </StackPanel>
+                </StackPanel>
                 <!--<StackPanel>
                     <RichTextBlock>
                         <Paragraph>
