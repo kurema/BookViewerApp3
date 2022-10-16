@@ -45,8 +45,7 @@ public sealed partial class AdBlockerSetting : Page
 
         LoadTextEditors();
     }
-
-
+        
     public async void LoadFilters()
     {
         if (DataContext is ViewModels.AdBlockerSettingViewModel vm)

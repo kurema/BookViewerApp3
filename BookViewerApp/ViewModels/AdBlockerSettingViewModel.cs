@@ -62,7 +62,11 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 }
             }
         }
-        if (success) RefreshAll = false;
+        if (success)
+        {
+            RefreshAll = false;
+            SetupRequired = false;
+        }
         await Managers.ExtensionAdBlockerManager.LoadRulesFromText();
         return success;
     }
@@ -78,6 +82,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
             {
                 var c = i.GetContent();
                 var b = await Managers.ExtensionAdBlockerManager.IsItemLoaded(c);
+                SetupRequired &= !b;
                 i.IsLoaded = b;
                 i.IsEnabled = b;
             }
@@ -101,6 +106,11 @@ public class AdBlockerSettingViewModel : ViewModelBase
     {
         RefreshCommand?.OnCanExecuteChanged();
     }
+
+
+    private bool _SetupRequired;
+    public bool SetupRequired { get => _SetupRequired; set => SetProperty(ref _SetupRequired, value); }
+
 }
 
 public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlockerSettingFilterViewModel>
