@@ -148,7 +148,7 @@ public static partial class UIHelper
                 {
                     //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
                     var defaultDark = OpenEpub_CurrentDarkMode();
-                    var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
+                    var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Extension/DarkMode/Title"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
 
                     async Task applyDarkMode()
                     {
@@ -266,7 +266,7 @@ public static partial class UIHelper
                     {
                         //普通ブラウザでもダークモード対応するのも選択肢。でもbackgroundとか修正しないといけないし、とりあえずなし。
                         var defaultDark = OpenEpub_CurrentDarkMode();
-                        var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Browser/Addon/DarkMode"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
+                        var checkbox = new CheckBox() { Content = ResourceManager.Loader.GetString("Extension/DarkMode/Title"), IsChecked = defaultDark, HorizontalAlignment = HorizontalAlignment.Stretch };
 
                         async Task applyDarkMode()
                         {

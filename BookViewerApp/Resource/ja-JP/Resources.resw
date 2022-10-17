@@ -653,7 +653,7 @@
   <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
     <value>Epubビュワーにダークモードを適用 (プレビュー)</value>
   </data>
-  <data name="Browser.Addon.DarkMode" xml:space="preserve">
+  <data name="Extension.DarkMode.Title" xml:space="preserve">
     <value>ダークモード</value>
   </data>
   <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
@@ -767,5 +767,35 @@
   </data>
   <data name="Info.More.OpenAdBlockerSetting.Description" xml:space="preserve">
     <value>フィルターのダウンロードとローカル設定の更新</value>
+  </data>
+  <data name="Word.Apply" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Documents.Header" xml:space="preserve">
+    <value>ドキュメント</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Header" xml:space="preserve">
+    <value>フォルダ</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Code.Header" xml:space="preserve">
+    <value>コード</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Documents.GitHubDocs.Description" xml:space="preserve">
+    <value>GitHubのドキュメントを読んで、基本的な情報を得ることができます。</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Local.Description" xml:space="preserve">
+    <value>設定ファイルのあるフォルダーを開く。</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Cache.Description" xml:space="preserve">
+    <value>フィルターが入ったフォルダを開く。</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Code.Manager.Description" xml:space="preserve">
+    <value>広告除去エンジンのソースコードを表示し、悪意のある動作が存在しないことを確認します。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Recommended" xml:space="preserve">
+    <value>おすすめ</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
+    <value>使用開始前にフィルターのダウンロードが必要です。</value>
   </data>
 </root>

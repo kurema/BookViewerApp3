@@ -36,12 +36,12 @@
                         </StackPanel.Resources>
                         <StackPanel Orientation="Horizontal" Margin="10,0">
                             <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                                <AppBarButton Icon="Accept" Label="Apply" Command="{Binding RefreshCommand}" />
+                                <AppBarButton Icon="Accept" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.Apply'}" Command="{Binding RefreshCommand}" />
                                 <AppBarToggleButton Icon="Refresh" Label="Refresh all" IsChecked="{Binding RefreshAll,Mode=TwoWay}"/>
                             </CommandBar>
                             <AppBarSeparator />
                             <muxc:InfoBadge Margin="5,0,5,0" Style="{StaticResource AttentionIconInfoBadgeStyle}"/>
-                            <TextBlock Text="Recommended"/>
+                            <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Recommended'}"/>
                             <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                                 <AppBarSeparator />
                                 <AppBarToggleButton Icon="Refresh" LabelPosition="Collapsed" VerticalAlignment="Center"/>
@@ -50,7 +50,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding SetupRequired,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}">
                                 <AppBarSeparator />
-                                <TextBlock Text="You have to download filters before you start using." FontWeight="Bold"/>
+                                <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.FirstMessage'}" FontWeight="Bold"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -109,26 +109,26 @@
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
                     </StackPanel.Resources>
-                    <TextBlock Text="Documents" FontWeight="Bold" Style="{StaticResource InfoHeader}" />
+                    <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Documents.Header'}" FontWeight="Bold" Style="{StaticResource InfoHeader}" />
                     <StackPanel Orientation="Horizontal">
                         <v:AcrylicButtonControl Margin="0" Icon="World" Click="Button_Click_Open_Document" Tag="https://github.com/kurema/BookViewerApp3/blob/master/res/Docs/AdBlocker/readme.md"/>
-                        <TextBlock Text="Open this to get general informations." Style="{StaticResource InfoLabel}"/>
+                        <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Documents.GitHubDocs.Description'}" Style="{StaticResource InfoLabel}"/>
                     </StackPanel>
                     <NavigationViewItemSeparator/>
-                    <TextBlock Text="Folders"  Style="{StaticResource InfoHeader}"/>
+                    <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Folders.Header'}"  Style="{StaticResource InfoHeader}"/>
                     <StackPanel Orientation="Horizontal">
                         <v:AcrylicButtonControl Margin="0" Icon="Folder" Click="Button_Click" Tag="Local" />
-                        <TextBlock Text="Open the setting folder." Style="{StaticResource InfoLabel}"/>
+                        <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Folders.Local.Description'}" Style="{StaticResource InfoLabel}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <v:AcrylicButtonControl Margin="0" Icon="Folder" Click="Button_Click" Tag="Cache" />
-                        <TextBlock Text="Open the filters folder." Style="{StaticResource InfoLabel}"/>
+                        <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Folders.Cache.Description'}" Style="{StaticResource InfoLabel}"/>
                     </StackPanel>
                     <NavigationViewItemSeparator/>
-                    <TextBlock Text="Code" FontWeight="Bold" Style="{StaticResource InfoHeader}" />
+                    <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Code.Header'}" FontWeight="Bold" Style="{StaticResource InfoHeader}" />
                     <StackPanel Orientation="Horizontal">
                         <v:AcrylicButtonControl Margin="0" Icon="World" Command="{x:Bind OpenWebCommand}" CommandParameter="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Managers/ExtensionAdBlockerManager.cs"/>
-                        <TextBlock Text="View the source code of AdBlocker." Style="{StaticResource InfoLabel}"/>
+                        <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Code.Manager.Description'}" Style="{StaticResource InfoLabel}"/>
                     </StackPanel>
                 </StackPanel>
                 <!--<StackPanel>

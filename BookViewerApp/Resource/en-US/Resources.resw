@@ -760,7 +760,7 @@ You can also disable thumbnail generation in Explorer tab with the setting above
   <data name="LibraryManager.KindTitle.Network" xml:space="preserve">
     <value>Network item</value>
   </data>
-  <data name="Browser.Addon.DarkMode" xml:space="preserve">
+  <data name="Extension.DarkMode.Title" xml:space="preserve">
     <value>Dark mode</value>
   </data>
   <data name="Setting_EpubViewerDarkMode.Description" xml:space="preserve">
@@ -804,7 +804,7 @@ Right click to configure</value>
   <data name="Word.Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
-  <data name="Browser.Addon.UserAgent.Title" xml:space="preserve">
+  <data name="Extension.UserAgent.Title" xml:space="preserve">
     <value>User-Agent</value>
     <comment>@Invariant</comment>
   </data>
@@ -841,7 +841,7 @@ Right click to configure</value>
   <data name="Word.Screenshot" xml:space="preserve">
     <value>Screenshot</value>
   </data>
-  <data name="Browser.Addon.Screenshot.Filename" xml:space="preserve">
+  <data name="Extension.Screenshot.Filename" xml:space="preserve">
     <value>screenshot</value>
     <comment>@Invariant</comment>
   </data>
@@ -893,5 +893,35 @@ Right click to configure</value>
   </data>
   <data name="Info.More.OpenAdBlockerSetting.Description" xml:space="preserve">
     <value>Download filters and update local settings</value>
+  </data>
+  <data name="Word.Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Documents.Header" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Header" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Code.Header" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Documents.GitHubDocs.Description" xml:space="preserve">
+    <value>Read the documentation on GitHub to get some basic information.</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Local.Description" xml:space="preserve">
+    <value>Open the folder containing the configuration files.</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Cache.Description" xml:space="preserve">
+    <value>Open the folder containing the filters.</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Code.Manager.Description" xml:space="preserve">
+    <value>View the source code of the ad removal engine to ensure that no malicious behavior exists.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Recommended" xml:space="preserve">
+    <value>Recommended</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
+    <value>You need to download the filter before you start using it.</value>
   </data>
 </root>

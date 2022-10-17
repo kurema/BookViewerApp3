@@ -162,7 +162,7 @@ public sealed partial class CaptureContentDialog : ContentDialog
             var picker = new Windows.Storage.Pickers.FileSavePicker();
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
             foreach (var choice in ImageManager.GetFileExtensionsEncodable()) picker.FileTypeChoices.Add(choice.description, choice.extensions.ToList());
-            picker.SuggestedFileName = ResourceManager.Loader.GetString("Browser/Addon/Screenshot/Filename");
+            picker.SuggestedFileName = ResourceManager.Loader.GetString("Extension/Screenshot/Filename");
             var file = await picker.PickSaveFileAsync();
             if (file is null) return;
             using var stream = await file.OpenAsync(FileAccessMode.ReadWrite);

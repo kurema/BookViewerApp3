@@ -647,7 +647,7 @@ Também pode desativar a geração de miniaturas no separador Explorador com a d
   <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
     <value>Aplicar as definições do modo escuro ao visualizador Epub. (Experimental)</value>
   </data>
-  <data name="Browser.Addon.DarkMode" xml:space="preserve">
+  <data name="Extension.DarkMode.Title" xml:space="preserve">
     <value>Modo escuro</value>
   </data>
   <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
@@ -761,5 +761,35 @@ Clique direito para configurar</value>
   </data>
   <data name="Info.More.OpenAdBlockerSetting.Description" xml:space="preserve">
     <value>Descarregar filtros e actualizar as configurações locais</value>
+  </data>
+  <data name="Word.Apply" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Documents.Header" xml:space="preserve">
+    <value>Documentos</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Header" xml:space="preserve">
+    <value>Pastas</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Code.Header" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Documents.GitHubDocs.Description" xml:space="preserve">
+    <value>Leia a documentação sobre o GitHub para obter alguma informação básica.</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Local.Description" xml:space="preserve">
+    <value>Abrir a pasta que contém os ficheiros de configuração.</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Folders.Cache.Description" xml:space="preserve">
+    <value>Abrir a pasta que contém os filtros.</value>
+  </data>
+  <data name="Extension.AdBlocker.Info.Code.Manager.Description" xml:space="preserve">
+    <value>Ver o código fonte do motor de remoção de anúncios para garantir que não existe qualquer comportamento malicioso.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Recommended" xml:space="preserve">
+    <value>Recomendado</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
+    <value>É necessário descarregar o filtro antes de o começar a utilizar.</value>
   </data>
 </root>
