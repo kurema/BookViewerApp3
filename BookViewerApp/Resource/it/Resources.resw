@@ -794,4 +794,16 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
     <value>È necessario scaricare il filtro prima di iniziare a utilizzarlo.</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.RefreshAll.Message" xml:space="preserve">
+    <value>Aggiornare tutti</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.License" xml:space="preserve">
+    <value>Licenza</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Document" xml:space="preserve">
+    <value>Documento</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
+    <value>Ricarica</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Data;
 using BookViewerApp.ViewModels;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BookViewerApp.ValueConverters;
 
@@ -210,6 +211,29 @@ public sealed class BoolToStringConverter : IValueConverter
     {
         string[] text = parameter.ToString().Split(':');
         return text[0] == value.ToString();
+    }
+}
+
+public sealed class NullableBoolConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        return value.ToString() switch
+        {
+            "true" => true,
+            "false" => false,
+            _ => parameter?.ToString() == "true"
+        };
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        return value.ToString() switch
+        {
+            "true" => true,
+            "false" => false,
+            _ => parameter?.ToString() == "true"
+        };
     }
 }
 

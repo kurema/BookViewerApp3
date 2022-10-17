@@ -792,4 +792,16 @@ Clique direito para configurar</value>
   <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
     <value>É necessário descarregar o filtro antes de o começar a utilizar.</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.RefreshAll.Message" xml:space="preserve">
+    <value>Actualizar tudo</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.License" xml:space="preserve">
+    <value>Licença</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Document" xml:space="preserve">
+    <value>Documento</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
 </root>

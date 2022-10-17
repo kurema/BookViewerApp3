@@ -794,4 +794,16 @@
   <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
     <value>在开始使用之前，你需要下载该过滤器。</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.RefreshAll.Message" xml:space="preserve">
+    <value>刷新所有</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.License" xml:space="preserve">
+    <value>执照</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Document" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
 </root>

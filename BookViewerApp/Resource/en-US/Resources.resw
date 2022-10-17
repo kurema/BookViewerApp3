@@ -924,4 +924,16 @@ Right click to configure</value>
   <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
     <value>You need to download the filter before you start using it.</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.RefreshAll.Message" xml:space="preserve">
+    <value>Refresh all</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.License" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Document" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
 </root>

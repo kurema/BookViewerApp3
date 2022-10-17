@@ -787,7 +787,7 @@
     <value>設定ファイルのあるフォルダーを開く。</value>
   </data>
   <data name="Extension.AdBlocker.Info.Folders.Cache.Description" xml:space="preserve">
-    <value>フィルターが入ったフォルダを開く。</value>
+    <value>フィルターのあるフォルダを開く。</value>
   </data>
   <data name="Extension.AdBlocker.Info.Code.Manager.Description" xml:space="preserve">
     <value>広告除去エンジンのソースコードを表示し、悪意のある動作が存在しないことを確認します。</value>
@@ -796,6 +796,18 @@
     <value>おすすめ</value>
   </data>
   <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
-    <value>使用開始前にフィルターのダウンロードが必要です。</value>
+    <value>使用開始にフィルターのダウンロードが必要です。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.RefreshAll.Message" xml:space="preserve">
+    <value>全て更新</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.License" xml:space="preserve">
+    <value>ライセンス</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Document" xml:space="preserve">
+    <value>ドキュメント</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
+    <value>更新</value>
   </data>
 </root>

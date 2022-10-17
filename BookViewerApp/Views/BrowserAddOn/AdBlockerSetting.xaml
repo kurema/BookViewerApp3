@@ -22,6 +22,7 @@
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
         <ValueConverter:StringChangeConverter x:Key="StringChangeConverter" />
         <ValueConverter:BoolToStringConverter x:Key="Bool2StringConverter" />
+        <ValueConverter:NullableBoolConverter x:Key="NullableBoolConverter" />
         <CollectionViewSource x:Name="FiltersSource" Source="{Binding FilterList}" IsSourceGrouped="True" />
     </Page.Resources>
     <Pivot>
@@ -37,7 +38,7 @@
                         <StackPanel Orientation="Horizontal" Margin="10,0">
                             <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
                                 <AppBarButton Icon="Accept" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.Apply'}" Command="{Binding RefreshCommand}" />
-                                <AppBarToggleButton Icon="Refresh" Label="Refresh all" IsChecked="{Binding RefreshAll,Mode=TwoWay}"/>
+                                <AppBarToggleButton Icon="Refresh" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.RefreshAll.Message'}" IsChecked="{Binding RefreshAll,Mode=TwoWay}"/>
                             </CommandBar>
                             <AppBarSeparator />
                             <muxc:InfoBadge Margin="5,0,5,0" Style="{StaticResource AttentionIconInfoBadgeStyle}"/>
@@ -74,9 +75,9 @@
                                 </StackPanel>
                             </CheckBox>
                             <CommandBar DefaultLabelPosition="Collapsed">
-                                <AppBarToggleButton Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay,TargetNullValue=False}" IsEnabled="{Binding IsEnabled,Mode=OneWay,TargetNullValue=False}"/>
-                                <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}" ToolTipService.Placement="Bottom"/>
-                                <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}" ToolTipService.Placement="Top"/>
+                                <AppBarToggleButton ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Refresh'}" Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay,Converter={StaticResource NullableBoolConverter},ConverterParameter=false}" IsEnabled="{Binding IsEnabled,Mode=OneWay,TargetNullValue=False}"/>
+                                <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}"/>
+                                <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}"/>
                             </CommandBar>
                             <muxc:InfoBadge Style="{StaticResource SuccessIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Success:Visible}"/>
                             <muxc:InfoBadge Style="{StaticResource CriticalIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Fail:Visible}" />
