@@ -73,6 +73,9 @@ public class AdBlockerSettingViewModel : ViewModelBase
 
     public async Task LoadFilterList()
     {
+        var info = await Managers.ExtensionAdBlockerManager.LocalInfo.GetContentAsync();
+        await Managers.ExtensionAdBlockerManager.LocalInfo.SaveAsync();
+
         var filter = await Managers.ExtensionAdBlockerManager.LocalLists.GetContentAsync();
         //ToDo: Update IsEnabled
         FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a) { Parent = this }) ?? new AdBlockerSettingFilterGroupViewModel[0]);

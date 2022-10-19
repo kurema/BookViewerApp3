@@ -96,7 +96,13 @@ public class StorageContent<T> where T : class
             }
             try
             {
-                await Functions.SerializeAsync(Content, this.DataFolder, this.FileName, this.Semaphore);
+                var folder = DataFolder;
+                var pathSplited = FileName.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+                for(int i = 0; i < pathSplited.Length - 1; i++)
+                {
+                    folder = await folder.CreateFolderAsync(pathSplited[i], Windows.Storage.CreationCollisionOption.OpenIfExists);
+                }
+                await Functions.SerializeAsync(Content, folder, pathSplited.Last(), this.Semaphore);
             }
             catch
             {
