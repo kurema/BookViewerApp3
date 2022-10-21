@@ -1,6 +1,7 @@
 ﻿using BookViewerApp.Helper;
 using BookViewerApp.Storages.ExtensionAdBlockerItems;
 using kurema.FileExplorerControl.ViewModels;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -73,12 +74,19 @@ public class AdBlockerSettingViewModel : ViewModelBase
 
     public async Task LoadFilterList()
     {
-        var info = await Managers.ExtensionAdBlockerManager.LocalInfo.GetContentAsync();
-        await Managers.ExtensionAdBlockerManager.LocalInfo.SaveAsync();
-
         var filter = await Managers.ExtensionAdBlockerManager.LocalLists.GetContentAsync();
-        //ToDo: Update IsEnabled
+        var info = await Managers.ExtensionAdBlockerManager.LocalInfo.GetContentAsync();
+
         FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a) { Parent = this }) ?? new AdBlockerSettingFilterGroupViewModel[0]);
+        if (info.filters?.Length > 0)
+        {
+            itemsGroup gr = new()
+            {
+                title = new[] { new title() { Value = Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Filters/CustomGroup/Header"),@default=true } },
+                item=info.filters,
+            };
+            FilterList.Add(new AdBlockerSettingFilterGroupViewModel(gr) { Parent = this });
+        }
         foreach (var g in FilterList)
         {
             foreach (var i in g)
@@ -87,7 +95,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 var b = await Managers.ExtensionAdBlockerManager.IsItemLoaded(c);
                 SetupRequired &= !b;
                 i.IsLoaded = b;
-                i.IsEnabled = b;
+                i.IsEnabled = info.selected.Any(a => a.filename == c.filename);
             }
         }
         OnPropertyChanged(nameof(FilterList));

@@ -282,6 +282,11 @@ public static class ExtensionAdBlockerManager
     {
         string? filename = item?.filename;
         if (filename is null) return false;
+        {
+            var info = await LocalInfo.GetContentAsync();
+            //This is not efficient, but ignorable. I ignore.
+            info.selected = info.selected.Where(a => a.filename != filename).ToArray();
+        }
         try
         {
             var folder = await GetDataFolderCache();
@@ -300,6 +305,12 @@ public static class ExtensionAdBlockerManager
     public static async Task<bool> TryDownloadList(Storages.ExtensionAdBlockerItems.item item)
     {
         if (!Uri.TryCreate(item.source, UriKind.Absolute, out var uri)) return false;
+        {
+            var info = await LocalInfo.GetContentAsync();
+            var list = info.selected.ToList();
+            list.Add(new Storages.ExtensionAdBlockerItems.item() { filename = item.filename });
+            info.selected = list.ToArray();
+        }
 
         try
         {

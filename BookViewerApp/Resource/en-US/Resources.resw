@@ -936,4 +936,7 @@ Right click to configure</value>
   <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
+    <value>Custom</value>
+  </data>
 </root>

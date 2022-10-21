@@ -55,7 +55,16 @@ public class StorageContent<T> where T : class
             case SavePlaces.Local:
             case SavePlaces.Roaming:
             case SavePlaces.LocalCache:
-                return await Functions.DeserializeAsync<T>(this.DataFolder, this.FileName, this.Semaphore);
+                {
+                    var folder = DataFolder;
+                    var pathSplited = FileName.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+                    for (int i = 0; i < pathSplited.Length - 1; i++)
+                    {
+                        folder = await folder.GetFolderAsync(pathSplited[i]);
+                        if (folder is null) return null;
+                    }
+                    return await Functions.DeserializeAsync<T>(folder, pathSplited.Last(), this.Semaphore);
+                }
             case SavePlaces.InstalledLocation:
                 return await Functions.DeserializeAsync<T>(await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName)), this.Semaphore);
             default:

@@ -806,4 +806,7 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
     <value>Ricarica</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
+    <value>Personalizzato</value>
+  </data>
 </root>

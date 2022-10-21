@@ -806,4 +806,7 @@
   <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
     <value>更新</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
+    <value>自訂</value>
+  </data>
 </root>

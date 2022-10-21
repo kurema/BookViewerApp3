@@ -804,4 +804,7 @@ Clique direito para configurar</value>
   <data name="Extension.AdBlocker.Filters.Word.Refresh" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
+    <value>Personalizado</value>
+  </data>
 </root>

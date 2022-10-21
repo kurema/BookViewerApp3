@@ -76,7 +76,8 @@ public static class Functions
     {
         try
         {
-            return await DeserializeAsync<T>((await folder.GetItemAsync(fileName)) as Windows.Storage.StorageFile, semaphore);
+            var file = (await folder.GetItemAsync(fileName)) as Windows.Storage.StorageFile;
+            return await DeserializeAsync<T>(file, semaphore);
         }
         catch
         {
