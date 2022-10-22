@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -217,6 +218,7 @@ public static class ExtensionAdBlockerManager
             }
         }
 
+        var info = await LocalInfo.GetContentAsync();
         await SemaphoreLoadFromText.WaitAsync();
         try
         {
@@ -239,8 +241,10 @@ public static class ExtensionAdBlockerManager
                     }
                 }
                 if (Filter is null) return (null, false);
-                foreach (var file in await folder.GetFilesAsync())
+                foreach (var fn in info.selected)
                 {
+                    var file = await folder.TryGetItemAsync(fn.filename) as StorageFile;
+                    if (file is null) continue;
                     //if (Path.GetFileName(file.Path) is FileNameWhiteList or FileNameUser or FileNameDb) continue;
                     if (Path.GetFileName(file.Path) is FileNameDb) continue;
                     if (Path.GetExtension(file.Path).ToUpperInvariant() != ".TXT") continue;
@@ -276,6 +280,12 @@ public static class ExtensionAdBlockerManager
         {
             return await folder.TryGetItemAsync(fileName) as StorageFile;
         }
+    }
+
+    public static async Task TryRemoveListFromInfo(string filename)
+    {
+        var info = await LocalInfo.GetContentAsync();
+        info.selected = info.selected.Where(a => !a.filename.Equals(filename, StringComparison.InvariantCultureIgnoreCase)).ToArray();
     }
 
     public static async Task<bool> TryRemoveList(Storages.ExtensionAdBlockerItems.item item)

@@ -19,13 +19,15 @@ public class AdBlockerSettingViewModel : ViewModelBase
     {
         RefreshCommand = new DelegateCommand(async _ => await RefreshSelectedAsync(), _ =>
         {
+            var info = Managers.ExtensionAdBlockerManager.LocalInfo.Content;
             if (RefreshAll) return true;
             foreach (var g in this.FilterList)
             {
                 foreach (var i in g)
                 {
                     if (i.IsRefreshRequested && i.IsEnabled) return true;
-                    if (i.IsEnabled != i.IsLoaded) return true;
+                    if (i.IsEnabled && !i.IsLoaded) return true;
+                    if (info is not null && i.IsEnabled != info.selected.Any(a => a.filename == i.FileName)) return true;
                 }
             }
             return false;
@@ -59,7 +61,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 if (!i.IsEnabled)
                 {
                     i.DownloadStatus = AdBlockerSettingFilterViewModel.DownloadSuccessStatus.NoMessage;
-                    if (await Managers.ExtensionAdBlockerManager.TryRemoveList(i.GetContent())) i.IsLoaded = false;
+                    await Managers.ExtensionAdBlockerManager.TryRemoveListFromInfo(i.FileName);
                 }
             }
         }
@@ -69,6 +71,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
             SetupRequired = false;
         }
         await Managers.ExtensionAdBlockerManager.LoadRulesFromText();
+        await Managers.ExtensionAdBlockerManager.LocalInfo.SaveAsync();
         return success;
     }
 
@@ -82,8 +85,8 @@ public class AdBlockerSettingViewModel : ViewModelBase
         {
             itemsGroup gr = new()
             {
-                title = new[] { new title() { Value = Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Filters/CustomGroup/Header"),@default=true } },
-                item=info.filters,
+                title = new[] { new title() { Value = Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Filters/CustomGroup/Header"), @default = true } },
+                item = info.filters,
             };
             FilterList.Add(new AdBlockerSettingFilterGroupViewModel(gr) { Parent = this });
         }
@@ -96,6 +99,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 SetupRequired &= !b;
                 i.IsLoaded = b;
                 i.IsEnabled = info.selected.Any(a => a.filename == c.filename);
+                if (i.IsEnabled && !i.IsLoaded) i.IsRefreshRequested = true;
             }
         }
         OnPropertyChanged(nameof(FilterList));
@@ -202,7 +206,7 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
     public AdBlockerSettingFilterViewModel(item content)
     {
         this.content = content ?? throw new ArgumentNullException(nameof(content));
-        ReloadSingleCommang = new Helper.DelegateCommand(async _ =>
+        ReloadSingleCommand = new Helper.DelegateCommand(async _ =>
         {
             await Managers.ExtensionAdBlockerManager.TryDownloadList(content);
             await Managers.ExtensionAdBlockerManager.LoadRulesFromText();
@@ -211,7 +215,7 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
 
     public item GetContent() => content;
 
-    public ICommand ReloadSingleCommang { get; }
+    public ICommand ReloadSingleCommand { get; }
 
     private bool _IsEnabled;
     public bool IsEnabled
