@@ -218,22 +218,24 @@ public sealed class NullableBoolConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
+        switch (value)
+        {
+            case null:
+                return parameter?.ToString() is "true" or "True" || parameter?.ToString() == bool.TrueString;
+            case bool b:
+                return b;
+        }
         return value.ToString() switch
         {
-            "true" => true,
-            "false" => false,
-            _ => parameter?.ToString() == "true"
+            "true" or "True" => true,
+            "false" or "False" => false,
+            _ => parameter?.ToString() is "true" or "True"
         };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        return value.ToString() switch
-        {
-            "true" => true,
-            "false" => false,
-            _ => parameter?.ToString() == "true"
-        };
+        return Convert(value, targetType, parameter, language);
     }
 }
 
