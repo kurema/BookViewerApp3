@@ -807,4 +807,12 @@ Clique direito para configurar</value>
   <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
     <value>Personalizado</value>
   </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Message" xml:space="preserve">
+    <value>Economia abortada porque o teste de filtro falhou.
+Detalhe:
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
+    <value>Salvar abortado</value>
+  </data>
 </root>

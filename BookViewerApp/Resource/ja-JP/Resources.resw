@@ -813,4 +813,12 @@
   <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
     <value>カスタム</value>
   </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Message" xml:space="preserve">
+    <value>フィルタのテストに失敗したため、保存を中止しました。
+詳細:
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
+    <value>保存中止</value>
+  </data>
 </root>

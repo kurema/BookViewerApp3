@@ -163,6 +163,10 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         private bool recommendedField;
         
+        private System.DateTime expiresField;
+        
+        private bool expiresFieldSpecified;
+        
         public item() {
             this.recommendedField = false;
         }
@@ -264,6 +268,28 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.recommendedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime expires {
+            get {
+                return this.expiresField;
+            }
+            set {
+                this.expiresField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool expiresSpecified {
+            get {
+                return this.expiresFieldSpecified;
+            }
+            set {
+                this.expiresFieldSpecified = value;
             }
         }
     }

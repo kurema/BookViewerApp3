@@ -809,4 +809,12 @@
   <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
     <value>自訂</value>
   </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Message" xml:space="preserve">
+    <value>由于过滤器测试失败，保存被中止。
+细节:
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
+    <value>保存已中止</value>
+  </data>
 </root>

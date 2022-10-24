@@ -84,7 +84,7 @@ public sealed partial class TextEditorPage : Page
         get
         {
             var abcChar = new char[26];
-            for(byte i = 0; i < 26; i++)
+            for (byte i = 0; i < 26; i++)
             {
                 abcChar[i] = (char)('a' + i);
             }
@@ -135,7 +135,7 @@ public sealed partial class TextEditorPage : Page
         {
             if (ea.ErrorMessage is not null)
             {
-                var dialog = new MessageDialog(ea.ErrorMessage);
+                var dialog = ea.ErrorTitle is null ? new MessageDialog(ea.ErrorMessage) : new MessageDialog(ea.ErrorMessage, ea.ErrorTitle);
                 await dialog.ShowAsync();
             }
             return;
@@ -143,6 +143,9 @@ public sealed partial class TextEditorPage : Page
         using var stream = await file.OpenStreamForWriteAsync();
         if (stream is null) return;
         var text = MainTextBox.Text;
+        //You need .SetLength(0);
+        //https://www.moonmile.net/blog/archives/3937
+        stream.SetLength(0);
         using var sw = new StreamWriter(stream, encoding ?? System.Text.Encoding.UTF8);
         await sw.WriteAsync(text);
         sw.Close();
@@ -321,6 +324,8 @@ public sealed partial class TextEditorPage : Page
     public delegate void GenericsEventHandler<T>(TextEditorPage sender, T args);
     public event GenericsEventHandler<SavingFileEventArgs> SavingFile;
 
+    public string Text { get => MainTextBox.Text; set => MainTextBox.Text = value; }
+
     public class SavingFileEventArgs : EventArgs
     {
         public SavingFileEventArgs(Models.FileItems.IFileItem file, SaveMode mode)
@@ -330,13 +335,15 @@ public sealed partial class TextEditorPage : Page
         }
 
         public bool ContinueSaving { get; set; } = true;
-        public void Cancel(string errorMesasge = null)
+        public void Cancel(string errorMesasge = null, string errorTitle = null)
         {
             ContinueSaving = false;
             ErrorMessage = errorMesasge;
+            ErrorTitle = errorTitle;
         }
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = null;
+        public string ErrorTitle { get; set; } = null;
 
         public SaveMode Mode { get; }
 

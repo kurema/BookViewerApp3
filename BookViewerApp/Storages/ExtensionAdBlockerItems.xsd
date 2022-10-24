@@ -45,6 +45,7 @@
 			<xs:attribute name="license_summary" type="xs:string" use="optional"/>
 			<xs:attribute name="info_source" type="xs:anyURI" use="optional"/>
 			<xs:attribute name="recommended" type="xs:boolean" use="optional" default="false" />
+			<xs:attribute name="expires" type="xs:dateTime" use="optional" />
 		</xs:complexType>
 	</xs:element>
 

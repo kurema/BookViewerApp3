@@ -45,7 +45,7 @@ public sealed partial class AdBlockerSetting : Page
 
         LoadTextEditors();
     }
-        
+
     public async void LoadFilters()
     {
         if (DataContext is ViewModels.AdBlockerSettingViewModel vm)
@@ -58,7 +58,16 @@ public sealed partial class AdBlockerSetting : Page
 
     private void textEditorCustomFilters_SavingFile(kurema.FileExplorerControl.Views.Viewers.TextEditorPage sender, kurema.FileExplorerControl.Views.Viewers.TextEditorPage.SavingFileEventArgs args)
     {
-        args.Cancel("It's not implemented");
+        var parser = new DistillNET.AbpFormatRuleParser();
+        try
+        {
+            parser.ParseAbpFormattedRule(sender.Text, 0);
+        }
+        catch (Exception e)
+        {
+            var loader = Managers.ResourceManager.Loader;
+            args.Cancel(string.Format(loader.GetString("Extension/AdBlocker/CustomFilter/Error/Message"), e.Message), loader.GetString("Extension/AdBlocker/CustomFilter/Error/Title"));
+        }
     }
 
     private void Button_Click_Open_Document(object sender, RoutedEventArgs e)

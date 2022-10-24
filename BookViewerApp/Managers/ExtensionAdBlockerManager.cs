@@ -295,7 +295,7 @@ public static class ExtensionAdBlockerManager
         {
             var info = await LocalInfo.GetContentAsync();
             //This is not efficient, but ignorable. I ignore.
-            info.selected = info.selected.Where(a => a.filename != filename).ToArray();
+            info.selected = info.selected.Where(a => !a.filename.Equals(filename, StringComparison.InvariantCultureIgnoreCase)).ToArray();
         }
         try
         {
@@ -318,7 +318,7 @@ public static class ExtensionAdBlockerManager
         {
             var info = await LocalInfo.GetContentAsync();
             var list = info.selected.ToList();
-            list.Add(new Storages.ExtensionAdBlockerItems.item() { filename = item.filename });
+            if (!info.selected.Any(a => a.filename.Equals(item.filename, StringComparison.InvariantCultureIgnoreCase))) list.Add(new Storages.ExtensionAdBlockerItems.item() { filename = item.filename });
             info.selected = list.ToArray();
         }
 

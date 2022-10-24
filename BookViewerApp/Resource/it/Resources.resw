@@ -809,4 +809,12 @@ Cliccare con il tasto destro del mouse per configurare</value>
   <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
     <value>Personalizzato</value>
   </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Message" xml:space="preserve">
+    <value>Salvataggio interrotto perché il test del filtro non è riuscito.
+Dettaglio:
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
+    <value>Salvataggio interrotto</value>
+  </data>
 </root>

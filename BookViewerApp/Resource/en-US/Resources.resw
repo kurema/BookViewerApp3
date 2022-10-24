@@ -939,4 +939,12 @@ Right click to configure</value>
   <data name="Extension.AdBlocker.Filters.CustomGroup.Header" xml:space="preserve">
     <value>Custom</value>
   </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Message" xml:space="preserve">
+    <value>Saving aborted because filter test failed.
+Detail:
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
+    <value>Save aborted</value>
+  </data>
 </root>
