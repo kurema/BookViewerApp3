@@ -14,6 +14,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Sources;
+using Windows.Foundation;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -314,11 +315,14 @@ public static class ExtensionAdBlockerManager
 
     public static async Task<bool> TryDownloadList(Storages.ExtensionAdBlockerItems.item item)
     {
+        Storages.ExtensionAdBlockerItems.item itemInfo;
         if (!Uri.TryCreate(item.source, UriKind.Absolute, out var uri)) return false;
+
         {
             var info = await LocalInfo.GetContentAsync();
             var list = info.selected.ToList();
-            if (!info.selected.Any(a => a.filename.Equals(item.filename, StringComparison.InvariantCultureIgnoreCase))) list.Add(new Storages.ExtensionAdBlockerItems.item() { filename = item.filename });
+            itemInfo = info.selected.FirstOrDefault(a => a.filename.Equals(item.filename, StringComparison.InvariantCultureIgnoreCase));
+            if (itemInfo is null) list.Add(itemInfo = new Storages.ExtensionAdBlockerItems.item() { filename = item.filename });
             info.selected = list.ToArray();
         }
 
@@ -327,7 +331,7 @@ public static class ExtensionAdBlockerManager
             var folder = await GetDataFolderCache();
             var file = await folder.CreateFileAsync($"{item.filename}.dl", CreationCollisionOption.ReplaceExisting);
             if (file is null) return false;
-            var stream = await file.OpenAsync(FileAccessMode.ReadWrite);
+            using var stream = await file.OpenAsync(FileAccessMode.ReadWrite);
 
             //var wc = new WebClient();
             //wc.DownloadFileAsync(uri, System.IO.Path.Combine(path, item.filename));
@@ -336,7 +340,46 @@ public static class ExtensionAdBlockerManager
             if (!result.Succeeded) return false;
             result.ResponseMessage.EnsureSuccessStatusCode();
             await result.ResponseMessage.Content.WriteToStreamAsync(stream);
+
+            var text = await FileIO.ReadTextAsync(file);
+
+            {
+                //For peterlowe.blocklist.txt
+                //https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=0
+                var match = new Regex(@"<pre>\r?\n?(.+)</pre>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline).Match(text);
+                if (match.Success && match.Value.Length > text.Length * 0.5)
+                {
+                    text = match.Groups[1].Value;
+                    stream.Seek(0);
+                    stream.Size = 0;
+                    using var w = new DataWriter(stream);
+                    w.WriteString(text);
+                    await w.StoreAsync();
+                    //await FileIO.WriteTextAsync(file, text);
+                }
+            }
+            {
+                var match = new Regex(@"^!\s*Expires:\s*(\d+)\s+days", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline).Match(text);
+                if (match.Success && int.TryParse(match.Groups[1].Value, out int days))
+                {
+                    itemInfo.expiresSpecified = true;
+                    //Should expire based on downloaded time?
+                    //Or should I parse "! Last modified:"?
+                    //Expireの日時はダウンロード時点を基準にすべきか、ファイル中の最終編集日時を参照すべきか。
+                    //ダウンロード時点の場合、例えば4日なら毎回3日遅れになる可能性がある。
+                    //一方、最終編集日時の4日後だとタイミングがズレて割合でほぼ4日遅れになる。そして日時がアメリカ表記でパースがめんどくさいし危うい。
+                    //とりあえずダウンロード時ベースで。ダウンロード時点はファイルを見れば分かるはずなので、Expireが無ければわざわざ書かない。
+                    itemInfo.expires = DateTime.UtcNow.AddDays(days);
+                }
+                else
+                {
+                    itemInfo.expiresSpecified = false;
+                    itemInfo.expires = DateTime.UtcNow;
+                }
+            }
+
             await file.RenameAsync(item.filename, NameCollisionOption.ReplaceExisting);
+
             return true;
         }
         catch
