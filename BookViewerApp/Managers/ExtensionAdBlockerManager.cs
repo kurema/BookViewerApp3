@@ -1,5 +1,6 @@
 ﻿using BookViewerApp.Storages;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Utilities;
 using System;
@@ -179,7 +180,8 @@ public static class ExtensionAdBlockerManager
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRules()
     {
-        if (!DomainsWhitelistLoaded) await LoadUserWhitelist();
+        (bool any, _) = await UpdateExpired();
+        if (!DomainsWhitelistLoaded && !any) await LoadUserWhitelist();
         return await LoadRulesFromDb() ?? (await LoadRulesFromText()).result;
     }
 
@@ -198,6 +200,44 @@ public static class ExtensionAdBlockerManager
     }
 
     private static System.Threading.SemaphoreSlim SemaphoreLoadFromText = new(1, 1);
+
+    public const double DefaultDaysToExpire = 7;
+
+    /// <summary>
+    /// Update expired or deleted filters.
+    /// </summary>
+    /// <returns>If there's any successful download, updateAny is true. If any download failed, successAll is false.</returns>
+    public static async Task<(bool updateAny, bool successAll)> UpdateExpired()
+    {
+        var localInfoContent = (await LocalInfo.GetContentAsync());
+        var selected = localInfoContent?.selected;
+        if (selected is null or { Length: 0 }) return (false, true);
+        var folder = await GetDataFolderCache();
+        var filters = (await LocalLists.GetContentAsync()).group.SelectMany(a => a.item).ToList();
+        if (localInfoContent?.filters is not null and { Length: > 0 }) filters.AddRange(localInfoContent.filters);
+        bool updateAny = false;
+        bool success = true;
+
+        foreach (var item in selected)
+        {
+            if (string.IsNullOrEmpty(item?.filename)) continue;
+            if (item?.expires is not null && item.expiresSpecified && item.expires <= DateTime.UtcNow && item.expires >= new DateTime(1800, 1, 1)) goto download; //If expired, download.
+            var file = await folder.TryGetItemAsync(item!.filename) as StorageFile;
+            if (file is null) goto download; //If filter is not downloaded, download.
+            if (item?.expires is not null && item.expiresSpecified) continue; //If filter is downloaded and not expired, continue.
+            var prop = await file.GetBasicPropertiesAsync();
+            if (prop.DateModified.ToUniversalTime().AddDays(DefaultDaysToExpire) < DateTime.UtcNow) goto download; //If `expired` is not specified, assume 7 days.
+            continue;
+        download:;
+            var filter = filters.FirstOrDefault(f => f.filename.Equals(item!.filename, StringComparison.InvariantCultureIgnoreCase));
+            if (filter is null) continue;
+            bool result = await TryDownloadList(filter);
+            success &= result;
+            updateAny |= result;
+        }
+        if (updateAny) await LocalInfo.SaveAsync();
+        return (updateAny, success);
+    }
 
     public static async Task<(DistillNET.FilterDbCollection? result, bool success)> LoadRulesFromText()
     {
@@ -244,7 +284,8 @@ public static class ExtensionAdBlockerManager
                 if (Filter is null) return (null, false);
                 foreach (var fn in info.selected)
                 {
-                    var file = await folder.TryGetItemAsync(fn.filename) as StorageFile;
+                    if (string.IsNullOrEmpty(fn?.filename)) continue;
+                    var file = await folder.TryGetItemAsync(fn!.filename) as StorageFile;
                     if (file is null) continue;
                     //if (Path.GetFileName(file.Path) is FileNameWhiteList or FileNameUser or FileNameDb) continue;
                     if (Path.GetFileName(file.Path) is FileNameDb) continue;
