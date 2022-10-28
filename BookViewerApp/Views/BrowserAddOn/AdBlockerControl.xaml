@@ -15,9 +15,13 @@
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock FontWeight="Bold" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Title'}"/>
-        <CheckBox x:Name="checkBoxEnabled" Content="Global" IsChecked="{x:Bind IsAdBlockerEnabled,Mode=TwoWay}" />
+        <CheckBox x:Name="checkBoxEnabled"  IsChecked="{x:Bind IsAdBlockerEnabled,Mode=TwoWay}">
+            <TextBlock FontWeight="Bold" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Title'}"/>
+        </CheckBox>
+        <CheckBox Content="www.placeholder.com" />
         <!--<Button HorizontalAlignment="Stretch" Content="Configure"  />-->
-        <v:AcrylicButtonControl Icon="Setting" Click="{x:Bind OpenConfig}" Margin="0"/>
+        <CommandBar DefaultLabelPosition="Collapsed">
+            <AppBarButton Icon="Setting" Click="{x:Bind OpenConfig}" />
+        </CommandBar>
     </StackPanel>
 </UserControl>

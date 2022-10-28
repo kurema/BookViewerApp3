@@ -656,7 +656,6 @@ public static partial class UIHelper
                         },
                         XamlRootProvider = () => content.XamlRoot,
                     });
-#if DEBUG
                     content.AddOnSpace.Add(new NavigationViewItemSeparator());
                     try
                     {
@@ -664,16 +663,13 @@ public static partial class UIHelper
                         content.AddOnSpace.Add(new Views.BrowserAddOn.AdBlockerControl());
                     }
                     catch { }
-#endif
                     {
                         void WebView2InitalizedOperation()
                         {
                             content.UserAgentOriginal ??= content.WebView2.CoreWebView2.Settings.UserAgent;
                             OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, OpenTabWeb, UpdateTitle);
-#if DEBUG
                             content.WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                             content.WebView2.CoreWebView2.WebResourceRequested += ExtensionAdBlockerManager.WebView2WebResourceRequested;
-#endif
                             updateUserAgent();
                         }
 

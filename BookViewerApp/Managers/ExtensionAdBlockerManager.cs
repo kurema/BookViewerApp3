@@ -180,7 +180,8 @@ public static class ExtensionAdBlockerManager
 
     public static async Task<DistillNET.FilterDbCollection?> LoadRules()
     {
-        (bool any, _) = await UpdateExpired();
+        bool any = false;
+        try { (any, _) = await UpdateExpired(); } catch { }
         if (!DomainsWhitelistLoaded && !any) await LoadUserWhitelist();
         return await LoadRulesFromDb() ?? (await LoadRulesFromText()).result;
     }
@@ -229,11 +230,18 @@ public static class ExtensionAdBlockerManager
             if (prop.DateModified.ToUniversalTime().AddDays(DefaultDaysToExpire) < DateTime.UtcNow) goto download; //If `expired` is not specified, assume 7 days.
             continue;
         download:;
-            var filter = filters.FirstOrDefault(f => f.filename.Equals(item!.filename, StringComparison.InvariantCultureIgnoreCase));
-            if (filter is null) continue;
-            bool result = await TryDownloadList(filter);
-            success &= result;
-            updateAny |= result;
+            try
+            {
+                var filter = filters.FirstOrDefault(f => f.filename.Equals(item!.filename, StringComparison.InvariantCultureIgnoreCase));
+                if (filter is null) continue;
+                bool result = await TryDownloadList(filter);
+                success &= result;
+                updateAny |= result;
+            }
+            catch
+            {
+                success = false;
+            }
         }
         if (updateAny) await LocalInfo.SaveAsync();
         return (updateAny, success);
