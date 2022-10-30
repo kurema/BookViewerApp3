@@ -20,6 +20,15 @@ using Windows.UI.Xaml.Navigation;
 namespace BookViewerApp.Views.BrowserAddOn;
 public sealed partial class AdBlockerControl : UserControl
 {
+    public string Url
+    {
+        get { return (string)GetValue(UrlProperty); }
+        set { SetValue(UrlProperty, value); }
+    }
+
+    public static readonly DependencyProperty UrlProperty = DependencyProperty.Register(nameof(Url), typeof(string), typeof(AdBlockerControl), new PropertyMetadata(""));
+
+
     public bool IsAdBlockerEnabled
     {
         get => (bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled);
@@ -35,5 +44,15 @@ public sealed partial class AdBlockerControl : UserControl
     {
         var tab = Helper.UIHelper.GetCurrentTabPage(this);
         tab.OpenTab("AdBlocker", typeof(AdBlockerSetting), null);
+    }
+
+    private void CheckBox_Whitelist_Checked(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void CheckBox_Whitelist_Unchecked(object sender, RoutedEventArgs e)
+    {
+
     }
 }

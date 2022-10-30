@@ -10,6 +10,7 @@ using BookViewerApp.Storages;
 using BookViewerApp.Views;
 
 using System.Threading.Tasks;
+using System.ServiceModel.Channels;
 
 namespace BookViewerApp.Helper;
 
@@ -660,7 +661,14 @@ public static partial class UIHelper
                     try
                     {
                         await ExtensionAdBlockerManager.LoadRules();
-                        content.AddOnSpace.Add(new Views.BrowserAddOn.AdBlockerControl());
+                        var adbc = new Views.BrowserAddOn.AdBlockerControl();
+                        adbc.SetBinding(Views.BrowserAddOn.AdBlockerControl.UrlProperty, new Windows.UI.Xaml.Data.Binding()
+                        {
+                            Source = content,
+                            Path = new PropertyPath("DataContext.Source"),
+                            Mode= Windows.UI.Xaml.Data.BindingMode.OneWay,
+                        });
+                        content.AddOnSpace.Add(adbc);
                     }
                     catch { }
                     {

@@ -58,10 +58,16 @@ public static class ExtensionAdBlockerManager
     private static HttpClient? _CommonHttpClient;
     public static HttpClient CommonHttpClient => _CommonHttpClient ??= new HttpClient();
 
+    public static bool IsInWhitelist(string domain)
+    {
+        var upper = domain.ToUpperInvariant();// This operation may be called twice. It's not smart in performance but ignorable.
+        return UserWhitelist.BinarySearch(upper) >= 0;
+    }
+
     public static async Task<bool> AddUserWhitelist(string domain)
     {
         var upper = domain.ToUpperInvariant();
-        if (UserWhitelist.BinarySearch(upper) >= 0) return true;
+        if (IsInWhitelist(upper)) return true;
         UserWhitelist.Add(upper);
         try
         {
@@ -78,7 +84,7 @@ public static class ExtensionAdBlockerManager
     public static async Task<bool> RemoveUserWhitelist(string domain)
     {
         var upper = domain.ToUpperInvariant();
-        if (!(UserWhitelist.BinarySearch(upper) >= 0)) return false;
+        if (!IsInWhitelist(upper)) return false;
         UserWhitelist.Remove(upper);
         try
         {
@@ -122,7 +128,7 @@ public static class ExtensionAdBlockerManager
         if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
         if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
         var domain = uri.Host.ToUpperInvariant();
-        if (UserWhitelist.BinarySearch(domain) >= 0) return;
+        if (IsInWhitelist(domain)) return;
         var headers = new System.Collections.Specialized.NameValueCollection();
         foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
         switch (args.ResourceContext)

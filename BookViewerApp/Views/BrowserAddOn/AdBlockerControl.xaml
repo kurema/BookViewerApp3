@@ -13,12 +13,16 @@
     >
     <UserControl.Resources >
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+        <ValueConverter:UrlDomainConverter x:Key="DomainConverter" />
+        <ValueConverter:AdBlockerIsHostEnabled x:Key="HostBlockerConverter" />
     </UserControl.Resources>
     <StackPanel>
         <CheckBox x:Name="checkBoxEnabled"  IsChecked="{x:Bind IsAdBlockerEnabled,Mode=TwoWay}">
             <TextBlock FontWeight="Bold" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Title'}"/>
         </CheckBox>
-        <CheckBox Content="www.placeholder.com" />
+        <CheckBox Content="{x:Bind Url,Converter={StaticResource DomainConverter},Mode=OneWay}" IsChecked="{x:Bind Url,Converter={StaticResource HostBlockerConverter},Mode=OneWay}" 
+                  Checked="CheckBox_Whitelist_Checked" Unchecked="CheckBox_Whitelist_Unchecked"
+                  />
         <!--<Button HorizontalAlignment="Stretch" Content="Configure"  />-->
         <CommandBar DefaultLabelPosition="Collapsed">
             <AppBarButton Icon="Setting" Click="{x:Bind OpenConfig}" />

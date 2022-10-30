@@ -365,3 +365,47 @@ public sealed class BoolToAcrylicBackgroundBrushConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+public sealed class UrlDomainConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        var v = value?.ToString();
+        if (v is null) return null;
+        if (Uri.TryCreate(v, UriKind.Absolute, out var uri))
+        {
+            return uri.Host;
+        }
+        else
+        {
+            return value;
+        }
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        return value;
+    }
+}
+
+public sealed class AdBlockerIsHostEnabled : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        var v = value?.ToString();
+        if (v is null) return false;
+        if (Uri.TryCreate(v, UriKind.Absolute, out var uri))
+        {
+            return !Managers.ExtensionAdBlockerManager.IsInWhitelist(uri.Host.ToUpperInvariant());
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
