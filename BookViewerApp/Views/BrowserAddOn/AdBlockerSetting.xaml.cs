@@ -56,7 +56,7 @@ public sealed partial class AdBlockerSetting : Page
 
     public Helper.DelegateCommand OpenWebCommand { get; }
 
-    private void textEditorCustomFilters_SavingFile(kurema.FileExplorerControl.Views.Viewers.TextEditorPage sender, kurema.FileExplorerControl.Views.Viewers.TextEditorPage.SavingFileEventArgs args)
+    private void textEditorCustomFilters_FileSaving(kurema.FileExplorerControl.Views.Viewers.TextEditorPage sender, kurema.FileExplorerControl.Views.Viewers.TextEditorPage.SavingFileEventArgs args)
     {
         var parser = new DistillNET.AbpFormatRuleParser();
         try
@@ -69,6 +69,12 @@ public sealed partial class AdBlockerSetting : Page
             args.Cancel(string.Format(loader.GetString("Extension/AdBlocker/CustomFilter/Error/Message"), e.Message), loader.GetString("Extension/AdBlocker/CustomFilter/Error/Title"));
         }
     }
+
+    private async void textEditorCustomFilters_FileSaved(object sender, EventArgs e)
+    {
+        await Managers.ExtensionAdBlockerManager.LoadUserWhitelist();
+    }
+
 
     private void Button_Click_Open_Document(object sender, RoutedEventArgs e)
     {

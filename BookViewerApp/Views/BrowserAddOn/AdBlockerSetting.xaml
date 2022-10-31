@@ -88,10 +88,10 @@
             </ListView>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
-            <fv:TextEditorPage x:Name="textEditorCustomFilters" CanChageSavePath="False" IsSpellCheckEnabled="False" SavingFile="textEditorCustomFilters_SavingFile" />
+            <fv:TextEditorPage x:Name="textEditorCustomFilters" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaving="textEditorCustomFilters_FileSaving" />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
-            <fv:TextEditorPage x:Name="textEditorTrustedSites" CanChageSavePath="False" IsSpellCheckEnabled="False" />
+            <fv:TextEditorPage x:Name="textEditorTrustedSites" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaved="textEditorCustomFilters_FileSaved" />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">
             <ScrollViewer>

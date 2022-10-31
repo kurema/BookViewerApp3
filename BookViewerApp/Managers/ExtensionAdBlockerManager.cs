@@ -3,8 +3,10 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Utilities;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,6 +19,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Sources;
 using Windows.Foundation;
 using Windows.Media.Playback;
+using Windows.Networking;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
@@ -58,16 +61,40 @@ public static class ExtensionAdBlockerManager
     private static HttpClient? _CommonHttpClient;
     public static HttpClient CommonHttpClient => _CommonHttpClient ??= new HttpClient();
 
+    public const int UserWhitelistCacheSize = 20;
+    public static List<(string host, bool isInWhitelist)> UserWhitelistCache = new();
+
     public static bool IsInWhitelist(string domain)
     {
         var upper = domain.ToUpperInvariant();// This operation may be called twice. It's not smart in performance but ignorable.
-        return UserWhitelist.BinarySearch(upper) >= 0;
+        var cached = UserWhitelistCache.FirstOrDefault(a => a.host == upper);
+        //Cache is not reordered by last access. Shoul I?
+        if (cached.host == upper) return cached.isInWhitelist;
+        bool result = check(upper);
+        UserWhitelistCache.Insert(0,(upper, result));
+        if (UserWhitelistCache.Count > UserWhitelistCacheSize) UserWhitelistCache.RemoveAt(UserWhitelistCache.Count - 1);
+        return result;
+
+        static bool check(string domainUpper)
+        {
+            int lastIndex = -1;
+            while (true)
+            {
+                //You don't need cache if wildcard is not supported.
+                lastIndex = domainUpper.IndexOf('.', lastIndex + 1);
+                if (lastIndex < 0) break;
+                var s = "*" + domainUpper.Substring(lastIndex);
+                if (UserWhitelist.BinarySearch("*" + domainUpper.Substring(lastIndex)) >= 0) return true;
+            }
+            return false;
+        }
     }
 
     public static async Task<bool> AddUserWhitelist(string domain)
     {
         var upper = domain.ToUpperInvariant();
         if (IsInWhitelist(upper)) return true;
+        UserWhitelistCache.Clear();
         UserWhitelist.Add(upper);
         try
         {
@@ -85,6 +112,7 @@ public static class ExtensionAdBlockerManager
     {
         var upper = domain.ToUpperInvariant();
         if (!IsInWhitelist(upper)) return false;
+        UserWhitelistCache.Clear();
         UserWhitelist.Remove(upper);
         try
         {
@@ -102,6 +130,7 @@ public static class ExtensionAdBlockerManager
 
     public static async Task LoadUserWhitelist()
     {
+        UserWhitelistCache.Clear();
         UserWhitelist.Clear();
         try
         {
@@ -118,6 +147,22 @@ public static class ExtensionAdBlockerManager
             DomainsWhitelistLoaded = false;
         }
         return;
+    }
+
+    public static async Task<bool> SaveUserWhitelist()
+    {
+        var s = string.Join(Environment.NewLine, UserWhitelist).ToLowerInvariant();
+        try
+        {
+            var file = await GetWhiteListFileAsync();
+            if (file is null) return false;
+            await FileIO.WriteTextAsync(file, s);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public static async void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
@@ -554,5 +599,12 @@ public static class ExtensionAdBlockerManager
             catch { }
             return text;
         }
+    }
+
+    public static string? GetHostOfUri(string? uri)
+    {
+        if (uri is null) return null;
+        if (Uri.TryCreate(uri, UriKind.Absolute, out var uri2)) return uri2.Host;
+        return null;
     }
 }

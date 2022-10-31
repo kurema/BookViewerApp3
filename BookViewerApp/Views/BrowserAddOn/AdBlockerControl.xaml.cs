@@ -1,10 +1,12 @@
 ﻿using BookViewerApp.Storages;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -38,6 +40,8 @@ public sealed partial class AdBlockerControl : UserControl
     public AdBlockerControl()
     {
         this.InitializeComponent();
+
+        RefreshCommand = new Helper.InvalidCommand();
     }
 
     public void OpenConfig()
@@ -46,13 +50,29 @@ public sealed partial class AdBlockerControl : UserControl
         tab.OpenTab("AdBlocker", typeof(AdBlockerSetting), null);
     }
 
-    private void CheckBox_Whitelist_Checked(object sender, RoutedEventArgs e)
+    public ICommand RefreshCommand
     {
-
+        get { return (ICommand)GetValue(RefreshCommandProperty); }
+        set { SetValue(RefreshCommandProperty, value); }
     }
 
-    private void CheckBox_Whitelist_Unchecked(object sender, RoutedEventArgs e)
-    {
+    public static readonly DependencyProperty RefreshCommandProperty = DependencyProperty.Register(nameof(RefreshCommand), typeof(ICommand), typeof(AdBlockerControl), new PropertyMetadata(new Helper.InvalidCommand()));
 
+    //public ICommand RefreshCommand { get => AppBarButtonRefresh.Command; set => AppBarButtonRefresh.Command = value; }
+
+    private async void CheckBox_Whitelist_Checked(object sender, RoutedEventArgs e)
+    {
+        var host = Managers.ExtensionAdBlockerManager.GetHostOfUri(Url);
+        if (host is null) return;
+        await Managers.ExtensionAdBlockerManager.RemoveUserWhitelist(host);
+        await Managers.ExtensionAdBlockerManager.SaveUserWhitelist();
+    }
+
+    private async void CheckBox_Whitelist_Unchecked(object sender, RoutedEventArgs e)
+    {
+        var host = Managers.ExtensionAdBlockerManager.GetHostOfUri(Url);
+        if (host is null) return;
+        await Managers.ExtensionAdBlockerManager.AddUserWhitelist(host);
+        await Managers.ExtensionAdBlockerManager.SaveUserWhitelist();
     }
 }

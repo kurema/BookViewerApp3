@@ -370,16 +370,7 @@ public sealed class UrlDomainConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        var v = value?.ToString();
-        if (v is null) return null;
-        if (Uri.TryCreate(v, UriKind.Absolute, out var uri))
-        {
-            return uri.Host;
-        }
-        else
-        {
-            return value;
-        }
+        return Managers.ExtensionAdBlockerManager.GetHostOfUri(value?.ToString()) ?? value;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -392,16 +383,9 @@ public sealed class AdBlockerIsHostEnabled : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        var v = value?.ToString();
-        if (v is null) return false;
-        if (Uri.TryCreate(v, UriKind.Absolute, out var uri))
-        {
-            return !Managers.ExtensionAdBlockerManager.IsInWhitelist(uri.Host.ToUpperInvariant());
-        }
-        else
-        {
-            return false;
-        }
+        var host = Managers.ExtensionAdBlockerManager.GetHostOfUri(value?.ToString());
+        if (host is null) return false;
+        return !Managers.ExtensionAdBlockerManager.IsInWhitelist(host.ToUpperInvariant());
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

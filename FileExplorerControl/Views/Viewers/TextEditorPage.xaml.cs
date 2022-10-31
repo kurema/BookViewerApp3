@@ -126,11 +126,11 @@ public sealed partial class TextEditorPage : Page
         await SaveGeneral(File, Encoding, SaveMode.Save);
     }
 
-    public async Task SaveGeneral(Models.FileItems.IFileItem file, System.Text.Encoding encoding, SaveMode saveMode)
+    public async Task<bool> SaveGeneral(Models.FileItems.IFileItem file, System.Text.Encoding encoding, SaveMode saveMode)
     {
-        if (file is null) return;
+        if (file is null) return false;
         var ea = new SavingFileEventArgs(file, saveMode);
-        SavingFile?.Invoke(this, ea);
+        FileSaving?.Invoke(this, ea);
         if (!ea.ContinueSaving)
         {
             if (ea.ErrorMessage is not null)
@@ -138,18 +138,28 @@ public sealed partial class TextEditorPage : Page
                 var dialog = ea.ErrorTitle is null ? new MessageDialog(ea.ErrorMessage) : new MessageDialog(ea.ErrorMessage, ea.ErrorTitle);
                 await dialog.ShowAsync();
             }
-            return;
+            return false;
         }
-        using var stream = await file.OpenStreamForWriteAsync();
-        if (stream is null) return;
-        var text = MainTextBox.Text;
-        //You need .SetLength(0);
-        //https://www.moonmile.net/blog/archives/3937
-        stream.SetLength(0);
-        using var sw = new StreamWriter(stream, encoding ?? System.Text.Encoding.UTF8);
-        await sw.WriteAsync(text);
-        sw.Close();
-        stream.Close();
+        try
+        {
+            {
+                using var stream = await file.OpenStreamForWriteAsync();
+                if (stream is null) return false;
+                var text = MainTextBox.Text;
+                //You need .SetLength(0);
+                //https://www.moonmile.net/blog/archives/3937
+                stream.SetLength(0);
+                using var sw = new StreamWriter(stream, encoding ?? System.Text.Encoding.UTF8);
+                await sw.WriteAsync(text);
+                sw.Close();
+                stream.Close();
+            }
+            FileSaved?.Invoke(this, new EventArgs());
+            return true;
+        }
+        catch {
+            return false;
+        }
     }
 
     public async Task Open()
@@ -322,7 +332,8 @@ public sealed partial class TextEditorPage : Page
     }
 
     public delegate void GenericsEventHandler<T>(TextEditorPage sender, T args);
-    public event GenericsEventHandler<SavingFileEventArgs> SavingFile;
+    public event GenericsEventHandler<SavingFileEventArgs> FileSaving;
+    public event EventHandler FileSaved;
 
     public string Text { get => MainTextBox.Text; set => MainTextBox.Text = value; }
 

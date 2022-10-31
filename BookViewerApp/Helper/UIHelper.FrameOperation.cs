@@ -666,7 +666,11 @@ public static partial class UIHelper
                         {
                             Source = content,
                             Path = new PropertyPath("DataContext.Source"),
-                            Mode= Windows.UI.Xaml.Data.BindingMode.OneWay,
+                            Mode = Windows.UI.Xaml.Data.BindingMode.OneWay,
+                        });
+                        adbc.RefreshCommand = new DelegateCommand(a =>
+                        {
+                            content.WebView2.Reload();
                         });
                         content.AddOnSpace.Add(adbc);
                     }

@@ -25,6 +25,7 @@
                   />
         <!--<Button HorizontalAlignment="Stretch" Content="Configure"  />-->
         <CommandBar DefaultLabelPosition="Collapsed">
+            <AppBarButton Icon="Refresh" x:Name="AppBarButtonRefresh" Command="{x:Bind RefreshCommand}" />
             <AppBarButton Icon="Setting" Click="{x:Bind OpenConfig}" />
         </CommandBar>
     </StackPanel>
