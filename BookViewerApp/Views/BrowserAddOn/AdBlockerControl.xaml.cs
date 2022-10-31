@@ -65,7 +65,7 @@ public sealed partial class AdBlockerControl : UserControl
         var host = Managers.ExtensionAdBlockerManager.GetHostOfUri(Url);
         if (host is null) return;
         await Managers.ExtensionAdBlockerManager.RemoveUserWhitelist(host);
-        await Managers.ExtensionAdBlockerManager.SaveUserWhitelist();
+        //await Managers.ExtensionAdBlockerManager.SaveUserWhitelist();
     }
 
     private async void CheckBox_Whitelist_Unchecked(object sender, RoutedEventArgs e)
@@ -73,6 +73,6 @@ public sealed partial class AdBlockerControl : UserControl
         var host = Managers.ExtensionAdBlockerManager.GetHostOfUri(Url);
         if (host is null) return;
         await Managers.ExtensionAdBlockerManager.AddUserWhitelist(host);
-        await Managers.ExtensionAdBlockerManager.SaveUserWhitelist();
+        //await Managers.ExtensionAdBlockerManager.SaveUserWhitelist();
     }
 }

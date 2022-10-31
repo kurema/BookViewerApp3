@@ -29,7 +29,7 @@ using static System.Net.WebRequestMethods;
 #nullable enable
 
 namespace BookViewerApp.Managers;
-public static class ExtensionAdBlockerManager
+public static partial class ExtensionAdBlockerManager
 {
     //Stay away from GPL!
     //If users download manually, I think it's safe.
@@ -50,7 +50,8 @@ public static class ExtensionAdBlockerManager
     public static DistillNET.FilterDbCollection? Filter { get; private set; }
 
     //Make sure the list is sorted and ToUpeerInvariant()ed before use.
-    public static List<string> UserWhitelist { get; } = new List<string>();
+    //public static List<string> UserWhitelist { get; } = new List<string>();
+    public static Whitelist UserWhitelist { get; } = new();
     private static bool DomainsWhitelistLoaded = false;
     public const int FiltersCacheSize = 20;
     private static Dictionary<string, (DateTime, DistillNET.UrlFilter[])> FiltersCache = new();
@@ -70,25 +71,29 @@ public static class ExtensionAdBlockerManager
         var cached = UserWhitelistCache.FirstOrDefault(a => a.host == upper);
         //Cache is not reordered by last access. Shoul I?
         if (cached.host == upper) return cached.isInWhitelist;
-        bool result = check(upper);
-        UserWhitelistCache.Insert(0,(upper, result));
+        bool result = UserWhitelist.ContainsWildcard(upper);
+        UserWhitelistCache.Insert(0, (upper, result));
         if (UserWhitelistCache.Count > UserWhitelistCacheSize) UserWhitelistCache.RemoveAt(UserWhitelistCache.Count - 1);
         return result;
-
-        static bool check(string domainUpper)
-        {
-            int lastIndex = -1;
-            while (true)
-            {
-                //You don't need cache if wildcard is not supported.
-                lastIndex = domainUpper.IndexOf('.', lastIndex + 1);
-                if (lastIndex < 0) break;
-                var s = "*" + domainUpper.Substring(lastIndex);
-                if (UserWhitelist.BinarySearch("*" + domainUpper.Substring(lastIndex)) >= 0) return true;
-            }
-            return false;
-        }
     }
+
+    //public static IEnumerable<int> GetWhitelistEntries(string domain)
+    //{
+    //    var upper = domain.ToUpperInvariant();// This operation may be called twice. It's not smart in performance but ignorable.
+    //    int index = UserWhitelist.BinarySearch(upper);
+    //    if (index >= 0) yield return index;
+
+    //    int lastIndex = -1;
+    //    while (true)
+    //    {
+    //        //You don't need cache if wildcard is not supported.
+    //        lastIndex = upper.IndexOf('.', lastIndex + 1);
+    //        if (lastIndex < 0) break;
+    //        var s = "*" + upper.Substring(lastIndex);
+    //        index = UserWhitelist.BinarySearch("*" + upper.Substring(lastIndex));
+    //        if (index >= 0) yield return index;
+    //    }
+    //}
 
     public static async Task<bool> AddUserWhitelist(string domain)
     {
@@ -99,7 +104,22 @@ public static class ExtensionAdBlockerManager
         try
         {
             var file = await GetWhiteListFileAsync();
-            await FileIO.AppendLinesAsync(file, new[] { domain.ToLowerInvariant() });
+            if (file is null) return false;
+
+            using var s = await file.OpenStreamForWriteAsync();
+            if (!s.CanRead) return false;
+            using var sw = new StreamWriter(s);
+            if (s.Length > 0)
+            {
+                s.Seek(-1, SeekOrigin.End);
+                var buffer = new byte[1];
+                await s.ReadAsync(buffer, 0, 1);
+                if (!(buffer[0] is (byte)'\r' or (byte)'\n'))
+                {
+                    await sw.WriteAsync(sw.NewLine);
+                }
+            }
+            sw.WriteLine(domain.ToLowerInvariant());
             return true;
         }
         catch
@@ -108,25 +128,15 @@ public static class ExtensionAdBlockerManager
         }
     }
 
-    public static async Task<bool> RemoveUserWhitelist(string domain)
+    public static async Task<(bool removeSuccess, bool saveSuccess)> RemoveUserWhitelist(string domain)
     {
         var upper = domain.ToUpperInvariant();
-        if (!IsInWhitelist(upper)) return false;
+        bool result = UserWhitelist.Remove(upper);
+        result |= UserWhitelist.RemoveWildcard(upper);
         UserWhitelistCache.Clear();
-        UserWhitelist.Remove(upper);
-        try
-        {
-            var file = await GetWhiteListFileAsync();
-            var text = string.Join('\n', UserWhitelist.Select(a => a.ToLowerInvariant()));
-            await FileIO.WriteTextAsync(file, text, Windows.Storage.Streams.UnicodeEncoding.Utf8);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        if (!result) return (false, false);
+        return (result, await SaveUserWhitelist());
     }
-
 
     public static async Task LoadUserWhitelist()
     {
@@ -137,7 +147,7 @@ public static class ExtensionAdBlockerManager
             var file = await GetWhiteListFileAsync();
             if (file is null) return;
             var text = await FileIO.ReadTextAsync(file, Windows.Storage.Streams.UnicodeEncoding.Utf8);
-            var list = text.Split('\n', '\r').Where(a => !a.StartsWith("#") && !string.IsNullOrWhiteSpace(a)).Select(a => a.ToUpperInvariant()).ToArray();
+            var list = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).ToArray();
             UserWhitelist.AddRange(list);
             DomainsWhitelistLoaded = true;
         }
@@ -215,6 +225,7 @@ public static class ExtensionAdBlockerManager
         FiltersWhitelistCacheGlobal = null;
         FiltersCache.Clear();
         FiltersWhitelistCache.Clear();
+
     }
 
     public static DistillNET.UrlFilter[] LoadFilters(string domain) => LoadFiltersCommon(domain, FiltersCache, (domain) => Filter?.GetFiltersForDomain(domain));

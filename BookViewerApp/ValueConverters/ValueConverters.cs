@@ -290,19 +290,8 @@ public sealed class StringChangeConverter : IValueConverter
     }
 }
 
-public sealed class StringNullOrEmptyConverter : IValueConverter
+public sealed class StringNullOrEmptyConverter : kurema.FileExplorerControl.Helper.ValueConverters.StringNullOrEmptyConverter
 {
-    public object Convert(object value, Type targetType, object parameter, string language)
-    {
-        var list = parameter?.ToString()?.Split(":");
-        if (list == null || list.Length < 2) return "";
-        return string.IsNullOrEmpty(value?.ToString()) ? list[0] : list[1];
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public sealed class IsValidUriIValueConverter : IValueConverter

@@ -13,6 +13,7 @@
         <vc:BoolToEnumConverter x:Key="vc_b2e"/>
         <vc:EnumToBoolConverter x:Key="vc_e2b"/>
         <vc:LocalizeConverter x:Key="vc_loc" />
+        <vc:StringNullOrEmptyConverter x:Key="vc_noe" />
     </Page.Resources>
 
     <Grid>
@@ -102,16 +103,31 @@
                 <AppBarButton Icon="OpenFile" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Open}"
                               Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Open}"/>
                 <AppBarButton Icon="Save" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Save}"
-                              Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" />
+                              Visibility="{x:Bind CanOverwrite,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind Save}" 
+                              IsEnabled="{x:Bind IsUpdated,Mode=OneWay}"
+                              />
                 <AppBarButton Icon="SaveLocal" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.SaveAs}"
                               Visibility="{x:Bind CanChageSavePath,Mode=OneWay,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="{x:Bind SaveAs}" />
                 <AppBarButton Icon="Refresh" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Reload}" Click="{x:Bind Load}" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}"/>
-                <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}"/>
+                <!-- IsEnabled="{x:Bind MainTextBox.CanUndo,Mode=OneWay}" do not work. Why? I don't know. -->
+                <!-- Nor IsEnabled="{Binding ElementName=MainTextBox,Path=CanUndo,Mode=OneWay}" -->
+                <!-- We can fix it using TextChanged but... Well, no. -->
+                <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}" />
+                <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}" />
+                <AppBarButton Visibility="{x:Bind Info, Converter={StaticResource vc_noe},ConverterParameter=Collapsed:Visible,Mode=OneWay}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF167;"/>
+                    </AppBarButton.Icon>
+                    <AppBarButton.Flyout>
+                        <Flyout Placement="Bottom">
+                            <TextBlock Text="{x:Bind Info,Mode=OneWay}" />
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
             </CommandBar>
         </StackPanel>
-        <TextBox
+        <TextBox TextChanged="MainTextBox_TextChanged"
             x:Name="MainTextBox" SelectionChanged="MainTextBox_SelectionChanged"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" AcceptsReturn="True" IsSpellCheckEnabled="{x:Bind IsSpellCheckEnabled,Mode=OneWay}"
             ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"

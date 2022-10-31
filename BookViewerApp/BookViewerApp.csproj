@@ -276,6 +276,7 @@
     <Compile Include="Helper\ViewModelBase.cs" />
     <Compile Include="Helper\DelegateCommand.cs" />
     <Compile Include="Managers\ExtensionAdBlockerManager.cs" />
+    <Compile Include="Managers\ExtensionAdBlockerManager.Whitelist.cs" />
     <Compile Include="Managers\FaviconManager.cs" />
     <Compile Include="Managers\HistoryManager.cs" />
     <Compile Include="Managers\ImageManager.cs" />

@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Data;
 
 namespace kurema.FileExplorerControl.Helper.ValueConverters;
 
+//I've read ValueConverter should be sealed somewhere, but I forgot why.
 public class IntToStringValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
@@ -72,6 +73,7 @@ public class BoolToEnumConverter : IValueConverter
         }
         if (targetType.IsEnum)
         {
+            //Why didn't I use Enum.Parse. Is there a reason or just I did't know? I don't fix it for now for the safe side.
             foreach (Enum item in targetType.GetEnumValues())
             {
                 if (item.ToString().Equals(result, StringComparison.InvariantCulture))
@@ -348,6 +350,29 @@ public class UlongToHumanReadableSizeConverter : IValueConverter
             return GetBytesReadable(num);
         }
         return "";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class StringNullOrEmptyConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        var list = parameter?.ToString()?.Split(":");
+        if (list == null || list.Length < 2) return "";
+        var text= string.IsNullOrEmpty(value?.ToString()) ? list[0] : list[1];
+        if (targetType.IsEnum && Enum.TryParse(targetType, text, out var result))
+        {
+            return result;
+        }
+        else
+        {
+            return text;
+        }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

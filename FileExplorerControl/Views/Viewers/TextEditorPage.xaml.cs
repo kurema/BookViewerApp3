@@ -59,7 +59,13 @@ public sealed partial class TextEditorPage : Page
 
     public static readonly DependencyProperty IsSpellCheckEnabledProperty = DependencyProperty.Register("IsSpellCheckEnabled", typeof(bool), typeof(TextEditorPage), new PropertyMetadata(true));
 
+    public bool IsUpdated
+    {
+        get { return (bool)GetValue(IsUpdatedProperty); }
+        set { SetValue(IsUpdatedProperty, value); }
+    }
 
+    public static readonly DependencyProperty IsUpdatedProperty = DependencyProperty.Register("IsUpdated", typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
 
     public bool SelectionNotEmpty
     {
@@ -68,6 +74,14 @@ public sealed partial class TextEditorPage : Page
     }
 
     public static readonly DependencyProperty SelectionNotEmptyProperty = DependencyProperty.Register("SelectionNotEmpty", typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
+
+    public string Info
+    {
+        get { return (string)GetValue(InfoProperty); }
+        set { SetValue(InfoProperty, value); }
+    }
+
+    public static readonly DependencyProperty InfoProperty = DependencyProperty.Register("Info", typeof(string), typeof(TextEditorPage), new PropertyMetadata(string.Empty));
 
 
 
@@ -83,6 +97,8 @@ public sealed partial class TextEditorPage : Page
     {
         get
         {
+            //basicaly 'I'.ToLower() is different on Tr-TR and az-Latn-AZ.
+            //https://learn.microsoft.com/dotnet/core/extensions/performing-culture-insensitive-case-changes#using-the-chartoupper-and-chartolower-methods
             var abcChar = new char[26];
             for (byte i = 0; i < 26; i++)
             {
@@ -123,7 +139,8 @@ public sealed partial class TextEditorPage : Page
 
     public async Task Save()
     {
-        await SaveGeneral(File, Encoding, SaveMode.Save);
+        bool result = await SaveGeneral(File, Encoding, SaveMode.Save);
+        IsUpdated &= !result;
     }
 
     public async Task<bool> SaveGeneral(Models.FileItems.IFileItem file, System.Text.Encoding encoding, SaveMode saveMode)
@@ -364,5 +381,10 @@ public sealed partial class TextEditorPage : Page
     public enum SaveMode
     {
         Save, SaveAs, SaveAsCopy,
+    }
+
+    private void MainTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        IsUpdated = true;
     }
 }
