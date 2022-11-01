@@ -21,8 +21,7 @@ namespace BookViewerApp.Storages
         public static event Windows.Foundation.TypedEventHandler<object?, LibraryKind>? LibraryUpdateRequest;
         public static void OnLibraryUpdateRequest(LibraryKind kind) => LibraryUpdateRequest?.Invoke(null, kind);
 
-        public static StorageContent<Library.bookmarks_library> LocalBookmark = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
-
+        public static StorageContent<Library.bookmarks_library> LocalBookmarks = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/Bookmark.xml", () => new Library.bookmarks_library());
 
         public static StorageContent<Library.bookmarks> RoamingBookmarks = new(SavePlaces.Roaming, "Bookmarks.xml", () => new Library.bookmarks());
 
@@ -147,7 +146,7 @@ namespace BookViewerApp.Storages
             return new ContainerDelegateItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", async (parent) =>
             {
                 var library = await Content.GetContentAsync();
-                var bookmark_local = await LocalBookmark.GetContentAsync();
+                var bookmark_local = await LocalBookmarks.GetContentAsync();
                 var bookmark_roaming = await RoamingBookmarks.GetContentAsync();
 
                 var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
@@ -188,7 +187,7 @@ namespace BookViewerApp.Storages
                     {
                         var bookmarksCulture = bookmark_local?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
                         var local = bookmarksCulture?.AsFileItem(bookmarkAction, true, menuCommandsPr);
-                        if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmark.FileName, local)
+                        if (bookmarksCulture != null) list.Insert(0, new ContainerItem(bookmarksCulture.title ?? "App Bookmark", LocalBookmarks.FileName, local)
                         {
                             FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/PresetBookmark"),
                             MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarkPreset,

@@ -947,4 +947,37 @@ Detail:
   <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
     <value>Save aborted</value>
   </data>
+  <data name="Info.More.BookmarkManager.Description" xml:space="preserve">
+    <value>Edit the XML file for browser bookmarks</value>
+  </data>
+  <data name="Info.More.BookmarkManager.Title" xml:space="preserve">
+    <value>Open bookmarks manager</value>
+  </data>
+  <data name="TabHeader.BookmarkManager" xml:space="preserve">
+    <value>Bookmark manager</value>
+  </data>
+  <data name="BookmarkManager.Roaming.Header" xml:space="preserve">
+    <value>Bookmarks.xml</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="BookmarkManager.Local.Header" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
+    <value>Save has failed</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
+    <value>File save failed because validation failed.
+
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
+    <value>Enter the filter in an EasyList compatible format.</value>
+  </data>
+  <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
+    <value>Specifies the domains for which ad blocking should be disabled.
+One entry per line.
+Wildcards can be used only at the beginning of a line.
+Lines prefixed with '#' will be ignored.</value>
+  </data>
 </root>

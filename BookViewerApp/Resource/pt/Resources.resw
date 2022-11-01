@@ -815,4 +815,33 @@ Detalhe:
   <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
     <value>Salvar abortado</value>
   </data>
+  <data name="Info.More.BookmarkManager.Title" xml:space="preserve">
+    <value>Gestor de marcadores abertos</value>
+  </data>
+  <data name="Info.More.BookmarkManager.Description" xml:space="preserve">
+    <value>Editar o ficheiro XML para os marcadores do navegador</value>
+  </data>
+  <data name="TabHeader.BookmarkManager" xml:space="preserve">
+    <value>Gestor de marcadores de livros</value>
+  </data>
+  <data name="BookmarkManager.Local.Header" xml:space="preserve">
+    <value>Amostra</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
+    <value>Salvar falhou</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
+    <value>O ficheiro guardado falhou porque a validação falhou.
+
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
+    <value>Introduzir o filtro num formato compatível com EasyList.</value>
+  </data>
+  <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
+    <value>Especifica os domínios para os quais o bloqueio de anúncios deve ser desactivado.
+Uma entrada por linha.
+Os wildcards só podem ser utilizados no início de uma linha.
+As linhas prefixadas com '#' serão ignoradas.</value>
+  </data>
 </root>

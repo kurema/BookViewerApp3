@@ -88,11 +88,13 @@
             </ListView>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
-            <fv:TextEditorPage x:Name="textEditorCustomFilters" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaving="textEditorCustomFilters_FileSaving" />
+            <fv:TextEditorPage x:Name="textEditorCustomFilters" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaving="textEditorCustomFilters_FileSaving"
+                               Info="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Info'}"
+                               />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
             <fv:TextEditorPage x:Name="textEditorTrustedSites" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaved="textEditorCustomFilters_FileSaved"
-                               Info="This is a test message."
+                               Info="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Info'}"
                                />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">

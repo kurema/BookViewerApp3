@@ -50,26 +50,29 @@ public class StorageContent<T> where T : class
 
     private async Task<T> DeserializeAsync()
     {
-        switch (SavePlace)
-        {
-            case SavePlaces.Local:
-            case SavePlaces.Roaming:
-            case SavePlaces.LocalCache:
-                {
-                    var folder = DataFolder;
-                    var pathSplited = FileName.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
-                    for (int i = 0; i < pathSplited.Length - 1; i++)
-                    {
-                        folder = await folder.GetFolderAsync(pathSplited[i]);
-                        if (folder is null) return null;
-                    }
-                    return await Functions.DeserializeAsync<T>(folder, pathSplited.Last(), this.Semaphore);
-                }
-            case SavePlaces.InstalledLocation:
-                return await Functions.DeserializeAsync<T>(await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName)), this.Semaphore);
-            default:
-                return null;
-        }
+        var f = await GetFileAsync();
+        if (f is null) return null;
+        return await Functions.DeserializeAsync<T>(f, Semaphore);
+        //switch (SavePlace)
+        //{
+        //    case SavePlaces.Local:
+        //    case SavePlaces.Roaming:
+        //    case SavePlaces.LocalCache:
+        //        {
+        //            var folder = DataFolder;
+        //            var pathSplited = FileName.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+        //            for (int i = 0; i < pathSplited.Length - 1; i++)
+        //            {
+        //                folder = await folder.GetFolderAsync(pathSplited[i]);
+        //                if (folder is null) return null;
+        //            }
+        //            return await Functions.DeserializeAsync<T>(folder, pathSplited.Last(), this.Semaphore);
+        //        }
+        //    case SavePlaces.InstalledLocation:
+        //        return await Functions.DeserializeAsync<T>(await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName)), this.Semaphore);
+        //    default:
+        //        return null;
+        //}
     }
 
     public SavePlaces SavePlace { get; set; }
@@ -77,8 +80,11 @@ public class StorageContent<T> where T : class
     public Func<T> GetNewDelegate { get; set; } = null;
 
     public T GetNew() => GetNewDelegate != null ? GetNewDelegate() : default;
+    
 
     internal async Task<T> GetContentAsync() => Content ??= await DeserializeAsync() ?? GetNew();
+
+    internal async Task<T> ReloadAsync() => Content = await DeserializeAsync();
 
     internal async Task SaveAsync()
     {
@@ -120,10 +126,34 @@ public class StorageContent<T> where T : class
         }
     }
 
+    public async Task<Windows.Storage.StorageFile> GetFileAsync()
+    {
+        switch (SavePlace)
+        {
+            case SavePlaces.Local:
+            case SavePlaces.Roaming:
+            case SavePlaces.LocalCache:
+                {
+                    var folder = DataFolder;
+                    var pathSplited = FileName.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+                    for (int i = 0; i < pathSplited.Length - 1; i++)
+                    {
+                        folder = await folder.GetFolderAsync(pathSplited[i]);
+                        if (folder is null) return null;
+                    }
+                    return await folder.TryGetItemAsync(pathSplited.Last()) as Windows.Storage.StorageFile;
+                }
+            case SavePlaces.InstalledLocation:
+                return await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.FileName));
+            default:
+                return null;
+        }
+    }
+
     public async Task<bool> ExistAsync()
     {
         var item = await DataFolder.TryGetItemAsync(FileName);
-        return item != null;
+        return item is not null and Windows.Storage.StorageFile;
     }
 
     public async Task TryDeleteAsync()

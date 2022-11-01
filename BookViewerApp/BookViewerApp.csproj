@@ -247,9 +247,9 @@
     <Content Include="res\bibi\bibi\resources\styles\fonts\MaterialIcons-Regular.woff2" />
     <Content Include="res\bibi\LICENSE" />
     <Content Include="res\bibi\README.md" />
-    <None Include="Storages\Library.xsd">
+    <Content Include="Storages\Library.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </Content>
     <PRIResource Include="Resource\en-US\Resources.resw" />
     <PRIResource Include="Resource\it\Resources.resw" />
     <PRIResource Include="Resource\ja-JP\Resources.resw" />
@@ -327,6 +327,9 @@
     </Compile>
     <Compile Include="Views\BookmarkContentDialog.xaml.cs">
       <DependentUpon>BookmarkContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookmarksSettingPage.xaml.cs">
+      <DependentUpon>BookmarksSettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bookshelf\Book.xaml.cs">
       <DependentUpon>Book.xaml</DependentUpon>
@@ -460,6 +463,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BookmarkContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BookmarksSettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

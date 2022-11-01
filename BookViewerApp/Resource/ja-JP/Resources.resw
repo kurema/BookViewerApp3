@@ -821,4 +821,33 @@
   <data name="Extension.AdBlocker.CustomFilter.Error.Title" xml:space="preserve">
     <value>保存中止</value>
   </data>
+  <data name="Info.More.BookmarkManager.Description" xml:space="preserve">
+    <value>ブックマークのXMLを編集する</value>
+  </data>
+  <data name="Info.More.BookmarkManager.Title" xml:space="preserve">
+    <value>ブックマークを管理する</value>
+  </data>
+  <data name="TabHeader.BookmarkManager" xml:space="preserve">
+    <value>ブックマークマネージャー</value>
+  </data>
+  <data name="BookmarkManager.Local.Header" xml:space="preserve">
+    <value>サンプル</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
+    <value>保存失敗</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
+    <value>検証に失敗したため、ファイルの保存に失敗しました。
+
+{0}</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
+    <value>EasyList互換の形式でフィルタを入力します。</value>
+  </data>
+  <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
+    <value>広告ブロックを無効にするドメインを指定します。
+1行につき1つです。
+ワイルドカードは行頭でのみ使用可能です。
+行頭に '#' がある行は無視されます。</value>
+  </data>
 </root>

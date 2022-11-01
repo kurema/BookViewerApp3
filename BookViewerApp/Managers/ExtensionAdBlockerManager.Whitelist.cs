@@ -127,7 +127,7 @@ public static partial class ExtensionAdBlockerManager
         {
             var upper = item.ToUpperInvariant();// This operation may be called twice. It's not smart in performance but ignorable.
             if (ContainsDomain(upper)) return true;
-            foreach (var entry in GetWildcardCandidate(upper))
+            foreach (var entry in GetWildcardCandidates(upper))
             {
                 if (ContainsDomain(entry)) return true;
             }
@@ -137,14 +137,28 @@ public static partial class ExtensionAdBlockerManager
         public bool RemoveWildcard(string item)
         {
             bool result = false;
-            foreach(var entry in GetWildcardCandidate(item))
+            var wc = GetWildcardCandidates(item);
+            foreach (var wildcard in wc)
             {
-                result|= Remove(entry);
+                contentForSearch.Remove(wildcard.ToUpperInvariant());
             }
+
+            for (int i=0;i<content.Count;i++)
+            {
+                foreach (var wildcard in wc)
+                {
+                    if(content[i].Equals(wildcard, System.StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        result = true;
+                        content[i] = "#" + content[i];
+                    }
+                }
+            }
+
             return result;
         }
 
-        public static IEnumerable<string> GetWildcardCandidate(string domain)
+        public static IEnumerable<string> GetWildcardCandidates(string domain)
         {
             int lastIndex = -1;
             while (true)

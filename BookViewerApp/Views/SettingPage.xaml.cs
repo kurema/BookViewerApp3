@@ -160,6 +160,7 @@ namespace BookViewerApp.Views
 
             var result = new ViewModels.ListItemViewModel[] {
                 new ViewModels.ListItemViewModel(loader.GetString("Info/More/OpenAdBlockerSetting/Title"), loader.GetString("Info/More/OpenAdBlockerSetting/Description") , new DelegateCommand(a => tabpage.OpenTab("AdBlocker", typeof(BrowserAddOn.AdBlockerSetting), null))) { GroupTag = "Info/More/Title" },
+                new ViewModels.ListItemViewModel(loader.GetString("Info/More/BookmarkManager/Title"), loader.GetString("Info/More/BookmarkManager/Description") , new DelegateCommand(a => tabpage.OpenTab("BookmarkManager", typeof(BookmarksSettingPage), null))) { GroupTag = "Info/More/Title" },
                 new ViewModels.ListItemViewModel(loader.GetString("AppName"), loader.GetString("Info/Info/AboutThisApp/Description"), new DelegateCommand(async _ => await OpenLicenseContentDialogAboutThisApp())) { GroupTag = "Info/Info/Title" },
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/Privacy/Title"), loader.GetString("Info/Info/Privacy/Description"), new OpenWebCommand(tabpage, "https://github.com/kurema/BookViewerApp3/blob/master/PrivacyPolicy.md")) { GroupTag = "Info/Info/Title" },
                 new ViewModels.ListItemViewModel(loader.GetString("Info/Info/ThirdParty/Title"), loader.GetString("Info/Info/ThirdParty/Description"), new DelegateCommand(async _ => await OpenLicenseContentDialogThirdParty())) { GroupTag = "Info/Info/Title" },
