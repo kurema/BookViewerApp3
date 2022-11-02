@@ -42,6 +42,10 @@ public sealed partial class TextEditorPage : Page
 
     public static readonly DependencyProperty CanChageSavePathProperty = DependencyProperty.Register(nameof(CanChageSavePath), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
 
+    /// <summary>
+    /// Use this to access some functions not provided by this class like `IsHandwritingViewEnabled`. It can cause some issue so be careful.
+    /// </summary>
+    public TextBox TextBox => MainTextBox;
 
     public bool CanOverwrite
     {
@@ -125,12 +129,13 @@ public sealed partial class TextEditorPage : Page
         var text = await sr.ReadToEndAsync();
         if (text is null) return false;
         MainTextBox.Text = text;
+        IsUpdated = false;
         return true;
     }
 
     public async Task<bool> LoadFile(IStorageFile file)
     {
-        //x:bind cannot use overload.
+        //x:bind cannot handle overload.
         if (file is null) return false;
         var fileitem = new Models.FileItems.StorageFileItem(file);
         File = fileitem;
@@ -199,9 +204,21 @@ public sealed partial class TextEditorPage : Page
         }
         else
         {
+            var loader = Application.ResourceLoader.Loader;
             savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            savePicker.SuggestedFileName = File?.Name ?? "New Text";
+            if(File?.Name is not null)
+            {
+                var ext = Path.GetExtension(File.Name);
+                string desc = ext;
+                if (desc.Length >= 2)
+                {
+                    desc = string.Format(loader.GetString("TextEditor/SaveDialog/General/Description"), desc.Substring(1).ToUpperInvariant());
+                    savePicker.FileTypeChoices.Add(desc, new List<string>() { ext });
+                }
+            }
+            savePicker.FileTypeChoices.Add(loader.GetString("TextEditor/SaveDialog/PlainText/Description"), new List<string>() { ".txt" });
+            savePicker.FileTypeChoices.Add(loader.GetString("TextEditor/SaveDialog/Any/Description"), new List<string>() { "." });
+            savePicker.SuggestedFileName = File?.Name ?? loader.GetString("TextEditor/SaveDialog/NewText/Title");
         }
         var file = await savePicker.PickSaveFileAsync();
         if (file is null) return;

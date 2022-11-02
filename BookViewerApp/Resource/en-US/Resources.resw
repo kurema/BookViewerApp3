@@ -967,7 +967,7 @@ Detail:
     <value>Save has failed</value>
   </data>
   <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
-    <value>File save failed because validation failed.
+    <value>File save aborted because validation failed.
 
 {0}</value>
   </data>
@@ -979,5 +979,8 @@ Detail:
 One entry per line.
 Wildcards can be used only at the beginning of a line.
 Lines prefixed with '#' will be ignored.</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
+    <value>Manage</value>
   </data>
 </root>

@@ -294,4 +294,19 @@
   <data name="TextEditor.Help.Title" xml:space="preserve">
     <value>Ajuda</value>
   </data>
+  <data name="TextEditor.View.SpellChecker.Title" xml:space="preserve">
+    <value>Corrector ortográfico</value>
+  </data>
+  <data name="TextEditor.SaveDialog.PlainText.Description" xml:space="preserve">
+    <value>Texto simples</value>
+  </data>
+  <data name="TextEditor.SaveDialog.NewText.Title" xml:space="preserve">
+    <value>Novo texto</value>
+  </data>
+  <data name="TextEditor.SaveDialog.General.Description" xml:space="preserve">
+    <value>Arquivo {0}</value>
+  </data>
+  <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
+    <value>Qualquer ficheiro</value>
+  </data>
 </root>

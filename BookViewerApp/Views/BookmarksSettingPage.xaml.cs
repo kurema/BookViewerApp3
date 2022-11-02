@@ -94,6 +94,7 @@ public sealed partial class BookmarksSettingPage : Page
             }
             catch (Exception e)
             {
+                // When XML is invalid.
                 args.Cancel(string.Format(loader.GetString("BookmarkManager/TextEditor/Error/Message"), e.Message), loader.GetString("BookmarkManager/TextEditor/Error/Title"));
                 return;
             }
@@ -101,6 +102,7 @@ public sealed partial class BookmarksSettingPage : Page
 
         if (xsdError)
         {
+            // When XSD validiate failed.
             args.Cancel(string.Format(loader.GetString("BookmarkManager/TextEditor/Error/Message"), sbError.ToString()), loader.GetString("BookmarkManager/TextEditor/Error/Title"));
             return;
         }
@@ -114,6 +116,7 @@ public sealed partial class BookmarksSettingPage : Page
             }
             catch (Exception e)
             {
+                // When serialize failed. Unlikely to come here.
                 args.Cancel(string.Format(loader.GetString("BookmarkManager/TextEditor/Error/Message"), e.Message), loader.GetString("BookmarkManager/TextEditor/Error/Title"));
                 return;
             }

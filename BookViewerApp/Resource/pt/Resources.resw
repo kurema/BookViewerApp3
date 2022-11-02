@@ -830,11 +830,6 @@ Detalhe:
   <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
     <value>Salvar falhou</value>
   </data>
-  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
-    <value>O ficheiro guardado falhou porque a validação falhou.
-
-{0}</value>
-  </data>
   <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
     <value>Introduzir o filtro num formato compatível com EasyList.</value>
   </data>
@@ -843,5 +838,13 @@ Detalhe:
 Uma entrada por linha.
 Os wildcards só podem ser utilizados no início de uma linha.
 As linhas prefixadas com '#' serão ignoradas.</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
+    <value>Ficheiro salvo abortado porque a validação falhou.
+
+{0}</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
+    <value>Gerir</value>
   </data>
 </root>

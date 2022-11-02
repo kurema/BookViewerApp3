@@ -137,17 +137,17 @@ public static partial class ExtensionAdBlockerManager
         public bool RemoveWildcard(string item)
         {
             bool result = false;
-            var wc = GetWildcardCandidates(item);
+            var wc = GetWildcardCandidates(item).ToArray();
             foreach (var wildcard in wc)
             {
                 contentForSearch.Remove(wildcard.ToUpperInvariant());
             }
 
-            for (int i=0;i<content.Count;i++)
+            for (int i = 0; i < content.Count; i++)
             {
                 foreach (var wildcard in wc)
                 {
-                    if(content[i].Equals(wildcard, System.StringComparison.CurrentCultureIgnoreCase))
+                    if (content[i].Equals(wildcard, System.StringComparison.CurrentCultureIgnoreCase))
                     {
                         result = true;
                         content[i] = "#" + content[i];

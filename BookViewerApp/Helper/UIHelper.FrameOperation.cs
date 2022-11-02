@@ -41,7 +41,7 @@ public static partial class UIHelper
                     }, t => SetTitle(sender, t));
                 };
 
-                OpenBrowser_BookmarkSetViewModel(vm);
+                OpenBrowser_BookmarkSetViewModel(vm, () => GetCurrentTabPage(sender));
                 var uri = resolver.GetUri(resolver.PathHome);
                 await content.WebView2.EnsureCoreWebView2Async();
                 //https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2.addwebresourcerequestedfilter?view=webview2-dotnet-1.0.1293.44
@@ -77,7 +77,7 @@ public static partial class UIHelper
                     }, t => SetTitle(sender, t));
                 };
 
-                OpenBrowser_BookmarkSetViewModel(vm);
+                OpenBrowser_BookmarkSetViewModel(vm, () => GetCurrentTabPage(sender));
 
                 var uri = $"https://file.example/{System.Web.HttpUtility.UrlEncode(System.IO.Path.GetFileName(file.Name))}";
                 await content.WebView2.EnsureCoreWebView2Async();
@@ -124,7 +124,7 @@ public static partial class UIHelper
             if (content.DataContext is not kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm) return;
             if (tabPage is null) return;
 
-            OpenBrowser_BookmarkSetViewModel(vm);
+            OpenBrowser_BookmarkSetViewModel(vm, () => GetCurrentTabPage(sender));
 
             content.WebView2.CoreWebView2Initialized += (s, e) =>
             {
@@ -242,7 +242,7 @@ public static partial class UIHelper
 
             if (frame.Content is kurema.BrowserControl.Views.BrowserControl content)
             {
-                OpenBrowser_BookmarkSetViewModel(content?.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel);
+                OpenBrowser_BookmarkSetViewModel(content?.DataContext as kurema.BrowserControl.ViewModels.BrowserControlViewModel, () => GetCurrentTabPage(sender));
 
                 Uri uri = content.Control.BuildLocalStreamUri("epub", resolver.PathHome);
                 content.Control.NavigateToLocalStreamUri(uri, resolver);
@@ -546,10 +546,10 @@ public static partial class UIHelper
             }
         }
 
-        private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.IBrowserControlViewModel viewModel)
+        private static void OpenBrowser_BookmarkSetViewModel(kurema.BrowserControl.ViewModels.IBrowserControlViewModel viewModel, Func<Views.TabPage> tabPageProvider)
         {
             if (viewModel is null) return;
-            var bookmark = LibraryStorage.GetItemBookmarks((_, _) => { });
+            var bookmark = LibraryStorage.GetItemBookmarks((_, _) => { }, tabPageProvider);
             viewModel.BookmarkRoot = new kurema.BrowserControl.ViewModels.BookmarkItem("", (bmNew) =>
             {
                 LibraryStorage.OperateBookmark(a =>
@@ -597,13 +597,13 @@ public static partial class UIHelper
             };
         }
 
-        public static async Task OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle)
+        public static async Task OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), uri);
 
             if ((frame.Content as kurema.BrowserControl.Views.BrowserControl2)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm && vm != null)
             {
-                OpenBrowser_BookmarkSetViewModel(vm);
+                OpenBrowser_BookmarkSetViewModel(vm, tabPageProvider);
 
                 vm.OpenDownloadDirectoryCommand = new DelegateCommand(async (_) =>
                 {
@@ -693,7 +693,7 @@ public static partial class UIHelper
             }
         }
 
-        public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle)
+        public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), uri);
             if (frame?.Content is kurema.BrowserControl.Views.BrowserControl content)
@@ -727,7 +727,7 @@ public static partial class UIHelper
 
             if ((frame.Content as kurema.BrowserControl.Views.BrowserControl)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
             {
-                OpenBrowser_BookmarkSetViewModel(vm);
+                OpenBrowser_BookmarkSetViewModel(vm, tabPageProvider);
 
                 vm.OpenDownloadDirectoryCommand = new DelegateCommand(async (_) =>
                 {

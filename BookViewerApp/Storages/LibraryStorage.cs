@@ -140,9 +140,9 @@ namespace BookViewerApp.Storages
             };
         }
 
-        public static ContainerDelegateItem GetItemBookmarks(Action<string, BookmarkActionType> bookmarkAction)
+        public static ContainerDelegateItem GetItemBookmarks(Action<string, BookmarkActionType> bookmarkAction, Func<Views.TabPage> tabPageProvider)
         {
-            var menuCommandsPr = UIHelper.ContextMenus.MenuBookmarks(bookmarkAction);
+            var menuCommandsPr = UIHelper.ContextMenus.MenuBookmarks(bookmarkAction, tabPageProvider);
             return new ContainerDelegateItem(GetItem_GetWord("Bookmarks"), "/Bookmarks", async (parent) =>
             {
                 var library = await Content.GetContentAsync();
@@ -220,7 +220,7 @@ namespace BookViewerApp.Storages
             var itemLibrary = GetItemLibrary();
             //var itemHistory = GetItemHistory(PathRequestCommand);
             var itemHistory = GetItemHistoryMRU(PathRequestCommand, tabPageProvider);
-            var itemBookmark = GetItemBookmarks(bookmarkAction);
+            var itemBookmark = GetItemBookmarks(bookmarkAction, tabPageProvider);
 
             result.Add(itemFolder);
             result.Add(itemLibrary);

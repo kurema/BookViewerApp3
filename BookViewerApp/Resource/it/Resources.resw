@@ -832,11 +832,6 @@ Dettaglio:
   <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
     <value>Il salvataggio non è riuscito</value>
   </data>
-  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
-    <value>Il salvataggio del file non è riuscito perché la convalida non è andata a buon fine.
-
-{0}</value>
-  </data>
   <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
     <value>Inserire il filtro in un formato compatibile con EasyList.</value>
   </data>
@@ -845,5 +840,13 @@ Dettaglio:
 Una voce per riga.
 I caratteri jolly possono essere usati solo all'inizio di una riga.
 Le righe con prefisso "#" saranno ignorate.</value>
+  </data>
+  <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
+    <value>Il salvataggio del file è stato interrotto perché la convalida non è riuscita.
+
+{0}</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
+    <value>Gestire</value>
   </data>
 </root>

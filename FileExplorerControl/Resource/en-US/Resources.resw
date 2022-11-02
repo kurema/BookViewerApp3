@@ -298,4 +298,19 @@
   <data name="TextEditor.Help.Title" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="TextEditor.View.SpellChecker.Title" xml:space="preserve">
+    <value>Spell checker</value>
+  </data>
+  <data name="TextEditor.SaveDialog.PlainText.Description" xml:space="preserve">
+    <value>Plain Text</value>
+  </data>
+  <data name="TextEditor.SaveDialog.NewText.Title" xml:space="preserve">
+    <value>New Text</value>
+  </data>
+  <data name="TextEditor.SaveDialog.General.Description" xml:space="preserve">
+    <value>{0} File</value>
+  </data>
+  <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
+    <value>Any File</value>
+  </data>
 </root>

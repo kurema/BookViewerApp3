@@ -242,7 +242,7 @@ public sealed partial class TabPage : Page
                 await UIHelper.FrameOperation.OpenBrowser2(frame, uri, (a) => OpenTabWeb(a), (title) =>
                 {
                     newTab.Header = title;
-                });
+                }, () => this);
                 return;
             }
             catch
@@ -254,7 +254,7 @@ public sealed partial class TabPage : Page
             {
                 newTab.Header = title;
             }
-            );
+            , () => this);
         }
     }
 

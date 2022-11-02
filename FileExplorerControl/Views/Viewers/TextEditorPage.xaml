@@ -96,7 +96,9 @@
                         <MenuFlyoutItem Text="48" Tag="48" Click="MenuFlyoutItem_Click_ChangeFontSize" />
                         <MenuFlyoutItem Text="64" Tag="64" Click="MenuFlyoutItem_Click_ChangeFontSize" />
                         <MenuFlyoutItem Text="72" Tag="72" Click="MenuFlyoutItem_Click_ChangeFontSize" />
+                        <MenuFlyoutItem Text="108" Tag="108" Click="MenuFlyoutItem_Click_ChangeFontSize" />
                     </MenuFlyoutSubItem>
+                    <ToggleMenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.View.SpellChecker.Title}" IsChecked="{x:Bind IsSpellCheckEnabled,Mode=TwoWay}" />
                 </MenuBarItem>
             </MenuBar>
             <CommandBar DefaultLabelPosition="Collapsed">

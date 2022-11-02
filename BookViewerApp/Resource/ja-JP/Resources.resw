@@ -837,7 +837,7 @@
     <value>保存失敗</value>
   </data>
   <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
-    <value>検証に失敗したため、ファイルの保存に失敗しました。
+    <value>検証に失敗したため、ファイルの保存を中止しました。
 
 {0}</value>
   </data>
@@ -849,5 +849,8 @@
 1行につき1つです。
 ワイルドカードは行頭でのみ使用可能です。
 行頭に '#' がある行は無視されます。</value>
+  </data>
+  <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
+    <value>管理</value>
   </data>
 </root>

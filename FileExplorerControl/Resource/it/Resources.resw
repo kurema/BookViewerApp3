@@ -189,4 +189,19 @@
   <data name="TextEditor.Help.Title" xml:space="preserve">
     <value>Aiuto</value>
   </data>
+  <data name="TextEditor.View.SpellChecker.Title" xml:space="preserve">
+    <value>Controllo ortografico</value>
+  </data>
+  <data name="TextEditor.SaveDialog.PlainText.Description" xml:space="preserve">
+    <value>Testo normale</value>
+  </data>
+  <data name="TextEditor.SaveDialog.NewText.Title" xml:space="preserve">
+    <value>Nuovo testo</value>
+  </data>
+  <data name="TextEditor.SaveDialog.General.Description" xml:space="preserve">
+    <value>File {0}</value>
+  </data>
+  <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
+    <value>Qualsiasi file</value>
+  </data>
 </root>

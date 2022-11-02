@@ -228,13 +228,21 @@ public static partial class UIHelper
             return result.ToArray();
         }
 
-        public static Func<IFileItem, MenuCommand[]> MenuBookmarks(Action<string, Storages.LibraryStorage.BookmarkActionType> bookmarkAction)
+        public static Func<IFileItem, MenuCommand[]> MenuBookmarks(Action<string, Storages.LibraryStorage.BookmarkActionType> bookmarkAction, Func<Views.TabPage> tabPageProvider)
         {
             return (item) =>
             {
                 var result = new List<MenuCommand>();
+                var manage = new MenuCommand(GetResourceTitle("Bookmarks/Manage"), new DelegateCommand((_) =>
+                {
+                    var tab = tabPageProvider?.Invoke();
+                    if (tab is null) return;
+                    tab.OpenTab("BookmarkManager", typeof(Views.BookmarksSettingPage), null);
+                }));
+
                 if (item is StorageBookmarkContainer container && !container.IsReadOnly)
                 {
+                    result.Add(manage);
                     result.Add(new MenuCommand(GetResourceTitle("Word/New"),
                         new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(async a =>
                         {
@@ -258,6 +266,7 @@ public static partial class UIHelper
                                 items.Add(dialog.GetLibraryBookmark());
                                 container.Content.Items = items.ToArray();
                                 await container.GetChildren();
+                                await Storages.LibraryStorage.RoamingBookmarks.SaveAsync();
                             }
                         })
                         ))
@@ -289,8 +298,11 @@ public static partial class UIHelper
                                     bookmarkItem.Content.title = dialog.TitleBookmark;
 
                                     bookmarkItem.OnUpdate();
+
+                                    await Storages.LibraryStorage.RoamingBookmarks.SaveAsync();
                                 }
                             }));
+                            result.Add(manage);
                         }
                         if ((bool)Storages.SettingStorage.GetValue("DefaultBrowserExternal"))
                         {
@@ -311,6 +323,7 @@ public static partial class UIHelper
                 else if (item.Tag is Storages.LibraryStorage.LibraryKind kind && kind == Storages.LibraryStorage.LibraryKind.Bookmarks)
                 {
                     result.Add(GetMenuBookmarkShowPreset());
+                    result.Add(manage);
                     result.Add(new MenuCommand(GetResourceTitle("Word/New"),
                         new MenuCommand(Managers.ResourceManager.Loader.GetString("Word/Folder"), new DelegateCommand(a =>
                         {
@@ -336,11 +349,14 @@ public static partial class UIHelper
                                     b?.Add(dialog.GetLibraryBookmark());
                                     return Task.CompletedTask;
                                 });
+
+                                await Storages.LibraryStorage.RoamingBookmarks.SaveAsync();
                             }
                         })
                         ))
                         );
                 }
+
 
                 return result.ToArray();
             };
