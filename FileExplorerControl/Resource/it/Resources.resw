@@ -204,4 +204,7 @@
   <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
     <value>Qualsiasi file</value>
   </data>
+  <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
+    <value>Ora/Data</value>
+  </data>
 </root>

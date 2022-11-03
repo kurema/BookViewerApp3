@@ -204,4 +204,7 @@
   <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
     <value>任意のファイル</value>
   </data>
+  <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
+    <value>日付と時刻</value>
+  </data>
 </root>

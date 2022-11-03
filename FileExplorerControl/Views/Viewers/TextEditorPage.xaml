@@ -72,6 +72,9 @@
                     </MenuFlyoutSubItem>
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.SelectAll}" Click="{x:Bind MainTextBox.SelectAll}" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutSubItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.TimeDate}" x:Name="menuFlyoutSubItemInsertTimeDate">
+                    </MenuFlyoutSubItem>
                 </MenuBarItem>
                 <MenuBarItem Title="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.View.Title}">
                     <ToggleMenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.View.WordWrap}" IsChecked="{x:Bind MainTextBox.TextWrapping,Converter={StaticResource vc_e2b},ConverterParameter=Wrap:NoWrap,Mode=TwoWay}" />
@@ -129,7 +132,7 @@
                 </AppBarButton>
             </CommandBar>
         </StackPanel>
-        <TextBox TextChanged="MainTextBox_TextChanged"
+        <TextBox TextChanged="MainTextBox_TextChanged" SelectionHighlightColorWhenNotFocused="{ThemeResource SystemControlHighlightAccentBrush}"
             x:Name="MainTextBox" SelectionChanged="MainTextBox_SelectionChanged"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" AcceptsReturn="True" IsSpellCheckEnabled="{x:Bind IsSpellCheckEnabled,Mode=OneWay}"
             ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"

@@ -179,7 +179,8 @@ public sealed partial class TextEditorPage : Page
             FileSaved?.Invoke(this, new EventArgs());
             return true;
         }
-        catch {
+        catch
+        {
             return false;
         }
     }
@@ -206,7 +207,7 @@ public sealed partial class TextEditorPage : Page
         {
             var loader = Application.ResourceLoader.Loader;
             savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            if(File?.Name is not null)
+            if (File?.Name is not null)
             {
                 var ext = Path.GetExtension(File.Name);
                 string desc = ext;
@@ -248,6 +249,29 @@ public sealed partial class TextEditorPage : Page
         this.InitializeComponent();
 
         this.IsJapanese = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("ja", StringComparison.InvariantCulture);
+
+        {
+            var dt = new DateTime(2012, 3, 4, 5, 6, 7, 8);
+            var formats = new string[] { "d", "D", "f", "F", "g", "G", "m", "r", "s", "t", "T", "u", "U", "y" };
+            foreach (var format in formats)
+            {
+                var menu = new MenuFlyoutItem() { Tag = format, Text = dt.ToString(format) };
+                menu.Click += Menu_Click;
+                menuFlyoutSubItemInsertTimeDate.Items.Add(menu);
+            }
+        }
+
+    }
+
+    private void Menu_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement ue) return;
+        if (ue.Tag.ToString() is not String format) return;
+        MainTextBox.SelectionLength = 0;
+        int insertPoint = Math.Max(MainTextBox.SelectionStart, 0);
+        string text = DateTime.Now.ToString(format);
+        MainTextBox.Text = MainTextBox.Text.Insert(insertPoint, text);
+        MainTextBox.SelectionStart = insertPoint + text.Length;
     }
 
     private async Task CutAndAppendToClipboard() => await AppendToClipboard(true);

@@ -313,4 +313,7 @@
   <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
     <value>Any File</value>
   </data>
+  <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
+    <value>Time/Date</value>
+  </data>
 </root>
