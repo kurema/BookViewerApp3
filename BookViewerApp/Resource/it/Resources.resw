@@ -832,9 +832,6 @@ Dettaglio:
   <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
     <value>Il salvataggio non è riuscito</value>
   </data>
-  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
-    <value>Inserire il filtro in un formato compatibile con EasyList.</value>
-  </data>
   <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
     <value>Specifica i domini per i quali il blocco degli annunci deve essere disabilitato.
 Una voce per riga.
@@ -848,5 +845,8 @@ Le righe con prefisso "#" saranno ignorate.</value>
   </data>
   <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
     <value>Gestire</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
+    <value>Inserire il filtro in un formato compatibile con Adblock Plus Filter.</value>
   </data>
 </root>

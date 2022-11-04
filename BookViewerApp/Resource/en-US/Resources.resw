@@ -972,7 +972,7 @@ Detail:
 {0}</value>
   </data>
   <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
-    <value>Enter the filter in an EasyList compatible format.</value>
+    <value>Enter the filter in an Adblock Plus Filter compatible format.</value>
   </data>
   <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
     <value>Specifies the domains for which ad blocking should be disabled.

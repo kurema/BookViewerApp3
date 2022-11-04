@@ -830,9 +830,6 @@ Detalhe:
   <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
     <value>Salvar falhou</value>
   </data>
-  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
-    <value>Introduzir o filtro num formato compatível com EasyList.</value>
-  </data>
   <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
     <value>Especifica os domínios para os quais o bloqueio de anúncios deve ser desactivado.
 Uma entrada por linha.
@@ -846,5 +843,8 @@ As linhas prefixadas com '#' serão ignoradas.</value>
   </data>
   <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
     <value>Gerir</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
+    <value>Introduzir o filtro num formato compatível com o Adblock Plus Filter.</value>
   </data>
 </root>

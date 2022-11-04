@@ -832,9 +832,6 @@
   <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
     <value>保存失败</value>
   </data>
-  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
-    <value>以EasyList兼容的格式输入过滤器。</value>
-  </data>
   <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
     <value>指定应禁用广告屏蔽的域。
 每行有一个条目。
@@ -848,5 +845,8 @@
   </data>
   <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
     <value>管理</value>
+  </data>
+  <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
+    <value>以Adblock Plus过滤器兼容的格式输入过滤器。</value>
   </data>
 </root>

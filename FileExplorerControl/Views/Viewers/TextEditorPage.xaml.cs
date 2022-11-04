@@ -87,7 +87,13 @@ public sealed partial class TextEditorPage : Page
 
     public static readonly DependencyProperty InfoProperty = DependencyProperty.Register("Info", typeof(string), typeof(TextEditorPage), new PropertyMetadata(string.Empty));
 
+    public ViewModels.TextEditorSearchViewModel SearchViewModel
+    {
+        get { return (ViewModels.TextEditorSearchViewModel)GetValue(SearchViewModelProperty); }
+        set { SetValue(SearchViewModelProperty, value); }
+    }
 
+    public static readonly DependencyProperty SearchViewModelProperty = DependencyProperty.Register(nameof(SearchViewModel), typeof(ViewModels.TextEditorSearchViewModel), typeof(TextEditorPage), new PropertyMetadata(new ViewModels.TextEditorSearchViewModel()));
 
     public bool IsJapanese
     {
@@ -427,5 +433,15 @@ public sealed partial class TextEditorPage : Page
     private void MainTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
         IsUpdated = true;
+    }
+
+    private void Button_Click_Up(object sender, RoutedEventArgs e)
+    {
+        SearchViewModel?.ExecuteSeachUp(MainTextBox);
+    }
+
+    private void Button_Click_Down(object sender, RoutedEventArgs e)
+    {
+        SearchViewModel?.ExecuteSeach(MainTextBox);
     }
 }

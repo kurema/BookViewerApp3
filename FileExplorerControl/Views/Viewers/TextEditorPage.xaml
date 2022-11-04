@@ -72,7 +72,6 @@
                     </MenuFlyoutSubItem>
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.SelectAll}" Click="{x:Bind MainTextBox.SelectAll}" />
-                    <MenuFlyoutSeparator />
                     <MenuFlyoutSubItem Text="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=TextEditor.Edit.TimeDate}" x:Name="menuFlyoutSubItemInsertTimeDate">
                     </MenuFlyoutSubItem>
                 </MenuBarItem>
@@ -120,6 +119,18 @@
                 <!-- We can fix it using TextChanged but... Well, no. -->
                 <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}" />
                 <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Find" AllowFocusOnInteraction="True">
+                    <AppBarButton.Flyout>
+                        <Flyout Placement="Bottom">
+                            <StackPanel DataContext="{x:Bind SearchViewModel,Mode=OneWay}">
+                                <TextBox Text="{Binding WordSearch,Mode=TwoWay}" />
+                                <Button Content="SearchUp" Click="Button_Click_Up" />
+                                <Button Content="SearchDown" Click="Button_Click_Down" />
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
                 <AppBarButton Visibility="{x:Bind Info, Converter={StaticResource vc_noe},ConverterParameter=Collapsed:Visible,Mode=OneWay}">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF167;"/>

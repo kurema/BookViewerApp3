@@ -151,6 +151,7 @@
     <Compile Include="Models\MenuCommands\MenuCommand.cs" />
     <Compile Include="ViewModels\OrderStatus.cs" />
     <Compile Include="ViewModels\RenameViewModel.cs" />
+    <Compile Include="ViewModels\TextEditorSearchViewModel.cs" />
     <Compile Include="Views\DeleteContentDialog.xaml.cs">
       <DependentUpon>DeleteContentDialog.xaml</DependentUpon>
     </Compile>

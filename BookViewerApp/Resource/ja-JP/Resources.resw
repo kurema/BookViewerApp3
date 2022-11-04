@@ -842,7 +842,7 @@
 {0}</value>
   </data>
   <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
-    <value>EasyList互換の形式でフィルタを入力します。</value>
+    <value>Adblock Plus互換の形式でフィルタを入力します。</value>
   </data>
   <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
     <value>広告ブロックを無効にするドメインを指定します。

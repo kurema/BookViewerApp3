@@ -28,6 +28,14 @@ using static System.Net.WebRequestMethods;
 
 #nullable enable
 
+// This code may not represent the actual state of your app.
+// If you are using forked version refer the forked repository.
+// Other codes:
+// * UIs:
+//https://github.com/kurema/BookViewerApp3/tree/master/BookViewerApp/Views/BrowserAddOn
+// * Library :
+//https://github.com/TechnikEmpire/DistillNET
+
 namespace BookViewerApp.Managers;
 public static partial class ExtensionAdBlockerManager
 {
