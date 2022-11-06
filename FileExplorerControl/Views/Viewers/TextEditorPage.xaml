@@ -8,6 +8,7 @@
     xmlns:vc="using:kurema.FileExplorerControl.Helper.ValueConverters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:vm="using:kurema.FileExplorerControl.ViewModels"
     >
     <Page.Resources>
         <vc:BoolToEnumConverter x:Key="vc_b2e"/>
@@ -120,14 +121,66 @@
                 <AppBarButton Icon="Undo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Undo}" Click="{x:Bind MainTextBox.Undo}" />
                 <AppBarButton Icon="Redo" Label="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" ToolTipService.ToolTip="{x:Bind Converter={StaticResource vc_loc},TargetNullValue=0,ConverterParameter=Word.Redo}" Click="{x:Bind MainTextBox.Redo}" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Find" AllowFocusOnInteraction="True">
+                <AppBarButton Icon="Find" AllowFocusOnInteraction="True" x:Name="appBarButtonSearch">
+                    <AppBarButton.DataContext>
+                        <vm:TextEditorSearchViewModel />
+                    </AppBarButton.DataContext>
                     <AppBarButton.Flyout>
-                        <Flyout Placement="Bottom">
-                            <StackPanel DataContext="{x:Bind SearchViewModel,Mode=OneWay}">
-                                <TextBox Text="{Binding WordSearch,Mode=TwoWay}" />
-                                <Button Content="SearchUp" Click="Button_Click_Up" />
-                                <Button Content="SearchDown" Click="Button_Click_Down" />
-                            </StackPanel>
+                        <Flyout Placement="RightEdgeAlignedBottom">
+                            <Grid MinWidth="300">
+                                <Grid.Resources>
+                                    <Style TargetType="AppBarButton">
+                                        <Setter Property="Width" Value="{ThemeResource AppBarThemeCompactHeight}" />
+                                    </Style>
+                                    <Style TargetType="AppBarToggleButton">
+                                        <Setter Property="Width" Value="{ThemeResource AppBarThemeCompactHeight}" />
+                                    </Style>
+                                    <Style TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonRevealStyle}">
+                                        <Setter Property="CornerRadius" Value="0" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Row="0" Grid.Column="1">
+                                    <TextBox Text="{Binding WordSearch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Text="{Binding WordReplace,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"/>
+                                </StackPanel>
+                                <ToggleButton  Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" IsChecked="{Binding Replace,Mode=TwoWay}">
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE96E;"/>
+                                </ToggleButton>
+                                <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Disabled" Grid.ColumnSpan="2" Grid.Row="1">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <ToggleButton IsChecked="{Binding CaseSensitive,Mode=TwoWay}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon Glyph="Aa" FontFamily="{ThemeResource ContentControlThemeFontFamily}"/>
+                                                <TextBlock Text="Case sensitive" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                            </StackPanel>
+                                        </ToggleButton>
+                                        <ToggleButton IsChecked="{Binding Regex,Mode=TwoWay}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon Glyph=".*" FontFamily="{ThemeResource ContentControlThemeFontFamily}"/>
+                                                <TextBlock Text="Regex" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                            </StackPanel>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                </ScrollViewer>
+                                <CommandBar DefaultLabelPosition="Collapsed" Grid.ColumnSpan="2" Grid.Row="2">
+                                    <AppBarButton Icon="Back" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
+                                    <AppBarButton Icon="Forward" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
+                                    <AppBarSeparator Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
+                                    <AppBarButton Icon="Back" Click="Button_Click_Up" />
+                                    <AppBarButton Icon="Forward"  Click="Button_Click_Down" />
+                                </CommandBar>
+                            </Grid>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
