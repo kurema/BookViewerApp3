@@ -35,7 +35,7 @@ public class TextEditorSearchViewModel : BaseViewModel
     private bool _Replace = false;
     public bool Replace { get => _Replace; set => SetProperty(ref _Replace, value); }
 
-    private bool _Repeat;
+    private bool _Repeat = true;
     public bool Repeat { get => _Repeat; set => SetProperty(ref _Repeat, value); }
 
     private bool _RegexError = false;
@@ -63,6 +63,8 @@ public class TextEditorSearchViewModel : BaseViewModel
         }
     }
 
+    private StringComparison StringComparisonCurrentCulture => CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
+
     private Regex RegexCache;
     private Regex RegexCacheR2L;
 
@@ -88,8 +90,31 @@ public class TextEditorSearchViewModel : BaseViewModel
     {
         if (replace)
         {
-            textBox.Select(index, length);
+            // args (index and length) is before replacement. So fix them.
+            int lengthOriginal = textBox.SelectedText.Length;
+            int lengthNew = lengthOriginal;
+            bool goBack = textBox.SelectionStart > index;
+            bool selectionSame = (textBox.SelectionStart == index) && (textBox.SelectionLength == length);
 
+            // If selected text match the condition, replace.
+            // Then proceed to next match.
+            if (string.IsNullOrEmpty(textBox.SelectedText)) goto select;
+            if (WordReplace is null) goto select;
+            if (Regex)
+            {
+                if (RegexCache is null) goto select;
+                if (!RegexCache.IsMatch(textBox.SelectedText)) goto select;
+                textBox.SelectedText = RegexCache.Replace(textBox.SelectedText, WordReplace);
+            }
+            else
+            {
+                if (!textBox.SelectedText.Equals(WordSearch, StringComparisonCurrentCulture)) goto select;
+                textBox.SelectedText = WordReplace;
+            }
+            lengthNew = textBox.SelectedText.Length;
+            if (selectionSame) return;
+        select:;
+            textBox.Select(index + (goBack ? 0 : lengthNew - lengthOriginal), length);
         }
         else
         {
@@ -130,7 +155,7 @@ public class TextEditorSearchViewModel : BaseViewModel
         {
             if (startAt < textBox.Text.Length)
             {
-                int hit = textBox.Text.IndexOf(WordSearch, startAt, CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase);
+                int hit = textBox.Text.IndexOf(WordSearch, startAt, StringComparisonCurrentCulture);
                 if (hit >= 0)
                 {
                     ExecuteSearchEach(textBox, hit, WordSearch.Length, replace);
@@ -139,7 +164,7 @@ public class TextEditorSearchViewModel : BaseViewModel
                 if (!Repeat) return;
             }
             {
-                int hit = textBox.Text.IndexOf(WordSearch, 0, CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase);
+                int hit = textBox.Text.IndexOf(WordSearch, StringComparisonCurrentCulture);
                 if (hit >= 0)
                 {
                     ExecuteSearchEach(textBox, hit, WordSearch.Length, replace);
@@ -148,6 +173,20 @@ public class TextEditorSearchViewModel : BaseViewModel
             }
             return;
         }
+    }
+
+    public void ReplaceAll(TextBox textBox)
+    {
+        if (Regex)
+        {
+            if (RegexCache is null && ConstructRegexCache() is false) return;
+            textBox.Text = RegexCache.Replace(textBox.Text, WordReplace);
+        }
+        else
+        {
+            textBox.Text = textBox.Text.Replace(WordSearch, WordReplace, StringComparisonCurrentCulture);
+        }
+        textBox.Select(0, 0);
     }
 
     public void ExecuteSeachUp(TextBox textBox) => ExecuteSeachUp(textBox, Replace);
@@ -167,9 +206,8 @@ public class TextEditorSearchViewModel : BaseViewModel
                     ExecuteSearchEach(textBox, match.Index, match.Length, replace);
                     return;
                 }
-                if (!Repeat) return;
             }
-
+            if (Repeat)
             {
                 var match = RegexCacheR2L.Match(textBox.Text);
                 if (match.Success)
@@ -184,16 +222,16 @@ public class TextEditorSearchViewModel : BaseViewModel
         {
             if (startAt > 0)
             {
-                int hit = textBox.Text.LastIndexOf(WordSearch, startAt - 1, CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase);
+                int hit = textBox.Text.LastIndexOf(WordSearch, startAt - 1, StringComparisonCurrentCulture);
                 if (hit >= 0)
                 {
                     ExecuteSearchEach(textBox, hit, WordSearch.Length, replace);
                     return;
                 }
-                if (!Repeat) return;
             }
+            if (Repeat)
             {
-                int hit = textBox.Text.LastIndexOf(WordSearch, 0, CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase);
+                int hit = textBox.Text.LastIndexOf(WordSearch, StringComparisonCurrentCulture);
                 if (hit >= 0)
                 {
                     ExecuteSearchEach(textBox, hit, WordSearch.Length, replace);

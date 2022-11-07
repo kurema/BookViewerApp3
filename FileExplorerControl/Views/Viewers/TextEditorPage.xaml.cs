@@ -446,4 +446,17 @@ public sealed partial class TextEditorPage : Page
         if (appBarButtonSearch?.DataContext is not ViewModels.TextEditorSearchViewModel vm) return;
         vm.ExecuteSeach(MainTextBox, false);
     }
+
+    private void Button_Click_Replace_Up(object sender, RoutedEventArgs e)
+    {
+        if (appBarButtonSearch?.DataContext is not ViewModels.TextEditorSearchViewModel vm) return;
+        vm.ExecuteSeachUp(MainTextBox, true);
+    }
+
+    private void Button_Click_Replace_Down(object sender, RoutedEventArgs e)
+    {
+        if (appBarButtonSearch?.DataContext is not ViewModels.TextEditorSearchViewModel vm) return;
+        vm.ExecuteSeach(MainTextBox, true);
+    }
+
 }

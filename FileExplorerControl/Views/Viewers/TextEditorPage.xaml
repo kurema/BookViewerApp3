@@ -13,6 +13,7 @@
     <Page.Resources>
         <vc:BoolToEnumConverter x:Key="vc_b2e"/>
         <vc:EnumToBoolConverter x:Key="vc_e2b"/>
+        <vc:BoolToStringConverter x:Key="vc_b2s" />
         <vc:LocalizeConverter x:Key="vc_loc" />
         <vc:StringNullOrEmptyConverter x:Key="vc_noe" />
     </Page.Resources>
@@ -155,7 +156,7 @@
                                     <TextBox Text="{Binding WordReplace,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}"/>
                                 </StackPanel>
                                 <ToggleButton  Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" IsChecked="{Binding Replace,Mode=TwoWay}">
-                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE96E;"/>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{Binding Replace,Converter={StaticResource vc_b2s},ConverterParameter='&#xE96D;:&#xE96E;'}"/>
                                 </ToggleButton>
                                 <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Disabled" Grid.ColumnSpan="2" Grid.Row="1">
                                     <StackPanel Orientation="Horizontal" >
@@ -174,8 +175,8 @@
                                     </StackPanel>
                                 </ScrollViewer>
                                 <CommandBar DefaultLabelPosition="Collapsed" Grid.ColumnSpan="2" Grid.Row="2">
-                                    <AppBarButton Icon="Back" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
-                                    <AppBarButton Icon="Forward" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
+                                    <AppBarButton Icon="Back" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="Button_Click_Replace_Up" />
+                                    <AppBarButton Icon="Forward" Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" Click="Button_Click_Replace_Down" />
                                     <AppBarSeparator Visibility="{Binding Replace,Converter={StaticResource vc_b2e},ConverterParameter=Visible:Collapsed}" />
                                     <AppBarButton Icon="Back" Click="Button_Click_Up" />
                                     <AppBarButton Icon="Forward"  Click="Button_Click_Down" />
