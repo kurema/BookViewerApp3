@@ -316,4 +316,16 @@
   <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
     <value>Time/Date</value>
   </data>
+  <data name="TextEditor.Find.Replace" xml:space="preserve">
+    <value>Replace...</value>
+  </data>
+  <data name="TextEditor.Find.Regex" xml:space="preserve">
+    <value>Use Regular Expressions</value>
+  </data>
+  <data name="TextEditor.Find.CaseSensitive" xml:space="preserve">
+    <value>Match case</value>
+  </data>
+  <data name="TextEditor.Find.Search" xml:space="preserve">
+    <value>Find...</value>
+  </data>
 </root>

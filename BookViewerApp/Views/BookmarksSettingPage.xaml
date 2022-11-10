@@ -17,7 +17,7 @@
 
     <Pivot>
         <PivotItem Header="{x:Bind Converter={StaticResource vc_loc},ConverterParameter='BookmarkManager.Roaming.Header'}">
-            <fv:TextEditorPage x:Name="textEditorBookmarkXmlRoaming" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaved="textEditorBookmarkXmlRoaming_FileSaved" FileSaving="textEditorBookmarkXml_FileSaving"/>
+            <fv:TextEditorPage x:Name="textEditorBookmarkXmlRoaming" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaved="textEditorBookmarkXmlRoaming_FileSaved" FileSaving="textEditorBookmarkXml_FileSaving" ReplaceToggleReversed="True"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource vc_loc},ConverterParameter='BookmarkManager.Local.Header'}">
             <TextBox x:Name="textBoxSample" IsReadOnly="True" AcceptsReturn="True"

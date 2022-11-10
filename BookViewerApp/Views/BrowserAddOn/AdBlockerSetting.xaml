@@ -90,11 +90,13 @@
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Header'}">
             <fv:TextEditorPage x:Name="textEditorCustomFilters" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaving="textEditorCustomFilters_FileSaving"
                                Info="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.CustomFilters.Info'}"
+                               ReplaceToggleReversed="True"
                                />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Header'}">
             <fv:TextEditorPage x:Name="textEditorTrustedSites" CanChageSavePath="False" IsSpellCheckEnabled="False" FileSaved="textEditorCustomFilters_FileSaved"
                                Info="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.TrustedSites.Info'}"
+                               ReplaceToggleReversed="True"
                                />
         </PivotItem>
         <PivotItem Header="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Info.Header'}">

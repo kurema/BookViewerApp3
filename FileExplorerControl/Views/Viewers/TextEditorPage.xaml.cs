@@ -103,6 +103,14 @@ public sealed partial class TextEditorPage : Page
 
     public static readonly DependencyProperty IsJapaneseProperty = DependencyProperty.Register(nameof(IsJapanese), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
 
+    public bool ReplaceToggleReversed
+    {
+        get { return (bool)GetValue(ReplaceToggleReversedProperty); }
+        set { SetValue(ReplaceToggleReversedProperty, value); }
+    }
+
+    public static readonly DependencyProperty ReplaceToggleReversedProperty = DependencyProperty.Register(nameof(ReplaceToggleReversed), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
+
     public bool IsToUpperLowerStarange
     {
         get

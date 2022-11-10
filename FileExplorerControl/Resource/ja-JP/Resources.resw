@@ -207,4 +207,16 @@
   <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
     <value>日付と時刻</value>
   </data>
+  <data name="TextEditor.Find.Replace" xml:space="preserve">
+    <value>置換...</value>
+  </data>
+  <data name="TextEditor.Find.Regex" xml:space="preserve">
+    <value>正規表現</value>
+  </data>
+  <data name="TextEditor.Find.CaseSensitive" xml:space="preserve">
+    <value>大文字/小文字を区別</value>
+  </data>
+  <data name="TextEditor.Find.Search" xml:space="preserve">
+    <value>検索...</value>
+  </data>
 </root>

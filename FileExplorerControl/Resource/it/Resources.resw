@@ -207,4 +207,16 @@
   <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
     <value>Ora/Data</value>
   </data>
+  <data name="TextEditor.Find.Replace" xml:space="preserve">
+    <value>Sostituire...</value>
+  </data>
+  <data name="TextEditor.Find.Regex" xml:space="preserve">
+    <value>Utilizzare le espressioni regolari</value>
+  </data>
+  <data name="TextEditor.Find.CaseSensitive" xml:space="preserve">
+    <value>Caso di partita</value>
+  </data>
+  <data name="TextEditor.Find.Search" xml:space="preserve">
+    <value>Trova...</value>
+  </data>
 </root>

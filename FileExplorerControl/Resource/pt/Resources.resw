@@ -312,4 +312,16 @@
   <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
     <value>Hora/Data</value>
   </data>
+  <data name="TextEditor.Find.Replace" xml:space="preserve">
+    <value>Substituir...</value>
+  </data>
+  <data name="TextEditor.Find.Regex" xml:space="preserve">
+    <value>Usar Expressões Regulares</value>
+  </data>
+  <data name="TextEditor.Find.CaseSensitive" xml:space="preserve">
+    <value>Caso de jogo</value>
+  </data>
+  <data name="TextEditor.Find.Search" xml:space="preserve">
+    <value>Encontrar...</value>
+  </data>
 </root>
