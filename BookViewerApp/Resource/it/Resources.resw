@@ -849,4 +849,7 @@ Le righe con prefisso "#" saranno ignorate.</value>
   <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
     <value>Inserire il filtro in un formato compatibile con Adblock Plus Filter.</value>
   </data>
+  <data name="TabHeader.TextEditor" xml:space="preserve">
+    <value>Blocco note</value>
+  </data>
 </root>

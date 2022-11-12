@@ -476,6 +476,17 @@ public static partial class UIHelper
                     tab.OpenTabBook(file, Storages.SettingStorage.SettingEnums.EpubViewerType.EpubJsReader);
                 }));
             }
+            if(MimeTypes.MimeTypeMap.GetMimeType(ext).StartsWith("text/"))
+            {
+                yield return new MenuCommand(Managers.ResourceManager.LoaderFileExplorer.GetString("TextEditor/Title"), new DelegateCommand(async _ =>
+                {
+                    var tab = tabPageProvider?.Invoke();
+                    if (tab is null) return;
+                    var file = await getFile();
+                    if (file is null) return;
+                    tab.OpenTabTextEditor(file);
+                }));
+            }
             {
                 yield return new MenuCommand(Managers.ResourceManager.LoaderFileExplorer.GetString("ContextMenu/OpenWith/Choose"), new DelegateCommand(async _ =>
                 {

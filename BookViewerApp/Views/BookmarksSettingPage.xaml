@@ -8,7 +8,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     xmlns:vc="using:BookViewerApp.ValueConverters"
-    
     xmlns:fv="using:kurema.FileExplorerControl.Views.Viewers"
     >
     <Page.Resources>

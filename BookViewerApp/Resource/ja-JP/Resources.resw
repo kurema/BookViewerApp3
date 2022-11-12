@@ -853,4 +853,7 @@
   <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
     <value>管理</value>
   </data>
+  <data name="TabHeader.TextEditor" xml:space="preserve">
+    <value>メモ帳</value>
+  </data>
 </root>

@@ -324,4 +324,7 @@
   <data name="TextEditor.Find.Search" xml:space="preserve">
     <value>Encontrar...</value>
   </data>
+  <data name="TextEditor.Title" xml:space="preserve">
+    <value>Bloco de notas</value>
+  </data>
 </root>

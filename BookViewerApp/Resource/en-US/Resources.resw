@@ -983,4 +983,7 @@ Lines prefixed with '#' will be ignored.</value>
   <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
     <value>Manage</value>
   </data>
+  <data name="TabHeader.TextEditor" xml:space="preserve">
+    <value>Notepad</value>
+  </data>
 </root>

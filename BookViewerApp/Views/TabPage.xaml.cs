@@ -28,6 +28,7 @@ using BookViewerApp.Storages;
 using static BookViewerApp.Storages.SettingStorage;
 using Microsoft.UI.Xaml.Controls;
 using BookViewerApp.Managers;
+using Windows.Storage;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -285,11 +286,24 @@ public sealed partial class TabPage : Page
         frame?.Navigate(typeof(Bookshelf.NavigationPage));
     }
 
-
-    public (Frame, winui.Controls.TabViewItem) OpenTab(string titleId)
+    public void OpenTabTextEditor(IStorageFile file)
     {
-        var newTab = new winui.Controls.TabViewItem();
+        var (frame, _) = OpenTab("TextEditor", file.Name, file.Path);
+        frame?.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.TextEditorPage), file);
+    }
+
+    public void OpenTabTextEditor(kurema.FileExplorerControl.Models.FileItems.IFileItem file)
+    {
+        var (frame, _) = OpenTab("TextEditor", file.Name, file.Path);
+        frame?.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.TextEditorPage), file);
+    }
+
+
+    public (Frame, TabViewItem) OpenTab(string titleId, params object[] args)
+    {
+        var newTab = new TabViewItem();
         var titleString = UIHelper.GetTitleByResource(titleId);
+        if (args is not null and { Length: > 0 }) titleString = string.Format(titleString, args);
         newTab.Header = string.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
 
         Frame frame = new();

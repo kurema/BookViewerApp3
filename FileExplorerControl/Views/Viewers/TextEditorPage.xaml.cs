@@ -40,7 +40,7 @@ public sealed partial class TextEditorPage : Page
         set { SetValue(CanChageSavePathProperty, value); }
     }
 
-    public static readonly DependencyProperty CanChageSavePathProperty = DependencyProperty.Register(nameof(CanChageSavePath), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(false));
+    public static readonly DependencyProperty CanChageSavePathProperty = DependencyProperty.Register(nameof(CanChageSavePath), typeof(bool), typeof(TextEditorPage), new PropertyMetadata(true));
 
     /// <summary>
     /// Use this to access some functions not provided by this class like `IsHandwritingViewEnabled`. It can cause some issue so be careful.
@@ -467,4 +467,18 @@ public sealed partial class TextEditorPage : Page
         vm.ExecuteSeach(MainTextBox, true);
     }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        switch (e.Parameter)
+        {
+            case IStorageFile isf:
+                _ = LoadFile(isf);
+                break;
+            case Models.FileItems.IFileItem fi:
+                File = fi;
+                _ = Load();
+                break;
+        };
+        base.OnNavigatedTo(e);
+    }
 }

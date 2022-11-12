@@ -849,4 +849,7 @@
   <data name="Extension.AdBlocker.CustomFilters.Info" xml:space="preserve">
     <value>以Adblock Plus过滤器兼容的格式输入过滤器。</value>
   </data>
+  <data name="TabHeader.TextEditor" xml:space="preserve">
+    <value>记事本</value>
+  </data>
 </root>
