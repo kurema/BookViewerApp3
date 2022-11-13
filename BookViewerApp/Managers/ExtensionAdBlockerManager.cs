@@ -22,6 +22,7 @@ using Windows.Media.Playback;
 using Windows.Networking;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
 using static System.Net.WebRequestMethods;
@@ -182,6 +183,54 @@ public static partial class ExtensionAdBlockerManager
             return false;
         }
     }
+
+    public static void WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
+    {
+        if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
+        if (Filter is null) return;
+        using var deferral = args.GetDeferral();
+        if (args.Request is null || args.Request.RequestUri is null) return;
+        var requestUri = args.Request.RequestUri;
+        var headers = new System.Collections.Specialized.NameValueCollection();
+        foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
+        //string scheme = string.Empty;
+        //string domain = string.Empty;
+
+        //await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+        //{
+        //    scheme = sender.Source.Scheme;
+        //    domain = sender.Source.Host.ToUpperInvariant();
+        //});
+        //if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
+        //if (IsInWhitelist(domain)) return;
+
+        // Forget it. Nobody use Referer.
+        //if (args.Request.Headers.Referer is not null)
+        //{
+        //    if (!(args.Request.Headers.Referer.Scheme?.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
+        //    string domain = args.Request.Headers.Referer.Host.ToUpperInvariant();
+        //    if (domain is not null && IsInWhitelist(domain)) return;
+        //}
+
+        //switch (args.Request.)
+        //{
+        //    case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
+        //        headers.Add("X-Requested-With", "XmlHttpRequest");
+        //        break;
+        //    case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
+        //        headers.Add("Content-Type", "script");
+        //        break;
+        //}
+        // YouTube blocking is disabled now.
+        if (!IsBlocked(requestUri, requestUri.Host, headers))
+        {
+            //await YouTube.WebViewWebResourceRequested(sender, args);
+            return;
+        }
+        args.Response = new HttpResponseMessage(Windows.Web.Http.HttpStatusCode.Forbidden);
+        deferral.Complete();
+    }
+
 
     public static async void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
     {
@@ -535,6 +584,31 @@ public static partial class ExtensionAdBlockerManager
                 else if (uriReq.LocalPath.Equals("/youtubei/v1/player", StringComparison.InvariantCultureIgnoreCase))
                 {
                     await WebView2WebResourceRequestedCommon(sender, args, text => RemoveAdsFromJson(text));
+                }
+            }
+        }
+
+        public static async Task WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
+        {
+            throw new NotImplementedException();
+            if (sender.Source is null) return;
+            if (IsUriYouTube(sender.Source))
+            {
+                //YouTube specific ad blocking.
+                if (IsUriWatchPage(sender.Source))
+                {
+                    //await WebView2WebResourceRequestedCommon(sender, args, text =>
+                    //{
+                    //    return Regex.Replace(text, @"var ytInitialPlayerResponse\s*=\s*(\{.+?\});", (a) =>
+                    //    {
+                    //        return a.Value.Replace(a.Groups[1].Value, RemoveAdsFromJson(a.Groups[1].Value));
+                    //    });
+                    //});
+
+                }
+                else if (args.Request.RequestUri.LocalPath.Equals("/youtubei/v1/player", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    //await WebView2WebResourceRequestedCommon(sender, args, text => RemoveAdsFromJson(text));
                 }
             }
         }

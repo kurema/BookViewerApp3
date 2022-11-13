@@ -723,6 +723,28 @@ public static partial class UIHelper
                         XamlRootProvider = () => content.XamlRoot,
                     });
                 }
+
+                // Uncomment following to enable AdBlocker. But it's not implemented fully now.
+                //try
+                //{
+                //    _ = ExtensionAdBlockerManager.LoadRules();
+                //    var adbc = new Views.BrowserAddOn.AdBlockerControl();
+                //    adbc.SetBinding(Views.BrowserAddOn.AdBlockerControl.UrlProperty, new Windows.UI.Xaml.Data.Binding()
+                //    {
+                //        Source = content,
+                //        Path = new PropertyPath("DataContext.Uri"),
+                //        Mode = Windows.UI.Xaml.Data.BindingMode.OneWay,
+                //    });
+                //    adbc.RefreshCommand = new DelegateCommand(a =>
+                //    {
+                //        content.Control.Refresh();
+                //    });
+                //    content.AddOnSpace.Add(new NavigationViewItemSeparator());
+                //    content.AddOnSpace.Add(adbc);
+                //}
+                //catch { }
+
+                //content.Control.WebResourceRequested += ExtensionAdBlockerManager.WebViewWebResourceRequested;
             }
 
             if ((frame.Content as kurema.BrowserControl.Views.BrowserControl)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControlViewModel vm && vm != null)
@@ -753,6 +775,5 @@ public static partial class UIHelper
                 };
             }
         }
-
     }
 }
