@@ -1,4 +1,5 @@
 ﻿using BookViewerApp.Storages;
+using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -22,6 +23,7 @@ using Windows.Media.Playback;
 using Windows.Networking;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
@@ -184,51 +186,72 @@ public static partial class ExtensionAdBlockerManager
         }
     }
 
-    public static void WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
+    public static async void WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
     {
         if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
         if (Filter is null) return;
         using var deferral = args.GetDeferral();
         if (args.Request is null || args.Request.RequestUri is null) return;
         var requestUri = args.Request.RequestUri;
-        var headers = new System.Collections.Specialized.NameValueCollection();
+        var headers = new NameValueCollection();
         foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
-        //string scheme = string.Empty;
-        //string domain = string.Empty;
 
-        //await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-        //{
-        //    scheme = sender.Source.Scheme;
-        //    domain = sender.Source.Host.ToUpperInvariant();
-        //});
-        //if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
-        //if (IsInWhitelist(domain)) return;
-
-        // Forget it. Nobody use Referer.
-        //if (args.Request.Headers.Referer is not null)
-        //{
-        //    if (!(args.Request.Headers.Referer.Scheme?.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
-        //    string domain = args.Request.Headers.Referer.Host.ToUpperInvariant();
-        //    if (domain is not null && IsInWhitelist(domain)) return;
-        //}
-
-        //switch (args.Request.)
-        //{
-        //    case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
-        //        headers.Add("X-Requested-With", "XmlHttpRequest");
-        //        break;
-        //    case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
-        //        headers.Add("Content-Type", "script");
-        //        break;
-        //}
-        // YouTube blocking is disabled now.
-        if (!IsBlocked(requestUri, requestUri.Host, headers))
+        try
         {
-            //await YouTube.WebViewWebResourceRequested(sender, args);
-            return;
+            string scheme = string.Empty;
+            string domain = string.Empty;
+            //Dispatcher.AwaitableRunAsync(); looks like the best way to solve thread issue.
+            //You don't need ConfigureAwait(true) because it's default but I want to make sure.
+            //They say it's obsolete but alternative didn't seem to work.
+
+            var sb = new StringBuilder();
+            sb.AppendLine(args.Request.RequestUri.ToString());
+            sb.AppendLine($"1:{System.Threading.Thread.CurrentThread.ManagedThreadId} {Task.CurrentId}");
+            var thread = System.Threading.Thread.CurrentThread;
+            //await DispatcherQueue.GetForCurrentThread().EnqueueAsync(() =>
+            //{
+            //    scheme = sender.Source.Scheme;
+            //    domain = sender.Source.Host.ToUpperInvariant();
+            //}).ConfigureAwait(true);
+#pragma warning disable CS0618 // 型またはメンバーが旧型式です
+            await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                sb.AppendLine($"2:{System.Threading.Thread.CurrentThread.ManagedThreadId} {Task.CurrentId}");
+                scheme = sender.Source.Scheme;
+                domain = sender.Source.Host.ToUpperInvariant();
+            }).AsTask().ConfigureAwait(true);
+            //await sender.Dispatcher.AwaitableRunAsync(() =>
+            //{
+            //    sb.AppendLine($"2:{System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //    scheme = sender.Source.Scheme;
+            //    domain = sender.Source.Host.ToUpperInvariant();
+            //}).ConfigureAwait(true);
+#pragma warning restore CS0618 // 型またはメンバーが旧型式です
+            sb.AppendLine($"3:{System.Threading.Thread.CurrentThread.ManagedThreadId} {Task.CurrentId}");
+            Debug.WriteLine(sb.ToString());
+            if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
+            if (IsInWhitelist(domain)) return;
+
+            if (!IsBlocked(requestUri, requestUri.Host, headers))
+            {
+                // YouTube blocking is disabled now.
+                //await YouTube.WebViewWebResourceRequested(sender, args);
+                return;
+            }
+            
+            args.Response = new HttpResponseMessage(Windows.Web.Http.HttpStatusCode.Forbidden);
         }
-        args.Response = new HttpResponseMessage(Windows.Web.Http.HttpStatusCode.Forbidden);
-        deferral.Complete();
+        catch (Exception e)
+        {
+#if DEBUG
+            Debug.Write(e);
+#endif
+            //Ignore all exceptions. It's not a big deal.
+        }
+        finally
+        {
+            deferral.Complete();
+        }
     }
 
 
@@ -292,7 +315,7 @@ public static partial class ExtensionAdBlockerManager
         if (cache is null || Filter is null || getFiltersForDomain is null) return new DistillNET.UrlFilter[0];
         if (cache.ContainsKey(domain)) return cache[domain].Item2;
         var filters = getFiltersForDomain(domain)?.ToArray() ?? new DistillNET.UrlFilter[0];
-        cache.Add(domain, (DateTime.Now, filters));
+        cache.TryAdd(domain, (DateTime.Now, filters));
         if (cache.Count > FiltersCacheSize) cache.Remove(cache.OrderBy(a => a.Value).First().Key);
         return filters;
     }

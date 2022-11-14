@@ -387,7 +387,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Background="Transparent"
+                <TextBox Grid.Column="0" Background="Transparent" IsSpellCheckEnabled="False"
                          BorderBrush="Transparent" BorderThickness="0"
                          x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="Address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="Address_text_KeyDown">
                     <TextBox.Resources>

@@ -96,7 +96,7 @@
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
                     <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Uri,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" Background="Transparent"
-                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus">
+                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus" IsSpellCheckEnabled="False">
                         <TextBox.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.ThemeDictionaries>
