@@ -52,7 +52,7 @@ All we do is block requests (and YouTube stuffs), so we don't expect any major s
 ## Licenses
 Many existing ad blockers are GPLed and we use MIT, so we don't use their code.
 We also let users download filters at their own discretion.
-That said, we were careful not to confuse existing ad-block users.
+On the other hand, the setting screen is based on the existing ad blocker.
 
 ## Performance
 WebView version uses Wait() that prevent the thread. It can be a performance issue.
