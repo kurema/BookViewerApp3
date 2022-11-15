@@ -14,6 +14,13 @@ Click "≡" then select rightmost tab. Enable AdBlocker by selecting "Ad blocker
 
 ![Drawer](img/BrowserDrawer.png "Web browser with drawer opened. Extensions tab is selected.")
 
+| Title | Description |
+| -- | -- |
+| Ad blocker | Enable/Disable ad blocker. This is App-wide toggle. |
+| [Domain] | Add/Remove the domain to/from the whitelist. |
+| Refresh icon | Refresh the page. Click this after you changed the setting. |
+| Gear icon | Launch ad block manager. |
+
 3. Download filters
 
 Select the filters you want to add, then click ✓Apply.
