@@ -54,6 +54,9 @@ Many existing ad blockers are GPLed and we use MIT, so we don't use their code.
 We also let users download filters at their own discretion.
 That said, we were careful not to confuse existing ad-block users.
 
+## Performance
+WebView version uses Wait() that prevent the thread. It can be a performance issue.
+
 ## Links
 Our codes
 * [Engine](https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Managers/ExtensionAdBlockerManager.cs)
