@@ -55,7 +55,7 @@ We also let users download filters at their own discretion.
 On the other hand, the setting screen is based on the existing ad blocker.
 
 ## Performance
-WebView version uses Wait() that prevent the thread. It can be a performance issue.
+WebView version uses Wait() that block the thread. It can be a performance issue.
 
 ## Links
 Our codes
