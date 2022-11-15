@@ -34,7 +34,12 @@ public sealed partial class AdBlockerControl : UserControl
     public bool IsAdBlockerEnabled
     {
         get => (bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled);
-        set => SettingStorage.SetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled, value);
+        set
+        {
+            var current = IsAdBlockerEnabled;
+            SettingStorage.SetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled, value);
+            if (!current && value) _ = OpenConfigIfNeeded();
+        }
     }
 
     public AdBlockerControl()
@@ -43,6 +48,16 @@ public sealed partial class AdBlockerControl : UserControl
 
         RefreshCommand = new Helper.InvalidCommand();
     }
+
+    public async Task OpenConfigIfNeeded()
+    {
+        var info = await Managers.ExtensionAdBlockerManager.LocalInfo.GetContentAsync();
+        if (info is null or { selected: null } or { selected.Length: 0 })
+        {
+            OpenConfig();
+        }
+    }
+
 
     public void OpenConfig()
     {

@@ -1,4 +1,5 @@
 ﻿using BookViewerApp.Storages;
+using Microsoft.Toolkit;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -186,7 +187,7 @@ public static partial class ExtensionAdBlockerManager
         }
     }
 
-    public static async void WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
+    public static void WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
     {
         if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
         if (Filter is null) return;
@@ -200,45 +201,22 @@ public static partial class ExtensionAdBlockerManager
         {
             string scheme = string.Empty;
             string domain = string.Empty;
-            //Dispatcher.AwaitableRunAsync(); looks like the best way to solve thread issue.
-            //You don't need ConfigureAwait(true) because it's default but I want to make sure.
-            //They say it's obsolete but alternative didn't seem to work.
-
-            var sb = new StringBuilder();
-            sb.AppendLine(args.Request.RequestUri.ToString());
-            sb.AppendLine($"1:{System.Threading.Thread.CurrentThread.ManagedThreadId} {Task.CurrentId}");
+            //Wait() is easy fix, but bad in performance.
             var thread = System.Threading.Thread.CurrentThread;
-            //await DispatcherQueue.GetForCurrentThread().EnqueueAsync(() =>
-            //{
-            //    scheme = sender.Source.Scheme;
-            //    domain = sender.Source.Host.ToUpperInvariant();
-            //}).ConfigureAwait(true);
-#pragma warning disable CS0618 // 型またはメンバーが旧型式です
-            await sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
             {
-                sb.AppendLine($"2:{System.Threading.Thread.CurrentThread.ManagedThreadId} {Task.CurrentId}");
                 scheme = sender.Source.Scheme;
                 domain = sender.Source.Host.ToUpperInvariant();
-            }).AsTask().ConfigureAwait(true);
-            //await sender.Dispatcher.AwaitableRunAsync(() =>
-            //{
-            //    sb.AppendLine($"2:{System.Threading.Thread.CurrentThread.ManagedThreadId}");
-            //    scheme = sender.Source.Scheme;
-            //    domain = sender.Source.Host.ToUpperInvariant();
-            //}).ConfigureAwait(true);
-#pragma warning restore CS0618 // 型またはメンバーが旧型式です
-            sb.AppendLine($"3:{System.Threading.Thread.CurrentThread.ManagedThreadId} {Task.CurrentId}");
-            Debug.WriteLine(sb.ToString());
+            }).AsTask().Wait();
             if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
             if (IsInWhitelist(domain)) return;
 
             if (!IsBlocked(requestUri, requestUri.Host, headers))
             {
                 // YouTube blocking is disabled now.
-                //await YouTube.WebViewWebResourceRequested(sender, args);
+                //YouTube.WebViewWebResourceRequested(sender, args);
                 return;
             }
-            
             args.Response = new HttpResponseMessage(Windows.Web.Http.HttpStatusCode.Forbidden);
         }
         catch (Exception e)
@@ -323,7 +301,7 @@ public static partial class ExtensionAdBlockerManager
     public static async Task<DistillNET.FilterDbCollection?> LoadRules()
     {
         bool any = false;
-        try { (any, _) = await UpdateExpired(); } catch { }
+        try { (any, _) = await UpdateExpiredFilters(); } catch { }
         if (!DomainsWhitelistLoaded && !any) await LoadUserWhitelist();
         return await LoadRulesFromDb() ?? (await LoadRulesFromText()).result;
     }
@@ -350,7 +328,7 @@ public static partial class ExtensionAdBlockerManager
     /// Update expired or deleted filters.
     /// </summary>
     /// <returns>If there's any successful download, updateAny is true. If any download failed, successAll is false.</returns>
-    public static async Task<(bool updateAny, bool successAll)> UpdateExpired()
+    public static async Task<(bool updateAny, bool successAll)> UpdateExpiredFilters()
     {
         var localInfoContent = (await LocalInfo.GetContentAsync());
         var selected = localInfoContent?.selected;
@@ -611,9 +589,9 @@ public static partial class ExtensionAdBlockerManager
             }
         }
 
-        public static async Task WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
+        public static void WebViewWebResourceRequested(WebView sender, WebViewWebResourceRequestedEventArgs args)
         {
-            throw new NotImplementedException();
+            //You defenitely need await for http access. It's crazy to just Wait() for that. So it's impossible. I think.
             if (sender.Source is null) return;
             if (IsUriYouTube(sender.Source))
             {
@@ -642,11 +620,22 @@ public static partial class ExtensionAdBlockerManager
 
         public static async Task WebView2WebResourceRequestedCommon(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args, Func<string, string> removeAdsFunction)
         {
-            if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
             var d = args.GetDeferral();
+            await WebResourceRequestedCommon(removeAdsFunction, (ms, s) =>
+            {
+                args.Response = sender.Environment.CreateWebResourceResponse(ms, 200, "OK", s);
+            },
+                args.Request.Uri, args.Request.Method, args.Request.Content, args.Request.Headers.ToArray() ?? new KeyValuePair<string, string>[0]);
+            d.Complete();
+        }
+
+
+        public static async Task WebResourceRequestedCommon(Func<string, string> removeAdsFunction,Action<InMemoryRandomAccessStream,string> setResponse, string requestUri, string? requestMethod, IRandomAccessStream requestContent, KeyValuePair<string, string>[] requestHeaders)
+        {
+            if (!Uri.TryCreate(requestUri, UriKind.Absolute, out Uri uriReq)) return;
             var client = CommonHttpClient;
             var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
-            message.Method = args.Request.Method?.ToUpperInvariant() switch
+            message.Method = requestMethod?.ToUpperInvariant() switch
             {
                 "POST" => HttpMethod.Post,
                 "PUT" => HttpMethod.Put,
@@ -657,10 +646,10 @@ public static partial class ExtensionAdBlockerManager
                 "GET" => HttpMethod.Get,
                 _ => HttpMethod.Get,
             };
-            if (args.Request.Content is not null)
+            if (requestContent is not null)
             {
-                message.Content = new HttpStreamContent(args.Request.Content);
-                foreach (var item in args.Request.Headers)
+                message.Content = new HttpStreamContent(requestContent);
+                foreach (var item in requestHeaders)
                 {
                     try
                     {
@@ -670,7 +659,7 @@ public static partial class ExtensionAdBlockerManager
                 }
             }
             message.Headers.Clear();
-            foreach (var item in args.Request.Headers)
+            foreach (var item in requestHeaders)
             {
                 try
                 {
@@ -694,9 +683,8 @@ public static partial class ExtensionAdBlockerManager
             {
                 hs.AppendLine($"{h.Key}:{h.Value}");
             }
-            if (response.StatusCode == Windows.Web.Http.HttpStatusCode.Ok) args.Response = sender.Environment.CreateWebResourceResponse(ms, 200, "OK", hs.ToString());
+            if (response.StatusCode == Windows.Web.Http.HttpStatusCode.Ok) setResponse(ms, hs.ToString());
             //args.Response = sender.Environment.CreateWebResourceResponse(ms, (int)response.StatusCode, response.ReasonPhrase, hs.ToString());
-            d.Complete();
             return;
         }
 
