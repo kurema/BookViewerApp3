@@ -126,6 +126,11 @@ public class AdBlockerSettingViewModel : ViewModelBase
     private bool _SetupRequired;
     public bool SetupRequired { get => _SetupRequired; set => SetProperty(ref _SetupRequired, value); }
 
+
+    private AdBlockerSettingFilterViewModel _ItemToAdd;
+    public AdBlockerSettingFilterViewModel ItemToAdd { get => _ItemToAdd; set => SetProperty(ref _ItemToAdd, value); }
+
+
 }
 
 public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlockerSettingFilterViewModel>
@@ -268,6 +273,11 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         }
     }
 
+
+    private string _FileNameCandidateBody = string.Empty;
+    public string NewFileNameBody { get => _FileNameCandidateBody; set => SetProperty(ref _FileNameCandidateBody, value); }
+
+
     public bool Recommended
     {
         get => content.recommended;
@@ -313,6 +323,18 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         }
     }
 
+    public string Source
+    {
+        get => content.source;
+        set
+        {
+            if (content.source is null || string.IsNullOrWhiteSpace(NewFileNameBody) || System.IO.Path.GetFileNameWithoutExtension(content.source) == NewFileNameBody)
+                NewFileNameBody = System.IO.Path.GetFileNameWithoutExtension(value);
+            content.source = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string ProjectSource
     {
         get => content.project_source;
@@ -322,4 +344,8 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    private bool _CanDelete;
+    public bool CanDelete { get => _CanDelete; set => SetProperty(ref _CanDelete, value); }
+
 }

@@ -56,6 +56,40 @@
                         </StackPanel>
                     </StackPanel>
                 </ListView.Header>
+                <ListView.Footer>
+                    <ScrollViewer VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto">
+                        <Grid HorizontalAlignment="Left" MinWidth="700">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="TextBox" >
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBlock" >
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </Grid.Resources>
+                            <AppBarButton Icon="Add" LabelPosition="Collapsed" Grid.Column="0" />
+                            <AppBarSeparator Grid.Column="1" />
+                            <TextBox Text="{Binding ItemToAdd.Title}"  Grid.Column="2" />
+                            <AppBarSeparator  Grid.Column="3" />
+                            <TextBox Text="{Binding ItemToAdd.Source}" Grid.Column="4" />
+                            <AppBarSeparator Grid.Column="5" />
+                            <TextBlock Text="local." Grid.Column="6" />
+                            <TextBox Text="{Binding ItemToAdd.NewFileNameBody}" Grid.Column="7" />
+                            <TextBlock Text=".txt" Grid.Column="8" />
+                        </Grid>
+                    </ScrollViewer>
+                </ListView.Footer>
                 <ListView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
