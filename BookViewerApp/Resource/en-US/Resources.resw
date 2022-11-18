@@ -986,4 +986,7 @@ Lines prefixed with '#' will be ignored.</value>
   <data name="TabHeader.TextEditor" xml:space="preserve">
     <value>Notepad</value>
   </data>
+  <data name="Word.Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

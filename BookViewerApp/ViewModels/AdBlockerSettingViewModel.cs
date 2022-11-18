@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -32,6 +33,50 @@ public class AdBlockerSettingViewModel : ViewModelBase
             }
             return false;
         });
+
+        {
+            AddItemCommand = new DelegateCommand(async _ =>
+            {
+                await SemaphoreAddItem.WaitAsync();
+                try
+                {
+                    if (CustomFilters is null) return;
+                    ItemToAdd.PropertyChanged -= ItemToAdd_PropertyChanged;
+                    var item = ItemToAdd;
+                    item.UpdateFileNameFromNewFileNameBody();
+                    var content = item.GetContent();
+                    if (!content.IsValidEntry) return;
+                    if (CustomFilters.Select(a => a.GetContent())
+                    .Any(a => (a.filename ?? string.Empty).Equals(content.filename, StringComparison.InvariantCultureIgnoreCase) || (a.source ?? string.Empty).Equals(content.source, StringComparison.InvariantCultureIgnoreCase))) return;
+                    if (!await Managers.ExtensionAdBlockerManager.TryDownloadList(content)) return;
+                    // We should check if file is valid.
+                    item.Parent = CustomFilters;
+                    CustomFilters.Add(item);
+                    ItemToAdd = new AdBlockerSettingFilterViewModel(new item());
+                    ItemToAdd.PropertyChanged += ItemToAdd_PropertyChanged;
+                    await SaveCustomFilters();
+                    AddItemCommand?.OnCanExecuteChanged();
+                }
+                finally
+                {
+                    SemaphoreAddItem.Release();
+                }
+            }, _ => !string.IsNullOrEmpty(ItemToAdd.NewFileNameBody));
+            ItemToAdd.PropertyChanged += ItemToAdd_PropertyChanged;
+
+            void ItemToAdd_PropertyChanged(object sender, PropertyChangedEventArgs e) => AddItemCommand?.OnCanExecuteChanged();
+        }
+    }
+
+    private static SemaphoreSlim SemaphoreAddItem = new(1, 1);
+
+    public async Task SaveCustomFilters()
+    {
+        if (CustomFilters is null) return;
+        var info = await Managers.ExtensionAdBlockerManager.LocalInfo.GetContentAsync();
+        if (info is null) return;
+        info.filters = CustomFilters.Content.item;
+        await Managers.ExtensionAdBlockerManager.LocalInfo.SaveAsync();
     }
 
     public ObservableCollection<AdBlockerSettingFilterGroupViewModel> FilterList { get; private set; } = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>();
@@ -75,6 +120,11 @@ public class AdBlockerSettingViewModel : ViewModelBase
         return success;
     }
 
+
+    private AdBlockerSettingFilterGroupViewModel? _CustomFilters;
+    public AdBlockerSettingFilterGroupViewModel? CustomFilters { get => _CustomFilters; set => SetProperty(ref _CustomFilters, value); }
+
+
     public async Task LoadFilterList()
     {
         var filter = await Managers.ExtensionAdBlockerManager.LocalLists.GetContentAsync();
@@ -88,7 +138,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 title = new[] { new title() { Value = Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Filters/CustomGroup/Header"), @default = true } },
                 item = info.filters,
             };
-            FilterList.Add(new AdBlockerSettingFilterGroupViewModel(gr) { Parent = this });
+            FilterList.Add(CustomFilters = new AdBlockerSettingFilterGroupViewModel(gr) { Parent = this, CanDelete = true });
         }
         foreach (var g in FilterList)
         {
@@ -104,7 +154,6 @@ public class AdBlockerSettingViewModel : ViewModelBase
         }
         OnPropertyChanged(nameof(FilterList));
     }
-
 
     private bool _RefreshAll = false;
     public bool RefreshAll
@@ -122,15 +171,15 @@ public class AdBlockerSettingViewModel : ViewModelBase
         RefreshCommand?.OnCanExecuteChanged();
     }
 
+    public DelegateCommand AddItemCommand { get; }
+
 
     private bool _SetupRequired;
     public bool SetupRequired { get => _SetupRequired; set => SetProperty(ref _SetupRequired, value); }
 
 
-    private AdBlockerSettingFilterViewModel _ItemToAdd;
+    private AdBlockerSettingFilterViewModel _ItemToAdd = new AdBlockerSettingFilterViewModel(new item());
     public AdBlockerSettingFilterViewModel ItemToAdd { get => _ItemToAdd; set => SetProperty(ref _ItemToAdd, value); }
-
-
 }
 
 public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlockerSettingFilterViewModel>
@@ -202,6 +251,17 @@ public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlock
         }
     }
 
+    private bool _CanDelete;
+    public bool CanDelete
+    {
+        get => _CanDelete; set
+        {
+            _CanDelete = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDelete)));
+        }
+    }
+
+
 }
 
 public class AdBlockerSettingFilterViewModel : BaseViewModel
@@ -252,6 +312,10 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
     public AdBlockerSettingFilterGroupViewModel? Parent { get => _Parent; set => SetProperty(ref _Parent, value); }
 
 
+    private ICommand? _DeleteCommand;
+    public ICommand DeleteCommand => _DeleteCommand ??= new DelegateCommand(_ => { Parent?.Remove(this); }, _ => Parent is not null);
+
+
     public string Title
     {
         get => content.GetTitleForCulture();
@@ -274,8 +338,13 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
     }
 
 
-    private string _FileNameCandidateBody = string.Empty;
-    public string NewFileNameBody { get => _FileNameCandidateBody; set => SetProperty(ref _FileNameCandidateBody, value); }
+    private string _NewFileNameBody = string.Empty;
+    public string NewFileNameBody { get => _NewFileNameBody; set => SetProperty(ref _NewFileNameBody, value); }
+
+    public void UpdateFileNameFromNewFileNameBody()
+    {
+        FileName = $"{Managers.ExtensionAdBlockerManager.CustomFilterFileNameHeader}{NewFileNameBody}.txt";
+    }
 
 
     public bool Recommended
@@ -328,11 +397,19 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         get => content.source;
         set
         {
-            if (content.source is null || string.IsNullOrWhiteSpace(NewFileNameBody) || System.IO.Path.GetFileNameWithoutExtension(content.source) == NewFileNameBody)
-                NewFileNameBody = System.IO.Path.GetFileNameWithoutExtension(value);
+            if (content.source is null || string.IsNullOrWhiteSpace(NewFileNameBody) || GetNewFileNameBodyFromSource(content.source) == NewFileNameBody)
+                NewFileNameBody = GetNewFileNameBodyFromSource(value);
             content.source = value;
             OnPropertyChanged();
         }
+    }
+
+    public static string GetNewFileNameBodyFromSource(string source)
+    {
+        string result = System.IO.Path.GetFileNameWithoutExtension(source);
+        foreach (var item in System.IO.Path.GetInvalidFileNameChars()) result = result.Replace(item, '_');
+        result = result.Substring(0, 32 - Managers.ExtensionAdBlockerManager.CustomFilterFileNameHeader.Length - 4);
+        return result;
     }
 
     public string ProjectSource
@@ -344,8 +421,4 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-
-    private bool _CanDelete;
-    public bool CanDelete { get => _CanDelete; set => SetProperty(ref _CanDelete, value); }
-
 }

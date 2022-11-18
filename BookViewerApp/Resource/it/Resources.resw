@@ -852,4 +852,7 @@ Le righe con prefisso "#" saranno ignorate.</value>
   <data name="TabHeader.TextEditor" xml:space="preserve">
     <value>Blocco note</value>
   </data>
+  <data name="Word.Delete" xml:space="preserve">
+    <value>Cancellare</value>
+  </data>
 </root>

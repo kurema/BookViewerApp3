@@ -31,6 +31,20 @@ partial class itemsGroup
 
 partial class item
 {
+    public bool IsValidEntry
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(title1) && title is null or { Length: 0 }) return false;
+            if (source is null) return false;
+            if (!Uri.TryCreate(source, UriKind.Absolute, out Uri uri)) return false;
+            if (uri.Scheme.ToUpperInvariant() is not "HTTP" and not "HTTPS") return false;
+            if (string.IsNullOrEmpty(filename)) return false;
+            if (System.IO.Path.GetInvalidFileNameChars().Any(a => filename.Contains(a))) return false;
+            return true;
+        }
+    }
+
     public string GetTitleForCulture(CultureInfo culture = null)
     {
         if (!string.IsNullOrEmpty(title1)) return title1;

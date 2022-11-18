@@ -59,6 +59,7 @@ public static partial class ExtensionAdBlockerManager
     public const string FileNameUser = "user.txt";
     public const string FileNameDb = "rules.db";
 
+    public const string CustomFilterFileNameHeader = "custom.";
     public static DistillNET.FilterDbCollection? Filter { get; private set; }
 
     //Make sure the list is sorted and ToUpeerInvariant()ed before use.
@@ -559,6 +560,7 @@ public static partial class ExtensionAdBlockerManager
 
     public static async Task<bool> IsItemLoaded(Storages.ExtensionAdBlockerItems.item item)
     {
+        if (item.filename is null) return false;
         var cache = await GetDataFolderCache();
         return await cache.FileExistsAsync(item.filename);
     }

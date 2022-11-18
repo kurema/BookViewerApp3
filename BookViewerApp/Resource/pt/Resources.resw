@@ -850,4 +850,7 @@ As linhas prefixadas com '#' serão ignoradas.</value>
   <data name="TabHeader.TextEditor" xml:space="preserve">
     <value>Bloco de notas</value>
   </data>
+  <data name="Word.Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
 </root>

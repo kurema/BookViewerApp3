@@ -58,16 +58,16 @@
                 </ListView.Header>
                 <ListView.Footer>
                     <ScrollViewer VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto">
-                        <Grid HorizontalAlignment="Left" MinWidth="700">
+                        <Grid HorizontalAlignment="Left" MinWidth="800">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="5*" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.Resources>
@@ -78,14 +78,14 @@
                                     <Setter Property="VerticalAlignment" Value="Center" />
                                 </Style>
                             </Grid.Resources>
-                            <AppBarButton Icon="Add" LabelPosition="Collapsed" Grid.Column="0" />
+                            <AppBarButton Icon="Add" LabelPosition="Collapsed" Grid.Column="0" Command="{Binding AddItemCommand}" />
                             <AppBarSeparator Grid.Column="1" />
-                            <TextBox Text="{Binding ItemToAdd.Title}"  Grid.Column="2" />
+                            <TextBox Text="{Binding ItemToAdd.Title,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" PlaceholderText="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.Title'}" />
                             <AppBarSeparator  Grid.Column="3" />
-                            <TextBox Text="{Binding ItemToAdd.Source}" Grid.Column="4" />
+                            <TextBox Text="{Binding ItemToAdd.Source,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" PlaceholderText="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.URL'}" />
                             <AppBarSeparator Grid.Column="5" />
-                            <TextBlock Text="local." Grid.Column="6" />
-                            <TextBox Text="{Binding ItemToAdd.NewFileNameBody}" Grid.Column="7" />
+                            <TextBlock Text="{x:Bind CustomFilterFileNameHeader}" Grid.Column="6" />
+                            <TextBox Text="{Binding ItemToAdd.NewFileNameBody,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="7" PlaceholderText="filename" />
                             <TextBlock Text=".txt" Grid.Column="8" />
                         </Grid>
                     </ScrollViewer>
@@ -109,6 +109,14 @@
                                 </StackPanel>
                             </CheckBox>
                             <CommandBar DefaultLabelPosition="Collapsed">
+                                <AppBarButton Icon="Delete" Visibility="{Binding Parent.CanDelete,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}" >
+                                    <AppBarButton.Flyout>
+                                        <MenuFlyout>
+                                            <!-- Same functionality as confirmation dialog -->
+                                            <MenuFlyoutItem Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.Delete'}" Icon="Delete" Click="MenuFlyoutItem_Click"/>
+                                        </MenuFlyout>
+                                    </AppBarButton.Flyout>
+                                </AppBarButton>
                                 <AppBarToggleButton ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Refresh'}" Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay,Converter={StaticResource NullableBoolConverter},ConverterParameter=false}" IsEnabled="{Binding IsEnabled,Mode=OneWay,TargetNullValue=False}"/>
                                 <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}"/>
                                 <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}"/>

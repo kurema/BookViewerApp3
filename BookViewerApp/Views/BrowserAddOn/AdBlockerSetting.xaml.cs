@@ -95,4 +95,15 @@ public sealed partial class AdBlockerSetting : Page
                 return;
         }
     }
+
+    private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.DataContext is not ViewModels.AdBlockerSettingFilterViewModel vmItem) return;
+        if (this.DataContext is not ViewModels.AdBlockerSettingViewModel vm) return;
+        if (vmItem.DeleteCommand?.CanExecute(null) != true) return;
+        vmItem.DeleteCommand?.Execute(null);
+        await vm.SaveCustomFilters();
+    }
+
+    public string CustomFilterFileNameHeader => Managers.ExtensionAdBlockerManager.CustomFilterFileNameHeader;
 }

@@ -852,4 +852,7 @@
   <data name="TabHeader.TextEditor" xml:space="preserve">
     <value>记事本</value>
   </data>
+  <data name="Word.Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
 </root>
