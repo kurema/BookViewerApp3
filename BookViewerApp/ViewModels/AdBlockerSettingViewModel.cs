@@ -61,7 +61,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
                 {
                     SemaphoreAddItem.Release();
                 }
-            }, _ => !string.IsNullOrEmpty(ItemToAdd.NewFileNameBody));
+            }, _ => !string.IsNullOrEmpty(ItemToAdd.NewFileNameBody) && !string.IsNullOrEmpty(ItemToAdd.Source) && !string.IsNullOrWhiteSpace(ItemToAdd.Title));
             ItemToAdd.PropertyChanged += ItemToAdd_PropertyChanged;
 
             void ItemToAdd_PropertyChanged(object sender, PropertyChangedEventArgs e) => AddItemCommand?.OnCanExecuteChanged();
@@ -408,7 +408,8 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
     {
         string result = System.IO.Path.GetFileNameWithoutExtension(source);
         foreach (var item in System.IO.Path.GetInvalidFileNameChars()) result = result.Replace(item, '_');
-        result = result.Substring(0, 32 - Managers.ExtensionAdBlockerManager.CustomFilterFileNameHeader.Length - 4);
+        int len = 32 - Managers.ExtensionAdBlockerManager.CustomFilterFileNameHeader.Length - 4;
+        if (result.Length > len) result = result.Substring(0, len);
         return result;
     }
 

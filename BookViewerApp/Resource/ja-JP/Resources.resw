@@ -859,4 +859,9 @@
   <data name="Word.Delete" xml:space="preserve">
     <value>削除</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Notepad.Info" xml:space="preserve">
+    <value>タイトル：{0}
+ファイル名：{1}
+ダウンロード元：{2}</value>
+  </data>
 </root>

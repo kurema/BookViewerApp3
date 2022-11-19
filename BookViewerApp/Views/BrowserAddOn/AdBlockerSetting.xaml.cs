@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookViewerApp.Helper;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -106,4 +107,28 @@ public sealed partial class AdBlockerSetting : Page
     }
 
     public string CustomFilterFileNameHeader => Managers.ExtensionAdBlockerManager.CustomFilterFileNameHeader;
+
+    private async void AppBarButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement fe || fe.DataContext is not ViewModels.AdBlockerSettingFilterViewModel vm) return;
+        var tab = UIHelper.GetCurrentTabPage(this);
+        if (tab is null) return;
+        var content = vm.GetContent();
+        if (!content.IsValidEntry || string.IsNullOrWhiteSpace(content.filename)) return;
+        var df = await Managers.ExtensionAdBlockerManager.GetDataFolderCache();
+        Windows.Storage.StorageFile item;
+        try
+        {
+            item = await df.GetFileAsync(content.filename);
+        }
+        catch { return; }
+        var te = tab.OpenTabTextEditor(item);
+        var loader = Managers.ResourceManager.Loader;
+        if (te is not null)
+        {
+            te.CanOverwrite = false;
+            te.CanChageSavePath = false;
+            te.Info = string.Format(loader.GetString("Extension/AdBlocker/Filters/Notepad/Info"), vm.Title, vm.FileName, vm.Source);
+        }
+    }
 }

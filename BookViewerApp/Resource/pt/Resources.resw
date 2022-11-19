@@ -853,4 +853,9 @@ As linhas prefixadas com '#' serão ignoradas.</value>
   <data name="Word.Delete" xml:space="preserve">
     <value>Eliminar</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Notepad.Info" xml:space="preserve">
+    <value>Título: {0}
+Nome do ficheiro: {1}
+Fonte: {2}</value>
+  </data>
 </root>

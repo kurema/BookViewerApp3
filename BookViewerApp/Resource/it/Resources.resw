@@ -855,4 +855,9 @@ Le righe con prefisso "#" saranno ignorate.</value>
   <data name="Word.Delete" xml:space="preserve">
     <value>Cancellare</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Notepad.Info" xml:space="preserve">
+    <value>Titolo: {0}
+Nome file: {1}
+Fonte: {2}</value>
+  </data>
 </root>

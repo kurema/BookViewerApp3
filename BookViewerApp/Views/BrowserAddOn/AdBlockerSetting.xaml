@@ -120,6 +120,7 @@
                                 <AppBarToggleButton ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Refresh'}" Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay,Converter={StaticResource NullableBoolConverter},ConverterParameter=false}" IsEnabled="{Binding IsEnabled,Mode=OneWay,TargetNullValue=False}"/>
                                 <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}"/>
                                 <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}"/>
+                                <AppBarButton Icon="Edit" Click="AppBarButton_Click" Visibility="{Binding IsLoaded,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}" />
                             </CommandBar>
                             <muxc:InfoBadge Style="{StaticResource SuccessIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Success:Visible}"/>
                             <muxc:InfoBadge Style="{StaticResource CriticalIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Fail:Visible}" />

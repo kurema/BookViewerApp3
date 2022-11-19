@@ -989,4 +989,9 @@ Lines prefixed with '#' will be ignored.</value>
   <data name="Word.Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Notepad.Info" xml:space="preserve">
+    <value>Title: {0}
+Filename: {1}
+Source: {2}</value>
+  </data>
 </root>

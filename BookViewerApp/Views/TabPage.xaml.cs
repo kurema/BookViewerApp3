@@ -286,10 +286,11 @@ public sealed partial class TabPage : Page
         frame?.Navigate(typeof(Bookshelf.NavigationPage));
     }
 
-    public void OpenTabTextEditor(IStorageFile file)
+    public kurema.FileExplorerControl.Views.Viewers.TextEditorPage? OpenTabTextEditor(IStorageFile file)
     {
         var (frame, _) = OpenTab("TextEditor", file.Name, file.Path);
         frame?.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.TextEditorPage), file);
+        return frame.Content as kurema.FileExplorerControl.Views.Viewers.TextEditorPage;
     }
 
     public void OpenTabTextEditor(kurema.FileExplorerControl.Models.FileItems.IFileItem file)
