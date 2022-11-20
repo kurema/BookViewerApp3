@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppBasePlatform", "AppBasePlatform\AppBasePlatform.csproj", "{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,12 +100,32 @@ Global
 		{7D40EB0D-37D2-458A-BFCE-BD4FEF8244F7}.Release|x64.Build.0 = Release|x64
 		{7D40EB0D-37D2-458A-BFCE-BD4FEF8244F7}.Release|x86.ActiveCfg = Release|x86
 		{7D40EB0D-37D2-458A-BFCE-BD4FEF8244F7}.Release|x86.Build.0 = Release|x86
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|ARM.ActiveCfg = Debug|ARM
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|ARM.Build.0 = Debug|ARM
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|ARM64.Build.0 = Debug|ARM64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|x64.ActiveCfg = Debug|x64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|x64.Build.0 = Debug|x64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|x86.ActiveCfg = Debug|x86
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Debug|x86.Build.0 = Debug|x86
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|ARM.ActiveCfg = Release|ARM
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|ARM.Build.0 = Release|ARM
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|ARM64.ActiveCfg = Release|ARM64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|ARM64.Build.0 = Release|ARM64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|x64.ActiveCfg = Release|x64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|x64.Build.0 = Release|x64
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|x86.ActiveCfg = Release|x86
+		{9350DD9F-DF65-4362-AD68-8DDCB0AB18D4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1D690A2D-E395-40EB-B506-A5722EB4DF01}
 		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":\"4fcf2967-1777-f609-5cd8-cebb3f4feaa7:fx\",\"ApiUrl\":\"https://api-free.deepl.com/v2/translate\",\"IsEnabled\":true,\"SaveCredentials\":true,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
+		SolutionGuid = {1D690A2D-E395-40EB-B506-A5722EB4DF01}
 	EndGlobalSection
 EndGlobal
