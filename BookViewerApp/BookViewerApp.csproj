@@ -297,6 +297,7 @@
     </Compile>
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
+    <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="ViewModels\AdBlockerSettingViewModel.cs" />
     <Compile Include="ViewModels\Bookshelf2BookViewModel.cs" />
     <Compile Include="ViewModels\Bookshelf2NavigationItemViewModel.cs" />
@@ -410,7 +411,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="Views\SettingPanelControl.xaml.cs">
       <DependentUpon>SettingPanelControl.xaml</DependentUpon>
     </Compile>

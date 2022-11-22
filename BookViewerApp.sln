@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookViewerApp", "BookViewerApp\BookViewerApp.csproj", "{AB303D80-1960-4AD3-A357-455B1E97215A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E2C8720-2E94-4490-895D-8874C218E6D8} = {0E2C8720-2E94-4490-895D-8874C218E6D8}
+		{7D40EB0D-37D2-458A-BFCE-BD4FEF8244F7} = {7D40EB0D-37D2-458A-BFCE-BD4FEF8244F7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserControl", "BrowserControl\BrowserControl.csproj", "{0E2C8720-2E94-4490-895D-8874C218E6D8}"
 EndProject
@@ -125,7 +129,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":\"4fcf2967-1777-f609-5cd8-cebb3f4feaa7:fx\",\"ApiUrl\":\"https://api-free.deepl.com/v2/translate\",\"IsEnabled\":true,\"SaveCredentials\":true,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
 		SolutionGuid = {1D690A2D-E395-40EB-B506-A5722EB4DF01}
+		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":\"4fcf2967-1777-f609-5cd8-cebb3f4feaa7:fx\",\"ApiUrl\":\"https://api-free.deepl.com/v2/translate\",\"IsEnabled\":true,\"SaveCredentials\":true,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
 	EndGlobalSection
 EndGlobal
