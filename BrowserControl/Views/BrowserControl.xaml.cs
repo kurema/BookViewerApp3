@@ -124,8 +124,8 @@ public sealed partial class BrowserControl : Page, IDisposable
             {
                 try
                 {
-                        //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
-                        if (t.Progress.TotalBytesToReceive > 0)
+                    //https://stackoverflow.com/questions/38939720/backgrounddownloader-progress-doesnt-update-in-uwp-c-sharp
+                    if (t.Progress.TotalBytesToReceive > 0)
                     {
                         double br = t.Progress.TotalBytesToReceive;
                         dlitem.DownloadedRate = br / t.Progress.TotalBytesToReceive;
@@ -169,19 +169,28 @@ public sealed partial class BrowserControl : Page, IDisposable
 
     private async void listViewBookmarks_ItemClick(object sender, ItemClickEventArgs e)
     {
-        if (sender is ItemsControl && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem && DataContext is ViewModels.BrowserControlViewModel vm)
+        if (sender is not ItemsControl || e.ClickedItem is not ViewModels.IBookmarkItem bookmarkItem || DataContext is not ViewModels.BrowserControlViewModel vm) return;
+        if (bookmarkItem is ViewModels.BookmarkItemGoUp)
         {
-            if (bookmarkItem.IsFolder)
+            vm.BookmarkCurrent.Clear();
+            foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+            return;
+        }
+        else if (bookmarkItem.IsFolder)
+        {
+            var goup = new ViewModels.BookmarkItemGoUp(vm.BookmarkCurrent.ToArray());
+            vm.BookmarkCurrent.Clear();
+            vm.BookmarkCurrent.Add(goup);
+            foreach (var item in await bookmarkItem.GetChilderenAsync())
             {
-                vm.BookmarkCurrent.Clear();
-                foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+                if (item is not ViewModels.BookmarkItemGoUp) vm.BookmarkCurrent.Add(item);
             }
-            else
+        }
+        else
+        {
+            if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out Uri uri))
             {
-                if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out Uri uri))
-                {
-                    webView.Navigate(uri);
-                }
+                webView.Navigate(uri);
             }
         }
     }

@@ -15,6 +15,31 @@ public interface IBookmarkItem
     void AddItem(IBookmarkItem content);
 }
 
+public class BookmarkItemGoUp : IBookmarkItem
+{
+    IEnumerable<IBookmarkItem> contents;
+
+    public BookmarkItemGoUp(IEnumerable<IBookmarkItem> contents)
+    {
+        this.contents = contents ?? throw new ArgumentNullException(nameof(contents));
+    }
+
+    public string Title => "..";
+
+    public bool IsFolder => true;
+
+    public bool IsReadOnly => true;
+
+    public string Address => string.Empty;
+
+    public void AddItem(IBookmarkItem content)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<IBookmarkItem>> GetChilderenAsync() => Task.FromResult(contents);
+}
+
 public class BookmarkItem : IBookmarkItem
 {
     public BookmarkItem(string title, Action<IBookmarkItem> addItemDelegate, Func<Task<IEnumerable<IBookmarkItem>>> getChilderenDelegate)

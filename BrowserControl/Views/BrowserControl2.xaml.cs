@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using System.Threading.Tasks;
+using kurema.BrowserControl.ViewModels;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -76,19 +77,27 @@ public sealed partial class BrowserControl2 : Page, IDisposable
     {
         if (DataContext is not ViewModels.BrowserControl2ViewModel vm) return;
 
-        if (sender is ItemsControl && e.ClickedItem is ViewModels.IBookmarkItem bookmarkItem)
+        if (sender is not ItemsControl || e.ClickedItem is not ViewModels.IBookmarkItem bookmarkItem) return;
+        if (bookmarkItem is BookmarkItemGoUp)
         {
-            if (bookmarkItem.IsFolder)
+            vm.BookmarkCurrent.Clear();
+            foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+        }
+        else if (bookmarkItem.IsFolder)
+        {
+            var goup = new BookmarkItemGoUp(vm.BookmarkCurrent.ToArray());
+            vm.BookmarkCurrent.Clear();
+            vm.BookmarkCurrent.Add(goup);
+            foreach (var item in await bookmarkItem.GetChilderenAsync())
             {
-                vm.BookmarkCurrent.Clear();
-                foreach (var item in await bookmarkItem.GetChilderenAsync()) vm.BookmarkCurrent.Add(item);
+                if (item is not BookmarkItemGoUp) vm.BookmarkCurrent.Add(item);
             }
-            else
+        }
+        else
+        {
+            if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out Uri uri))
             {
-                if (Uri.TryCreate(bookmarkItem.Address, UriKind.Absolute, out Uri uri))
-                {
-                    vm.Source = uri;
-                }
+                vm.Source = uri;
             }
         }
     }
