@@ -1,6 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <items xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/ExtensionAdBlockerItems.xsd">
 	<group>
+		<title language="en" default="true">uBlock</title>
+		<item filename="uBlocks.filters.txt" recommended="true"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/filters.txt" title="uBlock filters"/>
+		<item filename="uBlocks.badware.txt" recommended="true"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/badware.txt" title="uBlock filters – Badware risks"/>
+		<item filename="uBlocks.privacy.txt" recommended="true"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/privacy.txt" title="uBlock filters – Privacy"/>
+		<item filename="uBlocks.quick-fixes.txt" recommended="true"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/quick-fixes.txt" title="uBlock filters – Quick fixes"/>
+		<item filename="uBlocks.resource-abuse.txt" recommended="true"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/resource-abuse.txt" title="uBlock filters – Resource abuse"/>
+		<item filename="uBlocks.unbreak.txt" recommended="true"
+			  project_source="https://github.com/uBlockOrigin/uAssets"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/unbreak.txt" title="uBlock filters – Unbreak"/>
+	</group>
+	<group>
+		<title language="en" default="true">AdGuard</title>
+		<item filename="AdGuard.base.txt"
+			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://filters.adtidy.org/extension/ublock/filters/2_without_easylist.txt" title="AdGuard Base"/>
+		<item filename="AdGuard.mobile.txt"
+			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://filters.adtidy.org/extension/ublock/filters/11.txt" title="AdGuard Mobile Ads"/>
+		<item filename="AdGuard.spyware.txt"
+			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://filters.adtidy.org/extension/ublock/filters/3.txt" title="AdGuard Tracking Protection"/>
+		<item filename="AdGuard.spyware_url.txt"
+			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://filters.adtidy.org/extension/ublock/filters/17.txt" title="AdGuard URL Tracking Protection"/>
+	</group>
+	<group>
 		<title language="en" default="true">Ad</title>
 		<title language="ja">広告</title>
 		<item filename="easylist.txt" recommended="true"
@@ -8,11 +64,6 @@
 			  license_source="https://easylist.to/pages/licence.html"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
-		<item filename="uBlocks.filters.txt" recommended="true"
-			  project_source="https://github.com/uBlockOrigin/uAssets"
-			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
-			  license_summary="GNU General Public License v3.0"
-			  source="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt" title="uBlock filters"/>
 	</group>
 	<group>
 		<title language="en" default="true">Versatile</title>
