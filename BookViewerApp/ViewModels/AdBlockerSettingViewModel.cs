@@ -188,7 +188,7 @@ public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlock
 
     public string Title
     {
-        get => content.GetTitleForCulture()?.Value ?? string.Empty;
+        get => content.GetTitleForCulture()?.GetTitleAsString() ?? string.Empty;
         set
         {
             static title getTitle(string value)
@@ -220,7 +220,7 @@ public class AdBlockerSettingFilterGroupViewModel : ObservableCollection<AdBlock
             }
             else
             {
-                first.Value = value;
+                first.SetTitle(value);
             }
         }
     }

@@ -51,6 +51,8 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         private title[] titleField;
         
+        private target_language[] target_languageField;
+        
         private item[] itemField;
         
         /// <remarks/>
@@ -61,6 +63,17 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.titleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("target_language")]
+        public target_language[] target_language {
+            get {
+                return this.target_languageField;
+            }
+            set {
+                this.target_languageField = value;
             }
         }
         
@@ -147,6 +160,8 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
         
         private title[] titleField;
         
+        private target_language[] target_languageField;
+        
         private string title1Field;
         
         private string filenameField;
@@ -179,6 +194,17 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.titleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("target_language")]
+        public target_language[] target_language {
+            get {
+                return this.target_languageField;
+            }
+            set {
+                this.target_languageField = value;
             }
         }
         
@@ -290,6 +316,31 @@ namespace BookViewerApp.Storages.ExtensionAdBlockerItems {
             }
             set {
                 this.expiresFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
+        "sionAdBlockerItems.xsd")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Exten" +
+        "sionAdBlockerItems.xsd", IsNullable=false)]
+    public partial class target_language {
+        
+        private string languageField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="language")]
+        public string language {
+            get {
+                return this.languageField;
+            }
+            set {
+                this.languageField = value;
             }
         }
     }

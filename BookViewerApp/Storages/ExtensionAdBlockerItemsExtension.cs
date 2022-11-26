@@ -54,9 +54,23 @@ partial class item
         if (title is null) return null;
         foreach (var item in title)
         {
-            if (culture != null && string.Equals(item.language, culture.TwoLetterISOLanguageName, StringComparison.InvariantCultureIgnoreCase)) return item?.Value;
+            if (culture != null && string.Equals(item.language, culture.TwoLetterISOLanguageName, StringComparison.InvariantCultureIgnoreCase)) return item?.GetTitleAsString();
             if (item.@default) defaultTitle = item;
         }
-        return defaultTitle?.Value;
+        return defaultTitle?.GetTitleAsString();
+    }
+}
+
+partial class title
+{
+    //I know [NonSerialized()] but using method is clear. I like this way.
+    public string GetTitleAsString()
+    {
+        return string.Join(string.Empty, this.Value);
+    }
+
+    public void SetTitle(string value)
+    {
+        Value = value;
     }
 }

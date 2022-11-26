@@ -13,6 +13,7 @@
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="title" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="target_language" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:sequence>
 					</xs:complexType>
@@ -32,10 +33,32 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- xsd.exe and dotnet serialization can't handle mixed. -->
+	<!--<xs:element name="title">
+		<xs:complexType mixed="true">
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="culture_string">
+					<xs:complexType>
+						<xs:attribute name="language" type="xs:language" />
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="language" type="xs:language" default="en" use="optional"/>
+			<xs:attribute name="default" type="xs:boolean" default="false" use="optional"/>
+		</xs:complexType>
+	</xs:element>-->
+
+	<xs:element name="target_language">
+		<xs:complexType>
+			<xs:attribute name="language" type="xs:language" />
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="item">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="title" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="target_language" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="title" type="xs:string" use="optional"/>
 			<xs:attribute name="filename" type="xs:string"/>
