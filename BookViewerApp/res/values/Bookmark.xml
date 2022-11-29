@@ -36,6 +36,11 @@
 				<bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
 				<bookmark url="https://www.amazon.com/hz/wishlist/ls/KC5BG6DDLC92?tag=kurema_bv3-22" title="Wishlist" />
 			</container>
+			<search title="Search on Google" url="http://www.google.com/search?q={0}" />
+			<search url="https://duckduckgo.com/?q={0}" title="Search on DuckDuckGo" />
+			<search url="https://www.bing.com/search?q={0}" title="Search on Bing" />
+			<search url="https://www.youtube.com/results?search_query={0}" title="Search on YouTube" />
+			<search url="https://www.amazon.com/s?k={0}&amp;tag=kurema_bv3-20" title="Search on Amazon" />
 		</bookmarks>
 		<bookmarks language="ja" title="BookViewer3">
 			<container title="検索エンジン">
@@ -107,6 +112,12 @@
 				<bookmark url="https://github.com/sponsors/kurema" title="GitHub Sponsors" />
 				<bookmark url="https://www.amazon.co.jp/registry/wishlist/2V4H9YB1CV3PV?tag=kurema_bv3-22" title="欲しいものリスト" />
 			</container>
+			<search title="Googleで検索" url="http://www.google.co.jp/search?q={0}" />
+			<search url="https://search.yahoo.co.jp/search?p={0}" title="Yahoo!で検索" />
+			<search url="https://duckduckgo.com/?q={0}" title="DuckDuckGoで検索" />
+			<search url="https://www.bing.com/search?q={0}" title="Bingで検索" />
+			<search url="https://www.youtube.com/results?search_query={0}" title="YouTubeで検索" />
+			<search url="https://www.amazon.co.jp/s?k={0}&amp;tag=kurema_bv3-22" title="Amazonで検索" />
 		</bookmarks>
 	</multilingual>
 </bookmarks_library>

@@ -67,7 +67,7 @@ namespace BookViewerApp.Storages
                     Managers.HistoryManager.List.Entries.Select(a => new HistoryMRUItem(a)
                     {
                         MenuCommandsProvider = UIHelper.ContextMenus.GetMenuHistoryMRU(PathRequestCommand, tabPageProvider)
-                    }).OrderByDescending(a => a.DateCreated) : new IFileItem[0]);
+                    }).OrderByDescending(a => a.DateCreated) : Array.Empty<IFileItem>());
             })
             {
                 Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
@@ -150,7 +150,7 @@ namespace BookViewerApp.Storages
                 var bookmark_roaming = await RoamingBookmarks.GetContentAsync();
 
                 var list = library?.bookmarks?.AsFileItem(bookmarkAction)?.Where(a => a != null)?.ToList() ?? new List<IFileItem>();
-                list.AddRange(bookmark_roaming?.AsFileItem(bookmarkAction)?.Where(a => a != null) ?? new IFileItem[0]);
+                list.AddRange(bookmark_roaming?.AsFileItem(bookmarkAction)?.Where(a => a != null) ?? Array.Empty<IFileItem>());
 
                 foreach (var item in list)
                 {
@@ -191,6 +191,7 @@ namespace BookViewerApp.Storages
                         {
                             FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/PresetBookmark"),
                             MenuCommandsProvider = UIHelper.ContextMenus.MenuBookmarkPreset,
+                            SearchReusltsProvider = (w) => StorageBookmarkContainer.GetBasicSearchResults(w, a => bookmarkAction?.Invoke(a, BookmarkActionType.Auto)),
                         });
                     }
                 }
@@ -204,6 +205,7 @@ namespace BookViewerApp.Storages
                 Tag = LibraryKind.Bookmarks,
                 FileTypeDescription = Managers.ResourceManager.Loader.GetString("ItemType/SystemFolder"),
                 MenuCommandsProvider = menuCommandsPr,
+                SearchReusltsProvider = (w) => StorageBookmarkContainer.GetBasicSearchResults(w, a => bookmarkAction?.Invoke(a, BookmarkActionType.Auto)),
             };
         }
 
@@ -383,31 +385,31 @@ namespace BookViewerApp.Storages
 #nullable disable
     namespace Library
     {
-    //    [Serializable()]
-    //    [System.Xml.Serialization.XmlType(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-    //"ry.xsd")]
-    //    [System.Xml.Serialization.XmlRoot(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
-    //    "ry.xsd", IsNullable = false)]
-    //    public partial class bookmarks_library
-    //    {
-    //        [System.Xml.Serialization.XmlArrayItem("bookmarks", IsNullable = false)]
-    //        [System.Xml.Serialization.XmlArray(ElementName = "multilingual")]
-    //        public libraryBookmarks[] bookmarks;
+        //    [Serializable()]
+        //    [System.Xml.Serialization.XmlType(AnonymousType = true, Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        //"ry.xsd")]
+        //    [System.Xml.Serialization.XmlRoot(Namespace = "https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        //    "ry.xsd", IsNullable = false)]
+        //    public partial class bookmarks_library
+        //    {
+        //        [System.Xml.Serialization.XmlArrayItem("bookmarks", IsNullable = false)]
+        //        [System.Xml.Serialization.XmlArray(ElementName = "multilingual")]
+        //        public libraryBookmarks[] bookmarks;
 
-    //        public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
-    //        {
-    //            if (bookmarks is null) return null;
-    //            libraryBookmarks defaultBookmarks = null;
-    //            libraryBookmarks languageMatchedBookmarks = null;
-    //            foreach (var item in bookmarks)
-    //            {
-    //                if (item.@default) defaultBookmarks = item;
-    //                if (item.language == culture.Name) return item;
-    //                if (item.language == culture.TwoLetterISOLanguageName) languageMatchedBookmarks = item;
-    //            }
-    //            return languageMatchedBookmarks ?? defaultBookmarks;
-    //        }
-    //    }
+        //        public libraryBookmarks GetBookmarksForCulture(System.Globalization.CultureInfo culture)
+        //        {
+        //            if (bookmarks is null) return null;
+        //            libraryBookmarks defaultBookmarks = null;
+        //            libraryBookmarks languageMatchedBookmarks = null;
+        //            foreach (var item in bookmarks)
+        //            {
+        //                if (item.@default) defaultBookmarks = item;
+        //                if (item.language == culture.Name) return item;
+        //                if (item.language == culture.TwoLetterISOLanguageName) languageMatchedBookmarks = item;
+        //            }
+        //            return languageMatchedBookmarks ?? defaultBookmarks;
+        //        }
+        //    }
 
         public partial class bookmarks_library
         {
@@ -441,7 +443,7 @@ namespace BookViewerApp.Storages
             public IFileItem[] AsFileItem(Action<string, LibraryStorage.BookmarkActionType> action, bool isReadOnly = false, Func<IFileItem, MenuCommand[]> menuCommandProvider = null)
             {
                 var list = new List<IFileItem>();
-                if (Items is null) return new IFileItem[0];
+                if (Items is null) return Array.Empty<IFileItem>();
                 foreach (var item in this.Items)
                 {
                     switch (item)
@@ -455,6 +457,29 @@ namespace BookViewerApp.Storages
                     }
                 }
                 return list.OrderByDescending(a => a.IsFolder).ToArray();
+            }
+
+            public IEnumerable<StorageBookmarkItem> GetSearchItems(string word, Action<string> actionOpen)
+            {
+                foreach (var item in this.Items)
+                {
+                    switch (item)
+                    {
+                        case bookmarksContainerSearch search:
+                            yield return new StorageBookmarkItem(new bookmarksContainerBookmark()
+                            {
+                                createdSpecified = false,
+                                created = DateTime.Now,
+                                title = string.Format(search.title, word),
+                                url = string.Format(search.url, System.Web.HttpUtility.UrlEncode(word)),
+                            })
+                            {
+                                ActionOpen = actionOpen,
+                                IsReadOnly = true,
+                            };
+                            break;
+                    }
+                }
             }
         }
 

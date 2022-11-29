@@ -15,6 +15,8 @@ public interface IFileItem
     void OnUpdate();
 
     Task<ObservableCollection<IFileItem>> GetChildren();
+    IEnumerable<IFileItem> GetSearchResults(string word);
+
     string Name { get; }
     string Path { get; }
     string FileTypeDescription { get; }
@@ -103,4 +105,6 @@ public class FileItemPlaceHolder : IFileItem
     {
         return Task.FromResult<Stream>(new MemoryStream());
     }
+
+    public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
 }

@@ -165,6 +165,7 @@ namespace BookViewerApp.Storages.Library {
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(bookmarksContainerBookmark))]
         [System.Xml.Serialization.XmlElementAttribute("container", typeof(bookmarksContainer))]
+        [System.Xml.Serialization.XmlElementAttribute("search", typeof(bookmarksContainerSearch))]
         public object[] Items {
             get {
                 return this.itemsField;
@@ -318,6 +319,7 @@ namespace BookViewerApp.Storages.Library {
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("bookmark", typeof(bookmarksContainerBookmark))]
         [System.Xml.Serialization.XmlElementAttribute("container", typeof(bookmarksContainer))]
+        [System.Xml.Serialization.XmlElementAttribute("search", typeof(bookmarksContainerSearch))]
         public object[] Items {
             get {
                 return this.itemsField;
@@ -361,6 +363,53 @@ namespace BookViewerApp.Storages.Library {
             set {
                 this.createdFieldSpecified = value;
                 this.RaisePropertyChanged("createdSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/Libra" +
+        "ry.xsd")]
+    public partial class bookmarksContainerSearch : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string urlField;
+        
+        private string titleField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
+        public string url {
+            get {
+                return this.urlField;
+            }
+            set {
+                this.urlField = value;
+                this.RaisePropertyChanged("url");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+                this.RaisePropertyChanged("title");
             }
         }
         

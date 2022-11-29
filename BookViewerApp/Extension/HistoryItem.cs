@@ -109,4 +109,6 @@ public class HistoryItem : IFileItem
 
     public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
 
+    public System.Collections.Generic.IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
+
 }

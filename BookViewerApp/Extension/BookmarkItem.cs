@@ -1,4 +1,5 @@
-﻿using BookViewerApp.Storages.Library;
+﻿using BookViewerApp.Storages;
+using BookViewerApp.Storages.Library;
 using kurema.BrowserControl.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,8 @@ public class StorageBookmarkItem : IStorageBookmark
     {
         return new BookmarkItem(Content.title, Content.url) { IsReadOnly = this.IsReadOnly };
     }
+
+    public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
 }
 
 public interface IStorageBookmark : IFileItem
@@ -255,4 +258,24 @@ public class StorageBookmarkContainer : IStorageBookmark
         return new BookmarkItem(Content.title, IBookmarkItemAddItem, IBookmarkItemGetChilderen) { IsReadOnly = this.IsReadOnly };
     }
 
+    public IEnumerable<IFileItem> GetSearchResults(string word)
+    {
+        return GetBasicSearchResults(word, this.ActionOpen);
+    }
+
+    public static IEnumerable<IFileItem> GetBasicSearchResults(string word, Action<string> actionOpen)
+    {
+        var result =new List<IFileItem>();
+        var bookmarksLocal = LibraryStorage.LocalBookmarks?.Content?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
+        if (bookmarksLocal is not null)
+        {
+            var searches = bookmarksLocal.GetSearchItems(word, actionOpen);
+            if (searches is not null) result.AddRange(searches);
+        }
+        {
+            var searches = LibraryStorage.RoamingBookmarks?.Content?.GetSearchItems(word, actionOpen);
+            if (searches is not null) result.AddRange(searches);
+        }
+        return result.ToArray();
+    }
 }

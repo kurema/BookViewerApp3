@@ -7,6 +7,7 @@ using System.Windows.Input;
 
 using Windows.Storage;
 using System.IO;
+using System.Collections.Generic;
 
 namespace kurema.FileExplorerControl.Models.FileItems;
 
@@ -194,4 +195,7 @@ public class StorageFileItem : IFileItem
     public event EventHandler Updated;
 
     public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+
+    public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
+
 }

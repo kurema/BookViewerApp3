@@ -11,6 +11,7 @@ using System.ComponentModel;
 using Windows.UI.Xaml.Media;
 using kurema.FileExplorerControl.Models.IconProviders;
 using kurema.FileExplorerControl.Models.FileItems;
+using System.ComponentModel.DataAnnotations;
 
 namespace kurema.FileExplorerControl.ViewModels;
 
@@ -172,7 +173,14 @@ public partial class FileItemViewModel : INotifyPropertyChanged
                 var pathFile = a.Path is null ? string.Empty : System.IO.Path.GetFileName(a.Path);
                 return SearchWord.Split(' ', '　', '&', '＆').All(b => a.Title.Contains(b, StringComparison.OrdinalIgnoreCase) || (!string.IsNullOrWhiteSpace(pathFile) && pathFile.Contains(b, StringComparison.OrdinalIgnoreCase)));
             });
-            return Order?.OrderDelegate is null ? r : Order?.OrderDelegate(r);
+            var result = new List<FileItemViewModel>();
+            result.AddRange(Order?.OrderDelegate is null ? r : Order?.OrderDelegate(r));
+            if (!string.IsNullOrWhiteSpace(SearchWord))
+            {
+                var searched = Content.GetSearchResults(SearchWord);
+                if (searched is not null) result.AddRange(searched.Select(a => new FileItemViewModel(a) { IconProviders = this.IconProviders }));
+            }
+            return result.ToArray();
         }
         private set
         {

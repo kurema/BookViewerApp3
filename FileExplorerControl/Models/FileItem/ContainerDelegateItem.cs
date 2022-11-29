@@ -87,4 +87,8 @@ public class ContainerDelegateItem : IFileItem, IIconProviderProvider
 
     public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
 
+    public Func<string,IEnumerable<IFileItem>> SearchReusltsProvider { get; set; }
+
+    public IEnumerable<IFileItem> GetSearchResults(string word) => SearchReusltsProvider?.Invoke(word) ?? Array.Empty<IFileItem>();
+
 }

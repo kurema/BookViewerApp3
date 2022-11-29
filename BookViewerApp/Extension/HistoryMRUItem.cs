@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -122,4 +123,5 @@ public class HistoryMRUItem : IFileItem
         return StorageCache;
     }
 
+    public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
 }

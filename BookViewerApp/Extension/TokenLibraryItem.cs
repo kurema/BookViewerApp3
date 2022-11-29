@@ -81,4 +81,5 @@ public class TokenLibraryItem : IFileItem, IContentFileItemProvider
 
     public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
 
+    public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
 }

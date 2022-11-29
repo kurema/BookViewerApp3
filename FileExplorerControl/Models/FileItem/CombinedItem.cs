@@ -127,4 +127,18 @@ public class CombinedItem : IFileItem
     {
         return Task.FromResult<Stream>(null);
     }
+
+    public IEnumerable<IFileItem> GetSearchResults(string word)
+    {
+        if (Contents is null) return null;
+        var result = new List<IFileItem>();
+        foreach (var item in Contents)
+        {
+            if (item is null) continue;
+            var s = item.GetSearchResults(word);
+            if (s is not null) result.AddRange(s);
+        }
+        return result.ToArray();
+    }
+
 }
