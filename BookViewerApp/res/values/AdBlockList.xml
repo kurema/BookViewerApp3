@@ -11,6 +11,7 @@
 			  project_source="https://github.com/uBlockOrigin/uAssets"
 			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
 			  license_summary="GNU General Public License v3.0"
+			  info_source="https://github.com/gorhill/uBlock/wiki/Badware-risks"
 			  source="https://ublockorigin.github.io/uAssets/filters/badware.txt" title="uBlock filters – Badware risks"/>
 		<item filename="uBlocks.privacy.txt" recommended="true"
 			  project_source="https://github.com/uBlockOrigin/uAssets"
@@ -32,55 +33,115 @@
 			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://ublockorigin.github.io/uAssets/filters/unbreak.txt" title="uBlock filters – Unbreak"/>
+		<item title="uBlock filters – Annoyances"
+			  filename="uBlocks.annoyances.txt"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/annoyances.txt"
+			  project_source="https://github.com/uBlockOrigin/uAssets" />
+		<item title="Block Outsider Intrusion into LAN"
+			  filename="uBlocks.block-lan.txt"
+			  license_source="https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/filters/lan-block.txt"
+			  project_source="https://github.com/uBlockOrigin/uAssets" />
 	</group>
 	<group>
 		<title language="en" default="true">AdGuard</title>
-		<item filename="AdGuard.base.txt"
-			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+		<item filename="AdGuard.generic.txt"
+			  project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
 			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  info_source="https://kb.adguard.com/en/general/adguard-ad-filters"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://filters.adtidy.org/extension/ublock/filters/2_without_easylist.txt" title="AdGuard Base"/>
 		<item filename="AdGuard.mobile.txt"
-			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
 			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  info_source="https://kb.adguard.com/en/general/adguard-ad-filters"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://filters.adtidy.org/extension/ublock/filters/11.txt" title="AdGuard Mobile Ads"/>
 		<item filename="AdGuard.spyware.txt"
-			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
 			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  info_source="https://kb.adguard.com/en/general/adguard-ad-filters"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://filters.adtidy.org/extension/ublock/filters/3.txt" title="AdGuard Tracking Protection"/>
 		<item filename="AdGuard.spyware_url.txt"
-			  project_source="https://github.com/AdguardTeam/AdGuardFilters"
+			  project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
 			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
 			  license_summary="GNU General Public License v3.0"
+			  info_source="https://kb.adguard.com/en/general/adguard-ad-filters"
 			  source="https://filters.adtidy.org/extension/ublock/filters/17.txt" title="AdGuard URL Tracking Protection"/>
+		<item title="AdGuard Annoyances"
+			  filename="AdGuard.annoyance.txt"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://filters.adtidy.org/extension/ublock/filters/14.txt"
+			  project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
+			  info_source="https://kb.adguard.com/en/general/adguard-ad-filters" />
+		<item title="AdGuard Social Media"
+			  filename="AdGuard.social.txt"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://filters.adtidy.org/extension/ublock/filters/4.txt"
+			  project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
+			  info_source="https://kb.adguard.com/en/general/adguard-ad-filters" />
 	</group>
 	<group>
-		<title language="en" default="true">Ad</title>
-		<title language="ja">広告</title>
+		<title language="en" default="true">Easylist</title>
 		<item filename="easylist.txt" recommended="true"
 			  project_source="https://easylist.to/"
 			  license_source="https://easylist.to/pages/licence.html"
 			  license_summary="GNU General Public License v3.0"
-			  source="https://easylist.to/easylist/easylist.txt" title="EasyList"/>
-	</group>
+			  source="https://ublockorigin.github.io/uAssets/thirdparties/easylist.txt" title="EasyList"/>
+		<item filename="easyprivacy.txt"
+			  project_source="https://easylist.to/"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://ublockorigin.github.io/uAssets/thirdparties/easyprivacy.txt" title="EasyPrivacy"/>
+		<item title="Anti-Facebook"
+			  filename="fanboy.thirdparty_social.txt"
+			  source="https://secure.fanboy.co.nz/fanboy-antifacebook.txt"
+			  project_source="https://github.com/ryanbr/fanboy-adblock/issues" />
+		<item title="Fanboy’s Annoyance"
+			  filename="fanboy.annoyance.txt"
+			  source="https://secure.fanboy.co.nz/fanboy-annoyance.txt"
+			  project_source="https://easylist.to/" />
+		<item title="EasyList Cookie"
+			  filename="fanboy.cookiemonster.txt"
+			  source="https://secure.fanboy.co.nz/fanboy-cookiemonster.txt"
+			  project_source="https://github.com/easylist/easylist/issues" />
+		<item title="Fanboy’s Social"
+			  filename="fanboy.social.txt"
+			  source="https://easylist.to/easylist/fanboy-social.txt"
+			  project_source="https://easylist.to/" />	</group>
 	<group>
 		<title language="en" default="true">Versatile</title>
 		<title language="ja">多目的</title>
 		<item filename="peterlowe.blocklist.txt" recommended="true"
 			  title="Peter Lowe’s Ad and tracking server list"
-			  source="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&amp;showintro=0"
+			  source="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&amp;showintro=1&amp;mimetype=plaintext"
 			  project_source="https://pgl.yoyo.org/adservers/"
 			  />
+		<!--<item title="Dan Pollock’s hosts file"
+			  filename="dpollock-0.txt"
+			  source="https://someonewhocares.org/hosts/hosts"
+			  project_source="https://someonewhocares.org/hosts/" />-->
 	</group>
 	<group>
-		<title language="en" default="true">Privacy</title>
-		<title language="ja">プライバシー</title>
-		<item filename="easyprivacy.txt"
-			  project_source="https://easylist.to/"
-			  license_source="https://easylist.to/pages/licence.html"
-			  license_summary="GNU General Public License v3.0"
-			  source="https://easylist.to/easylist/easyprivacy.txt" title="EasyPrivacy"/>
+		<title language="en" default="true">Malware</title>
+		<title language="ja">マルウェア</title>
+		<item title="Online Malicious URL Blocklist" 
+			  filename="malware.urlhaus-1.txt" 
+			  source="https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-online.txt" 
+			  project_source="https://gitlab.com/malware-filter/urlhaus-filter#malicious-url-blocklist" />
+		<item title="Phishing URL Blocklist" 
+			  filename="malware.curben-phishing.txt" 
+			  source="https://malware-filter.gitlab.io/malware-filter/phishing-filter.txt" 
+			  project_source="https://gitlab.com/malware-filter/phishing-filter#phishing-url-blocklist" />
+		<item title="PUP Domains Blocklist" 
+			  filename="malware.curben-pup.txt"
+			  source="https://malware-filter.gitlab.io/malware-filter/pup-filter.txt" 
+			  project_source="https://gitlab.com/malware-filter/pup-filter#pup-domains-blocklist" />
 	</group>
 </items>
