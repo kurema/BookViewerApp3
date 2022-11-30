@@ -105,7 +105,7 @@
                             <CheckBox IsChecked="{Binding IsEnabled,Mode=TwoWay}" >
                                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                     <muxc:InfoBadge Margin="0,0,5,0" Style="{StaticResource AttentionIconInfoBadgeStyle}" Visibility="{Binding Recommended,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"/>
-                                    <TextBlock Text="{Binding Title}"/>
+                                    <TextBlock Text="{Binding Title}" ToolTipService.ToolTip="{Binding Source}"/>
                                 </StackPanel>
                             </CheckBox>
                             <CommandBar DefaultLabelPosition="Collapsed">
@@ -118,8 +118,19 @@
                                     </AppBarButton.Flyout>
                                 </AppBarButton>
                                 <AppBarToggleButton ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Refresh'}" Icon="Refresh" IsChecked="{Binding IsRefreshRequested,Mode=TwoWay,Converter={StaticResource NullableBoolConverter},ConverterParameter=false}" IsEnabled="{Binding IsEnabled,Mode=OneWay,TargetNullValue=False}"/>
-                                <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}"/>
-                                <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}"/>
+                                <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}"
+                                              Visibility="{Binding RelativeSource={RelativeSource Self},Path=IsEnabled,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"
+                                              />
+                                <AppBarButton  Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding InfoSource}"
+                                               Visibility="{Binding RelativeSource={RelativeSource Self},Path=IsEnabled,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"
+                                               >
+                                    <AppBarButton.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF167;"/>
+                                    </AppBarButton.Icon>
+                                </AppBarButton>
+                                <AppBarButton Icon="Document" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding LicenseSource}" ToolTipService.ToolTip="{Binding LicenseSummary}"
+                                              Visibility="{Binding RelativeSource={RelativeSource Self},Path=IsEnabled,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"
+                                              />
                                 <AppBarButton Icon="View" Click="AppBarButton_Click" Visibility="{Binding IsLoaded,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}" />
                             </CommandBar>
                             <muxc:InfoBadge Style="{StaticResource SuccessIconInfoBadgeStyle}" Visibility="{Binding DownloadStatus,Converter={StaticResource StringChangeConverter},ConverterParameter=default:Collapsed::Success:Visible}"/>

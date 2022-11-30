@@ -99,22 +99,31 @@
 			  license_source="https://easylist.to/pages/licence.html"
 			  license_summary="GNU General Public License v3.0"
 			  source="https://ublockorigin.github.io/uAssets/thirdparties/easyprivacy.txt" title="EasyPrivacy"/>
-		<item title="Anti-Facebook"
-			  filename="fanboy.thirdparty_social.txt"
-			  source="https://secure.fanboy.co.nz/fanboy-antifacebook.txt"
-			  project_source="https://github.com/ryanbr/fanboy-adblock/issues" />
-		<item title="Fanboy’s Annoyance"
-			  filename="fanboy.annoyance.txt"
-			  source="https://secure.fanboy.co.nz/fanboy-annoyance.txt"
-			  project_source="https://easylist.to/" />
-		<item title="EasyList Cookie"
+		<item title="EasyList Cookie List"
 			  filename="fanboy.cookiemonster.txt"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
 			  source="https://secure.fanboy.co.nz/fanboy-cookiemonster.txt"
 			  project_source="https://github.com/easylist/easylist/issues" />
-		<item title="Fanboy’s Social"
+		<item title="Fanboy's Social Blocking List"
 			  filename="fanboy.social.txt"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
 			  source="https://easylist.to/easylist/fanboy-social.txt"
-			  project_source="https://easylist.to/" />	</group>
+			  project_source="https://easylist.to/" />
+		<item title="Fanboy's Annoyance List"
+			  filename="fanboy.annoyance.txt"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://secure.fanboy.co.nz/fanboy-annoyance.txt"
+			  project_source="https://easylist.to/" />
+		<item title="Anti-Facebook List"
+			  filename="fanboy.thirdparty_social.txt"
+			  license_source="https://easylist.to/pages/licence.html"
+			  license_summary="GNU General Public License v3.0"
+			  source="https://secure.fanboy.co.nz/fanboy-antifacebook.txt"
+			  project_source="https://github.com/ryanbr/fanboy-adblock/issues" />
+	</group>
 	<group>
 		<title language="en" default="true">Versatile</title>
 		<title language="ja">多目的</title>
@@ -143,5 +152,174 @@
 			  filename="malware.curben-pup.txt"
 			  source="https://malware-filter.gitlab.io/malware-filter/pup-filter.txt" 
 			  project_source="https://gitlab.com/malware-filter/pup-filter#pup-domains-blocklist" />
+	</group>
+	<group>
+		<title language="en" default="true">regions</title>
+		<title language="ja">地域</title>
+		<item title="ALB: Adblock List for Albania" filename="regions.ALB-0.txt" source="https://raw.githubusercontent.com/AnXh3L0/blocklist/master/albanian-easylist-addition/Albania.txt" project_source="https://github.com/AnXh3L0/blocklist">
+			<target_language language="sq" />
+		</item>
+		<item title="ARA: Liste AR" filename="ara-0.txt" source="https://easylist-downloads.adblockplus.org/Liste_AR.txt" project_source="https://forums.lanik.us/viewforum.php?f=98">
+			<target_language language="ar" />
+		</item>
+		<item title="BGR: Bulgarian Adblock list" filename="regions.BGR-0.txt" source="https://stanev.org/abp/adblock_bg.txt" project_source="https://stanev.org/abp/">
+			<target_language language="bg" />
+			<target_language language="mk" />
+		</item>
+		<item title="CHN: AdGuard Chinese (中文)" filename="regions.CHN-0.txt" source="https://filters.adtidy.org/extension/ublock/filters/224.txt" project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters"
+			  license_source="https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE"
+			  license_summary="GNU General Public License v3.0">
+			<target_language language="ug" />
+			<target_language language="zh" />
+		</item>
+		<item title="CZE, SVK: EasyList Czech and Slovak" filename="regions.CZE-0.txt" source="https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt" project_source="https://github.com/tomasko126/easylistczechandslovak"
+			  license_source="https://github.com/tomasko126/easylistczechandslovak/blob/master/LICENSE"
+			  license_summary="Creative Commons Attribution-ShareAlike 4.0 International Public License"
+			  >
+			<target_language language="cs" />
+			<target_language language="sk" />
+		</item>
+		<item title="DEU: EasyList Germany" filename="regions.DEU-0.txt" source="https://easylist.to/easylistgermany/easylistgermany.txt" project_source="https://forums.lanik.us/viewforum.php?f=90">
+			<target_language language="de" />
+			<target_language language="dsb" />
+			<target_language language="hsb" />
+			<target_language language="lb" />
+			<target_language language="rm" />
+		</item>
+		<item title="EST: Eesti saitidele kohandatud filter" filename="regions.EST-0.txt" source="https://adblock.ee/list.php" project_source="https://adblock.ee/">
+			<target_language language="et" />
+		</item>
+		<item title="FIN: Adblock List for Finland" filename="regions.FIN-0.txt" source="https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/master/Finland_adb.txt" project_source="https://github.com/finnish-easylist-addition/finnish-easylist-addition">
+			<target_language language="fi" />
+		</item>
+		<item title="FRA: AdGuard Français" filename="regions.FRA-0.txt" source="https://filters.adtidy.org/extension/ublock/filters/16.txt" project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters">
+			<target_language language="ar" />
+			<target_language language="br" />
+			<target_language language="ff" />
+			<target_language language="fr" />
+			<target_language language="lb" />
+			<target_language language="oc" />
+			<target_language language="son" />
+		</item>
+		<item title="GRC: Greek AdBlock Filter" filename="regions.GRC-0.txt" source="https://www.void.gr/kargig/void-gr-filters.txt" project_source="https://github.com/kargig/greek-adblockplus-filter">
+			<target_language language="el" />
+		</item>
+		<item title="HUN: hufilter" filename="regions.HUN-0.txt" source="https://raw.githubusercontent.com/hufilter/hufilter/master/hufilter-ublock.txt" project_source="https://github.com/hufilter/hufilter">
+			<target_language language="hu" />
+		</item>
+		<item title="IDN, MYS: ABPindo" filename="regions.IDN-0.txt" source="https://raw.githubusercontent.com/ABPindo/indonesianadblockrules/master/subscriptions/abpindo.txt" project_source="https://github.com/ABPindo/indonesianadblockrules">
+			<target_language language="id" />
+			<target_language language="ms" />
+		</item>
+		<item title="IND, LKA, NPL: IndianList" filename="regions.IND-0.txt" source="https://easylist-downloads.adblockplus.org/indianlist.txt" project_source="https://github.com/mediumkreation/IndianList">
+			<target_language language="as" />
+			<target_language language="bn" />
+			<target_language language="gu" />
+			<target_language language="hi" />
+			<target_language language="kn" />
+			<target_language language="ml" />
+			<target_language language="mr" />
+			<target_language language="ne" />
+			<target_language language="pa" />
+			<target_language language="si" />
+			<target_language language="ta" />
+			<target_language language="te" />
+		</item>
+		<item title="IRN: PersianBlocker" filename="regions.IRN-0.txt" source="https://raw.githubusercontent.com/MasterKia/PersianBlocker/main/PersianBlocker.txt" project_source="https://github.com/MasterKia/PersianBlocker">
+			<target_language language="fa" />
+		</item>
+		<item title="ISL: Icelandic ABP List" filename="regions.ISL-0.txt" source="https://adblock.gardar.net/is.abp.txt" project_source="https://adblock.gardar.net/">
+			<target_language language="is" />
+		</item>
+		<item title="ISR: EasyList Hebrew" filename="regions.ISR-0.txt" source="https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt" project_source="https://github.com/easylist/EasyListHebrew">
+			<target_language language="he" />
+		</item>
+		<item title="ITA: EasyList Italy" filename="regions.ITA-0.txt" source="https://easylist-downloads.adblockplus.org/easylistitaly.txt" project_source="https://forums.lanik.us/viewforum.php?f=96">
+			<target_language language="it" />
+			<target_language language="lij" />
+		</item>
+		<item title="JPN: AdGuard Japanese" filename="regions.JPN-1.txt" source="https://filters.adtidy.org/extension/ublock/filters/7.txt" project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters" info_source="https://kb.adguard.com/en/general/adguard-ad-filters">
+			<target_language language="ja" />
+		</item>
+		<item title="KOR: List-KR" filename="regions.KOR-1.txt" source="https://raw.githubusercontent.com/List-KR/List-KR/master/filter-uBO.txt" project_source="https://github.com/List-KR/List-KR#readme">
+			<target_language language="ko" />
+		</item>
+		<item title="LTU: EasyList Lithuania" filename="regions.LTU-0.txt" source="https://raw.githubusercontent.com/EasyList-Lithuania/easylist_lithuania/master/easylistlithuania.txt" project_source="https://github.com/EasyList-Lithuania/easylist_lithuania">
+			<target_language language="lt" />
+		</item>
+		<item title="LVA: Latvian List" filename="regions.LVA-0.txt" source="https://raw.githubusercontent.com/Latvian-List/adblock-latvian/master/lists/latvian-list.txt" project_source="https://github.com/Latvian-List/adblock-latvian">
+			<target_language language="lv" />
+		</item>
+		<item title="NLD: EasyDutch" filename="regions.NLD-0.txt" source="https://raw.githubusercontent.com/EasyDutch-uBO/EasyDutch/gh-pages/EasyDutch.txt" project_source="https://github.com/EasyDutch-uBO/EasyDutch/">
+			<target_language language="af" />
+			<target_language language="fy" />
+			<target_language language="nl" />
+		</item>
+		<item title="NOR, DNK, ISL: Dandelion Sprouts nordiske filtre" filename="regions.NOR-0.txt" source="https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianList.txt" project_source="https://github.com/DandelionSprout/adfilt">
+			<target_language language="nb" />
+			<target_language language="nn" />
+			<target_language language="no" />
+			<target_language language="da" />
+			<target_language language="is" />
+		</item>
+		<item title="POL: Oficjalne Polskie Filtry do AdBlocka, uBlocka Origin i AdGuarda" filename="regions.POL-0.txt" source="https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt" project_source="https://github.com/MajkiIT/polish-ads-filter/issues" info_source="https://github.com/MajkiIT/polish-ads-filter#polish-filters-for-adblock-ublock-origin--adguard">
+			<target_language language="szl" />
+			<target_language language="pl" />
+		</item>
+		<item title="POL: Oficjalne polskie filtry przeciwko alertom o Adblocku" filename="regions.POL-2.txt" source="https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/anti-adblock.txt" project_source="https://github.com/olegwukr/polish-privacy-filters/issues">
+			<target_language language="szl" />
+			<target_language language="pl" />
+		</item>
+		<item title="ROU: Romanian Ad (ROad) Block List Light" filename="regions.ROU-1.txt" source="https://road.adblock.ro/lista.txt" project_source="https://github.com/tcptomato/ROad-Block">
+			<target_language language="ro" />
+		</item>
+		<item title="RUS: RU AdList" filename="regions.RUS-0.txt" source="https://raw.githubusercontent.com/easylist/ruadlist/master/RuAdList-uBO.txt" project_source="https://forums.lanik.us/viewforum.php?f=102" info_source="https://forums.lanik.us/viewtopic.php?f=102&amp;t=22512">
+			<target_language language="be" />
+			<target_language language="kk" />
+			<target_language language="tt" />
+			<target_language language="ru" />
+			<target_language language="uk" />
+			<target_language language="uz" />
+		</item>
+		<item title="SPA: EasyList Spanish" filename="regions.SPA-0.txt" source="https://easylist-downloads.adblockplus.org/easylistspanish.txt" project_source="https://forums.lanik.us/viewforum.php?f=103">
+			<target_language language="an" />
+			<target_language language="ast" />
+			<target_language language="ca" />
+			<target_language language="cak" />
+			<target_language language="es" />
+			<target_language language="eu" />
+			<target_language language="gn" />
+			<target_language language="gl" />
+			<target_language language="trs" />
+			<target_language language="quz" />
+		</item>
+		<item title="SPA, POR: AdGuard Spanish/Portuguese" filename="regions.SPA-1.txt" source="https://filters.adtidy.org/extension/ublock/filters/9.txt" project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters" info_source="https://kb.adguard.com/en/general/adguard-ad-filters">
+			<target_language language="an" />
+			<target_language language="ast" />
+			<target_language language="ca" />
+			<target_language language="cak" />
+			<target_language language="es" />
+			<target_language language="eu" />
+			<target_language language="gl" />
+			<target_language language="gn" />
+			<target_language language="trs" />
+			<target_language language="pt" />
+			<target_language language="quz" />
+		</item>
+		<item title="SVN: Slovenian List" filename="regions.SVN-0.txt" source="https://raw.githubusercontent.com/betterwebleon/slovenian-list/master/filters.txt" project_source="https://github.com/betterwebleon/slovenian-list">
+			<target_language language="sl" />
+		</item>
+		<item title="SWE: Frellwit's Swedish Filter" filename="regions.SWE-1.txt" source="https://raw.githubusercontent.com/lassekongo83/Frellwits-filter-lists/master/Frellwits-Swedish-Filter.txt" project_source="https://github.com/lassekongo83/Frellwits-filter-lists">
+			<target_language language="sv" />
+		</item>
+		<item title="THA: EasyList Thailand" filename="regions.THA-0.txt" source="https://raw.githubusercontent.com/easylist-thailand/easylist-thailand/master/subscription/easylist-thailand.txt" project_source="https://github.com/easylist-thailand/easylist-thailand">
+			<target_language language="th" />
+		</item>
+		<item title="TUR: AdGuard Turkish" filename="regions.TUR-0.txt" source="https://filters.adtidy.org/extension/ublock/filters/13.txt" project_source="https://github.com/AdguardTeam/AdguardFilters#adguard-filters" info_source="https://kb.adguard.com/en/general/adguard-ad-filters">
+			<target_language language="tr" />
+		</item>
+		<item title="VIE: ABPVN List" filename="regions.VIE-1.txt" source="https://raw.githubusercontent.com/abpvn/abpvn/master/filter/abpvn_ublock.txt" project_source="https://abpvn.com/">
+			<target_language language="vi" />
+		</item>
 	</group>
 </items>

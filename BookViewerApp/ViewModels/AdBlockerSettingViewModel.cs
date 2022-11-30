@@ -371,6 +371,15 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
         NoMessage, Success, Fail
     }
 
+    public string InfoSource
+    {
+        get => content.info_source;
+        set
+        {
+            content.info_source = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string LicenseSource
     {
