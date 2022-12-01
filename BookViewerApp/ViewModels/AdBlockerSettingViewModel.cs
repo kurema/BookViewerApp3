@@ -349,7 +349,15 @@ public class AdBlockerSettingFilterViewModel : BaseViewModel
 
     public bool Recommended
     {
-        get => content.recommended;
+        get
+        {
+            if (content.recommended) return true;
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            var tlc = culture?.TwoLetterISOLanguageName;
+            if (tlc is null) return false;
+            if (content.target_language?.Any(a => a.language.Equals(tlc, StringComparison.InvariantCultureIgnoreCase)) == true) return true;
+            return false;
+        }
         set
         {
             Recommended = value;
