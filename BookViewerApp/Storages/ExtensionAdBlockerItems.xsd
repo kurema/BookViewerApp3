@@ -72,7 +72,6 @@
 		</xs:complexType>
 	</xs:element>
 
-
 	<xs:element name="status">
 		<xs:complexType>
 			<xs:sequence>
@@ -93,5 +92,4 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
 </xs:schema>

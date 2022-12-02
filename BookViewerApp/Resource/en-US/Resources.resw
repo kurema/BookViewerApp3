@@ -994,4 +994,23 @@ Lines prefixed with '#' will be ignored.</value>
 Filename: {1}
 Source: {2}</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenProject" xml:space="preserve">
+    <value>Open the project page.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Refresh" xml:space="preserve">
+    <value>Include in refresh targets.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.License" xml:space="preserve">
+    <value>Check the license.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenInfo" xml:space="preserve">
+    <value>Open the information page.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
+    <value>View the content.
+(Issue: Large files are not displayed properly.)</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
+    <value>Tap "Apply" to save the change.</value>
+  </data>
 </root>

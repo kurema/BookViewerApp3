@@ -41,14 +41,73 @@
                                 <AppBarToggleButton Icon="Refresh" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.RefreshAll.Message'}" IsChecked="{Binding RefreshAll,Mode=TwoWay}"/>
                             </CommandBar>
                             <AppBarSeparator />
-                            <muxc:InfoBadge Margin="5,0,5,0" Style="{StaticResource AttentionIconInfoBadgeStyle}"/>
-                            <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Recommended'}"/>
-                            <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                                <AppBarSeparator />
-                                <AppBarToggleButton Icon="Refresh" LabelPosition="Collapsed" VerticalAlignment="Center"/>
-                                <TextBlock Text="→" />
-                                <AppBarButton Icon="Accept" Label="Apply" Command="{Binding RefreshCommand}" VerticalAlignment="Center" />
-                            </StackPanel>
+                            <AppBarButton Icon="Help" LabelPosition="Collapsed">
+                                <AppBarButton.Flyout>
+                                    <Flyout>
+                                        <Grid>
+                                            <Grid.Resources>
+                                                <Style TargetType="AppBarButton">
+                                                    <Setter Property="LabelPosition" Value="Collapsed" />
+                                                </Style>
+                                                <Style TargetType="AppBarToggleButton">
+                                                    <Setter Property="LabelPosition" Value="Collapsed" />
+                                                </Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                </Style>
+                                            </Grid.Resources>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.ColumnSpan="2">
+                                                <Grid HorizontalAlignment="Center">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox IsChecked="True" Padding="0" MinWidth="0" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="→" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                                                    <AppBarButton Icon="Accept" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.Apply'}" Grid.Row="0" Grid.Column="2" />
+                                                    <AppBarToggleButton Icon="Refresh" LabelPosition="Collapsed" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                                                    <TextBlock Text="→" VerticalAlignment="Center"  Grid.Row="1" Grid.Column="1"/>
+                                                    <AppBarButton Icon="Accept" Label="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Word.Apply'}"  Grid.Row="1" Grid.Column="2"/>
+                                                </Grid>
+                                                <TextBlock HorizontalAlignment="Center" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Help.Apply'}"/>
+                                                <NavigationViewItemSeparator />
+                                            </StackPanel>
+                                            <muxc:InfoBadge HorizontalAlignment="Center" Style="{StaticResource AttentionIconInfoBadgeStyle}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                                            <TextBlock Margin="0,10" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Word.Recommended'}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+                                            <AppBarToggleButton Icon="Refresh" Grid.Row="2" Grid.Column="0" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Help.Refresh'}" />
+                                            <AppBarButton Icon="World" Grid.Row="3" Grid.Column="0" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Help.OpenProject'}" />
+                                            <AppBarButton Grid.Row="4" Grid.Column="0" >
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF167;"/>
+                                            </AppBarButton>
+                                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Help.OpenInfo'}" />
+                                            <AppBarButton Icon="Document" Grid.Row="5" Grid.Column="0" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Help.License'}" />
+                                            <AppBarButton Icon="View" Grid.Row="6" Grid.Column="0" />
+                                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.Help.View'}" />
+                                        </Grid>
+                                    </Flyout>
+                                </AppBarButton.Flyout>
+                            </AppBarButton>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding SetupRequired,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}">
                                 <AppBarSeparator />
                                 <TextBlock Text="{x:Bind Converter={StaticResource LocalizeConverter},ConverterParameter='Extension.AdBlocker.Filters.FirstMessage'}" FontWeight="Bold"/>
@@ -121,7 +180,7 @@
                                 <AppBarButton Icon="World" Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding ProjectSource}" ToolTipService.ToolTip="{Binding ProjectSource}"
                                               Visibility="{Binding RelativeSource={RelativeSource Self},Path=IsEnabled,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"
                                               />
-                                <AppBarButton  Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding InfoSource}"
+                                <AppBarButton Command="{Binding ElementName=main,Path=OpenWebCommand}" CommandParameter="{Binding InfoSource}"
                                                Visibility="{Binding RelativeSource={RelativeSource Self},Path=IsEnabled,Converter={StaticResource Bool2StringConverter},ConverterParameter=Visible:Collapsed}"
                                                >
                                     <AppBarButton.Icon>

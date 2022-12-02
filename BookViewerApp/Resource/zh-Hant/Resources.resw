@@ -860,4 +860,23 @@
 文件名：{1}
 URL：{2}</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenProject" xml:space="preserve">
+    <value>打开项目页面。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Refresh" xml:space="preserve">
+    <value>包括在刷新目标中。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.License" xml:space="preserve">
+    <value>检查许可证。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenInfo" xml:space="preserve">
+    <value>打开信息页面。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
+    <value>查看内容。
+(问题：大文件不能正常显示。)</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
+    <value>点 "申请 "来保存更改。</value>
+  </data>
 </root>

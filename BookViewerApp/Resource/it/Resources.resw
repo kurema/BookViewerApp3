@@ -860,4 +860,23 @@ Le righe con prefisso "#" saranno ignorate.</value>
 Nome file: {1}
 Fonte: {2}</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenProject" xml:space="preserve">
+    <value>Aprire la pagina del progetto.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Refresh" xml:space="preserve">
+    <value>Includere negli obiettivi di aggiornamento.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.License" xml:space="preserve">
+    <value>Controllare la licenza.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenInfo" xml:space="preserve">
+    <value>Aprire la pagina delle informazioni.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
+    <value>Visualizzare il contenuto.
+(Problema: i file di grandi dimensioni non vengono visualizzati correttamente.)</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
+    <value>Toccare "Applicare" per salvare la modifica.</value>
+  </data>
 </root>

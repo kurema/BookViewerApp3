@@ -858,4 +858,23 @@ As linhas prefixadas com '#' serão ignoradas.</value>
 Nome do ficheiro: {1}
 Fonte: {2}</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenProject" xml:space="preserve">
+    <value>Abrir a página do projecto.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Refresh" xml:space="preserve">
+    <value>Incluir em alvos de actualização.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.License" xml:space="preserve">
+    <value>Verificar a licença.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenInfo" xml:space="preserve">
+    <value>Abrir a página de informação.</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
+    <value>Ver o conteúdo.
+(Assunto: Os ficheiros grandes não são exibidos correctamente.)</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
+    <value>Toque em "Aplicar" para guardar a alteração.</value>
+  </data>
 </root>

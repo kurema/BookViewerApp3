@@ -864,4 +864,23 @@
 ファイル名：{1}
 ダウンロード元：{2}</value>
   </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenProject" xml:space="preserve">
+    <value>プロジェクトページを開く。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Refresh" xml:space="preserve">
+    <value>更新対象に含める。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.License" xml:space="preserve">
+    <value>ライセンスを確認する。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.OpenInfo" xml:space="preserve">
+    <value>情報ページを開く。</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
+    <value>内容を確認。
+(注意：大きなファイルが正常に表示されません。)</value>
+  </data>
+  <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
+    <value>「適用」をタップすると、変更が保存されます。</value>
+  </data>
 </root>
