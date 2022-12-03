@@ -177,8 +177,12 @@ public partial class FileItemViewModel : INotifyPropertyChanged
             result.AddRange(Order?.OrderDelegate is null ? r : Order?.OrderDelegate(r));
             if (!string.IsNullOrWhiteSpace(SearchWord))
             {
-                var searched = Content.GetSearchResults(SearchWord);
-                if (searched is not null) result.AddRange(searched.Select(a => new FileItemViewModel(a) { IconProviders = this.IconProviders }));
+                try
+                {
+                    var searched = Content.GetSearchResults(SearchWord);
+                    if (searched is not null) result.AddRange(searched.Select(a => new FileItemViewModel(a) { IconProviders = this.IconProviders }));
+                }
+                catch { }
             }
             return result.ToArray();
         }

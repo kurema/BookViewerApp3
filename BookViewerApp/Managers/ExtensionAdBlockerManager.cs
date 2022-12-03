@@ -212,7 +212,7 @@ public static partial class ExtensionAdBlockerManager
             if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
             if (IsInWhitelist(domain)) return;
 
-            if (!IsBlocked(requestUri, requestUri.Host, headers))
+            if (!IsBlocked(requestUri, domain, headers))
             {
                 // YouTube blocking is disabled now.
                 //YouTube.WebViewWebResourceRequested(sender, args);
@@ -243,27 +243,57 @@ public static partial class ExtensionAdBlockerManager
         if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
         var domain = uri.Host.ToUpperInvariant();
         if (IsInWhitelist(domain)) return;
+        using var d = args.GetDeferral();
         var headers = new System.Collections.Specialized.NameValueCollection();
-        foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
-        switch (args.ResourceContext)
+        try
         {
-            case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
-                headers.Add("X-Requested-With", "XmlHttpRequest");
-                break;
-            case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
-                headers.Add("Content-Type", "script");
-                break;
+            foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
+            switch (args.ResourceContext)
+            {
+                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
+                    headers.Add("X-Requested-With", "XmlHttpRequest");
+                    break;
+                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
+                    headers.Add("Content-Type", "script");
+                    break;
+            }
+            if (!IsBlocked(uriReq, domain, headers))
+            {
+                await YouTube.WebView2WebResourceRequested(sender, args);
+                return;
+            }
+            args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
         }
-        if (!IsBlocked(uriReq, uriReq.Host, headers))
+        catch
         {
-            await YouTube.WebView2WebResourceRequested(sender, args);
-            return;
+#if DEBUG
+            throw;
+#endif
         }
-        args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
+        finally
+        {
+            d.Complete();
+        }
     }
 
-    public static bool IsBlocked(Uri uri, string domain, System.Collections.Specialized.NameValueCollection rawHeaders)
+    public static bool IsBlocked(Uri uri, string domain, NameValueCollection rawHeaders)
     {
+        //static bool isDomainTargeted(DistillNET.UrlFilter? filter, string domain)
+        //{
+        //    if (filter is null) return false;
+        //    if (filter.ExceptionDomains.Count > 0 && filter.ExceptionDomains.Any(a => a.Equals(domain, StringComparison.InvariantCultureIgnoreCase))) return false;
+        //    if (filter.ApplicableDomains.Count == 0 || filter.ApplicableDomains.Any(a => a.Equals(domain, StringComparison.InvariantCultureIgnoreCase))) return true;
+        //    return false;
+        //}
+
+        static bool isMatch(DistillNET.UrlFilter? filter, Uri uri, NameValueCollection rawHeaders,string domain)
+        {
+            if (filter is null) return false;
+            bool match= filter.IsMatch(uri, rawHeaders);
+            return match;
+        }
+
+
         if (Filter is null) return false;
         FiltersCacheGlobal ??= Filter?.GetFiltersForDomain()?.ToArray();
         FiltersWhitelistCacheGlobal ??= Filter?.GetWhitelistFiltersForDomain()?.ToArray();
@@ -271,10 +301,10 @@ public static partial class ExtensionAdBlockerManager
         if (FiltersWhitelistCacheGlobal is null) return false;
         DistillNET.UrlFilter[] filters = LoadFilters(domain);
         DistillNET.UrlFilter[] filtersWhite = LoadWhitelistFilters(domain);
-        foreach (var item in filtersWhite) if (item.IsMatch(uri, rawHeaders)) return false;
-        foreach (var item in FiltersWhitelistCacheGlobal) if (item.IsMatch(uri, rawHeaders)) return false;
-        foreach (var item in filters) if (!string.IsNullOrWhiteSpace(item.OriginalRule) && item.IsMatch(uri, rawHeaders)) return true;
-        foreach (var item in FiltersCacheGlobal) if (!string.IsNullOrWhiteSpace(item.OriginalRule) && item.IsMatch(uri, rawHeaders)) return true;
+        if (filtersWhite.Any(a => isMatch(a, uri, rawHeaders, domain))) return false;
+        if (FiltersWhitelistCacheGlobal.Any(a => isMatch(a, uri, rawHeaders, domain))) return false;
+        if (filters.Any(a => isMatch(a, uri, rawHeaders, domain))) return true;
+        if (FiltersCacheGlobal.Any(a => isMatch(a, uri, rawHeaders, domain))) return true;
         return false;
     }
 
@@ -293,7 +323,7 @@ public static partial class ExtensionAdBlockerManager
     {
         if (cache is null || Filter is null || getFiltersForDomain is null) return new DistillNET.UrlFilter[0];
         if (cache.ContainsKey(domain)) return cache[domain].Item2;
-        var filters = getFiltersForDomain(domain)?.ToArray() ?? new DistillNET.UrlFilter[0];
+        var filters = getFiltersForDomain(domain.ToLowerInvariant())?.ToArray() ?? new DistillNET.UrlFilter[0];
         cache.TryAdd(domain, (DateTime.Now, filters));
         if (cache.Count > FiltersCacheSize) cache.Remove(cache.OrderBy(a => a.Value).First().Key);
         return filters;
@@ -378,8 +408,11 @@ public static partial class ExtensionAdBlockerManager
             {
                 var stream = await file.OpenReadAsync();
                 if (stream is null) return false;
-                using var streamNative = stream.AsStream();
-                var result = Filter?.ParseStoreRulesFromStream(streamNative, 1);
+                var text = await stream.ReadTextAsync();
+                var texts = text.Split('\r', '\n').Where(a => !string.IsNullOrEmpty(a) && !a.StartsWith('!')).ToArray();
+                var result = Filter?.ParseStoreRules(texts, 1);
+                //using var streamNative = stream.AsStream();
+                //var result = Filter?.ParseStoreRulesFromStream(streamNative, 1);
                 return true;
             }
             catch
@@ -408,6 +441,9 @@ public static partial class ExtensionAdBlockerManager
                     {
                         Filter = null;
                         await Task.Delay(1000);
+#if DEBUG
+                        Debug.WriteLine($"Filter init failed #{i}.");
+#endif
                     }
                 }
                 if (Filter is null) return (null, false);
@@ -622,17 +658,15 @@ public static partial class ExtensionAdBlockerManager
 
         public static async Task WebView2WebResourceRequestedCommon(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args, Func<string, string> removeAdsFunction)
         {
-            var d = args.GetDeferral();
             await WebResourceRequestedCommon(removeAdsFunction, (ms, s) =>
             {
                 args.Response = sender.Environment.CreateWebResourceResponse(ms, 200, "OK", s);
             },
                 args.Request.Uri, args.Request.Method, args.Request.Content, args.Request.Headers.ToArray() ?? new KeyValuePair<string, string>[0]);
-            d.Complete();
         }
 
 
-        public static async Task WebResourceRequestedCommon(Func<string, string> removeAdsFunction,Action<InMemoryRandomAccessStream,string> setResponse, string requestUri, string? requestMethod, IRandomAccessStream requestContent, KeyValuePair<string, string>[] requestHeaders)
+        public static async Task WebResourceRequestedCommon(Func<string, string> removeAdsFunction, Action<InMemoryRandomAccessStream, string> setResponse, string requestUri, string? requestMethod, IRandomAccessStream requestContent, KeyValuePair<string, string>[] requestHeaders)
         {
             if (!Uri.TryCreate(requestUri, UriKind.Absolute, out Uri uriReq)) return;
             var client = CommonHttpClient;

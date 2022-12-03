@@ -265,16 +265,16 @@ public class StorageBookmarkContainer : IStorageBookmark
 
     public static IEnumerable<IFileItem> GetBasicSearchResults(string word, Action<string> actionOpen)
     {
-        var result =new List<IFileItem>();
+        var result = new List<IFileItem>();
         var bookmarksLocal = LibraryStorage.LocalBookmarks?.Content?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
         if (bookmarksLocal is not null)
         {
-            var searches = bookmarksLocal.GetSearchItems(word, actionOpen);
-            if (searches is not null) result.AddRange(searches);
+            var searches = bookmarksLocal.GetSearchItems(word, actionOpen)?.ToArray();
+            if (searches is not null and { Length: > 0 }) result.AddRange(searches);
         }
         {
-            var searches = LibraryStorage.RoamingBookmarks?.Content?.GetSearchItems(word, actionOpen);
-            if (searches is not null) result.AddRange(searches);
+            var searches = LibraryStorage.RoamingBookmarks?.Content?.GetSearchItems(word, actionOpen)?.ToArray();
+            if (searches is not null and { Length: > 0 }) result.AddRange(searches);
         }
         return result.ToArray();
     }

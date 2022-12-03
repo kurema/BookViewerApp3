@@ -66,6 +66,8 @@ public class AdBlockerSettingViewModel : ViewModelBase
 
             void ItemToAdd_PropertyChanged(object sender, PropertyChangedEventArgs e) => AddItemCommand?.OnCanExecuteChanged();
         }
+
+        SetupRequired = Managers.ExtensionAdBlockerManager.Filter is null;
     }
 
     private static SemaphoreSlim SemaphoreAddItem = new(1, 1);

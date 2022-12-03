@@ -461,6 +461,7 @@ namespace BookViewerApp.Storages
 
             public IEnumerable<StorageBookmarkItem> GetSearchItems(string word, Action<string> actionOpen)
             {
+                if (Items is null) yield break;
                 foreach (var item in this.Items)
                 {
                     switch (item)
