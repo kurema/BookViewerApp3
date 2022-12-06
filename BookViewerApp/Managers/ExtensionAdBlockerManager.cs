@@ -207,13 +207,28 @@ public static partial class ExtensionAdBlockerManager
             var thread = System.Threading.Thread.CurrentThread;
             sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
             {
-                scheme = sender.Source.Scheme;
-                domain = sender.Source.Host.ToUpperInvariant();
-                source = sender.Source.ToString();
+                try
+                {
+                    if (sender?.Source is null) return;
+                    scheme = sender.Source.Scheme;
+                    domain = sender.Source.Host.ToUpperInvariant();
+                    source = sender.Source.ToString();
+                }
+                catch { }
             }).AsTask().Wait();
-            if (headers.Get("Referer") is null) headers.Add("Referer", source); // Manually add Referer.
             if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
             if (IsInWhitelist(domain)) return;
+
+            if (headers.Get("Referer") is null) headers.Add("Referer", source); // Manually add Referer.
+            if (headers.Get("Content-Type") is null)
+            {
+                string ext = Path.GetExtension(requestUri.LocalPath);
+                if (!string.IsNullOrEmpty(ext))
+                {
+                    string mime = MimeTypes.MimeTypeMap.GetMimeType(ext);
+                    if (!string.IsNullOrEmpty(mime)) headers.Add("Content-Type", mime);
+                }
+            }
 
             if (!IsBlocked(requestUri, domain, headers))
             {
@@ -247,7 +262,7 @@ public static partial class ExtensionAdBlockerManager
         var domain = uri.Host.ToUpperInvariant();
         if (IsInWhitelist(domain)) return;
         using var d = args.GetDeferral();
-        var headers = new System.Collections.Specialized.NameValueCollection();
+        var headers = new NameValueCollection();
         try
         {
             foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
@@ -257,7 +272,24 @@ public static partial class ExtensionAdBlockerManager
                     headers.Add("X-Requested-With", "XmlHttpRequest");
                     break;
                 case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
-                    headers.Add("Content-Type", "script");
+                    //UrlFilter.IsMatch() currently checks if "Content-Type" contains "script", "image" or "css".
+                    headers.Add("Content-Type", "text/javascript");
+                    break;
+                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Image:
+                    headers.Add("Content-Type", "image/image");
+                    break;
+                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Stylesheet:
+                    headers.Add("Content-Type", "text/css");
+                    break;
+                default:
+                    {
+                        if (headers.Get("Content-Type") is not null) break;
+                        string ext = Path.GetExtension(uriReq.LocalPath);
+                        if (string.IsNullOrEmpty(ext)) break;
+                        string mime = MimeTypes.MimeTypeMap.GetMimeType(ext);
+                        if (string.IsNullOrEmpty(mime)) break;
+                        headers.Add("Content-Type", mime);
+                    }
                     break;
             }
             if (headers.Get("Referer") is null) headers.Add("Referer", uri.ToString()); // Manually add Referer. Is this correct?
@@ -321,7 +353,6 @@ public static partial class ExtensionAdBlockerManager
         FiltersWhitelistCacheGlobal = null;
         FiltersCache.Clear();
         FiltersWhitelistCache.Clear();
-
     }
 
     public static DistillNET.UrlFilter[] LoadFilters(string domain) => LoadFiltersCommon(domain, FiltersCache, (domain) => Filter?.GetFiltersForDomain(domain));
