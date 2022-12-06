@@ -580,9 +580,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DistillNET">
-      <Version>1.6.6</Version>
-    </PackageReference>
     <PackageReference Include="iTextSharp.LGPLv2.Core">
       <Version>1.9.3</Version>
     </PackageReference>
@@ -606,6 +603,10 @@
     <Folder Include="res\bibi\bibi-bookshelf\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DistillNET\DistillNET\DistillNET.csproj">
+      <Project>{93d84f2d-b2ab-41f5-b52c-00f1589e7554}</Project>
+      <Name>DistillNET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppBasePlatform\AppBasePlatform.csproj">
       <Project>{9350dd9f-df65-4362-ad68-8ddcb0ab18d4}</Project>
       <Name>AppBasePlatform</Name>

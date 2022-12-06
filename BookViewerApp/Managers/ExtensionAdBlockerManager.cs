@@ -202,13 +202,16 @@ public static partial class ExtensionAdBlockerManager
         {
             string scheme = string.Empty;
             string domain = string.Empty;
+            string source = string.Empty;
             //Wait() is easy fix, but bad in performance.
             var thread = System.Threading.Thread.CurrentThread;
             sender.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
             {
                 scheme = sender.Source.Scheme;
                 domain = sender.Source.Host.ToUpperInvariant();
+                source = sender.Source.ToString();
             }).AsTask().Wait();
+            if (headers.Get("Referer") is null) headers.Add("Referer", source); // Manually add Referer.
             if (!(scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
             if (IsInWhitelist(domain)) return;
 
@@ -257,6 +260,7 @@ public static partial class ExtensionAdBlockerManager
                     headers.Add("Content-Type", "script");
                     break;
             }
+            if (headers.Get("Referer") is null) headers.Add("Referer", uri.ToString()); // Manually add Referer. Is this correct?
             if (!IsBlocked(uriReq, domain, headers))
             {
                 await YouTube.WebView2WebResourceRequested(sender, args);
@@ -286,13 +290,12 @@ public static partial class ExtensionAdBlockerManager
         //    return false;
         //}
 
-        static bool isMatch(DistillNET.UrlFilter? filter, Uri uri, NameValueCollection rawHeaders,string domain)
+        static bool isMatch(DistillNET.UrlFilter? filter, Uri uri, NameValueCollection rawHeaders, string domain)
         {
             if (filter is null) return false;
-            bool match= filter.IsMatch(uri, rawHeaders);
-            return match;
+            return filter.IsMatch(uri, rawHeaders);
+            //return filter.IsMatch(uri, rawHeaders) && isDomainTargeted(filter, domain);
         }
-
 
         if (Filter is null) return false;
         FiltersCacheGlobal ??= Filter?.GetFiltersForDomain()?.ToArray();
@@ -301,9 +304,13 @@ public static partial class ExtensionAdBlockerManager
         if (FiltersWhitelistCacheGlobal is null) return false;
         DistillNET.UrlFilter[] filters = LoadFilters(domain);
         DistillNET.UrlFilter[] filtersWhite = LoadWhitelistFilters(domain);
+        //DistillNET.UrlFilter[] filters2 = LoadFilters(uri.Host);
+        //DistillNET.UrlFilter[] filtersWhite2 = LoadWhitelistFilters(uri.Host);
         if (filtersWhite.Any(a => isMatch(a, uri, rawHeaders, domain))) return false;
+        //if (filtersWhite2.Any(a => isMatch(a, uri, rawHeaders, domain))) return false;
         if (FiltersWhitelistCacheGlobal.Any(a => isMatch(a, uri, rawHeaders, domain))) return false;
         if (filters.Any(a => isMatch(a, uri, rawHeaders, domain))) return true;
+        //if (filters2.Any(a => isMatch(a, uri, rawHeaders, domain))) return true;
         if (FiltersCacheGlobal.Any(a => isMatch(a, uri, rawHeaders, domain))) return true;
         return false;
     }
