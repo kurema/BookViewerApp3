@@ -232,4 +232,8 @@ public sealed partial class BrowserControl2 : Page, IDisposable
     {
         webView.Close();
     }
+
+    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+    }
 }

@@ -36,6 +36,7 @@
         <vc:BoolToStringConverter x:Key="vc_b2s"/>
         <vc:ObjectToTreeViewItemConverter x:Key="vc_tvi"/>
         <vc:UIElementCollectionEmptyConverter x:Key="vc_uce" />
+        <vc:StringChangeConverter x:Key="vc_sc" />
         <Style TargetType="FlyoutPresenter" x:Name="FlyoutPresenterStyleBasic">
             <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}" />
         </Style>
@@ -75,7 +76,7 @@
             <AppBarButton Grid.Column="1" Icon="Forward" IsEnabled="{Binding CanGoForward}" Click="AppBarButton_Click_GoForward" />
             <AppBarButton Grid.Column="2" Icon="Refresh" Click="AppBarButton_Click_Reload"/>
             <AppBarButton Grid.Column="3" Icon="Home" Command="{Binding NavigateCommand}" CommandParameter="{Binding HomePage}"/>
-            <Border Grid.Column="4" Grid.ColumnSpan="1" Margin="4" Background="{ThemeResource SystemAltHighColor}" CornerRadius="2" BorderThickness="1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}">
+            <Border Grid.Column="4" Grid.ColumnSpan="1" Margin="4" Background="{ThemeResource SystemAltHighColor}" CornerRadius="2" BorderThickness="1" BorderBrush="{ThemeResource SystemChromeBlackLowColor}" Name="addressBarBorder">
                 <Grid>
                     <Grid.Resources>
                         <Storyboard x:Name="HideErrorStoryboard" AutoReverse="False">
@@ -94,7 +95,7 @@
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
                     <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SourceString,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" Background="Transparent"
-                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus" IsSpellCheckEnabled="False">
+                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus" IsSpellCheckEnabled="False" TextChanged="TextBox_TextChanged" Name="addressBarTextBox">
                         <TextBox.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.ThemeDictionaries>
@@ -231,5 +232,11 @@
         <controls:WebView2 Grid.Row="1" x:Name="webView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                            CanGoBack="{Binding CanGoBack,Mode=TwoWay}" CanGoForward="{Binding CanGoForward,Mode=TwoWay}" Source="{Binding Source,Mode=TwoWay}"
                            />
+        <!--<StackPanel Grid.Row="1" Visibility="{Binding ElementName=addressBarTextBox,Path=FocusState,Converter={StaticResource vc_sc},ConverterParameter='Unfocused:Collapsed::default:Visible'}"
+                    HorizontalAlignment="Center" VerticalAlignment="Top"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                    >
+            
+        </StackPanel>-->
     </Grid>
 </Page>

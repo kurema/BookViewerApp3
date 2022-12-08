@@ -75,7 +75,7 @@ public static partial class ExtensionAdBlockerManager
     private static HttpClient? _CommonHttpClient;
     public static HttpClient CommonHttpClient => _CommonHttpClient ??= new HttpClient();
 
-    public const int UserWhitelistCacheSize = 20;
+    public const int UserWhitelistCacheSize = 100;
     public static List<(string host, bool isInWhitelist)> UserWhitelistCache = new();
 
     public static bool IsInWhitelist(string domain)

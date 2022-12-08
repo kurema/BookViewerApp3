@@ -86,3 +86,35 @@ public class UIElementCollectionEmptyConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+public class IntTableConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is not int number) return null;
+        string[] text = parameter.ToString().Split(':');
+        return text[Math.Min(text.Length - 1, number)];
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public sealed class StringChangeConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        var word = value.ToString();
+        var dic = parameter.ToString().Split("::").Select(a => a.Split(":")).Where(a => a.Length >= 2).ToDictionary(a => a[0], a => a[1]);
+        if (dic.ContainsKey(word)) return dic[word];
+        if (dic.ContainsKey("default")) return dic["default"];
+        return "";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
