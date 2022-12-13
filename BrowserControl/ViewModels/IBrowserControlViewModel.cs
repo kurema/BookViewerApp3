@@ -16,4 +16,5 @@ public interface IBrowserControlViewModel
     string HomePage { get; set; }
     ICommand OpenDownloadDirectoryCommand { get; set; }
     string SearchEngine { get; set; }
+
 }

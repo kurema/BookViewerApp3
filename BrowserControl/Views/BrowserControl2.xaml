@@ -94,9 +94,11 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
-                    <TextBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SourceString,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalAlignment="Center" Background="Transparent"
-                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus" IsSpellCheckEnabled="False" TextChanged="TextBox_TextChanged" Name="addressBarTextBox">
-                        <TextBox.Resources>
+                    <AutoSuggestBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SourceString,UpdateSourceTrigger=Default,Mode=OneWay}" VerticalAlignment="Center" Background="Transparent"
+                             KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"
+                             TextChanged="addressBarTextBox_TextChanged" SuggestionChosen="addressBarTextBox_SuggestionChosen" QuerySubmitted="addressBarTextBox_QuerySubmitted"
+                             Name="addressBarTextBox">
+                        <AutoSuggestBox.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.ThemeDictionaries>
                                     <ResourceDictionary x:Key="Light">
@@ -111,14 +113,14 @@
                                     </ResourceDictionary>
                                 </ResourceDictionary.ThemeDictionaries>
                             </ResourceDictionary>
-                        </TextBox.Resources>
-                        <TextBox.Style>
-                            <!--Without this empty style, border is shown some how. -->
-                            <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->
+                        </AutoSuggestBox.Resources>
+                        <!--<AutoSuggestBox.Style>
+                            --><!--Without this empty style, border is shown some how. -->
+                            <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 --><!--
                             <Style TargetType="TextBox">
                             </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                        </AutoSuggestBox.Style>-->
+                    </AutoSuggestBox>
                     <Button Grid.Column="2" x:Name="button_favorite">
                         <SymbolIcon Symbol="Favorite" />
                         <Button.Flyout>

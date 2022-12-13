@@ -233,7 +233,27 @@ public sealed partial class BrowserControl2 : Page, IDisposable
         webView.Close();
     }
 
-    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
+        if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            sender.ItemsSource = new List<string>() { "Empty." };
+        }
+    }
+
+    private void addressBarTextBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+
+    }
+
+    private void addressBarTextBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        if(args.ChosenSuggestion is null)
+        {
+            if (this.DataContext is BrowserControl2ViewModel vm && sender is AutoSuggestBox box)
+            {
+                vm.SourceString = box.Text;
+            }
+        }
     }
 }
