@@ -251,7 +251,7 @@ public sealed partial class TabPage : Page
             }
         }
         {
-            UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
+            await UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
             {
                 newTab.Header = title;
             }

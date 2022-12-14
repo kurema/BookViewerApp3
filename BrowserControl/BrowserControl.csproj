@@ -139,6 +139,7 @@
     <Compile Include="ViewModels\DownloadItemViewModel.cs" />
     <Compile Include="ViewModels\IBookmarkItem.cs" />
     <Compile Include="ViewModels\IBrowserControlViewModel.cs" />
+    <Compile Include="ViewModels\SearchEngineEntry.cs" />
     <Compile Include="Views\BrowserControl.xaml.cs">
       <DependentUpon>BrowserControl.xaml</DependentUpon>
     </Compile>

@@ -236,6 +236,12 @@ public class BrowserControlViewModel : INotifyPropertyChanged, IBrowserControlVi
     private Commands.NavigateCommand _NavigateCommand;
     public Commands.NavigateCommand NavigateCommand => _NavigateCommand ??= new Commands.NavigateCommand(this);
 
+    private ISearchEngineEntry[] _SearchEngines;
+    public ISearchEngineEntry[] SearchEngines { get => _SearchEngines; set => SetProperty(ref _SearchEngines, value); }
+
+    //private ISearchEngineEntry _SearchEngineDefault;
+    //public ISearchEngineEntry SearchEngineDefault { get => _SearchEngineDefault; set => SetProperty(ref _SearchEngineDefault, value); }
+
     public class Commands
     {
         public abstract class CommandBase : ICommand

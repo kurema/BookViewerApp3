@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Navigation;
 
 using System.Threading.Tasks;
 using kurema.BrowserControl.ViewModels;
+using Windows.ApplicationModel;
+using System.Reflection;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -233,27 +235,77 @@ public sealed partial class BrowserControl2 : Page, IDisposable
         webView.Close();
     }
 
+    private void RestoreAddressBarTextBoxText()
+    {
+        if (this.DataContext is not BrowserControl2ViewModel vm) return;
+        //{Binding SourceString,UpdateSourceTrigger=Default,Mode=OneWay}
+        addressBarTextBox.SetBinding(AutoSuggestBox.TextProperty, new Binding()
+        {
+            Path = new PropertyPath(nameof(vm.SourceString)),
+            UpdateSourceTrigger = UpdateSourceTrigger.Default,
+            Mode = BindingMode.OneWay,
+        });
+    }
+
     private void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        if (this.DataContext is not BrowserControl2ViewModel vm) return;
+        string word = sender.Text;
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            sender.ItemsSource = new List<string>() { "Empty." };
+            var list = new List<ISearchEngineEntry>();
+            //if (vm.SearchEngineDefault is not null)
+            //{
+            //    vm.SearchEngineDefault.Word = word;
+            //    var candidates = (await vm.SearchEngineDefault.GetCandidates())?.ToArray();
+            //    if (candidates?.Count() > 0) list.AddRange(candidates);
+            //    list.Add(vm.SearchEngineDefault);
+            //}
+            if (vm.SearchEngines is not null && !string.IsNullOrEmpty(word))
+            {
+                foreach (var item in vm.SearchEngines)
+                {
+                    if (item is null) continue;
+                    item.Word = word;
+                    list.Add(item);
+                }
+            }
+            sender.ItemsSource = list.ToArray();
+        }
+        else
+        {
+            sender.IsSuggestionListOpen = false;
         }
     }
 
     private void addressBarTextBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
+        //When this is called?
+        if (args.SelectedItem is not ISearchEngineEntry entry) return;
+        if (DataContext is not BrowserControl2ViewModel vm) return;
 
+        entry.Open((url) =>
+        {
+            vm.SourceString = url;
+            return Task.CompletedTask;
+        });
+
+        RestoreAddressBarTextBoxText();
     }
 
     private void addressBarTextBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        if(args.ChosenSuggestion is null)
+        if (args.ChosenSuggestion is null)
         {
             if (this.DataContext is BrowserControl2ViewModel vm && sender is AutoSuggestBox box)
             {
                 vm.SourceString = box.Text;
             }
         }
+    }
+
+    private void webView_NavigationCompleted(Microsoft.UI.Xaml.Controls.WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
+    {
+        RestoreAddressBarTextBoxText();
     }
 }

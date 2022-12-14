@@ -482,6 +482,31 @@ namespace BookViewerApp.Storages
                     }
                 }
             }
+
+            public IEnumerable<kurema.BrowserControl.ViewModels.ISearchEngineEntry> GetSearchEngineEntries()
+            {
+                if (Items is null) yield break;
+                foreach (var item in this.Items)
+                {
+                    switch (item)
+                    {
+                        case bookmarksContainerSearch search:
+                            yield return search.AsSearchEngineEntry();
+                            break;
+                    }
+                }
+            }
+        }
+
+        partial class bookmarksContainerSearch
+        {
+            public kurema.BrowserControl.ViewModels.SearchEngineEntryDelegate AsSearchEngineEntry()
+            {
+                return new kurema.BrowserControl.ViewModels.SearchEngineEntryDelegate(this.title, async (word, action) =>
+                {
+                    if (action is not null) await action.Invoke(string.Format(url, System.Web.HttpUtility.UrlEncode(word)));
+                });
+            }
         }
 
         public partial class bookmarksContainer

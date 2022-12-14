@@ -571,7 +571,6 @@ public static partial class UIHelper
                     else return null;
                 })?.Where(a => a != null);
             });
-
         }
 
         public static void OpenBrowser2_UpdateCoreStuffs(Microsoft.Web.WebView2.Core.CoreWebView2 core, Action<string> OpenTabWeb, Action<string> UpdateTitle)
@@ -601,7 +600,9 @@ public static partial class UIHelper
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), uri);
 
-            if ((frame.Content as kurema.BrowserControl.Views.BrowserControl2)?.DataContext is kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm && vm != null)
+            if ((frame.Content as kurema.BrowserControl.Views.BrowserControl2)?.DataContext is not kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm) return;
+            if (frame?.Content is not kurema.BrowserControl.Views.BrowserControl2 content) return;
+
             {
                 OpenBrowser_BookmarkSetViewModel(vm, tabPageProvider);
 
@@ -620,8 +621,7 @@ public static partial class UIHelper
                     vm.SearchEngine = searchEngine;
                 }
             }
-
-            if (frame?.Content is kurema.BrowserControl.Views.BrowserControl2 content)
+            
             {
                 //await content.WebView2.EnsureCoreWebView2Async();
 
@@ -689,11 +689,14 @@ public static partial class UIHelper
                         WebView2InitalizedOperation();
                         content.WebView2.CoreWebView2Initialized += (_, _) => WebView2InitalizedOperation();
                     }
+
+                    var bookmarksLocal = (await LibraryStorage.LocalBookmarks.GetContentAsync())?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
+                    vm.SearchEngines = bookmarksLocal?.GetSearchEngineEntries().ToArray();
                 }
             }
         }
 
-        public static void OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider)
+        public static async Task OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider)
         {
             frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), uri);
             if (frame?.Content is kurema.BrowserControl.Views.BrowserControl content)
@@ -775,6 +778,9 @@ public static partial class UIHelper
                         UpdateTitle(vm.Title);
                     }
                 };
+
+                var bookmarksLocal = (await LibraryStorage.LocalBookmarks.GetContentAsync())?.GetBookmarksForCulture(System.Globalization.CultureInfo.CurrentCulture);
+                vm.SearchEngines = bookmarksLocal?.GetSearchEngineEntries().ToArray();
             }
         }
     }

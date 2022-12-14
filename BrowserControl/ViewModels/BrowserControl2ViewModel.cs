@@ -176,5 +176,12 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
         }
     }
 
+    private ISearchEngineEntry[] _SearchEngines;
+    public ISearchEngineEntry[] SearchEngines { get => _SearchEngines; set => SetProperty(ref _SearchEngines, value); }
+
+    //private ISearchEngineEntry _SearchEngineDefault;
+    //public ISearchEngineEntry SearchEngineDefault { get => _SearchEngineDefault; set => SetProperty(ref _SearchEngineDefault, value); }
+
+
 }
 

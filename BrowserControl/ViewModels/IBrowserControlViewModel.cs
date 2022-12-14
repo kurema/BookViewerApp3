@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -17,4 +18,6 @@ public interface IBrowserControlViewModel
     ICommand OpenDownloadDirectoryCommand { get; set; }
     string SearchEngine { get; set; }
 
+    ISearchEngineEntry[] SearchEngines { get; set; }
+    //ISearchEngineEntry SearchEngineDefault { get; set; }
 }

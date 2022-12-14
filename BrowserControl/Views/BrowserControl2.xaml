@@ -94,6 +94,9 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!--<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"  VerticalAlignment="Center" Margin="5"/>-->
+                    <!-- 
+                    Note: Fix RestoreAddressBarTextBoxText(); if you change content of Text.
+                    -->
                     <AutoSuggestBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SourceString,UpdateSourceTrigger=Default,Mode=OneWay}" VerticalAlignment="Center" Background="Transparent"
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"
                              TextChanged="addressBarTextBox_TextChanged" SuggestionChosen="addressBarTextBox_SuggestionChosen" QuerySubmitted="addressBarTextBox_QuerySubmitted"
@@ -114,6 +117,18 @@
                                 </ResourceDictionary.ThemeDictionaries>
                             </ResourceDictionary>
                         </AutoSuggestBox.Resources>
+                        <AutoSuggestBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ISearchEngineEntry">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <SymbolIcon Symbol="Find" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding Title}" Grid.Column="1" Margin="5,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </AutoSuggestBox.ItemTemplate>
                         <!--<AutoSuggestBox.Style>
                             --><!--Without this empty style, border is shown some how. -->
                             <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 --><!--
@@ -233,6 +248,7 @@
         </Grid>
         <controls:WebView2 Grid.Row="1" x:Name="webView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                            CanGoBack="{Binding CanGoBack,Mode=TwoWay}" CanGoForward="{Binding CanGoForward,Mode=TwoWay}" Source="{Binding Source,Mode=TwoWay}"
+                           NavigationCompleted="webView_NavigationCompleted"
                            />
         <!--<StackPanel Grid.Row="1" Visibility="{Binding ElementName=addressBarTextBox,Path=FocusState,Converter={StaticResource vc_sc},ConverterParameter='Unfocused:Collapsed::default:Visible'}"
                     HorizontalAlignment="Center" VerticalAlignment="Top"
