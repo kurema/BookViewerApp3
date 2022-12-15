@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using Windows.Networking.BackgroundTransfer;
+using kurema.BrowserControl.ViewModels;
+using System.Threading.Tasks;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
@@ -254,7 +256,75 @@ public sealed partial class BrowserControl : Page, IDisposable
 
     private void Button_Click_ToggleCollapsed(object sender, RoutedEventArgs e)
     {
-        if (DataContext is not ViewModels.BrowserControlViewModel vm) return;
+        if (DataContext is not BrowserControlViewModel vm) return;
         vm.ControllerCollapsed = !vm.ControllerCollapsed;
+    }
+
+    private void RestoreAddressBarTextBoxText()
+    {
+        if (this.DataContext is not BrowserControlViewModel vm) return;
+        //{Binding Uri,UpdateSourceTrigger=Default,Mode=OneWay}
+        addressBarBox.SetBinding(AutoSuggestBox.TextProperty, new Binding()
+        {
+            Path = new PropertyPath(nameof(vm.Uri)),
+            UpdateSourceTrigger = UpdateSourceTrigger.Default,
+            Mode = BindingMode.OneWay,
+        });
+    }
+
+    private void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (this.DataContext is not IBrowserControlViewModel vm) return;
+        string word = sender.Text;
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            var list = new List<ISearchEngineEntry>();
+            //if (vm.SearchEngineDefault is not null)
+            //{
+            //    vm.SearchEngineDefault.Word = word;
+            //    var candidates = (await vm.SearchEngineDefault.GetCandidates())?.ToArray();
+            //    if (candidates?.Count() > 0) list.AddRange(candidates);
+            //    list.Add(vm.SearchEngineDefault);
+            //}
+            if (vm.SearchEngines is not null && !string.IsNullOrEmpty(word))
+            {
+                foreach (var item in vm.SearchEngines)
+                {
+                    if (item is null) continue;
+                    item.Word = word;
+                    list.Add(item);
+                }
+            }
+            sender.ItemsSource = list.ToArray();
+        }
+        else
+        {
+            sender.IsSuggestionListOpen = false;
+        }
+    }
+
+    private void addressBarTextBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        if (args.SelectedItem is not ISearchEngineEntry entry) return;
+        if (DataContext is not BrowserControlViewModel vm) return;
+
+        entry.Open((url) =>
+        {
+            vm.Uri = url;
+            return Task.CompletedTask;
+        });
+
+        RestoreAddressBarTextBoxText();
+    }
+
+    private void addressBarTextBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        if (args.ChosenSuggestion is null)
+        {
+            if (this.DataContext is BrowserControlViewModel vm && sender is AutoSuggestBox box)
+            {
+                vm.Uri = box.Text;
+            }
+        }
     }
 }
