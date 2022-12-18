@@ -1013,4 +1013,26 @@ Source: {2}</value>
   <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
     <value>Tap "Apply" to save the change.</value>
   </data>
+  <data name="Setting_BrowserSearchComplitionService.Title" xml:space="preserve">
+    <value>search suggestion provider</value>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Description" xml:space="preserve">
+    <value>Select the service to use for search suggestions. Please select after agreeing to the privacy policy of each service.</value>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
+    <value>None</value>
+    
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Google.Title" xml:space="preserve">
+    <value>Google</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Yahoo.Title" xml:space="preserve">
+    <value>Yahoo</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Bing.Title" xml:space="preserve">
+    <value>Bing</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

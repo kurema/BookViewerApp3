@@ -879,4 +879,13 @@ URL：{2}</value>
   <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
     <value>点 "申请 "来保存更改。</value>
   </data>
+  <data name="Setting_BrowserSearchComplitionService.Title" xml:space="preserve">
+    <value>搜索建议提供者</value>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Description" xml:space="preserve">
+    <value>选择用于搜索建议的服务。请在同意每个服务的隐私政策后进行选择。</value>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
+    <value>无</value>
+  </data>
 </root>

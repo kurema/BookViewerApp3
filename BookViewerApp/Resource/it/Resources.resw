@@ -879,4 +879,13 @@ Fonte: {2}</value>
   <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
     <value>Toccare "Applicare" per salvare la modifica.</value>
   </data>
+  <data name="Setting_BrowserSearchComplitionService.Title" xml:space="preserve">
+    <value>fornitore di suggerimenti di ricerca</value>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Description" xml:space="preserve">
+    <value>Selezionare il servizio da utilizzare per i suggerimenti di ricerca. Selezionare dopo aver accettato l'informativa sulla privacy di ciascun servizio.</value>
+  </data>
+  <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
+    <value>Nessuno</value>
+  </data>
 </root>
