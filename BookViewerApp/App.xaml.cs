@@ -41,10 +41,10 @@ sealed partial class App : Application
             if (SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserSearchComplitionService) is not kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions choice) return new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummy();
             return choice switch
             {
-                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Google => new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionGoogle(),
-                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Yahoo => new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionYahoo(),
-                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Bing => new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionBing(),
-                _ => new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummy(),
+                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Google => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionGoogleSingle,
+                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Yahoo => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionYahooSingle,
+                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Bing => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionBingSingle,
+                _ => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummySingle,
             };
         };
     }

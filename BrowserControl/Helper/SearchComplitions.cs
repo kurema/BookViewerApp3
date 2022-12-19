@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +11,9 @@ using System.Threading.Tasks;
 namespace kurema.BrowserControl.Helper.SearchComplitions;
 public interface ISearchComplition
 {
+    /// <summary>
+    /// Url of the API. This should be unique.
+    /// </summary>
     string APIUrl { get; }
     //IAsyncEnumerable is not available for UWP, yet.
     //https://learn.microsoft.com/dotnet/standard/net-standard?tabs=net-standard-2-1
@@ -26,6 +30,27 @@ public static class SearchComplitionManager
 {
     private static SemaphoreSlim semaphoreHttp = new(1, 1);
     private static Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
+    public static Dictionary<string, IEnumerable<string>> Cache { get; } = new Dictionary<string, IEnumerable<string>>();
+    public static void Clear() { Cache.Clear(); }
+    public static object? CacheServiceId { get; set; }
+
+    //new() each time is not good. Event though with no field.
+    public static SearchComplitionGoogle SearchComplitionGoogleSingle { get; } = new();
+    public static SearchComplitionDummy SearchComplitionDummySingle { get; } = new();
+    public static SearchComplitionYahoo SearchComplitionYahooSingle { get; } = new();
+    public static SearchComplitionBing SearchComplitionBingSingle { get; } = new();
+
+    public static async Task<IEnumerable<string>> UseCacheOrGet(object id, string term, Func<Task<IEnumerable<string>>> func)
+    {
+        if (CacheServiceId != id) { Cache.Clear(); CacheServiceId = id; }
+        else if (Cache.TryGetValue(term, out var r)) return r;
+        if (func is null) return Array.Empty<string>();
+        var result = await func.Invoke();
+        if (result is null) return Array.Empty<string>();
+        if (!result.Any()) return result;
+        Cache.Add(term, result);
+        return result;
+    }
 
     private static async Task<string> GetHttp(string url)
     {
@@ -47,7 +72,7 @@ public static class SearchComplitionManager
 
     public class SearchComplitionDummy : ISearchComplition
     {
-        public string APIUrl => "";
+        public string APIUrl => string.Empty;
 
         public Task<IEnumerable<string>> GetComplitions(string word, CultureInfo? culture = null)
         {
