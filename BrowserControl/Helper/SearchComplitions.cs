@@ -40,16 +40,23 @@ public static class SearchComplitionManager
     public static SearchComplitionYahoo SearchComplitionYahooSingle { get; } = new();
     public static SearchComplitionBing SearchComplitionBingSingle { get; } = new();
 
-    public static async Task<IEnumerable<string>> UseCacheOrGet(object id, string term, Func<Task<IEnumerable<string>>> func)
+    public static async Task<IEnumerable<string>> UseCacheOrGet(object id, string term, Func<string,Task<IEnumerable<string>>> func)
     {
         if (CacheServiceId != id) { Cache.Clear(); CacheServiceId = id; }
         else if (Cache.TryGetValue(term, out var r)) return r;
         if (func is null) return Array.Empty<string>();
-        var result = await func.Invoke();
+        var result = await func.Invoke(term);
         if (result is null) return Array.Empty<string>();
         if (!result.Any()) return result;
         Cache.Add(term, result);
         return result;
+    }
+
+    public static async Task<IEnumerable<string>> UseCacheOrGet(string term)
+    {
+        var complition = DefaultSearchComplition;
+        if (complition is null) return Array.Empty<string>();
+        return await UseCacheOrGet(complition.APIUrl, term, async t => await complition.GetComplitions(t));
     }
 
     private static async Task<string> GetHttp(string url)
@@ -96,22 +103,22 @@ public static class SearchComplitionManager
 
                 var xdoc = new System.Xml.XmlDocument();
                 xdoc.LoadXml(response);
-                foreach (var item in xdoc.ChildNodes)
-                {
-                    if (item is not System.Xml.XmlElement itemXe) continue;
-                    if (!itemXe.Name.Equals("CompleteSuggestion", StringComparison.InvariantCultureIgnoreCase)) continue;
-                    if (!itemXe.FirstChild.Name.Equals("suggestion", StringComparison.InvariantCultureIgnoreCase)) continue;
-                    if (itemXe.FirstChild.Attributes.Count != 1) continue;
-                    result.Add(itemXe.FirstChild.Attributes["data"].Value);
-                }
-
-                //var nodelist = xdoc.SelectNodes("/CompleteSuggestion/suggestion");
-                //foreach(var item in nodelist)
+                //foreach (var item in xdoc.DocumentElement.ChildNodes)
                 //{
                 //    if (item is not System.Xml.XmlElement itemXe) continue;
+                //    if (!itemXe.Name.Equals("CompleteSuggestion", StringComparison.InvariantCultureIgnoreCase)) continue;
+                //    if (!itemXe.FirstChild.Name.Equals("suggestion", StringComparison.InvariantCultureIgnoreCase)) continue;
                 //    if (itemXe.FirstChild.Attributes.Count != 1) continue;
                 //    result.Add(itemXe.FirstChild.Attributes["data"].Value);
                 //}
+
+                var nodelist = xdoc.SelectNodes("/toplevel/CompleteSuggestion/suggestion");
+                foreach (var item in nodelist)
+                {
+                    if (item is not System.Xml.XmlElement itemXe) continue;
+                    if (!itemXe.HasAttribute("data")) continue;
+                    result.Add(itemXe.GetAttribute("data"));
+                }
                 return result.ToArray();
             }
             catch
@@ -139,8 +146,8 @@ public static class SearchComplitionManager
                 foreach (var item in nodelist)
                 {
                     if (item is not System.Xml.XmlElement itemXe) continue;
-                    if (itemXe.FirstChild.Attributes.Count == 0) continue;
-                    result.Add(itemXe.FirstChild.Attributes["k"].Value);
+                    if (!itemXe.HasAttribute("k")) continue;
+                    result.Add(itemXe.GetAttribute("k"));
                 }
                 return result.ToArray();
             }

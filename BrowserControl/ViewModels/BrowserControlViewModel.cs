@@ -211,8 +211,7 @@ public class BrowserControlViewModel : INotifyPropertyChanged, IBrowserControlVi
                     {
                         try
                         {
-                            var word = (this.SearchEngine ?? "https://www.google.com/search?q=%s").Replace("%s", value);
-                            Content?.Navigate(new Uri(word));
+                            Search(value);
                         }
                         catch { }
                     }
@@ -224,6 +223,16 @@ public class BrowserControlViewModel : INotifyPropertyChanged, IBrowserControlVi
             }
             catch { }
         }
+    }
+
+    public void Search(string term)
+    {
+        try
+        {
+            var word = (this.SearchEngine ?? "https://www.google.com/search?q=%s").Replace("%s", term);
+            Content?.Navigate(new Uri(word));
+        }
+        catch { }
     }
 
 

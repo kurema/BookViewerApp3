@@ -148,6 +148,7 @@
     <Compile Include="Views\BrowserControl2.xaml.cs">
       <DependentUpon>BrowserControl2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TemplateSelectors\SearchEngineEntrySelector.cs" />
     <EmbeddedResource Include="Properties\BrowserControl.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +178,7 @@
   <ItemGroup>
     <None Include="BookViewerApp_TemporaryKey.pfx" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

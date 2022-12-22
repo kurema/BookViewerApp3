@@ -505,7 +505,10 @@ namespace BookViewerApp.Storages
                 return new kurema.BrowserControl.ViewModels.SearchEngineEntryDelegate(this.title, async (word, action) =>
                 {
                     if (action is not null) await action.Invoke(string.Format(url, System.Web.HttpUtility.UrlEncode(word)));
-                });
+                })
+                {
+                    EntryGenre = kurema.BrowserControl.ViewModels.ISearchEngineEntry.Genre.SearchEngine,
+                };
             }
         }
 

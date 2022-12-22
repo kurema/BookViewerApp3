@@ -272,13 +272,13 @@ public sealed partial class BrowserControl : Page, IDisposable
         });
     }
 
-    private void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    private async void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         if (this.DataContext is not IBrowserControlViewModel vm) return;
         string word = sender.Text;
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            var list = new List<ISearchEngineEntry>();
+            var list = new System.Collections.ObjectModel.ObservableCollection<ISearchEngineEntry>();
             //if (vm.SearchEngineDefault is not null)
             //{
             //    vm.SearchEngineDefault.Word = word;
@@ -295,13 +295,25 @@ public sealed partial class BrowserControl : Page, IDisposable
                     list.Add(item);
                 }
             }
-            sender.ItemsSource = list.ToArray();
+            sender.ItemsSource = list;
+
+            var complitions = await Helper.SearchComplitions.SearchComplitionManager.UseCacheOrGet(word);
+            foreach (var comp in complitions.Reverse())
+            {
+                var toAdd = new SearchEngineEntryDelegate(comp, (_, action) =>
+                {
+                    vm.Search(comp);
+                    return Task.CompletedTask;
+                });
+                list.Insert(0, toAdd);
+            }
         }
         else
         {
             sender.IsSuggestionListOpen = false;
         }
     }
+
 
     private void addressBarTextBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {

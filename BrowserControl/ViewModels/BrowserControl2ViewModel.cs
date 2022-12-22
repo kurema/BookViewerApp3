@@ -118,6 +118,16 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
     private bool _CanGoForward;
     public bool CanGoForward { get => _CanGoForward; set => SetProperty(ref _CanGoForward, value); }
 
+    public void Search(string term)
+    {
+        try
+        {
+            var word = (this.SearchEngine ?? "https://www.google.com/search?q=%s").Replace("%s", term);
+            if (Uri.TryCreate(word, UriKind.Absolute, out var result)) this.Source = result;
+        }
+        catch { }
+    }
+
     public string SourceString
     {
         get => Source?.ToString();
@@ -143,12 +153,7 @@ public class BrowserControl2ViewModel : INotifyPropertyChanged, IBrowserControlV
                 }
                 else
                 {
-                    try
-                    {
-                        var word = (this.SearchEngine ?? "https://www.google.com/search?q=%s").Replace("%s", value);
-                        ParseAndSetSource(word);
-                    }
-                    catch { }
+                    Search(value);
                 }
             }
 

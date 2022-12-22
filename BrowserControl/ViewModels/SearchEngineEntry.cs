@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using static kurema.BrowserControl.ViewModels.ISearchEngineEntry;
 
 namespace kurema.BrowserControl.ViewModels;
 
@@ -11,9 +12,15 @@ public interface ISearchEngineEntry : INotifyPropertyChanged
     string Title { get; }
     string Description { get; }
     string Word { get; set; }
+    Genre EntryGenre { get; set; }
 
     Task Open(Func<string, Task> openUrlCallback);
-    Task<IEnumerable<ISearchEngineEntry>> GetCandidates();
+    //Task<IEnumerable<ISearchEngineEntry>> GetCandidates();
+
+    public enum Genre
+    {
+        None, SearchEngine, Complition, URL,
+    }
 }
 
 public class SearchEngineEntryDelegate : ISearchEngineEntry
@@ -40,15 +47,20 @@ public class SearchEngineEntryDelegate : ISearchEngineEntry
     #endregion
 
     Func<string, Func<string, Task>, Task> action;
-    Func<string, Task<IEnumerable<ISearchEngineEntry>>>? funcCandidates;
+    //Func<string, Task<IEnumerable<ISearchEngineEntry>>>? funcCandidates;
 
-    public SearchEngineEntryDelegate(string title, Func<string, Func<string, Task>, Task> action, Func<string, Task<IEnumerable<ISearchEngineEntry>>> funcCandidates = null)
+    //public SearchEngineEntryDelegate(string title, Func<string, Func<string, Task>, Task> action, Func<string, Task<IEnumerable<ISearchEngineEntry>>> funcCandidates = null)
+    //{
+    //    Title = title ?? throw new ArgumentNullException(nameof(title));
+    //    this.action = action ?? throw new ArgumentNullException(nameof(action));
+    //    this.funcCandidates = funcCandidates;
+    //}
+
+    public SearchEngineEntryDelegate(string title, Func<string, Func<string, Task>, Task> action)
     {
         Title = title ?? throw new ArgumentNullException(nameof(title));
         this.action = action ?? throw new ArgumentNullException(nameof(action));
-        this.funcCandidates = funcCandidates;
     }
-
 
     private string _Title = string.Empty;
     public string Title { get => string.Format(_Title ?? string.Empty, Word ?? string.Empty); set => SetProperty(ref _Title, value); }
@@ -69,11 +81,13 @@ public class SearchEngineEntryDelegate : ISearchEngineEntry
         }
     }
 
-    public async Task<IEnumerable<ISearchEngineEntry>> GetCandidates()
-    {
-        if (funcCandidates is null) return Array.Empty<ISearchEngineEntry>();
-        return await funcCandidates.Invoke(Word) ?? Array.Empty<ISearchEngineEntry>();
-    }
+    public Genre EntryGenre { get; set; } = Genre.None;
+
+    //public async Task<IEnumerable<ISearchEngineEntry>> GetCandidates()
+    //{
+    //    if (funcCandidates is null) return Array.Empty<ISearchEngineEntry>();
+    //    return await funcCandidates.Invoke(Word) ?? Array.Empty<ISearchEngineEntry>();
+    //}
 
     public async Task Open(Func<string, Task> openUrlCallback)
     {

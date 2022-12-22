@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using kurema.BrowserControl.ViewModels;
 using Windows.ApplicationModel;
 using System.Reflection;
+using System.Collections.ObjectModel;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -247,13 +248,13 @@ public sealed partial class BrowserControl2 : Page, IDisposable
         });
     }
 
-    private void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    private async void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (this.DataContext is not BrowserControl2ViewModel vm) return;
+        if (this.DataContext is not IBrowserControlViewModel vm) return;
         string word = sender.Text;
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            var list = new List<ISearchEngineEntry>();
+            var list = new ObservableCollection<ISearchEngineEntry>();
             //if (vm.SearchEngineDefault is not null)
             //{
             //    vm.SearchEngineDefault.Word = word;
@@ -270,7 +271,18 @@ public sealed partial class BrowserControl2 : Page, IDisposable
                     list.Add(item);
                 }
             }
-            sender.ItemsSource = list.ToArray();
+            sender.ItemsSource = list;
+
+            var complitions = await Helper.SearchComplitions.SearchComplitionManager.UseCacheOrGet(word);
+            foreach (var comp in complitions.Reverse())
+            {
+                var toAdd = new SearchEngineEntryDelegate(comp, (word, action) =>
+                {
+                    vm.Search(comp);
+                    return Task.CompletedTask;
+                });
+                list.Insert(0, toAdd);
+            }
         }
         else
         {
@@ -306,6 +318,7 @@ public sealed partial class BrowserControl2 : Page, IDisposable
 
     private void webView_NavigationCompleted(Microsoft.UI.Xaml.Controls.WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
     {
+        addressBarTextBox.IsSuggestionListOpen = false;
         RestoreAddressBarTextBoxText();
     }
 }

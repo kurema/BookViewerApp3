@@ -100,7 +100,7 @@
                     <AutoSuggestBox BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SourceString,UpdateSourceTrigger=Default,Mode=OneWay}" VerticalAlignment="Center" Background="Transparent"
                              KeyDown="TextBox_KeyDown" GotFocus="TextBox_GotFocus"
                              TextChanged="addressBarTextBox_TextChanged" SuggestionChosen="addressBarTextBox_SuggestionChosen" QuerySubmitted="addressBarTextBox_QuerySubmitted"
-                             Name="addressBarTextBox">
+                             Name="addressBarTextBox" xmlns:tp="using:kurema.BrowserControl.Views.TemplateSelectors">
                         <AutoSuggestBox.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.ThemeDictionaries>
@@ -117,18 +117,39 @@
                                 </ResourceDictionary.ThemeDictionaries>
                             </ResourceDictionary>
                         </AutoSuggestBox.Resources>
-                        <AutoSuggestBox.ItemTemplate>
-                            <DataTemplate x:DataType="vm:ISearchEngineEntry">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <SymbolIcon Symbol="Find" Grid.Column="0"/>
-                                    <TextBlock Text="{Binding Title}" Grid.Column="1" Margin="5,0,0,0"/>
-                                </Grid>
-                            </DataTemplate>
-                        </AutoSuggestBox.ItemTemplate>
+                        <AutoSuggestBox.ItemTemplateSelector>
+                            <tp:SearchEngineEntrySelector>
+                                <tp:SearchEngineEntrySelector.TemplateNone>
+                                    <DataTemplate x:DataType="vm:ISearchEngineEntry">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <SymbolIcon Symbol="Find" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Title}" Grid.Column="1" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </tp:SearchEngineEntrySelector.TemplateNone>
+                                <tp:SearchEngineEntrySelector.TemplateComplition>
+                                    <DataTemplate x:DataType="vm:ISearchEngineEntry">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <SymbolIcon Symbol="Find" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Title}" Grid.Column="1" Margin="5,0,0,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </tp:SearchEngineEntrySelector.TemplateComplition>
+                                <tp:SearchEngineEntrySelector.TemplateSearchEngine>
+                                    <DataTemplate x:DataType="vm:ISearchEngineEntry">
+                                        <TextBlock Text="{Binding Title}" />
+                                    </DataTemplate>
+                                </tp:SearchEngineEntrySelector.TemplateSearchEngine>
+                            </tp:SearchEngineEntrySelector>
+                        </AutoSuggestBox.ItemTemplateSelector>
                         <!--<AutoSuggestBox.Style>
                             --><!--Without this empty style, border is shown some how. -->
                             <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 --><!--

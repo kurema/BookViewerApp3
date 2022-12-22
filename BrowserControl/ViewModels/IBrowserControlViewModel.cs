@@ -17,6 +17,7 @@ public interface IBrowserControlViewModel
     string HomePage { get; set; }
     ICommand OpenDownloadDirectoryCommand { get; set; }
     string SearchEngine { get; set; }
+    void Search(string term);
 
     ISearchEngineEntry[] SearchEngines { get; set; }
     //ISearchEngineEntry SearchEngineDefault { get; set; }
