@@ -19,7 +19,7 @@ public interface ISearchEngineEntry : INotifyPropertyChanged
 
     public enum Genre
     {
-        None, SearchEngine, Complition, URL,
+        None, SearchEngine, Complition, URL, Bookmark,
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace kurema.BrowserControl.ViewModels;
 
@@ -81,5 +82,53 @@ public class BookmarkItem : IBookmarkItem
     public Task<IEnumerable<IBookmarkItem>> GetChilderenAsync()
     {
         return GetChilderenDelegate?.Invoke() ?? Task.FromResult<IEnumerable<IBookmarkItem>>(null);
+    }
+
+    public static async Task<(IEnumerable<IBookmarkItem>, IEnumerable<IBookmarkItem>)> SearchBookmark(IBookmarkItem bookmark, string word)
+    {
+        //new[] { ' ', '　', '&', '＆' }
+        if (bookmark is null) return (Array.Empty<IBookmarkItem>(), Array.Empty<IBookmarkItem>());
+        var words = word.Split(new string[0], StringSplitOptions.RemoveEmptyEntries).Select(a => a.Trim()).ToArray();
+        var list1 = new List<IBookmarkItem>();
+        var list2 = new List<IBookmarkItem>();
+        await SearchRecursion(bookmark, list1, list2, words);
+        return (list1.ToArray(), list2.ToArray());
+
+        static async Task SearchRecursion(IBookmarkItem bookmark, IList<IBookmarkItem> hitAllList, IList<IBookmarkItem> hitSingleList, string[] words)
+        {
+            if (bookmark.IsFolder)
+            {
+                var items = await bookmark.GetChilderenAsync();
+                foreach (var item in items)
+                {
+                    await SearchRecursion(item, hitAllList, hitSingleList, words);
+                }
+                return;
+            }
+            if (words.Length == 0)
+            {
+                hitAllList.Add(bookmark);
+                return;
+            }
+            bool hitAll = true;
+            bool hitSingle = false;
+            foreach (var word in words)
+            {
+                var hit = bookmark.Title.Contains(word, StringComparison.CurrentCultureIgnoreCase) || bookmark.Title.Contains(word, StringComparison.CurrentCultureIgnoreCase);
+                hitAll &= hit;
+                hitSingle |= hit;
+            }
+            if (hitAll)
+            {
+                hitAllList.Add(bookmark);
+                return;
+            }
+            if (hitSingle)
+            {
+                hitSingleList.Add(bookmark);
+                return;
+            }
+            return;
+        }
     }
 }

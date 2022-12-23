@@ -250,11 +250,18 @@ public sealed partial class BrowserControl2 : Page, IDisposable
 
     private async void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (this.DataContext is not IBrowserControlViewModel vm) return;
+        await Shared_addressBarTextBox_TextChanged(sender, args, DataContext as IBrowserControlViewModel);
+    }
+
+    public static async Task Shared_addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args, IBrowserControlViewModel vm)
+    {
+        // Making this public is a bit strange. But it's also not good to copy the almost same comment each time.
+
+        if (vm is null) return;
         string word = sender.Text;
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            var list = new ObservableCollection<ISearchEngineEntry>();
+            var list = new System.Collections.ObjectModel.ObservableCollection<ISearchEngineEntry>();
             //if (vm.SearchEngineDefault is not null)
             //{
             //    vm.SearchEngineDefault.Word = word;
@@ -262,7 +269,7 @@ public sealed partial class BrowserControl2 : Page, IDisposable
             //    if (candidates?.Count() > 0) list.AddRange(candidates);
             //    list.Add(vm.SearchEngineDefault);
             //}
-            if (vm.SearchEngines is not null && !string.IsNullOrEmpty(word))
+            if (vm.SearchEngines is not null && !string.IsNullOrWhiteSpace(word))
             {
                 foreach (var item in vm.SearchEngines)
                 {
@@ -273,16 +280,39 @@ public sealed partial class BrowserControl2 : Page, IDisposable
             }
             sender.ItemsSource = list;
 
-            var complitions = await Helper.SearchComplitions.SearchComplitionManager.UseCacheOrGet(word);
-            foreach (var comp in complitions.Reverse())
+            try
             {
-                var toAdd = new SearchEngineEntryDelegate(comp, (word, action) =>
+                var complitions = await Helper.SearchComplitions.SearchComplitionManager.UseCacheOrGet(word);
+                foreach (var comp in complitions.Reverse())
                 {
-                    vm.Search(comp);
-                    return Task.CompletedTask;
-                });
-                list.Insert(0, toAdd);
+                    var toAdd = new SearchEngineEntryDelegate(comp, (_, action) =>
+                    {
+                        vm.Search(comp);
+                        return Task.CompletedTask;
+                    })
+                    { EntryGenre = ISearchEngineEntry.Genre.Complition };
+                    list.Insert(0, toAdd);
+                }
             }
+            catch { }
+
+            try
+            {
+                (var result1, var result2) = await BookmarkItem.SearchBookmark(vm.BookmarkRoot, word);
+                foreach (var item in result1)
+                {
+                    var toAdd = new SearchEngineEntryDelegate(item.Title, (_, action) =>
+                    {
+                        { if (vm is BrowserControlViewModel vm2) vm2.Uri = item.Address; }
+                        { if (vm is BrowserControl2ViewModel vm2) vm2.SourceString = item.Address; }
+                        return Task.CompletedTask;
+                    })
+                    { EntryGenre = ISearchEngineEntry.Genre.Bookmark };
+                    list.Add(toAdd);
+                }
+
+            }
+            catch { }
         }
         else
         {

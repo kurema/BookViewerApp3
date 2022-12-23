@@ -143,6 +143,18 @@
                                         </Grid>
                                     </DataTemplate>
                                 </tp:SearchEngineEntrySelector.TemplateComplition>
+                                <tp:SearchEngineEntrySelector.TemplateBookmark>
+                                    <DataTemplate x:DataType="vm:ISearchEngineEntry">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <SymbolIcon Symbol="Favorite" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Title}" Grid.Column="1" Margin="5,0,0,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </tp:SearchEngineEntrySelector.TemplateBookmark>
                                 <tp:SearchEngineEntrySelector.TemplateSearchEngine>
                                     <DataTemplate x:DataType="vm:ISearchEngineEntry">
                                         <TextBlock Text="{Binding Title}" />

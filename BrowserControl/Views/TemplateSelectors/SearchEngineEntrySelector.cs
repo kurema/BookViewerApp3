@@ -15,6 +15,7 @@ public class SearchEngineEntrySelector : DataTemplateSelector
     public DataTemplate TemplateNone { get; set; }
     public DataTemplate TemplateSearchEngine { get; set; }
     public DataTemplate TemplateComplition { get; set; }
+    public DataTemplate TemplateBookmark { get; set; }
     public DataTemplate TemplateURL { get; set; }
 
     protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
@@ -25,6 +26,7 @@ public class SearchEngineEntrySelector : DataTemplateSelector
             ISearchEngineEntry.Genre.SearchEngine => TemplateSearchEngine,
             ISearchEngineEntry.Genre.Complition => TemplateComplition,
             ISearchEngineEntry.Genre.URL => TemplateURL,
+            ISearchEngineEntry.Genre.Bookmark => TemplateBookmark,
             ISearchEngineEntry.Genre.None => TemplateNone,
             _ => base.SelectTemplateCore(item, container),
         };

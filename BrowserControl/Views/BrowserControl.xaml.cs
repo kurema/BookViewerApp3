@@ -274,46 +274,8 @@ public sealed partial class BrowserControl : Page, IDisposable
 
     private async void addressBarTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (this.DataContext is not IBrowserControlViewModel vm) return;
-        string word = sender.Text;
-        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-        {
-            var list = new System.Collections.ObjectModel.ObservableCollection<ISearchEngineEntry>();
-            //if (vm.SearchEngineDefault is not null)
-            //{
-            //    vm.SearchEngineDefault.Word = word;
-            //    var candidates = (await vm.SearchEngineDefault.GetCandidates())?.ToArray();
-            //    if (candidates?.Count() > 0) list.AddRange(candidates);
-            //    list.Add(vm.SearchEngineDefault);
-            //}
-            if (vm.SearchEngines is not null && !string.IsNullOrEmpty(word))
-            {
-                foreach (var item in vm.SearchEngines)
-                {
-                    if (item is null) continue;
-                    item.Word = word;
-                    list.Add(item);
-                }
-            }
-            sender.ItemsSource = list;
-
-            var complitions = await Helper.SearchComplitions.SearchComplitionManager.UseCacheOrGet(word);
-            foreach (var comp in complitions.Reverse())
-            {
-                var toAdd = new SearchEngineEntryDelegate(comp, (_, action) =>
-                {
-                    vm.Search(comp);
-                    return Task.CompletedTask;
-                });
-                list.Insert(0, toAdd);
-            }
-        }
-        else
-        {
-            sender.IsSuggestionListOpen = false;
-        }
+        await BrowserControl2.Shared_addressBarTextBox_TextChanged(sender, args, DataContext as IBrowserControlViewModel);
     }
-
 
     private void addressBarTextBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
