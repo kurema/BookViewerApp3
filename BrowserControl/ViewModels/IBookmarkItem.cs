@@ -86,8 +86,10 @@ public class BookmarkItem : IBookmarkItem
 
     public static async Task<(IEnumerable<IBookmarkItem>, IEnumerable<IBookmarkItem>)> SearchBookmark(IBookmarkItem bookmark, string word)
     {
-        //new[] { ' ', '　', '&', '＆' }
         if (bookmark is null) return (Array.Empty<IBookmarkItem>(), Array.Empty<IBookmarkItem>());
+        //new[] { ' ', '　', '&', '＆' }
+        //string.Split(new string[0],_) means that any White_Space(Zs) catagory character in Unicode is the separator.
+        //https://learn.microsoft.com/dotnet/api/system.string.split
         var words = word.Split(new string[0], StringSplitOptions.RemoveEmptyEntries).Select(a => a.Trim()).ToArray();
         var list1 = new List<IBookmarkItem>();
         var list2 = new List<IBookmarkItem>();
