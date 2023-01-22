@@ -71,7 +71,7 @@ namespace BookViewerApp.Books
 			}
 		}
 
-		public static TocItem[] GetTocs(Array? list, System.util.INullValueDictionary<object, iTextSharp.text.pdf.PdfObject> nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
+		public static TocItem[] GetTocs(Array? list, Hashtable nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
 		{
 			int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
 			{
@@ -83,13 +83,11 @@ namespace BookViewerApp.Books
 
 			if (list is null) return new TocItem[0];
 
-
 			var result = new List<TocItem>();
 			foreach (var item in list)
 			{
 				TocItem tocItem = new();
-				var t = item.GetType();
-				if (item is System.util.INullValueDictionary<string,object> itemd)
+				if (item is Hashtable itemd)
 				{
 					if (itemd.ContainsKey("Named") && itemd["Named"] is string named)
 					{
@@ -154,6 +152,91 @@ namespace BookViewerApp.Books
 			}
 			return result.ToArray();
 		}
+
+		//Code for iTextSharp v3.0.0? (maybe v2.0.0) or above.
+		//public static TocItem[] GetTocs(Array? list, System.util.INullValueDictionary<object, iTextSharp.text.pdf.PdfObject> nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
+		//{
+		//	int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
+		//	{
+		//		return pageRefs.FindIndex(a =>
+		//		{
+		//			return a.Number == pref.Number && a.Generation == pref.Generation;
+		//		});
+		//	}
+
+		//	if (list is null) return new TocItem[0];
+
+
+		//	var result = new List<TocItem>();
+		//	foreach (var item in list)
+		//	{
+		//		TocItem tocItem = new();
+		//		var t = item.GetType();
+		//		if (item is System.util.INullValueDictionary<string,object> itemd)
+		//		{
+		//			if (itemd.ContainsKey("Named") && itemd["Named"] is string named)
+		//			{
+		//				if (nd.ContainsKey(named) && nd[named] is iTextSharp.text.pdf.PdfArray nditem)
+		//				{
+		//					//Note
+		//					//http://www.pdf-tools.trustss.co.jp/Syntax/catalog.html#destinations
+
+		//					if (nditem.Length > 0 && nditem[0] is iTextSharp.text.pdf.PdfIndirectReference pir)
+		//					{
+		//						//This pir thing is not page number. This is reference to the /Page.
+		//						//https://stackoverflow.com/questions/30855432/how-to-get-the-page-number-of-an-arbitrary-pdf-object
+		//						tocItem.Page = GetPage(pir);
+		//					}
+		//				}
+		//				else if (nd.ContainsKey(named) && nd[named] is iTextSharp.text.pdf.PdfDictionary ndDict)
+		//				{
+		//					//I dont have PDF file to test this...
+		//					continue;
+		//				}
+		//			}
+		//			else if (itemd.ContainsKey("Page"))
+		//			{
+		//				if (itemd["Page"] is string s)
+		//				{
+		//					var res = s.Split(' ');
+		//					if (res.Length > 0 && int.TryParse(res[0], out int page))
+		//					{
+		//						tocItem.Page = page - 1;
+		//					}
+		//					else
+		//					{
+		//						continue;
+		//					}
+		//				}
+		//				else if (itemd["Page"] is iTextSharp.text.pdf.PdfArray nditem)
+		//				{
+		//					//There may be the case where this is PdfIndirectReference... But I dont have one.
+		//					//Does this really happen?
+		//					if (nditem.Length > 0 && nditem[0] is iTextSharp.text.pdf.PdfIndirectReference pir)
+		//					{
+		//						tocItem.Page = GetPage(pir);
+		//					}
+		//				}
+		//				else
+		//				{
+		//					continue;
+		//				}
+		//			}
+		//			else { continue; }
+		//			if (itemd.ContainsKey("Title") && itemd["Title"] is string title)
+		//			{
+		//				tocItem.Title = title;
+		//			}
+		//			else { continue; }
+		//			if (itemd.ContainsKey("Kids") && itemd["Kids"] is ArrayList kids)
+		//			{
+		//				tocItem.Children = GetTocs(kids.ToArray(), nd, pageRefs);
+		//			}
+		//			result.Add(tocItem);
+		//		}
+		//	}
+		//	return result.ToArray();
+		//}
 
 		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
 		{
