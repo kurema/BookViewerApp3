@@ -14,11 +14,11 @@ jobs:
 
     env:
       SigningCertificate: BookViewerApp_TemporaryKey_GitHub.pfx
-      Solution_Path: BookViewerApp.sln
+      Solution_Path: BookViewerApp\BookViewerApp.sln
       UWP_Project_Path: BookViewerApp.csproj
-      UWP_Project_Directory: .\BookViewerApp\
-      BrowserControl_Project_Directory: .\BrowserControl\
-      FileExplorerControl_Project_Directory: .\FileExplorerControl\
+      UWP_Project_Directory: .\BookViewerApp\BookViewerApp\
+      BrowserControl_Project_Directory: .\BookViewerApp\BrowserControl\
+      FileExplorerControl_Project_Directory: .\BookViewerApp\FileExplorerControl\
 
     steps:
 
@@ -50,9 +50,15 @@ jobs:
           }
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        path: BookViewerApp
+    
+    - name: Checkout tools repo
+      uses: actions/checkout@v3
+      with:
+        repository: kurema/DistillNET
+        path: DistillNET
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
