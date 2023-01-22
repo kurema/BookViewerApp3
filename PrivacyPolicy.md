@@ -18,7 +18,7 @@ You can perform searches directory from several places on BookViewer 3, includin
 * [YouTube](https://support.google.com/youtube/answer/7671399)
 
 #### Search queries
-BookViewer 3 by default sends search queries to Google to suggest words to search for you. You can change it to other provider or disable.
+BookViewer 3 by default do not sends search queries. You can enable search completion service in the settings. In that case, BookViewer 3 send search queries to Google or another provider to suggest words to search for you.
 
 ### GitHub
 GitHub is used to
