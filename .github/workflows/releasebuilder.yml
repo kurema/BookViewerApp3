@@ -50,9 +50,13 @@ jobs:
           }
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+    
+    - name: Checkout tools repo
+      uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        repository: kurema/DistillNET
+        path: DistillNET
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
