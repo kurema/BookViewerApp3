@@ -4,7 +4,7 @@
 [![Release builder](https://github.com/kurema/BookViewerApp3/workflows/Release%20builder/badge.svg)](https://github.com/kurema/BookViewerApp3/actions)
 [![Releases](https://img.shields.io/github/release/kurema/BookViewerApp3.svg)](https://github.com/kurema/BookViewerApp3/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/kurema/BookViewerApp3/blob/master/LICENSE)
-[![Chat on Discord](https://discordapp.com/api/guilds/741373122858713118/widget.png)](https://discord.gg/tKwuhcc)
+[![Chat on Discord](https://discordapp.com/api/guilds/741373122858713118/widget.png)](https://discord.gg/EKZEs8g8w6)
 
 BookViewer 3 is a powerful and beautiful viewer app for booklovers and comic fans.
 Its main features include multiple tabs, file manager, Fluent Design System and web browser.
