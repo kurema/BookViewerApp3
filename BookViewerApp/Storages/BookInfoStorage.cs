@@ -10,6 +10,9 @@ namespace BookViewerApp.Storages;
 
 public class BookInfoStorage
 {
+    //ToDo:
+    //Consider using sqlite. Simple database like this is suitable for RDBMS.
+
     private const string fileName = "Bookinfo.xml";
     private static Windows.Storage.StorageFolder DataFolderRoaming { get { return Functions.GetSaveFolderRoaming(); } }
     private static Windows.Storage.StorageFolder DataFolderLocal { get { return Functions.GetSaveFolderLocal(); } }
