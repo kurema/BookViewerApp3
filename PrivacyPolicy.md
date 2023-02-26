@@ -18,7 +18,7 @@ You can perform searches directory from several places on BookViewer 3, includin
 * [YouTube](https://support.google.com/youtube/answer/7671399)
 
 #### Search queries
-BookViewer 3 by default do not sends search queries. You can enable search completion service in the settings. In that case, BookViewer 3 send search queries to Google or another provider to suggest words to search for you.
+BookViewer 3 by default does not send search queries. You can enable search completion service in the settings. In that case, BookViewer 3 send search queries to Google or another provider to suggest words to search for you.
 
 ### GitHub
 GitHub is used to
@@ -32,7 +32,7 @@ Links to GitHub are:
 
 * [GitHub](https://docs.github.com/site-policy/privacy-policies/github-privacy-statement).
 
-## If you enable the features, BookViewer 3 by send data to:
+## If you enable the features, BookViewer 3 send data to:
 ### Providers of filters for AdBlocker
 AdBlocker is disabled by default. If you enable it and download the filters, BookViewer 3 shares data to the providers of each filters. Please refer to the privacy policy of each filters.
 We provide links to project page and licenses of some of the filters, but we do not guarantee that they are all up to date. It is also possible that the filter download source has been changed to an unintended operator.
