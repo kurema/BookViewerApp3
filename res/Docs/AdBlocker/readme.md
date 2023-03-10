@@ -41,7 +41,7 @@ We use [DistillNET](https://github.com/TechnikEmpire/DistillNET) to analyze filt
 
 ### YouTube
 If WebView2 is enabled, video ads for YouTube is also blocked, sometimes.
-For technical reasons, video ad blocking does not work when you open the play page currently.
+For technical reasons, video ad blocking does not work when you open the play page at first currently.
 It only works when you open another video on the play page.
 
 In YouTube We rewrite the JSON file. In particular `playerAds` and `adPlacements` are removed.
@@ -54,7 +54,7 @@ This may no longer work if YouTube specs has been changed. Add issue or just dis
 Filters are generally downloaded using SSL, but make sure your internet connection are secure.
 Filters are downloaded periodically, not just when you download them in your Manager.
 
-All we do is block requests (and YouTube stuffs), so we don't expect any major security breaches, but still.
+All we do is to block requests (and YouTube stuffs), so we don't expect any major security breaches, but be careful still.
 
 ## Licenses
 Many existing ad blockers are GPLed and we use MIT, so we don't use their code.
