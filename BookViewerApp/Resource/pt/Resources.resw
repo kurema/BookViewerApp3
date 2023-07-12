@@ -886,4 +886,10 @@ Fonte: {2}</value>
   <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
     <value>Nenhum</value>
   </data>
+  <data name="Setting_ScreenBrightnessOverride.Description" xml:space="preserve">
+    <value>Substituir o brilho do ecrã. Ativado apenas quando o valor é positivo.</value>
+  </data>
+  <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
+    <value>Brilho do ecrã</value>
+  </data>
 </root>

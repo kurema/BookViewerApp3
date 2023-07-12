@@ -1035,4 +1035,10 @@ Source: {2}</value>
     <value>Bing</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="Setting_ScreenBrightnessOverride.Description" xml:space="preserve">
+    <value>Override screen brightness. Enabled only when the value is positive.</value>
+  </data>
+  <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
+    <value>Screen brightness</value>
+  </data>
 </root>

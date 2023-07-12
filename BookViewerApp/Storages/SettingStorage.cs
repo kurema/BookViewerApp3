@@ -60,9 +60,11 @@ public class SettingStorage
         public const string BrowserAdBlockEnabled = "BrowserAdBlockEnabled";
         public const string Theme = "Theme";
         public const string BrowserSearchComplitionService = "BrowserSearchComplitionService";
-    }
+		public const string ScreenBrightnessOverride = "ScreenBrightnessOverride";
 
-    private static SettingInstance[] _SettingInstances = null;
+	}
+
+	private static SettingInstance[] _SettingInstances = null;
     public static SettingInstance[] SettingInstances
     {
         get
@@ -107,7 +109,9 @@ public class SettingStorage
                         new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
-                };
+						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-1,new TypeConverters.DoubleConverter(),group:"Viewer"){ Minimum = -1, Maximum = 100},
+
+				};
             //How to add resource when you add SettingInstance:
             //1. Open Resource/en-US/Resources.resw
             //2. Add entries nemad:

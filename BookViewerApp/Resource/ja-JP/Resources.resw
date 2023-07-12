@@ -892,4 +892,10 @@
   <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
     <value>なし</value>
   </data>
+  <data name="Setting_ScreenBrightnessOverride.Description" xml:space="preserve">
+    <value>画面の明るさを上書きする。値が正のときのみ有効。</value>
+  </data>
+  <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
+    <value>画面の明るさ</value>
+  </data>
 </root>

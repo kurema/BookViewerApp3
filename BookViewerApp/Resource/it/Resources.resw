@@ -888,4 +888,10 @@ Fonte: {2}</value>
   <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
     <value>Nessuno</value>
   </data>
+  <data name="Setting_ScreenBrightnessOverride.Description" xml:space="preserve">
+    <value>Sovrascrive la luminosità dello schermo. Abilitato solo quando il valore è positivo.</value>
+  </data>
+  <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
+    <value>Luminosità dello schermo</value>
+  </data>
 </root>
