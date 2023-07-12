@@ -17,7 +17,6 @@ using Windows.UI.Xaml.Navigation;
 
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
-
 namespace BookViewerApp;
 
 /// <summary>
@@ -25,140 +24,169 @@ namespace BookViewerApp;
 /// </summary>
 sealed partial class App : Application
 {
-    /// <summary>
-    /// 単一アプリケーション オブジェクトを初期化します。これは、実行される作成したコードの
-    ///最初の行であるため、main() または WinMain() と論理的に等価です。
-    /// </summary>
-    public App()
-    {
-        this.InitializeComponent();
-        this.Suspending += OnSuspending;
-        LoadStorages();
+	/// <summary>
+	/// 単一アプリケーション オブジェクトを初期化します。これは、実行される作成したコードの
+	///最初の行であるため、main() または WinMain() と論理的に等価です。
+	/// </summary>
+	public App()
+	{
+		this.InitializeComponent();
+		this.Suspending += OnSuspending;
+		LoadStorages();
+		OverrideBrightness();
 
-        //Easier than DI.
-        kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.DefaultSearchComplitionProvider = () =>
-        {
-            if (SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserSearchComplitionService) is not kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions choice) return new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummy();
-            return choice switch
-            {
-                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Google => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionGoogleSingle,
-                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Yahoo => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionYahooSingle,
-                kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Bing => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionBingSingle,
-                _ => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummySingle,
-            };
-        };
-    }
+		//Easier than DI.
+		kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.DefaultSearchComplitionProvider = () =>
+		{
+			if (SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserSearchComplitionService) is not kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions choice) return new kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummy();
+			return choice switch
+			{
+				kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Google => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionGoogleSingle,
+				kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Yahoo => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionYahooSingle,
+				kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Bing => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionBingSingle,
+				_ => kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.SearchComplitionDummySingle,
+			};
+		};
+	}
 
-    private async void LoadStorages()
-    {
-        await BookInfoStorage.LoadAsync();
-        //await LicenseStorage.LoadAsync();
-        await LibraryStorage.Content.GetContentAsync();
-        //await HistoryStorage.Content.GetContentAsync();
-        await PathStorage.Content.GetContentAsync();
-    }
+	private async void LoadStorages()
+	{
+		await BookInfoStorage.LoadAsync();
+		//await LicenseStorage.LoadAsync();
+		await LibraryStorage.Content.GetContentAsync();
+		//await HistoryStorage.Content.GetContentAsync();
+		await PathStorage.Content.GetContentAsync();
+	}
 
-    /// <summary>
-    /// アプリケーションがエンド ユーザーによって正常に起動されたときに呼び出されます。他のエントリ ポイントは、
-    /// アプリケーションが特定のファイルを開くために起動されたときなどに使用されます。
-    /// </summary>
-    /// <param name="e">起動の要求とプロセスの詳細を表示します。</param>
-    protected override void OnLaunched(LaunchActivatedEventArgs e)
-    {
+	static Windows.Graphics.Display.BrightnessOverride _BrightnessOverride;
+
+	public static void OverrideBrightness()
+	{
+		try
+		{
+			if (SettingStorage.GetValue(SettingStorage.SettingKeys.ScreenBrightnessOverride) is double bvalue && bvalue >= 0)
+			{
+				_BrightnessOverride?.StopOverride();
+				_BrightnessOverride = Windows.Graphics.Display.BrightnessOverride.GetForCurrentView();
+				if (_BrightnessOverride is not null and { IsSupported: true })
+				{
+					_BrightnessOverride.SetBrightnessLevel(bvalue / 100, Windows.Graphics.Display.DisplayBrightnessOverrideOptions.UseDimmedPolicyWhenBatteryIsLow);
+					_BrightnessOverride.StartOverride();
+				}
+			}
+		}
+		catch
+		{
+		}
+	}
+
+	/// <summary>
+	/// アプリケーションがエンド ユーザーによって正常に起動されたときに呼び出されます。他のエントリ ポイントは、
+	/// アプリケーションが特定のファイルを開くために起動されたときなどに使用されます。
+	/// </summary>
+	/// <param name="e">起動の要求とプロセスの詳細を表示します。</param>
+	protected override void OnLaunched(LaunchActivatedEventArgs e)
+	{
 #if DEBUG
-        if (System.Diagnostics.Debugger.IsAttached)
-        {
-            this.DebugSettings.EnableFrameRateCounter = true;
-        }
-
+		if (System.Diagnostics.Debugger.IsAttached)
+		{
+			this.DebugSettings.EnableFrameRateCounter = true;
+		}
 #endif
-        // ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、
-        // ウィンドウがアクティブであることだけを確認してください
-        if (Window.Current.Content is not Frame rootFrame)
-        {
-            // ナビゲーション コンテキストとして動作するフレームを作成し、最初のページに移動します
-            rootFrame = new Frame();
 
-            rootFrame.NavigationFailed += OnNavigationFailed;
+		// ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、
+		// ウィンドウがアクティブであることだけを確認してください
+		if (Window.Current.Content is not Frame rootFrame)
+		{
+			// ナビゲーション コンテキストとして動作するフレームを作成し、最初のページに移動します
+			rootFrame = new Frame();
 
-            if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-            {
-                //TODO: 以前中断したアプリケーションから状態を読み込みます
-            }
+			rootFrame.NavigationFailed += OnNavigationFailed;
 
-            // フレームを現在のウィンドウに配置します
-            Window.Current.Content = rootFrame;
-        }
+			if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+			{
+				//TODO: 以前中断したアプリケーションから状態を読み込みます
+			}
 
-        if (rootFrame.Content is null)
-        {
-            // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
-            // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
-            //構成します
-            rootFrame.Navigate(typeof(TabPage), e.Arguments);
-        }
-        // 現在のウィンドウがアクティブであることを確認します
-        Window.Current.Activate();
-    }
+			// フレームを現在のウィンドウに配置します
+			Window.Current.Content = rootFrame;
+		}
 
-    /// <summary>
-    /// 特定のページへの移動が失敗したときに呼び出されます
-    /// </summary>
-    /// <param name="sender">移動に失敗したフレーム</param>
-    /// <param name="e">ナビゲーション エラーの詳細</param>
-    void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-    {
-        throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
-    }
+		if (rootFrame.Content is null)
+		{
+			// ナビゲーション スタックが復元されない場合は、最初のページに移動します。
+			// このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
+			//構成します
+			rootFrame.Navigate(typeof(TabPage), e.Arguments);
+		}
+		// 現在のウィンドウがアクティブであることを確認します
+		Window.Current.Activate();
+	}
 
-    /// <summary>
-    /// アプリケーションの実行が中断されたときに呼び出されます。
-    /// アプリケーションが終了されるか、メモリの内容がそのままで再開されるかに
-    /// かかわらず、アプリケーションの状態が保存されます。
-    /// </summary>
-    /// <param name="sender">中断要求の送信元。</param>
-    /// <param name="e">中断要求の詳細。</param>
-    private async void OnSuspending(object sender, SuspendingEventArgs e)
-    {
-        var deferral = e.SuspendingOperation.GetDeferral();
+	/// <summary>
+	/// 特定のページへの移動が失敗したときに呼び出されます
+	/// </summary>
+	/// <param name="sender">移動に失敗したフレーム</param>
+	/// <param name="e">ナビゲーション エラーの詳細</param>
+	void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+	{
+		throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+	}
 
-        await BookInfoStorage.SaveAsync();
-        await LibraryStorage.Content.SaveAsync();
-        await LibraryStorage.RoamingBookmarks.SaveAsync();
+	/// <summary>
+	/// アプリケーションの実行が中断されたときに呼び出されます。
+	/// アプリケーションが終了されるか、メモリの内容がそのままで再開されるかに
+	/// かかわらず、アプリケーションの状態が保存されます。
+	/// </summary>
+	/// <param name="sender">中断要求の送信元。</param>
+	/// <param name="e">中断要求の詳細。</param>
+	private async void OnSuspending(object sender, SuspendingEventArgs e)
+	{
+		var deferral = e.SuspendingOperation.GetDeferral();
 
-        //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
-        deferral.Complete();
-    }
+		await BookInfoStorage.SaveAsync();
+		await LibraryStorage.Content.SaveAsync();
+		await LibraryStorage.RoamingBookmarks.SaveAsync();
 
-    protected override void OnFileActivated(FileActivatedEventArgs args)
-    {
-        if (Window.Current?.Content is Frame f)
-        {
+		try
+		{
+			_BrightnessOverride?.StopOverride();
+		}
+		catch { }
+
+		//TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
+		deferral.Complete();
+	}
+
+	protected override void OnFileActivated(FileActivatedEventArgs args)
+	{
+		if (Window.Current?.Content is Frame f)
+		{
 #pragma warning disable CS0612 // 型またはメンバーが旧型式です
-            if (f.Content is BookFixed2Viewer v2)
-            {
-                v2.SaveInfo();
-            }
+			if (f.Content is BookFixed2Viewer v2)
+			{
+				v2.SaveInfo();
+			}
 #pragma warning restore CS0612 // 型またはメンバーが旧型式です
-            else if (f.Content is BookFixed3Viewer v3)
-            {
-                v3.CloseOperation();
-            }
-            else if (f.Content is TabPage tp)
-            {
-                tp.OpenTabBook(args.Files);
-                return;
-            }
-        }
+			else if (f.Content is BookFixed3Viewer v3)
+			{
+				v3.CloseOperation();
+			}
+			else if (f.Content is TabPage tp)
+			{
+				tp.OpenTabBook(args.Files);
+				return;
+			}
+		}
 
-        var rootFrame = new Frame();
-        rootFrame.Navigate(typeof(TabPage), args);
+		var rootFrame = new Frame();
+		rootFrame.Navigate(typeof(TabPage), args);
 
-        if (Window.Current != null)
-        {
-            Window.Current.Content = rootFrame;
-            Window.Current.Activate();
-        }
-        //base.OnFileActivated(args);
-    }
+		if (Window.Current != null)
+		{
+			Window.Current.Content = rootFrame;
+			Window.Current.Activate();
+		}
+		//base.OnFileActivated(args);
+	}
 }

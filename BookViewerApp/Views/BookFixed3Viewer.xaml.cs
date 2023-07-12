@@ -152,22 +152,6 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 	{
 		UIHelper.SetTitleByResource(this, "BookViewer");
 
-		try
-		{
-			if (SettingStorage.GetValue(SettingKeys.ScreenBrightnessOverride) is double bvalue && bvalue >= 0)
-			{
-				_BrightnessOverride = Windows.Graphics.Display.BrightnessOverride.GetForCurrentView();
-				if (_BrightnessOverride is not null and { IsSupported: true })
-				{
-					_BrightnessOverride.SetBrightnessLevel(bvalue / 100, Windows.Graphics.Display.DisplayBrightnessOverrideOptions.UseDimmedPolicyWhenBatteryIsLow);
-					_BrightnessOverride.StartOverride();
-				}
-			}
-		}
-		catch
-		{
-		}
-
 		if (e?.Parameter is null) { }
 		else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs)
 		{
@@ -238,14 +222,6 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 	protected override void OnNavigatedFrom(NavigationEventArgs e)
 	{
 		Binding?.SaveInfo();
-
-		try
-		{
-			_BrightnessOverride?.StopOverride();
-		}
-		catch
-		{
-		}
 
 		var currentView = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
 		currentView.AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
