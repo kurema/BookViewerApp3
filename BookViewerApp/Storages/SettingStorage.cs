@@ -78,11 +78,12 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.DefaultPageReverse,false,new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.RememberPageDirection,true,new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.RespectPageDirectionInfo,true,new TypeConverters.BoolConverter(),group:"Viewer"),
-						new SettingInstance(SettingKeys.ShowRightmostAndLeftmost,false,new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.SyncBookmarks,true,new TypeConverters.BoolConverter(),group:"Cloud"),
 						new SettingInstance(SettingKeys.TileWidth,300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false) { Minimum=0, Maximum=1000 },
 						new SettingInstance(SettingKeys.TileHeight,300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){ Minimum=0, Maximum=1000 },
+						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-50,new TypeConverters.DoubleConverter(),group:"Viewer",IsLocal:true,onChangedAction:_=>{ App.OverrideBrightness(); }){ Minimum = -100, Maximum = 100,CustomUIKey="DoubleSignToggle"},
 						new SettingInstance(SettingKeys.BackgroundBrightness,90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){ Minimum=0, Maximum=100 },
+						new SettingInstance(SettingKeys.ShowRightmostAndLeftmost,false,new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.ScrollAnimation,true,new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.FolderNameToExclude,null,new TypeConverters.RegexConverter(),group:"Library",isVisible:false),
 						new SettingInstance(SettingKeys.BookNameTrim,null,new TypeConverters.RegexConverter(),group:"Library",isVisible:false),
@@ -109,7 +110,6 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
-						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-10,new TypeConverters.DoubleConverter(),group:"Viewer",IsLocal:true,onChangedAction:_=>{ App.OverrideBrightness(); }){ Minimum = -10, Maximum = 100},
 				};
 			//How to add resource when you add SettingInstance:
 			//1. Open Resource/en-US/Resources.resw
@@ -175,6 +175,8 @@ public class SettingStorage
 		public object Maximum { get; set; }
 
 		public string GroupName { get; set; }
+
+		public string CustomUIKey { get; set; } = null;
 
 		public bool IsVisible { get; set; }
 		public event EventHandler ValueChanged;

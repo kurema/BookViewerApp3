@@ -59,6 +59,8 @@ sealed partial class App : Application
 
 	static Windows.Graphics.Display.BrightnessOverride _BrightnessOverride;
 
+	public static void OverrideBrightnessStop() => _BrightnessOverride?.StopOverride();
+
 	public static void OverrideBrightness()
 	{
 		try

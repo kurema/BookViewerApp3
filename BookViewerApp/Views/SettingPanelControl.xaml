@@ -15,6 +15,8 @@
         <CollectionViewSource x:Name="settingSource" IsSourceGrouped="True"/>
 
         <ValueConverter:TextToDoubleConverter x:Key="TextToDoubleConverter"/>
+        <ValueConverter:DoubleSignToValueConverter x:Key="DoubleSignToValueConverter" />
+        <!--<ValueConverter:BoolToStringConverter x:Key="BoolToStringConverter" />-->
         <ValueConverter:LocalizeFormatConverter x:Key="vc_lf"/>
         <ValueConverter:LocalizeConverter x:Key="vc_local"/>
 
@@ -55,6 +57,25 @@
         </ItemsControl.GroupStyle>
         <ItemsControl.ItemTemplateSelector>
             <template:SettingTemplateSelector>
+                <template:SettingTemplateSelector.TemplateCustoms>
+                    <template:SettingTemplateSelectorCustomTemplate Key="DoubleSignToggle">
+                        <template:SettingTemplateSelectorCustomTemplate.Template>
+                            <DataTemplate>
+                                <Border Style="{StaticResource ItemBorder}">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                        <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}" TextWrapping="WrapWholeWords"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox IsEnabled="{Binding Value,Mode=OneWay,Converter={StaticResource DoubleSignToValueConverter},ConverterParameter=True:False}" InputScope="Number" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ResourceKey=TextToDoubleConverter}}" Width="80"/>
+                                            <Slider IsEnabled="{Binding Value,Mode=OneWay,Converter={StaticResource DoubleSignToValueConverter},ConverterParameter=True:False}" Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="240"  Minimum="0" Maximum="{Binding Maximum}"/>
+                                            <ToggleSwitch IsOn="{Binding Value,Mode=TwoWay,Converter={StaticResource DoubleSignToValueConverter},ConverterParameter=True:False:50:-50}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </template:SettingTemplateSelectorCustomTemplate.Template>
+                    </template:SettingTemplateSelectorCustomTemplate>
+                </template:SettingTemplateSelector.TemplateCustoms>
                 <template:SettingTemplateSelector.TemplateBool>
                     <DataTemplate>
                         <Border Style="{StaticResource ItemBorder}">
