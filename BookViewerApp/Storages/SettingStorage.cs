@@ -109,8 +109,7 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
-						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-1,new TypeConverters.DoubleConverter(),group:"Viewer",IsLocal:true,onChangedAction:_=>{ App.OverrideBrightness(); }){ Minimum = -1, Maximum = 100},
-
+						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-10,new TypeConverters.DoubleConverter(),group:"Viewer",IsLocal:true,onChangedAction:_=>{ App.OverrideBrightness(); }){ Minimum = -10, Maximum = 100},
 				};
 			//How to add resource when you add SettingInstance:
 			//1. Open Resource/en-US/Resources.resw

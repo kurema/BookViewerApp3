@@ -892,6 +892,6 @@ URL：{2}</value>
     <value>覆盖屏幕亮度。仅当数值为正时启用。</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
-    <value>屏幕亮度</value>
+    <value>屏幕亮度 (实验选项)</value>
   </data>
 </root>

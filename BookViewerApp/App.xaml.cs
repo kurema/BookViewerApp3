@@ -33,7 +33,6 @@ sealed partial class App : Application
 		this.InitializeComponent();
 		this.Suspending += OnSuspending;
 		LoadStorages();
-		OverrideBrightness();
 
 		//Easier than DI.
 		kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionManager.DefaultSearchComplitionProvider = () =>
@@ -70,7 +69,7 @@ sealed partial class App : Application
 				_BrightnessOverride = Windows.Graphics.Display.BrightnessOverride.GetForCurrentView();
 				if (_BrightnessOverride is not null and { IsSupported: true })
 				{
-					_BrightnessOverride.SetBrightnessLevel(bvalue / 100, Windows.Graphics.Display.DisplayBrightnessOverrideOptions.UseDimmedPolicyWhenBatteryIsLow);
+					_BrightnessOverride.SetBrightnessLevel(Math.Clamp(bvalue / 100, 0, 1), Windows.Graphics.Display.DisplayBrightnessOverrideOptions.UseDimmedPolicyWhenBatteryIsLow);
 					_BrightnessOverride.StartOverride();
 				}
 			}
@@ -93,6 +92,8 @@ sealed partial class App : Application
 			this.DebugSettings.EnableFrameRateCounter = true;
 		}
 #endif
+
+		OverrideBrightness();
 
 		// ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、
 		// ウィンドウがアクティブであることだけを確認してください
@@ -160,6 +161,8 @@ sealed partial class App : Application
 
 	protected override void OnFileActivated(FileActivatedEventArgs args)
 	{
+		OverrideBrightness();
+
 		if (Window.Current?.Content is Frame f)
 		{
 #pragma warning disable CS0612 // 型またはメンバーが旧型式です

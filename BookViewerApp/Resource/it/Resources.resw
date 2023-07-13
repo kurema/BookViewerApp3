@@ -892,6 +892,6 @@ Fonte: {2}</value>
     <value>Sovrascrive la luminosità dello schermo. Abilitato solo quando il valore è positivo.</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
-    <value>Luminosità dello schermo</value>
+    <value>Luminosità dello schermo (Sperimentale)</value>
   </data>
 </root>
