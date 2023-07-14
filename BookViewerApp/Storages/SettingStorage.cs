@@ -81,7 +81,7 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.SyncBookmarks,true,new TypeConverters.BoolConverter(),group:"Cloud"),
 						new SettingInstance(SettingKeys.TileWidth,300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false) { Minimum=0, Maximum=1000 },
 						new SettingInstance(SettingKeys.TileHeight,300.0,new TypeConverters.DoubleConverter(),group:"Obsolete",isVisible:false){ Minimum=0, Maximum=1000 },
-						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-50,new TypeConverters.DoubleConverter(),group:"Viewer",IsLocal:true,onChangedAction:_=>{ App.OverrideBrightness(); }){ Minimum = -100, Maximum = 100,CustomUIKey="DoubleSignToggle"},
+						new SettingInstance(SettingKeys.ScreenBrightnessOverride,-50,new TypeConverters.DoubleConverter(),group:"Viewer",IsLocal:true,onChangedAction:_=>{ App.OverrideBrightnessUpdate(); }){ Minimum = -100, Maximum = 100,CustomUIKey="DoubleSignToggle"},
 						new SettingInstance(SettingKeys.BackgroundBrightness,90.0,new TypeConverters.DoubleConverter(),group:"Viewer"){ Minimum=0, Maximum=100 },
 						new SettingInstance(SettingKeys.ShowRightmostAndLeftmost,false,new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.ScrollAnimation,true,new TypeConverters.BoolConverter(),group:"Viewer"),

@@ -59,7 +59,26 @@ sealed partial class App : Application
 
 	static Windows.Graphics.Display.BrightnessOverride _BrightnessOverride;
 
-	public static void OverrideBrightnessStop() => _BrightnessOverride?.StopOverride();
+	public static void OverrideBrightnessStop() { try { _BrightnessOverride?.StopOverride(); } catch { } }
+
+	public static void OverrideBrightnessUpdate()
+	{
+		try
+		{
+			if (SettingStorage.GetValue(SettingStorage.SettingKeys.ScreenBrightnessOverride) is double bvalue && bvalue >= 0)
+			{
+				_BrightnessOverride ??= Windows.Graphics.Display.BrightnessOverride.GetForCurrentView();
+				if (_BrightnessOverride is not null and { IsSupported: true })
+				{
+					_BrightnessOverride.SetBrightnessLevel(Math.Clamp(bvalue / 100, 0, 1), Windows.Graphics.Display.DisplayBrightnessOverrideOptions.UseDimmedPolicyWhenBatteryIsLow);
+					_BrightnessOverride.StartOverride();
+				}
+			}
+		}
+		catch
+		{
+		}
+	}
 
 	public static void OverrideBrightness()
 	{
@@ -67,6 +86,9 @@ sealed partial class App : Application
 		{
 			if (SettingStorage.GetValue(SettingStorage.SettingKeys.ScreenBrightnessOverride) is double bvalue && bvalue >= 0)
 			{
+				//Following code may have issue of blinking, because it stops and then start again.
+				//We also consider there may be an environment with multiple monitors and each can adjustable brightness. Really?
+				//Anyway, if there's no blinking issue this should be fine.
 				_BrightnessOverride?.StopOverride();
 				_BrightnessOverride = Windows.Graphics.Display.BrightnessOverride.GetForCurrentView();
 				if (_BrightnessOverride is not null and { IsSupported: true })
@@ -151,11 +173,7 @@ sealed partial class App : Application
 		await LibraryStorage.Content.SaveAsync();
 		await LibraryStorage.RoamingBookmarks.SaveAsync();
 
-		try
-		{
-			_BrightnessOverride?.StopOverride();
-		}
-		catch { }
+		OverrideBrightnessStop();
 
 		//TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
 		deferral.Complete();
