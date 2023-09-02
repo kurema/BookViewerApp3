@@ -40,15 +40,17 @@ We use [DistillNET](https://github.com/TechnikEmpire/DistillNET) to analyze filt
 [WebView.WebResource](https://learn.microsoft.com/uwp/api/windows.ui.xaml.controls.webview.webresourcerequested) Event and [CoreWebView2.WebResourceRequested](https://learn.microsoft.com/dotnet/api/microsoft.web.webview2.core.corewebview2.webresourcerequested?view=webview2-dotnet-1.0.1418.22) Event is used to intercept the request.
 
 ### YouTube
-If WebView2 is enabled, video ads for YouTube is also blocked, sometimes.
-For technical reasons, video ad blocking does not work when you open the play page at first currently.
-It only works when you open another video on the play page.
+AdBlocker for YouTube is disabled.
 
-In YouTube We rewrite the JSON file. In particular `playerAds` and `adPlacements` are removed.
+~~If WebView2 is enabled, video ads for YouTube is also blocked, sometimes.~~
+~~For technical reasons, video ad blocking does not work when you open the play page at first currently.~~
+~~It only works when you open another video on the play page.~~
 
-If you don't want to enable this feature, just add "www.youtube.com" and other domains to whitelist.
+~~In YouTube We rewrite the JSON file. In particular `playerAds` and `adPlacements` are removed.~~
 
-This may no longer work if YouTube specs has been changed. Add issue or just disable in that case.
+~~If you don't want to enable this feature, just add "www.youtube.com" and other domains to whitelist.~~
+
+~~This may no longer work if YouTube specs has been changed. Add issue or just disable in that case.~~
 
 ## Security
 Filters are generally downloaded using SSL, but make sure your internet connection are secure.

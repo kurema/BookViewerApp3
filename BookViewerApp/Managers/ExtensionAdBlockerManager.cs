@@ -252,67 +252,68 @@ public static partial class ExtensionAdBlockerManager
     }
 
 
-    public static async void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
-    {
-        if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
-        if (Filter is null) return;
-        if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
-        if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
-        if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
-        var domain = uri.Host.ToUpperInvariant();
-        if (IsInWhitelist(domain)) return;
-        using var d = args.GetDeferral();
-        var headers = new NameValueCollection();
-        try
-        {
-            foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
-            switch (args.ResourceContext)
-            {
-                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
-                    headers.Add("X-Requested-With", "XmlHttpRequest");
-                    break;
-                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
-                    //UrlFilter.IsMatch() currently checks if "Content-Type" contains "script", "image" or "css".
-                    headers.Add("Content-Type", "text/javascript");
-                    break;
-                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Image:
-                    headers.Add("Content-Type", "image/image");
-                    break;
-                case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Stylesheet:
-                    headers.Add("Content-Type", "text/css");
-                    break;
-                default:
-                    {
-                        if (headers.Get("Content-Type") is not null) break;
-                        string ext = Path.GetExtension(uriReq.LocalPath);
-                        if (string.IsNullOrEmpty(ext)) break;
-                        string mime = MimeTypes.MimeTypeMap.GetMimeType(ext);
-                        if (string.IsNullOrEmpty(mime)) break;
-                        headers.Add("Content-Type", mime);
-                    }
-                    break;
-            }
-            if (headers.Get("Referer") is null) headers.Add("Referer", uri.ToString()); // Manually add Referer. Is this correct?
-            if (!IsBlocked(uriReq, domain, headers))
-            {
-                await YouTube.WebView2WebResourceRequested(sender, args);
-                return;
-            }
-            args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
-        }
-        catch
-        {
+	public static void WebView2WebResourceRequested(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
+	{
+		if (!(bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserAdBlockEnabled)) return;
+		if (Filter is null) return;
+		if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uriReq)) return;
+		if (!Uri.TryCreate(sender.Source, UriKind.Absolute, out Uri uri)) return;
+		if (!(uri.Scheme.ToUpperInvariant() is "HTTPS" or "HTTP")) return;
+		var domain = uri.Host.ToUpperInvariant();
+		if (IsInWhitelist(domain)) return;
+		using var d = args.GetDeferral();
+		var headers = new NameValueCollection();
+		try
+		{
+			foreach (var item in args.Request.Headers) headers.Add(item.Key, item.Value);
+			switch (args.ResourceContext)
+			{
+				case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.XmlHttpRequest:
+					headers.Add("X-Requested-With", "XmlHttpRequest");
+					break;
+				case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Script:
+					//UrlFilter.IsMatch() currently checks if "Content-Type" contains "script", "image" or "css".
+					headers.Add("Content-Type", "text/javascript");
+					break;
+				case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Image:
+					headers.Add("Content-Type", "image/image");
+					break;
+				case Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Stylesheet:
+					headers.Add("Content-Type", "text/css");
+					break;
+				default:
+					{
+						if (headers.Get("Content-Type") is not null) break;
+						string ext = Path.GetExtension(uriReq.LocalPath);
+						if (string.IsNullOrEmpty(ext)) break;
+						string mime = MimeTypes.MimeTypeMap.GetMimeType(ext);
+						if (string.IsNullOrEmpty(mime)) break;
+						headers.Add("Content-Type", mime);
+					}
+					break;
+			}
+			if (headers.Get("Referer") is null) headers.Add("Referer", uri.ToString()); // Manually add Referer. Is this correct?
+			if (!IsBlocked(uriReq, domain, headers))
+			{
+				//YouTube AdBlocking is disabled. It's not gonna work anyway.
+				//await YouTube.WebView2WebResourceRequested(sender, args);
+				return;
+			}
+			args.Response = sender.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "");
+		}
+		catch
+		{
 #if DEBUG
-            throw;
+			throw;
 #endif
-        }
-        finally
-        {
-            d.Complete();
-        }
-    }
+		}
+		finally
+		{
+			d.Complete();
+		}
+	}
 
-    public static bool IsBlocked(Uri uri, string domain, NameValueCollection rawHeaders)
+	public static bool IsBlocked(Uri uri, string domain, NameValueCollection rawHeaders)
     {
         //static bool isDomainTargeted(DistillNET.UrlFilter? filter, string domain)
         //{
