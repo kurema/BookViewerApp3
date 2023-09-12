@@ -15,6 +15,7 @@ using System.Collections;
 
 using BookViewerApp.Helper;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Immutable;
 
 #nullable enable
 namespace BookViewerApp.Books
@@ -71,7 +72,10 @@ namespace BookViewerApp.Books
 			}
 		}
 
-		public static TocItem[] GetTocs(Array? list, Hashtable nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
+		//Note:
+		//Type has changed due to the change in the library. To see old version:
+		//https://github.com/kurema/BookViewerApp3/blob/7b5e4149c0bd5dcc2117ba8deab41d29d8ffaa1b/BookViewerApp/Books/BookPdf.cs
+		public static TocItem[] GetTocs(Array? list, System.util.INullValueDictionary<object, iTextSharp.text.pdf.PdfObject> nd, List<iTextSharp.text.pdf.PrIndirectReference> pageRefs)
 		{
 			int GetPage(iTextSharp.text.pdf.PdfIndirectReference pref)
 			{
@@ -87,7 +91,8 @@ namespace BookViewerApp.Books
 			foreach (var item in list)
 			{
 				TocItem tocItem = new();
-				if (item is Hashtable itemd)
+				var t = item.GetType();
+				if (item is System.util.NullValueDictionary<string, object> itemd)
 				{
 					if (itemd.ContainsKey("Named") && itemd["Named"] is string named)
 					{
@@ -132,6 +137,18 @@ namespace BookViewerApp.Books
 								tocItem.Page = GetPage(pir);
 							}
 						}
+						else if (itemd["Page"] is IEnumerable nditem2)
+						{
+							//I don't know, but iTextSharp.text.pdf.PdfArray seems to change in the future or already. This should work in many case.
+							foreach (var item2 in nditem2)
+							{
+								if(item2 is iTextSharp.text.pdf.PdfIndirectReference pir)
+								{
+									tocItem.Page = GetPage(pir);
+									break;
+								}
+							}
+						}
 						else
 						{
 							continue;
@@ -143,9 +160,20 @@ namespace BookViewerApp.Books
 						tocItem.Title = title;
 					}
 					else { continue; }
-					if (itemd.ContainsKey("Kids") && itemd["Kids"] is ArrayList kids)
+					if (itemd.ContainsKey("Kids"))
 					{
-						tocItem.Children = GetTocs(kids.ToArray(), nd, pageRefs);
+						if (itemd["Kids"] is ArrayList kids)
+						{
+							tocItem.Children = GetTocs(kids.ToArray(), nd, pageRefs);
+						}
+						else if (itemd["Kids"] is List<System.util.INullValueDictionary<string, object>> kids2)
+						{
+							tocItem.Children = GetTocs(kids2.ToArray(), nd, pageRefs);
+						}
+						else if (itemd["Kids"] is List<object> kids3)
+						{
+							tocItem.Children = GetTocs(kids3.ToArray(), nd, pageRefs);
+						}
 					}
 					result.Add(tocItem);
 				}

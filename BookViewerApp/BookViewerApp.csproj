@@ -581,7 +581,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="iTextSharp.LGPLv2.Core">
-      <Version>1.9.3</Version>
+      <Version>3.4.5</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
