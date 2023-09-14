@@ -164,14 +164,17 @@ namespace BookViewerApp.Books
 					{
 						if (itemd["Kids"] is ArrayList kids)
 						{
+							//Old, should not be called.
 							tocItem.Children = GetTocs(kids.ToArray(), nd, pageRefs);
 						}
 						else if (itemd["Kids"] is List<System.util.INullValueDictionary<string, object>> kids2)
 						{
+							//Current
 							tocItem.Children = GetTocs(kids2.ToArray(), nd, pageRefs);
 						}
 						else if (itemd["Kids"] is List<object> kids3)
 						{
+							//General
 							tocItem.Children = GetTocs(kids3.ToArray(), nd, pageRefs);
 						}
 					}

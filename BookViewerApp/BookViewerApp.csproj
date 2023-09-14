@@ -232,6 +232,9 @@
     <Content Include="res\reader\img\toc-selected.svg" />
     <Content Include="res\reader\img\toc.svg" />
     <Content Include="res\reader\img\upload.svg" />
+    <None Include="Storages\WindowStates.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <PRIResource Include="Resource\pt\Resources.resw" />
     <Content Include="res\pdfjs\pdfjs.zip" />
     <None Include="Storages\ExtensionAdBlockerItems.xsd">
@@ -297,6 +300,10 @@
     </Compile>
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
+    <Compile Include="Storages\WindowStates.cs">
+      <DependentUpon>WindowStates.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Storages\WindowStatesStorage.cs" />
     <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="ViewModels\AdBlockerSettingViewModel.cs" />
     <Compile Include="ViewModels\Bookshelf2BookViewModel.cs" />

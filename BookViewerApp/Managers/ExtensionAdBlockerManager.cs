@@ -81,9 +81,9 @@ public static partial class ExtensionAdBlockerManager
     public static bool IsInWhitelist(string domain)
     {
         var upper = domain.ToUpperInvariant();// This operation may be called twice. It's not smart in performance but ignorable.
-        var cached = UserWhitelistCache.FirstOrDefault(a => a.host == upper);
+        var (host, isInWhitelist) = UserWhitelistCache.FirstOrDefault(a => a.host == upper);
         //Cache is not reordered by last access. Shoul I?
-        if (cached.host == upper) return cached.isInWhitelist;
+        if (host == upper) return isInWhitelist;
         bool result = UserWhitelist.ContainsWildcard(upper);
         UserWhitelistCache.Insert(0, (upper, result));
         if (UserWhitelistCache.Count > UserWhitelistCacheSize) UserWhitelistCache.RemoveAt(UserWhitelistCache.Count - 1);
@@ -439,7 +439,7 @@ public static partial class ExtensionAdBlockerManager
 
     public static async Task<(DistillNET.FilterDbCollection? result, bool success)> LoadRulesFromText()
     {
-        async Task<bool> LoadFilterFile(StorageFile file)
+		static async Task<bool> LoadFilterFile(StorageFile file)
         {
             if (file is null) return false;
             if (Filter is null) return false;

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="WindowStates"
+    targetNamespace="http://tempuri.org/WindowStates.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/WindowStates.xsd"
+    xmlns:mstns="http://tempuri.org/WindowStates.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+	<xs:element name="WindowStates">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Last">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="WindowState" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Entries">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Entry">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="WindowState" />
+									</xs:sequence>
+									<xs:attribute name="title" type="xs:string"/>
+									<xs:attribute name="origin" type="xs:dateTime"/>
+									<xs:attribute name="updated" type="xs:dateTime"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="WindowState">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Window">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="ExplorerTab">
+								<xs:complexType>
+									<xs:attribute name="src" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ViewerTab">
+								<xs:complexType>
+									<xs:attribute name="Id" type="xs:string" />
+									<xs:attribute name="Token" type="xs:string" />
+									<xs:attribute name="Path" type="xs:string" />
+									<xs:attribute name="PathRelative" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

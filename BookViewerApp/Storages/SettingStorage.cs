@@ -61,7 +61,8 @@ public class SettingStorage
 		public const string Theme = "Theme";
 		public const string BrowserSearchComplitionService = "BrowserSearchComplitionService";
 		public const string ScreenBrightnessOverride = "ScreenBrightnessOverride";
-
+		public const string PdfPasswordDictionary = "PdfPasswordDictionary";
+		public const string DefaultHomeScreen = "DefaultHomeScreen";
 	}
 
 	private static SettingInstance[] _SettingInstances = null;
@@ -110,6 +111,8 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
+						//new SettingInstance(SettingKeys.PdfPasswordDictionary,string.Empty,new TypeConverters.StringConverter(),group:"Viewer"),
+						//new SettingInstance(SettingKeys.DefaultHomeScreen,SettingEnums.HomeScreen.RememberLast, new TypeConverters.EnumConverter<SettingEnums.HomeScreen>(),group:"Tabs"),
 				};
 			//How to add resource when you add SettingInstance:
 			//1. Open Resource/en-US/Resources.resw
@@ -156,6 +159,12 @@ public class SettingStorage
 		{
 			//Auto, Light, Dark,
 			AcrylicAuto, AcrylicLight, AcrylicDark,
+		}
+
+		public enum HomeScreen
+		{
+			//We will add bookshelf.
+			RememberLast, Explorer,
 		}
 	}
 
