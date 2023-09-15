@@ -430,10 +430,17 @@ namespace BookViewerApp.Views
 					var resourceContext = new Windows.ApplicationModel.Resources.Core.ResourceContext();
 					resourceContext.QualifierValues["Language"] = "en-US";
 					var resourceMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap.GetSubtree("Resources");
-					return string.Format(rl.GetString("Setting/ToolTip/Message"),
-						resourceMap.GetValue(target.StringResourceKey + "/Title", resourceContext).ValueAsString,
-						resourceMap.GetValue(target.StringResourceKey + "/Description", resourceContext).ValueAsString,
-						target.DefaultValue?.ToString() ?? "null");
+					try
+					{
+						return string.Format(rl.GetString("Setting/ToolTip/Message"),
+							resourceMap.GetValue(target.StringResourceKey + "/Title", resourceContext).ValueAsString,
+							resourceMap.GetValue(target.StringResourceKey + "/Description", resourceContext).ValueAsString,
+							target.DefaultValue?.ToString() ?? "null");
+					}
+					catch
+					{
+						return string.Empty;
+					}
 				}
 			}
 

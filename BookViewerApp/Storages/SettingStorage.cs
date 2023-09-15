@@ -111,7 +111,7 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
-						//new SettingInstance(SettingKeys.PdfPasswordDictionary,string.Empty,new TypeConverters.StringConverter(),group:"Viewer"),
+						new SettingInstance(SettingKeys.PdfPasswordDictionary,"pass\npassword",new TypeConverters.StringConverter(),group:"Viewer"){ CustomUIKey="StringMultiline"},
 						//new SettingInstance(SettingKeys.DefaultHomeScreen,SettingEnums.HomeScreen.RememberLast, new TypeConverters.EnumConverter<SettingEnums.HomeScreen>(),group:"Tabs"),
 				};
 			//How to add resource when you add SettingInstance:

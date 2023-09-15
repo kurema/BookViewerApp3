@@ -75,6 +75,19 @@
                             </DataTemplate>
                         </template:SettingTemplateSelectorCustomTemplate.Template>
                     </template:SettingTemplateSelectorCustomTemplate>
+                    <template:SettingTemplateSelectorCustomTemplate Key="StringMultiline">
+                        <template:SettingTemplateSelectorCustomTemplate.Template>
+                            <DataTemplate>
+                                <Border Style="{StaticResource ItemBorder}">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+                                        <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}" TextWrapping="WrapWholeWords"/>
+                                        <TextBox AcceptsReturn="True" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="600" MinHeight="50"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </template:SettingTemplateSelectorCustomTemplate.Template>
+                    </template:SettingTemplateSelectorCustomTemplate>
                 </template:SettingTemplateSelector.TemplateCustoms>
                 <template:SettingTemplateSelector.TemplateBool>
                     <DataTemplate>
