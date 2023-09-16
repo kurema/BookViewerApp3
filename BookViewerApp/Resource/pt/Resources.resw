@@ -892,4 +892,28 @@ Fonte: {2}</value>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
     <value>Brilho do ecrã (Experimental)</value>
   </data>
+  <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
+    <value>Lista de candidatos a senha para PDF com senha</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
+    <value>Defina uma lista de candidatos a senha para abrir o PDF protegido por senha. Insira um item por linha para várias entradas.</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
+    <value>Startup</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
+    <value>Que ecrã abrir quando a aplicação for iniciada.</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+    <value>Recuperar a sessão anterior</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+    <value>Explorador</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+    <value>Prateleira</value>
+  </data>
+  <data name="Setting.Group.General" xml:space="preserve">
+    <value>Geral</value>
+  </data>
 </root>

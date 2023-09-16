@@ -134,7 +134,7 @@ public class BookInfoStorage
 
     public static async Task<List<BookInfo>> GetBookInfoAsync()
     {
-        if (BookInfosCache is null) BookInfosCache = ((await LoadAsync()) ?? new BookInfo[0]).ToList();
+        BookInfosCache ??= ((await LoadAsync()) ?? new BookInfo[0]).ToList();
         return BookInfosCache;
     }
 

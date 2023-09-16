@@ -82,7 +82,7 @@
                                     <StackPanel>
                                         <TextBlock FontWeight="Bold" Text="{Binding Title}" />
                                         <TextBlock Text="{Binding Description}" ToolTipService.ToolTip="{Binding ToolTip}" TextWrapping="WrapWholeWords"/>
-                                        <TextBox AcceptsReturn="True" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="600" MinHeight="50"/>
+                                        <TextBox AcceptsReturn="True" Text="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=Default}" MinWidth="600" Height="120" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

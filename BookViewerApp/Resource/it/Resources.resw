@@ -894,4 +894,28 @@ Fonte: {2}</value>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
     <value>Luminosità dello schermo (Sperimentale)</value>
   </data>
+  <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
+    <value>Elenco password candidate per PDF con password</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
+    <value>Imposta un elenco di candidati con password per l'apertura del PDF protetto da password. Inserisci un elemento per riga per più input.</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
+    <value>Startup</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
+    <value>Quale schermata aprire all'avvio dell'app.</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+    <value>Ripristina la sessione precedente</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+    <value>Scaffale</value>
+  </data>
+  <data name="Setting.Group.General" xml:space="preserve">
+    <value>Generale</value>
+  </data>
 </root>

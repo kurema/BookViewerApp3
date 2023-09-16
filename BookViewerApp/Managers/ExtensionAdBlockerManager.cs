@@ -413,9 +413,8 @@ public static partial class ExtensionAdBlockerManager
         {
             if (string.IsNullOrEmpty(item?.filename)) continue;
             if (item?.expires is not null && item.expiresSpecified && item.expires <= DateTime.UtcNow && item.expires >= new DateTime(1800, 1, 1)) goto download; //If expired, download.
-            var file = await folder.TryGetItemAsync(item!.filename) as StorageFile;
-            if (file is null) goto download; //If filter is not downloaded, download.
-            if (item?.expires is not null && item.expiresSpecified) continue; //If filter is downloaded and not expired, continue.
+			if (await folder.TryGetItemAsync(item!.filename) is not StorageFile file) goto download; //If filter is not downloaded, download.
+			if (item?.expires is not null && item.expiresSpecified) continue; //If filter is downloaded and not expired, continue.
             var prop = await file.GetBasicPropertiesAsync();
             if (prop.DateModified.ToUniversalTime().AddDays(DefaultDaysToExpire) < DateTime.UtcNow) goto download; //If `expired` is not specified, assume 7 days.
             continue;
@@ -709,19 +708,21 @@ public static partial class ExtensionAdBlockerManager
         {
             if (!Uri.TryCreate(requestUri, UriKind.Absolute, out Uri uriReq)) return;
             var client = CommonHttpClient;
-            var message = new HttpRequestMessage(HttpMethod.Get, uriReq);
-            message.Method = requestMethod?.ToUpperInvariant() switch
-            {
-                "POST" => HttpMethod.Post,
-                "PUT" => HttpMethod.Put,
-                "DELETE" => HttpMethod.Delete,
-                "HEAD" => HttpMethod.Head,
-                "PATCH" => HttpMethod.Patch,
-                "OPTIONS" => HttpMethod.Options,
-                "GET" => HttpMethod.Get,
-                _ => HttpMethod.Get,
-            };
-            if (requestContent is not null)
+			var message = new HttpRequestMessage(HttpMethod.Get, uriReq)
+			{
+				Method = requestMethod?.ToUpperInvariant() switch
+				{
+					"POST" => HttpMethod.Post,
+					"PUT" => HttpMethod.Put,
+					"DELETE" => HttpMethod.Delete,
+					"HEAD" => HttpMethod.Head,
+					"PATCH" => HttpMethod.Patch,
+					"OPTIONS" => HttpMethod.Options,
+					"GET" => HttpMethod.Get,
+					_ => HttpMethod.Get,
+				}
+			};
+			if (requestContent is not null)
             {
                 message.Content = new HttpStreamContent(requestContent);
                 foreach (var item in requestHeaders)

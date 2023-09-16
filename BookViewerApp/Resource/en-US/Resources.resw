@@ -1041,4 +1041,28 @@ Source: {2}</value>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
     <value>Screen brightness  (Experimental)</value>
   </data>
+  <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
+    <value>Password candidate list for PDF with password</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
+    <value>Set a list of password candidates for opening the password protected PDF. Enter one item per line for multiple inputs.</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
+    <value>Startup</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
+    <value>What screen to open when the app is launched.</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+    <value>Restore previous session</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+    <value>Bookshelf</value>
+  </data>
+  <data name="Setting.Group.General" xml:space="preserve">
+    <value>General</value>
+  </data>
 </root>

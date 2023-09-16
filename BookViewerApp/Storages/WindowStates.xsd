@@ -44,7 +44,15 @@
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
 							<xs:element name="ExplorerTab">
 								<xs:complexType>
-									<xs:attribute name="src" type="xs:string" />
+									<xs:attribute name="Path" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="SettingTab">
+								<xs:complexType>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Bookshelf">
+								<xs:complexType>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="ViewerTab">

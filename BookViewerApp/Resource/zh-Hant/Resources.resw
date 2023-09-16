@@ -894,4 +894,28 @@ URL：{2}</value>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
     <value>屏幕亮度 (實驗選項)</value>
   </data>
+  <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
+    <value>PDF的密碼候選清單與密碼</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
+    <value>設定密碼候選清單，以開啟受密碼保護的PDF。每行輸入一個項目以進行多次輸入。</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
+    <value>啟動</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
+    <value>當應用程序啓動時，要打開什麼屏幕。</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+    <value>資源管理器</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+    <value>書架</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+    <value>恢復開啟的選項卡</value>
+  </data>
+  <data name="Setting.Group.General" xml:space="preserve">
+    <value>一般</value>
+  </data>
 </root>

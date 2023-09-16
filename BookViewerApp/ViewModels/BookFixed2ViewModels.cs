@@ -223,10 +223,9 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
             uint page = i;
             pages.Add(new PageViewModel(new Books.VirtualPage(() =>
             {
-                var p = value.GetPage(page);
-                if (p is null) throw new ArgumentOutOfRangeException();
-                //if (p is Books.PdfPage pdf) pdf.Option = option;// Is this OK?
-                return p;
+                var p = value.GetPage(page) ?? throw new ArgumentOutOfRangeException();
+				//if (p is Books.PdfPage pdf) pdf.Option = option;// Is this OK?
+				return p;
             }), this));
             if (i > 0) pages[(int)i - 1].NextPage = pages[(int)i];
         }

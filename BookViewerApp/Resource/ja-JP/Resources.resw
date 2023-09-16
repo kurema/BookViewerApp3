@@ -898,4 +898,28 @@
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
     <value>画面の明るさ (プレビュー)</value>
   </data>
+  <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
+    <value>PDFのパスワード候補リスト</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
+    <value>保護されたPDFを開くためのパスワード候補。</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
+    <value>起動</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
+    <value>アプリ起動時のタブ。</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+    <value>以前のセッションを復元</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+    <value>ファイラー</value>
+  </data>
+  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+    <value>本棚</value>
+  </data>
+  <data name="Setting.Group.General" xml:space="preserve">
+    <value>一般</value>
+  </data>
 </root>

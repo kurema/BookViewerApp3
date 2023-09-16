@@ -72,6 +72,7 @@ public class SettingStorage
 		{
 			return _SettingInstances ??= new SettingInstance[]
 				{
+						new SettingInstance(SettingKeys.DefaultHomeScreen,SettingEnums.HomeScreen.RememberLast, new TypeConverters.EnumConverter<SettingEnums.HomeScreen>(),group:"General"),
 						new SettingInstance(SettingKeys.DefaultSpreadType,Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
 						new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.AcrylicAuto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
 						new SettingInstance(SettingKeys.DefaultFullScreen,false,new TypeConverters.BoolConverter(),group:"Viewer"),
@@ -111,8 +112,7 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
-						new SettingInstance(SettingKeys.PdfPasswordDictionary,"pass\npassword",new TypeConverters.StringConverter(),group:"Viewer"){ CustomUIKey="StringMultiline"},
-						//new SettingInstance(SettingKeys.DefaultHomeScreen,SettingEnums.HomeScreen.RememberLast, new TypeConverters.EnumConverter<SettingEnums.HomeScreen>(),group:"Tabs"),
+						new SettingInstance(SettingKeys.PdfPasswordDictionary,"pass\npassword\n",new TypeConverters.StringConverter(),group:"Viewer"){ CustomUIKey="StringMultiline"},
 				};
 			//How to add resource when you add SettingInstance:
 			//1. Open Resource/en-US/Resources.resw
