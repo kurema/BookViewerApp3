@@ -428,6 +428,7 @@
     <Compile Include="Views\TabPage.xaml.cs">
       <DependentUpon>TabPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TabViewItemEx.cs" />
     <Compile Include="Views\ThumbnailSelectionPage.xaml.cs">
       <DependentUpon>ThumbnailSelectionPage.xaml</DependentUpon>
     </Compile>

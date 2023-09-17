@@ -898,22 +898,25 @@ Fonte: {2}</value>
   <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
     <value>Defina uma lista de candidatos a senha para abrir o PDF protegido por senha. Insira um item por linha para várias entradas.</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
-    <value>Startup</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
-    <value>Que ecrã abrir quando a aplicação for iniciada.</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+  <data name="Setting_RestorePreviousSession.Title" xml:space="preserve">
     <value>Recuperar a sessão anterior</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Explorer.Title" xml:space="preserve">
     <value>Explorador</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Bookshelf.Title" xml:space="preserve">
     <value>Prateleira</value>
   </data>
   <data name="Setting.Group.General" xml:space="preserve">
     <value>Geral</value>
+  </data>
+  <data name="Setting_RestorePreviousSession.Description" xml:space="preserve">
+    <value>Restaurar os separadores anteriores ao abrir a aplicação.</value>
+  </data>
+  <data name="Setting_DefaultTab.Title" xml:space="preserve">
+    <value>Separador predefinido</value>
+  </data>
+  <data name="Setting_DefaultTab.Description" xml:space="preserve">
+    <value>Escolha o separador a apresentar quando clicar em "+" ou quando a aplicação for iniciada sem sessão anterior.</value>
   </data>
 </root>

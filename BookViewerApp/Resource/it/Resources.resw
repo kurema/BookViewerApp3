@@ -900,22 +900,25 @@ Fonte: {2}</value>
   <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
     <value>Imposta un elenco di candidati con password per l'apertura del PDF protetto da password. Inserisci un elemento per riga per più input.</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
-    <value>Startup</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
-    <value>Quale schermata aprire all'avvio dell'app.</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+  <data name="Setting_RestorePreviousSession.Title" xml:space="preserve">
     <value>Ripristina la sessione precedente</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Explorer.Title" xml:space="preserve">
     <value>Explorer</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Bookshelf.Title" xml:space="preserve">
     <value>Scaffale</value>
   </data>
   <data name="Setting.Group.General" xml:space="preserve">
     <value>Generale</value>
+  </data>
+  <data name="Setting_RestorePreviousSession.Description" xml:space="preserve">
+    <value>Ripristino delle schede precedenti all'apertura dell'app.</value>
+  </data>
+  <data name="Setting_DefaultTab.Title" xml:space="preserve">
+    <value>Scheda predefinita</value>
+  </data>
+  <data name="Setting_DefaultTab.Description" xml:space="preserve">
+    <value>Scegliere la scheda da visualizzare quando si fa clic su '+' o quando si avvia l'applicazione senza una sessione precedente.</value>
   </data>
 </root>

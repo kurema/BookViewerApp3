@@ -62,7 +62,10 @@ public class SettingStorage
 		public const string BrowserSearchComplitionService = "BrowserSearchComplitionService";
 		public const string ScreenBrightnessOverride = "ScreenBrightnessOverride";
 		public const string PdfPasswordDictionary = "PdfPasswordDictionary";
-		public const string DefaultHomeScreen = "DefaultHomeScreen";
+		//public const string DefaultHomeScreen = "DefaultHomeScreen";
+		public const string DefaultTab = "DefaultTab";
+		public const string RestorePreviousSession = "RestorePreviousSession";
+
 	}
 
 	private static SettingInstance[] _SettingInstances = null;
@@ -72,7 +75,8 @@ public class SettingStorage
 		{
 			return _SettingInstances ??= new SettingInstance[]
 				{
-						new SettingInstance(SettingKeys.DefaultHomeScreen,SettingEnums.HomeScreen.RememberLast, new TypeConverters.EnumConverter<SettingEnums.HomeScreen>(),group:"General"),
+						//new SettingInstance(SettingKeys.DefaultTab,SettingEnums.DefaultTab.Explorer, new TypeConverters.EnumConverter<SettingEnums.DefaultTab>(),group:"General"),
+						new SettingInstance(SettingKeys.RestorePreviousSession,true, new TypeConverters.BoolConverter(),group:"General"),
 						new SettingInstance(SettingKeys.DefaultSpreadType,Views.SpreadPagePanel.ModeEnum.Default, new TypeConverters.EnumConverter<Views.SpreadPagePanel.ModeEnum>(),group:"Viewer"),
 						new SettingInstance(SettingKeys.Theme,SettingEnums.Theme.AcrylicAuto, new TypeConverters.EnumConverter<SettingEnums.Theme>(),group:"Viewer"),
 						new SettingInstance(SettingKeys.DefaultFullScreen,false,new TypeConverters.BoolConverter(),group:"Viewer"),
@@ -161,10 +165,10 @@ public class SettingStorage
 			AcrylicAuto, AcrylicLight, AcrylicDark,
 		}
 
-		public enum HomeScreen
+		public enum DefaultTab
 		{
 			//We will add bookshelf.
-			RememberLast, Explorer,
+			Explorer,
 		}
 	}
 

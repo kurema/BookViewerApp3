@@ -904,22 +904,25 @@
   <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
     <value>保護されたPDFを開くためのパスワード候補。</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
-    <value>起動</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
-    <value>アプリ起動時のタブ。</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+  <data name="Setting_RestorePreviousSession.Title" xml:space="preserve">
     <value>以前のセッションを復元</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Explorer.Title" xml:space="preserve">
     <value>ファイラー</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Bookshelf.Title" xml:space="preserve">
     <value>本棚</value>
   </data>
   <data name="Setting.Group.General" xml:space="preserve">
     <value>一般</value>
+  </data>
+  <data name="Setting_RestorePreviousSession.Description" xml:space="preserve">
+    <value>アプリを開いたときに以前のタブを復元します。</value>
+  </data>
+  <data name="Setting_DefaultTab.Description" xml:space="preserve">
+    <value>「＋」をクリックしたとき、または以前のセッションがない状態でアプリを起動したときに表示されるタブを選択します。</value>
+  </data>
+  <data name="Setting_DefaultTab.Title" xml:space="preserve">
+    <value>標準タブ</value>
   </data>
 </root>

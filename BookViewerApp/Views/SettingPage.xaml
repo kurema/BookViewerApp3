@@ -20,7 +20,7 @@
     </Page.Resources>
     <Grid>
         <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollViewerMain">
-            <StackPanel MaxWidth="800" HorizontalAlignment="Center" Name="StackPanelMain">
+            <StackPanel MaxWidth="800" HorizontalAlignment="Center" Name="StackPanelMain" Margin="0,0,0,15">
                 <TextBlock x:Name="TextBlockSettingHeader" Text="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource vc_local},ConverterParameter=Setting/Label}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="10"/>
                 <local:SettingPanelControl  x:Name="SettingPanel" DataContext="{Binding}" />
                 <local:SimpleListViewControl x:Name="listView"/>

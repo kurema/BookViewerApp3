@@ -900,22 +900,25 @@ URL：{2}</value>
   <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
     <value>设置用于打开受密码保护的PDF的候选密码列表。为多个输入每行输入一个项目。</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
-    <value>启动</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
-    <value>启动应用程序时要打开什么屏幕。</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Explorer.Title" xml:space="preserve">
     <value>资源管理器</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Bookshelf.Title" xml:space="preserve">
     <value>书架</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+  <data name="Setting_RestorePreviousSession.Title" xml:space="preserve">
     <value>恢复打开的选项卡</value>
   </data>
   <data name="Setting.Group.General" xml:space="preserve">
     <value>一般</value>
+  </data>
+  <data name="Setting_RestorePreviousSession.Description" xml:space="preserve">
+    <value>打开应用程序时恢复以前的标签页。</value>
+  </data>
+  <data name="Setting_DefaultTab.Title" xml:space="preserve">
+    <value>默认选项卡</value>
+  </data>
+  <data name="Setting_DefaultTab.Description" xml:space="preserve">
+    <value>选择在点击 "+"时或在未启动前启动应用程序时显示的选项卡。</value>
   </data>
 </root>

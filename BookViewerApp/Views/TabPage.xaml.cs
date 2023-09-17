@@ -302,7 +302,7 @@ public sealed partial class TabPage : Page
 
     public (Frame, TabViewItem) OpenTab(string titleId, params object[] args)
     {
-        var newTab = new TabViewItem();
+        var newTab = new TabViewItemEx();
         var titleString = UIHelper.GetTitleByResource(titleId);
         if (args is not null and { Length: > 0 }) titleString = string.Format(titleString, args);
         newTab.Header = string.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;

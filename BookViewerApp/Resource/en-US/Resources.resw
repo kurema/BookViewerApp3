@@ -1047,22 +1047,25 @@ Source: {2}</value>
   <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
     <value>Set a list of password candidates for opening the password protected PDF. Enter one item per line for multiple inputs.</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Title" xml:space="preserve">
-    <value>Startup</value>
+  <data name="Setting_RestorePreviousSession.Description" xml:space="preserve">
+    <value>Restore previous tabs when you open the App.</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Description" xml:space="preserve">
-    <value>What screen to open when the app is launched.</value>
-  </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.RememberLast.Title" xml:space="preserve">
+  <data name="Setting_RestorePreviousSession.Title" xml:space="preserve">
     <value>Restore previous session</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Explorer.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Explorer.Title" xml:space="preserve">
     <value>Explorer</value>
   </data>
-  <data name="Setting_DefaultHomeScreen.Enums.HomeScreen.Bookshelf.Title" xml:space="preserve">
+  <data name="Setting_DefaultTab.Enums.DefaultTab.Bookshelf.Title" xml:space="preserve">
     <value>Bookshelf</value>
   </data>
   <data name="Setting.Group.General" xml:space="preserve">
     <value>General</value>
+  </data>
+  <data name="Setting_DefaultTab.Description" xml:space="preserve">
+    <value>Choose the tab to be displayed when clicking on '+' or when the app is launched without previous session.</value>
+  </data>
+  <data name="Setting_DefaultTab.Title" xml:space="preserve">
+    <value>Default tab</value>
   </data>
 </root>
