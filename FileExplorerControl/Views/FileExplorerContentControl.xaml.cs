@@ -44,12 +44,17 @@ public sealed partial class FileExplorerContentControl : UserControl
             if (folder.Children is null) await folder.UpdateChildren();
             folder.IconFetchingUnCancel();
             vm.Item = folder;
-        });
-    }
+            FolderChangedHandler?.Invoke(this, vm);
+		});
+
+	}
 
     public TypedEventHandler<FileExplorerContentControl, ViewModels.FileItemViewModel> FileOpenedEventHandler;
 
-    private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+	public TypedEventHandler<FileExplorerContentControl, ViewModels.ContentViewModel> FolderChangedHandler;
+
+
+	private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
     {
         if (args.NewValue is ViewModels.ContentViewModel vm)
         {

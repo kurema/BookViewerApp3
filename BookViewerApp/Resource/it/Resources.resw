@@ -892,7 +892,7 @@ Fonte: {2}</value>
     <value>Sovrascrive la luminosità dello schermo. Abilitato solo quando il valore è positivo.</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
-    <value>Luminosità dello schermo (Sperimentale)</value>
+    <value>Luminosità dello schermo</value>
   </data>
   <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
     <value>Elenco password candidate per PDF con password</value>

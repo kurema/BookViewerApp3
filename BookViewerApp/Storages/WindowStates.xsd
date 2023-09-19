@@ -35,7 +35,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	
+
 	<xs:element name="WindowState">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -44,6 +44,20 @@
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
 							<xs:element name="ExplorerTab">
 								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Structure">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Item" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="Path" type="xs:string" />
+															<xs:attribute name="DisplayedName" type="xs:string" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
 									<xs:attribute name="Path" type="xs:string" />
 								</xs:complexType>
 							</xs:element>
@@ -51,8 +65,23 @@
 								<xs:complexType>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="Bookshelf">
+							<xs:element name="BookshelfTab">
 								<xs:complexType>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="TextEditorTab">
+								<xs:complexType>
+									<xs:attribute name="Path" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="MediaPlayerTab">
+								<xs:complexType>
+									<xs:attribute name="Path" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="BrowserTab">
+								<xs:complexType>
+									<xs:attribute name="Url" type="xs:anyURI" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="ViewerTab">
@@ -64,6 +93,7 @@
 								</xs:complexType>
 							</xs:element>
 						</xs:choice>
+						<xs:attribute name="isTop" default="true" type="xs:boolean" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

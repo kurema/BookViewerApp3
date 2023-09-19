@@ -96,10 +96,11 @@ public sealed partial class BookFixed2Viewer : Page
         if (file != null) Open(file);
     }
 
-    private void Open(Windows.Storage.IStorageFile file)
+    private async void Open(Windows.Storage.IStorageFile file)
     {
         Binding?.UpdateContainerInfo(file);
-        Binding?.Initialize(file, this.flipView);
+        await Binding?.InitializeAsync(file, this.flipView);
+        //ToDo: Update SessionInfo
     }
 
     private void Open(Books.IBook book)

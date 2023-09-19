@@ -146,7 +146,6 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 		public string Title;
 	}
 
-	Windows.Graphics.Display.BrightnessOverride _BrightnessOverride;
 
 	protected override async void OnNavigatedTo(NavigationEventArgs e)
 	{
@@ -298,15 +297,27 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 
 	Frame BasicFullScreenFrame = null;
 
-	private void Open(Windows.Storage.IStorageFile file)
+	private async void Open(Windows.Storage.IStorageFile file)
 	{
 		Binding?.UpdateContainerInfo(file);
-		Binding?.Initialize(file, this.flipView);
+		await Binding?.InitializeAsync(file, this.flipView);
+		UpdateSessionInfo();
+	}
+
+	private void UpdateSessionInfo()
+	{
+		var tab = UIHelper.GetCurrentTabViewItem(this);
+		if (tab is not TabViewItemEx tabex) return;
+		tabex.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab()
+		{
+			Token = Binding?.HistoryToken
+		};
 	}
 
 	private void Open(Books.IBook book)
 	{
 		if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
+		UpdateSessionInfo();
 	}
 
 	private void flipView_Tapped(object sender, TappedRoutedEventArgs e)
@@ -339,12 +350,13 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 				var tab = UIHelper.GetCurrentTabPage(this);
 				if (tab is null) return;
 				var (frame, newTab) = tab.OpenTab("BookViewer");
-				UIHelper.FrameOperation.OpenEpubPreferedEngine(frame, file, newTab);
+				await UIHelper.FrameOperation.OpenEpubPreferedEngine(frame, file, newTab);
 			}
 			else
 			{
 				Binding?.UpdateContainerInfo(file);
-				Binding?.Initialize(file, this.flipView);
+				await Binding?.InitializeAsync(file, this.flipView);
+				UpdateSessionInfo();
 			}
 		}
 	}

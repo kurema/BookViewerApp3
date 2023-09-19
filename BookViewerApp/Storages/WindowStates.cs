@@ -101,12 +101,11 @@ namespace BookViewerApp.Storages.WindowStates {
     [System.Xml.Serialization.XmlRootAttribute(Namespace="http://tempuri.org/WindowStates.xsd", IsNullable=false)]
     public partial class WindowState : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private object[][] windowField;
+        private WindowStateWindow[] windowField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("ExplorerTab", typeof(WindowStateWindowExplorerTab), IsNullable=false)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("ViewerTab", typeof(WindowStateWindowViewerTab), IsNullable=false)]
-        public object[][] Window {
+        [System.Xml.Serialization.XmlElementAttribute("Window")]
+        public WindowStateWindow[] Window {
             get {
                 return this.windowField;
             }
@@ -132,19 +131,268 @@ namespace BookViewerApp.Storages.WindowStates {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
-    public partial class WindowStateWindowExplorerTab : object, System.ComponentModel.INotifyPropertyChanged {
+    public partial class WindowStateWindow : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private string srcField;
+        private object[] itemsField;
+        
+        private bool isTopField;
+        
+        public WindowStateWindow() {
+            this.isTopField = true;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("BookshelfTab", typeof(WindowStateWindowBookshelfTab))]
+        [System.Xml.Serialization.XmlElementAttribute("BrowserTab", typeof(WindowStateWindowBrowserTab))]
+        [System.Xml.Serialization.XmlElementAttribute("ExplorerTab", typeof(WindowStateWindowExplorerTab))]
+        [System.Xml.Serialization.XmlElementAttribute("MediaPlayerTab", typeof(WindowStateWindowMediaPlayerTab))]
+        [System.Xml.Serialization.XmlElementAttribute("SettingTab", typeof(WindowStateWindowSettingTab))]
+        [System.Xml.Serialization.XmlElementAttribute("TextEditorTab", typeof(WindowStateWindowTextEditorTab))]
+        [System.Xml.Serialization.XmlElementAttribute("ViewerTab", typeof(WindowStateWindowViewerTab))]
+        public object[] Items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                this.itemsField = value;
+                this.RaisePropertyChanged("Items");
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string src {
+        [System.ComponentModel.DefaultValueAttribute(true)]
+        public bool isTop {
             get {
-                return this.srcField;
+                return this.isTopField;
             }
             set {
-                this.srcField = value;
-                this.RaisePropertyChanged("src");
+                this.isTopField = value;
+                this.RaisePropertyChanged("isTop");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowBookshelfTab : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowBrowserTab : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string urlField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
+        public string Url {
+            get {
+                return this.urlField;
+            }
+            set {
+                this.urlField = value;
+                this.RaisePropertyChanged("Url");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowExplorerTab : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private WindowStateWindowExplorerTabItem[] structureField;
+        
+        private string pathField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Item", IsNullable=false)]
+        public WindowStateWindowExplorerTabItem[] Structure {
+            get {
+                return this.structureField;
+            }
+            set {
+                this.structureField = value;
+                this.RaisePropertyChanged("Structure");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Path {
+            get {
+                return this.pathField;
+            }
+            set {
+                this.pathField = value;
+                this.RaisePropertyChanged("Path");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowExplorerTabItem : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string pathField;
+        
+        private string displayedNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Path {
+            get {
+                return this.pathField;
+            }
+            set {
+                this.pathField = value;
+                this.RaisePropertyChanged("Path");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DisplayedName {
+            get {
+                return this.displayedNameField;
+            }
+            set {
+                this.displayedNameField = value;
+                this.RaisePropertyChanged("DisplayedName");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowMediaPlayerTab : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string pathField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Path {
+            get {
+                return this.pathField;
+            }
+            set {
+                this.pathField = value;
+                this.RaisePropertyChanged("Path");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowSettingTab : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
+    public partial class WindowStateWindowTextEditorTab : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string pathField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Path {
+            get {
+                return this.pathField;
+            }
+            set {
+                this.pathField = value;
+                this.RaisePropertyChanged("Path");
             }
         }
         

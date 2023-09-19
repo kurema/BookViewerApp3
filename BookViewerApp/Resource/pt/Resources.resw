@@ -890,7 +890,7 @@ Fonte: {2}</value>
     <value>Substituir o brilho do ecrã. Ativado apenas quando o valor é positivo.</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
-    <value>Brilho do ecrã (Experimental)</value>
+    <value>Brilho do ecrã</value>
   </data>
   <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
     <value>Lista de candidatos a senha para PDF com senha</value>

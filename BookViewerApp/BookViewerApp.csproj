@@ -303,6 +303,7 @@
     <Compile Include="Storages\WindowStates.cs">
       <DependentUpon>WindowStates.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Storages\WindowStatesExtend.cs" />
     <Compile Include="Storages\WindowStatesStorage.cs" />
     <Compile Include="ValueConverters\ValueConverters.cs" />
     <Compile Include="ViewModels\AdBlockerSettingViewModel.cs" />

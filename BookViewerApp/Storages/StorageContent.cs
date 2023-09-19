@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using BookViewerApp.Helper;
 
 namespace BookViewerApp.Storages;
-
+#nullable enable
 public enum SavePlaces
 {
     Local, Roaming, LocalCache, InstalledLocation
@@ -15,12 +15,12 @@ public enum SavePlaces
 
 public class StorageContent<T> where T : class
 {
-    public T Content { get; set; } = null;
+    public T? Content { get; set; } = null;
     public string FileName { get; }
 
     private System.Threading.SemaphoreSlim Semaphore = new(1, 1);
 
-    public StorageContent(SavePlaces savePlace, string fileName, Func<T> getNewDelegate = null)
+    public StorageContent(SavePlaces savePlace, string fileName, Func<T>? getNewDelegate = null)
     {
         SavePlace = savePlace;
         FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
@@ -43,12 +43,12 @@ public class StorageContent<T> where T : class
                 case SavePlaces.InstalledLocation:
                     //Not used. Don't use.
                     return Windows.ApplicationModel.Package.Current.InstalledLocation;
-                default: return null;
+                default: throw new Exception($"{nameof(DataFolder)} is not within expected velue.");
             }
         }
     }
 
-    private async Task<T> DeserializeAsync()
+    private async Task<T?> DeserializeAsync()
     {
         var f = await GetFileAsync();
         if (f is null) return null;
@@ -77,14 +77,14 @@ public class StorageContent<T> where T : class
 
     public SavePlaces SavePlace { get; set; }
 
-    public Func<T> GetNewDelegate { get; set; } = null;
+    public Func<T>? GetNewDelegate { get; set; } = null;
 
-    public T GetNew() => GetNewDelegate != null ? GetNewDelegate() : default;
+    public T? GetNew() => GetNewDelegate?.Invoke() ?? default;
     
 
-    internal async Task<T> GetContentAsync() => Content ??= await DeserializeAsync() ?? GetNew();
+    internal async Task<T?> GetContentAsync() => Content ??= await DeserializeAsync() ?? GetNew();
 
-    internal async Task<T> ReloadAsync() => Content = await DeserializeAsync();
+    internal async Task<T?> ReloadAsync() => Content = await DeserializeAsync();
 
     internal async Task SaveAsync()
     {
@@ -126,7 +126,7 @@ public class StorageContent<T> where T : class
         }
     }
 
-    public async Task<Windows.Storage.StorageFile> GetFileAsync()
+    public async Task<Windows.Storage.StorageFile?> GetFileAsync()
     {
         switch (SavePlace)
         {
@@ -184,7 +184,7 @@ public class StorageContent<T> where T : class
             var itemList = contentEnum.ToList();
             action(itemList);
 
-            T result = (itemList as T) ?? (itemList.ToArray() as T);
+            T? result = (itemList as T) ?? (itemList.ToArray() as T);
             if (result is null)
             {
                 return false;

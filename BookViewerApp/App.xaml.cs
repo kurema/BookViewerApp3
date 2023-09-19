@@ -172,6 +172,12 @@ sealed partial class App : Application
 		await BookInfoStorage.SaveAsync();
 		await LibraryStorage.Content.SaveAsync();
 		await LibraryStorage.RoamingBookmarks.SaveAsync();
+		{
+			var content = await Storages.WindowStatesStorage.Content.GetContentAsync();
+			if (Window.Current.Content is TabPage tp1) content.Last = tp1.GetWindowStates();
+			else if ((Window.Current.Content as Frame)?.Content is TabPage tp2) content.Last = tp2.GetWindowStates();
+			await Storages.WindowStatesStorage.Content.SaveAsync();
+		}
 
 		OverrideBrightnessStop();
 

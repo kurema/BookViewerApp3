@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using BookViewerApp.Storages.WindowStates;
+using Microsoft.UI.Xaml.Controls;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -8,5 +9,5 @@ namespace BookViewerApp.Views;
 
 public class TabViewItemEx : TabViewItem
 {
-	public object? SessionInfo { get; set; }
+	public IWindowStateWindowTab? SessionInfo { get; set; }
 }

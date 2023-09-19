@@ -896,7 +896,7 @@
     <value>画面の明るさを上書きする。値が正のときのみ有効。</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
-    <value>画面の明るさ (プレビュー)</value>
+    <value>画面の明るさ</value>
   </data>
   <data name="Setting_PdfPasswordDictionary.Title" xml:space="preserve">
     <value>PDFのパスワード候補リスト</value>
