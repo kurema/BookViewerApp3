@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace BookViewerApp.Storages;
 public static class WindowStatesStorage
 {
-	public static StorageContent<WindowStates.WindowStates> Content = new(SavePlaces.Local, "Windows.xml", () => new() { Entries = new WindowStates.WindowStatesEntry[0] });
+	public static StorageContent<WindowStates.WindowStates> Content = new(SavePlaces.Local, "Sessions.xml", () => new() { Entries = new WindowStates.WindowStatesEntry[0] });
 }

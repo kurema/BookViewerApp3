@@ -476,11 +476,55 @@ public sealed partial class TabPage : Page
 		};
 	}
 
+	public async void OpenWindowState(Storages.WindowStates.WindowStatesLast last)
+	{
+		if (!(last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0)) return;
+		foreach (var item in last.WindowState.Window[0].Items)
+		{
+			switch (item)
+			{
+				case Storages.WindowStates.WindowStateWindowBookshelfTab bs:
+					OpenTabBookshelf();
+					break;
+				case Storages.WindowStates.WindowStateWindowBrowserTab br:
+					if (string.IsNullOrEmpty(br.Url)) OpenTabWeb();
+					else OpenTabWeb(br.Url);
+					break;
+				case Storages.WindowStates.WindowStateWindowExplorerTab ex:
+					//ToDo: Load path;
+					OpenTabExplorer();
+					break;
+				case Storages.WindowStates.WindowStateWindowMediaPlayerTab md:
+					//I don't want to consume history for media player. So this is ignored.
+					//OpenTabMedia();
+					break;
+				case Storages.WindowStates.WindowStateWindowSettingTab st:
+					OpenTabSetting();
+					break;
+				case Storages.WindowStates.WindowStateWindowTextEditorTab te:
+					//OpenTabTextEditor();
+					break;
+				case Storages.WindowStates.WindowStateWindowViewerTab vw:
+					if (!string.IsNullOrEmpty(vw.Token) && Managers.HistoryManager.List.ContainsItem(vw.Token))
+					{
+						var storage = await HistoryManager.List.GetItemAsync(vw.Token);
+						OpenTabBook(storage);
+					}
+					break;
+			}
+		}
+	}
+
 	protected override void OnNavigatedTo(NavigationEventArgs e)
 	{
 		if (e.Parameter == null || (e.Parameter is string s && s == ""))
 		{
 			OpenTabExplorer();
+		}
+		else if (e.Parameter is Storages.WindowStates.WindowStatesLast last)
+		{
+			if (last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0) OpenWindowState(last);
+			else OpenTabExplorer();
 		}
 		else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs args)
 		{
@@ -498,7 +542,6 @@ public sealed partial class TabPage : Page
 		}
 
 		SetupWindow(null);
-
 	}
 
 	protected override void OnNavigatedFrom(NavigationEventArgs e)

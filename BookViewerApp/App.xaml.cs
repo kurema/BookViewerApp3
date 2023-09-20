@@ -108,7 +108,7 @@ sealed partial class App : Application
 	/// アプリケーションが特定のファイルを開くために起動されたときなどに使用されます。
 	/// </summary>
 	/// <param name="e">起動の要求とプロセスの詳細を表示します。</param>
-	protected override void OnLaunched(LaunchActivatedEventArgs e)
+	protected override async void OnLaunched(LaunchActivatedEventArgs e)
 	{
 #if DEBUG
 		if (System.Diagnostics.Debugger.IsAttached)
@@ -142,7 +142,16 @@ sealed partial class App : Application
 			// ナビゲーション スタックが復元されない場合は、最初のページに移動します。
 			// このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
 			//構成します
-			rootFrame.Navigate(typeof(TabPage), e.Arguments);
+			if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.RestorePreviousSession))
+			{
+				var content = await Storages.WindowStatesStorage.Content.GetContentAsync();
+				rootFrame.Navigate(typeof(TabPage), content.Last);
+			}
+			else
+			{
+				rootFrame.Navigate(typeof(TabPage), e.Arguments);
+			}
+
 		}
 		// 現在のウィンドウがアクティブであることを確認します
 		Window.Current.Activate();
