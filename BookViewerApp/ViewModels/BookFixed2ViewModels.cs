@@ -146,7 +146,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		var book = await BookManager.GetBookFromFile(value);
 		if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
 		{
-			Initialize(bookf, target);
+			await InitializeAsync(bookf, target);
 			this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
 			this.Loading = false;
 
@@ -212,7 +212,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		}
 	}
 
-	public async void Initialize(Books.IBookFixed value, Control? target = null)
+	public async Task InitializeAsync(Books.IBookFixed value, Control? target = null)
 	{
 		this.Loading = true;
 		if (BookInfo != null) SaveInfo();

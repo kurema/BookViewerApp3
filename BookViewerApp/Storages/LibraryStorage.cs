@@ -129,6 +129,7 @@ namespace BookViewerApp.Storages
             return new ContainerDelegateItem(GetItem_GetWord("Folders"), "/Folders", async (sender) =>
             {
                 var library = await Content.GetContentAsync();
+                if (library is null) return null;
                 var list = (await Task.WhenAll(library.folders.Select(async a => await a.AsTokenLibraryItem(UIHelper.ContextMenus.MenuFolderToken, UIHelper.ContextMenus.MenuStorage(tabPageProvider)))))?.Where(a => a != null)?.ToArray() ?? Array.Empty<TokenLibraryItem>();
                 foreach (var item in list) item.Parent = sender;
                 return list;

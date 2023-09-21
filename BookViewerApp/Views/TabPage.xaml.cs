@@ -30,6 +30,7 @@ using Microsoft.UI.Xaml.Controls;
 using BookViewerApp.Managers;
 using Windows.Storage;
 using static System.Net.WebRequestMethods;
+using System.Threading.Tasks;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -200,11 +201,12 @@ public sealed partial class TabPage : Page
 	}
 
 
-	public void OpenTabExplorer()
+	public async Task<(Frame, TabViewItemEx)> OpenTabExplorer()
 	{
 		var (frame, newTab) = OpenTab("Explorer");
 		newTab.SessionInfo = new Storages.WindowStates.WindowStateWindowExplorerTab();
-		UIHelper.FrameOperation.OpenExplorer(frame, newTab);
+		await UIHelper.FrameOperation.OpenExplorer(frame, newTab);
+		return (frame, newTab);
 	}
 
 	public void OpenTabMedia(kurema.FileExplorerControl.Models.FileItems.IFileItem file)
@@ -327,16 +329,16 @@ public sealed partial class TabPage : Page
 		return (frame, newTab);
 	}
 
-	private void TabViewMain_AddTabButtonClick(winui.Controls.TabView sender, object args)
+	private async void TabViewMain_AddTabButtonClick(winui.Controls.TabView sender, object args)
 	{
-		OpenTabExplorer();
+		await OpenTabExplorer();
 	}
 
 	private async void TabViewMain_TabCloseRequested(winui.Controls.TabView sender, winui.Controls.TabViewTabCloseRequestedEventArgs args)
 	{
 		if (RootAppWindow == null && TabViewMain.TabItems.Count == 1)
 		{
-			OpenTabExplorer();
+			await OpenTabExplorer();
 			await CloseTab(args.Tab);
 			TabViewMain.SelectedIndex = 0;
 		}
@@ -478,53 +480,105 @@ public sealed partial class TabPage : Page
 
 	public async void OpenWindowState(Storages.WindowStates.WindowStatesLast last)
 	{
+		async Task<StorageFile> GetStorage(string path)
+		{
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				try
+				{
+					return await StorageFile.GetFileFromPathAsync(path);
+				}
+				catch { }
+			}
+			return null;
+		}
+
 		if (!(last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0)) return;
 		foreach (var item in last.WindowState.Window[0].Items)
 		{
-			switch (item)
+			try
 			{
-				case Storages.WindowStates.WindowStateWindowBookshelfTab bs:
-					OpenTabBookshelf();
-					break;
-				case Storages.WindowStates.WindowStateWindowBrowserTab br:
-					if (string.IsNullOrEmpty(br.Url)) OpenTabWeb();
-					else OpenTabWeb(br.Url);
-					break;
-				case Storages.WindowStates.WindowStateWindowExplorerTab ex:
-					//ToDo: Load path;
-					OpenTabExplorer();
-					break;
-				case Storages.WindowStates.WindowStateWindowMediaPlayerTab md:
-					//I don't want to consume history for media player. So this is ignored.
-					//OpenTabMedia();
-					break;
-				case Storages.WindowStates.WindowStateWindowSettingTab st:
-					OpenTabSetting();
-					break;
-				case Storages.WindowStates.WindowStateWindowTextEditorTab te:
-					//OpenTabTextEditor();
-					break;
-				case Storages.WindowStates.WindowStateWindowViewerTab vw:
-					if (!string.IsNullOrEmpty(vw.Token) && Managers.HistoryManager.List.ContainsItem(vw.Token))
-					{
-						var storage = await HistoryManager.List.GetItemAsync(vw.Token);
-						OpenTabBook(storage);
-					}
-					break;
+				switch (item)
+				{
+					case Storages.WindowStates.WindowStateWindowBookshelfTab bs:
+						OpenTabBookshelf();
+						break;
+					case Storages.WindowStates.WindowStateWindowBrowserTab br:
+						if (string.IsNullOrEmpty(br.Url)) OpenTabWeb();
+						else OpenTabWeb(br.Url);
+						break;
+					case Storages.WindowStates.WindowStateWindowExplorerTab ex:
+						//ToDo: Load path;
+						var (f, _) = await OpenTabExplorer();
+						try { await OpenExplorerPath(f?.Content as kurema.FileExplorerControl.Views.FileExplorerControl, ex.Structure); } catch { }
+						break;
+					case Storages.WindowStates.WindowStateWindowMediaPlayerTab md:
+						{ if (await GetStorage(md.Path) is { } storage) { OpenTabMedia(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(storage)); break; } }
+						break;
+					case Storages.WindowStates.WindowStateWindowSettingTab st:
+						OpenTabSetting();
+						break;
+					case Storages.WindowStates.WindowStateWindowTextEditorTab te:
+						{ if (await GetStorage(te.Path) is { } storage) { OpenTabTextEditor(storage); break; } }
+						break;
+					case Storages.WindowStates.WindowStateWindowViewerTab vw:
+						{ if (await GetStorage(vw.Path) is { } storage) { OpenTabBook(storage); break; } }
+						if (!string.IsNullOrEmpty(vw.Token) && HistoryManager.List.ContainsItem(vw.Token))
+						{
+							var storage = await HistoryManager.List.GetItemAsync(vw.Token);
+							OpenTabBook(storage);
+						}
+						break;
+				}
 			}
+			catch { }
 		}
+	}
+
+	async static Task OpenExplorerPath(kurema.FileExplorerControl.Views.FileExplorerControl control, IEnumerable<Storages.WindowStates.WindowStateWindowExplorerTabItem> items)
+	{
+		if (control is null || control.DataContext is not kurema.FileExplorerControl.ViewModels.FileExplorerViewModel vm) return;
+		var children = control.GetTreeViewRoot();
+		if (children is null) return;
+		if (items is null) return;
+		kurema.FileExplorerControl.ViewModels.FileItemViewModel result = null;
+		foreach (var item in items.Skip(1))
+		{
+			{
+				var hits = children.Where(a => a.Path == item.Path).ToArray();
+				if (!string.IsNullOrEmpty(item.Path) && hits.Count() == 1)
+				{
+					result = hits[0];
+					await result.UpdateChildren();
+					children = result.Children;
+					continue;
+				}
+			}
+			{
+				var hits = children.Where(a => a.Title == item.DisplayedName).ToArray();
+				if (!string.IsNullOrWhiteSpace(item.DisplayedName) && hits.Count() == 1)
+				{
+					result = hits[0];
+					await result.UpdateChildren();
+					children = result.Children;
+					continue;
+				}
+			}
+			break;
+		}
+		await control.ContentControl.SetFolder(result);
 	}
 
 	protected override void OnNavigatedTo(NavigationEventArgs e)
 	{
 		if (e.Parameter == null || (e.Parameter is string s && s == ""))
 		{
-			OpenTabExplorer();
+			_ = OpenTabExplorer();
 		}
 		else if (e.Parameter is Storages.WindowStates.WindowStatesLast last)
 		{
 			if (last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0) OpenWindowState(last);
-			else OpenTabExplorer();
+			else _ = OpenTabExplorer();
 		}
 		else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs args)
 		{
@@ -686,13 +740,13 @@ public sealed partial class TabPage : Page
 		args.Data.RequestedOperation = DataPackageOperation.Move;
 	}
 
-	private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+	private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
 	{
 		if (sender is FrameworkElement elem && elem.Tag != null)
 		{
 			switch (elem.Tag.ToString())
 			{
-				case "Explorer": this.OpenTabExplorer(); break;
+				case "Explorer": await this.OpenTabExplorer(); break;
 				case "Browser": this.OpenTabWeb(); break;
 				case "Setting": this.OpenTabSetting(); break;
 				case "Picker": this.OpenTabBookPicked(); break;

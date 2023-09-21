@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Navigation;
 
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
+using System.Threading.Tasks;
+
 namespace BookViewerApp;
 
 /// <summary>
@@ -144,8 +146,22 @@ sealed partial class App : Application
 			//構成します
 			if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.RestorePreviousSession))
 			{
-				var content = await Storages.WindowStatesStorage.Content.GetContentAsync();
-				rootFrame.Navigate(typeof(TabPage), content.Last);
+				try
+				{
+					var content = await WindowStatesStorage.Content.GetContentAsync();
+					var last = content.Last;
+					_ = Task.Run(async () =>
+					{
+						//Ensure that startup failures do not occur again.
+						//content.Last = new();
+						//await WindowStatesStorage.Content.SaveAsync();
+					});
+					rootFrame.Navigate(typeof(TabPage), last);
+				}
+				catch
+				{
+					rootFrame.Navigate(typeof(TabPage), e.Arguments);
+				}
 			}
 			else
 			{

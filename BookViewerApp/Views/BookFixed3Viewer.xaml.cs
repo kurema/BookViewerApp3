@@ -301,22 +301,24 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 	{
 		Binding?.UpdateContainerInfo(file);
 		await Binding?.InitializeAsync(file, this.flipView);
-		UpdateSessionInfo();
+		UpdateSessionInfo(file.Path);
 	}
 
-	private void UpdateSessionInfo()
+	private void UpdateSessionInfo(string path = null)
 	{
 		var tab = UIHelper.GetCurrentTabViewItem(this);
 		if (tab is not TabViewItemEx tabex) return;
 		tabex.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab()
 		{
-			Token = Binding?.HistoryToken
+			Token = Binding?.HistoryToken,
+			Id = Binding?.ID,
+			Path = path,
 		};
 	}
 
-	private void Open(Books.IBook book)
+	private async void Open(Books.IBook book)
 	{
-		if (book is Books.IBookFixed) Binding?.Initialize((Books.IBookFixed)book, this.flipView);
+		if (book is Books.IBookFixed && Binding is not null) await Binding.InitializeAsync((Books.IBookFixed)book, this.flipView);
 		UpdateSessionInfo();
 	}
 
@@ -352,11 +354,11 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 				var (frame, newTab) = tab.OpenTab("BookViewer");
 				await UIHelper.FrameOperation.OpenEpubPreferedEngine(frame, file, newTab);
 			}
-			else
+			else if (Binding is not null)
 			{
-				Binding?.UpdateContainerInfo(file);
-				await Binding?.InitializeAsync(file, this.flipView);
-				UpdateSessionInfo();
+				await Binding.UpdateContainerInfo(file);
+				await Binding.InitializeAsync(file, this.flipView);
+				UpdateSessionInfo(file.Path);
 			}
 		}
 	}

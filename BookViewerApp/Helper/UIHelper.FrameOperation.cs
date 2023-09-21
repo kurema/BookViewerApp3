@@ -374,7 +374,7 @@ public static partial class UIHelper
 			}
 		}
 
-		public static async void OpenExplorer(Frame frame, FrameworkElement sender = null)
+		public static async Task OpenExplorer(Frame frame, FrameworkElement sender = null)
 		{
 			{
 				var tab = UIHelper.GetCurrentTabViewItem(sender) as TabViewItemEx;
