@@ -144,7 +144,8 @@ sealed partial class App : Application
 			// ナビゲーション スタックが復元されない場合は、最初のページに移動します。
 			// このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
 			//構成します
-			if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.RestorePreviousSession))
+			if (e.PreviousExecutionState == ApplicationExecutionState.Terminated ||
+				(e.PreviousExecutionState == ApplicationExecutionState.ClosedByUser && (bool)SettingStorage.GetValue(SettingStorage.SettingKeys.RestorePreviousSession)))
 			{
 				try
 				{
@@ -153,8 +154,8 @@ sealed partial class App : Application
 					_ = Task.Run(async () =>
 					{
 						//Ensure that startup failures do not occur again.
-						//content.Last = new();
-						//await WindowStatesStorage.Content.SaveAsync();
+						content.Last = new();
+						await WindowStatesStorage.Content.SaveAsync();
 					});
 					rootFrame.Navigate(typeof(TabPage), last);
 				}

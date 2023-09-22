@@ -510,7 +510,10 @@ public sealed partial class TabPage : Page
 					case Storages.WindowStates.WindowStateWindowExplorerTab ex:
 						//ToDo: Load path;
 						var (f, _) = await OpenTabExplorer();
-						try { await OpenExplorerPath(f?.Content as kurema.FileExplorerControl.Views.FileExplorerControl, ex.Structure); } catch { }
+						_ = this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+						{
+							try { await OpenExplorerPath(f?.Content as kurema.FileExplorerControl.Views.FileExplorerControl, ex.Structure); } catch { }
+						});
 						break;
 					case Storages.WindowStates.WindowStateWindowMediaPlayerTab md:
 						{ if (await GetStorage(md.Path) is { } storage) { OpenTabMedia(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(storage)); break; } }
@@ -538,6 +541,7 @@ public sealed partial class TabPage : Page
 	async static Task OpenExplorerPath(kurema.FileExplorerControl.Views.FileExplorerControl control, IEnumerable<Storages.WindowStates.WindowStateWindowExplorerTabItem> items)
 	{
 		if (control is null || control.DataContext is not kurema.FileExplorerControl.ViewModels.FileExplorerViewModel vm) return;
+		if (vm.Content is null) return;
 		var children = control.GetTreeViewRoot();
 		if (children is null) return;
 		if (items is null) return;
@@ -566,7 +570,11 @@ public sealed partial class TabPage : Page
 			}
 			break;
 		}
+		var stv = vm.Content.SyncTreeView;
+		vm.Content.SyncTreeView = false;
+		//Expanding treeview throws Access Violation Exception when you open "/Histories".
 		await control.ContentControl.SetFolder(result);
+		vm.Content.SyncTreeView = stv;
 	}
 
 	protected override void OnNavigatedTo(NavigationEventArgs e)

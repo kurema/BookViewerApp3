@@ -35,8 +35,7 @@ public sealed partial class FileExplorerControl : Page
 				if (e.PropertyName == nameof(ViewModels.ContentViewModel.Item))
 				{
 					address.SetAddress(fvm.Content.Item);
-
-					try { await OpenTreeView(fvm.Content.Item); } catch { }
+					if (vm.SyncTreeView) try { await OpenTreeView(fvm.Content.Item); } catch { }
 				}
 			};
 		}
