@@ -573,6 +573,7 @@ public sealed partial class TabPage : Page
 		var stv = vm.Content.SyncTreeView;
 		vm.Content.SyncTreeView = false;
 		//Expanding treeview throws Access Violation Exception when you open "/Histories".
+		//https://github.com/microsoft/microsoft-ui-xaml/issues/5683
 		await control.ContentControl.SetFolder(result);
 		vm.Content.SyncTreeView = stv;
 	}
