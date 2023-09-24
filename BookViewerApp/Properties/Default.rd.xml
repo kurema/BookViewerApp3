@@ -15,17 +15,17 @@
     <Namespace Name="DataClasses.ViewModels" Seralize="All" />
 -->
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
-  <Application>
-    <!--
+	<Application>
+		<!--
       An Assembly element with Name="*Application*" applies to all assemblies in
       the application package. The asterisks are not wildcards.
     -->
-    <Assembly Name="*Application*" Dynamic="Required All"/>
-    
-    <!-- https://github.com/dotnet/runtime/issues/978 -->
-    <Namespace Name="System.Text.Json.Serialization.Converters" Dynamic="Required All"/>
+		<Assembly Name="*Application*" Dynamic="Required All"/>
 
-    <!-- Add your application specific runtime directives here. -->
+		<!-- https://github.com/dotnet/runtime/issues/978 -->
+		<Namespace Name="System.Text.Json.Serialization.Converters" Dynamic="Required All"/>
 
-  </Application>
+		<!-- Add your application specific runtime directives here. -->
+
+	</Application>
 </Directives>

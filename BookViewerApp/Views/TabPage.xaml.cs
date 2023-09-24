@@ -201,10 +201,10 @@ public sealed partial class TabPage : Page
 	}
 
 
-	public async Task<(Frame, TabViewItemEx)> OpenTabExplorer()
+	public async Task<(Frame, TabViewItem)> OpenTabExplorer()
 	{
 		var (frame, newTab) = OpenTab("Explorer");
-		newTab.SessionInfo = new Storages.WindowStates.WindowStateWindowExplorerTab();
+		TabViewItemTagInfo.SetOrGetTag(newTab).SessionInfo = new Storages.WindowStates.WindowStateWindowExplorerTab();
 		await UIHelper.FrameOperation.OpenExplorer(frame, newTab);
 		return (frame, newTab);
 	}
@@ -216,7 +216,7 @@ public sealed partial class TabPage : Page
 		{
 			case kurema.FileExplorerControl.Models.FileItems.StorageFileItem sf when sf.Content is Windows.Storage.IStorageFile sfFile:
 				newTab.Header = Path.GetFileNameWithoutExtension(sfFile.Path);
-				newTab.SessionInfo = new Storages.WindowStates.WindowStateWindowMediaPlayerTab() { Path = sfFile.Path };
+				TabViewItemTagInfo.SetOrGetTag(newTab).SessionInfo = new Storages.WindowStates.WindowStateWindowMediaPlayerTab() { Path = sfFile.Path };
 				frame.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.SimpleMediaPlayerPage), Windows.Media.Core.MediaSource.CreateFromStorageFile(sfFile));
 				break;
 		}
@@ -231,7 +231,7 @@ public sealed partial class TabPage : Page
 	public async void OpenTabWeb(string uri)
 	{
 		var (frame, newTab) = OpenTab("Browser");
-		newTab.SessionInfo = new Storages.WindowStates.WindowStateWindowBrowserTab() { Url = uri };
+		TabViewItemTagInfo.SetOrGetTag(newTab).SessionInfo = new Storages.WindowStates.WindowStateWindowBrowserTab() { Url = uri };
 
 		//UIHelper.FrameOperation.OpenBrowser(frame, uri, (a) => OpenTabWeb(a), (a) => OpenTabBook(a), (title) =>
 		//{
@@ -283,21 +283,24 @@ public sealed partial class TabPage : Page
 	public void OpenTabSetting()
 	{
 		var (frame, t) = OpenTab("Setting");
-		t.SessionInfo = new Storages.WindowStates.WindowStateWindowSettingTab();
+		var tag = TabViewItemTagInfo.SetOrGetTag(t);
+		tag.SessionInfo = new Storages.WindowStates.WindowStateWindowSettingTab();
 		frame?.Navigate(typeof(SettingPage));
 	}
 
 	public void OpenTabBookshelf()
 	{
 		var (frame, t) = OpenTab("Bookshelf");
-		t.SessionInfo = new Storages.WindowStates.WindowStateWindowBookshelfTab();
+		var tag = TabViewItemTagInfo.SetOrGetTag(t);
+		tag.SessionInfo = new Storages.WindowStates.WindowStateWindowBookshelfTab();
 		frame?.Navigate(typeof(Bookshelf.NavigationPage));
 	}
 
 	public kurema.FileExplorerControl.Views.Viewers.TextEditorPage OpenTabTextEditor(IStorageFile file)
 	{
 		var (frame, t) = OpenTab("TextEditor", file.Name, file.Path);
-		t.SessionInfo = new Storages.WindowStates.WindowStateWindowTextEditorTab() { Path = file.Path };
+		var tag = TabViewItemTagInfo.SetOrGetTag(t);
+		tag.SessionInfo = new Storages.WindowStates.WindowStateWindowTextEditorTab() { Path = file.Path };
 		frame?.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.TextEditorPage), file);
 		return frame.Content as kurema.FileExplorerControl.Views.Viewers.TextEditorPage;
 	}
@@ -305,14 +308,15 @@ public sealed partial class TabPage : Page
 	public void OpenTabTextEditor(kurema.FileExplorerControl.Models.FileItems.IFileItem file)
 	{
 		var (frame, t) = OpenTab("TextEditor", file.Name, file.Path);
-		t.SessionInfo = new Storages.WindowStates.WindowStateWindowTextEditorTab() { Path = file.Path };
+		var tag = TabViewItemTagInfo.SetOrGetTag(t);
+		tag.SessionInfo = new Storages.WindowStates.WindowStateWindowTextEditorTab() { Path = file.Path };
 		frame?.Navigate(typeof(kurema.FileExplorerControl.Views.Viewers.TextEditorPage), file);
 	}
 
 
-	public (Frame, TabViewItemEx) OpenTab(string titleId, params object[] args)
+	public (Frame, TabViewItem) OpenTab(string titleId, params object[] args)
 	{
-		var newTab = new TabViewItemEx();
+		var newTab = new TabViewItem();
 		var titleString = UIHelper.GetTitleByResource(titleId);
 		if (args is not null and { Length: > 0 }) titleString = string.Format(titleString, args);
 		newTab.Header = string.IsNullOrWhiteSpace(titleString) ? "New Tab" : titleString;
@@ -470,7 +474,7 @@ public sealed partial class TabPage : Page
 				Window = new Storages.WindowStates.WindowStateWindow[]
 				{
 					new Storages.WindowStates.WindowStateWindow(){
-						Items= TabViewMain.TabItems.Select(a => (a as TabViewItemEx)?.SessionInfo).Where(a => a is not null).ToArray(),
+						Items= TabViewMain.TabItems.Select(a => ((a as TabViewItem)?.Tag as TabViewItemTagInfo) ?.SessionInfo).Where(a => a is not null).ToArray(),
 						isTop=true,
 					}
 				}

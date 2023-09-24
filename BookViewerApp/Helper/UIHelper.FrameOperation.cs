@@ -109,7 +109,7 @@ public static partial class UIHelper
 			if (sender is null) return;
 			SetTitleByResource(sender, "Epub");
 			var tabPage = GetCurrentTabPage(sender);
-			var tabItem = GetCurrentTabViewItem(sender) as TabViewItemEx;
+			var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
 
 			epubType ??= SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
 			EpubResolverBase resolver = epubType switch
@@ -196,7 +196,7 @@ public static partial class UIHelper
 			}
 			{
 				var token = HistoryManager.AddEntry(file);
-				if (tabItem is not null) tabItem.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, Path = file.Path };
+				if (tagInfo is not null) tagInfo.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, Path = file.Path };
 			}
 		}
 
@@ -377,7 +377,7 @@ public static partial class UIHelper
 		public static async Task OpenExplorer(Frame frame, FrameworkElement sender = null)
 		{
 			{
-				var tab = UIHelper.GetCurrentTabViewItem(sender) as TabViewItemEx;
+				var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
 
 				//Too long! Split!
 				SetTitleByResource(sender, "Explorer");
@@ -516,17 +516,17 @@ public static partial class UIHelper
 								return;
 							}
 						};
-						if (tab is not null)
+						if (tagInfo is not null)
 						{
 							control.ContentControl.FolderChangedHandler += (s2, e2) =>
 							{
-								var t = (tab.SessionInfo as Storages.WindowStates.WindowStateWindowExplorerTab) ?? new();
+								var t = (tagInfo.SessionInfo as Storages.WindowStates.WindowStateWindowExplorerTab) ?? new();
 								t.Path = e2.Item.Path;
 								var structure =
 									kurema.FileExplorerControl.ViewModels.FileItemViewModel.GetStructure(e2.Item)
 									.Select(a => new Storages.WindowStates.WindowStateWindowExplorerTabItem() { Path = a.Path, DisplayedName = a.Title }).ToArray();
 								t.Structure = structure;
-								tab.SessionInfo = t;
+								tagInfo.SessionInfo = t;
 							};
 						}
 
@@ -615,7 +615,7 @@ public static partial class UIHelper
 			};
 		}
 
-		public static async Task OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider, TabViewItemEx tabViewItem)
+		public static async Task OpenBrowser2(Frame frame, string uri, Action<string> OpenTabWeb, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider, Microsoft.UI.Xaml.Controls.TabViewItem tabViewItem)
 		{
 			frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), uri);
 
@@ -716,14 +716,16 @@ public static partial class UIHelper
 			}
 		}
 
-		static void UpdateBrowserSession(TabViewItemEx tabView, string url)
+		static void UpdateBrowserSession(Microsoft.UI.Xaml.Controls.TabViewItem tabView, string url)
 		{
-			var browserTab = (tabView.SessionInfo as Storages.WindowStates.WindowStateWindowBrowserTab) ?? new Storages.WindowStates.WindowStateWindowBrowserTab();
+			var tag = TabViewItemTagInfo.SetOrGetTag(tabView);
+			if (tag is null) return;
+			var browserTab = (tag.SessionInfo as Storages.WindowStates.WindowStateWindowBrowserTab) ?? new Storages.WindowStates.WindowStateWindowBrowserTab();
 			browserTab.Url = url;
-			tabView.SessionInfo = browserTab;
+			tag.SessionInfo = browserTab;
 		}
 
-		public static async Task OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider, TabViewItemEx tabViewItem)
+		public static async Task OpenBrowser(Frame frame, string uri, Action<string> OpenTabWeb, Action<Windows.Storage.IStorageItem> OpenTabBook, Action<string> UpdateTitle, Func<Views.TabPage> tabPageProvider, Microsoft.UI.Xaml.Controls.TabViewItem tabViewItem)
 		{
 			frame?.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl), uri);
 			if (frame?.Content is kurema.BrowserControl.Views.BrowserControl content)

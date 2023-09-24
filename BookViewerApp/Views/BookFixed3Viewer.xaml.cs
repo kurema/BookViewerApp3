@@ -306,9 +306,9 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 
 	private void UpdateSessionInfo(string path = null)
 	{
-		var tab = UIHelper.GetCurrentTabViewItem(this);
-		if (tab is not TabViewItemEx tabex) return;
-		tabex.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab()
+		var tag = TabViewItemTagInfo.SetOrGetTag(UIHelper.GetCurrentTabViewItem(this));
+		if (tag is null) return;
+		tag.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab()
 		{
 			Token = Binding?.HistoryToken,
 			Id = Binding?.ID,
