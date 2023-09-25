@@ -131,6 +131,7 @@ public class AdBlockerSettingViewModel : ViewModelBase
     {
         var filter = await Managers.ExtensionAdBlockerManager.LocalLists.GetContentAsync();
         var info = await Managers.ExtensionAdBlockerManager.LocalInfo.GetContentAsync();
+        if (info is null) return;
 
         FilterList = new ObservableCollection<AdBlockerSettingFilterGroupViewModel>(filter?.group?.Select(a => new AdBlockerSettingFilterGroupViewModel(a) { Parent = this }) ?? new AdBlockerSettingFilterGroupViewModel[0]);
         if (info.filters?.Length > 0)
