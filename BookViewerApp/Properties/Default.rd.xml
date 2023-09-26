@@ -24,8 +24,21 @@
 
 		<!-- https://github.com/dotnet/runtime/issues/978 -->
 		<Namespace Name="System.Text.Json.Serialization.Converters" Dynamic="Required All"/>
+		
+		<Namespace Name="kurema.BrowserControl" Dynamic="Required All"/>
+		<Namespace Name="kurema.FileExplorerControl" Dynamic="Required All"/>
+
+		<!--<Namespace Name="Microsoft.UI.Xaml.Controls" Dynamic="Required All"/>-->
 
 		<!-- Add your application specific runtime directives here. -->
+
+		<!--<Assembly Name="Windows.Foundation.FoundationContract" Dynamic="Required All" />
+			<Type Name="Windows.Foundation.IReference`1[[System.Double, System.Private.CoreLib]]" Dynamic="Required All" />
+		</Assembly>-->
+
+		<!--<Assembly Name="Microsoft.UI.Xaml"  Dynamic="Required All" />-->
+			<!--<Type Name="Microsoft.UI.Xaml.Controls.XamlControlsResources" Dynamic="Required All" />
+		</Assembly>-->
 
 	</Application>
 </Directives>

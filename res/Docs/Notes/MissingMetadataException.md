@@ -37,5 +37,6 @@ System.Reflection.MissingMetadataException
 
 * https://github.com/microsoft/microsoft-ui-xaml/issues/2545
 * https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/4254
+* https://stackoverflow.com/questions/70088739/uwp-app-starts-on-startup-when-compiled-with-net-native (No answer)
 
 * [XamlControlsResources.properties.cpp](https://github.com/microsoft/microsoft-ui-xaml/blob/main/dev/Generated/XamlControlsResources.properties.cpp)

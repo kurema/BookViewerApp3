@@ -123,6 +123,47 @@
                 <SymbolIcon Symbol="Up"/>
             </Button>
 
+            <Grid Grid.Column="3" BorderBrush="{ThemeResource SystemBaseLowColor}" BorderThickness="1" Margin="5"  Background="{ThemeResource SystemAltHighColor}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Background="Transparent" IsSpellCheckEnabled="False"
+                         BorderBrush="Transparent" BorderThickness="0"
+                         x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="Address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="Address_text_KeyDown">
+                    <TextBox.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Light">
+                                    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                                </ResourceDictionary>
+                                <ResourceDictionary x:Key="Dark">
+                                    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </TextBox.Resources>
+                    <TextBox.Style>
+                        <!--Without this empty style, border is shown some how. -->
+                        <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->
+                        <Style TargetType="TextBox">
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="Address_FocusLostRequested"/>
+                <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}" Background="Transparent">
+                    <SymbolIcon Symbol="Share"/>
+                </Button>
+                <Button Grid.Column="2" Command="{Binding Content.RefreshCommand}" Background="Transparent">
+                    <SymbolIcon Symbol="Refresh"/>
+                </Button>
+            </Grid>
+
             <Button Grid.Column="4" x:Name="buttonMenu">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE700;"/>
                 <Button.Flyout>
@@ -206,35 +247,7 @@
 
                                     </Style>
                                 </Grid.Resources>
-                                <Button Grid.Column="1" Command="{Binding Content.SetContentStyleCommand}" HorizontalAlignment="Stretch" CommandParameter="List">
-                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xEA37;" FontSize="20"/>
-                                </Button>
-                                <Button  Grid.Column="3" Command="{Binding Content.SetContentStyleCommand}" CommandParameter="Icon">
-                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xF0E2;" FontSize="20" x:Name="SetStyleIconButton"/>
-                                </Button>
-                                <Button Grid.Column="2" Command="{Binding Content.SetContentStyleCommand}" CommandParameter="IconWide">
-                                    <Viewbox Width="20" Height="20">
-                                        <Canvas Height="13.25" Width="13.25">
-                                            <Canvas Height="13.25" Width="13.25">
-                                                <Canvas>
-                                                    <Path Data="M0,0v5.25h5.25V0H0z M4.5,4.5H0.75V0.75H4.5V4.5z" Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
-                                                </Canvas>
-                                            </Canvas>
-                                            <Canvas>
-                                                <Canvas>
-                                                    <Path Data="M0,6v5.25h5.25V6H0z M4.5,10.5H0.75V6.75H4.5V10.5z"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
-                                                </Canvas>
-                                            </Canvas>
-                                            <Rectangle Canvas.Left="6" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}" />
-                                            <Rectangle Canvas.Left="6" Canvas.Top="2.25" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
-                                            <Rectangle Canvas.Left="6" Canvas.Top="4.5" Width="5.25" Height="0.75" Fill="{ThemeResource DefaultTextForegroundThemeBrush}" />
-                                            <Rectangle Canvas.Left="6" Canvas.Top="6" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
-                                            <Rectangle Canvas.Left="6" Canvas.Top="8.25" Width="5.25" Height="0.75" Fill="{ThemeResource DefaultTextForegroundThemeBrush}" />
-                                            <Rectangle Canvas.Left="6" Canvas.Top="10.5" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
-                                        </Canvas>
-                                    </Viewbox>
-                                    <!--<Image Source="/FileExplorerControl/res/UI/Layout_Contents.svg" Height="{x:Bind SetStyleIconButton.Height}" Width="{x:Bind SetStyleIconButton.Width}" VerticalAlignment="Center" />-->
-                                </Button>
+
                                 <Button Grid.Column="0" Command="{Binding Content.SetContentStyleCommand}" CommandParameter="Detail" >
                                     <Viewbox Width="20" Height="20">
                                         <Canvas Height="13.25" Width="13.25">
@@ -263,6 +276,35 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--<Image Source="/FileExplorerControl/res/UI/Layout_Detail.svg" Height="40" HorizontalAlignment="Center" />-->
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding Content.SetContentStyleCommand}" HorizontalAlignment="Stretch" CommandParameter="List">
+                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xEA37;" FontSize="20"/>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding Content.SetContentStyleCommand}" CommandParameter="IconWide">
+                                    <Viewbox Width="20" Height="20">
+                                        <Canvas Height="13.25" Width="13.25">
+                                            <Canvas Height="13.25" Width="13.25">
+                                                <Canvas>
+                                                    <Path Data="M0,0v5.25h5.25V0H0z M4.5,4.5H0.75V0.75H4.5V4.5z" Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                                                </Canvas>
+                                            </Canvas>
+                                            <Canvas>
+                                                <Canvas>
+                                                    <Path Data="M0,6v5.25h5.25V6H0z M4.5,10.5H0.75V6.75H4.5V10.5z"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                                                </Canvas>
+                                            </Canvas>
+                                            <Rectangle Canvas.Left="6" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}" />
+                                            <Rectangle Canvas.Left="6" Canvas.Top="2.25" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                                            <Rectangle Canvas.Left="6" Canvas.Top="4.5" Width="5.25" Height="0.75" Fill="{ThemeResource DefaultTextForegroundThemeBrush}" />
+                                            <Rectangle Canvas.Left="6" Canvas.Top="6" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                                            <Rectangle Canvas.Left="6" Canvas.Top="8.25" Width="5.25" Height="0.75" Fill="{ThemeResource DefaultTextForegroundThemeBrush}" />
+                                            <Rectangle Canvas.Left="6" Canvas.Top="10.5" Width="5.25" Height="0.75"  Fill="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <!--<Image Source="/FileExplorerControl/res/UI/Layout_Contents.svg" Height="{x:Bind SetStyleIconButton.Height}" Width="{x:Bind SetStyleIconButton.Width}" VerticalAlignment="Center" />-->
+                                </Button>
+                                <Button  Grid.Column="3" Command="{Binding Content.SetContentStyleCommand}" CommandParameter="Icon">
+                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xF0E2;" FontSize="20" x:Name="SetStyleIconButton"/>
                                 </Button>
                             </Grid>
                             <Slider Value="{Binding Content.IconSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Content.IconSizeVariable}" Minimum="50" Maximum="150"/>
@@ -375,52 +417,12 @@
                             <NavigationViewItemSeparator HorizontalAlignment="Stretch" />
                             <TextBox HorizontalAlignment="Stretch" Text="{Binding Content.Item.SearchWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{x:Bind Converter={StaticResource vc_local},ConverterParameter='Search/Placeholder',Mode=OneTime}"
                                      x:Name="searchBox"/>
- 
+
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
             </Button>
 
-            <Grid Grid.Column="3" BorderBrush="{ThemeResource SystemBaseLowColor}" BorderThickness="1" Margin="5"  Background="{ThemeResource SystemAltHighColor}" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Background="Transparent" IsSpellCheckEnabled="False"
-                         BorderBrush="Transparent" BorderThickness="0"
-                         x:Name="address_text" Text="{Binding Content.Item.Path,Mode=OneWay}" Opacity="0" LostFocus="Address_text_FocusDisengaged" VerticalAlignment="Center" KeyDown="Address_text_KeyDown">
-                    <TextBox.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.ThemeDictionaries>
-                                <ResourceDictionary x:Key="Light">
-                                    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
-                                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
-                                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
-                                </ResourceDictionary>
-                                <ResourceDictionary x:Key="Dark">
-                                    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
-                                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
-                                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
-                                </ResourceDictionary>
-                            </ResourceDictionary.ThemeDictionaries>
-                        </ResourceDictionary>
-                    </TextBox.Resources>
-                    <TextBox.Style>
-                        <!--Without this empty style, border is shown some how. -->
-                        <!-- この空スタイルがないとWinUI 2.6で導入された枠が何故か表示される。原因不明。 -->
-                        <Style TargetType="TextBox">
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="Address_FocusLostRequested"/>
-                <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}" Background="Transparent">
-                    <SymbolIcon Symbol="Share"/>
-                </Button>
-                <Button Grid.Column="2" Command="{Binding Content.RefreshCommand}" Background="Transparent">
-                    <SymbolIcon Symbol="Refresh"/>
-                </Button>
-            </Grid>
         </Grid>
 
         <Grid Grid.Row="1" ContextRequested="UserControl_ContextRequested">
@@ -432,7 +434,7 @@
             <Rectangle Grid.Column="0" Fill="{ThemeResource SystemControlChromeMediumLowAcrylicWindowMediumBrush}"/>
             <Rectangle Grid.Column="1" Fill="{ThemeResource SystemControlAltHighAcrylicElementBrush}"/>
             <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0" Margin="0,0,8,0">
-                <ui:TreeView 
+                <ui:TreeView TabIndex="1"
                 CanReorderItems="False" CanDragItems="False" x:Name="treeview"  SelectionMode="Single" IsTapEnabled="True" Expanding="TreeView_Expanding" ItemInvoked="Treeview_ItemInvoked"
                   >
                     <ui:TreeView.ItemTemplate>
@@ -448,7 +450,7 @@
                     </ui:TreeView.ItemTemplate>
                 </ui:TreeView>
             </ScrollViewer>
-            <local:FileExplorerContentControl x:Name="content" Grid.Column="1" Margin="8,0,0,0"/>
+            <local:FileExplorerContentControl x:Name="content" Grid.Column="1" Margin="8,0,0,0" TabIndex="0" />
             <controls:GridSplitter
             GripperCursor="Default"
             HorizontalAlignment="Left"
