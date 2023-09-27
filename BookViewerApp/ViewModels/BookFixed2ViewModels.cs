@@ -762,6 +762,8 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 			}
 		(this.Content as IDisposable)?.Dispose();
 		(this.Content as IDisposableBasic)?.DisposeBasic();
+		Content = null;
+		PagesOriginal = Array.Empty<PageViewModel>();
 	}
 }
 

@@ -142,7 +142,7 @@ namespace BookViewerApp.Books
 							//I don't know, but iTextSharp.text.pdf.PdfArray seems to change in the future or already. This should work in many case.
 							foreach (var item2 in nditem2)
 							{
-								if(item2 is iTextSharp.text.pdf.PdfIndirectReference pir)
+								if (item2 is iTextSharp.text.pdf.PdfIndirectReference pir)
 								{
 									tocItem.Page = GetPage(pir);
 									break;
@@ -184,13 +184,13 @@ namespace BookViewerApp.Books
 			return result.ToArray();
 		}
 
-		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
+		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, string[]? defaultPassword = null)
 		{
 			using Windows.Storage.Streams.IRandomAccessStream stream = await file.OpenReadAsync();
-			await Load(stream, file.Name, passwordRequestedCallback, defaultPassword);
+			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPassword);
 		}
 
-		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, string[]? defaultPassword = null)
+		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, string[]? defaultPassword = null)
 		{
 			string? password = null;
 			bool passSave = false;
@@ -313,23 +313,50 @@ namespace BookViewerApp.Books
 				}
 
 				Toc = GetTocs(bm, nd, pageRefs);
+
+				if (password is null)
+				{
+					try { Content = await pdf.PdfDocument.LoadFromStreamAsync(stream); }
+					catch (Exception e)
+					{
+						var task = errorCallback?.Invoke(string.Format(Managers.ResourceManager.Loader.GetString("Book/Pdf/Error/Message/Normal"), e.Message, e.StackTrace));
+						if (task is not null) await task;
+					}
+
+				}
+				else
+				{
+					Password = password;
+					PasswordRemember = passSave;
+					try { Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password); }
+					catch
+					{
+						//Use iTextSharp to remove password and store it in memory.
+						//This will eat lots of memory.
+						using Windows.Storage.Streams.InMemoryRandomAccessStream ms = new();
+						using var stamper = new iTextSharp.text.pdf.PdfStamper(pr, ms.AsStream());
+						stamper.Close();
+						
+						try
+						{
+							Content = await pdf.PdfDocument.LoadFromStreamAsync(ms, password);
+						}
+						catch (Exception e)
+						{
+							var task = errorCallback?.Invoke(string.Format(Managers.ResourceManager.Loader.GetString("Book/Pdf/Error/Message/PasswordCorrect"), e.Message, e.StackTrace));
+							if (task is not null) await task;
+						}
+					}
+				}
+
 				pr.Close();
+				pr.Dispose();
 			}
 			catch { }
 
-			if (password is null)
-			{
-				Content = await pdf.PdfDocument.LoadFromStreamAsync(stream);
-			}
-			else
-			{
-				Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password);
-				Password = password;
-				PasswordRemember = passSave;
-			}
 			OnLoaded(new EventArgs());
 			PageLoaded = true;
-			ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(fileName, Content.PageCount));
+			ID = id ?? Functions.GetHash(Functions.CombineStringAndDouble(fileName, Content?.PageCount ?? 0));
 		}
 
 		private void OnLoaded(EventArgs e)

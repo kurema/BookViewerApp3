@@ -919,4 +919,19 @@ Fonte: {2}</value>
   <data name="Setting_DefaultTab.Description" xml:space="preserve">
     <value>Escolha o separador a apresentar quando clicar em "+" ou quando a aplicação for iniciada sem sessão anterior.</value>
   </data>
+  <data name="Password.SaveInPlain.Message" xml:space="preserve">
+    <value>Guardar a palavra-passe em texto simples</value>
+  </data>
+  <data name="Word.Error" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.PasswordCorrect" xml:space="preserve">
+    <value>A palavra-passe está correcta, mas não conseguimos abrir.
+Talvez seja um formato não suportado.
+{0}</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.Normal" xml:space="preserve">
+    <value>Falha ao abrir.
+{0}</value>
+  </data>
 </root>

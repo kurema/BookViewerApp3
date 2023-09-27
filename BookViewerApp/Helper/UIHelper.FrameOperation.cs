@@ -18,12 +18,12 @@ public static partial class UIHelper
 {
 	public static class FrameOperation
 	{
-		public static async void OpenPdfJs(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+		public static async Task OpenPdfJs(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, TabPage tabPage = null, string token = null)
 		{
 			if (file is null) return;
 			if (sender is null) return;
 			SetTitle(sender, Path.GetFileNameWithoutExtension(file.Name));
-			var tabPage = GetCurrentTabPage(sender);
+			tabPage ??= GetCurrentTabPage(sender);
 
 			EpubResolverBase resolver = await EpubResolverBase.GetResolverPdfJs(file);
 			frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
@@ -51,16 +51,20 @@ public static partial class UIHelper
 				vm.HomePage = uri;
 				vm.ControllerCollapsed = true;
 			}
-			//ID can not be saved properly here. It cause thumbnail problem in the history page of Filer.
-			//HistoryManager.AddEntry(file);
+			{
+				var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
+				//ID can not be saved properly here. It cause thumbnail problem in the history page of Filer.
+				//var token = HistoryManager.AddEntry(file);
+				if (tagInfo is not null) tagInfo.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, ViewerKey = "PDF.js", Path = file.Path };
+			}
 		}
 
-		public static async void OpenSingleFile(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender)
+		public static async Task OpenSingleFile(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, TabPage tabPage = null, string token = null)
 		{
 			if (file is null) return;
 			if (sender is null) return;
 			SetTitle(sender, Path.GetFileNameWithoutExtension(file.Name));
-			var tabPage = GetCurrentTabPage(sender);
+			tabPage ??= GetCurrentTabPage(sender);
 
 			frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
 
@@ -98,18 +102,23 @@ public static partial class UIHelper
 				vm.HomePage = uri;
 				vm.ControllerCollapsed = true;
 			}
+			{
+				var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
+				//ID can not be saved properly here. It cause thumbnail problem in the history page of Filer.
+				//var token = HistoryManager.AddEntry(file);
+				if (tagInfo is not null) tagInfo.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, ViewerKey = "Browser", Path = file.Path };
+			}
 			//HistoryManager.AddEntry(file);
 		}
 
 		private static bool OpenEpub_CurrentDarkMode() => (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Managers.ThemeManager.IsDarkTheme;
 
-		public static async Task OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
+		public static async Task OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, TabPage tabPage = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
 		{
 			if (file is null) return;
 			if (sender is null) return;
 			SetTitleByResource(sender, "Epub");
-			var tabPage = GetCurrentTabPage(sender);
-			var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
+			tabPage ??= GetCurrentTabPage(sender);
 
 			epubType ??= SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
 			EpubResolverBase resolver = epubType switch
@@ -195,12 +204,13 @@ public static partial class UIHelper
 				}
 			}
 			{
+				var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
 				var token = HistoryManager.AddEntry(file);
 				if (tagInfo is not null) tagInfo.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, Path = file.Path };
 			}
 		}
 
-		public static async Task OpenEpubPreferedEngine(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
+		public static async Task OpenEpubPreferedEngine(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, TabPage tabPage = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
 		{
 			if ((bool)SettingStorage.GetValue(SettingStorage.SettingKeys.BrowserUseWebView2))
 			{
@@ -209,7 +219,7 @@ public static partial class UIHelper
 					//https://github.com/MicrosoftEdge/WebView2Feedback/issues/2545
 					var version = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
 					if (string.IsNullOrEmpty(version)) throw new Exception();
-					await OpenEpub2(frame, file, sender, epubType);
+					await OpenEpub2(frame, file, sender, tabPage, epubType);
 					return;
 				}
 				catch
@@ -220,19 +230,19 @@ public static partial class UIHelper
 			{
 				try
 				{
-					await OpenEpub(frame, file, sender, epubType);
+					await OpenEpub(frame, file, sender, tabPage, epubType);
 					return;
 				}
 				catch { }
 			}
 		}
 
-		public static async Task OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
+		public static async Task OpenEpub(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, TabPage tabPage = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
 		{
 			if (file is null) return;
 			if (sender is null) return;
 			SetTitleByResource(sender, "Epub");
-			var tabPage = GetCurrentTabPage(sender);
+			tabPage ??= GetCurrentTabPage(sender);
 
 			epubType ??= SettingStorage.GetValue("EpubViewerType") as SettingStorage.SettingEnums.EpubViewerType?;
 			EpubResolverBase resolver = epubType switch
@@ -321,7 +331,11 @@ public static partial class UIHelper
 				//    var v = e.Value;
 				//};
 			}
-			HistoryManager.AddEntry(file);
+			{
+				var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
+				var token = HistoryManager.AddEntry(file);
+				if (tagInfo is not null) tagInfo.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, Path = file.Path };
+			}
 		}
 
 		private static CheckBox OpenEpub_GetDarkmodeCheckBox()
@@ -338,15 +352,15 @@ public static partial class UIHelper
 			return checkbox;
 		}
 
-		public static async Task<bool> OpenBookPicked(Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null)
+		public static async Task<bool> OpenBookPicked(Func<(Frame, FrameworkElement)> frameProvider, TabPage tabPage = null, Action handleOtherFileAction = null)
 		{
 			var file = await BookManager.PickFile();
 			if (file is null) return false;
-			await OpenBook(file, frameProvider, handleOtherFileAction);
+			await OpenBook(file, frameProvider, handleOtherFileAction, tabPage);
 			return true;
 		}
 
-		public async static Task OpenBook(Windows.Storage.IStorageFile file, Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
+		public async static Task OpenBook(Windows.Storage.IStorageFile file, Func<(Frame, FrameworkElement)> frameProvider, Action handleOtherFileAction = null, TabPage tabPage = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
 		{
 			if (file is null) return;
 			if (frameProvider is null) return;
@@ -356,7 +370,7 @@ public static partial class UIHelper
 			if (type == BookManager.BookType.Epub)
 			{
 				var (frame, sender) = frameProvider();
-				await OpenEpubPreferedEngine(frame, file, sender, epubType);
+				await OpenEpubPreferedEngine(frame, file, sender, tabPage, epubType);
 			}
 			//else if (type is BookManager.BookType.Pdf)
 			//{
@@ -778,7 +792,7 @@ public static partial class UIHelper
 					catch { }
 
 					content.Control.WebResourceRequested += ExtensionAdBlockerManager.WebViewWebResourceRequested;
-					content.Control.NavigationCompleted += (s, e) => UpdateBrowserSession(tabViewItem, s.Source.ToString());
+					content.Control.NavigationCompleted += (s, e) => { try { UpdateBrowserSession(tabViewItem, s.Source.ToString()); } catch { } };
 				}
 			}
 

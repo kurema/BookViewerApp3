@@ -11,117 +11,119 @@ namespace kurema.FileExplorerControl.Models.FileItems;
 
 public class HistoryMRUItem : IFileItem
 {
-    public HistoryMRUItem(Windows.Storage.AccessCache.AccessListEntry access)
-    {
-        this.Content = BookViewerApp.Managers.HistoryManager.Metadata.Deserialize(access.Metadata) ?? new BookViewerApp.Managers.HistoryManager.Metadata();
-        this.Token = access.Token;
-    }
+	public HistoryMRUItem(Windows.Storage.AccessCache.AccessListEntry access)
+	{
+		this.Content = BookViewerApp.Managers.HistoryManager.Metadata.Deserialize(access.Metadata) ?? new BookViewerApp.Managers.HistoryManager.Metadata();
+		this._Token = access.Token;
+	}
 
-    readonly BookViewerApp.Managers.HistoryManager.Metadata Content;
-    readonly string Token;
+	readonly BookViewerApp.Managers.HistoryManager.Metadata Content;
+	readonly string _Token;
 
-    public bool IsParentAccessible { get; set; } = true;
+	public bool IsParentAccessible { get; set; } = true;
 
-    public string Id => Content?.ID;
+	public string Id => Content?.ID;
 
-    public string Name => Content.Name;
+	public string Name => Content.Name;
 
-    public string Path => Token;
+	public string Path => _Token;
 
-    public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
+	public string Token => _Token;
 
-    public DateTimeOffset DateCreated
-    {
-        get
-        {
-            try
-            {
-                //Content.Date is DateTimeOffset, so you dont need try-catch.
-                return Content.Date;
-            }
-            catch
-            {
-                return new DateTimeOffset();
-            }
-        }
-    }
+	public string FileTypeDescription => BookViewerApp.Managers.ResourceManager.Loader.GetString("ItemType/HistoryItem");
 
-    public bool IsFolder => false;
+	public DateTimeOffset DateCreated
+	{
+		get
+		{
+			try
+			{
+				//Content.Date is DateTimeOffset, so you dont need try-catch.
+				return Content.Date;
+			}
+			catch
+			{
+				return new DateTimeOffset();
+			}
+		}
+	}
 
-    public ICommand DeleteCommand => new DelegateCommand((_) =>
-    {
-        if (BookViewerApp.Managers.HistoryManager.List.ContainsItem(this.Token))
-        {
-            BookViewerApp.Managers.HistoryManager.List.Remove(this.Token);
-            BookViewerApp.Managers.HistoryManager.OnUpdated();
-            this.OnUpdate();
-        }
-    }, a => !(a is bool b && b == true));
-    public ICommand RenameCommand => new InvalidCommand();
+	public bool IsFolder => false;
 
-    public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
+	public ICommand DeleteCommand => new DelegateCommand((_) =>
+	{
+		if (BookViewerApp.Managers.HistoryManager.List.ContainsItem(this._Token))
+		{
+			BookViewerApp.Managers.HistoryManager.List.Remove(this._Token);
+			BookViewerApp.Managers.HistoryManager.OnUpdated();
+			this.OnUpdate();
+		}
+	}, a => !(a is bool b && b == true));
+	public ICommand RenameCommand => new InvalidCommand();
 
-    public object Tag { get; set; }
+	public Func<IFileItem, MenuCommand[]> MenuCommandsProvider { get; set; }
 
-    public event EventHandler Updated;
+	public object Tag { get; set; }
 
-    public Task<ObservableCollection<IFileItem>> GetChildren()
-    {
-        return Task.FromResult<ObservableCollection<IFileItem>>(null);
-    }
+	public event EventHandler Updated;
 
-    public async Task<ulong?> GetSizeAsync()
-    {
-        var file = await GetFile();
-        if (file is null) return null;
-        return (await file.GetBasicPropertiesAsync())?.Size;
-    }
+	public Task<ObservableCollection<IFileItem>> GetChildren()
+	{
+		return Task.FromResult<ObservableCollection<IFileItem>>(null);
+	}
 
-    public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
+	public async Task<ulong?> GetSizeAsync()
+	{
+		var file = await GetFile();
+		if (file is null) return null;
+		return (await file.GetBasicPropertiesAsync())?.Size;
+	}
 
-    public void Open()
-    {
-        return;
-    }
+	public void OnUpdate() { Updated?.Invoke(this, new EventArgs()); }
 
-    public async Task<Stream> OpenStreamForReadAsync()
-    {
-        var file = await GetFile();
-        if (file is null) return null;
-        return await file.OpenStreamForReadAsync();
-    }
+	public void Open()
+	{
+		return;
+	}
 
-    public async Task<Stream> OpenStreamForWriteAsync()
-    {
-        var file = await GetFile();
-        if (file is null) return null;
-        return await file.OpenStreamForWriteAsync();
-    }
+	public async Task<Stream> OpenStreamForReadAsync()
+	{
+		var file = await GetFile();
+		if (file is null) return null;
+		return await file.OpenStreamForReadAsync();
+	}
 
-    private Windows.Storage.StorageFile StorageCache = null;
+	public async Task<Stream> OpenStreamForWriteAsync()
+	{
+		var file = await GetFile();
+		if (file is null) return null;
+		return await file.OpenStreamForWriteAsync();
+	}
 
-    public async Task<Windows.Storage.StorageFile> GetFile()
-    {
-        if (StorageCache != null) return StorageCache;
-        if (!BookViewerApp.Managers.HistoryManager.List.ContainsItem(this.Token))
-        {
-            return null;
-        }
-        if (StorageCache is null)
-        {
-            try
-            {
-                //What is AccessCacheOptions!?
-                //https://docs.microsoft.com/en-us/uwp/api/windows.storage.accesscache.accesscacheoptions?view=winrt-19041
-                StorageCache = await BookViewerApp.Managers.HistoryManager.List.GetFileAsync(this.Token);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        return StorageCache;
-    }
+	private Windows.Storage.StorageFile StorageCache = null;
 
-    public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
+	public async Task<Windows.Storage.StorageFile> GetFile()
+	{
+		if (StorageCache != null) return StorageCache;
+		if (!BookViewerApp.Managers.HistoryManager.List.ContainsItem(this._Token))
+		{
+			return null;
+		}
+		if (StorageCache is null)
+		{
+			try
+			{
+				//What is AccessCacheOptions!?
+				//https://docs.microsoft.com/en-us/uwp/api/windows.storage.accesscache.accesscacheoptions?view=winrt-19041
+				StorageCache = await BookViewerApp.Managers.HistoryManager.List.GetFileAsync(this._Token);
+			}
+			catch
+			{
+				return null;
+			}
+		}
+		return StorageCache;
+	}
+
+	public IEnumerable<IFileItem> GetSearchResults(string word) => Array.Empty<IFileItem>();
 }

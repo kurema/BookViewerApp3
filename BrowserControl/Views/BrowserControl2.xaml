@@ -279,7 +279,7 @@
                 </Button.Flyout>
             </Button>
         </Grid>
-        <controls:WebView2 Grid.Row="1" x:Name="webView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        <controls:WebView2 Grid.Row="1" x:Name="webView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="0"
                            CanGoBack="{Binding CanGoBack,Mode=TwoWay}" CanGoForward="{Binding CanGoForward,Mode=TwoWay}" Source="{Binding Source,Mode=TwoWay}"
                            NavigationCompleted="webView_NavigationCompleted"
                            />

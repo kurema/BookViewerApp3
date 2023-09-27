@@ -414,6 +414,8 @@ namespace BookViewerApp.Storages.WindowStates {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/WindowStates.xsd")]
     public partial class WindowStateWindowViewerTab : object, System.ComponentModel.INotifyPropertyChanged {
         
+        private string viewerKeyField;
+        
         private string idField;
         
         private string tokenField;
@@ -421,6 +423,18 @@ namespace BookViewerApp.Storages.WindowStates {
         private string pathField;
         
         private string pathRelativeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ViewerKey {
+            get {
+                return this.viewerKeyField;
+            }
+            set {
+                this.viewerKeyField = value;
+                this.RaisePropertyChanged("ViewerKey");
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]

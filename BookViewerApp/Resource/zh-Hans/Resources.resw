@@ -921,4 +921,19 @@ URL：{2}</value>
   <data name="Setting_DefaultTab.Description" xml:space="preserve">
     <value>选择在点击 "+"时或在未启动前启动应用程序时显示的选项卡。</value>
   </data>
+  <data name="Password.SaveInPlain.Message" xml:space="preserve">
+    <value>以纯文本保存密码</value>
+  </data>
+  <data name="Word.Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.PasswordCorrect" xml:space="preserve">
+    <value>密码正确，但无法打开。
+可能是不支持的格式。
+{0}</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.Normal" xml:space="preserve">
+    <value>打开失败。
+{0}</value>
+  </data>
 </root>

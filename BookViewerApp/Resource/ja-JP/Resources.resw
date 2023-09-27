@@ -925,4 +925,19 @@
   <data name="Setting_DefaultTab.Title" xml:space="preserve">
     <value>標準タブ</value>
   </data>
+  <data name="Password.SaveInPlain.Message" xml:space="preserve">
+    <value>パスワードを平文で保存</value>
+  </data>
+  <data name="Word.Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.PasswordCorrect" xml:space="preserve">
+    <value>パスワードは正しいのですが、開くことができませんでした。
+サポートされていない形式なのかもしれません。
+{0}</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.Normal" xml:space="preserve">
+    <value>開けませんでした
+{0}</value>
+  </data>
 </root>

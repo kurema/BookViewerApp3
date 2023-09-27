@@ -101,6 +101,11 @@ public static class BookManager
 				{
 					throw new Exception();
 				}
+			}, async (message) =>
+			{
+				var dialog = new Windows.UI.Popups.MessageDialog(message, ResourceManager.Loader.GetString("Word/Error"));
+				await dialog.ShowAsync();
+				return;
 			}, allPw);
 		}
 		catch { return null; }

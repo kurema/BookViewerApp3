@@ -216,6 +216,7 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 	{
 		Binding?.SaveInfo();
 		Binding?.DisposeBasic();
+		this.DataContext = null;
 	}
 
 	protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -232,6 +233,7 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 		SetTitle(this.OriginalTitle);
 
 		Binding?.DisposeBasic();
+		this.DataContext = null;
 
 		base.OnNavigatedFrom(e);
 	}

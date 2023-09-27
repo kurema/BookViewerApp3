@@ -921,4 +921,19 @@ Fonte: {2}</value>
   <data name="Setting_DefaultTab.Description" xml:space="preserve">
     <value>Scegliere la scheda da visualizzare quando si fa clic su '+' o quando si avvia l'applicazione senza una sessione precedente.</value>
   </data>
+  <data name="Password.SaveInPlain.Message" xml:space="preserve">
+    <value>Salvare la password in testo normale</value>
+  </data>
+  <data name="Word.Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.PasswordCorrect" xml:space="preserve">
+    <value>La password è corretta, ma l'apertura non è riuscita.
+Forse il formato non è supportato.
+{0}</value>
+  </data>
+  <data name="Book.Pdf.Error.Message.Normal" xml:space="preserve">
+    <value>Apertura fallita.
+{0}</value>
+  </data>
 </root>

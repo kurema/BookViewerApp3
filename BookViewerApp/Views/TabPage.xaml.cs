@@ -146,7 +146,7 @@ public sealed partial class TabPage : Page
 
 	public async void OpenTabBookPicked()
 	{
-		await UIHelper.FrameOperation.OpenBookPicked(() => OpenTab("BookViewer"));
+		await UIHelper.FrameOperation.OpenBookPicked(() => OpenTab("BookViewer"), this);
 	}
 
 	public void OpenTabBook(IEnumerable<Windows.Storage.IStorageItem> files)
@@ -155,18 +155,18 @@ public sealed partial class TabPage : Page
 		foreach (var item in files) OpenTabBook(item);
 	}
 
-	public void OpenTabPdfJs(Windows.Storage.IStorageFile file)
+	public async Task OpenTabPdfJs(Windows.Storage.IStorageFile file, string token = null)
 	{
 		if (file is null) return;
 		var (frame, newTab) = OpenTab("PdfJs");
-		UIHelper.FrameOperation.OpenPdfJs(frame, file, newTab);
+		await UIHelper.FrameOperation.OpenPdfJs(frame, file, newTab, this, token);
 	}
 
-	public void OpenTabBrowser(Windows.Storage.IStorageFile file)
+	public async Task OpenTabBrowser(Windows.Storage.IStorageFile file, string token = null)
 	{
 		if (file is null) return;
 		var (frame, newTab) = OpenTab("Browser");
-		UIHelper.FrameOperation.OpenSingleFile(frame, file, newTab);
+		await UIHelper.FrameOperation.OpenSingleFile(frame, file, newTab, this, token);
 	}
 
 	public async void OpenTabBook(Windows.Storage.IStorageItem file, SettingStorage.SettingEnums.EpubViewerType? epubType = null)
@@ -178,7 +178,7 @@ public sealed partial class TabPage : Page
 				 //Dialog:Open dangerous file?
 				 //Open.
 				 //Or just ignore.
-			 }, epubType);
+			 }, this, epubType);
 		}
 	}
 
@@ -395,7 +395,7 @@ public sealed partial class TabPage : Page
 				}
 			}
 		}
-
+		GC.Collect();
 	}
 
 	#region keyAccelerator
@@ -529,11 +529,27 @@ public sealed partial class TabPage : Page
 						{ if (await GetStorage(te.Path) is { } storage) { OpenTabTextEditor(storage); break; } }
 						break;
 					case Storages.WindowStates.WindowStateWindowViewerTab vw:
-						{ if (await GetStorage(vw.Path) is { } storage) { OpenTabBook(storage); break; } }
-						if (!string.IsNullOrEmpty(vw.Token) && HistoryManager.List.ContainsItem(vw.Token))
 						{
-							var storage = await HistoryManager.List.GetItemAsync(vw.Token);
-							OpenTabBook(storage);
+							StorageFile file = null;
+							if (!string.IsNullOrEmpty(vw.Token) && HistoryManager.List.ContainsItem(vw.Token))
+							{
+								var storage = await HistoryManager.List.GetItemAsync(vw.Token);
+								file = storage as StorageFile;
+							}
+							if (file is null && await GetStorage(vw.Path) is { } storage1) { file = storage1; }
+							if (file is null) break;
+							switch (vw.ViewerKey)
+							{
+								case "PDF.js":
+									await OpenTabPdfJs(file, token: vw.Token);
+									break;
+								case "Browser":
+									await OpenTabBrowser(file, token: vw.Token);
+									break;
+								default:
+									OpenTabBook(file);
+									break;
+							}
 						}
 						break;
 				}

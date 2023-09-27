@@ -86,6 +86,7 @@
 							</xs:element>
 							<xs:element name="ViewerTab">
 								<xs:complexType>
+									<xs:attribute name="ViewerKey" type="xs:string" />
 									<xs:attribute name="Id" type="xs:string" />
 									<xs:attribute name="Token" type="xs:string" />
 									<xs:attribute name="Path" type="xs:string" />
