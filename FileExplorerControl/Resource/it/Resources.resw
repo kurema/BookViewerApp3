@@ -222,4 +222,13 @@
   <data name="TextEditor.Title" xml:space="preserve">
     <value>Blocco note</value>
   </data>
+  <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
+    <value>Copiare l'indirizzo come testo</value>
+  </data>
+  <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
+    <value>Modifica indirizzo</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
+    <value>Copia indirizzo</value>
+  </data>
 </root>

@@ -331,4 +331,13 @@
   <data name="TextEditor.Title" xml:space="preserve">
     <value>Notepad</value>
   </data>
+  <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
+    <value>Copy address as text</value>
+  </data>
+  <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
+    <value>Edit address</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
+    <value>Copy address</value>
+  </data>
 </root>

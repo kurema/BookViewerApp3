@@ -327,4 +327,13 @@
   <data name="TextEditor.Title" xml:space="preserve">
     <value>记事本</value>
   </data>
+  <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
+    <value>复制地址为文本</value>
+  </data>
+  <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
+    <value>编辑地址</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
+    <value>复制地址</value>
+  </data>
 </root>

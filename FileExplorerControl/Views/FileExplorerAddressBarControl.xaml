@@ -18,7 +18,7 @@
                 </Button>
                 <Button Content=">" Padding="5" Width="30" Visibility="{Binding Folders.Length,Converter={StaticResource i2svc},ConverterParameter=Collapsed:Visible}">
                     <Button.Flyout>
-                        <Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft">
                             <ListView ItemsSource="{Binding Folders}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>

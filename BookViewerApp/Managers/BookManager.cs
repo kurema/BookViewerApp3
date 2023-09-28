@@ -84,6 +84,7 @@ public static class BookManager
 			{
 				if (skipPasswordEntry) throw new Exception("Password entry is skipped.");
 				var dialog = new Views.PasswordRequestContentDialog() { XamlRoot = xamlRoot };
+				if (!string.IsNullOrWhiteSpace(fileName)) dialog.Title = fileName;
 				Windows.UI.Xaml.Controls.ContentDialogResult result;
 				try
 				{
@@ -103,7 +104,7 @@ public static class BookManager
 				}
 			}, async (message) =>
 			{
-				var dialog = new Windows.UI.Popups.MessageDialog(message, ResourceManager.Loader.GetString("Word/Error"));
+				var dialog = new Windows.UI.Popups.MessageDialog(message, fileName);
 				await dialog.ShowAsync();
 				return;
 			}, allPw);

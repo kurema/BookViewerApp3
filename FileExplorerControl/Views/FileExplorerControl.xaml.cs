@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -140,7 +141,7 @@ public sealed partial class FileExplorerControl : Page
 		}
 	}
 
-	private void Address_FocusLostRequested(object sender, EventArgs e)
+	private void Address_FocusLostRequested(object sender, object e)
 	{
 		address.Opacity = 0;
 		address.IsHitTestVisible = false;
@@ -323,5 +324,62 @@ public sealed partial class FileExplorerControl : Page
 			return;
 		}
 		e.Handled = false;
+	}
+
+	private void Address_CopyAddress(object sender, RoutedEventArgs e)
+	{
+		var dataPackage = new DataPackage();
+		dataPackage.RequestedOperation = DataPackageOperation.Copy;
+		dataPackage.SetText(address_text.Text);
+		Clipboard.SetContent(dataPackage);
+	}
+
+	private void address_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+	{
+		if (this.DataContext is not ViewModels.FileExplorerViewModel fvm) return;
+		var option = new FlyoutShowOptions();
+		if (args.TryGetPosition(sender, out Point p)) option.Position = p;
+		var menu = new MenuFlyout();
+		if (fvm.Content?.Item?.Content is Models.FileItems.StorageFileItem sfi)
+		{
+			var item = new MenuFlyoutItem()
+			{
+				Text = Application.ResourceLoader.Loader.GetString("ContextMenu/Address/CopyAddress"),
+			};
+			item.Click += (sender, e) =>
+			{
+				var dataPackage = new DataPackage();
+				dataPackage.RequestedOperation = DataPackageOperation.Copy;
+				dataPackage.SetText(fvm.Content?.Item?.Content?.Path ?? string.Empty);
+				dataPackage.SetStorageItems(new[] { sfi.Content });
+				Clipboard.SetContent(dataPackage);
+			};
+			menu.Items.Add(item);
+		}
+		if (!string.IsNullOrEmpty(fvm.Content?.Item?.Content?.Path))
+		{
+			var item = new MenuFlyoutItem()
+			{
+				Text = Application.ResourceLoader.Loader.GetString("ContextMenu/Address/CopyAddressAsText"),
+			};
+			item.Click += (sender, e) =>
+			{
+				var dataPackage = new DataPackage();
+				dataPackage.RequestedOperation = DataPackageOperation.Copy;
+				dataPackage.SetText(fvm.Content?.Item?.Content?.Path ?? string.Empty);
+				Clipboard.SetContent(dataPackage);
+			};
+			menu.Items.Add(item);
+		}
+		{
+			var item = new MenuFlyoutItem()
+			{
+				Text = Application.ResourceLoader.Loader.GetString("ContextMenu/Address/EditAddress"),
+			};
+			item.Click += Address_FocusLostRequested;
+			menu.Items.Add(item);
+		}
+		menu.ShowAt(sender, option);
+		args.Handled = true;
 	}
 }

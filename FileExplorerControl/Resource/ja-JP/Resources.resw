@@ -222,4 +222,13 @@
   <data name="TextEditor.Title" xml:space="preserve">
     <value>メモ帳</value>
   </data>
+  <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
+    <value>アドレスをテキストとしてコピーする</value>
+  </data>
+  <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
+    <value>アドレスの編集</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
+    <value>アドレスをコピー</value>
+  </data>
 </root>

@@ -327,4 +327,13 @@
   <data name="TextEditor.Title" xml:space="preserve">
     <value>Bloco de notas</value>
   </data>
+  <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
+    <value>Copiar endereço como texto</value>
+  </data>
+  <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
+    <value>Editar endereço</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
+    <value>Copiar endereço</value>
+  </data>
 </root>

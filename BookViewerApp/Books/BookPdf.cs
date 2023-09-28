@@ -16,11 +16,12 @@ using System.Collections;
 using BookViewerApp.Helper;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.Immutable;
+using System.Threading;
 
 #nullable enable
 namespace BookViewerApp.Books
 {
-	public class PdfBook : IBookFixed, IDirectionProvider, ITocProvider, IPasswordPdovider
+	public class PdfBook : IBookFixed, IDirectionProvider, ITocProvider, IPasswordPdovider, IDisposable
 	{
 		public pdf.PdfDocument? Content { get; private set; }
 		private bool PageLoaded = false;
@@ -194,6 +195,9 @@ namespace BookViewerApp.Books
 		{
 			string? password = null;
 			bool passSave = false;
+			//If you want users to require password just to open the file, set this false.
+			bool allowUserPassword = true;
+			iTextSharp.text.pdf.PdfReader.AllowOpenWithFullPermissions = allowUserPassword;
 
 			string? id = null;
 
@@ -202,14 +206,24 @@ namespace BookViewerApp.Books
 				iTextSharp.text.pdf.PdfReader? pr = null;
 				var streamClassic = stream.AsStream();
 
+				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
+
 				#region Password
 				pr = GetPdfReader(streamClassic, null);
-				if (pr != null) goto PasswordSuccess;
+				if (isPrOk()) goto PasswordSuccess;
 
-				foreach (var item in defaultPassword ?? new string[0])
+				IEnumerable<string> GetCapitalCombinations(string text)
+				{
+					yield return text;
+					yield return text.ToUpperInvariant();
+					yield return text.ToLowerInvariant();
+					if (text.Length >= 2) yield return $"{char.ToUpperInvariant(text[0])}{text.Substring(1).ToLowerInvariant()}";
+				}
+
+				foreach (var item in defaultPassword.SelectMany(GetCapitalCombinations).Distinct() ?? new string[0])
 				{
 					pr = GetPdfReader(streamClassic, item);
-					if (pr != null)
+					if (isPrOk())
 					{
 						password = item;
 						passSave = true;
@@ -223,12 +237,13 @@ namespace BookViewerApp.Books
 					password = result.password;
 					passSave = result.remember;
 					pr = GetPdfReader(streamClassic, password);
-					if (pr != null) goto PasswordSuccess;
+					if (isPrOk()) goto PasswordSuccess;
 				}
 				throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
 			#endregion
 
 			PasswordSuccess:;
+				if (pr is null) throw new NullReferenceException(nameof(pr));
 
 				try
 				{
@@ -314,39 +329,39 @@ namespace BookViewerApp.Books
 
 				Toc = GetTocs(bm, nd, pageRefs);
 
-				if (password is null)
+				async Task OpenPdfCommon(Func<Task<pdf.PdfDocument?>> contentProvider, string errorMessageKey)
 				{
-					try { Content = await pdf.PdfDocument.LoadFromStreamAsync(stream); }
-					catch (Exception e)
+					try { Content = await contentProvider.Invoke(); }
+					catch
 					{
-						var task = errorCallback?.Invoke(string.Format(Managers.ResourceManager.Loader.GetString("Book/Pdf/Error/Message/Normal"), e.Message, e.StackTrace));
-						if (task is not null) await task;
+						try
+						{
+							//Use iTextSharp to remove password and store it in memory.
+							//This will eat lots of memory.
+							using Windows.Storage.Streams.InMemoryRandomAccessStream ms = new();
+							using var stamper = new iTextSharp.text.pdf.PdfStamper(pr, ms.AsStream());
+							stamper.Close();
+							Content = await pdf.PdfDocument.LoadFromStreamAsync(ms);
+						}
+						catch (Exception e)
+						{
+							var task = errorCallback?.Invoke(string.Format(Managers.ResourceManager.Loader.GetString(errorMessageKey), e.Message, e.StackTrace));
+							if (task is not null) await task;
+						}
 					}
 
+				}
+
+				if (password is null)
+				{
+					//It's stupid but it seems we need owner password to LoadFromStreamAsync();
+					await OpenPdfCommon(async () => await pdf.PdfDocument.LoadFromStreamAsync(stream), "Book/Pdf/Error/Message/Normal");
 				}
 				else
 				{
 					Password = password;
 					PasswordRemember = passSave;
-					try { Content = await pdf.PdfDocument.LoadFromStreamAsync(stream, password); }
-					catch
-					{
-						//Use iTextSharp to remove password and store it in memory.
-						//This will eat lots of memory.
-						using Windows.Storage.Streams.InMemoryRandomAccessStream ms = new();
-						using var stamper = new iTextSharp.text.pdf.PdfStamper(pr, ms.AsStream());
-						stamper.Close();
-						
-						try
-						{
-							Content = await pdf.PdfDocument.LoadFromStreamAsync(ms, password);
-						}
-						catch (Exception e)
-						{
-							var task = errorCallback?.Invoke(string.Format(Managers.ResourceManager.Loader.GetString("Book/Pdf/Error/Message/PasswordCorrect"), e.Message, e.StackTrace));
-							if (task is not null) await task;
-						}
-					}
+					await OpenPdfCommon(async () => await pdf.PdfDocument.LoadFromStreamAsync(stream, password), "Book/Pdf/Error/Message/PasswordCorrect");
 				}
 
 				pr.Close();
@@ -367,6 +382,23 @@ namespace BookViewerApp.Books
 		public IPageFixed? GetPageCover()
 		{
 			return GetPage(0);
+		}
+
+		public void Dispose()
+		{
+			try
+			{
+				if (Content is not null)
+				{
+					//https://stackoverflow.com/questions/48380522/how-to-release-dispose-windows-data-pdfdocument
+					//I don't think it's working.
+					System.Runtime.InteropServices.Marshal.ReleaseComObject(Content);
+					Content = null;
+				}
+			}
+			catch
+			{
+			}
 		}
 	}
 }
