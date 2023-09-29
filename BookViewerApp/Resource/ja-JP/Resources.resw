@@ -940,4 +940,16 @@
     <value>開けませんでした
 {0}</value>
   </data>
+  <data name="ContextMenu.BookViewer.ShowPassword.Title" xml:space="preserve">
+    <value>パスワードを表示する</value>
+  </data>
+  <data name="ContextMenu.BookViewer.ShowPassword.Dialog.Message" xml:space="preserve">
+    <value>パスワード：{0}</value>
+  </data>
+  <data name="ContextMenu.BookViewer.ShowPassword.RequestVerification.Message" xml:space="preserve">
+    <value>パスワードを表示するには確認してください。</value>
+  </data>
+  <data name="Word.Password" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
 </root>

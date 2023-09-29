@@ -201,9 +201,9 @@ namespace BookViewerApp.Books
 
 			string? id = null;
 
+			iTextSharp.text.pdf.PdfReader? pr = null;
 			try
 			{
-				iTextSharp.text.pdf.PdfReader? pr = null;
 				var streamClassic = stream.AsStream();
 
 				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
@@ -329,6 +329,11 @@ namespace BookViewerApp.Books
 
 				Toc = GetTocs(bm, nd, pageRefs);
 
+				// Open even when iTextSharp fails.
+			}
+			catch { }
+			try
+			{
 				async Task OpenPdfCommon(Func<Task<pdf.PdfDocument?>> contentProvider, string errorMessageKey)
 				{
 					try { Content = await contentProvider.Invoke(); }
@@ -336,6 +341,7 @@ namespace BookViewerApp.Books
 					{
 						try
 						{
+							if (pr is null) throw;
 							//Use iTextSharp to remove password and store it in memory.
 							//This will eat lots of memory.
 							using Windows.Storage.Streams.InMemoryRandomAccessStream ms = new();
@@ -363,11 +369,13 @@ namespace BookViewerApp.Books
 					PasswordRemember = passSave;
 					await OpenPdfCommon(async () => await pdf.PdfDocument.LoadFromStreamAsync(stream, password), "Book/Pdf/Error/Message/PasswordCorrect");
 				}
-
-				pr.Close();
-				pr.Dispose();
 			}
 			catch { }
+			finally
+			{
+				pr?.Close();
+				pr?.Dispose();
+			}
 
 			OnLoaded(new EventArgs());
 			PageLoaded = true;

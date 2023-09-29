@@ -47,16 +47,19 @@ public static class ThemeManager
     {
         get
         {
-            return false;
-            //var theme = (SettingEnums.Theme)GetValue(SettingKeys.Theme);
-            //return theme switch
-            //{
-            //    SettingEnums.Theme.Auto or SettingEnums.Theme.Light or SettingEnums.Theme.Dark => true,
-            //    SettingEnums.Theme.AcrylicAuto or SettingEnums.Theme.AcrylicLight or SettingEnums.Theme.AcrylicDark => false,
-            //    _ => false,
-            //} && Environment.OSVersion.Version.Build >= 22000;
+#if MICA_ENABLED
+            var theme = (SettingEnums.Theme)GetValue(SettingKeys.Theme);
+            return theme switch
+            {
+                SettingEnums.Theme.Auto or SettingEnums.Theme.Light or SettingEnums.Theme.Dark => true,
+                SettingEnums.Theme.AcrylicAuto or SettingEnums.Theme.AcrylicLight or SettingEnums.Theme.AcrylicDark => false,
+                _ => false,
+            } && Environment.OSVersion.Version.Build >= 22000;
             //I think it's better to use ApiInformation. But what's the correct argument?
             //ApiInformation.IsApiContractPresent("");
-        }
-    }
+#else
+            return false;
+#endif
+		}
+	}
 }

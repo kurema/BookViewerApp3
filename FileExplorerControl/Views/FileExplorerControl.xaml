@@ -155,14 +155,7 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="Address_FocusLostRequested" ContextRequested="address_ContextRequested">
-                    <!--<local:FileExplorerAddressBarControl.ContextFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem Click="Address_CopyAddress" Text="{x:Bind Converter={StaticResource vc_local},ConverterParameter='ContextMenu/Address/CopyAddressAsText',Mode=OneTime}" />
-                            <MenuFlyoutItem Click="Address_FocusLostRequested" Text="{x:Bind Converter={StaticResource vc_local},ConverterParameter='ContextMenu/Address/EditAddress',Mode=OneTime}" />
-                        </MenuFlyout>
-                    </local:FileExplorerAddressBarControl.ContextFlyout>-->
-                </local:FileExplorerAddressBarControl>
+                <local:FileExplorerAddressBarControl Grid.Column="0" x:Name="address" FocusLostRequested="Address_FocusLostRequested" ContextRequested="address_ContextRequested"/>
                 <Button Grid.Column="1" Command="{Binding Content.LaunchCommand}" Background="Transparent">
                     <SymbolIcon Symbol="Share"/>
                 </Button>

@@ -177,10 +177,13 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		this.Loading = false;
 	}
 
-	private string? Password = null;
+	private string? _PasswordInfo = null;
+	public string? Password => (_Content as Books.IPasswordPdovider)?.Password;
 
 	//To Dispose
-	private Books.IBookFixed? Content;
+	private Books.IBookFixed? _Content;
+	//I forgot why but it was private.
+	public Books.IBookFixed? Content => _Content;
 
 	private bool ShouldBeReversed(Books.IBookFixed value)
 	{
@@ -219,7 +222,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		this.DisposeBasic();//変なタイミングだがこれだ正しい。
 		this.Title = "";
 
-		Content = value;
+		_Content = value;
 
 		var pages = new ObservableCollection<PageViewModel>();
 		var option = OptionCache = target == null ? OptionCache : new Books.PageOptionsControl(target);
@@ -237,8 +240,8 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		this._Reversed = false;
 		this._PageSelected = 0;
 		ID = value.ID;
-		Password = null;
-		if (value is Books.IPasswordPdovider pp && pp.PasswordRemember) Password = pp.Password;
+		_PasswordInfo = null;
+		if (value is Books.IPasswordPdovider pp && pp.PasswordRemember) _PasswordInfo = pp.Password;
 		this.PagesOriginal = pages;
 		BookInfo = value.ID == null ? null : await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
 		var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
@@ -319,7 +322,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 				BookInfo.Bookmarks.Add(new BookInfoStorage.BookInfo.BookmarkItem() { Page = (uint)bm.Page, Title = bm.Title, Type = BookInfoStorage.BookInfo.BookmarkItem.BookmarkItemType.UserDefined });
 		}
 		BookInfo.PageDirection = this.Reversed ? Books.Direction.R2L : Books.Direction.L2R;
-		BookInfo.Password = this.Password;
+		BookInfo.Password = this._PasswordInfo;
 	}
 
 	public string? ID { get { return _ID; } private set { _ID = value; OnPropertyChanged(nameof(ID)); } }
@@ -743,7 +746,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 
 	public void UpdateSettings()
 	{
-		if (Content != null) this.Reversed = ShouldBeReversed(Content);
+		if (_Content != null) this.Reversed = ShouldBeReversed(_Content);
 		if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
 		foreach (var item in PagesOriginal)
 		{
@@ -760,9 +763,9 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 				(item.Content as IDisposable)?.Dispose();
 				(item.Content as IDisposableBasic)?.DisposeBasic();
 			}
-		(this.Content as IDisposable)?.Dispose();
-		(this.Content as IDisposableBasic)?.DisposeBasic();
-		Content = null;
+		(this._Content as IDisposable)?.Dispose();
+		(this._Content as IDisposableBasic)?.DisposeBasic();
+		_Content = null;
 		PagesOriginal = Array.Empty<PageViewModel>();
 	}
 }

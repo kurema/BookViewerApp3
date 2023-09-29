@@ -161,7 +161,9 @@ public class SettingStorage
 
 		public enum Theme
 		{
-			//Auto, Light, Dark,
+#if MICA_ENABLED
+			Auto, Light, Dark,
+#endif
 			AcrylicAuto, AcrylicLight, AcrylicDark,
 		}
 

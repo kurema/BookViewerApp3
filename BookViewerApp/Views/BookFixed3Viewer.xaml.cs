@@ -27,6 +27,10 @@ using Microsoft.Toolkit.Uwp.UI;
 using Windows.Foundation.Metadata;
 using static BookViewerApp.Storages.SettingStorage;
 using Windows.Media.Devices;
+using Windows.UI.Popups;
+using Microsoft.Extensions.Options;
+using Windows.Networking.NetworkOperators;
+using Windows.ApplicationModel.DataTransfer;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -91,7 +95,6 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 		var brSet = (double)SettingStorage.GetValue(SettingKeys.BackgroundBrightness);
 		if (ThemeManager.IsMica)
 		{
-
 			if (this.Parent is not Frame f) Microsoft.UI.Xaml.Controls.BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
 			else
 			{
@@ -491,9 +494,9 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 								{
 									Text = ResourceManager.Loader.GetString("TabHeader/PdfJs"),
 								};
-								menu.Click += (_, _) =>
+								menu.Click += async (_, _) =>
 								{
-									tab.OpenTabPdfJs(isf);
+									await tab.OpenTabPdfJs(isf);
 								};
 								menuOpenWith.Items.Add(menu);
 							}
@@ -502,9 +505,9 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 								{
 									Text = ResourceManager.Loader.GetString("TabHeader/Browser"),
 								};
-								menu.Click += (_, _) =>
+								menu.Click += async (_, _) =>
 								{
-									tab.OpenTabBrowser(isf);
+									await tab.OpenTabBrowser(isf);
 								};
 								menuOpenWith.Items.Add(menu);
 							}
@@ -524,6 +527,12 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 						menuOpenWith.Items.Add(menu);
 					}
 				}
+			}
+		}
+		{
+			if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "ShowPassword") is MenuFlyoutItem menu)
+			{
+				menu.Visibility = string.IsNullOrEmpty(Binding?.Password) ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}
 
@@ -787,5 +796,30 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 	public void OnThemeChanged()
 	{
 		UpdateBackground();
+	}
+
+	private async void MenuFlyoutItem_Click_ShowPassword(object sender, RoutedEventArgs e)
+	{
+		try
+		{
+			var consentResult = await Windows.Security.Credentials.UI.UserConsentVerifier.RequestVerificationAsync(ResourceManager.Loader.GetString("ContextMenu/BookViewer/ShowPassword/RequestVerification/Message"));
+			if (consentResult is not Windows.Security.Credentials.UI.UserConsentVerificationResult.Verified) return;
+		}
+		catch
+		{
+			return;
+		}
+		var cd = new MessageDialog(string.Format(ResourceManager.Loader.GetString("ContextMenu/BookViewer/ShowPassword/Dialog/Message"), Binding.Password), ResourceManager.Loader.GetString("Word/Password"));
+		cd.Commands.Add(new UICommand(ResourceManager.Loader.GetString("Word/Copy"), new UICommandInvokedHandler(_ =>
+		{
+			var dataPackage = new DataPackage();
+			dataPackage.RequestedOperation = DataPackageOperation.Copy;
+			dataPackage.SetText(Binding.Password ?? string.Empty);
+			Clipboard.SetContent(dataPackage);
+		})));
+		cd.Commands.Add(new UICommand(ResourceManager.Loader.GetString("Word/Close"), new UICommandInvokedHandler(_ => { })));
+		cd.DefaultCommandIndex = 1;
+		cd.CancelCommandIndex = 1;
+		await cd.ShowAsync();
 	}
 }

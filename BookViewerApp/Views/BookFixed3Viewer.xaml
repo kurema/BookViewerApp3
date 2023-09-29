@@ -69,6 +69,7 @@
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageEnd.Label, Mode=OneTime}"  Command="{Binding PageMaxCommand}" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.QuickSettings.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_OpenSettingDialog" />
+                        <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.ShowPassword.Title, Mode=OneTime}" Visibility="Visible" Tag="ShowPassword" Click="MenuFlyoutItem_Click_ShowPassword" />
                     </MenuFlyout>
 
                 </FlipView.Resources>
@@ -82,7 +83,7 @@
         </Grid>
         <local:BookFixed3ViewerControllerControl x:Name="ViewerController" DataContext="{Binding}" Grid.Row="2" Grid.RowSpan="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         <StackPanel Grid.RowSpan="3" Visibility="Collapsed">
-            
+
         </StackPanel>
     </Grid>
 </Page>
