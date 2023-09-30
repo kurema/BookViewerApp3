@@ -27,7 +27,9 @@
         <ValueConverter:FloatEqualOneToVisibilityConverter x:Key="FloatEqualOneToVisibilityConverter" />
         <ValueConverter:BoolToFlowDirectionConverter x:Key="BoolToFlowDirectionConverter" />
         <ValueConverter:BoolToStringConverter x:Key="BoolToStringConverter" />
+        <ValueConverter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <ValueConverter:LocalizeConverter x:Key="LocalizeConverter"/>
+        <ValueConverter:StringNullOrEmptyConverter x:Key="StringNullOrEmptyConverter" />
     </UserControl.Resources>
     <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
@@ -69,9 +71,9 @@
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=PageEnd.Label, Mode=OneTime}"  Command="{Binding PageMaxCommand}" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.QuickSettings.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_OpenSettingDialog" />
-                        <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.ShowPassword.Title, Mode=OneTime}" Visibility="Visible" Tag="ShowPassword" Click="MenuFlyoutItem_Click_ShowPassword" />
+                        <!--<MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.ShowPassword.Title, Mode=OneTime}" Visibility="Visible" Tag="ShowPassword" Click="MenuFlyoutItem_Click_ShowPassword" />-->
+                        <MenuFlyoutItem FlowDirection="LeftToRight" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=FileExplorerControl/Command.Property, Mode=OneTime}" Click="MenuFlyoutItem_Click_SwapPropertyVisibility" />
                     </MenuFlyout>
-
                 </FlipView.Resources>
                 <FlipView.ItemTemplate>
                     <DataTemplate>
@@ -82,8 +84,103 @@
             <ProgressBar Grid.Row="1" Opacity="0"/>
         </Grid>
         <local:BookFixed3ViewerControllerControl x:Name="ViewerController" DataContext="{Binding}" Grid.Row="2" Grid.RowSpan="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <StackPanel Grid.RowSpan="3" Visibility="Collapsed">
+        <StackPanel Grid.RowSpan="3" Visibility="{x:Bind PropertyVisible,Mode=TwoWay,Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid HorizontalAlignment="Left">
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="CornerRadius" Value="0" />
+                        <Setter Property="IsHitTestVisible" Value="True" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="5,0" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Background="#8888" HorizontalAlignment="Right" Padding="5" Margin="10,10,10,0">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button Content="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=ContextMenu.BookViewer.ShowPassword.Title, Mode=OneTime}"
+                                Click="Button_Click_PasswordVisibility"
+                                Visibility="{Binding Password,Converter={StaticResource StringNullOrEmptyConverter},ConverterParameter=Collapsed:Visible}"
+                                />
+                        <Button Padding="2" ToolTipService.ToolTip="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Copy, Mode=OneTime}">
+                            <Button.RenderTransform>
+                                <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                            </Button.RenderTransform>
+                            <SymbolIcon Symbol="Copy" />
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Tag="{Binding ID}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.ID, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                    <MenuFlyoutItem Tag="{Binding FileName}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.FileName, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                    <MenuFlyoutItem Tag="{Binding Password}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Password, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" Visibility="{x:Bind PasswordVisible,Mode=TwoWay,Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <MenuFlyoutItem Tag="{Binding ReadTimeFirst}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.ReadTimeFirst.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                    <MenuFlyoutItem Tag="{Binding ReadTimeLast}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.ReadTimeLast.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                    <MenuFlyoutItem Tag="{Binding ReadTimeSpan}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.ReadTimeSpan.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                    <MenuFlyoutItem Tag="{Binding PageSelectedViewModel.Title}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.PageTitle.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                    <MenuFlyoutItem Tag="{Binding PageSelectedViewModel.Path}" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.PagePath.Title, Mode=OneTime}" Click="MenuFlyoutItem_Click_CopyTag" />
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button  Click="Button_Click_CloseProperty" Padding="2">
+                            <Button.RenderTransform>
+                                <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                            </Button.RenderTransform>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE894;" />
+                        </Button>
+                    </StackPanel>
+                </Border>
+                <Border Margin="10,0,10,10" Background="#8888" Padding="5" Grid.Row="1" IsHitTestVisible="False" >
+                    <Grid ColumnSpacing="5" >
+                        <Grid.Resources>
+                            <Style x:Key="PropertyHeader" TargetType="TextBlock">
+                                <Setter Property="Grid.Column" Value="0" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                            <Style x:Key="PropertyValues" TargetType="TextBlock">
+                                <Setter Property="Grid.Column" Value="1" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
 
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="0" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.ID, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="0" Text="{Binding ID}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="1" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.FileName, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="1" Text="{Binding FileName}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="2" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Word.Password, Mode=OneTime}" Visibility="{Binding Password,Converter={StaticResource StringNullOrEmptyConverter},ConverterParameter=Collapsed:Visible}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="2" Text="{Binding Password}" Visibility="{x:Bind PasswordVisible,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="3" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.ReadTimeFirst.Title, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="3" Text="{Binding ReadTimeFirst}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="4" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.ReadTimeLast.Title, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="4" Text="{Binding ReadTimeLast}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="5" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.ReadTimeSpan.Title, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="5" Text="{Binding ReadTimeSpan}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="6" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.PageTitle.Title, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="6" Text="{Binding PageSelectedViewModel.Title}" />
+                        <TextBlock Style="{StaticResource PropertyHeader}" Grid.Row="7" Text="{x:Bind Converter={StaticResource LocalizeConverter}, ConverterParameter=Viewer.Property.Header.PagePath.Title, Mode=OneTime}" />
+                        <TextBlock Style="{StaticResource PropertyValues}" Grid.Row="7" Text="{Binding PageSelectedViewModel.Path}" />
+
+                    </Grid>
+                </Border>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

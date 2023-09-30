@@ -46,9 +46,40 @@ namespace BookViewerApp.Books
 		public IPageFixed? GetPage(uint i)
 		{
 			if (Content is null) return null;
-			if (i < PageCount) return new PdfPage(Content.GetPage(i));
+			if (i < PageCount) return new PdfPage(Content.GetPage(i), string.Join(", ", GetNameFromToc((int)i)));
 			else throw new Exception("Incorrect page.");
 		}
+
+		void PrepareNameFromTocCache()
+		{
+			Dictionary<int, List<string>> result = new();
+			void AddItem(int page, string name)
+			{
+				List<string> list;
+				if (result.TryGetValue(page, out var value)) list = value; else result[page] = list = new List<string>();
+				list.Add(name);
+			}
+
+			AddItemsFromToc(Toc);
+
+			void AddItemsFromToc(IEnumerable<TocItem> tocs)
+			{
+				foreach (var item in tocs)
+				{
+					AddItem(item.Page, item.Title);
+					if (item.Children is not null and { Length: > 0 }) AddItemsFromToc(item.Children);
+				}
+			}
+
+			this.ReverseDictionary = result.ToDictionary(a => a.Key, a => a.Value.ToArray());
+		}
+
+		public IEnumerable<string> GetNameFromToc(int page)
+		{
+			if (ReverseDictionary.TryGetValue(page, out var r)) return r; else return Array.Empty<string>();
+		}
+
+		Dictionary<int, string[]> ReverseDictionary = new();
 
 		public static iTextSharp.text.pdf.PdfReader? GetPdfReader(Stream stream, string? password)
 		{
@@ -328,6 +359,7 @@ namespace BookViewerApp.Books
 				}
 
 				Toc = GetTocs(bm, nd, pageRefs);
+				PrepareNameFromTocCache();
 
 				// Open even when iTextSharp fails.
 			}
@@ -424,11 +456,15 @@ namespace BookViewerApp.Books
 		//public IPageOptions? LastOption;
 
 		private pdf.PdfPageRenderOptions? LastPdfOption;
+		public string Path => string.Empty;
 
-		public PdfPage(pdf.PdfPage page)
+		public PdfPage(pdf.PdfPage page, string? title = null)
 		{
 			Content = page;
+			Title = title ?? string.Empty;
 		}
+
+		public string Title { get; private set; }
 
 		protected double RenderScaleDefault => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 2.0 : 1.0;
 		protected double RenderScaleMinimum => ((bool)Storages.SettingStorage.GetValue("PdfRenderScaling")) ? 1.3 : 0.95;

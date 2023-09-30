@@ -948,4 +948,34 @@ Forse il formato non è supportato.
   <data name="Word.Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Viewer.Property.Header.ReadTimeLast.Title" xml:space="preserve">
+    <value>Ultima lettura</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeFirst.Title" xml:space="preserve">
+    <value>Prima lettura</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeSpan.Title" xml:space="preserve">
+    <value>Durata</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeSpan.Hint" xml:space="preserve">
+    <value>Durata della lettura</value>
+  </data>
+  <data name="Viewer.Property.Header.PageTitle.Title" xml:space="preserve">
+    <value>Titolo della pagina</value>
+  </data>
+  <data name="Viewer.Property.Header.PagePath.Title" xml:space="preserve">
+    <value>Percorso della pagina</value>
+  </data>
+  <data name="Word.ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Word.FileName" xml:space="preserve">
+    <value>Nome del file</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeFirst.Hint" xml:space="preserve">
+    <value>Data della prima lettura</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeLast.Hint" xml:space="preserve">
+    <value>Data dell'ultima lettura</value>
+  </data>
 </root>

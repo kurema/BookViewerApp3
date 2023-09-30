@@ -45,6 +45,24 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 
 	public FlipView FlipViewControl => this.flipView;
 
+	public bool PropertyVisible
+	{
+		get { return (bool)GetValue(PropertyVisibleProperty); }
+		set { SetValue(PropertyVisibleProperty, value); }
+	}
+
+	public static readonly DependencyProperty PropertyVisibleProperty =
+		DependencyProperty.Register("PropertyVisible", typeof(bool), typeof(BookFixed3Viewer), new PropertyMetadata(false));
+
+	public bool PasswordVisible
+	{
+		get { return (bool)GetValue(PasswordVisibleProperty); }
+		set { SetValue(PasswordVisibleProperty, value); }
+	}
+
+	public static readonly DependencyProperty PasswordVisibleProperty =
+		DependencyProperty.Register("PasswordVisible", typeof(bool), typeof(BookFixed3Viewer), new PropertyMetadata(false));
+
 	public BookFixed3Viewer()
 	{
 		this.InitializeComponent();
@@ -800,6 +818,7 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 
 	private async void MenuFlyoutItem_Click_ShowPassword(object sender, RoutedEventArgs e)
 	{
+		//https://tsmatz.wordpress.com/2015/07/30/windows-hello-app/
 		try
 		{
 			var consentResult = await Windows.Security.Credentials.UI.UserConsentVerifier.RequestVerificationAsync(ResourceManager.Loader.GetString("ContextMenu/BookViewer/ShowPassword/RequestVerification/Message"));
@@ -821,5 +840,51 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 		cd.DefaultCommandIndex = 1;
 		cd.CancelCommandIndex = 1;
 		await cd.ShowAsync();
+	}
+
+	private void Button_Click_CloseProperty(object sender, RoutedEventArgs e)
+	{
+		this.PropertyVisible = false;
+		if (!PropertyVisible) PasswordVisible = false;
+	}
+
+	private void MenuFlyoutItem_Click_SwapPropertyVisibility(object sender, RoutedEventArgs e)
+	{
+		this.PropertyVisible = !this.PropertyVisible;
+		if (!PropertyVisible) PasswordVisible = false;
+	}
+
+	private async void Button_Click_PasswordVisibility(object sender, RoutedEventArgs e)
+	{
+		if (!PasswordVisible)
+		{
+			//https://tsmatz.wordpress.com/2015/07/30/windows-hello-app/
+			try
+			{
+				var consentResult = await Windows.Security.Credentials.UI.UserConsentVerifier.RequestVerificationAsync(ResourceManager.Loader.GetString("ContextMenu/BookViewer/ShowPassword/RequestVerification/Message"));
+				if (consentResult is not Windows.Security.Credentials.UI.UserConsentVerificationResult.Verified) return;
+			}
+			catch
+			{
+				return;
+			}
+			PasswordVisible = true;
+		}
+		else
+		{
+			PasswordVisible = false;
+		}
+
+	}
+
+	private void MenuFlyoutItem_Click_CopyTag(object sender, RoutedEventArgs e)
+	{
+		if (sender is not FrameworkElement ui) return;
+		var text = ui?.Tag?.ToString();
+		if (string.IsNullOrEmpty(text)) return;
+		var dataPackage = new DataPackage();
+		dataPackage.RequestedOperation = DataPackageOperation.Copy;
+		dataPackage.SetText(text ?? string.Empty);
+		Clipboard.SetContent(dataPackage);
 	}
 }

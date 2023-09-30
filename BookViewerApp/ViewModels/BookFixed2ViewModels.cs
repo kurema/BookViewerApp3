@@ -104,6 +104,11 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 	public string Title { get { return _Title; } set { _Title = value; OnPropertyChanged(nameof(Title)); } }
 	private string _Title = "";
 
+
+	private string _FileName = string.Empty;
+	public string FileName { get => _FileName; set { _FileName = value; OnPropertyChanged(nameof(FileName)); } }
+
+
 	public bool IsControlPinned { get => _IsControlPinned; set { _IsControlPinned = value; OnPropertyChanged(nameof(IsControlPinned)); } }
 	private bool _IsControlPinned = false;
 
@@ -148,6 +153,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		{
 			await InitializeAsync(bookf, target);
 			this.Title = System.IO.Path.GetFileNameWithoutExtension(value.Name);
+			this.FileName = value.Name;
 			this.Loading = false;
 
 			if (await ThumbnailManager.GetImageFileAsync(bookf.ID) is null)
@@ -223,6 +229,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		this.Title = "";
 
 		_Content = value;
+		OnPropertyChanged(nameof(Password));
 
 		var pages = new ObservableCollection<PageViewModel>();
 		var option = OptionCache = target == null ? OptionCache : new Books.PageOptionsControl(target);
@@ -244,6 +251,9 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		if (value is Books.IPasswordPdovider pp && pp.PasswordRemember) _PasswordInfo = pp.Password;
 		this.PagesOriginal = pages;
 		BookInfo = value.ID == null ? null : await BookInfoStorage.GetBookInfoByIDOrCreateAsync(value.ID);
+		OnPropertyChanged(nameof(ReadTimeLast));
+		OnPropertyChanged(nameof(ReadTimeFirst));
+		OnPropertyChanged(nameof(ReadTimeSpan));
 		var tempPageSelected = (bool)SettingStorage.GetValue("SaveLastReadPage") ? (int)(BookInfo?.GetLastReadPage()?.Page ?? 1) : 1;
 		if (SettingStorage.GetValue("DefaultSpreadType") is SpreadPagePanel.ModeEnum modeSpread) this.SpreadMode = modeSpread;
 		this.PageSelectedDisplay = tempPageSelected >= this.PagesCount - 1 ? 1 : tempPageSelected;
@@ -310,7 +320,12 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 	public bool Loading { get { return _Loading; } set { _Loading = value; OnPropertyChanged(nameof(Loading)); } }
 	private bool _Loading = true;
 
-	private BookInfoStorage.BookInfo? BookInfo = null;
+	BookInfoStorage.BookInfo? BookInfo = null;
+
+	public DateTime ReadTimeLast => BookInfo?.ReadTimeLast ?? new DateTime();
+	public DateTime ReadTimeFirst => BookInfo?.ReadTimeFirst ?? new DateTime();
+	public TimeSpan ReadTimeSpan => TimeSpan.FromMilliseconds(BookInfo?.ReadTimeSpan ?? 0);
+
 	public void SaveInfo()
 	{
 		if (BookInfo is null) return;
@@ -342,7 +357,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 	}
 
 
-	public IPageViewModel? PageSelectedViewModel
+	public PageViewModel? PageSelectedViewModel
 	{
 		get
 		{
@@ -731,6 +746,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 		set { _Bookmarks = value; BookmarksSort(); OnPropertyChanged(nameof(Bookmarks)); OnPropertyChanged(nameof(CurrentBookmarkName)); }
 	}
 
+	IPageViewModel? IBookViewModel.PageSelectedViewModel => this.PageSelectedViewModel;
 
 	private ObservableCollection<BookmarkViewModel> _Bookmarks = new();
 
@@ -953,6 +969,33 @@ public class PageViewModel : INotifyPropertyChanged, IPageViewModel
 		finally
 		{
 			Semaphore.Release();
+		}
+	}
+
+	async void ensureLocal()
+	{
+		if (Content is Books.VirtualPage p)
+		{
+			await p.GetPage();
+			OnPropertyChanged(nameof(Title));
+			OnPropertyChanged(nameof(Path));
+		}
+	}
+
+	public string Title
+	{
+		get
+		{
+			ensureLocal();
+			return Content?.Title ?? string.Empty;
+		}
+	}
+	public string Path
+	{
+		get
+		{
+			ensureLocal();
+			return Content?.Path ?? string.Empty;
 		}
 	}
 }

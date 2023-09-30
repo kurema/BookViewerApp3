@@ -197,6 +197,35 @@ public sealed class BoolToStringConverter : IValueConverter
 	}
 }
 
+public sealed class BoolToVisibilityConverter : IValueConverter
+{
+	public object Convert(object value, Type targetType, object parameter, string language)
+	{
+		var rev = parameter?.ToString().Equals("reverse", StringComparison.InvariantCultureIgnoreCase) == true;
+		if (value is bool b)
+		{
+			return b ^ rev ? Visibility.Visible : Visibility.Collapsed;
+		}
+		else
+		{
+			throw new ArgumentException();
+		}
+	}
+
+	public object ConvertBack(object value, Type targetType, object parameter, string language)
+	{
+		var rev = parameter?.ToString().Equals("reverse", StringComparison.InvariantCultureIgnoreCase) == true;
+		if (value is Visibility b)
+		{
+			return (b == Visibility.Visible) ^ rev ? true : false;
+		}
+		else
+		{
+			throw new ArgumentException();
+		}
+	}
+}
+
 public sealed class NullableBoolConverter : IValueConverter
 {
 	public object Convert(object value, Type targetType, object parameter, string language)

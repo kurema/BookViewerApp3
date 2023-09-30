@@ -1095,4 +1095,34 @@ Maybe it's unsupported format.
   <data name="Word.Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Viewer.Property.Header.ReadTimeLast.Title" xml:space="preserve">
+    <value>Last read</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeFirst.Title" xml:space="preserve">
+    <value>First read</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeSpan.Title" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeSpan.Hint" xml:space="preserve">
+    <value>Reading duration</value>
+  </data>
+  <data name="Viewer.Property.Header.PageTitle.Title" xml:space="preserve">
+    <value>Page title</value>
+  </data>
+  <data name="Viewer.Property.Header.PagePath.Title" xml:space="preserve">
+    <value>Page path</value>
+  </data>
+  <data name="Word.ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Word.FileName" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeFirst.Hint" xml:space="preserve">
+    <value>Date of first reading</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeLast.Hint" xml:space="preserve">
+    <value>Date of last reading</value>
+  </data>
 </root>

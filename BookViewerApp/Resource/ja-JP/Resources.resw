@@ -952,4 +952,34 @@
   <data name="Word.Password" xml:space="preserve">
     <value>パスワード</value>
   </data>
+  <data name="Viewer.Property.Header.ReadTimeLast.Title" xml:space="preserve">
+    <value>最終読書</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeFirst.Title" xml:space="preserve">
+    <value>初回読書</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeSpan.Title" xml:space="preserve">
+    <value>読書時間</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeSpan.Hint" xml:space="preserve">
+    <value>読書時間</value>
+  </data>
+  <data name="Viewer.Property.Header.PageTitle.Title" xml:space="preserve">
+    <value>ページタイトル</value>
+  </data>
+  <data name="Viewer.Property.Header.PagePath.Title" xml:space="preserve">
+    <value>ページパス</value>
+  </data>
+  <data name="Word.ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Word.FileName" xml:space="preserve">
+    <value>ファイル名</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeFirst.Hint" xml:space="preserve">
+    <value>初読日</value>
+  </data>
+  <data name="Viewer.Property.Header.ReadTimeLast.Hint" xml:space="preserve">
+    <value>最終読書日</value>
+  </data>
 </root>
