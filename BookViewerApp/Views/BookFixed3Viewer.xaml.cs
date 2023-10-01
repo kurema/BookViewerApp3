@@ -816,31 +816,8 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 		UpdateBackground();
 	}
 
-	private async void MenuFlyoutItem_Click_ShowPassword(object sender, RoutedEventArgs e)
-	{
-		//https://tsmatz.wordpress.com/2015/07/30/windows-hello-app/
-		try
-		{
-			var consentResult = await Windows.Security.Credentials.UI.UserConsentVerifier.RequestVerificationAsync(ResourceManager.Loader.GetString("ContextMenu/BookViewer/ShowPassword/RequestVerification/Message"));
-			if (consentResult is not Windows.Security.Credentials.UI.UserConsentVerificationResult.Verified) return;
-		}
-		catch
-		{
-			return;
-		}
-		var cd = new MessageDialog(string.Format(ResourceManager.Loader.GetString("ContextMenu/BookViewer/ShowPassword/Dialog/Message"), Binding.Password), ResourceManager.Loader.GetString("Word/Password"));
-		cd.Commands.Add(new UICommand(ResourceManager.Loader.GetString("Word/Copy"), new UICommandInvokedHandler(_ =>
-		{
-			var dataPackage = new DataPackage();
-			dataPackage.RequestedOperation = DataPackageOperation.Copy;
-			dataPackage.SetText(Binding.Password ?? string.Empty);
-			Clipboard.SetContent(dataPackage);
-		})));
-		cd.Commands.Add(new UICommand(ResourceManager.Loader.GetString("Word/Close"), new UICommandInvokedHandler(_ => { })));
-		cd.DefaultCommandIndex = 1;
-		cd.CancelCommandIndex = 1;
-		await cd.ShowAsync();
-	}
+	//Deleted MenuFlyoutItem_Click_ShowPassword();
+	//https://github.com/kurema/BookViewerApp3/blob/dafdc7d28bb46eaf5445deb232f3758051532cbd/BookViewerApp/Views/BookFixed3Viewer.xaml.cs#L819
 
 	private void Button_Click_CloseProperty(object sender, RoutedEventArgs e)
 	{

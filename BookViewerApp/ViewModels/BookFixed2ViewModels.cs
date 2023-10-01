@@ -959,7 +959,7 @@ public class PageViewModel : INotifyPropertyChanged, IPageViewModel
 		try
 		{
 			token.ThrowIfCancellationRequested();
-			await Content.SetBitmapAsync(im, width, height);
+			_ = await Content.SetBitmapAsync(im, width, height);
 			Aspect = (double)im.PixelWidth / (double)im.PixelHeight;
 		}
 		catch

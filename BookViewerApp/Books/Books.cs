@@ -29,9 +29,9 @@ public interface IPageFixed
 {
 	//IPageOptions? Option { get; set; }
 	//Task<Windows.UI.Xaml.Media.Imaging.BitmapImage> GetBitmapAsync();
-	Task SetBitmapAsync(BitmapSource image, double width, double height);
+	Task<bool> SetBitmapAsync(BitmapSource image, double width, double height);
 	Task<bool> UpdateRequiredAsync(double width, double height);
-	Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null);
+	Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null);
 	string Title { get; }
 	string Path { get; }
 }
@@ -160,15 +160,14 @@ public class VirtualPage : IPageFixed, Helper.IDisposableBasic
 		return await (await GetPage()).UpdateRequiredAsync(width, height);
 	}
 
-	public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
+	public async Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
 	{
-		await (await GetPage()).SaveImageAsync(file, width, Clip);
+		return await (await GetPage()).SaveImageAsync(file, width, Clip);
 	}
 
-	public async Task SetBitmapAsync(BitmapSource image, double width, double height)
+	public async Task<bool> SetBitmapAsync(BitmapSource image, double width, double height)
 	{
-		var body = await GetPage();
-		await body.SetBitmapAsync(image, width, height);
+		return await (await GetPage()).SetBitmapAsync(image, width, height);
 	}
 
 	public void DisposeBasic()

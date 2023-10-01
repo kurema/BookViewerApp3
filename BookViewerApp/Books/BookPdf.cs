@@ -549,7 +549,7 @@ namespace BookViewerApp.Books
 			else { return Task.FromResult(false); }
 		}
 
-		public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
+		public async Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
 		{
 			var pdfOption = new pdf.PdfPageRenderOptions
 			{
@@ -563,13 +563,15 @@ namespace BookViewerApp.Books
 			var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
 			await Content.RenderToStreamAsync(stream, pdfOption);
 			await Functions.SaveStreamToFile(stream, file);
+			return true;
 		}
 
-		public async Task SetBitmapAsync(BitmapSource image, double width, double height)
+		public async Task<bool> SetBitmapAsync(BitmapSource image, double width, double height)
 		{
 			var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
 			await RenderToStreamAsync(stream, width, height);
 			if (image is not null) await image.SetSourceAsync(stream);
+			return true;
 		}
 	}
 }

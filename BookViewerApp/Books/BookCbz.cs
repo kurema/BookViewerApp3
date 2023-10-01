@@ -186,9 +186,9 @@ namespace BookViewerApp.Books
 			return Task.FromResult(false);
 		}
 
-		public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
+		public async Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
 		{
-			if (Cache is null) return;
+			if (Cache is null) return false;
 			try
 			{
 				using var fileThumb = await file.OpenAsync(FileAccessMode.ReadWrite);
@@ -199,20 +199,25 @@ namespace BookViewerApp.Books
 				try
 				{ await file.DeleteAsync(); }
 				catch { }
+				return false;
 			}
-			return;
+			return true;
 		}
 
-		public async Task SetBitmapAsync(BitmapSource image, double width, double height)
+		public async Task<bool> SetBitmapAsync(BitmapSource image, double width, double height)
 		{
-			if (Cache is null) return;
+			if (Cache is null) return false;
 			try
 			{
 				await new ImagePageStream((await Cache.GetMemoryStreamByProviderAsync()).AsRandomAccessStream()).SetBitmapAsync(image, width, height);
+				return true;
 			}
 			catch
 			{
-				// ignored
+				// When it's password protected, System.IO.InvalidDataException is thrown. Password is currently not supported. UWP can't use .NET 7.
+				//https://github.com/dotnet/runtime/issues/1545
+				//https://github.com/dotnet/runtime/issues/57197
+				return false;
 			}
 		}
 

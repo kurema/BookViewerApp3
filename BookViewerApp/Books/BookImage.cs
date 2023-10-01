@@ -38,7 +38,7 @@ namespace BookViewerApp.Books
 			return Task.FromResult(false);
 		}
 
-		public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
+		public async Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
 		{
 			//ToDo: Fix me!
 			if (Uri.IsFile)
@@ -48,10 +48,12 @@ namespace BookViewerApp.Books
 				var thm = await (await StorageFile.GetFileFromApplicationUriAsync(Uri)).GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView);
 
 				await Functions.SaveStreamToFile(thm, file);
+				return true;
 			}
+			return false;
 		}
 
-		public Task SetBitmapAsync(BitmapSource image, double width, double height)
+		public Task<bool> SetBitmapAsync(BitmapSource image, double width, double height)
 		{
 			if (image is BitmapImage bimage)
 			{
@@ -61,7 +63,7 @@ namespace BookViewerApp.Books
 			{
 				throw new NotImplementedException();
 			}
-			return Task.CompletedTask;
+			return Task.FromResult(true);
 		}
 	}
 }
@@ -91,21 +93,22 @@ namespace BookViewerApp.Books
 			return Task.FromResult(image);
 		}
 
-		public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
+		public async Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? Clip = null)
 		{
 			//Clip is ignored.
 			await Functions.SaveStreamToFile(stream, file);
+			return true;
 		}
 
-		public Task SetBitmapAsync(BitmapSource image, double width, double height)
+		public Task<bool> SetBitmapAsync(BitmapSource image, double width, double height)
 		{
 			if (stream is null)
 			{
-				return Task.CompletedTask;
+				return Task.FromResult(false);
 			}
 			stream.Seek(0);
 			image?.SetSource(stream);
-			return Task.CompletedTask;
+			return Task.FromResult(true);
 		}
 
 		public Task<bool> UpdateRequiredAsync(double width, double height)

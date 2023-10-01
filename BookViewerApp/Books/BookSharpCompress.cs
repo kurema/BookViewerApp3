@@ -66,7 +66,7 @@ namespace BookViewerApp.Books
 					}
 					catch
 					{
-						//Try password? Not yet.
+						// No exception even if it's encrypted.
 						throw;
 					}
 					DisposableStream = sr;
@@ -172,7 +172,7 @@ namespace BookViewerApp.Books
 
 		private readonly MemoryStreamCache Cache;
 
-		public async Task SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
+		public async Task<bool> SaveImageAsync(StorageFile file, uint width, Windows.Foundation.Rect? croppedRegionRelative = null)
 		{
 			try
 			{
@@ -187,6 +187,7 @@ namespace BookViewerApp.Books
 					  var ibuffer = buffer.AsBuffer();
 					  await fileStream.WriteAsync(ibuffer);
 				  });
+				return true;
 			}
 			catch (Exception)
 			{
@@ -195,16 +196,25 @@ namespace BookViewerApp.Books
 					await file.DeleteAsync();
 				}
 				catch { }
+				return false;
 			}
 		}
 
 
-		public async Task SetBitmapAsync(BitmapSource image, double width, double height)
+		public async Task<bool> SetBitmapAsync(BitmapSource image, double width, double height)
 		{
 			var stream = await Cache.GetMemoryStreamByProviderAsync();
-			if (stream is null) return;
-			Task? task = new ImagePageStream(stream.AsRandomAccessStream())?.SetBitmapAsync(image, width, height);
-			if (task != null) await task;
+			if (stream is null) return false;
+			try
+			{
+				Task? task = new ImagePageStream(stream.AsRandomAccessStream())?.SetBitmapAsync(image, width, height);
+				if (task != null) await task; else return false;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		public Task<bool> UpdateRequiredAsync(double width, double height)
