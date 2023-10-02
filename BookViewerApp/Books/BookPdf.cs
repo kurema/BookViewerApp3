@@ -89,20 +89,53 @@ namespace BookViewerApp.Books
 				if (password is null)
 				{
 					return new iTextSharp.text.pdf.PdfReader(stream);
+					//return new iTextSharp.text.pdf.PdfReader(new iTextSharp.text.pdf.RandomAccessFileOrArray(stream), null);
 				}
 				else
 				{
 					//Encoding of password depends on the implementation if it's not ISO 32000-2.
 					//https://stackoverflow.com/questions/57328735/use-itext-7-to-open-a-password-protected-pdf-file-with-non-ascii-characters
 					//It's not correct... but UTF8 should be fine for many cases.
+
 					return new iTextSharp.text.pdf.PdfReader(stream, Encoding.UTF8.GetBytes(password));
+					//Following throws NullReferenceException. PDF file has some problem? I don't think so.
+					//https://stackoverflow.com/questions/5121169/cant-read-some-pdf-files-with-itextsharp
+					//return new iTextSharp.text.pdf.PdfReader(new iTextSharp.text.pdf.RandomAccessFileOrArray(stream), Encoding.UTF8.GetBytes(password));
 				}
 			}
 			catch (iTextSharp.text.pdf.BadPasswordException)
 			{
 				return null;
 			}
+			catch
+			{
+				return null;
+			}
 		}
+
+		//public static iTextSharp.text.pdf.PdfReader? GetPdfReader(iTextSharp.text.pdf.RandomAccessFileOrArray raf, string? password)
+		//{
+		//	try
+		//	{
+		//		raf.Seek(0);
+		//		if (password is null)
+		//		{
+		//			return new iTextSharp.text.pdf.PdfReader(raf, null);
+		//		}
+		//		else
+		//		{
+		//			return new iTextSharp.text.pdf.PdfReader(raf, Encoding.UTF8.GetBytes(password));
+		//		}
+		//	}
+		//	catch (iTextSharp.text.pdf.BadPasswordException)
+		//	{
+		//		return null;
+		//	}
+		//	catch
+		//	{
+		//		return null;
+		//	}
+		//}
 
 		//Note:
 		//Type has changed due to the change in the library. To see old version:
@@ -235,12 +268,14 @@ namespace BookViewerApp.Books
 			iTextSharp.text.pdf.PdfReader? pr = null;
 			try
 			{
-				var streamClassic = stream.AsStream();
+				using var streamClassic = stream.AsStream();
+				//var raf = new iTextSharp.text.pdf.RandomAccessFileOrArray(streamClassic);
 
 				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
 
 				#region Password
 				pr = GetPdfReader(streamClassic, null);
+				//pr = GetPdfReader(raf, null);
 				if (isPrOk()) goto PasswordSuccess;
 
 				IEnumerable<string> GetCapitalCombinations(string text)
@@ -254,6 +289,7 @@ namespace BookViewerApp.Books
 				foreach (var item in defaultPassword.SelectMany(GetCapitalCombinations).Distinct() ?? new string[0])
 				{
 					pr = GetPdfReader(streamClassic, item);
+					//pr = GetPdfReader(raf, item);
 					if (isPrOk())
 					{
 						password = item;
@@ -262,14 +298,19 @@ namespace BookViewerApp.Books
 					}
 				}
 
-				for (int i = 0; i < 10; i++)
+				try
 				{
-					var result = await passwordRequestedCallback(i);
-					password = result.password;
-					passSave = result.remember;
-					pr = GetPdfReader(streamClassic, password);
-					if (isPrOk()) goto PasswordSuccess;
+					for (int i = 0; i < 10; i++)
+					{
+						var result = await passwordRequestedCallback(i);
+						password = result.password;
+						passSave = result.remember;
+						pr = GetPdfReader(streamClassic, password);
+						//pr = GetPdfReader(raf, password);
+						if (isPrOk()) goto PasswordSuccess;
+					}
 				}
+				catch { password = null; passSave = false; }
 				throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
 			#endregion
 
