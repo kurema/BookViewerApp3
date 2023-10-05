@@ -191,6 +191,7 @@
     <Content Include="res\Icon\icon_library_s.png" />
     <Content Include="res\Icon\icon_star_l.png" />
     <Content Include="res\Icon\icon_star_s.png" />
+    <Content Include="res\passwords\additional_passwords.txt" />
     <Content Include="res\reader\css\main.css" />
     <Content Include="res\reader\css\sidebar.css" />
     <Content Include="res\reader\css\toolbar.css" />
@@ -232,6 +233,9 @@
     <Content Include="res\reader\img\toc-selected.svg" />
     <Content Include="res\reader\img\toc.svg" />
     <Content Include="res\reader\img\upload.svg" />
+    <Content Include="res\passwords\passwords.gz" />
+    <Content Include="res\passwords\README.md" />
+    <None Include="res\passwords\words.gz" />
     <None Include="Storages\WindowStates.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -267,7 +271,6 @@
     <Compile Include="Extension\BookmarkItem.cs" />
     <Compile Include="Extension\HistoryItem.cs" />
     <Compile Include="Extension\HistoryMRUItem.cs" />
-    <Compile Include="Extension\PdfReaderPasswordTester.cs" />
     <Compile Include="Extension\TokenLibraryItem.cs" />
     <Compile Include="Helper\IDisposableBasic.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
@@ -285,6 +288,7 @@
     <Compile Include="Managers\HistoryManager.cs" />
     <Compile Include="Managers\ImageManager.cs" />
     <Compile Include="Managers\LicenseManager.cs" />
+    <Compile Include="Managers\PasswordDictionaryManager.cs" />
     <Compile Include="Managers\ResourceManager.cs" />
     <Compile Include="Managers\ThemeManager.cs" />
     <Compile Include="Storages\ExtensionAdBlockerItems.cs">
@@ -591,7 +595,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="iTextSharp.LGPLv2.Core">
-      <Version>3.4.8</Version>
+      <Version>3.4.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -616,6 +620,10 @@
     <ProjectReference Include="..\..\DistillNET\DistillNET\DistillNET.csproj">
       <Project>{93d84f2d-b2ab-41f5-b52c-00f1589e7554}</Project>
       <Name>DistillNET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention.csproj">
+      <Project>{22fe8e91-71ba-4108-b71b-2ba616de3358}</Project>
+      <Name>iTextSharp.LGPLv2.Core.Extention</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppBasePlatform\AppBasePlatform.csproj">
       <Project>{9350dd9f-df65-4362-ad68-8ddcb0ab18d4}</Project>

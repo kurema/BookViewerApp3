@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppBasePlatform", "AppBaseP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistillNET", "..\DistillNET\DistillNET\DistillNET.csproj", "{93D84F2D-B2AB-41F5-B52C-00F1589E7554}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTextSharp.LGPLv2.Core.Extention", "..\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention.csproj", "{22FE8E91-71BA-4108-B71B-2BA616DE3358}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,12 +148,32 @@ Global
 		{93D84F2D-B2AB-41F5-B52C-00F1589E7554}.Release|x64.Build.0 = Release|Any CPU
 		{93D84F2D-B2AB-41F5-B52C-00F1589E7554}.Release|x86.ActiveCfg = Release|Any CPU
 		{93D84F2D-B2AB-41F5-B52C-00F1589E7554}.Release|x86.Build.0 = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|ARM.Build.0 = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|x64.Build.0 = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Debug|x86.Build.0 = Debug|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|ARM.ActiveCfg = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|ARM.Build.0 = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|ARM64.Build.0 = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|x64.ActiveCfg = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|x64.Build.0 = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|x86.ActiveCfg = Release|Any CPU
+		{22FE8E91-71BA-4108-B71B-2BA616DE3358}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":\"4fcf2967-1777-f609-5cd8-cebb3f4feaa7:fx\",\"ApiUrl\":\"https://api-free.deepl.com/v2/translate\",\"IsEnabled\":true,\"SaveCredentials\":true,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
 		SolutionGuid = {1D690A2D-E395-40EB-B506-A5722EB4DF01}
+		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":\"4fcf2967-1777-f609-5cd8-cebb3f4feaa7:fx\",\"ApiUrl\":\"https://api-free.deepl.com/v2/translate\",\"IsEnabled\":true,\"SaveCredentials\":true,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
 	EndGlobalSection
 EndGlobal

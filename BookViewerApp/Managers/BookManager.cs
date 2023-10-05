@@ -8,6 +8,7 @@ using System.IO;
 using BookViewerApp.Books;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using BookViewerApp.Storages;
 
 namespace BookViewerApp.Managers;
 
@@ -69,7 +70,7 @@ public static class BookManager
 	}
 
 
-	public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntry = false)
+	public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string path, string fileName, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntry = false)
 	{
 		var book = new PdfBook();
 		try
@@ -77,9 +78,18 @@ public static class BookManager
 			//We don't know ID of PDF before opening. Remembered passwords doesn't make sense. That's why I forgot to implement.
 			//So for now, we try all remembered password for now.
 			//It's not good for performance. But I don't think it takes only a moment.
-			var infos = await Storages.BookInfoStorage.GetBookInfoAsync();
-			var passSetting = ((Storages.SettingStorage.GetValue(Storages.SettingStorage.SettingKeys.PdfPasswordDictionary) as string) ?? string.Empty).Split('\n', '\r');
-			var allPw = infos.Select(a => a.Password).Concat(passSetting).Where(a => !string.IsNullOrEmpty(a)).Distinct().ToArray();
+			IEnumerable<string> allPw;
+			{
+				await PasswordDictionaryManager.LoadAsync();
+				var id = Storages.PathStorage.GetIdFromPath(path);
+				var infos = await Storages.BookInfoStorage.GetBookInfoAsync();
+				var currentInfo = infos.FirstOrDefault(a => a.ID == id);
+				var infoPaths = (currentInfo is null ? new Storages.BookInfoStorage.BookInfo[0] : new BookInfoStorage.BookInfo[] { currentInfo })
+					.Concat(infos).Select(a => a.Password).Where(a => !string.IsNullOrEmpty(a)).Distinct().ToArray();
+				allPw = infoPaths.Concat(Managers.PasswordDictionaryManager.ListCombined);
+				var a2 = allPw.ToArray();
+			}
+
 			await book.Load(stream, fileName, async (a) =>
 			{
 				if (skipPasswordEntry) throw new Exception("Password entry is skipped.");
@@ -157,7 +167,7 @@ public static class BookManager
 
 
 	Pdf:;
-		return await GetBookPdf(await file.OpenReadAsync(), file.Name, xamlRoot, skipPasswordEntryPdf);
+		return await GetBookPdf(await file.OpenReadAsync(), file.Path, file.Name, xamlRoot, skipPasswordEntryPdf);
 	Zip:;
 		return await GetBookZip((await file.OpenReadAsync()).AsStream());
 	SharpCompress:;

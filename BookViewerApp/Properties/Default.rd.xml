@@ -27,6 +27,7 @@
 		
 		<Namespace Name="kurema.BrowserControl" Dynamic="Required All"/>
 		<Namespace Name="kurema.FileExplorerControl" Dynamic="Required All"/>
+		<Namespace Name="iTextSharp.text.pdf" Dynamic="Required All"/>
 
 		<!--<Namespace Name="Microsoft.UI.Xaml.Controls" Dynamic="Required All"/>-->
 

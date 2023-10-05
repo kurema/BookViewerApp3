@@ -88,7 +88,7 @@ namespace BookViewerApp.Books
 				if (stream.CanSeek) stream.Seek(0, SeekOrigin.Begin);
 				if (password is null)
 				{
-					return new iTextSharp.text.pdf.PdfReader(stream);
+					return new iTextSharp.text.pdf.PdfReader(stream, false);
 					//return new iTextSharp.text.pdf.PdfReader(new iTextSharp.text.pdf.RandomAccessFileOrArray(stream), null);
 				}
 				else
@@ -97,7 +97,7 @@ namespace BookViewerApp.Books
 					//https://stackoverflow.com/questions/57328735/use-itext-7-to-open-a-password-protected-pdf-file-with-non-ascii-characters
 					//It's not correct... but UTF8 should be fine for many cases.
 
-					return new iTextSharp.text.pdf.PdfReader(stream, Encoding.UTF8.GetBytes(password));
+					return new iTextSharp.text.pdf.PdfReader(stream, Encoding.UTF8.GetBytes(password), false);
 					//Following throws NullReferenceException. PDF file has some problem? I don't think so.
 					//https://stackoverflow.com/questions/5121169/cant-read-some-pdf-files-with-itextsharp
 					//return new iTextSharp.text.pdf.PdfReader(new iTextSharp.text.pdf.RandomAccessFileOrArray(stream), Encoding.UTF8.GetBytes(password));
@@ -249,13 +249,13 @@ namespace BookViewerApp.Books
 			return result.ToArray();
 		}
 
-		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, string[]? defaultPassword = null)
+		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null)
 		{
 			using Windows.Storage.Streams.IRandomAccessStream stream = await file.OpenReadAsync();
-			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPassword);
+			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPasswords);
 		}
 
-		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, string[]? defaultPassword = null)
+		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null)
 		{
 			string? password = null;
 			bool passSave = false;
@@ -266,19 +266,23 @@ namespace BookViewerApp.Books
 			string? id = null;
 
 			iTextSharp.text.pdf.PdfReader? pr = null;
+			var cancel = new CancellationTokenSource();
+			Task? cracker = null;
 			try
 			{
-				using var streamClassic = stream.AsStream();
 				//var raf = new iTextSharp.text.pdf.RandomAccessFileOrArray(streamClassic);
 
 				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
+
+				using var streamClassic = stream.AsStream();
+				using var streamClassic2 = stream.AsStream();
 
 				#region Password
 				pr = GetPdfReader(streamClassic, null);
 				//pr = GetPdfReader(raf, null);
 				if (isPrOk()) goto PasswordSuccess;
 
-				IEnumerable<string> GetCapitalCombinations(string text)
+				static IEnumerable<string> GetCapitalCombinations(string text)
 				{
 					yield return text;
 					yield return text.ToUpperInvariant();
@@ -286,15 +290,76 @@ namespace BookViewerApp.Books
 					if (text.Length >= 2) yield return $"{char.ToUpperInvariant(text[0])}{text.Substring(1).ToLowerInvariant()}";
 				}
 
-				foreach (var item in defaultPassword.SelectMany(GetCapitalCombinations).Distinct() ?? new string[0])
+				bool crackSuccess = false;
+
 				{
-					pr = GetPdfReader(streamClassic, item);
-					//pr = GetPdfReader(raf, item);
-					if (isPrOk())
+					try
 					{
-						password = item;
-						passSave = true;
-						goto PasswordSuccess;
+						if (defaultPasswords.Any())
+						{
+							var word = defaultPasswords.First();
+							streamClassic2.Seek(0, SeekOrigin.Begin);
+							var p = new iTextSharp.text.pdf.PdfReaderTriable(streamClassic2, Encoding.UTF8.GetBytes(word));
+							streamClassic2.Seek(0, SeekOrigin.Begin);
+							crackSuccess = true;
+							pr = GetPdfReader(streamClassic2, word);
+							password = word;
+							passSave = true;
+							goto PasswordSuccess;
+						}
+					}
+					catch (iTextSharp.text.pdf.BadPasswordExceptionTriable badPw)
+					{
+						if (badPw.CanTryPassword)
+						{
+							cracker = Task.Run(async () =>
+							{
+								foreach (var item2 in defaultPasswords.Skip(1) ?? new string[0])
+								{
+									//foreach (var item1 in GetCapitalCombinations(item2).Distinct())
+									{
+										var item1 = item2;
+										if (item1 == "hello")
+										{
+
+										}
+										if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
+										{
+											try
+											{
+												pr = GetPdfReader(streamClassic2, item1);
+												//pr = GetPdfReader(raf, item);
+												if (isPrOk())
+												{
+													password = item1;
+													passSave = true;
+													crackSuccess = true;
+													return;
+												}
+											}
+											catch (Exception e)
+											{
+											}
+										}
+									}
+								}
+							}, cancel.Token);
+						}
+					}
+					catch(Exception e)
+					{
+						if (!crackSuccess)
+						{
+							try
+							{
+								var word = defaultPasswords.First();
+								pr = GetPdfReader(streamClassic2, word);
+								password = word;
+								passSave = true;
+								goto PasswordSuccess;
+							}
+							catch { crackSuccess = false; }
+						}
 					}
 				}
 
@@ -303,14 +368,21 @@ namespace BookViewerApp.Books
 					for (int i = 0; i < 10; i++)
 					{
 						var result = await passwordRequestedCallback(i);
-						password = result.password;
 						passSave = result.remember;
+						if (crackSuccess) goto PasswordSuccess;
+						password = result.password;
 						pr = GetPdfReader(streamClassic, password);
 						//pr = GetPdfReader(raf, password);
 						if (isPrOk()) goto PasswordSuccess;
 					}
 				}
 				catch { password = null; passSave = false; }
+				if (cracker is not null && !cracker.IsCompleted) try
+					{
+						await cracker;
+						if (crackSuccess) goto PasswordSuccess;
+					}
+					catch { }
 				throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
 			#endregion
 
@@ -448,6 +520,7 @@ namespace BookViewerApp.Books
 			{
 				pr?.Close();
 				pr?.Dispose();
+				cancel?.Cancel();
 			}
 
 			OnLoaded(new EventArgs());

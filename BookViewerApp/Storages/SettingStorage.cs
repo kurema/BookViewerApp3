@@ -62,10 +62,10 @@ public class SettingStorage
 		public const string BrowserSearchComplitionService = "BrowserSearchComplitionService";
 		public const string ScreenBrightnessOverride = "ScreenBrightnessOverride";
 		public const string PdfPasswordDictionary = "PdfPasswordDictionary";
+		public const string PdfPasswordDictionaryAttack = "PdfPasswordDictionaryAttack";
 		//public const string DefaultHomeScreen = "DefaultHomeScreen";
 		public const string DefaultTab = "DefaultTab";
 		public const string RestorePreviousSession = "RestorePreviousSession";
-
 	}
 
 	private static SettingInstance[] _SettingInstances = null;
