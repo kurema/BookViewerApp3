@@ -9,6 +9,7 @@ using BookViewerApp.Books;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using BookViewerApp.Storages;
+using System.Threading;
 
 namespace BookViewerApp.Managers;
 
@@ -62,15 +63,15 @@ public static class BookManager
 		return GetBookTypeByPath(file.Path) ?? GetBookTypeByStream(await file.OpenStreamForReadAsync());
 	}
 
-	public static async Task<IBook> GetBookFromFile(IStorageFile file, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntryPdf = false)
+	public static async Task<IBook> GetBookFromFile(IStorageFile file, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntryPdf = false, CancellationTokenSource cancellationTokenSource = null)
 	{
 		var type = await GetBookTypeByStorageFile(file);
 		if (type is null) return null;
-		return await GetBookFromFile(file, (BookType)type, xamlRoot, skipPasswordEntryPdf);
+		return await GetBookFromFile(file, (BookType)type, xamlRoot, skipPasswordEntryPdf, cancellationTokenSource);
 	}
 
 
-	public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string path, string fileName, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntry = false)
+	public static async Task<IBook> GetBookPdf(Windows.Storage.Streams.IRandomAccessStream stream, string path, string fileName, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntry = false, CancellationTokenSource cancellationTokenSource = null)
 	{
 		var book = new PdfBook();
 		try
@@ -117,7 +118,7 @@ public static class BookManager
 				var dialog = new Windows.UI.Popups.MessageDialog(message, fileName);
 				await dialog.ShowAsync();
 				return;
-			}, allPw);
+			}, allPw, cancellationTokenSource);
 		}
 		catch { return null; }
 		if (book.PageCount <= 0) { return null; }
@@ -154,7 +155,7 @@ public static class BookManager
 		return book;
 	}
 
-	public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntryPdf = false)
+	public static async Task<IBook> GetBookFromFile(IStorageFile file, BookType type, Windows.UI.Xaml.XamlRoot xamlRoot = null, bool skipPasswordEntryPdf = false, CancellationTokenSource cancellationTokenSource = null)
 	{
 		switch (type)
 		{
@@ -167,7 +168,7 @@ public static class BookManager
 
 
 	Pdf:;
-		return await GetBookPdf(await file.OpenReadAsync(), file.Path, file.Name, xamlRoot, skipPasswordEntryPdf);
+		return await GetBookPdf(await file.OpenReadAsync(), file.Path, file.Name, xamlRoot, skipPasswordEntryPdf, cancellationTokenSource);
 	Zip:;
 		return await GetBookZip((await file.OpenReadAsync()).AsStream());
 	SharpCompress:;
@@ -297,7 +298,6 @@ public static class BookManager
 			picker.FileTypeFilter.Add(ext);
 		}
 		return await picker.PickSingleFileAsync();
-
 	}
 
 	public static async Task<IBook> PickBook()

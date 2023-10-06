@@ -19,6 +19,7 @@ using BookViewerApp.Managers;
 
 using BookViewerApp.Storages;
 using BookViewerApp.Views;
+using System.Threading;
 
 #nullable enable
 namespace BookViewerApp.ViewModels;
@@ -142,13 +143,23 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 			new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
 	}
 
+	System.Threading.CancellationTokenSource CancellationTokenSource;
+
+	public void CancelLoading()
+	{
+		if (CancellationTokenSource is not null && !CancellationTokenSource.IsCancellationRequested) CancellationTokenSource.Cancel();
+		CancellationTokenSource = new();
+	}
+
 	public async Task InitializeAsync(Windows.Storage.IStorageFile value, Control? target = null)
 	{
 		this.Loading = true;
 
 		if (value is null) return;
-
-		var book = await BookManager.GetBookFromFile(value);
+		var cancel = new System.Threading.CancellationTokenSource();
+		CancellationTokenSource ??= new System.Threading.CancellationTokenSource();
+		CancellationTokenSource.Token.Register(() => { try { cancel.Cancel(); } catch { } });
+		var book = await BookManager.GetBookFromFile(value, cancellationTokenSource: cancel);
 		if (book is Books.IBookFixed bookf && bookf.PageCount > 0)
 		{
 			await InitializeAsync(bookf, target);
@@ -773,6 +784,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 
 	public void DisposeBasic()
 	{
+		CancelLoading();
 		if (PagesOriginal != null)
 			foreach (var item in PagesOriginal)
 			{

@@ -249,13 +249,15 @@ namespace BookViewerApp.Books
 			return result.ToArray();
 		}
 
-		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null)
+		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null, CancellationTokenSource? cancellationTokenSource = null)
 		{
 			using Windows.Storage.Streams.IRandomAccessStream stream = await file.OpenReadAsync();
-			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPasswords);
+			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPasswords, cancellationTokenSource);
 		}
 
-		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null)
+		CancellationTokenSource? cancellation = null;
+
+		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null, CancellationTokenSource? cancellationTokenSource = null)
 		{
 			string? password = null;
 			bool passSave = false;
@@ -266,7 +268,9 @@ namespace BookViewerApp.Books
 			string? id = null;
 
 			iTextSharp.text.pdf.PdfReader? pr = null;
-			var cancel = new CancellationTokenSource();
+			cancellation?.Cancel();
+			var cancel = cancellation = new CancellationTokenSource();
+			cancellationTokenSource?.Token.Register(() => { try { if (!cancel.IsCancellationRequested) cancel.Cancel(); } catch { } });
 			Task? cracker = null;
 			try
 			{
@@ -275,7 +279,6 @@ namespace BookViewerApp.Books
 				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
 
 				using var streamClassic = stream.AsStream();
-				using var streamClassic2 = stream.AsStream();
 
 				#region Password
 				pr = GetPdfReader(streamClassic, null);
@@ -298,11 +301,11 @@ namespace BookViewerApp.Books
 						if (defaultPasswords.Any())
 						{
 							var word = defaultPasswords.First();
-							streamClassic2.Seek(0, SeekOrigin.Begin);
-							var p = new iTextSharp.text.pdf.PdfReaderTriable(streamClassic2, Encoding.UTF8.GetBytes(word));
-							streamClassic2.Seek(0, SeekOrigin.Begin);
+							streamClassic.Seek(0, SeekOrigin.Begin);
+							var p = new iTextSharp.text.pdf.PdfReaderTriable(streamClassic, Encoding.UTF8.GetBytes(word));
+							streamClassic.Seek(0, SeekOrigin.Begin);
 							crackSuccess = true;
-							pr = GetPdfReader(streamClassic2, word);
+							pr = GetPdfReader(streamClassic, word);
 							password = word;
 							passSave = true;
 							goto PasswordSuccess;
@@ -314,27 +317,31 @@ namespace BookViewerApp.Books
 						{
 							cracker = Task.Run(async () =>
 							{
-								foreach (var item2 in defaultPasswords.Skip(1) ?? new string[0])
+								Parallel.ForEach(defaultPasswords.Skip(1) ?? new string[0], new ParallelOptions()
 								{
-									//foreach (var item1 in GetCapitalCombinations(item2).Distinct())
+									CancellationToken = cancel.Token
+								}, (item2, state) =>
+								{
+									if(cancel.IsCancellationRequested) state.Break();
+									foreach (var item1 in GetCapitalCombinations(item2).Distinct())
 									{
-										var item1 = item2;
-										if (item1 == "hello")
-										{
-
-										}
+										//var item1 = item2;
+										// For debug.
+										//if (item1 == "hello")
+										//{
+										//}
 										if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
 										{
 											try
 											{
+												using var streamClassic2 = stream.AsStream();
 												pr = GetPdfReader(streamClassic2, item1);
-												//pr = GetPdfReader(raf, item);
 												if (isPrOk())
 												{
 													password = item1;
 													passSave = true;
 													crackSuccess = true;
-													return;
+													state.Break();
 												}
 											}
 											catch (Exception e)
@@ -342,18 +349,18 @@ namespace BookViewerApp.Books
 											}
 										}
 									}
-								}
+								});
 							}, cancel.Token);
 						}
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
 						if (!crackSuccess)
 						{
 							try
 							{
 								var word = defaultPasswords.First();
-								pr = GetPdfReader(streamClassic2, word);
+								pr = GetPdfReader(streamClassic, word);
 								password = word;
 								passSave = true;
 								goto PasswordSuccess;
@@ -376,7 +383,7 @@ namespace BookViewerApp.Books
 						if (isPrOk()) goto PasswordSuccess;
 					}
 				}
-				catch { password = null; passSave = false; }
+				catch { if (!crackSuccess) { password = null; passSave = false; } }
 				if (cracker is not null && !cracker.IsCompleted) try
 					{
 						await cracker;
@@ -479,6 +486,7 @@ namespace BookViewerApp.Books
 			catch { }
 			try
 			{
+				if (cancel.IsCancellationRequested) return;
 				async Task OpenPdfCommon(Func<Task<pdf.PdfDocument?>> contentProvider, string errorMessageKey)
 				{
 					try { Content = await contentProvider.Invoke(); }
@@ -520,7 +528,7 @@ namespace BookViewerApp.Books
 			{
 				pr?.Close();
 				pr?.Dispose();
-				cancel?.Cancel();
+				if (cancel?.IsCancellationRequested == false) cancel?.Cancel();
 			}
 
 			OnLoaded(new EventArgs());
@@ -552,6 +560,14 @@ namespace BookViewerApp.Books
 			}
 			catch
 			{
+			}
+			try
+			{
+				if (cancellation?.IsCancellationRequested == false) cancellation?.Cancel();
+			}
+			catch
+			{
+
 			}
 		}
 	}
