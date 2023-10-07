@@ -105,18 +105,20 @@ public class SettingStorage
 						new SettingInstance(SettingKeys.ShowHistories,true,new TypeConverters.BoolConverter(),group:"Explorer"),
 						new SettingInstance(SettingKeys.MaximumHistoryCount,100,new TypeConverters.IntConverter(),group:"Explorer",isVisible:false){ Minimum = 0, Maximum = 500},//MRUで履歴を管理するようにしたので非表示にしました。
                         new SettingInstance(SettingKeys.EpubViewerType,SettingEnums.EpubViewerType.Bibi, new TypeConverters.EnumConverter<SettingEnums.EpubViewerType>(),group:"Viewer"),
+						new SettingInstance(SettingKeys.EpubViewerDarkMode,false, new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.PdfRenderScaling,true,new TypeConverters.BoolConverter(),group:"Viewer"),
                         //new SettingInstance(SettingKeys.ShowBookmarkFavicon,false,new TypeConverters.BoolConverter(),group:"Explorer"),
                         new SettingInstance(SettingKeys.FetchThumbnailsBackground,true,new TypeConverters.BoolConverter(),group:"Explorer"),
 						new SettingInstance(SettingKeys.DefaultBrowserExternal,false,new TypeConverters.BoolConverter(),group:"Explorer"),
-						new SettingInstance(SettingKeys.EpubViewerDarkMode,false, new TypeConverters.BoolConverter(),group:"Viewer"),
 						new SettingInstance(SettingKeys.ViewerSlideshowLastTimeSpan,20.0,new TypeConverters.DoubleConverter(),group:"Viewer",isVisible:false),
 						new SettingInstance(SettingKeys.BrowserUseWebView2,false,new TypeConverters.BoolConverter(),group:"Browser"),
 						new SettingInstance(SettingKeys.BrowserUserAgent,string.Empty,new TypeConverters.StringConverter(),group:"Browser"),
 						new SettingInstance(SettingKeys.BrowserAdBlockEnabled,false,new TypeConverters.BoolConverter(),group:"Browser",isVisible:false),
                         // We disable search completion as default to comply GDPR or something.
                         new SettingInstance(SettingKeys.BrowserSearchComplitionService,kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions.Dummy,new TypeConverters.EnumConverter<kurema.BrowserControl.Helper.SearchComplitions.SearchComplitionOptions>(),group:"Browser"),
-						new SettingInstance(SettingKeys.PdfPasswordDictionary,"pass\npassword\nowner\nuser\n",new TypeConverters.StringConverter(),group:"Viewer",IsLocal:true){ CustomUIKey="StringMultiline"},
+						new SettingInstance(SettingKeys.PdfPasswordDictionary,"",new TypeConverters.StringConverter(),group:"Viewer",IsLocal:true){ CustomUIKey="StringMultiline"},
+						new SettingInstance(SettingKeys.PdfPasswordDictionaryAttack,false, new TypeConverters.BoolConverter(),group:"Viewer",IsLocal:true),
+
 				};
 			//How to add resource when you add SettingInstance:
 			//1. Open Resource/en-US/Resources.resw

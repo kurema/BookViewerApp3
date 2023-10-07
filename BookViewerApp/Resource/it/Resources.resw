@@ -978,4 +978,10 @@ Forse il formato non è supportato.
   <data name="Viewer.Property.Header.ReadTimeLast.Hint" xml:space="preserve">
     <value>Data dell'ultima lettura</value>
   </data>
+  <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
+    <value>Provate il dizionario con un PDF protetto da password</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
+    <value>Tenta automaticamente attacchi a dizionario per aprire PDF protetti da password. Questo processo richiede un grande carico sulla CPU.</value>
+  </data>
 </root>

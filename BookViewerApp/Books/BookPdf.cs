@@ -326,10 +326,6 @@ namespace BookViewerApp.Books
 									foreach (var item1 in GetCapitalCombinations(item2).Distinct())
 									{
 										//var item1 = item2;
-										// For debug.
-										//if (item1 == "hello")
-										//{
-										//}
 										if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
 										{
 											try

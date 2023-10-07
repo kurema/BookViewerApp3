@@ -87,7 +87,14 @@ public static class BookManager
 				var currentInfo = infos.FirstOrDefault(a => a.ID == id);
 				var infoPaths = (currentInfo is null ? new Storages.BookInfoStorage.BookInfo[0] : new BookInfoStorage.BookInfo[] { currentInfo })
 					.Concat(infos).Select(a => a.Password).Where(a => !string.IsNullOrEmpty(a)).Distinct().ToArray();
-				allPw = infoPaths.Concat(Managers.PasswordDictionaryManager.ListCombined);
+				if ((bool)Storages.SettingStorage.GetValue(Storages.SettingStorage.SettingKeys.PdfPasswordDictionaryAttack))
+				{
+					allPw = infoPaths.Concat(Managers.PasswordDictionaryManager.ListCombined);
+				}
+				else
+				{
+					allPw = infoPaths.Concat(Managers.PasswordDictionaryManager.ListCombinedBasic);
+				}
 				var a2 = allPw.ToArray();
 			}
 

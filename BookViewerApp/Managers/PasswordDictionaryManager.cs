@@ -40,6 +40,17 @@ public static class PasswordDictionaryManager
 		}
 	}
 
+	public static IEnumerable<string> ListCombinedBasic
+	{
+		get
+		{
+			var passSetting = ((Storages.SettingStorage.GetValue(Storages.SettingStorage.SettingKeys.PdfPasswordDictionary) as string) ?? string.Empty).Split('\n', '\r');
+			foreach (var item in passSetting) yield return item;
+			foreach (var item in ListWordsAdditional ?? Array.Empty<string>()) yield return item;
+		}
+	}
+
+
 	private static async Task<string[]> GetGzLists(string path)
 	{
 		var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));

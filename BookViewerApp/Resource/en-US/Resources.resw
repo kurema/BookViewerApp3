@@ -1125,4 +1125,10 @@ Maybe it's unsupported format.
   <data name="Viewer.Property.Header.ReadTimeLast.Hint" xml:space="preserve">
     <value>Date of last reading</value>
   </data>
+  <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
+    <value>Automatically attempts dictionary attacks to open password protected PDF. This process requires a large load on the CPU.</value>
+  </data>
+  <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
+    <value>Try the dictionary with a password-protected PDF</value>
+  </data>
 </root>
