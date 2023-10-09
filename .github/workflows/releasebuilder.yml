@@ -60,6 +60,12 @@ jobs:
         repository: kurema/DistillNET
         path: DistillNET
 
+    - name: Checkout iText ex repo
+      uses: actions/checkout@v3
+      with:
+        repository: kurema/iTextSharp.LGPLv2.Core.Extention
+        path: iTextSharp.LGPLv2.Core.Extention
+        
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
