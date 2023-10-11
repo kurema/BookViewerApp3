@@ -277,6 +277,7 @@ namespace BookViewerApp.Books
 				//var raf = new iTextSharp.text.pdf.RandomAccessFileOrArray(streamClassic);
 
 				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
+				bool isReaderOk(iTextSharp.text.pdf.PdfReader? reader) => reader is not null && (allowUserPassword || reader.IsOpenedWithFullPermissions);
 
 				using var streamClassic = stream.AsStream();
 
@@ -295,6 +296,60 @@ namespace BookViewerApp.Books
 
 				bool crackSuccess = false;
 
+#if true
+				{
+					try
+					{
+						if (defaultPasswords.Any())
+						{
+							var word = defaultPasswords.First();
+							crackSuccess = true;
+							pr = GetPdfReader(streamClassic, word);
+							password = word;
+							passSave = true;
+							goto PasswordSuccess;
+						}
+					}
+					catch (iTextSharp.text.pdf.BadPasswordExceptionTriable badPw)
+					{
+						if (badPw.CanTryPassword)
+						{
+							cracker = Task.Run(async () =>
+							{
+								Parallel.ForEach(defaultPasswords.Skip(1) ?? new string[0], new ParallelOptions()
+								{
+									CancellationToken = cancel.Token
+								}, (item2, state) =>
+								{
+									if (cancel.IsCancellationRequested) state.Break();
+									foreach (var item1 in GetCapitalCombinations(item2).Distinct())
+									{
+										if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
+										{
+											try
+											{
+												using var streamClassic2 = stream.AsStream();
+												var pr2 = GetPdfReader(streamClassic2, item1);
+												if (isReaderOk(pr2))
+												{
+													pr = pr2;
+													password = item1;
+													passSave = true;
+													crackSuccess = true;
+													state.Break();
+												}
+											}
+											catch (Exception e)
+											{
+											}
+										}
+									}
+								});
+							}, cancel.Token);
+						}
+					}
+				}
+#else
 				{
 					try
 					{
@@ -331,9 +386,10 @@ namespace BookViewerApp.Books
 											try
 											{
 												using var streamClassic2 = stream.AsStream();
-												pr = GetPdfReader(streamClassic2, item1);
-												if (isPrOk())
+												var pr2 = GetPdfReader(streamClassic2, item1);
+												if (isReaderOk(pr2))
 												{
+												    pr = pr2;
 													password = item1;
 													passSave = true;
 													crackSuccess = true;
@@ -365,6 +421,7 @@ namespace BookViewerApp.Books
 						}
 					}
 				}
+#endif
 
 				try
 				{
@@ -387,7 +444,7 @@ namespace BookViewerApp.Books
 					}
 					catch { }
 				throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
-			#endregion
+#endregion
 
 			PasswordSuccess:;
 				if (pr is null) throw new NullReferenceException(nameof(pr));

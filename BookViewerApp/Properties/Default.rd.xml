@@ -28,9 +28,9 @@
 		<Namespace Name="kurema.BrowserControl" Dynamic="Required All"/>
 		<Namespace Name="kurema.FileExplorerControl" Dynamic="Required All"/>
 		<Namespace Name="iTextSharp.text.pdf" Dynamic="Required All"/>
-
-		<!--<Namespace Name="Microsoft.UI.Xaml.Controls" Dynamic="Required All"/>-->
-
+		<Assembly Name="iTextSharp.LGPLv2.Core" Dynamic="Required All"/>
+		<Assembly Name="iTextSharp.LGPLv2.Core.Extention" Dynamic="Required All"/>
+		
 		<!-- Add your application specific runtime directives here. -->
 
 		<!--<Assembly Name="Windows.Foundation.FoundationContract" Dynamic="Required All" />

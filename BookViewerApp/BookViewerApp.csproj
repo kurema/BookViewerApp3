@@ -618,9 +618,9 @@
       <Project>{93d84f2d-b2ab-41f5-b52c-00f1589e7554}</Project>
       <Name>DistillNET</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention\iTextSharp.LGPLv2.Core.Extention.csproj">
-      <Project>{22fe8e91-71ba-4108-b71b-2ba616de3358}</Project>
-      <Name>iTextSharp.LGPLv2.Core.Extention</Name>
+    <ProjectReference Include="..\..\iTextSharp.LGPLv2.Core\src\iTextSharp.LGPLv2.Core\iTextSharp.LGPLv2.Core.csproj">
+      <Project>{9a85684b-c41f-4f2a-8492-a75e5d583cdb}</Project>
+      <Name>iTextSharp.LGPLv2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppBasePlatform\AppBasePlatform.csproj">
       <Project>{9350dd9f-df65-4362-ad68-8ddcb0ab18d4}</Project>
