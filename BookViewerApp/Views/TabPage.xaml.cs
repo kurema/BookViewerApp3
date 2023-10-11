@@ -609,6 +609,24 @@ public sealed partial class TabPage : Page
 			if (last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0) OpenWindowState(last);
 			else _ = OpenTabExplorer();
 		}
+		else if (e.Parameter is (Windows.ApplicationModel.Activation.IActivatedEventArgs args1, Storages.WindowStates.WindowStatesLast last1))
+		{
+			//We do not restore previous session when the app is activated by file and previous session has single viewer tab. I mean,
+			//Situation: Close window when only one book is opened -> Open app with file.
+			//Expected: Do not restore previous session.
+			//Why: You open lots of books one by one in the folder. In such situation, you don't want to see the previous book. You just mean to close the tab in that case.
+			var items = last1?.WindowState?.Window?.FirstOrDefault()?.Items;
+			if (items is not null and { Length: > 0 })
+				if (items.Length == 1 && items.FirstOrDefault() is not Storages.WindowStates.WindowStateWindowViewerTab)
+					OpenWindowState(last1);
+			if (args1.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
+			{
+				foreach (var item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args1).Files)
+				{
+					OpenTabBook(item);
+				}
+			}
+		}
 		else if (e.Parameter is Windows.ApplicationModel.Activation.IActivatedEventArgs args)
 		{
 			if (args.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
@@ -622,6 +640,10 @@ public sealed partial class TabPage : Page
 		else if (e.Parameter is Windows.Storage.IStorageItem f)
 		{
 			OpenTabBook(f);
+		}
+		else
+		{
+			_ = OpenTabExplorer();
 		}
 
 		SetupWindow(null);

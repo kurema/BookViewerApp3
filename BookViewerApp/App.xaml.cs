@@ -144,34 +144,46 @@ sealed partial class App : Application
 			// ナビゲーション スタックが復元されない場合は、最初のページに移動します。
 			// このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
 			//構成します
-			if (e.PreviousExecutionState == ApplicationExecutionState.Terminated ||
-				(e.PreviousExecutionState == ApplicationExecutionState.ClosedByUser && (bool)SettingStorage.GetValue(SettingStorage.SettingKeys.RestorePreviousSession)))
-			{
-				try
-				{
-					var content = await WindowStatesStorage.Content.GetContentAsync();
-					var last = content.Last;
-					_ = Task.Run(async () =>
-					{
-						//Ensure that startup failures do not occur again.
-						content.Last = new();
-						await WindowStatesStorage.Content.SaveAsync();
-					});
-					rootFrame.Navigate(typeof(TabPage), last);
-				}
-				catch
-				{
-					rootFrame.Navigate(typeof(TabPage), e.Arguments);
-				}
-			}
-			else
+			var last = await GetLast(e);
+			if (last is null)
 			{
 				rootFrame.Navigate(typeof(TabPage), e.Arguments);
 			}
-
+			else
+			{
+				rootFrame.Navigate(typeof(TabPage), last);
+			}
 		}
 		// 現在のウィンドウがアクティブであることを確認します
 		Window.Current.Activate();
+	}
+
+	async Task<Storages.WindowStates.WindowStatesLast> GetLast(IActivatedEventArgs eventArgs)
+	{
+		if (eventArgs.PreviousExecutionState == ApplicationExecutionState.Terminated ||
+			(eventArgs.PreviousExecutionState == ApplicationExecutionState.ClosedByUser && (bool)SettingStorage.GetValue(SettingStorage.SettingKeys.RestorePreviousSession)))
+		{
+			try
+			{
+				var content = await WindowStatesStorage.Content.GetContentAsync();
+				var last = content.Last;
+				_ = Task.Run(async () =>
+				{
+					//Ensure that startup failures do not occur again.
+					content.Last = new();
+					await WindowStatesStorage.Content.SaveAsync();
+				});
+				return last;
+			}
+			catch
+			{
+				return null;
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/// <summary>
@@ -211,7 +223,7 @@ sealed partial class App : Application
 		deferral.Complete();
 	}
 
-	protected override void OnFileActivated(FileActivatedEventArgs args)
+	protected override async void OnFileActivated(FileActivatedEventArgs args)
 	{
 		OverrideBrightness();
 
@@ -235,7 +247,15 @@ sealed partial class App : Application
 		}
 
 		var rootFrame = new Frame();
-		rootFrame.Navigate(typeof(TabPage), args);
+		var last = await GetLast(args);
+		if (last is null)
+		{
+			rootFrame.Navigate(typeof(TabPage), args);
+		}
+		else
+		{
+			rootFrame.Navigate(typeof(TabPage), (args, last));
+		}
 
 		if (Window.Current != null)
 		{
