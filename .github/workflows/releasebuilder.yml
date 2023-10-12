@@ -50,21 +50,28 @@ jobs:
           }
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: BookViewerApp
     
     - name: Checkout tools repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: kurema/DistillNET
         path: DistillNET
 
-    - name: Checkout iText ex repo
-      uses: actions/checkout@v3
+#    - name: Checkout iText ex repo
+#      uses: actions/checkout@v4
+#      with:
+#        repository: kurema/iTextSharp.LGPLv2.Core.Extention
+#        path: iTextSharp.LGPLv2.Core.Extention
+
+    - name: Checkout iText repo
+      uses: actions/checkout@v4
       with:
-        repository: kurema/iTextSharp.LGPLv2.Core.Extention
-        path: iTextSharp.LGPLv2.Core.Extention
+        repository: kurema/iTextSharp.LGPLv2.Core
+        path: iTextSharp.LGPLv2.Core
+        ref: bv3
         
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
