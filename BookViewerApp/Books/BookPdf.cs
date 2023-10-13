@@ -304,7 +304,8 @@ namespace BookViewerApp.Books
 						{
 							var word = defaultPasswords.First();
 							crackSuccess = true;
-							pr = GetPdfReader(streamClassic, word);
+							streamClassic.Seek(0, SeekOrigin.Begin);
+							pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(word));
 							password = word;
 							passSave = true;
 							goto PasswordSuccess;
@@ -444,7 +445,7 @@ namespace BookViewerApp.Books
 					}
 					catch { }
 				throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
-#endregion
+			#endregion
 
 			PasswordSuccess:;
 				if (pr is null) throw new NullReferenceException(nameof(pr));
