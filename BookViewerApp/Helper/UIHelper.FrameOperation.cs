@@ -792,7 +792,7 @@ public static partial class UIHelper
 					catch { }
 
 					content.Control.WebResourceRequested += ExtensionAdBlockerManager.WebViewWebResourceRequested;
-					content.Control.NavigationCompleted += (s, e) => { try { UpdateBrowserSession(tabViewItem, s.Source.ToString()); } catch { } };
+					content.Control.NavigationCompleted += (s, e) => { try { if (s.Source is not null) UpdateBrowserSession(tabViewItem, s.Source.ToString()); } catch { } };
 				}
 			}
 
