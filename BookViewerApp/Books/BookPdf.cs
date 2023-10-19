@@ -17,6 +17,7 @@ using BookViewerApp.Helper;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.Immutable;
 using System.Threading;
+using static System.Net.Mime.MediaTypeNames;
 
 #nullable enable
 namespace BookViewerApp.Books
@@ -249,15 +250,15 @@ namespace BookViewerApp.Books
 			return result.ToArray();
 		}
 
-		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null, CancellationTokenSource? cancellationTokenSource = null)
+		public async Task Load(IStorageFile file, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null, CancellationTokenSource? cancellationTokenSource = null, bool skipPasswordTrial = false)
 		{
 			using Windows.Storage.Streams.IRandomAccessStream stream = await file.OpenReadAsync();
-			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPasswords, cancellationTokenSource);
+			await Load(stream, file.Name, passwordRequestedCallback, errorCallback, defaultPasswords, cancellationTokenSource, skipPasswordTrial);
 		}
 
 		CancellationTokenSource? cancellation = null;
 
-		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null, CancellationTokenSource? cancellationTokenSource = null)
+		public async Task Load(Windows.Storage.Streams.IRandomAccessStream stream, string fileName, Func<int, Task<(string password, bool remember)>> passwordRequestedCallback, Func<string, Task> errorCallback, IEnumerable<string>? defaultPasswords = null, CancellationTokenSource? cancellationTokenSource = null, bool skipPasswordTrial = false)
 		{
 			string? password = null;
 			bool passSave = false;
@@ -276,8 +277,8 @@ namespace BookViewerApp.Books
 			{
 				//var raf = new iTextSharp.text.pdf.RandomAccessFileOrArray(streamClassic);
 
-				bool isPrOk() => pr is not null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
-				bool isReaderOk(iTextSharp.text.pdf.PdfReader? reader) => reader is not null && (allowUserPassword || reader.IsOpenedWithFullPermissions);
+				bool isPrOk() => pr is not null && pr != null && (allowUserPassword || pr.IsOpenedWithFullPermissions);
+				bool isReaderOk(iTextSharp.text.pdf.PdfReader? reader) => reader is not null && reader != null && (allowUserPassword || reader.IsOpenedWithFullPermissions);
 
 				using var streamClassic = stream.AsStream();
 
@@ -285,14 +286,6 @@ namespace BookViewerApp.Books
 				pr = GetPdfReader(streamClassic, null);
 				//pr = GetPdfReader(raf, null);
 				if (isPrOk()) goto PasswordSuccess;
-
-				static IEnumerable<string> GetCapitalCombinations(string text)
-				{
-					yield return text;
-					yield return text.ToUpperInvariant();
-					yield return text.ToLowerInvariant();
-					if (text.Length >= 2) yield return $"{char.ToUpperInvariant(text[0])}{text.Substring(1).ToLowerInvariant()}";
-				}
 
 				bool crackSuccess = false;
 
@@ -303,47 +296,79 @@ namespace BookViewerApp.Books
 						if (defaultPasswords.Any())
 						{
 							var word = defaultPasswords.First();
-							crackSuccess = true;
 							streamClassic.Seek(0, SeekOrigin.Begin);
 							pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(word));
-							password = word;
-							passSave = true;
-							goto PasswordSuccess;
+							if (isPrOk())
+							{
+								crackSuccess = true;
+								password = word;
+								passSave = true;
+								goto PasswordSuccess;
+							}
 						}
 					}
 					catch (iTextSharp.text.pdf.BadPasswordExceptionTriable badPw)
 					{
-						if (badPw.CanTryPassword)
+						if (badPw.CanTryPassword && !skipPasswordTrial)
 						{
 							cracker = Task.Run(async () =>
 							{
 								Parallel.ForEach(defaultPasswords.Skip(1) ?? new string[0], new ParallelOptions()
 								{
-									CancellationToken = cancel.Token
+									CancellationToken = cancel.Token,
 								}, (item2, state) =>
 								{
-									if (cancel.IsCancellationRequested) state.Break();
-									foreach (var item1 in GetCapitalCombinations(item2).Distinct())
+									var priviousePriority = Thread.CurrentThread.Priority;
+									try
 									{
-										if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
+										Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+										if (cancel.IsCancellationRequested) state.Break();
+
+										static IEnumerable<string> GetCapitalCombinations(string text)
 										{
-											try
+											yield return text;
+											yield return text.ToUpperInvariant();
+											yield return text.ToLowerInvariant();
+											if (text.Length >= 2) yield return $"{char.ToUpperInvariant(text[0])}{text.Substring(1).ToLowerInvariant()}";
+										}
+
+										foreach (var item1 in
+										GetCapitalCombinations(item2)
+										//new[] { item2, item2.ToUpperInvariant(), item2.ToLowerInvariant(), item2.Length >= 2 ? $"{char.ToUpperInvariant(item2[0])}{item2.Substring(1).ToLowerInvariant()}" : item2 }
+										.Distinct())
+										//bool TryPassword(string item1)
+										{
+											if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
 											{
-												using var streamClassic2 = stream.AsStream();
-												var pr2 = GetPdfReader(streamClassic2, item1);
-												if (isReaderOk(pr2))
+												try
 												{
-													pr = pr2;
-													password = item1;
-													passSave = true;
-													crackSuccess = true;
-													state.Break();
+													using var streamClassic2 = stream.AsStream();
+													var pr2 = GetPdfReader(streamClassic2, item1);
+													if (isReaderOk(pr2))
+													{
+														pr = pr2;
+														password = item1;
+														passSave = true;
+														crackSuccess = true;
+														state.Break();
+														//return true;
+													}
+												}
+												catch
+												{
 												}
 											}
-											catch (Exception e)
-											{
-											}
+											//return false;
 										}
+
+										//if (TryPassword(item2)) return;
+										//if (TryPassword(item2.ToUpperInvariant())) return;
+										//if (TryPassword(item2.ToLowerInvariant())) return;
+										//if (item2.Length >= 2 && TryPassword($"{char.ToUpperInvariant(item2[0])}{item2.Substring(1).ToLowerInvariant()}")) return;
+									}
+									finally
+									{
+										Thread.CurrentThread.Priority = priviousePriority;
 									}
 								});
 							}, cancel.Token);
@@ -430,7 +455,7 @@ namespace BookViewerApp.Books
 					{
 						var result = await passwordRequestedCallback(i);
 						passSave = result.remember;
-						if (crackSuccess) goto PasswordSuccess;
+						if (crackSuccess && isPrOk()) goto PasswordSuccess;
 						password = result.password;
 						pr = GetPdfReader(streamClassic, password);
 						//pr = GetPdfReader(raf, password);
@@ -448,7 +473,7 @@ namespace BookViewerApp.Books
 			#endregion
 
 			PasswordSuccess:;
-				if (pr is null) throw new NullReferenceException(nameof(pr));
+				if (pr is null || pr == null) throw new NullReferenceException(nameof(pr));
 
 				try
 				{
@@ -458,6 +483,8 @@ namespace BookViewerApp.Books
 					//http://itext.2136553.n4.nabble.com/Using-getSimpleViewerPreferences-td2167775.html
 					//私が書いた記事はこちら。
 					//https://qiita.com/kurema/items/3f274507aa5cf9e845a8
+
+					//Somehow NullReferenceException was thrown here. So `pr is null` seems to be not enough. It have to be `pr == null`.
 					var vp = iTextSharp.text.pdf.intern.PdfViewerPreferencesImp.GetViewerPreferences(pr.Catalog).GetViewerPreferences();
 
 					//L2R document often don't have Direction information.
@@ -551,7 +578,8 @@ namespace BookViewerApp.Books
 							if (pr is null) throw;
 							//Use iTextSharp to remove password and store it in memory.
 							//This will eat lots of memory.
-							using Windows.Storage.Streams.InMemoryRandomAccessStream ms = new();
+							//I'm not sure if I need using here.
+							Windows.Storage.Streams.InMemoryRandomAccessStream ms = new();
 							using var stamper = new iTextSharp.text.pdf.PdfStamper(pr, ms.AsStream());
 							stamper.Close();
 							Content = await pdf.PdfDocument.LoadFromStreamAsync(ms);

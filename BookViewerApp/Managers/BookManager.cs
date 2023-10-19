@@ -125,7 +125,7 @@ public static class BookManager
 				var dialog = new Windows.UI.Popups.MessageDialog(message, fileName);
 				await dialog.ShowAsync();
 				return;
-			}, allPw, cancellationTokenSource);
+			}, allPw, cancellationTokenSource, skipPasswordEntry);
 		}
 		catch { return null; }
 		if (book.PageCount <= 0) { return null; }
