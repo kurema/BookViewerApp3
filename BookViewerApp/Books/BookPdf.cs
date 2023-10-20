@@ -289,6 +289,14 @@ namespace BookViewerApp.Books
 
 				bool crackSuccess = false;
 
+				static IEnumerable<string> GetCapitalCombinations(string text)
+				{
+					yield return text;
+					yield return text.ToUpperInvariant();
+					yield return text.ToLowerInvariant();
+					if (text.Length >= 2) yield return $"{char.ToUpperInvariant(text[0])}{text.Substring(1).ToLowerInvariant()}";
+				}
+
 #if true
 				{
 					try
@@ -297,7 +305,7 @@ namespace BookViewerApp.Books
 						{
 							var word = defaultPasswords.First();
 							streamClassic.Seek(0, SeekOrigin.Begin);
-							pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(word));
+							pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(word), false);
 							if (isPrOk())
 							{
 								crackSuccess = true;
@@ -324,19 +332,12 @@ namespace BookViewerApp.Books
 										Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 										if (cancel.IsCancellationRequested) state.Break();
 
-										static IEnumerable<string> GetCapitalCombinations(string text)
-										{
-											yield return text;
-											yield return text.ToUpperInvariant();
-											yield return text.ToLowerInvariant();
-											if (text.Length >= 2) yield return $"{char.ToUpperInvariant(text[0])}{text.Substring(1).ToLowerInvariant()}";
-										}
-
+										//Function version (Not good. No Distinct()):
+										//https://github.com/kurema/BookViewerApp3/blob/c8a3a7c30952bec75dec432b644ee774ef8dabbb/BookViewerApp/Books/BookPdf.cs
 										foreach (var item1 in
 										GetCapitalCombinations(item2)
 										//new[] { item2, item2.ToUpperInvariant(), item2.ToLowerInvariant(), item2.Length >= 2 ? $"{char.ToUpperInvariant(item2[0])}{item2.Substring(1).ToLowerInvariant()}" : item2 }
 										.Distinct())
-										//bool TryPassword(string item1)
 										{
 											if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
 											{
@@ -348,23 +349,15 @@ namespace BookViewerApp.Books
 													{
 														pr = pr2;
 														password = item1;
-														passSave = true;
 														crackSuccess = true;
 														state.Break();
-														//return true;
 													}
 												}
 												catch
 												{
 												}
 											}
-											//return false;
 										}
-
-										//if (TryPassword(item2)) return;
-										//if (TryPassword(item2.ToUpperInvariant())) return;
-										//if (TryPassword(item2.ToLowerInvariant())) return;
-										//if (item2.Length >= 2 && TryPassword($"{char.ToUpperInvariant(item2[0])}{item2.Substring(1).ToLowerInvariant()}")) return;
 									}
 									finally
 									{
@@ -417,7 +410,6 @@ namespace BookViewerApp.Books
 												{
 												    pr = pr2;
 													password = item1;
-													passSave = true;
 													crackSuccess = true;
 													state.Break();
 												}
@@ -455,18 +447,38 @@ namespace BookViewerApp.Books
 					{
 						var result = await passwordRequestedCallback(i);
 						passSave = result.remember;
+						//If you didn't check [ ] Remember password, cracked password is not saved.
 						if (crackSuccess && isPrOk()) goto PasswordSuccess;
-						password = result.password;
-						pr = GetPdfReader(streamClassic, password);
-						//pr = GetPdfReader(raf, password);
-						if (isPrOk()) goto PasswordSuccess;
+						try
+						{
+							streamClassic.Seek(0, SeekOrigin.Begin);
+							pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(result.password), false);
+							//pr = GetPdfReader(raf, password);
+							if (isPrOk()) { password = result.password; goto PasswordSuccess; }
+						}
+						catch (iTextSharp.text.pdf.BadPasswordExceptionTriable badPw)
+						{
+							//Try passwords with different cases.
+							if (badPw.CanTryPassword)
+							{
+								foreach(var item in GetCapitalCombinations(result.password).Distinct().Where(a => a != result.password))
+								{
+									if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item))))
+									{
+										streamClassic.Seek(0, SeekOrigin.Begin);
+										pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(item), false);
+										if (isPrOk()) { password = item; goto PasswordSuccess; }
+									}
+								}
+							}
+						}
 					}
 				}
-				catch { if (!crackSuccess) { password = null; passSave = false; } }
+				catch { if (crackSuccess) { passSave = true; } else { password = null; passSave = false; } }
 				if (cracker is not null && !cracker.IsCompleted) try
 					{
 						await cracker;
-						if (crackSuccess) goto PasswordSuccess;
+						if (crackSuccess) { passSave = true; goto PasswordSuccess; }
 					}
 					catch { }
 				throw new iTextSharp.text.pdf.BadPasswordException("All passwords wrong");
