@@ -980,6 +980,6 @@ Talvez seja um formato não suportado.
     <value>Experimente o dicionário com um PDF protegido por palavra-passe</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
-    <value>Tenta automaticamente ataques de dicionário para abrir PDFs protegidos por senha. Este processo requer uma grande carga na CPU.</value>
+    <value>Tenta automaticamente ataques de dicionário para abrir PDFs protegidos por senha. Este processo requer uma grande carga na CPU. O resultado é guardado em texto simples.</value>
   </data>
 </root>

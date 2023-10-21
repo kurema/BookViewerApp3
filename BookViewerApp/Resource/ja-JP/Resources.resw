@@ -983,7 +983,7 @@
     <value>最終読書日</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
-    <value>保護されたPDFを開く際、自動的に辞書攻撃を試みます。このプロセスは、CPUに大きな負荷が掛かります。</value>
+    <value>保護されたPDFを開く際、自動的に辞書攻撃を試みます。このプロセス中、CPUに大きな負荷が掛かります。解析結果は平文で保存されます。</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
     <value>パスワードで保護されたPDFで辞書を試す</value>

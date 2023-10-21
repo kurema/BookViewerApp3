@@ -982,6 +982,6 @@ URL：{2}</value>
     <value>用密码保护的 PDF 试试字典</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
-    <value>自动尝试字典攻击以打开受密码保护的 PDF。此过程需要对 CPU 进行大量负载。</value>
+    <value>自动尝试字典攻击以打开受密码保护的 PDF。此过程需要对 CPU 进行大量负载。结果以纯文本形式保存。</value>
   </data>
 </root>

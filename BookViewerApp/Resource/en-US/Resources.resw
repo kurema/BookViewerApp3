@@ -1126,7 +1126,7 @@ Maybe it's unsupported format.
     <value>Date of last reading</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
-    <value>Automatically attempts dictionary attacks to open password protected PDF. This process requires a large load on the CPU.</value>
+    <value>Automatically attempts dictionary attacks to open password protected PDF. This process requires a large load on the CPU. The result is saved in plain text.</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
     <value>Try the dictionary with a password-protected PDF</value>

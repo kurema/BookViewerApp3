@@ -266,6 +266,8 @@ namespace BookViewerApp.Books
 			bool allowUserPassword = true;
 			iTextSharp.text.pdf.PdfReader.AllowOpenWithFullPermissions = allowUserPassword;
 
+			bool contentLoaded = false;
+
 			string? id = null;
 
 			iTextSharp.text.pdf.PdfReader? pr = null;
@@ -273,6 +275,7 @@ namespace BookViewerApp.Books
 			var cancel = cancellation = new CancellationTokenSource();
 			cancellationTokenSource?.Token.Register(() => { try { if (!cancel.IsCancellationRequested) cancel.Cancel(); } catch { } });
 			Task? cracker = null;
+
 			try
 			{
 				//var raf = new iTextSharp.text.pdf.RandomAccessFileOrArray(streamClassic);
@@ -321,41 +324,32 @@ namespace BookViewerApp.Books
 						{
 							cracker = Task.Run(async () =>
 							{
-								Parallel.ForEach(defaultPasswords.Skip(1) ?? new string[0], new ParallelOptions()
+								Parallel.ForEach(defaultPasswords.Skip(1).SelectMany(a => GetCapitalCombinations(a).Distinct()) ?? new string[0], new ParallelOptions()
 								{
 									CancellationToken = cancel.Token,
-								}, (item2, state) =>
+								}, (candidate, state) =>
 								{
 									var priviousePriority = Thread.CurrentThread.Priority;
 									try
 									{
 										Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 										if (cancel.IsCancellationRequested) state.Break();
-
-										//Function version (Not good. No Distinct()):
-										//https://github.com/kurema/BookViewerApp3/blob/c8a3a7c30952bec75dec432b644ee774ef8dabbb/BookViewerApp/Books/BookPdf.cs
-										foreach (var item1 in
-										GetCapitalCombinations(item2)
-										//new[] { item2, item2.ToUpperInvariant(), item2.ToLowerInvariant(), item2.Length >= 2 ? $"{char.ToUpperInvariant(item2[0])}{item2.Substring(1).ToLowerInvariant()}" : item2 }
-										.Distinct())
+										if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(candidate))))
 										{
-											if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item1))))
+											try
 											{
-												try
+												using var streamClassic2 = stream.AsStream();
+												var pr2 = GetPdfReader(streamClassic2, candidate);
+												if (isReaderOk(pr2))
 												{
-													using var streamClassic2 = stream.AsStream();
-													var pr2 = GetPdfReader(streamClassic2, item1);
-													if (isReaderOk(pr2))
-													{
-														pr = pr2;
-														password = item1;
-														crackSuccess = true;
-														state.Break();
-													}
+													pr = pr2;
+													password = candidate;
+													crackSuccess = true;
+													state.Break();
 												}
-												catch
-												{
-												}
+											}
+											catch
+											{
 											}
 										}
 									}
@@ -447,13 +441,11 @@ namespace BookViewerApp.Books
 					{
 						var result = await passwordRequestedCallback(i);
 						passSave = result.remember;
-						//If you didn't check [ ] Remember password, cracked password is not saved.
-						if (crackSuccess && isPrOk()) goto PasswordSuccess;
+						if (crackSuccess && isPrOk()) { passSave = true; goto PasswordSuccess; }
 						try
 						{
 							streamClassic.Seek(0, SeekOrigin.Begin);
 							pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(result.password), false);
-							//pr = GetPdfReader(raf, password);
 							if (isPrOk()) { password = result.password; goto PasswordSuccess; }
 						}
 						catch (iTextSharp.text.pdf.BadPasswordExceptionTriable badPw)
@@ -461,7 +453,7 @@ namespace BookViewerApp.Books
 							//Try passwords with different cases.
 							if (badPw.CanTryPassword)
 							{
-								foreach(var item in GetCapitalCombinations(result.password).Distinct().Where(a => a != result.password))
+								foreach (var item in GetCapitalCombinations(result.password).Distinct().Where(a => a != result.password))
 								{
 									if (iTextSharp.text.pdf.BadPasswordExceptionTriable.IsSucess(badPw.TryPassword(Encoding.UTF8.GetBytes(item))))
 									{
@@ -469,6 +461,32 @@ namespace BookViewerApp.Books
 										pr = new iTextSharp.text.pdf.PdfReader(streamClassic, Encoding.UTF8.GetBytes(item), false);
 										if (isPrOk()) { password = item; goto PasswordSuccess; }
 									}
+								}
+							}
+						}
+						catch
+						{
+							//If there's a problem with PdfReader, we just try with PdfDocument.
+							//This code is unlikely to be executed because iTextSharp's support is better but just in case.
+							foreach (var pass in GetCapitalCombinations(result.password).Distinct().Where(a => a != result.password))
+							{
+								try
+								{
+									using var s2 = stream.CloneStream();
+									s2.Seek(0);
+									//We have to load id beforehand because stream is locked if pass is correct.
+									id ??= await LoadIdFromStream(s2);
+									s2.Seek(0);
+									Content = await pdf.PdfDocument.LoadFromStreamAsync(s2, pass);
+									contentLoaded = true;
+									password = pass;
+									//Continue without iText (pr).
+									pr = null;
+									goto PasswordSuccess;
+								}
+								catch
+								{
+									continue;
 								}
 							}
 						}
@@ -536,30 +554,6 @@ namespace BookViewerApp.Books
 				{
 				}
 
-				if (id is null)
-				{
-					try
-					{
-						//When PDF ID is unavailable, Hash(Hash([first 2048 bytes of the file])+"\nSize:"+file size) is used.
-						//Problems are
-						//・Some books may have the same first 2048 bytes.
-						//・You may edit PDF file with same file size.
-						//But it's much better than just fileName+pageCount.
-
-						uint length = 2048;
-						var buffer = new Windows.Storage.Streams.Buffer(length);
-						stream.Seek(0);
-						await stream.ReadAsync(buffer, length, Windows.Storage.Streams.InputStreamOptions.Partial);
-						id = Functions.GetHash(Functions.GetHash(buffer) + "\nSize:" + stream.Size);
-
-						stream.Seek(0);
-					}
-					catch
-					{
-						id = null;
-					}
-				}
-
 				var bm = iTextSharp.text.pdf.SimpleBookmark.GetBookmark(pr)?.ToArray();
 				var nd = pr.GetNamedDestination(false);
 
@@ -577,6 +571,32 @@ namespace BookViewerApp.Books
 				// Open even when iTextSharp fails.
 			}
 			catch { }
+
+			static async Task<string?> LoadIdFromStream(Windows.Storage.Streams.IRandomAccessStream stream)
+			{
+				try
+				{
+					//When PDF ID is unavailable, Hash(Hash([first 2048 bytes of the file])+"\nSize:"+file size) is used.
+					//Problems are
+					//・Some books may have the same first 2048 bytes.
+					//・You may edit PDF file with same file size.
+					//But it's much better than just fileName+pageCount.
+
+					uint length = 2048;
+					var buffer = new Windows.Storage.Streams.Buffer(length);
+					stream.Seek(0);
+					await stream.ReadAsync(buffer, length, Windows.Storage.Streams.InputStreamOptions.Partial);
+					stream.Seek(0);
+					return Functions.GetHash(Functions.GetHash(buffer) + "\nSize:" + stream.Size);
+				}
+				catch
+				{
+					return null;
+				}
+			}
+
+			id ??= await LoadIdFromStream(stream);
+
 			try
 			{
 				if (cancel.IsCancellationRequested) return;
@@ -605,7 +625,12 @@ namespace BookViewerApp.Books
 
 				}
 
-				if (password is null)
+				if (contentLoaded)
+				{
+					Password = password;
+					PasswordRemember = passSave;
+				}
+				else if (password is null)
 				{
 					//It's stupid but it seems we need owner password to LoadFromStreamAsync();
 					await OpenPdfCommon(async () => await pdf.PdfDocument.LoadFromStreamAsync(stream), "Book/Pdf/Error/Message/Normal");
