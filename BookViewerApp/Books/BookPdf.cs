@@ -324,7 +324,7 @@ namespace BookViewerApp.Books
 						{
 							cracker = Task.Run(async () =>
 							{
-								Parallel.ForEach(defaultPasswords.Skip(1).SelectMany(a => GetCapitalCombinations(a).Distinct()) ?? new string[0], new ParallelOptions()
+								Parallel.ForEach(defaultPasswords.SelectMany(a => GetCapitalCombinations(a).Distinct()).Where(a => a != defaultPasswords.First()) ?? new string[0], new ParallelOptions()
 								{
 									CancellationToken = cancel.Token,
 								}, (candidate, state) =>
