@@ -13,14 +13,19 @@ using Windows.UI.Xaml.Media.Imaging;
 using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Storages;
+using SharpCompress.Archives;
 
 #nullable enable
 namespace BookViewerApp.Books
 {
-	public class CbzBook : IBookFixed, ITocProvider, IDisposableBasic
+	public class CbzBook : IBookFixed, ITocProvider, IDisposableBasic, IExtraEntryProvider
 	{
 		public ZipArchive? Content { get; private set; }
 		public ZipArchiveEntry[] AvailableEntries = new ZipArchiveEntry[0];
+
+		public IEnumerable<string> EntriesGeneral { get; private set; } = Array.Empty<string>();
+		public Func<Task<IArchive?>>? ArchiveProvider { get; private set; } = null;
+
 
 		public uint PageCount
 		{
@@ -64,13 +69,15 @@ namespace BookViewerApp.Books
 
 		private Stream? DisposableStream;
 
-		public async Task LoadAsync(Stream stream)
+		public async Task LoadAsync(Func<Task<Stream>> streamProvider)
 		{
-			await Task.Run(() =>
+			await Task.Run(async () =>
 			{
 				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 				try
 				{
+					var stream = await (streamProvider?.Invoke() ?? Task.FromResult<Stream>(null!));
+					if (stream is null) return;
 					//現状日本語の場合はZIPファイルをCP932で読むという雑なハックをしているが、たまにUTF-8の場合もある。
 					//事前に調べる方法はなさそうだし、パフォーマンスに影響が出る処理を入れたくはない。
 					//なのでこのまま。ほとんどの日本語ファイルはCP932なので妥協。
@@ -87,6 +94,17 @@ namespace BookViewerApp.Books
 			);
 
 			if (Content is null) { return; }
+
+			{
+				ArchiveProvider = async () =>
+				{
+					var stream = await (streamProvider?.Invoke() ?? Task.FromResult<Stream>(null!));
+					if (stream is null) return null;
+					return ArchiveFactory.Open(stream);
+				};
+				EntriesGeneral = Content.Entries.Select(a => a.FullName)?.ToArray() ?? Array.Empty<string>();
+			}
+
 
 			var entries = new List<ZipArchiveEntry>();
 			string[] supportedFile = ImageManager.AvailableExtensionsRead;

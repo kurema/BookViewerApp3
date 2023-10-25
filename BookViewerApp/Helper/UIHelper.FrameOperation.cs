@@ -111,6 +111,49 @@ public static partial class UIHelper
 			//HistoryManager.AddEntry(file);
 		}
 
+		public static async Task OpenSharpCompress(Frame frame, SharpCompress.Archives.IArchive archive, FrameworkElement sender, string homePath, TabPage tabPage = null)
+		{
+			if (archive is null) return;
+			if (sender is null) return;
+			SetTitle(sender, "");
+			tabPage ??= GetCurrentTabPage(sender);
+
+			frame.Navigate(typeof(kurema.BrowserControl.Views.BrowserControl2), null);
+
+			var resolver = new GeneralResolverSharpCompress(archive);
+
+			if (frame.Content is not kurema.BrowserControl.Views.BrowserControl2 content) return;
+			if (content.DataContext is not kurema.BrowserControl.ViewModels.BrowserControl2ViewModel vm) return;
+			if (tabPage is null) return;
+
+			{
+				content.WebView2.CoreWebView2Initialized += (s, e) =>
+				{
+					OpenBrowser2_UpdateCoreStuffs(content.WebView2.CoreWebView2, async (a) =>
+					{
+						await tabPage.OpenTabWebPreferedBrowser(a);
+					}, t => SetTitle(sender, t));
+				};
+
+				OpenBrowser_BookmarkSetViewModel(vm, () => GetCurrentTabPage(sender));
+				var uri = resolver.GetUri($"https://{resolver.Host}/{homePath}");
+				await content.WebView2.EnsureCoreWebView2Async();
+				//https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2.addwebresourcerequestedfilter?view=webview2-dotnet-1.0.1293.44
+				content.WebView2.CoreWebView2.AddWebResourceRequestedFilter($"*://{resolver.Host}/*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+				content.WebView2.CoreWebView2.WebResourceRequested += resolver.WebResourceRequested;
+				vm.SourceString = uri;
+				vm.HomePage = uri;
+				vm.ControllerCollapsed = true;
+			}
+
+			{
+				//This tab will not be restored.
+				//var tagInfo = TabViewItemTagInfo.SetOrGetTag(GetCurrentTabViewItem(sender));
+				//if (tagInfo is not null) tagInfo.SessionInfo = new Storages.WindowStates.WindowStateWindowViewerTab() { Token = token, ViewerKey = "Browser", Path = file.Path };
+			}
+			//HistoryManager.AddEntry(file);
+		}
+
 		private static bool OpenEpub_CurrentDarkMode() => (bool)SettingStorage.GetValue("EpubViewerDarkMode") && Managers.ThemeManager.IsDarkTheme;
 
 		public static async Task OpenEpub2(Frame frame, Windows.Storage.IStorageFile file, FrameworkElement sender, TabPage tabPage = null, SettingStorage.SettingEnums.EpubViewerType? epubType = null)

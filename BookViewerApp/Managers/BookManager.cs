@@ -132,12 +132,12 @@ public static class BookManager
 		return book;
 	}
 
-	public static async Task<IBook> GetBookZip(Stream stream)
+	public static async Task<IBook> GetBookZip(Func<Task<Stream>> streamProvider)
 	{
 		var book = new CbzBook();
 		try
 		{
-			await book.LoadAsync(stream);
+			await book.LoadAsync(streamProvider);
 		}
 		catch
 		{
@@ -147,12 +147,12 @@ public static class BookManager
 		return book;
 	}
 
-	public static async Task<IBook> GetBookSharpCompress(Stream stream)
+	public static async Task<IBook> GetBookSharpCompress(Func<Task<Stream>> streamProvider)
 	{
 		var book = new CompressedBook();
 		try
 		{
-			await book.LoadAsync(stream);
+			await book.LoadAsync(streamProvider);
 		}
 		catch
 		{
@@ -177,9 +177,9 @@ public static class BookManager
 	Pdf:;
 		return await GetBookPdf(await file.OpenReadAsync(), file.Path, file.Name, xamlRoot, skipPasswordEntryPdf, cancellationTokenSource);
 	Zip:;
-		return await GetBookZip((await file.OpenReadAsync()).AsStream());
+		return await GetBookZip(async () => (await file.OpenReadAsync()).AsStream());
 	SharpCompress:;
-		return await GetBookSharpCompress((await file.OpenReadAsync()).AsStream());
+		return await GetBookSharpCompress(async () => (await file.OpenReadAsync()).AsStream());
 	Epub:;
 		{
 			return new BookEpub(file);

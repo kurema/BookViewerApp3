@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpCompress.Archives;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -177,7 +178,7 @@ public class VirtualPage : IPageFixed, Helper.IDisposableBasic
 	}
 }
 
-public class ReversedBook : IBookFixed
+public class ReversedBook : IBookFixed, IExtraEntryProvider
 {
 	public IBookFixed Origin { get; private set; }
 
@@ -190,6 +191,10 @@ public class ReversedBook : IBookFixed
 	public string? ID => Origin.ID;
 
 	public uint PageCount => Origin.PageCount;
+
+	public IEnumerable<string> EntriesGeneral => (Origin as IExtraEntryProvider)?.EntriesGeneral ?? Enumerable.Empty<string>();
+
+	public Func<Task<IArchive?>>? ArchiveProvider => (Origin as IExtraEntryProvider)?.ArchiveProvider;
 
 	public event EventHandler? Loaded;
 	private void OnLoaded(EventArgs e)
@@ -229,7 +234,12 @@ public interface IPasswordPdovider
 public interface IDirectionProvider
 {
 	Direction Direction { get; }
+}
 
+public interface IExtraEntryProvider
+{
+	IEnumerable<string> EntriesGeneral { get; }
+	Func<Task<IArchive?>>? ArchiveProvider { get; }
 }
 
 public enum Direction

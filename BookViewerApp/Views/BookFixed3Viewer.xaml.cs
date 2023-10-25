@@ -553,6 +553,12 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 				menu.Visibility = string.IsNullOrEmpty(Binding?.Password) ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}
+		{
+			if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "OpenEntry") is MenuFlyoutItem menu)
+			{
+				menu.Visibility = Binding.Content is Books.IExtraEntryProvider ? Visibility.Visible : Visibility.Collapsed;
+			}
+		}
 
 		menuFlyout.ShowAt(this, option);
 		args.Handled = true;

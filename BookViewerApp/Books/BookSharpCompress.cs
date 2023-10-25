@@ -12,11 +12,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using BookViewerApp.Helper;
 using BookViewerApp.Managers;
 using BookViewerApp.Storages;
+using SharpCompress.Archives;
 
 #nullable enable
 namespace BookViewerApp.Books
 {
-	public class CompressedBook : IBookFixed, ITocProvider, IDisposableBasic
+	public class CompressedBook : IBookFixed, ITocProvider, IDisposableBasic, IExtraEntryProvider
 	{
 		public string ID
 		{
@@ -47,19 +48,34 @@ namespace BookViewerApp.Books
 
 		public TocItem[] Toc { get; private set; } = new TocItem[0];
 
+		public IEnumerable<string> EntriesGeneral { get; private set; } = Array.Empty<string>();
+		public Func<Task<IArchive?>>? ArchiveProvider { get; private set; } = null;
+
 		//private SharpCompress.Archive.IArchiveEntry Target;
 		private SharpCompress.Archives.IArchiveEntry[] Entries = new SharpCompress.Archives.IArchiveEntry[0];
 
 		private SharpCompress.Archives.IArchive? DisposableContent;//To Dispose
 		private Stream? DisposableStream;
 
-		public async Task LoadAsync(Stream sr)
+		public async Task LoadAsync(Stream stream)
+		{
+			await LoadAsync(() => Task.FromResult(stream));
+		}
+
+		public async Task LoadAsync(Func<Task<Stream>> streamProvider)
 		{
 			SharpCompress.Archives.IArchive archive;
-			await Task.Run(() =>
+			await Task.Run(async () =>
 			{
 				try
 				{
+					Stream sr;
+					{
+						var temp = streamProvider?.Invoke();
+						if (temp is null) return;
+						sr = await temp;
+					}
+
 					try
 					{
 						DisposableContent = archive = SharpCompress.Archives.ArchiveFactory.Open(sr);
@@ -68,6 +84,15 @@ namespace BookViewerApp.Books
 					{
 						// No exception even if it's encrypted.
 						throw;
+					}
+					{
+						ArchiveProvider = async () =>
+						{
+							var stream = await (streamProvider?.Invoke() ?? Task.FromResult<Stream>(null!));
+							if (stream is null) return null;
+							return ArchiveFactory.Open(stream);
+						};
+						EntriesGeneral = archive.Entries.Select(a => a.Key)?.ToArray() ?? Array.Empty<string>();
 					}
 					DisposableStream = sr;
 					var entries = new List<SharpCompress.Archives.IArchiveEntry>();
@@ -79,7 +104,6 @@ namespace BookViewerApp.Books
 							{
 								entries.Add(entry);
 							}
-
 						}
 					}
 
