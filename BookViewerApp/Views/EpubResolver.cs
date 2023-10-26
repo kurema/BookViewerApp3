@@ -12,6 +12,7 @@ using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 using SharpCompress.Archives;
+using System.Text.RegularExpressions;
 
 namespace BookViewerApp.Views;
 
@@ -43,6 +44,12 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 	public string PathHome { get; protected set; }
 
 	protected abstract Task<IInputStream> GetContent(Uri uri);
+	protected abstract Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri);
+
+	public class GetContentInfo
+	{
+		public string MimetypeOverride = null;
+	}
 
 	public static async Task<EpubResolverZip> GetResolverBibiZip(IStorageFile file)
 		=> new EpubResolverZip(new ZipArchive((await file.OpenReadAsync()).AsStream()), "/bibi-bookshelf/book/", "^/bibi/", "ms-appx:///res/bibi/bibi/", "/bibi/index.html?book=book");
@@ -121,15 +128,41 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 		}
 	}
 
+	protected static int ComparePath(string a, string b)
+	{
+		var a1 = a.AsSpan();
+		var b1 = b.AsSpan();
+		while (a1.Length > 0 && a1[0] is '\\' or '/') a1 = a1.Slice(1);
+		while (b1.Length > 0 && b1[0] is '\\' or '/') b1 = b1.Slice(1);
+		int result = 2;
+		while (true)
+		{
+			if (a1.Length == 0 && b1.Length == 0) return result;
+			var ai = a1.IndexOfAny('\\', '/');
+			var bi = b1.IndexOfAny('\\', '/');
+			var ac = ai >= 0 ? a1.Slice(0, ai) : a1;
+			var bc = bi >= 0 ? b1.Slice(0, bi) : b1;
+			if (ac.CompareTo(bc, StringComparison.InvariantCulture) == 0) { }
+			else if (ac.CompareTo(bc, StringComparison.InvariantCultureIgnoreCase) == 0)
+			{
+				result = 1;
+			}
+			else return 0;
+			if (ai < 0 && bi < 0) return result;
+			a1 = ai >= 0 ? a1.Slice(ai + 1) : a1;
+			b1 = bi >= 0 ? b1.Slice(bi + 1) : b1;
+		}
+	}
+
 	public static async Task<InMemoryRandomAccessStream> ReadSharpCompressFile(SharpCompress.Archives.IArchive archive, string pathFile, System.Threading.SemaphoreSlim semaphore)
 	{
 		if (archive is null) throw new ArgumentNullException(nameof(archive));
 		if (semaphore is null) throw new ArgumentNullException(nameof(semaphore));
 		string pathFileLower = pathFile.ToLowerInvariant();
-		var entry = archive.Entries.FirstOrDefault(a => a.Key == pathFile) ?? archive.Entries.FirstOrDefault(a => a.Key.Equals(pathFile, StringComparison.OrdinalIgnoreCase));
+		var entry = archive.Entries.Select(a => (a, ComparePath(a.Key, pathFile))).Where(a => a.Item2 != 0).OrderByDescending(a => a.Item2).Select(a => a.a).FirstOrDefault();
 		if (entry is null)
 		{
-			throw new Exception(InvalidPathMessage);
+			return null;
 		}
 		await semaphore.WaitAsync();
 		try
@@ -186,14 +219,16 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 		if (!Uri.TryCreate(args.Request.Uri, UriKind.Absolute, out Uri uri) || !uri.Host.Equals(Host, StringComparison.InvariantCultureIgnoreCase)) return;
 		var deferral = args.GetDeferral();
 		IInputStream content;
+		GetContentInfo info = null;
 		try
 		{
-			content = await GetContent(uri);
+			(content, info) = await GetContentWithInfo(uri);
 		}
 		catch
 		{
 			content = null;
 		}
+		info ??= new();
 
 		if (content is null)
 		{
@@ -213,7 +248,7 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 			try
 			{
 				var ext = Path.GetExtension(uri.LocalPath);
-				var mimetype = MimeTypes.MimeTypeMap.GetMimeType(ext);
+				var mimetype = info.MimetypeOverride ?? MimeTypes.MimeTypeMap.GetMimeType(ext);
 				var header = new StringBuilder();
 				if (!string.IsNullOrEmpty(mimetype) && !string.IsNullOrEmpty(ext)) header.Append($"Content-Type: {mimetype}");
 				args.Response = sender.Environment.CreateWebResourceResponse(random, 200, "OK", header.ToString());
@@ -267,6 +302,11 @@ public class EpubResolverZip : EpubResolverBase
 		}
 		);
 	}
+
+	protected override async Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri)
+	{
+		return (await GetContent(uri), new GetContentInfo());
+	}
 }
 
 public class EpubResolverZipDouble : EpubResolverBase
@@ -299,6 +339,11 @@ public class EpubResolverZipDouble : EpubResolverBase
 		}
 		);
 	}
+
+	protected override async Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri)
+	{
+		return (await GetContent(uri), new GetContentInfo());
+	}
 }
 
 public class EpubResolverStorageAndZip : EpubResolverBase
@@ -328,6 +373,11 @@ public class EpubResolverStorageAndZip : EpubResolverBase
 			return await File.OpenReadAsync();
 		}
 		);
+	}
+
+	protected override async Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri)
+	{
+		return (await GetContent(uri), new GetContentInfo());
 	}
 }
 
@@ -370,6 +420,11 @@ public class EpubResolverFile : EpubResolverBase
 		}
 		catch (Exception) { throw; }
 	}
+
+	protected override async Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri)
+	{
+		return (await GetContent(uri), new GetContentInfo());
+	}
 }
 
 public class GeneralResolverSharpCompress : EpubResolverBase
@@ -386,24 +441,92 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 	SharpCompress.Archives.IArchive Archive { get; set; }
 
-	protected override async Task<IInputStream> GetContent(Uri uri)
+	private async Task<InMemoryRandomAccessStream> StringToStream(string input)
+	{
+		var text = Encoding.UTF8.GetBytes(input);
+		var ms = new InMemoryRandomAccessStream() { Size = (ulong)text.Length };
+		await ms.WriteAsync(text.AsBuffer());
+		return ms;
+	}
+
+
+	protected override async Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri)
 	{
 		if (uri is null) throw new Exception(InvalidPathMessage);
 
 		var fn = Path.GetFileName(uri.LocalPath);
 		if (string.IsNullOrEmpty(fn))
 		{
-			var text = Encoding.UTF8.GetBytes(GetIndexHtml(uri.LocalPath));
-			var ms = new InMemoryRandomAccessStream() { Size = (ulong)text.Length };
-			await ms.WriteAsync(text.AsBuffer());
-			return ms;
+			return (await StringToStream(GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 		}
-		return await ReadSharpCompressFile(Archive, uri.LocalPath, SemaphoreReader);
+		if (Path.GetExtension(uri.LocalPath).Equals(".url", StringComparison.InvariantCultureIgnoreCase))
+		{
+			var arc = Archive.Entries.FirstOrDefault(a => ComparePath(a.Key, uri.LocalPath) != 0);
+			if (arc is null) throw new Exception(InvalidPathMessage);
+			await SemaphoreReader.WaitAsync();
+			try
+			{
+				using var s = arc.OpenEntryStream();
+				using var sr1 = new StreamReader(s);
+				var text = await sr1.ReadToEndAsync();
+				using var sr = new StringReader(text);
+				var reg = new Regex(@"^URL\s*\=\s*(.+)$");
+				bool isIs = false;
+
+				while (true)
+				{
+					var t = await sr.ReadLineAsync();
+					if (t == "[InternetShortcut]") isIs = true;
+					if (t is null) break;
+					if (!isIs) continue;
+					var match = reg.Match(t);
+					if (match.Success)
+					{
+						return (await StringToStream(
+			$"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Redirect</title>
+              <!--<meta http-equiv="refresh" content="5;URL={match.Groups[1].Value}">-->
+            </head>
+            <body>
+            {match.Groups[1].Value}
+            <h1>Content</h1>
+            {text}
+            </body>
+            </html>
+            """), new GetContentInfo() { MimetypeOverride = "text/html" });
+					}
+				}
+			}
+			finally
+			{
+				SemaphoreReader.Release();
+			}
+		}
+		return (await ReadSharpCompressFile(Archive, uri.LocalPath, SemaphoreReader) ?? throw new Exception(InvalidPathMessage), new());
+	}
+
+
+	protected override async Task<IInputStream> GetContent(Uri uri)
+	{
+		return (await GetContentWithInfo(uri)).Stream;
 	}
 
 	protected string GetIndexHtml(string folder)
 	{
-		var body = $"<ul>\n{string.Join('\n', Archive.Entries.Where(a => Path.GetDirectoryName(a.Key).Equals(folder, StringComparison.InvariantCultureIgnoreCase)).Select(a => $"<li><a href=\"{a}\">{a}</a></li>\n"))}</ul>";
+		var items = Archive.Entries.Select(a =>
+		{
+			var p = Path.GetRelativePath(folder, $"{Path.DirectorySeparatorChar}{a.Key}");
+			if (p.Contains("..")) return (0, string.Empty, a.Key);
+			if (p == ".") return (0, string.Empty, a.Key);
+			if (!(p.Contains(Path.DirectorySeparatorChar) || p.Contains(Path.AltDirectorySeparatorChar))) return (2, p, a.Key);
+			var s = p.Substring(0, p.IndexOfAny(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) + 1);
+			return (1, s, s);
+		}).Where(a => a.Item1 != 0).Distinct().OrderBy(a => a.Item1);
+		var body1 = $"<ul>\n{string.Join('\n', items.Select(a => $"<li><a href=\"/{a.Item3}\">{a.Item2}</a></li>\n"))}</ul>";
+
 		return $"""
             <!DOCTYPE html>
             <html>
@@ -411,7 +534,8 @@ public class GeneralResolverSharpCompress : EpubResolverBase
               <title>{folder}</title>
             </head>
             <body>
-            {body}
+            <h1>Items</h1>
+            {body1}
             </body>
             </html>
             """;

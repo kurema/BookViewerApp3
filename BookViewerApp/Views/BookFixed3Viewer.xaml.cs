@@ -554,9 +554,29 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 			}
 		}
 		{
-			if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "OpenEntry") is MenuFlyoutItem menu)
+			if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "OpenEntry") is MenuFlyoutSubItem menu)
 			{
-				menu.Visibility = Binding.Content is Books.IExtraEntryProvider ? Visibility.Visible : Visibility.Collapsed;
+				if (Binding.Content is Books.IExtraEntryProvider entry && entry.ArchiveProvider is not null)
+				{
+					menu.Items.Clear();
+					var tab = UIHelper.GetCurrentTabPage(this);
+					{
+						var item = new MenuFlyoutItem() { Text = "open" };
+						item.Click += async (_, _) => {
+							var task = entry.ArchiveProvider?.Invoke();
+							if (task is null) return;
+							var archive = await task;
+							if (archive is null) return;
+							await tab.OpenTabSharpCompress(archive, "");
+						};
+						menu.Items.Add(item);
+					}
+					menu.Visibility = Visibility.Visible;
+				}
+				else
+				{
+					menu.Visibility = Visibility.Collapsed;
+				}
 			}
 		}
 

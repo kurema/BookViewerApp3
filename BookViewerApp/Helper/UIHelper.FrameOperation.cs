@@ -136,7 +136,7 @@ public static partial class UIHelper
 				};
 
 				OpenBrowser_BookmarkSetViewModel(vm, () => GetCurrentTabPage(sender));
-				var uri = resolver.GetUri($"https://{resolver.Host}/{homePath}");
+				var uri = resolver.GetUri($"/{homePath}");
 				await content.WebView2.EnsureCoreWebView2Async();
 				//https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2.addwebresourcerequestedfilter?view=webview2-dotnet-1.0.1293.44
 				content.WebView2.CoreWebView2.AddWebResourceRequestedFilter($"*://{resolver.Host}/*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);

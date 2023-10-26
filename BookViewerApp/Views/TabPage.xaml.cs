@@ -162,6 +162,13 @@ public sealed partial class TabPage : Page
 		await UIHelper.FrameOperation.OpenPdfJs(frame, file, newTab, this, token);
 	}
 
+	public async Task OpenTabSharpCompress(SharpCompress.Archives.IArchive archive,string path)
+	{
+		if (archive is null) return;
+		var (frame, newTab) = OpenTab("Browser");
+		await UIHelper.FrameOperation.OpenSharpCompress(frame, archive, frame, path, this);
+	}
+
 	public async Task OpenTabBrowser(Windows.Storage.IStorageFile file, string token = null)
 	{
 		if (file is null) return;
