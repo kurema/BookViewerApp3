@@ -455,11 +455,13 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		if (uri is null) throw new Exception(InvalidPathMessage);
 
 		var fn = Path.GetFileName(uri.LocalPath);
-		if (string.IsNullOrEmpty(fn))
+		var q = uri.Query;
+		if (string.IsNullOrEmpty(fn) || q.Equals("?explorer", StringComparison.InvariantCultureIgnoreCase))
 		{
 			return (await StringToStream(GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 		}
-		if (Path.GetExtension(uri.LocalPath).Equals(".url", StringComparison.InvariantCultureIgnoreCase))
+		if (Path.GetExtension(uri.LocalPath).Equals(".url", StringComparison.InvariantCultureIgnoreCase) ||
+			q.Equals("?url", StringComparison.InvariantCultureIgnoreCase))
 		{
 			var arc = Archive.Entries.FirstOrDefault(a => ComparePath(a.Key, uri.LocalPath) != 0);
 			if (arc is null) throw new Exception(InvalidPathMessage);
