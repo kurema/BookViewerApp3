@@ -13,6 +13,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 using SharpCompress.Archives;
 using System.Text.RegularExpressions;
+using Windows.ApplicationModel.Email;
 
 namespace BookViewerApp.Views;
 
@@ -432,9 +433,12 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	//We only use SharpCompress because it's easy.
 	private System.Threading.SemaphoreSlim SemaphoreReader = new(1, 1);
 
+	public string Session { get; }
+
 	public GeneralResolverSharpCompress(IArchive archive)
 	{
 		Archive = archive ?? throw new ArgumentNullException(nameof(archive));
+		Session = Guid.NewGuid().ToString();
 	}
 
 	public override string Host { get; set; } = "cresolver.example";
@@ -449,65 +453,85 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		return ms;
 	}
 
-
 	protected override async Task<(IInputStream Stream, GetContentInfo Info)> GetContentWithInfo(Uri uri)
 	{
 		if (uri is null) throw new Exception(InvalidPathMessage);
 
 		var fn = Path.GetFileName(uri.LocalPath);
-		var q = uri.Query;
-		if (string.IsNullOrEmpty(fn) || q.Equals("?explorer", StringComparison.InvariantCultureIgnoreCase))
-		{
-			return (await StringToStream(GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
-		}
-		if (Path.GetExtension(uri.LocalPath).Equals(".url", StringComparison.InvariantCultureIgnoreCase) ||
-			q.Equals("?url", StringComparison.InvariantCultureIgnoreCase))
-		{
-			var arc = Archive.Entries.FirstOrDefault(a => ComparePath(a.Key, uri.LocalPath) != 0);
-			if (arc is null) throw new Exception(InvalidPathMessage);
-			await SemaphoreReader.WaitAsync();
-			try
-			{
-				using var s = arc.OpenEntryStream();
-				using var sr1 = new StreamReader(s);
-				var text = await sr1.ReadToEndAsync();
-				using var sr = new StringReader(text);
-				var reg = new Regex(@"^URL\s*\=\s*(.+)$");
-				bool isIs = false;
+		var q = System.Web.HttpUtility.ParseQueryString(uri.Query);
+		var ui = q.Get("ui");
 
-				while (true)
+		//if (q.Get("session") != this.Session) goto native;
+		switch (ui?.ToUpperInvariant())
+		{
+			case "INDEX": goto index;
+			case "URL": goto url;
+			case "NATIVE": goto native;
+		}
+
+		if (string.IsNullOrEmpty(fn))
+		{
+			goto index;
+		}
+		//if (Path.GetExtension(uri.LocalPath).Equals(".url", StringComparison.InvariantCultureIgnoreCase))
+		//{
+		//	goto url;
+		//}
+		goto native;
+
+	url:;
+		var arc = Archive.Entries.FirstOrDefault(a => ComparePath(a.Key, uri.LocalPath) != 0);
+		if (arc is null) throw new Exception(InvalidPathMessage);
+		await SemaphoreReader.WaitAsync();
+		string text;
+		try
+		{
+			using var s = arc.OpenEntryStream();
+			using var sr1 = new StreamReader(s);
+			text = await sr1.ReadToEndAsync();
+		}
+		finally
+		{
+			SemaphoreReader.Release();
+		}
+		{
+			using var sr = new StringReader(text);
+			var reg = new Regex(@"^URL\s*\=\s*(.+)$");
+			bool isIs = false;
+
+			while (true)
+			{
+				var t = await sr.ReadLineAsync();
+				if (t == "[InternetShortcut]") isIs = true;
+				if (t is null) break;
+				if (!isIs) continue;
+				var match = reg.Match(t);
+				if (match.Success)
 				{
-					var t = await sr.ReadLineAsync();
-					if (t == "[InternetShortcut]") isIs = true;
-					if (t is null) break;
-					if (!isIs) continue;
-					var match = reg.Match(t);
-					if (match.Success)
-					{
-						return (await StringToStream(
-			$"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <title>Redirect</title>
-              <!--<meta http-equiv="refresh" content="5;URL={match.Groups[1].Value}">-->
-            </head>
-            <body>
-            {match.Groups[1].Value}
-            <h1>Content</h1>
-            {text}
-            </body>
-            </html>
-            """), new GetContentInfo() { MimetypeOverride = "text/html" });
-					}
+					return (await StringToStream(
+		$"""
+					<!DOCTYPE html>
+					<html>
+					<head>
+						<title>Redirect</title>
+						<!--<meta http-equiv="refresh" content="5;URL={match.Groups[1].Value}">-->
+					</head>
+					<body>
+					<a href="{match.Groups[1].Value}">{match.Groups[1].Value}</a>
+					<a href="?ui=native">Download</a>
+					<h1>Content</h1>
+					{text}
+					</body>
+					</html>
+					"""), new GetContentInfo() { MimetypeOverride = "text/html" });
 				}
 			}
-			finally
-			{
-				SemaphoreReader.Release();
-			}
 		}
+	native:;
 		return (await ReadSharpCompressFile(Archive, uri.LocalPath, SemaphoreReader) ?? throw new Exception(InvalidPathMessage), new());
+	index:;
+		return (await StringToStream(GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
+
 	}
 
 
