@@ -1,12 +1,70 @@
 ﻿@page "/Cushion"
 
-<h1>{filename}</h1>
+<div id="alert_link">
+	<p class="message">
+	</p>
+	<button onclick="document.getElementById('alert_link').style.display='none';">
+		<span class="icon">&#xF78A;</span>
+	</button>
+</div>
 
-<h2>{URL}</h2>
+<h1 id="filename">{filename}</h1>
 
-<span class="icon">&#xe8b7;</span>
+<h2 id="link">{URL}</h2>
 
 <div id="content">{content}</div>
+
+<div id="resource" style="display:none;">
+	[
+	{
+	"language": "en",
+	"texts": [
+	{
+	"key": "warning.title",
+	"text": "Think before you click"
+	},
+	{
+	"key": "warning.text",
+	"text": ".url file like this may contain malicious link. Please be careful and do not panic when you see the message like \"Your computer is infected\", it's not. Just close the tab or the window in that case. And never enter your password, credit card number or any other personal informations."
+	}
+	]
+	}
+	]
+</div>
+
+<div id="info" style="display:none;">
+	{
+	"url": "https://www.google.com/",
+	"filename": "item.url",
+	"content" : "content"
+	}
+</div>
+
+<script>
+	const resource = JSON.parse(document.getElementById("resource").innerHTML);
+	let res_en = resource.find((e) => e.language === "en");
+	let res_crt = resource.find((e) => e.language === window.navigator.language) ?? res_en;
+
+	function GetLocalizedText(key) {
+		return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
+	}
+
+	document.querySelector("#alert_link > .message").textContent = GetLocalizedText("warning.text");
+
+	const info = JSON.parse(document.getElementById("info").innerHTML);
+	{
+		document.getElementById("filename").textContent = info.filename;
+		const elem_link = document.getElementById("link");
+		const elem_link_a = document.createElement("a");
+		elem_link_a.href = info.url;
+		elem_link_a.textContent = info.url;
+		elem_link.replaceChildren();
+		elem_link.appendChild(elem_link_a);
+
+		document.getElementById("content").textContent = info.content;
+	}
+
+</script>
 
 <style>
 	h1, h2 {
@@ -27,4 +85,20 @@
 	.icon {
 		font-family: 'Segoe MDL2 Assets';
 	}
+
+	#alert_link {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		margin: 10px;
+		padding: 10px;
+		background-color: #feff99;
+		box-shadow: rgba(128,128,128, 0.2) 0px 2px 5px 0px;
+	}
+
+		#alert_link button {
+			background: transparent;
+			border: none;
+			align-self: center;
+			padding: 7.5px;
+		}
 </style>

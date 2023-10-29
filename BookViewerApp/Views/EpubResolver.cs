@@ -473,10 +473,6 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		{
 			goto index;
 		}
-		//if (Path.GetExtension(uri.LocalPath).Equals(".url", StringComparison.InvariantCultureIgnoreCase))
-		//{
-		//	goto url;
-		//}
 		goto native;
 
 	url:;
