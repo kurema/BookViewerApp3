@@ -163,6 +163,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="res\archive_viewer\cushion.html" />
     <Content Include="res\archive_viewer\index.html" />
     <Content Include="res\bibi\bibi\and\jo.js" />
     <Content Include="res\bibi\bibi\extensions\analytics.js" />
@@ -240,6 +241,7 @@
     <None Include="Storages\WindowStates.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Views\BrowserTools\CushionInfo.json" />
     <PRIResource Include="Resource\pt\Resources.resw" />
     <Content Include="res\pdfjs\pdfjs.zip" />
     <None Include="Storages\ExtensionAdBlockerItems.xsd">
@@ -377,6 +379,7 @@
     <Compile Include="Views\BrowserAddOn\UserAgentOverride.xaml.cs">
       <DependentUpon>UserAgentOverride.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BrowserTools\CushionInfo.json.cs" />
     <Compile Include="Views\EpubResolver.cs" />
     <Compile Include="Views\ExplorerMenuControl.xaml.cs">
       <DependentUpon>ExplorerMenuControl.xaml</DependentUpon>
@@ -674,6 +677,11 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kurema/BookViewerApp3/tree/master/BookViewerApp/Views/BrowserTools/CushionInfo",
+  "type": "object",
+  "title": "Info of the cushion page",
+  "properties": {
+    "url": {
+      "type": "string"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    }
+  }
+}

@@ -1,18 +1,34 @@
 ﻿@page "/Cushion"
 
+<div id="cushion_top">
+
+	<h1 class="filename">{filename}</h1>
+
+	<h2 id="link_header"><!--<span class="icon_circle"><span class="icon">&#xEB41;</span></span>--><span id="link">{URL}</span></h2>
+</div>
+
 <div id="alert_link">
 	<p class="message">
 	</p>
 	<button onclick="document.getElementById('alert_link').style.display='none';">
-		<span class="icon">&#xF78A;</span>
+		<span class="icon">&#xE894;</span>
 	</button>
 </div>
 
-<h1 id="filename">{filename}</h1>
-
-<h2 id="link">{URL}</h2>
-
-<div id="content">{content}</div>
+<div class="content_block">
+	<div class="content_header">
+		<span class="filename">{filename}</span>
+		<button class="copy_icon" onclick="CopyContent();">
+			<span class="icon">&#xE8C8;</span>
+		</button>
+		<a class="download_icon" href="?ui=native">
+			<span class="icon">&#xE896;</span>
+		</a>
+	</div>
+	<div class="content_body">
+		<div id="content">{content}</div>
+	</div>
+</div>
 
 <div id="resource" style="display:none;">
 	[
@@ -41,9 +57,9 @@
 </div>
 
 <script>
-	const resource = JSON.parse(document.getElementById("resource").innerHTML);
-	let res_en = resource.find((e) => e.language === "en");
-	let res_crt = resource.find((e) => e.language === window.navigator.language) ?? res_en;
+	const resource = JSON.parse(document.getElementById("resource").innerText);
+	const res_en = resource.find((e) => e.language === "en");
+	const res_crt = resource.find((e) => e.language === window.navigator.language) ?? res_en;
 
 	function GetLocalizedText(key) {
 		return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
@@ -51,9 +67,10 @@
 
 	document.querySelector("#alert_link > .message").textContent = GetLocalizedText("warning.text");
 
-	const info = JSON.parse(document.getElementById("info").innerHTML);
+	const info = JSON.parse(document.getElementById("info").innerText);
 	{
-		document.getElementById("filename").textContent = info.filename;
+		Array.from(document.getElementsByClassName("filename")).forEach((elem) => elem.textContent = info.filename);
+
 		const elem_link = document.getElementById("link");
 		const elem_link_a = document.createElement("a");
 		elem_link_a.href = info.url;
@@ -61,38 +78,93 @@
 		elem_link.replaceChildren();
 		elem_link.appendChild(elem_link_a);
 
+		document.querySelector("a.download_icon").download = info.filename;
+
 		document.getElementById("content").textContent = info.content;
 	}
 
+	function CopyContent() {
+		navigator.clipboard?.writeText(info.content);
+	}
+
+											// function DownloadContent() {
+											// 	const xhr = new XMLHttpRequest();
+											// 	xhr.open("GET", "?ui=native", true);
+											// 	xhr.responseType = "blob";
+											// 	xhr.onload = function (e) {
+											// 		const blob = xhr.response;
+											// 		const url = window.URL.createObjectURL(blob);
+											// 		const link = document.createElement("a");
+											// 		link.href = url;
+											// 		link.download = info.filename;
+											// 		console.log(link.download);
+
+											// 		link.click();
+											// 		URL.revokeObjectURL(link.href);
+											// 	};
+											// 	xhr.send();
+											// }
 </script>
 
 <style>
-	h1, h2 {
-		text-align: center;
+	html, body {
+		margin: auto;
 	}
 
-	h2 {
-		border: solid 1px #8888;
-		border-radius: 4px;
-		padding: 10px;
+	@@media (prefers-color-scheme: dark) {
+		body {
+			background-color: black;
+			color: white;
+		}
 	}
 
-	div#content {
-		border: solid 1px #8888;
-		white-space: pre;
+	#cushion_top {
+		/* --cushion-header-color: #61b9ae; */
+		--cushion-header-color: #61defc;
+		background: var(--cushion-header-color);
+		display: flex;
+		flex-direction: column;
 	}
 
-	.icon {
-		font-family: 'Segoe MDL2 Assets';
-	}
+		#cushion_top > h1.filename, #cushion_top > h2#link_header {
+			text-align: center;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		#cushion_top > h1.filename {
+			font-weight: bold;
+			color: white;
+		}
+
+		#cushion_top > h2#link_header {
+			/* border: solid 1px #8888; */
+			border-radius: 12px;
+			padding: 10px;
+			align-self: center;
+			background: white;
+			color: var(--cushion-header-color);
+		}
+
+			#cushion_top > h2#link_header > span.icon_circle {
+				background: var(--cushion-header-color);
+				color: white;
+			}
+
+			#cushion_top > h2#link_header a {
+				all: unset;
+				cursor: pointer;
+			}
 
 	#alert_link {
+		margin: 8px;
 		display: grid;
 		grid-template-columns: 1fr auto;
 		margin: 10px;
 		padding: 10px;
 		background-color: #feff99;
-		box-shadow: rgba(128,128,128, 0.2) 0px 2px 5px 0px;
+		color: black;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
+		font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
 	}
 
 		#alert_link button {
@@ -101,4 +173,53 @@
 			align-self: center;
 			padding: 7.5px;
 		}
+
+	.icon {
+		font-family: 'Segoe MDL2 Assets';
+		user-select: none;
+	}
+
+	.content_block {
+		border: 1px solid #ddd;
+		margin: 8px;
+		border-radius: 6px;
+		font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+	}
+
+		.content_block > .content_header {
+			padding: 6px;
+			border-bottom: 1px solid #ddd;
+			display: grid;
+			grid-template-columns: 1fr auto auto;
+			place-content: center;
+		}
+
+			.content_block > .content_header > span {
+				font-weight: bold;
+				display: inline-flex;
+				align-items: center;
+			}
+
+			.content_block > .content_header > button, .content_block > .content_header > a {
+				all: unset;
+				cursor: pointer;
+				padding: 3px;
+				margin: 4px;
+			}
+
+			.content_block > .content_header > .copy_icon {
+				grid-column: 2/3;
+			}
+
+			.content_block > .content_header > .download_icon {
+				grid-column: 3/4;
+			}
+
+		.content_block > .content_body {
+			padding: 8px;
+		}
+
+	div#content {
+		white-space: pre;
+	}
 </style>

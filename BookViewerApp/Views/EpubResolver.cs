@@ -433,6 +433,8 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	//We only use SharpCompress because it's easy.
 	private System.Threading.SemaphoreSlim SemaphoreReader = new(1, 1);
 
+	private string HtmlURLCache = null;
+
 	public string Session { get; }
 
 	public GeneralResolverSharpCompress(IArchive archive)
@@ -504,22 +506,14 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 				var match = reg.Match(t);
 				if (match.Success)
 				{
-					return (await StringToStream(
-		$"""
-					<!DOCTYPE html>
-					<html>
-					<head>
-						<title>Redirect</title>
-						<!--<meta http-equiv="refresh" content="5;URL={match.Groups[1].Value}">-->
-					</head>
-					<body>
-					<a href="{match.Groups[1].Value}">{match.Groups[1].Value}</a>
-					<a href="?ui=native">Download</a>
-					<h1>Content</h1>
-					{text}
-					</body>
-					</html>
-					"""), new GetContentInfo() { MimetypeOverride = "text/html" });
+					if (HtmlURLCache is null)
+					{
+						var st = (await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/archive_viewer/cushion.html"))).OpenReadAsync()).AsStream();
+						using var str = new StreamReader(st, true);
+						HtmlURLCache = await str.ReadToEndAsync();
+					}
+					var json = Views.BrowserTools.Serialize.ToJson(new BrowserTools.CushionInfo() { Content = text, Filename = fn, Url = match.Groups[1].Value });
+					return (await StringToStream(HtmlURLCache.Replace("{info.json}", System.Web.HttpUtility.HtmlEncode(json))), new GetContentInfo() { MimetypeOverride = "text/html" });
 				}
 			}
 		}
@@ -547,7 +541,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			var s = p.Substring(0, p.IndexOfAny(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) + 1);
 			return (1, s, s);
 		}).Where(a => a.Item1 != 0).Distinct().OrderBy(a => a.Item1);
-		var body1 = $"<ul>\n{string.Join('\n', items.Select(a => $"<li><a href=\"/{a.Item3}\">{a.Item2}</a></li>\n"))}</ul>";
+		var body1 = $"<ul>\n{string.Join('\n', items.Select(a => $"<li><a href=\"/{a.Item3}{(Path.GetExtension(a.Item3).Equals(".url", StringComparison.InvariantCultureIgnoreCase) ? "?ui=url" : "")}\">{a.Item2}</a></li>\n"))}</ul>";
 
 		return $"""
             <!DOCTYPE html>

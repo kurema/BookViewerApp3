@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <div id="cushion_top">
+        <h1 class="filename">Filename</h1>
+        <h2 id="link_header"><span id="link">URL</span></h2>
+    </div>
+
+    <div id="alert_link">
+        <div class="warning_icon">
+            <span class="icon">&#xE7BA;</span>
+        </div>
+        <p class="message">
+        </p>
+        <button onclick="document.getElementById('alert_link').style.display='none';">
+            <span class="icon">&#xE894;</span>
+        </button>
+    </div>
+
+    <div class="content_block">
+        <div class="content_header">
+            <span class="filename">Filename</span>
+            <button class="copy_icon" onclick="CopyContent();">
+                <span class="icon">&#xE8C8;</span>
+            </button>
+            <a class="download_icon" href="?ui=native">
+                <span class="icon">&#xE896;</span>
+            </a>
+        </div>
+        <div class="content_body">
+            <div id="content">Content will be displayed here.</div>
+        </div>
+    </div>
+
+    <div id="resource" style="display:none;">
+[
+  {
+    "languages": [
+      "en",
+      "en-US"
+    ],
+    "texts": [
+      {
+        "key": "warning.text",
+        "text": ".url file like this may contain malicious link. Please be careful and do not panic when you see the message like \"Your computer is infected\", it's not. Just close the tab or the window in that case. And never enter your password, credit card number or any other personal informations."
+      }
+    ]
+  },
+  {
+    "languages": [
+      "ja",
+      "ja-JP"
+    ],
+    "texts": [
+      {
+        "key": "warning.text",
+        "text": "このような.urlファイルには危険なリンクが含まれている場合が多くあります。信用できる場合のみリンクを開いてください。リンク先で「ウィルスに感染しています」のようなメッセージが表示された場合も無視して下さい。パスワードやクレジットカード番号を入力しないでください。"
+      }
+    ]
+  },
+  {
+    "languages": [
+      "it"
+    ],
+    "texts": [
+      {
+        "key": "warning.text",
+        "text": "Un file .url come questo può contenere un collegamento dannoso. Fate attenzione e non fatevi prendere dal panico quando vedete un messaggio del tipo \"Il vostro computer è infetto\", non è così. In questo caso, chiudete la scheda o la finestra. E non inserite mai la vostra password, il numero della carta di credito o qualsiasi altra informazione personale."
+      }
+    ]
+  },
+  {
+    "languages": [
+      "pt"
+    ],
+    "texts": [
+      {
+        "key": "warning.text",
+        "text": "Um ficheiro .url como este pode conter uma ligação maliciosa. Tenha cuidado e não entre em pânico quando vir uma mensagem como \"O seu computador está infetado\", pois não está. Nesse caso, basta fechar o separador ou a janela. E nunca introduza a sua palavra-passe, número de cartão de crédito ou qualquer outra informação pessoal."
+      }
+    ]
+  },
+  {
+    "languages": [
+      "zh-CN",
+      "zh-Hans",
+      "zh-SG"
+    ],
+    "texts": [
+      {
+        "key": "warning.text",
+        "text": "这样的 .url 文件可能包含恶意链接。当看到 \"您的电脑已被感染\"之类的信息时，请务必小心，不要惊慌，其实并没有。在这种情况下，关闭标签页或窗口即可。千万不要输入密码、信用卡号或任何其他个人信息。"
+      }
+    ]
+  },
+  {
+    "languages": [
+      "zh-Hant",
+      "zh-MO",
+      "zh-HK",
+      "zh-TW"
+    ],
+    "texts": [
+      {
+        "key": "warning.text",
+        "text": "像這樣的 .url 檔案可能包含惡意連結。當您看到“您的計算機已被感染”之類的消息時，請小心，不要驚慌，事實並非如此。在這種情況下，只需關閉選項卡或視窗即可。切勿輸入您的密碼、信用卡號或任何其他個人資訊。"
+      }
+    ]
+  }
+]
+    </div>
+
+    <div id="info" style="display:none;">{info.json}</div>
+
+    <script>
+        const resource = JSON.parse(document.getElementById("resource").innerText);
+        const ln = window.navigator.language;
+        const res_en = resource.find((e) => e.languages[0] === "en");
+        const res_crt = resource.find((e) => e.languages.some((l) => l === ln || l === ln.split('-')[0])) ?? res_en;
+
+        function GetLocalizedText(key) {
+            return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
+        }
+
+        document.querySelector("#alert_link > .message").textContent = GetLocalizedText("warning.text");
+
+        const info = JSON.parse(document.getElementById("info").innerText);
+        {
+            Array.from(document.getElementsByClassName("filename")).forEach((elem) => elem.textContent = info.filename);
+
+            const elem_link = document.getElementById("link");
+            const elem_link_a = document.createElement("a");
+            elem_link_a.href = info.url;
+            elem_link_a.textContent = info.url;
+            elem_link.replaceChildren();
+            elem_link.appendChild(elem_link_a);
+
+            document.querySelector("a.download_icon").download = info.filename;
+
+            document.getElementById("content").textContent = info.content;
+
+            document.title = info.filename;
+        }
+
+        function CopyContent() {
+            navigator.clipboard?.writeText(info.content);
+        }
+    </script>
+
+    <style>
+        html, body {
+            margin: auto;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: black;
+                color: white;
+            }
+        }
+
+        #cushion_top {
+            /* --cushion-header-color: #61b9ae; */
+            --cushion-header-color: #61defc;
+            background: var(--cushion-header-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+            #cushion_top > h1.filename, #cushion_top > h2#link_header {
+                text-align: center;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            #cushion_top > h1.filename {
+                font-weight: bold;
+                color: white;
+            }
+
+            #cushion_top > h2#link_header {
+                /* border: solid 1px #8888; */
+                border-radius: 12px;
+                padding: 10px;
+                align-self: center;
+                background: white;
+                color: var(--cushion-header-color);
+            }
+
+                #cushion_top > h2#link_header > span.icon_circle {
+                    background: var(--cushion-header-color);
+                    color: white;
+                }
+
+                #cushion_top > h2#link_header a {
+                    all: unset;
+                    cursor: pointer;
+                }
+
+        #alert_link {
+            margin: 8px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            margin: 10px;
+            padding: 10px;
+            background-color: #feff99;
+            color: black;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+            #alert_link > .warning_icon {
+                padding: 7.5px;
+                align-self: center;
+            }
+
+            #alert_link > .alert_link {
+                padding: 7.5px;
+                align-self: center;
+            }
+
+            #alert_link button {
+                background: transparent;
+                border: none;
+                align-self: center;
+                padding: 7.5px;
+            }
+
+        .icon {
+            font-family: 'Segoe MDL2 Assets';
+            user-select: none;
+        }
+
+        .content_block {
+            border: 1px solid #ddd;
+            margin: 8px;
+            border-radius: 6px;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+            .content_block > .content_header {
+                padding: 6px;
+                border-bottom: 1px solid #ddd;
+                display: grid;
+                grid-template-columns: 1fr auto auto;
+                place-content: center;
+            }
+
+                .content_block > .content_header > span {
+                    font-weight: bold;
+                    display: inline-flex;
+                    align-items: center;
+                }
+
+                .content_block > .content_header > button, .content_block > .content_header > a {
+                    all: unset;
+                    cursor: pointer;
+                    padding: 3px;
+                    margin: 4px;
+                }
+
+                .content_block > .content_header > .copy_icon {
+                    grid-column: 2/3;
+                    display: none;
+                }
+
+                .content_block > .content_header > .download_icon {
+                    grid-column: 3/4;
+                }
+
+            .content_block > .content_body {
+                padding: 8px;
+            }
+
+        div#content {
+            white-space: pre;
+        }
+    </style>
+</body>
+</html>
