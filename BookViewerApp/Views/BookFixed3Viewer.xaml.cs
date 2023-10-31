@@ -31,6 +31,7 @@ using Windows.UI.Popups;
 using Microsoft.Extensions.Options;
 using Windows.Networking.NetworkOperators;
 using Windows.ApplicationModel.DataTransfer;
+using BookViewerApp.Storages.WindowStates;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -556,20 +557,56 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 		{
 			if (menuFlyout.Items.FirstOrDefault(a => a.Tag?.ToString() == "OpenEntry") is MenuFlyoutSubItem menu)
 			{
-				if (Binding.Content is Books.IExtraEntryProvider entry && entry.ArchiveProvider is not null)
+				if (Binding.Content is Books.IExtraEntryProvider entryP && entryP.ArchiveProvider is not null)
 				{
 					menu.Items.Clear();
 					var tab = UIHelper.GetCurrentTabPage(this);
 					{
-						var item = new MenuFlyoutItem() { Text = "open" };
-						item.Click += async (_, _) => {
-							var task = entry.ArchiveProvider?.Invoke();
+						var item = new MenuFlyoutItem() { Text = "Top" };
+						item.Click += async (_, _) =>
+						{
+							var task = entryP.ArchiveProvider?.Invoke();
 							if (task is null) return;
 							var archive = await task;
 							if (archive is null) return;
 							await tab.OpenTabSharpCompress(archive, "");
 						};
 						menu.Items.Add(item);
+					}
+					foreach (var entry in entryP.EntriesGeneral)
+					{
+						switch (Path.GetExtension(entry).ToUpperInvariant())
+						{
+							case ".URL":
+								{
+									var item = new MenuFlyoutItem() { Text = Path.GetFileName(entry) };
+									item.Click += async (_, _) =>
+									{
+										var task = entryP.ArchiveProvider?.Invoke();
+										if (task is null) return;
+										var archive = await task;
+										if (archive is null) return;
+										await tab.OpenTabSharpCompress(archive, $"{entry}?ui=url");
+									};
+									menu.Items.Add(item);
+								}
+								break;
+							case ".HTML":
+							case ".HTM":
+								{
+									var item = new MenuFlyoutItem() { Text = Path.GetFileName(entry) };
+									item.Click += async (_, _) =>
+									{
+										var task = entryP.ArchiveProvider?.Invoke();
+										if (task is null) return;
+										var archive = await task;
+										if (archive is null) return;
+										await tab.OpenTabSharpCompress(archive, $"{entry}");
+									};
+									menu.Items.Add(item);
+								}
+								break;
+						}
 					}
 					menu.Visibility = Visibility.Visible;
 				}

@@ -52,7 +52,7 @@ namespace BookViewerApp.Books
 		public Func<Task<IArchive?>>? ArchiveProvider { get; private set; } = null;
 
 		//private SharpCompress.Archive.IArchiveEntry Target;
-		private SharpCompress.Archives.IArchiveEntry[] Entries = new SharpCompress.Archives.IArchiveEntry[0];
+		private IArchiveEntry[] Entries = new IArchiveEntry[0];
 
 		private SharpCompress.Archives.IArchive? DisposableContent;//To Dispose
 		private Stream? DisposableStream;
@@ -92,7 +92,7 @@ namespace BookViewerApp.Books
 							if (stream is null) return null;
 							return ArchiveFactory.Open(stream);
 						};
-						EntriesGeneral = archive.Entries.Select(a => a.Key)?.ToArray() ?? Array.Empty<string>();
+						EntriesGeneral = archive.Entries.Where(a => !a.IsDirectory)?.Select(a => a.Key)?.ToArray() ?? Array.Empty<string>();
 					}
 					DisposableStream = sr;
 					var entries = new List<SharpCompress.Archives.IArchiveEntry>();

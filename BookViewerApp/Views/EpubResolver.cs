@@ -433,7 +433,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	//We only use SharpCompress because it's easy.
 	private System.Threading.SemaphoreSlim SemaphoreReader = new(1, 1);
 
-	private string HtmlURLCache = null;
+	private static string HtmlURLCache = null;
 
 	public string Session { get; }
 

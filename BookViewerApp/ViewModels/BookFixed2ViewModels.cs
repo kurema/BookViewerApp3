@@ -143,7 +143,7 @@ public class BookViewModel : INotifyPropertyChanged, IBookViewModel, IDisposable
 			new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(value);
 	}
 
-	System.Threading.CancellationTokenSource CancellationTokenSource;
+	System.Threading.CancellationTokenSource? CancellationTokenSource;
 
 	public void CancelLoading()
 	{
