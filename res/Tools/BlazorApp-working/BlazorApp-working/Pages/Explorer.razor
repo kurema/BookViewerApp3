@@ -1,0 +1,94 @@
+﻿@page "/Explorer"
+
+<div class="container">
+	<div class="left-panel">
+		<div class="tree-view">
+		</div>
+	</div>
+
+	<main class="main-panel">
+		<table class="files-view">
+			<thead>
+				<tr>
+					<th>
+						Name
+					</th>
+					<th>
+						Last update date
+					</th>
+					<th>
+						Size
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>File1</td>
+					<td>yesterday</td>
+					<td>100kb</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+</div>
+
+<style>
+
+	body, html {
+		margin: 0px;
+	}
+
+	.container {
+		display: grid;
+		grid-template-columns: 320px 1fr;
+		width: 100vw;
+		height: 100vh;
+	}
+
+		.container > .left-panel {
+			grid-column: 1/2;
+			border-right: solid 1px #ddd;
+			overflow: scroll;
+		}
+
+		.container > .main-panel {
+			grid-column: 2/3;
+			overflow: scroll;
+			padding: 16px;
+		}
+
+	table.files-view {
+		border-radius: 6px;
+		border: 1px solid rgb(200,200,200);
+		table-layout: fixed;
+		width: 100%;
+		border-collapse: separate;
+		border-spacing:0px;
+	}
+
+		table.files-view tr {
+			height: 40px;
+		}
+
+		table.files-view td{
+			border-top: 1px solid rgb(200,200,200);
+		}
+
+		table.files-view tr, table.files-view td, table.files-view th {
+		}
+
+		table.files-view thead {
+			color: rgb(100,100,100);
+			font-size: 12px;
+			text-align: left;
+			background-color: rgb(250,250,250);
+		}
+
+			table.files-view thead th {
+			}
+
+	@@media (max-width: 800px) {
+		:root {
+		}
+	}
+</style>
