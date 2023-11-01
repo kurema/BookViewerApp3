@@ -1,12 +1,31 @@
 ﻿@page "/Explorer"
 
-<div class="container">
+<div class="container pane-open">
 	<div class="left-panel">
+		<div class="vertical-middle">
+			<button class="pane-button pane-button-close" onclick="PaneClose();">
+				<span class="icon">&#xE8A0;</span>
+			</button>
+			<span>
+				Files
+			</span>
+		</div>
+
 		<div class="tree-view">
 		</div>
 	</div>
 
 	<main class="main-panel">
+		<div class="vertical-middle">
+			<button class="pane-button pane-button-open" onclick="PaneOpen();">
+				<span class="icon">&#xE89F;</span>
+			</button>
+			<span style="margin:10px 0;">/</span>
+			<span>Folder</span>
+			<span style="margin:10px 0;">/</span>
+			<span>Files</span>
+		</div>
+
 		<table class="files-view">
 			<thead>
 				<tr>
@@ -23,36 +42,118 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>File1</td>
-					<td>yesterday</td>
-					<td>100kb</td>
+					<td><span class="folder-icon item-icon"><span class="icon">&#xE8D5;</span></span>..</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><span class="folder-icon item-icon"><span class="icon">&#xE8D5;</span></span>Assets</td>
+					<td>Yesterday</td>
+					<td>100kB</td>
 				</tr>
 			</tbody>
 		</table>
 	</main>
 </div>
 
-<style>
+<script>
+	function PaneOpen() {
+		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-close"); elem.classList.add("pane-open"); });
+	}
 
+	function PaneClose() {
+		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-open"); elem.classList.add("pane-close"); });
+	}
+</script>
+
+<style>
 	body, html {
 		margin: 0px;
+		font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
 	}
+
+	button {
+		all: unset;
+		cursor: pointer;
+	}
+
+	.vertical-middle {
+		vertical-align: middle;
+		min-height: 35px;
+	}
+
+		.vertical-middle > * {
+			vertical-align: middle;
+		}
+
+
+	.pane-button {
+		padding: 6px;
+		border-radius: 3px;
+	}
+
+		.pane-button:hover {
+			background: #8884;
+		}
+
+	.icon {
+		font-family: 'Segoe MDL2 Assets';
+		user-select: none;
+	}
+
+	.folder-icon {
+		color: #54aeff;
+	}
+
+	.item-icon {
+		margin-right: 8px;
+	}
+
+	.container.pane-open {
+		grid-template-columns: 320px 1fr;
+	}
+
+		.container.pane-open > .left-panel {
+			grid-column: 1/2;
+		}
+
+		.container.pane-open > .main-panel {
+			grid-column: 2/3;
+		}
+
+		.container.pane-open .pane-button-open {
+			display: none;
+		}
+
+	.container.pane-close {
+		grid-template-columns: 1fr;
+	}
+
+		.container.pane-close > .left-panel {
+			display: none;
+		}
+
+		.container.pane-close > .main-panel {
+			grid-column: 1/2;
+		}
+
+		.container.pane-close .pane-button-close {
+			display: none;
+		}
 
 	.container {
 		display: grid;
-		grid-template-columns: 320px 1fr;
 		width: 100vw;
 		height: 100vh;
 	}
 
 		.container > .left-panel {
-			grid-column: 1/2;
 			border-right: solid 1px #ddd;
 			overflow: scroll;
+			padding: 16px;
 		}
 
 		.container > .main-panel {
-			grid-column: 2/3;
 			overflow: scroll;
 			padding: 16px;
 		}
@@ -63,19 +164,40 @@
 		table-layout: fixed;
 		width: 100%;
 		border-collapse: separate;
-		border-spacing:0px;
+		border-spacing: 0px;
+		font-size: 14px;
+		margin-top: 6px;
 	}
 
 		table.files-view tr {
 			height: 40px;
 		}
 
-		table.files-view td{
+		table.files-view tbody tr {
+			cursor: default;
+		}
+
+			table.files-view tbody tr:hover {
+				background-color: #f8f8f8;
+			}
+
+		table.files-view td {
 			border-top: 1px solid rgb(200,200,200);
 		}
 
-		table.files-view tr, table.files-view td, table.files-view th {
+		table.files-view td, table.files-view th {
+			padding-left: 16px;
+			vertical-align: middle;
 		}
+
+			table.files-view td:last-child, table.files-view th:last-child {
+				padding-right: 16px;
+				text-align: end;
+			}
+
+			table.files-view td > *, table.files-view th > * {
+				vertical-align: middle;
+			}
 
 		table.files-view thead {
 			color: rgb(100,100,100);
