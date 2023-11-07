@@ -2,16 +2,22 @@
 
 <div class="container pane-open">
 	<div class="left-panel">
-		<div class="vertical-middle">
-			<button class="pane-button pane-button-close" onclick="PaneClose();">
-				<span class="icon">&#xE8A0;</span>
-			</button>
-			<span>
-				Files
-			</span>
+		<div class="left-panel-top">
+			<div class="vertical-middle">
+				<button class="pane-button pane-button-close" onclick="PaneClose();">
+					<span class="icon">&#xE8A0;</span>
+				</button>
+				<span>
+					Files
+				</span>
+			</div>
 		</div>
 
 		<div class="tree-view">
+			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
+			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
+			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
+			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
 		</div>
 	</div>
 
@@ -149,9 +155,20 @@
 
 		.container > .left-panel {
 			border-right: solid 1px #ddd;
-			overflow: scroll;
-			padding: 16px;
+			display: grid;
+			grid-template-rows: auto 1fr;
+			height: 100vh;
 		}
+
+			.container > .left-panel > .left-panel-top {
+				grid-row: 1/2;
+				padding: 16px;
+			}
+
+			.container > .left-panel > .tree-view {
+				overflow: scroll;
+				grid-row: 2/3;
+			}
 
 		.container > .main-panel {
 			overflow: scroll;
