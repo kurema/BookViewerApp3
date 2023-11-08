@@ -22,10 +22,12 @@
 			<button class="pane-button pane-button-open" onclick="PaneOpen();">
 				<span class="icon">&#xE89F;</span>
 			</button>
-			<span style="margin:10px 0;">/</span>
-			<span>Folder</span>
-			<span style="margin:10px 0;">/</span>
-			<span>Files</span>
+			<span id="address-bar">
+				<span style="margin:10px 0;">/</span>
+				<span>Folder</span>
+				<span style="margin:10px 0;">/</span>
+				<span>Files</span>
+			</span>
 		</div>
 
 		<table class="files-view">
@@ -44,18 +46,45 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><span class="folder-icon item-icon"><span class="icon">&#xE8D5;</span></span>..</td>
+					<td><span class="folder-icon item-icon"><span class="icon">&#xE8D5;</span></span>Loading...</td>
 					<td></td>
 					<td></td>
-				</tr>
-				<tr>
-					<td><span class="folder-icon item-icon"><span class="icon">&#xE8D5;</span></span>Assets</td>
-					<td>Yesterday</td>
-					<td>100kB</td>
 				</tr>
 			</tbody>
 		</table>
 	</main>
+</div>
+
+<div id="info" style="display:none;">
+	{
+	"currentDirectory":"",
+	"previewFile":"",
+	"rootName":"Root",
+	"entries":[
+	{
+	"folder":"",
+	"name":"folder",
+	"isFolder":true,
+	"size":0,
+	"updated":"2018-01-01T20:20:39+00:00"
+	},
+	{
+	"folder":"",
+	"name":"readme.md",
+	"isFolder":false,
+	"size":126,
+	"updated":"2020-05-25T14:13:25+00:00"
+	}
+	,
+	{
+	"folder":"/folder",
+	"name":"index.html",
+	"isFolder":false,
+	"size":126,
+	"updated":"2019-10-12T12:34:56+00:00"
+	}
+	]
+	}
 </div>
 
 <script>
@@ -68,42 +97,67 @@
 	}
 
 	const elem = document.querySelector(".files-view > tbody");
-	OpenFolder("");
+	const info = JSON.parse(document.getElementById("info").innerText);
+	OpenFolder(info.currentDirectory);
+
+	function AddEntry(e, f) {
+		const tr = document.createElement("tr");
+		tr.onclick = function () {
+			if (e.name === "..") {
+				OpenFolder(f.substring(0, f.lastIndexOf("/")));
+
+			}
+			else if (e.isFolder) {
+				OpenFolder(f + "/" + e.name);
+			}
+			else {
+				alert(e.folder + "/" + e.name);
+			}
+		}
+		{
+			const td = document.createElement("td");
+			{
+				const s1 = document.createElement("span");
+				if (e.isFolder) {
+					s1.className = "folder-icon item-icon";
+				} else {
+					s1.className = "file-icon item-icon";
+				}
+				const s2 = document.createElement("span");
+				s2.className = "icon";
+				if (e.isFolder) {
+					s2.innerHTML = "&#xE8D5;";
+				} else {
+					s2.innerHTML = "&#xE8A5;";
+				}
+				s1.appendChild(s2);
+				td.appendChild(s1);
+				td.appendChild(document.createTextNode(e.name));
+			}
+			tr.appendChild(td);
+		}
+		{
+			const td = document.createElement("td");
+			td.innerText = e.updated;
+			tr.appendChild(td);
+		}
+		{
+			const td = document.createElement("td");
+			td.innerText = e.size + "B";
+			tr.appendChild(td);
+		}
+		elem.appendChild(tr);
+	}
+
 	function OpenFolder(f) {
+		document.getElementById("address-bar").innerText = info.rootName + f;
 		while (elem.firstChild) {
 			elem.removeChild(elem.lastChild);
 		}
-		for (let i = 0; i < 9; i++) {
-			const tr = document.createElement("tr");
-			tr.onclick = function () {
-				alert(i);
-			}
-			{
-				const td = document.createElement("td");
-				{
-					const s1 = document.createElement("span");
-					s1.className = "folder-icon item-icon";
-					const s2 = document.createElement("span");
-					s2.className = "icon";
-					s2.innerHTML = "&#xE8D5;";
-					s1.appendChild(s2);
-					td.appendChild(s1);
-					td.appendChild(document.createTextNode("" + i));
-				}
-				tr.appendChild(td);
-			}
-			{
-				const td = document.createElement("td");
-				td.innerText = "Yesterday";
-				tr.appendChild(td);
-			}
-			{
-				const td = document.createElement("td");
-				td.innerText = i + "KB";
-				tr.appendChild(td);
-			}
-			elem.appendChild(tr);
+		if (f !== "") {
+			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": 0, "updated": "" }, f)
 		}
+		info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
 	}
 </script>
 
@@ -127,6 +181,9 @@
 			vertical-align: middle;
 		}
 
+	#address-bar {
+		vertical-align: middle;
+	}
 
 	.pane-button {
 		padding: 6px;

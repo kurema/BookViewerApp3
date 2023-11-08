@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kurema/BookViewerApp3/tree/master/BookViewerApp/Views/BrowserTools/DirectoryInfo.json",
+  "type": "object",
+  "title": "Directory info and some additional data like current directory.",
+  "properties": {
+    "currentDirectory": {
+      "type": "string"
+    },
+    "previewFile": {
+      "type": "string"
+    },
+    "rootName": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "folder": { "type": "string" },
+          "name": { "type": "string" },
+          "isFolder": { "type": "boolean" },
+          "size": { "type": "integer" },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
