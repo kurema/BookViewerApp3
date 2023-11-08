@@ -14,10 +14,6 @@
 		</div>
 
 		<div class="tree-view">
-			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
-			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
-			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
-			a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />a<br />
 		</div>
 	</div>
 
@@ -69,6 +65,45 @@
 
 	function PaneClose() {
 		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-open"); elem.classList.add("pane-close"); });
+	}
+
+	const elem = document.querySelector(".files-view > tbody");
+	OpenFolder("");
+	function OpenFolder(f) {
+		while (elem.firstChild) {
+			elem.removeChild(elem.lastChild);
+		}
+		for (let i = 0; i < 9; i++) {
+			const tr = document.createElement("tr");
+			tr.onclick = function () {
+				alert(i);
+			}
+			{
+				const td = document.createElement("td");
+				{
+					const s1 = document.createElement("span");
+					s1.className = "folder-icon item-icon";
+					const s2 = document.createElement("span");
+					s2.className = "icon";
+					s2.innerHTML = "&#xE8D5;";
+					s1.appendChild(s2);
+					td.appendChild(s1);
+					td.appendChild(document.createTextNode("" + i));
+				}
+				tr.appendChild(td);
+			}
+			{
+				const td = document.createElement("td");
+				td.innerText = "Yesterday";
+				tr.appendChild(td);
+			}
+			{
+				const td = document.createElement("td");
+				td.innerText = i + "KB";
+				tr.appendChild(td);
+			}
+			elem.appendChild(tr);
+		}
 	}
 </script>
 
