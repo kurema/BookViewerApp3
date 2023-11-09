@@ -7,7 +7,7 @@
 				<button class="pane-button pane-button-close" onclick="PaneClose();">
 					<span class="icon">&#xE8A0;</span>
 				</button>
-				<span>
+				<span data-i18n-key="header.files">
 					Files
 				</span>
 			</div>
@@ -33,13 +33,13 @@
 		<table class="files-view">
 			<thead>
 				<tr>
-					<th>
+					<th data-i18n-key="table.name">
 						Name
 					</th>
-					<th>
+					<th data-i18n-key="table.updated">
 						Last update date
 					</th>
-					<th>
+					<th data-i18n-key="table.size">
 						Size
 					</th>
 				</tr>
@@ -78,6 +78,13 @@
 	,
 	{
 	"folder":"/folder",
+	"name":"folder2",
+	"isFolder":true,
+	"size":0,
+	"updated":"2019-10-12T12:34:56+00:00"
+	},
+	{
+	"folder":"/folder",
 	"name":"index.html",
 	"isFolder":false,
 	"size":126,
@@ -86,6 +93,74 @@
 	]
 	}
 </div>
+
+<div id="resource" style="display:none;">
+	[
+	{
+	"languages": [
+	"en",
+	"en-US"
+	],
+	"texts": [
+	{
+	"key": "header.files",
+	"text": "Files"
+	},
+	{
+	"key": "table.name",
+	"text": "Name"
+	},
+	{
+	"key": "table.updated",
+	"text": "Last update date"
+	},
+	{
+	"key": "table.size",
+	"text": "Size"
+	}
+	]
+	},
+	{
+	"languages": [
+	"ja",
+	"ja-JP"
+	],
+	"texts": [
+	{
+	"key": "header.files",
+	"text": "一覧"
+	},
+	{
+	"key": "table.name",
+	"text": "名前"
+	},
+	{
+	"key": "table.updated",
+	"text": "更新日時"
+	},
+	{
+	"key": "table.size",
+	"text": "サイズ"
+	}
+	]
+	}
+	]
+</div>
+
+<script>
+	const resource = JSON.parse(document.getElementById("resource").innerText);
+	const ln = window.navigator.language;
+	const res_en = resource.find((e) => e.languages[0] === "en");
+	const res_crt = resource.find((e) => e.languages.some((l) => l === ln || l === ln.split('-')[0])) ?? res_en;
+
+	function GetLocalizedText(key) {
+		return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
+	}
+
+	document.querySelectorAll("[data-i18n-key]").forEach((d) => {
+		d.textContent = GetLocalizedText(d.getAttribute("data-i18n-key"));
+	});
+</script>
 
 <script>
 	function PaneOpen() {
@@ -98,6 +173,7 @@
 
 	const elem = document.querySelector(".files-view > tbody");
 	const info = JSON.parse(document.getElementById("info").innerText);
+	let currentDirectory = "";
 	OpenFolder(info.currentDirectory);
 
 	function AddEntry(e, f) {
@@ -105,7 +181,6 @@
 		tr.onclick = function () {
 			if (e.name === "..") {
 				OpenFolder(f.substring(0, f.lastIndexOf("/")));
-
 			}
 			else if (e.isFolder) {
 				OpenFolder(f + "/" + e.name);
@@ -150,7 +225,8 @@
 	}
 
 	function OpenFolder(f) {
-		document.getElementById("address-bar").innerText = info.rootName + f;
+		currentDirectory = f;
+		UpdateAddressBar(f);
 		while (elem.firstChild) {
 			elem.removeChild(elem.lastChild);
 		}
@@ -158,6 +234,48 @@
 			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": 0, "updated": "" }, f)
 		}
 		info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
+	}
+
+	function UpdateAddressBar(f) {
+		const ab = document.getElementById("address-bar");
+		while (ab.firstChild) {
+			ab.removeChild(ab.lastChild);
+		}
+		let rn = info.rootName;
+		if (rn === "") {
+			rn = "Root";
+		}
+		{
+			const span = document.createElement("a");
+			span.textContent = rn;
+			span.onclick = function () { OpenFolder(""); }
+			span.className = "link-root";
+			ab.appendChild(span);
+		}
+		let folders = f.split("/");
+		if (folders[0] === "") { folders.splice(0, 1); }
+		let path = "";
+		folders.forEach((fd) => {
+			path = path + "/" + fd;
+			{
+				const span = document.createElement("span");
+				span.textContent = "/";
+				span.className = "separator";
+				ab.appendChild(span);
+			}
+			{
+				const span = document.createElement("a");
+				span.textContent = fd;
+				if (path !== currentDirectory) {
+					const localPath = path;
+					span.onclick = function () { OpenFolder(localPath); }
+					span.className = "link-folder";
+				} else {
+					span.className = "text-folder";
+				}
+				ab.appendChild(span);
+			}
+		});
 	}
 </script>
 
@@ -184,6 +302,29 @@
 	#address-bar {
 		vertical-align: middle;
 	}
+
+		#address-bar > .separator {
+			margin: 0 10px;
+		}
+
+		#address-bar > .link-root {
+			color: rgb(10, 100, 220);
+			text-decoration: none;
+			font-weight: 600;
+			cursor: pointer;
+		}
+
+		#address-bar > .link-folder {
+			color: rgb(10, 100, 220);
+			text-decoration: none;
+			font-weight: 400;
+			cursor: pointer;
+		}
+
+		#address-bar > .text-folder {
+			text-decoration: none;
+			font-weight: 600;
+		}
 
 	.pane-button {
 		padding: 6px;

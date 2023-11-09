@@ -13,6 +13,14 @@
     "rootName": {
       "type": "string"
     },
+    "pageDirection": {
+      "type": "string",
+      "enum": [
+        "left",
+        "right",
+        "down"
+      ]
+    },
     "entries": {
       "type": "array",
       "items": {
