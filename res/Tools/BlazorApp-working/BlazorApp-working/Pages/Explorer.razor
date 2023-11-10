@@ -65,7 +65,7 @@
 	"folder":"",
 	"name":"folder",
 	"isFolder":true,
-	"size":0,
+	"size":-1,
 	"updated":"2018-01-01T20:20:39+00:00"
 	},
 	{
@@ -80,7 +80,7 @@
 	"folder":"/folder",
 	"name":"folder2",
 	"isFolder":true,
-	"size":0,
+	"size":-1,
 	"updated":"2019-10-12T12:34:56+00:00"
 	},
 	{
@@ -218,7 +218,7 @@
 		}
 		{
 			const td = document.createElement("td");
-			td.innerText = e.size + "B";
+			td.innerText = e.size < 0 ? "" : e.size + "B";
 			tr.appendChild(td);
 		}
 		elem.appendChild(tr);
@@ -231,9 +231,15 @@
 			elem.removeChild(elem.lastChild);
 		}
 		if (f !== "") {
-			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": 0, "updated": "" }, f)
+			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": -1, "updated": "" }, f)
 		}
 		info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
+	}
+
+	{
+		var tv = document.getElementsByClassName("tree-view")[0];
+		while (tv.firstChild) { tv.removeChild(tv.lastChild); }
+		tv.appendChild(GetTree(""));
 	}
 
 	function UpdateAddressBar(f) {
@@ -277,6 +283,24 @@
 			}
 		});
 	}
+
+	function GetTree(f) {
+		const d = document.createElement("div");
+		d.className = "tree-container";
+		info.entries.filter((e) => e.folder === f).forEach((e) => {
+			const d2 = document.createElement("div");
+			d2.className = "tree-item-container";
+			const d3 = document.createElement("div");
+			d3.className = "tree-item";
+			d3.textContent = e.name;
+			d2.appendChild(d3);
+			if (e.isFolder) {
+				d2.appendChild(GetTree(f + "/" + e.name));
+			}
+			d.appendChild(d2);
+		});
+		return d;
+	}
 </script>
 
 <style>
@@ -299,6 +323,10 @@
 			vertical-align: middle;
 		}
 
+
+	.tree-view .tree-container {
+		margin: 0 10px;
+	}
 	#address-bar {
 		vertical-align: middle;
 	}
