@@ -191,24 +191,7 @@
 		}
 		{
 			const td = document.createElement("td");
-			{
-				const s1 = document.createElement("span");
-				if (e.isFolder) {
-					s1.className = "folder-icon item-icon";
-				} else {
-					s1.className = "file-icon item-icon";
-				}
-				const s2 = document.createElement("span");
-				s2.className = "icon";
-				if (e.isFolder) {
-					s2.innerHTML = "&#xE8D5;";
-				} else {
-					s2.innerHTML = "&#xE8A5;";
-				}
-				s1.appendChild(s2);
-				td.appendChild(s1);
-				td.appendChild(document.createTextNode(e.name));
-			}
+			ApplyItem(td, e);
 			tr.appendChild(td);
 		}
 		{
@@ -222,6 +205,43 @@
 			tr.appendChild(td);
 		}
 		elem.appendChild(tr);
+	}
+
+	function ApplyItem(element, e, isTree = false) {
+		if (e.isFolder) {
+			{
+				const s1 = document.createElement("span");
+				s1.className = "folder-icon item-icon";
+				const s2 = document.createElement("span");
+				s2.className = "icon";
+				if (isTree) {
+					s2.innerHTML = "&#xED42;";
+				} else {
+					s2.innerHTML = "&#xE8D5;";
+				}
+				s1.appendChild(s2);
+				element.appendChild(s1);
+			}
+			if (isTree) {
+				const s1 = document.createElement("span");
+				s1.className = "folder-icon-open item-icon";
+				const s2 = document.createElement("span");
+				s2.className = "icon";
+				s2.innerHTML = "&#xED44;";
+				s1.appendChild(s2);
+				element.appendChild(s1);
+			}
+
+		} else {
+			const s1 = document.createElement("span");
+			s1.className = "file-icon item-icon";
+			const s2 = document.createElement("span");
+			s2.className = "icon";
+			s2.innerHTML = "&#xE8A5;";
+			s1.appendChild(s2);
+			element.appendChild(s1);
+		}
+		element.appendChild(document.createTextNode(e.name));
 	}
 
 	function OpenFolder(f) {
@@ -239,7 +259,7 @@
 	{
 		var tv = document.getElementsByClassName("tree-view")[0];
 		while (tv.firstChild) { tv.removeChild(tv.lastChild); }
-		tv.appendChild(GetTree(""));
+		tv.appendChild(GetTree("", 0));
 	}
 
 	function UpdateAddressBar(f) {
@@ -254,8 +274,12 @@
 		{
 			const span = document.createElement("a");
 			span.textContent = rn;
-			span.onclick = function () { OpenFolder(""); }
-			span.className = "link-root";
+			if (f === "") {
+				span.className = "text-root";
+			} else {
+				span.onclick = function () { OpenFolder(""); }
+				span.className = "link-root";
+			}
 			ab.appendChild(span);
 		}
 		let folders = f.split("/");
@@ -284,7 +308,7 @@
 		});
 	}
 
-	function GetTree(f) {
+	function GetTree(f, indent) {
 		const d = document.createElement("div");
 		d.className = "tree-container";
 		info.entries.filter((e) => e.folder === f).forEach((e) => {
@@ -292,10 +316,56 @@
 			d2.className = "tree-item-container";
 			const d3 = document.createElement("div");
 			d3.className = "tree-item";
-			d3.textContent = e.name;
 			d2.appendChild(d3);
+			{
+				const s1 = document.createElement("button");
+				s1.className = "tree-item-indicator";
+				d3.appendChild(s1);
+			}
+			const d4 = document.createElement("div");
+			d4.className = "tree-item-body";
+			d4.style.paddingLeft = (indent * 10) + "px";
+			d3.appendChild(d4);
 			if (e.isFolder) {
-				d2.appendChild(GetTree(f + "/" + e.name));
+				{
+					const s1 = document.createElement("button");
+					s1.className = "tree-item-button-expand";
+					const s2 = document.createElement("span");
+					s2.className = "icon";
+					s2.textContent = "&#xE96D;"
+					s2.style.fontSize = "75%";
+					s1.appendChild(s2);
+					d4.appendChild(s1);
+				}
+				{
+					const s1 = document.createElement("button");
+					s1.className = "tree-item-button-shrink";
+					const s2 = document.createElement("span");
+					s2.className = "icon";
+					s2.textContent = "&#xE96E;"
+					s2.style.fontSize = "75%";
+					s1.appendChild(s2);
+					d4.appendChild(s1);
+				}
+				{
+					const s1 = document.createElement("div");
+					s1.className = "tree-item-header";
+					ApplyItem(s1, e, true);
+					const s2 = document.createElement("span");
+					s2.className = "tree-item-text";
+					s1.appendChild(s2);
+					d4.appendChild(s1);
+				}
+				d2.classList.add("collapsed");
+				d2.appendChild(GetTree(f + "/" + e.name, indent + 1));
+			} else {
+				const s1 = document.createElement("div");
+				s1.className = "tree-item-header";
+				ApplyItem(s1, e, true);
+				const s2 = document.createElement("span");
+				s2.className = "tree-item-text";
+				s1.appendChild(s2);
+				d4.appendChild(s1);
 			}
 			d.appendChild(d2);
 		});
@@ -324,9 +394,79 @@
 		}
 
 
-	.tree-view .tree-container {
-		margin: 0 10px;
+	.tree-view {
 	}
+
+		.tree-view .tree-container {
+			/* margin: 0 10px; */
+		}
+
+		.tree-view .tree-item-container > .tree-item {
+			display: grid;
+			/* grid-template-columns: calc( 0.25rem + 6px) 1fr; */
+			grid-template-columns: auto 1fr;
+			place-items: center inherit;
+		}
+
+			.tree-view .tree-item-container > .tree-item > .tree-item-indicator {
+				content: "";
+				left: 0px;
+				width: 0.25rem;
+				height: 1.5rem;
+				background-color: rgb(10, 100, 220);
+				border-radius: 6px;
+				margin: 2px;
+				grid-column: 1/2;
+				margin: 0 6px;
+				/* display: none; */
+				visibility: hidden;
+			}
+
+
+			.tree-view .tree-item-container > .tree-item > .tree-item-body {
+				display: grid;
+				grid-column: 2/3;
+				grid-template-columns: auto 1fr;
+				align-items: center;
+			}
+
+				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-expand,
+				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-shrink {
+					margin-right: 6px;
+				}
+
+				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header {
+					display: flex;
+					align-items: center;
+				}
+
+					.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .item-icon {
+						display: flex;
+						align-items: center;
+						margin-right: 6px;
+					}
+
+					.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .folder-icon-open {
+						display: none;
+					}
+
+		.tree-view .tree-item-container.selected > .tree-item > .tree-item-indicator {
+			/* display: inherit; */
+			visibility: visible;
+		}
+
+		.tree-view .tree-item-container.expand > .tree-item > .tree-item-body > .tree-item-button-expand {
+			display: none;
+		}
+
+		.tree-view .tree-item-container.collapsed > .tree-item > .tree-item-body > .tree-item-button-shrink {
+			display: none;
+		}
+
+	.item-icon {
+		margin-right: 8px;
+	}
+
 	#address-bar {
 		vertical-align: middle;
 	}
@@ -349,7 +489,7 @@
 			cursor: pointer;
 		}
 
-		#address-bar > .text-folder {
+		#address-bar > .text-folder, #address-bar > .text-root {
 			text-decoration: none;
 			font-weight: 600;
 		}
@@ -368,12 +508,12 @@
 		user-select: none;
 	}
 
-	.folder-icon {
+	.folder-icon, .folder-icon-open {
 		color: #54aeff;
 	}
 
-	.item-icon {
-		margin-right: 8px;
+	.folder-icon-open {
+		display: none;
 	}
 
 	.container.pane-open {
