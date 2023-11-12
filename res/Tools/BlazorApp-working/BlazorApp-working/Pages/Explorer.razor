@@ -174,6 +174,13 @@
 	const elem = document.querySelector(".files-view > tbody");
 	const info = JSON.parse(document.getElementById("info").innerText);
 	let currentDirectory = "";
+
+	{
+		var tv = document.getElementsByClassName("tree-view")[0];
+		while (tv.firstChild) { tv.removeChild(tv.lastChild); }
+		tv.appendChild(GetTree("", 0));
+	}
+
 	OpenFolder(info.currentDirectory);
 
 	function AddEntry(e, f) {
@@ -247,6 +254,22 @@
 	function OpenFolder(f) {
 		currentDirectory = f;
 		UpdateAddressBar(f);
+		{
+			Array.from(document.getElementsByClassName("selected")).forEach(e => {
+				e.classList.remove("selected");
+			});
+			let treeitem = document.querySelector("[data-tree-item-path=\"" + f + "\"]");
+			treeitem?.classList.add("selected");
+			while (treeitem !== null) {
+				treeitem?.classList.remove("collapsed");
+				treeitem?.classList.add("expand");
+				while (true) {
+					treeitem = treeitem.parentElement;
+					if (treeitem == null || treeitem.classList.contains("tree-item-container")) break;
+				}
+			}
+		}
+
 		while (elem.firstChild) {
 			elem.removeChild(elem.lastChild);
 		}
@@ -254,12 +277,6 @@
 			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": -1, "updated": "" }, f)
 		}
 		info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
-	}
-
-	{
-		var tv = document.getElementsByClassName("tree-view")[0];
-		while (tv.firstChild) { tv.removeChild(tv.lastChild); }
-		tv.appendChild(GetTree("", 0));
 	}
 
 	function UpdateAddressBar(f) {
@@ -313,7 +330,9 @@
 		d.className = "tree-container";
 		info.entries.filter((e) => e.folder === f).forEach((e) => {
 			const d2 = document.createElement("div");
+			const path = e.folder + "/" + e.name;
 			d2.className = "tree-item-container";
+			d2.setAttribute("data-tree-item-path", path);
 			const d3 = document.createElement("div");
 			d3.className = "tree-item";
 			d2.appendChild(d3);
@@ -330,9 +349,10 @@
 				{
 					const s1 = document.createElement("button");
 					s1.className = "tree-item-button-expand";
+					s1.onclick = function (e) { d2.classList.remove("collapsed"); d2.classList.add("expand"); e.preventDefault(); }
 					const s2 = document.createElement("span");
 					s2.className = "icon";
-					s2.textContent = "&#xE96D;"
+					s2.textContent = "&#xE96E;"
 					s2.style.fontSize = "75%";
 					s1.appendChild(s2);
 					d4.appendChild(s1);
@@ -340,9 +360,10 @@
 				{
 					const s1 = document.createElement("button");
 					s1.className = "tree-item-button-shrink";
+					s1.onclick = function (e) { d2.classList.remove("expand"); d2.classList.add("collapsed"); e.preventDefault(); }
 					const s2 = document.createElement("span");
 					s2.className = "icon";
-					s2.textContent = "&#xE96E;"
+					s2.textContent = "&#xE96D;"
 					s2.style.fontSize = "75%";
 					s1.appendChild(s2);
 					d4.appendChild(s1);
@@ -355,6 +376,9 @@
 					s2.className = "tree-item-text";
 					s1.appendChild(s2);
 					d4.appendChild(s1);
+					s1.onclick = function () {
+						OpenFolder(path);
+					};
 				}
 				d2.classList.add("collapsed");
 				d2.appendChild(GetTree(f + "/" + e.name, indent + 1));
@@ -426,18 +450,20 @@
 			.tree-view .tree-item-container > .tree-item > .tree-item-body {
 				display: grid;
 				grid-column: 2/3;
-				grid-template-columns: auto 1fr;
+				grid-template-columns: 20px 1fr;
 				align-items: center;
 			}
 
 				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-expand,
 				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-shrink {
-					margin-right: 6px;
+					/* margin-right: 6px; */
+					grid-column: 1/2;
 				}
 
 				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header {
 					display: flex;
 					align-items: center;
+					grid-column: 2/3;
 				}
 
 					.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .item-icon {
@@ -460,6 +486,10 @@
 		}
 
 		.tree-view .tree-item-container.collapsed > .tree-item > .tree-item-body > .tree-item-button-shrink {
+			display: none;
+		}
+
+		.tree-view .tree-item-container.collapsed > .tree-container > .tree-item-container {
 			display: none;
 		}
 
