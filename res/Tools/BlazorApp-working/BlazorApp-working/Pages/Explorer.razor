@@ -193,7 +193,7 @@
 				OpenFolder(f + "/" + e.name);
 			}
 			else {
-				alert(e.folder + "/" + e.name);
+				OpenFile(e.folder + "/" + e.name);
 			}
 		}
 		{
@@ -249,6 +249,24 @@
 			element.appendChild(s1);
 		}
 		element.appendChild(document.createTextNode(e.name));
+	}
+
+	function OpenFile(f) {
+		const li = f.lastIndexOf(".");
+		const ext = li < 0 ? "" : f.substring(li);
+		switch (ext.toUpperCase()) {
+			case ".URL":
+				alert(f + "\nURL file is dangerous.");
+				break;
+			case ".HTM":
+			case ".HTML":
+			case ".XML":
+				alert(f + "\nHyper Text Markup Language");
+				break;
+			default:
+				alert(f);
+				break;
+		}
 	}
 
 	function OpenFolder(f) {
@@ -337,36 +355,38 @@
 			d3.className = "tree-item";
 			d2.appendChild(d3);
 			{
-				const s1 = document.createElement("button");
+				const s1 = document.createElement("div");
 				s1.className = "tree-item-indicator";
 				d3.appendChild(s1);
 			}
 			const d4 = document.createElement("div");
 			d4.className = "tree-item-body";
-			d4.style.paddingLeft = (indent * 10) + "px";
+			d4.style.paddingLeft = (indent * 10 + 4) + "px";
 			d3.appendChild(d4);
 			if (e.isFolder) {
-				{
-					const s1 = document.createElement("button");
-					s1.className = "tree-item-button-expand";
-					s1.onclick = function (e) { d2.classList.remove("collapsed"); d2.classList.add("expand"); e.preventDefault(); }
-					const s2 = document.createElement("span");
-					s2.className = "icon";
-					s2.textContent = "&#xE96E;"
-					s2.style.fontSize = "75%";
-					s1.appendChild(s2);
-					d4.appendChild(s1);
-				}
-				{
-					const s1 = document.createElement("button");
-					s1.className = "tree-item-button-shrink";
-					s1.onclick = function (e) { d2.classList.remove("expand"); d2.classList.add("collapsed"); e.preventDefault(); }
-					const s2 = document.createElement("span");
-					s2.className = "icon";
-					s2.textContent = "&#xE96D;"
-					s2.style.fontSize = "75%";
-					s1.appendChild(s2);
-					d4.appendChild(s1);
+				if (info.entries.some(e => e.folder === path)) {
+					{
+						const s1 = document.createElement("button");
+						s1.className = "tree-item-button-expand";
+						s1.onclick = function (e) { d2.classList.remove("collapsed"); d2.classList.add("expand"); e.preventDefault(); }
+						const s2 = document.createElement("span");
+						s2.className = "icon";
+						s2.textContent = "&#xE96E;"
+						s2.style.fontSize = "75%";
+						s1.appendChild(s2);
+						d4.appendChild(s1);
+					}
+					{
+						const s1 = document.createElement("button");
+						s1.className = "tree-item-button-shrink";
+						s1.onclick = function (e) { d2.classList.remove("expand"); d2.classList.add("collapsed"); e.preventDefault(); }
+						const s2 = document.createElement("span");
+						s2.className = "icon";
+						s2.textContent = "&#xE96D;"
+						s2.style.fontSize = "75%";
+						s1.appendChild(s2);
+						d4.appendChild(s1);
+					}
 				}
 				{
 					const s1 = document.createElement("div");
@@ -390,6 +410,9 @@
 				s2.className = "tree-item-text";
 				s1.appendChild(s2);
 				d4.appendChild(s1);
+				s1.onclick = function () {
+					OpenFile(path);
+				};
 			}
 			d.appendChild(d2);
 		});
@@ -419,6 +442,7 @@
 
 
 	.tree-view {
+		padding: 0 8px;
 	}
 
 		.tree-view .tree-container {
@@ -427,9 +451,9 @@
 
 		.tree-view .tree-item-container > .tree-item {
 			display: grid;
-			/* grid-template-columns: calc( 0.25rem + 6px) 1fr; */
 			grid-template-columns: auto 1fr;
-			place-items: center inherit;
+			min-height: 2rem;
+			align-items: center;
 		}
 
 			.tree-view .tree-item-container > .tree-item > .tree-item-indicator {
@@ -442,8 +466,8 @@
 				margin: 2px;
 				grid-column: 1/2;
 				margin: 0 6px;
-				/* display: none; */
 				visibility: hidden;
+				align-items: center;
 			}
 
 
@@ -452,11 +476,12 @@
 				grid-column: 2/3;
 				grid-template-columns: 20px 1fr;
 				align-items: center;
+				border-radius: 6px;
+				padding: 3px 0;
 			}
 
 				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-expand,
 				.tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-shrink {
-					/* margin-right: 6px; */
 					grid-column: 1/2;
 				}
 
@@ -477,8 +502,11 @@
 					}
 
 		.tree-view .tree-item-container.selected > .tree-item > .tree-item-indicator {
-			/* display: inherit; */
 			visibility: visible;
+		}
+
+		.tree-view .tree-item-container.selected > .tree-item > .tree-item-body {
+			background-color: rgba(208, 215, 222, 0.24);
 		}
 
 		.tree-view .tree-item-container.expand > .tree-item > .tree-item-body > .tree-item-button-expand {

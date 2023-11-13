@@ -13,6 +13,7 @@
     "rootName": {
       "type": "string"
     },
+    "basePath": { "type": "string" },
     "pageDirection": {
       "type": "string",
       "enum": [
