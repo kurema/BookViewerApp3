@@ -4,7 +4,874 @@
     <title>{folder}</title>
 </head>
 <body>
-    {body1}
-    <div id="js-data-files" style="visibility:hidden;">{json_files}</div>
+    @page "/Explorer"
+
+    <div class="container pane-open">
+        <div class="left-panel">
+            <div class="left-panel-top">
+                <div class="vertical-middle">
+                    <button class="pane-button pane-button-close" onclick="PaneClose();">
+                        <span class="icon">&#xE8A0;</span>
+                    </button>
+                    <span data-i18n-key="header.files">
+                        Files
+                    </span>
+                </div>
+            </div>
+
+            <div class="tree-view">
+            </div>
+        </div>
+
+        <main class="main-panel">
+            <div class="vertical-middle">
+                <button class="pane-button pane-button-open" onclick="PaneOpen();">
+                    <span class="icon">&#xE89F;</span>
+                </button>
+                <span id="address-bar">
+                    <span style="margin:10px 0;">/</span>
+                    <span>Folder</span>
+                    <span style="margin:10px 0;">/</span>
+                    <span>Files</span>
+                </span>
+            </div>
+
+            <table class="files-view">
+                <thead>
+                    <tr>
+                        <th data-i18n-key="table.name">
+                            Name
+                        </th>
+                        <th data-i18n-key="table.updated">
+                            Last update date
+                        </th>
+                        <th data-i18n-key="table.size">
+                            Size
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="folder-icon item-icon"><span class="icon">&#xE8D5;</span></span>Loading...</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="alert-link">
+                <div class="header-icon">
+                    <span class="icon">&#xE7BA;</span>
+                </div>
+                <p class="message" data-i18n-key="alert.html.message">
+                    HTML is dangerous.
+                </p>
+                <button onclick="document.getElementById('alert-link').style.display='none';">
+                    <span class="icon">&#xE894;</span>
+                </button>
+            </div>
+
+            <div id="file-preview" class="wrap visible">
+                <div class="file-preview-header">
+                    <div class="button-group">
+                        <button>
+                            Raw
+                        </button>
+                    </div>
+                    <div class="wrap-box">
+                        <input type="checkbox" id="wrap" checked onchange="UpdateWrap(this);" name="wrap" />
+                        <label for="wrap">Wrap</label>
+                    </div>
+                    <div class="file-preview-title">
+                        <span>Sample.txt</span>
+                    </div>
+                    <button class="close-button" onclick="document.getElementById('file-preview').classList.remove('visible');">
+                        <span class="icon">&#xE894;</span>
+                    </button>
+                </div>
+                <div class="file-preview-body">
+                    This is the file. This is the file. This is the file. This is the file.This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file.
+                    Second line.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="info" style="display:none;">
+        {
+        "currentDirectory":"",
+        "previewFile":"",
+        "rootName":"Root",
+        "entries":[
+        {
+        "folder":"",
+        "name":"folder",
+        "isFolder":true,
+        "size":-1,
+        "updated":"2018-01-01T20:20:39+00:00"
+        },
+        {
+        "folder":"",
+        "name":"readme.md",
+        "isFolder":false,
+        "size":1260,
+        "updated":"2020-05-25T14:13:25+00:00"
+        }
+        ,
+        {
+        "folder":"/folder",
+        "name":"folder2",
+        "isFolder":true,
+        "size":-1,
+        "updated":"2019-10-12T12:34:56+00:00"
+        },
+        {
+        "folder":"/folder",
+        "name":"index.html",
+        "isFolder":false,
+        "size":123456789,
+        "updated":"2019-10-12T12:34:56+00:00"
+        }
+        ]
+        }
+    </div>
+
+    <div id="resource" style="display:none;">
+[
+  {
+    "languages": [
+      "en",
+      "en-US"
+    ],
+    "texts": [
+      {
+        "key": "header.files",
+        "text": "Files"
+      },
+      {
+        "key": "table.name",
+        "text": "Name"
+      },
+      {
+        "key": "table.updated",
+        "text": "Last update date"
+      },
+      {
+        "key": "table.size",
+        "text": "Size"
+      },
+      {
+        "key": "alert.html.message",
+        "text": "Opening HTML, URL and some other file may have serious security risk. Continue only if you trust this file."
+      }
+    ]
+  },
+  {
+    "languages": [
+      "ja",
+      "ja-JP"
+    ],
+    "texts": [
+      {
+        "key": "header.files",
+        "text": "一覧"
+      },
+      {
+        "key": "table.name",
+        "text": "名前"
+      },
+      {
+        "key": "table.updated",
+        "text": "更新日時"
+      },
+      {
+        "key": "table.size",
+        "text": "サイズ"
+      },
+      {
+        "key": "alert.html.message",
+        "text": "HTMLやURLのようなファイルはセキュリティ上のリスクがあります。このファイルの作成者を信頼する場合のみ開いてください。"
+      }
+    ]
+  }
+]
+    </div>
+
+    <script>
+	function UpdateWrap(target) {
+		const cl = document.getElementById("file-preview").classList;
+		if (target.checked) {
+			cl.add("wrap");
+		} else {
+			cl.remove("wrap");
+		}
+	}
+    </script>
+
+    <script>
+	const resource = JSON.parse(document.getElementById("resource").innerText);
+	const ln = window.navigator.language;
+	const res_en = resource.find((e) => e.languages[0] === "en");
+	const res_crt = resource.find((e) => e.languages.some((l) => l === ln || l === ln.split('-')[0])) ?? res_en;
+
+	function GetLocalizedText(key) {
+		return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
+	}
+
+	document.querySelectorAll("[data-i18n-key]").forEach((d) => {
+		d.textContent = GetLocalizedText(d.getAttribute("data-i18n-key"));
+	});
+    </script>
+
+    <script>
+	function PaneOpen() {
+		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-close"); elem.classList.add("pane-open"); });
+	}
+
+	function PaneClose() {
+		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-open"); elem.classList.add("pane-close"); });
+	}
+
+	const elem = document.querySelector(".files-view > tbody");
+	const info = JSON.parse(document.getElementById("info").innerText);
+	let currentDirectory = "";
+
+	{
+		var tv = document.getElementsByClassName("tree-view")[0];
+		while (tv.firstChild) { tv.removeChild(tv.lastChild); }
+		tv.appendChild(GetTree("", 0));
+	}
+
+	OpenFolder(info.currentDirectory);
+	if (!info.entries.some(e => {
+		const li = e.name.lastIndexOf(".");
+		const ext = li < 0 ? "" : e.name.substring(li);
+		switch (ext.toUpperCase()) {
+			case ".URL":
+			case ".HTM":
+			case ".HTML":
+			case ".XML":
+				return true;
+			default:
+				return false;
+		}
+	})) {
+		document.getElementById('alert-link').style.display = 'none';
+	}
+
+	function AddEntry(e, f) {
+		const tr = document.createElement("tr");
+		tr.onclick = function () {
+			if (e.name === "..") {
+				OpenFolder(f.substring(0, f.lastIndexOf("/")));
+			}
+			else if (e.isFolder) {
+				OpenFolder(f + "/" + e.name);
+			}
+			else {
+				OpenFile(e.folder + "/" + e.name);
+			}
+		}
+		{
+			const td = document.createElement("td");
+			ApplyItem(td, e);
+			tr.appendChild(td);
+		}
+		{
+			const td = document.createElement("td");
+			if (e.updated !== "") {
+				td.innerText = new Date(e.updated).toLocaleString();
+			}
+			tr.appendChild(td);
+		}
+		{
+			const td = document.createElement("td");
+			let content = "";
+			if (e.size === "" || e.size < 0) {
+				content = "";
+			} else if (e.size < 1024) {
+				content = e.size + " B";
+			} else if (e.size < (2 << 19)) {
+				content = (e.size >> 10) + " KB";
+			} else if (e.size < 2 << 29) {
+				content = (e.size >> 20) + " MB";
+			} else {
+				content = (e.size >> 30) + " GB";
+			}
+			td.innerText = content;
+			tr.appendChild(td);
+		}
+		elem.appendChild(tr);
+	}
+
+	function ApplyItem(element, e, isTree = false) {
+		if (e.isFolder) {
+			{
+				const s1 = document.createElement("span");
+				s1.className = "folder-icon item-icon";
+				const s2 = document.createElement("span");
+				s2.className = "icon";
+				if (isTree) {
+					s2.innerHTML = "&#xED42;";
+				} else {
+					s2.innerHTML = "&#xE8D5;";
+				}
+				s1.appendChild(s2);
+				element.appendChild(s1);
+			}
+			if (isTree) {
+				const s1 = document.createElement("span");
+				s1.className = "folder-icon-open item-icon";
+				const s2 = document.createElement("span");
+				s2.className = "icon";
+				s2.innerHTML = "&#xED44;";
+				s1.appendChild(s2);
+				element.appendChild(s1);
+			}
+
+		} else {
+			const s1 = document.createElement("span");
+			s1.className = "file-icon item-icon";
+			const s2 = document.createElement("span");
+			s2.className = "icon";
+			s2.innerHTML = "&#xE8A5;";
+			s1.appendChild(s2);
+			element.appendChild(s1);
+		}
+		element.appendChild(document.createTextNode(e.name));
+	}
+
+	function OpenFile(f) {
+		const li = f.lastIndexOf(".");
+		const ext = li < 0 ? "" : f.substring(li);
+		switch (ext.toUpperCase()) {
+			case ".URL":
+				alert(f + "\nURL file is dangerous.");
+				break;
+			case ".HTM":
+			case ".HTML":
+			case ".XML":
+				alert(f + "\nHyper Text Markup Language");
+				break;
+			default:
+				alert(f);
+				break;
+		}
+	}
+
+	function OpenFolder(f) {
+		currentDirectory = f;
+		UpdateAddressBar(f);
+		{
+			Array.from(document.getElementsByClassName("selected")).forEach(e => {
+				e.classList.remove("selected");
+			});
+			let treeitem = document.querySelector("[data-tree-item-path=\"" + f + "\"]");
+			treeitem?.classList.add("selected");
+			while (treeitem !== null) {
+				treeitem?.classList.remove("collapsed");
+				treeitem?.classList.add("expand");
+				while (true) {
+					treeitem = treeitem.parentElement;
+					if (treeitem == null || treeitem.classList.contains("tree-item-container")) break;
+				}
+			}
+		}
+
+		while (elem.firstChild) {
+			elem.removeChild(elem.lastChild);
+		}
+		if (f !== "") {
+			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": -1, "updated": "" }, f)
+		}
+		info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
+	}
+
+	function UpdateAddressBar(f) {
+		const ab = document.getElementById("address-bar");
+		while (ab.firstChild) {
+			ab.removeChild(ab.lastChild);
+		}
+		let rn = info.rootName;
+		if (rn === "") {
+			rn = "Root";
+		}
+		{
+			const span = document.createElement("a");
+			span.textContent = rn;
+			if (f === "") {
+				span.className = "text-root";
+			} else {
+				span.onclick = function () { OpenFolder(""); }
+				span.className = "link-root";
+			}
+			ab.appendChild(span);
+		}
+		let folders = f.split("/");
+		if (folders[0] === "") { folders.splice(0, 1); }
+		let path = "";
+		folders.forEach((fd) => {
+			path = path + "/" + fd;
+			{
+				const span = document.createElement("span");
+				span.textContent = "/";
+				span.className = "separator";
+				ab.appendChild(span);
+			}
+			{
+				const span = document.createElement("a");
+				span.textContent = fd;
+				if (path !== currentDirectory) {
+					const localPath = path;
+					span.onclick = function () { OpenFolder(localPath); }
+					span.className = "link-folder";
+				} else {
+					span.className = "text-folder";
+				}
+				ab.appendChild(span);
+			}
+		});
+	}
+
+	function GetTree(f, indent) {
+		const d = document.createElement("div");
+		d.className = "tree-container";
+		info.entries.filter((e) => e.folder === f).forEach((e) => {
+			const d2 = document.createElement("div");
+			const path = e.folder + "/" + e.name;
+			d2.className = "tree-item-container";
+			d2.setAttribute("data-tree-item-path", path);
+			const d3 = document.createElement("div");
+			d3.className = "tree-item";
+			d2.appendChild(d3);
+			{
+				const s1 = document.createElement("div");
+				s1.className = "tree-item-indicator";
+				d3.appendChild(s1);
+			}
+			const d4 = document.createElement("div");
+			d4.className = "tree-item-body";
+			d4.style.paddingLeft = (indent * 10 + 4) + "px";
+			d3.appendChild(d4);
+			if (e.isFolder) {
+				if (info.entries.some(e => e.folder === path)) {
+					{
+						const s1 = document.createElement("button");
+						s1.className = "tree-item-button-expand";
+						s1.onclick = function (e) { d2.classList.remove("collapsed"); d2.classList.add("expand"); e.preventDefault(); }
+						const s2 = document.createElement("span");
+						s2.className = "icon";
+						s2.textContent = "&#xE96E;"
+						s2.style.fontSize = "75%";
+						s1.appendChild(s2);
+						d4.appendChild(s1);
+					}
+					{
+						const s1 = document.createElement("button");
+						s1.className = "tree-item-button-shrink";
+						s1.onclick = function (e) { d2.classList.remove("expand"); d2.classList.add("collapsed"); e.preventDefault(); }
+						const s2 = document.createElement("span");
+						s2.className = "icon";
+						s2.textContent = "&#xE96D;"
+						s2.style.fontSize = "75%";
+						s1.appendChild(s2);
+						d4.appendChild(s1);
+					}
+				}
+				{
+					const s1 = document.createElement("div");
+					s1.className = "tree-item-header";
+					ApplyItem(s1, e, true);
+					const s2 = document.createElement("span");
+					s2.className = "tree-item-text";
+					s1.appendChild(s2);
+					d4.appendChild(s1);
+					s1.onclick = function () {
+						OpenFolder(path);
+					};
+				}
+				d2.classList.add("collapsed");
+				d2.appendChild(GetTree(f + "/" + e.name, indent + 1));
+			} else {
+				const s1 = document.createElement("div");
+				s1.className = "tree-item-header";
+				ApplyItem(s1, e, true);
+				const s2 = document.createElement("span");
+				s2.className = "tree-item-text";
+				s1.appendChild(s2);
+				d4.appendChild(s1);
+				s1.onclick = function () {
+					OpenFile(path);
+				};
+			}
+			d.appendChild(d2);
+		});
+		return d;
+	}
+    </script>
+
+    <style>
+        body, html {
+            margin: 0px;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+        }
+
+        .vertical-middle {
+            vertical-align: middle;
+            min-height: 35px;
+        }
+
+            .vertical-middle > * {
+                vertical-align: middle;
+            }
+
+
+        .tree-view {
+            padding: 0 8px;
+        }
+
+            .tree-view .tree-container {
+                /* margin: 0 10px; */
+            }
+
+            .tree-view .tree-item-container > .tree-item {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                min-height: 2rem;
+                align-items: center;
+            }
+
+                .tree-view .tree-item-container > .tree-item > .tree-item-indicator {
+                    content: "";
+                    left: 0px;
+                    width: 0.25rem;
+                    height: 1.5rem;
+                    background-color: rgb(10, 100, 220);
+                    border-radius: 6px;
+                    margin: 2px;
+                    grid-column: 1/2;
+                    margin: 0 6px;
+                    visibility: hidden;
+                    align-items: center;
+                }
+
+
+                .tree-view .tree-item-container > .tree-item > .tree-item-body {
+                    display: grid;
+                    grid-column: 2/3;
+                    grid-template-columns: 20px 1fr;
+                    align-items: center;
+                    border-radius: 6px;
+                    padding: 3px 0;
+                }
+
+                    .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-expand,
+                    .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-button-shrink {
+                        grid-column: 1/2;
+                    }
+
+                    .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header {
+                        display: flex;
+                        align-items: center;
+                        grid-column: 2/3;
+                    }
+
+                        .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .item-icon {
+                            display: flex;
+                            align-items: center;
+                            margin-right: 6px;
+                        }
+
+                        .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .folder-icon-open {
+                            display: none;
+                        }
+
+            .tree-view .tree-item-container.selected > .tree-item > .tree-item-indicator {
+                visibility: visible;
+            }
+
+            .tree-view .tree-item-container.selected > .tree-item > .tree-item-body {
+                background-color: rgba(208, 215, 222, 0.24);
+            }
+
+            .tree-view .tree-item-container.expand > .tree-item > .tree-item-body > .tree-item-button-expand {
+                display: none;
+            }
+
+            .tree-view .tree-item-container.collapsed > .tree-item > .tree-item-body > .tree-item-button-shrink {
+                display: none;
+            }
+
+            .tree-view .tree-item-container.collapsed > .tree-container > .tree-item-container {
+                display: none;
+            }
+
+        .item-icon {
+            margin-right: 8px;
+        }
+
+        #address-bar {
+            vertical-align: middle;
+        }
+
+            #address-bar > .separator {
+                margin: 0 10px;
+            }
+
+            #address-bar > .link-root {
+                color: rgb(10, 100, 220);
+                text-decoration: none;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            #address-bar > .link-folder {
+                color: rgb(10, 100, 220);
+                text-decoration: none;
+                font-weight: 400;
+                cursor: pointer;
+            }
+
+            #address-bar > .text-folder, #address-bar > .text-root {
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+        .pane-button {
+            padding: 6px;
+            border-radius: 3px;
+        }
+
+            .pane-button:hover {
+                background: #8884;
+            }
+
+        .icon {
+            font-family: 'Segoe MDL2 Assets';
+            user-select: none;
+        }
+
+        .folder-icon, .folder-icon-open {
+            color: #54aeff;
+        }
+
+        .folder-icon-open {
+            display: none;
+        }
+
+        .container.pane-open {
+            grid-template-columns: 320px 1fr;
+        }
+
+            .container.pane-open > .left-panel {
+                grid-column: 1/2;
+            }
+
+            .container.pane-open > .main-panel {
+                grid-column: 2/3;
+            }
+
+            .container.pane-open .pane-button-open {
+                display: none;
+            }
+
+        .container.pane-close {
+            grid-template-columns: 1fr;
+        }
+
+            .container.pane-close > .left-panel {
+                display: none;
+            }
+
+            .container.pane-close > .main-panel {
+                grid-column: 1/2;
+            }
+
+            .container.pane-close .pane-button-close {
+                display: none;
+            }
+
+        .container {
+            display: grid;
+            width: 100vw;
+            height: 100vh;
+        }
+
+            .container > .left-panel {
+                border-right: solid 1px #ddd;
+                display: grid;
+                grid-template-rows: auto 1fr;
+                height: 100vh;
+            }
+
+                .container > .left-panel > .left-panel-top {
+                    grid-row: 1/2;
+                    padding: 16px;
+                }
+
+                .container > .left-panel > .tree-view {
+                    overflow: scroll;
+                    grid-row: 2/3;
+                }
+
+            .container > .main-panel {
+                overflow: scroll;
+                padding: 16px;
+            }
+
+        #alert-link {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            border-radius: 6px;
+            border: 1px solid rgb(200,200,200);
+            font-size: 14px;
+            background-color: #feff99;
+            margin-top: 6px;
+            align-items: center;
+            padding: 10px;
+        }
+
+            #alert-link > p {
+                margin: 0 8px;
+            }
+
+        #file-preview {
+            border-radius: 6px;
+            border: 1px solid rgb(200,200,200);
+            font-size: 14px;
+            margin-top: 6px;
+            grid-template-rows: auto auto;
+            display: none;
+        }
+
+            #file-preview > .file-preview-header {
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                grid-row: 1/2;
+                display: grid;
+                grid-template-columns: 1fr auto auto auto;
+                padding: 8px;
+                border-bottom: 1px solid rgb(200,200,200);
+                background-color: rgb(250,250,250);
+            }
+
+                #file-preview > .file-preview-header > :first-child {
+                    grid-column: 3/4;
+                    border-radius: 6px;
+                    border: 1px solid rgb(200,200,200);
+                    padding: 0 8px;
+                    display: grid;
+                    justify-items: center;
+                    background-color: rgb(250,250,250);
+                    grid-row: 1/2;
+                    margin-right: 8px;
+                }
+
+                    #file-preview > .file-preview-header > :first-child:hover {
+                        background-color: rgb(230,230,230);
+                    }
+
+                #file-preview > .file-preview-header > .wrap-box {
+                    grid-column: 2/3;
+                    grid-row: 1/2;
+                    display: flex;
+                    justify-content: center;
+                    margin-right: 8px;
+                }
+
+                    #file-preview > .file-preview-header > .wrap-box > label {
+                        display: grid;
+                        align-items: center;
+                        user-select: none;
+                    }
+
+                #file-preview > .file-preview-header > .file-preview-title {
+                    grid-column: 1/2;
+                    grid-row: 1/2;
+                    display: flex;
+                    padding: 8px 0;
+                    font-weight: 600;
+                }
+
+                #file-preview > .file-preview-header > .close-button {
+                    grid-column: 4/5;
+                    grid-row: 1/2;
+                }
+
+            #file-preview > .file-preview-body {
+                overflow-x: scroll;
+                white-space: pre;
+                padding: 4px;
+            }
+
+            #file-preview.wrap > .file-preview-body {
+                white-space: pre-wrap;
+            }
+
+            #file-preview.visible {
+                display: grid;
+            }
+
+        table.files-view {
+            border-radius: 6px;
+            border: 1px solid rgb(200,200,200);
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0px;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+            table.files-view tr {
+                height: 40px;
+            }
+
+            table.files-view tbody tr {
+                cursor: default;
+            }
+
+                table.files-view tbody tr:hover {
+                    background-color: #f8f8f8;
+                }
+
+            table.files-view td {
+                border-top: 1px solid rgb(200,200,200);
+            }
+
+            table.files-view td, table.files-view th {
+                padding-left: 16px;
+                vertical-align: middle;
+            }
+
+                table.files-view td:last-child, table.files-view th:last-child {
+                    padding-right: 16px;
+                    text-align: end;
+                }
+
+                table.files-view td > *, table.files-view th > * {
+                    vertical-align: middle;
+                }
+
+            table.files-view thead {
+                color: rgb(100,100,100);
+                font-size: 12px;
+                text-align: left;
+                background-color: rgb(250,250,250);
+            }
+
+                table.files-view thead th {
+                }
+
+        @media (max-width: 800px) {
+            :root {
+            }
+        }
+    </style>
 </body>
 </html>

@@ -52,6 +52,42 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<div id="alert-link">
+			<div class="header-icon">
+				<span class="icon">&#xE7BA;</span>
+			</div>
+			<p class="message" data-i18n-key="alert.html.message">
+				HTML is dangerous.
+			</p>
+			<button onclick="document.getElementById('alert-link').style.display='none';">
+				<span class="icon">&#xE894;</span>
+			</button>
+		</div>
+
+		<div id="file-preview" class="wrap visible">
+			<div class="file-preview-header">
+				<div class="button-group">
+					<button>
+						Raw
+					</button>
+				</div>
+				<div class="wrap-box">
+					<input type="checkbox" id="wrap" checked onchange="UpdateWrap();" name="wrap" />
+					<label for="wrap">Wrap</label>
+				</div>
+				<div class="file-preview-title">
+					<span>Sample.txt</span>
+				</div>
+				<button class="close-button" onclick="document.getElementById('file-preview').classList.remove('visible');">
+					<span class="icon">&#xE894;</span>
+				</button>
+			</div>
+			<div class="file-preview-body">
+				This is the file. This is the file. This is the file. This is the file.This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file.
+				Second line.
+			</div>
+		</div>
 	</main>
 </div>
 
@@ -72,7 +108,7 @@
 	"folder":"",
 	"name":"readme.md",
 	"isFolder":false,
-	"size":126,
+	"size":1260,
 	"updated":"2020-05-25T14:13:25+00:00"
 	}
 	,
@@ -87,7 +123,7 @@
 	"folder":"/folder",
 	"name":"index.html",
 	"isFolder":false,
-	"size":126,
+	"size":123456789,
 	"updated":"2019-10-12T12:34:56+00:00"
 	}
 	]
@@ -117,6 +153,9 @@
 	{
 	"key": "table.size",
 	"text": "Size"
+	},
+	{"key":"alert.html.message",
+	"text":"Opening HTML, URL and some other file may have serious security risk. Continue only if you trust this file."
 	}
 	]
 	},
@@ -141,13 +180,27 @@
 	{
 	"key": "table.size",
 	"text": "サイズ"
+	},
+	{"key":"alert.html.message",
+	"text":"HTMLやURLのようなファイルはセキュリティ上のリスクがあります。このファイルの作成者を信頼する場合のみ開いてください。"
 	}
 	]
 	}
 	]
 </div>
 
-<script>
+<script type="text/javascript">
+	function UpdateWrap() {
+		const cl = document.getElementById("file-preview").classList;
+		if (event.target.checked) {
+			cl.add("wrap");
+		} else {
+			cl.remove("wrap");
+		}
+	}
+</script>
+
+<script type="text/javascript">
 	const resource = JSON.parse(document.getElementById("resource").innerText);
 	const ln = window.navigator.language;
 	const res_en = resource.find((e) => e.languages[0] === "en");
@@ -162,7 +215,7 @@
 	});
 </script>
 
-<script>
+<script type="text/javascript">
 	function PaneOpen() {
 		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-close"); elem.classList.add("pane-open"); });
 	}
@@ -182,6 +235,21 @@
 	}
 
 	OpenFolder(info.currentDirectory);
+	if (!info.entries.some(e => {
+		const li = e.name.lastIndexOf(".");
+		const ext = li < 0 ? "" : e.name.substring(li);
+		switch (ext.toUpperCase()) {
+			case ".URL":
+			case ".HTM":
+			case ".HTML":
+			case ".XML":
+				return true;
+			default:
+				return false;
+		}
+	})) {
+		document.getElementById('alert-link').style.display = 'none';
+	}
 
 	function AddEntry(e, f) {
 		const tr = document.createElement("tr");
@@ -203,12 +271,26 @@
 		}
 		{
 			const td = document.createElement("td");
-			td.innerText = e.updated;
+			if (e.updated !== "") {
+				td.innerText = new Date(e.updated).toLocaleString();
+			}
 			tr.appendChild(td);
 		}
 		{
 			const td = document.createElement("td");
-			td.innerText = e.size < 0 ? "" : e.size + "B";
+			let content = "";
+			if (e.size === "" || e.size < 0) {
+				content = "";
+			} else if (e.size < 1024) {
+				content = e.size + " B";
+			} else if (e.size < (2 << 19)) {
+				content = (e.size >> 10) + " KB";
+			} else if (e.size < 2 << 29) {
+				content = (e.size >> 20) + " MB";
+			} else {
+				content = (e.size >> 30) + " GB";
+			}
+			td.innerText = content;
 			tr.appendChild(td);
 		}
 		elem.appendChild(tr);
@@ -632,6 +714,99 @@
 		.container > .main-panel {
 			overflow: scroll;
 			padding: 16px;
+		}
+
+	#alert-link {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		border-radius: 6px;
+		border: 1px solid rgb(200,200,200);
+		font-size: 14px;
+		background-color: #feff99;
+		margin-top: 6px;
+		align-items: center;
+		padding: 10px;
+	}
+
+		#alert-link > p {
+			margin: 0 8px;
+		}
+
+	#file-preview {
+		border-radius: 6px;
+		border: 1px solid rgb(200,200,200);
+		font-size: 14px;
+		margin-top: 6px;
+		grid-template-rows: auto auto;
+		display: none;
+	}
+
+		#file-preview > .file-preview-header {
+			border-top-left-radius: 6px;
+			border-top-right-radius: 6px;
+			grid-row: 1/2;
+			display: grid;
+			grid-template-columns: 1fr auto auto auto;
+			padding: 8px;
+			border-bottom: 1px solid rgb(200,200,200);
+			background-color: rgb(250,250,250);
+		}
+
+			#file-preview > .file-preview-header > :first-child {
+				grid-column: 3/4;
+				border-radius: 6px;
+				border: 1px solid rgb(200,200,200);
+				padding: 0 8px;
+				display: grid;
+				justify-items: center;
+				background-color: rgb(250,250,250);
+				grid-row: 1/2;
+				margin-right: 8px;
+			}
+
+				#file-preview > .file-preview-header > :first-child:hover {
+					background-color: rgb(230,230,230);
+				}
+
+			#file-preview > .file-preview-header > .wrap-box {
+				grid-column: 2/3;
+				grid-row: 1/2;
+				display: flex;
+				justify-content: center;
+				margin-right: 8px;
+			}
+
+				#file-preview > .file-preview-header > .wrap-box > label {
+					display: grid;
+					align-items: center;
+					user-select: none;
+				}
+
+			#file-preview > .file-preview-header > .file-preview-title {
+				grid-column: 1/2;
+				grid-row: 1/2;
+				display: flex;
+				padding: 8px 0;
+				font-weight: 600;
+			}
+
+			#file-preview > .file-preview-header > .close-button {
+				grid-column: 4/5;
+				grid-row: 1/2;
+			}
+
+		#file-preview > .file-preview-body {
+			overflow-x: scroll;
+			white-space: pre;
+			padding: 4px;
+		}
+
+		#file-preview.wrap > .file-preview-body {
+			white-space: pre-wrap;
+		}
+
+		#file-preview.visible {
+			display: grid;
 		}
 
 	table.files-view {
