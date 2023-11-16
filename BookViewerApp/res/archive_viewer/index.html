@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{folder}</title>
+    <meta charset="utf-8">
+    <title>Index</title>
 </head>
 <body>
-    @page "/Explorer"
-
     <div class="container pane-open">
         <div class="left-panel">
             <div class="left-panel-top">
@@ -32,7 +31,7 @@
                     <span style="margin:10px 0;">/</span>
                     <span>Folder</span>
                     <span style="margin:10px 0;">/</span>
-                    <span>Files</span>
+                    <span>File</span>
                 </span>
             </div>
 
@@ -71,9 +70,9 @@
                 </button>
             </div>
 
-            <div id="file-preview" class="wrap visible">
+            <div id="file-preview" class="wrap">
                 <div class="file-preview-header">
-                    <div class="button-group">
+                    <div class="button-group" onclick="OpenPreviewRaw();">
                         <button>
                             Raw
                         </button>
@@ -90,424 +89,464 @@
                     </button>
                 </div>
                 <div class="file-preview-body">
-                    This is the file. This is the file. This is the file. This is the file.This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file. This is the file.
-                    Second line.
+                    <span class="file-preview-body-content"></span>
+                    <div class="file-preview-body-raw">
+                        <button class="file-preview-body-raw-link" onclick="OpenPreviewRaw(this);">View raw</button>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="info" style="display:none;">
+    <script type="application/json" id="info" style="display:none;">{info.json}</script>
+
+    <script type="application/json" id="resource" style="display:none;">
+        [
         {
-        "currentDirectory":"",
-        "previewFile":"",
-        "rootName":"Root",
-        "entries":[
+        "languages": [
+        "en",
+        "en-US"
+        ],
+        "texts": [
         {
-        "folder":"",
-        "name":"folder",
-        "isFolder":true,
-        "size":-1,
-        "updated":"2018-01-01T20:20:39+00:00"
+        "key": "header.files",
+        "text": "Files"
         },
         {
-        "folder":"",
-        "name":"readme.md",
-        "isFolder":false,
-        "size":1260,
-        "updated":"2020-05-25T14:13:25+00:00"
+        "key": "table.name",
+        "text": "Name"
+        },
+        {
+        "key": "table.updated",
+        "text": "Last update date"
+        },
+        {
+        "key": "table.size",
+        "text": "Size"
+        },
+        {
+        "key": "alert.html.message",
+        "text": "Opening HTML, URL and some other file may have serious security risk. Continue only if you trust this file."
         }
-        ,
-        {
-        "folder":"/folder",
-        "name":"folder2",
-        "isFolder":true,
-        "size":-1,
-        "updated":"2019-10-12T12:34:56+00:00"
+        ]
         },
         {
-        "folder":"/folder",
-        "name":"index.html",
-        "isFolder":false,
-        "size":123456789,
-        "updated":"2019-10-12T12:34:56+00:00"
+        "languages": [
+        "ja",
+        "ja-JP"
+        ],
+        "texts": [
+        {
+        "key": "header.files",
+        "text": "‰∏ÄË¶ß"
+        },
+        {
+        "key": "table.name",
+        "text": "ÂêçÂâç"
+        },
+        {
+        "key": "table.updated",
+        "text": "Êõ¥Êñ∞Êó•ÊôÇ"
+        },
+        {
+        "key": "table.size",
+        "text": "„Çµ„Ç§„Ç∫"
+        },
+        {
+        "key": "alert.html.message",
+        "text": "HTML„ÇÑURL„ÅÆ„Çà„ÅÜ„Å™„Éï„Ç°„Ç§„É´„ÅØ„Çª„Ç≠„É•„É™„ÉÜ„Ç£‰∏ä„ÅÆ„É™„Çπ„ÇØ„Åå„ÅÇ„Çä„Åæ„Åô„ÄÇ„Åì„ÅÆ„Éï„Ç°„Ç§„É´„ÅÆ‰ΩúÊàêËÄÖ„Çí‰ø°È†º„Åô„ÇãÂ†¥Âêà„ÅÆ„ÅøÈñã„ÅÑ„Å¶„Åè„Å†„Åï„ÅÑ„ÄÇ"
         }
         ]
         }
-    </div>
-
-    <div id="resource" style="display:none;">
-[
-  {
-    "languages": [
-      "en",
-      "en-US"
-    ],
-    "texts": [
-      {
-        "key": "header.files",
-        "text": "Files"
-      },
-      {
-        "key": "table.name",
-        "text": "Name"
-      },
-      {
-        "key": "table.updated",
-        "text": "Last update date"
-      },
-      {
-        "key": "table.size",
-        "text": "Size"
-      },
-      {
-        "key": "alert.html.message",
-        "text": "Opening HTML, URL and some other file may have serious security risk. Continue only if you trust this file."
-      }
-    ]
-  },
-  {
-    "languages": [
-      "ja",
-      "ja-JP"
-    ],
-    "texts": [
-      {
-        "key": "header.files",
-        "text": "àÍóó"
-      },
-      {
-        "key": "table.name",
-        "text": "ñºëO"
-      },
-      {
-        "key": "table.updated",
-        "text": "çXêVì˙éû"
-      },
-      {
-        "key": "table.size",
-        "text": "ÉTÉCÉY"
-      },
-      {
-        "key": "alert.html.message",
-        "text": "HTMLÇ‚URLÇÃÇÊÇ§Ç»ÉtÉ@ÉCÉãÇÕÉZÉLÉÖÉäÉeÉBè„ÇÃÉäÉXÉNÇ™Ç†ÇËÇ‹Ç∑ÅBÇ±ÇÃÉtÉ@ÉCÉãÇÃçÏê¨é“ÇêMóäÇ∑ÇÈèÍçáÇÃÇ›äJÇ¢ÇƒÇ≠ÇæÇ≥Ç¢ÅB"
-      }
-    ]
-  }
-]
-    </div>
-
-    <script>
-	function UpdateWrap(target) {
-		const cl = document.getElementById("file-preview").classList;
-		if (target.checked) {
-			cl.add("wrap");
-		} else {
-			cl.remove("wrap");
-		}
-	}
+        ]
     </script>
 
     <script>
-	const resource = JSON.parse(document.getElementById("resource").innerText);
-	const ln = window.navigator.language;
-	const res_en = resource.find((e) => e.languages[0] === "en");
-	const res_crt = resource.find((e) => e.languages.some((l) => l === ln || l === ln.split('-')[0])) ?? res_en;
-
-	function GetLocalizedText(key) {
-		return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
-	}
-
-	document.querySelectorAll("[data-i18n-key]").forEach((d) => {
-		d.textContent = GetLocalizedText(d.getAttribute("data-i18n-key"));
-	});
+        function UpdateWrap(target) {
+            const cl = document.getElementById("file-preview").classList;
+            if (target.checked) {
+                cl.add("wrap");
+            } else {
+                cl.remove("wrap");
+            }
+        }
     </script>
 
     <script>
-	function PaneOpen() {
-		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-close"); elem.classList.add("pane-open"); });
-	}
+        const resource = JSON.parse(document.getElementById("resource").innerText);
+        const ln = window.navigator.language;
+        const res_en = resource.find((e) => e.languages[0] === "en");
+        const res_crt = resource.find((e) => e.languages.some((l) => l === ln || l === ln.split('-')[0])) ?? res_en;
 
-	function PaneClose() {
-		Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-open"); elem.classList.add("pane-close"); });
-	}
+        function GetLocalizedText(key) {
+            return res_crt.texts.find((e) => e.key === key)?.text ?? res_en.texts.find((e) => e.key == key)?.text ?? "undefined";
+        }
 
-	const elem = document.querySelector(".files-view > tbody");
-	const info = JSON.parse(document.getElementById("info").innerText);
-	let currentDirectory = "";
+        document.querySelectorAll("[data-i18n-key]").forEach((d) => {
+            d.textContent = GetLocalizedText(d.getAttribute("data-i18n-key"));
+        });
+    </script>
 
-	{
-		var tv = document.getElementsByClassName("tree-view")[0];
-		while (tv.firstChild) { tv.removeChild(tv.lastChild); }
-		tv.appendChild(GetTree("", 0));
-	}
+    <script>
+        function PaneOpen() {
+            Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-close"); elem.classList.add("pane-open"); });
+        }
 
-	OpenFolder(info.currentDirectory);
-	if (!info.entries.some(e => {
-		const li = e.name.lastIndexOf(".");
-		const ext = li < 0 ? "" : e.name.substring(li);
-		switch (ext.toUpperCase()) {
-			case ".URL":
-			case ".HTM":
-			case ".HTML":
-			case ".XML":
-				return true;
-			default:
-				return false;
-		}
-	})) {
-		document.getElementById('alert-link').style.display = 'none';
-	}
+        function PaneClose() {
+            Array.from(document.getElementsByClassName("container")).forEach((elem) => { elem.classList.remove("pane-open"); elem.classList.add("pane-close"); });
+        }
 
-	function AddEntry(e, f) {
-		const tr = document.createElement("tr");
-		tr.onclick = function () {
-			if (e.name === "..") {
-				OpenFolder(f.substring(0, f.lastIndexOf("/")));
-			}
-			else if (e.isFolder) {
-				OpenFolder(f + "/" + e.name);
-			}
-			else {
-				OpenFile(e.folder + "/" + e.name);
-			}
-		}
-		{
-			const td = document.createElement("td");
-			ApplyItem(td, e);
-			tr.appendChild(td);
-		}
-		{
-			const td = document.createElement("td");
-			if (e.updated !== "") {
-				td.innerText = new Date(e.updated).toLocaleString();
-			}
-			tr.appendChild(td);
-		}
-		{
-			const td = document.createElement("td");
-			let content = "";
-			if (e.size === "" || e.size < 0) {
-				content = "";
-			} else if (e.size < 1024) {
-				content = e.size + " B";
-			} else if (e.size < (2 << 19)) {
-				content = (e.size >> 10) + " KB";
-			} else if (e.size < 2 << 29) {
-				content = (e.size >> 20) + " MB";
-			} else {
-				content = (e.size >> 30) + " GB";
-			}
-			td.innerText = content;
-			tr.appendChild(td);
-		}
-		elem.appendChild(tr);
-	}
+        const elem = document.querySelector(".files-view > tbody");
+        const info = JSON.parse(document.getElementById("info").innerText);
+        let currentDirectory = "";
 
-	function ApplyItem(element, e, isTree = false) {
-		if (e.isFolder) {
-			{
-				const s1 = document.createElement("span");
-				s1.className = "folder-icon item-icon";
-				const s2 = document.createElement("span");
-				s2.className = "icon";
-				if (isTree) {
-					s2.innerHTML = "&#xED42;";
-				} else {
-					s2.innerHTML = "&#xE8D5;";
-				}
-				s1.appendChild(s2);
-				element.appendChild(s1);
-			}
-			if (isTree) {
-				const s1 = document.createElement("span");
-				s1.className = "folder-icon-open item-icon";
-				const s2 = document.createElement("span");
-				s2.className = "icon";
-				s2.innerHTML = "&#xED44;";
-				s1.appendChild(s2);
-				element.appendChild(s1);
-			}
+        {
+            var tv = document.getElementsByClassName("tree-view")[0];
+            while (tv.firstChild) { tv.removeChild(tv.lastChild); }
+            tv.appendChild(GetTree("", 0));
+        }
 
-		} else {
-			const s1 = document.createElement("span");
-			s1.className = "file-icon item-icon";
-			const s2 = document.createElement("span");
-			s2.className = "icon";
-			s2.innerHTML = "&#xE8A5;";
-			s1.appendChild(s2);
-			element.appendChild(s1);
-		}
-		element.appendChild(document.createTextNode(e.name));
-	}
+        OpenFolder(info.currentDirectory);
+        if (!info.entries.some(e => {
+            const li = e.name.lastIndexOf(".");
+            const ext = li < 0 ? "" : e.name.substring(li);
+            switch (ext.toUpperCase()) {
+                case ".URL":
+                case ".HTM":
+                case ".HTML":
+                case ".XML":
+                    return true;
+                default:
+                    return false;
+            }
+        })) {
+            document.getElementById('alert-link').style.display = 'none';
+        }
 
-	function OpenFile(f) {
-		const li = f.lastIndexOf(".");
-		const ext = li < 0 ? "" : f.substring(li);
-		switch (ext.toUpperCase()) {
-			case ".URL":
-				alert(f + "\nURL file is dangerous.");
-				break;
-			case ".HTM":
-			case ".HTML":
-			case ".XML":
-				alert(f + "\nHyper Text Markup Language");
-				break;
-			default:
-				alert(f);
-				break;
-		}
-	}
+        function AddEntry(e, f) {
+            const tr = document.createElement("tr");
+            tr.onclick = function () {
+                if (e.name === "..") {
+                    OpenFolder(f.substring(0, f.lastIndexOf("/")));
+                }
+                else if (e.isFolder) {
+                    OpenFolder(f + "/" + e.name);
+                }
+                else {
+                    OpenFile(e.folder + "/" + e.name);
+                }
+            }
+            {
+                const td = document.createElement("td");
+                ApplyItem(td, e);
+                tr.appendChild(td);
+            }
+            {
+                const td = document.createElement("td");
+                if (e.updated !== "") {
+                    td.innerText = new Date(e.updated).toLocaleString();
+                }
+                tr.appendChild(td);
+            }
+            {
+                const td = document.createElement("td");
+                let content = "";
+                if (e.size === "" || e.size == null || e.size < 0) {
+                    content = "";
+                } else if (e.size < 1024) {
+                    content = e.size + " B";
+                } else if (e.size < (2 << 19)) {
+                    content = (e.size >> 10) + " KB";
+                } else if (e.size < 2 << 29) {
+                    content = (e.size >> 20) + " MB";
+                } else {
+                    content = (e.size >> 30) + " GB";
+                }
+                td.innerText = content;
+                tr.appendChild(td);
+            }
+            elem.appendChild(tr);
+        }
 
-	function OpenFolder(f) {
-		currentDirectory = f;
-		UpdateAddressBar(f);
-		{
-			Array.from(document.getElementsByClassName("selected")).forEach(e => {
-				e.classList.remove("selected");
-			});
-			let treeitem = document.querySelector("[data-tree-item-path=\"" + f + "\"]");
-			treeitem?.classList.add("selected");
-			while (treeitem !== null) {
-				treeitem?.classList.remove("collapsed");
-				treeitem?.classList.add("expand");
-				while (true) {
-					treeitem = treeitem.parentElement;
-					if (treeitem == null || treeitem.classList.contains("tree-item-container")) break;
-				}
-			}
-		}
+        function ApplyItem(element, e, isTree = false) {
+            if (e.isFolder) {
+                {
+                    const s1 = document.createElement("span");
+                    s1.className = "folder-icon item-icon";
+                    const s2 = document.createElement("span");
+                    s2.className = "icon";
+                    if (isTree) {
+                        s2.innerHTML = "&#xED42;";
+                    } else {
+                        s2.innerHTML = "&#xE8D5;";
+                    }
+                    s1.appendChild(s2);
+                    element.appendChild(s1);
+                }
+                if (isTree) {
+                    const s1 = document.createElement("span");
+                    s1.className = "folder-icon-open item-icon";
+                    const s2 = document.createElement("span");
+                    s2.className = "icon";
+                    s2.innerHTML = "&#xED44;";
+                    s1.appendChild(s2);
+                    element.appendChild(s1);
+                }
 
-		while (elem.firstChild) {
-			elem.removeChild(elem.lastChild);
-		}
-		if (f !== "") {
-			AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": -1, "updated": "" }, f)
-		}
-		info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
-	}
+            } else {
+                const s1 = document.createElement("span");
+                s1.className = "file-icon item-icon";
+                const s2 = document.createElement("span");
+                s2.className = "icon";
+                s2.innerHTML = "&#xE8A5;";
+                s1.appendChild(s2);
+                element.appendChild(s1);
+            }
+            element.appendChild(document.createTextNode(e.name));
+        }
 
-	function UpdateAddressBar(f) {
-		const ab = document.getElementById("address-bar");
-		while (ab.firstChild) {
-			ab.removeChild(ab.lastChild);
-		}
-		let rn = info.rootName;
-		if (rn === "") {
-			rn = "Root";
-		}
-		{
-			const span = document.createElement("a");
-			span.textContent = rn;
-			if (f === "") {
-				span.className = "text-root";
-			} else {
-				span.onclick = function () { OpenFolder(""); }
-				span.className = "link-root";
-			}
-			ab.appendChild(span);
-		}
-		let folders = f.split("/");
-		if (folders[0] === "") { folders.splice(0, 1); }
-		let path = "";
-		folders.forEach((fd) => {
-			path = path + "/" + fd;
-			{
-				const span = document.createElement("span");
-				span.textContent = "/";
-				span.className = "separator";
-				ab.appendChild(span);
-			}
-			{
-				const span = document.createElement("a");
-				span.textContent = fd;
-				if (path !== currentDirectory) {
-					const localPath = path;
-					span.onclick = function () { OpenFolder(localPath); }
-					span.className = "link-folder";
-				} else {
-					span.className = "text-folder";
-				}
-				ab.appendChild(span);
-			}
-		});
-	}
+        function OpenFile(f) {
+            const li = f.lastIndexOf(".");
+            const ext = li < 0 ? "" : f.substring(li);
+            switch (ext.toUpperCase()) {
+                case ".URL":
+                    window.location.href = info.basePath + f + "?ui=url";
+                    break;
+                case ".HTM":
+                case ".HTML":
+                case ".XML":
+                    window.location.href = info.basePath + f;
+                    break;
+                case ".JPEG":
+                case ".JPG":
+                case ".JFIF":
+                case ".PJPEG":
+                case ".PJP":
+                case ".SVG":
+                case ".GIF":
+                case ".WEBP":
+                case ".PNG":
+                case ".APNG":
+                case ".AVIF":
+                case ".BMP":
+                case ".ICO":
+                case ".CUR":
+                case ".TIF":
+                case ".TIFF":
+                //    window.location.href = info.basePath + f;
+                //    break;
+                default:
+                    {
+                        var e = info.entries.find(a => (a.folder + "/" + a.name) === f);
+                        if (e?.size < 1024 * 1024) {
+                            OpenTextFile(f);
+                        } else {
+                            OpenRawMode(f);
+                        }
+                    }
+                    break;
+            }
+        }
 
-	function GetTree(f, indent) {
-		const d = document.createElement("div");
-		d.className = "tree-container";
-		info.entries.filter((e) => e.folder === f).forEach((e) => {
-			const d2 = document.createElement("div");
-			const path = e.folder + "/" + e.name;
-			d2.className = "tree-item-container";
-			d2.setAttribute("data-tree-item-path", path);
-			const d3 = document.createElement("div");
-			d3.className = "tree-item";
-			d2.appendChild(d3);
-			{
-				const s1 = document.createElement("div");
-				s1.className = "tree-item-indicator";
-				d3.appendChild(s1);
-			}
-			const d4 = document.createElement("div");
-			d4.className = "tree-item-body";
-			d4.style.paddingLeft = (indent * 10 + 4) + "px";
-			d3.appendChild(d4);
-			if (e.isFolder) {
-				if (info.entries.some(e => e.folder === path)) {
-					{
-						const s1 = document.createElement("button");
-						s1.className = "tree-item-button-expand";
-						s1.onclick = function (e) { d2.classList.remove("collapsed"); d2.classList.add("expand"); e.preventDefault(); }
-						const s2 = document.createElement("span");
-						s2.className = "icon";
-						s2.textContent = "&#xE96E;"
-						s2.style.fontSize = "75%";
-						s1.appendChild(s2);
-						d4.appendChild(s1);
-					}
-					{
-						const s1 = document.createElement("button");
-						s1.className = "tree-item-button-shrink";
-						s1.onclick = function (e) { d2.classList.remove("expand"); d2.classList.add("collapsed"); e.preventDefault(); }
-						const s2 = document.createElement("span");
-						s2.className = "icon";
-						s2.textContent = "&#xE96D;"
-						s2.style.fontSize = "75%";
-						s1.appendChild(s2);
-						d4.appendChild(s1);
-					}
-				}
-				{
-					const s1 = document.createElement("div");
-					s1.className = "tree-item-header";
-					ApplyItem(s1, e, true);
-					const s2 = document.createElement("span");
-					s2.className = "tree-item-text";
-					s1.appendChild(s2);
-					d4.appendChild(s1);
-					s1.onclick = function () {
-						OpenFolder(path);
-					};
-				}
-				d2.classList.add("collapsed");
-				d2.appendChild(GetTree(f + "/" + e.name, indent + 1));
-			} else {
-				const s1 = document.createElement("div");
-				s1.className = "tree-item-header";
-				ApplyItem(s1, e, true);
-				const s2 = document.createElement("span");
-				s2.className = "tree-item-text";
-				s1.appendChild(s2);
-				d4.appendChild(s1);
-				s1.onclick = function () {
-					OpenFile(path);
-				};
-			}
-			d.appendChild(d2);
-		});
-		return d;
-	}
+        let controller = null;
+        let currentPreviewUrl = "";
+
+        function OpenPreviewRaw() {
+            if (currentPreviewUrl !== "") {
+                window.location.href = currentPreviewUrl;
+            }
+        }
+
+        function OpenRawMode(f) {
+            {
+                const cl = document.getElementById("file-preview").classList;
+                if (!cl.contains("raw-mode")) cl.add("raw-mode");
+                const url = info.basePath + f;
+                currentPreviewUrl = url;
+            }
+            {
+                const cl = document.getElementById("file-preview").classList;
+                if (!cl.contains("visible")) cl.add("visible");
+            }
+            {
+                const li = f.lastIndexOf("/");
+                const fn = li < 0 ? f : f.substring(li + 1);
+                document.querySelector(".file-preview-title > :first-child").textContent = fn;
+            }
+        }
+
+        async function OpenTextFile(f) {
+            const url = info.basePath + f;
+            document.getElementById("file-preview").classList.remove("raw-mode");
+
+            const li = f.lastIndexOf("/");
+            const fn = li < 0 ? f : f.substring(li + 1);
+            if (controller != null) controller.abort();
+            controller = new AbortController();
+
+            try {
+                const signal = controller.signal;
+                const response = await fetch(url, { signal });
+                document.querySelector("#file-preview > .file-preview-body > .file-preview-body-content").textContent = await response.text();
+                document.querySelector(".file-preview-title > :first-child").textContent = fn;
+                currentPreviewUrl = url;
+                const cl = document.getElementById("file-preview").classList;
+                if (!cl.contains("visible")) cl.add("visible");
+            } catch (error) {
+                alert(error);
+            }
+        }
+
+        function OpenFolder(f) {
+            currentDirectory = f;
+            document.title = f;
+            UpdateAddressBar(f);
+            {
+                Array.from(document.getElementsByClassName("selected")).forEach(e => {
+                    e.classList.remove("selected");
+                });
+                let treeitem = document.querySelector("[data-tree-item-path=\"" + f + "\"]");
+                treeitem?.classList.add("selected");
+                while (treeitem !== null) {
+                    treeitem?.classList.remove("collapsed");
+                    treeitem?.classList.add("expand");
+                    while (true) {
+                        treeitem = treeitem.parentElement;
+                        if (treeitem == null || treeitem.classList.contains("tree-item-container")) break;
+                    }
+                }
+            }
+
+            while (elem.firstChild) {
+                elem.removeChild(elem.lastChild);
+            }
+            if (f !== "") {
+                AddEntry({ "folder": f, "name": "..", "isFolder": true, "size": -1, "updated": "" }, f)
+            }
+            info.entries.filter((e) => e.folder == f).forEach((e) => AddEntry(e, f));
+        }
+
+        function UpdateAddressBar(f) {
+            const ab = document.getElementById("address-bar");
+            while (ab.firstChild) {
+                ab.removeChild(ab.lastChild);
+            }
+            let rn = info.rootName;
+            if (rn === "") {
+                rn = "Root";
+            }
+            {
+                const span = document.createElement("a");
+                span.textContent = rn;
+                if (f === "") {
+                    span.className = "text-root";
+                } else {
+                    span.onclick = function () { OpenFolder(""); }
+                    span.className = "link-root";
+                }
+                ab.appendChild(span);
+            }
+            let folders = f.split("/");
+            if (folders[0] === "") { folders.splice(0, 1); }
+            let path = "";
+            folders.forEach((fd) => {
+                path = path + "/" + fd;
+                {
+                    const span = document.createElement("span");
+                    span.textContent = "/";
+                    span.className = "separator";
+                    ab.appendChild(span);
+                }
+                {
+                    const span = document.createElement("a");
+                    span.textContent = fd;
+                    if (path !== currentDirectory) {
+                        const localPath = path;
+                        span.onclick = function () { OpenFolder(localPath); }
+                        span.className = "link-folder";
+                    } else {
+                        span.className = "text-folder";
+                    }
+                    ab.appendChild(span);
+                }
+            });
+        }
+
+        function GetTree(f, indent) {
+            const d = document.createElement("div");
+            d.className = "tree-container";
+            info.entries.filter((e) => e.folder === f).forEach((e) => {
+                const d2 = document.createElement("div");
+                const path = e.folder + "/" + e.name;
+                d2.className = "tree-item-container";
+                d2.setAttribute("data-tree-item-path", path);
+                const d3 = document.createElement("div");
+                d3.className = "tree-item";
+                d2.appendChild(d3);
+                {
+                    const s1 = document.createElement("div");
+                    s1.className = "tree-item-indicator";
+                    d3.appendChild(s1);
+                }
+                const d4 = document.createElement("div");
+                d4.className = "tree-item-body";
+                d4.style.paddingLeft = (indent * 10 + 4) + "px";
+                d3.appendChild(d4);
+                if (e.isFolder) {
+                    if (info.entries.some(e => e.folder === path)) {
+                        {
+                            const s1 = document.createElement("button");
+                            s1.className = "tree-item-button-expand";
+                            s1.onclick = function (e) { d2.classList.remove("collapsed"); d2.classList.add("expand"); e.preventDefault(); }
+                            const s2 = document.createElement("span");
+                            s2.className = "icon";
+                            s2.innerHTML = "&#xE96E;"
+                            s2.style.fontSize = "75%";
+                            s1.appendChild(s2);
+                            d4.appendChild(s1);
+                        }
+                        {
+                            const s1 = document.createElement("button");
+                            s1.className = "tree-item-button-shrink";
+                            s1.onclick = function (e) { d2.classList.remove("expand"); d2.classList.add("collapsed"); e.preventDefault(); }
+                            const s2 = document.createElement("span");
+                            s2.className = "icon";
+                            s2.innerHTML = "&#xE96D;"
+                            s2.style.fontSize = "75%";
+                            s1.appendChild(s2);
+                            d4.appendChild(s1);
+                        }
+                    }
+                    {
+                        const s1 = document.createElement("div");
+                        s1.className = "tree-item-header";
+                        ApplyItem(s1, e, true);
+                        const s2 = document.createElement("span");
+                        s2.className = "tree-item-text";
+                        s1.appendChild(s2);
+                        d4.appendChild(s1);
+                        s1.onclick = function () {
+                            OpenFolder(path);
+                        };
+                    }
+                    d2.classList.add("collapsed");
+                    d2.appendChild(GetTree(f + "/" + e.name, indent + 1));
+                } else {
+                    const s1 = document.createElement("div");
+                    s1.className = "tree-item-header";
+                    ApplyItem(s1, e, true);
+                    const s2 = document.createElement("span");
+                    s2.className = "tree-item-text";
+                    s1.appendChild(s2);
+                    d4.appendChild(s1);
+                    s1.onclick = function () {
+                        OpenFile(path);
+                    };
+                }
+                d.appendChild(d2);
+            });
+            return d;
+        }
     </script>
 
     <style>
@@ -715,12 +754,12 @@
                 }
 
                 .container > .left-panel > .tree-view {
-                    overflow: scroll;
+                    overflow: auto;
                     grid-row: 2/3;
                 }
 
             .container > .main-panel {
-                overflow: scroll;
+                overflow: auto;
                 padding: 16px;
             }
 
@@ -804,13 +843,47 @@
                 }
 
             #file-preview > .file-preview-body {
-                overflow-x: scroll;
-                white-space: pre;
                 padding: 4px;
             }
 
+                #file-preview > .file-preview-body > .file-preview-body-raw {
+                    text-align: center;
+                    display: none;
+                }
+
+                    #file-preview > .file-preview-body > .file-preview-body-raw > .file-preview-body-raw-link {
+                        color: rgb(10, 100, 220);
+                        text-decoration: none;
+                        cursor: pointer;
+                        user-select: none;
+                    }
+
+                        #file-preview > .file-preview-body > .file-preview-body-raw > .file-preview-body-raw-link:hover {
+                            text-decoration: underline;
+                        }
+
+            #file-preview.raw-mode > .file-preview-body > .file-preview-body-raw {
+                display: block;
+            }
+
+            #file-preview.raw-mode > .file-preview-body > .file-preview-body-content {
+                display: none;
+            }
+
+            #file-preview:not(.wrap) > .file-preview-body > .file-preview-body-content {
+                white-space: pre;
+            }
+
             #file-preview.wrap > .file-preview-body {
+                overflow-wrap: anywhere;
+            }
+
+            #file-preview.wrap > .file-preview-body > .file-preview-body-content {
                 white-space: pre-wrap;
+            }
+
+            #file-preview:not(.wrap) > .file-preview-body {
+                overflow-x: auto;
             }
 
             #file-preview.visible {
@@ -826,6 +899,7 @@
             border-spacing: 0px;
             font-size: 14px;
             margin-top: 6px;
+            overflow: hidden;
         }
 
             table.files-view tr {
@@ -867,6 +941,17 @@
 
                 table.files-view thead th {
                 }
+
+        /*table.files-view > thead {
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+            }
+
+            table.files-view > tbody > :last-child {
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }*/
+
 
         @media (max-width: 800px) {
             :root {

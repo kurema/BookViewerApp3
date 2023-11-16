@@ -14,6 +14,7 @@ using Windows.Storage;
 using SharpCompress.Archives;
 using System.Text.RegularExpressions;
 using Windows.ApplicationModel.Email;
+using BookViewerApp.Views.BrowserTools.DirectoryInfos;
 
 namespace BookViewerApp.Views;
 
@@ -469,6 +470,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			case "INDEX": goto index;
 			case "URL": goto url;
 			case "NATIVE": goto native;
+			case "BOOK": goto viewer;
 		}
 
 		if (string.IsNullOrEmpty(fn))
@@ -512,7 +514,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 						using var str = new StreamReader(st, true);
 						HtmlURLCache = await str.ReadToEndAsync();
 					}
-					var json = Views.BrowserTools.Serialize.ToJson(new BrowserTools.CushionInfo() { Content = text, Filename = fn, Url = match.Groups[1].Value });
+					var json = Views.BrowserTools.CushionInfos.Serialize.ToJson(new BrowserTools.CushionInfos.CushionInfo() { Content = text, Filename = fn, Url = match.Groups[1].Value });
 					return (await StringToStream(HtmlURLCache.Replace("{info.json}", System.Web.HttpUtility.HtmlEncode(json))), new GetContentInfo() { MimetypeOverride = "text/html" });
 				}
 			}
@@ -520,8 +522,35 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	native:;
 		return (await ReadSharpCompressFile(Archive, uri.LocalPath, SemaphoreReader) ?? throw new Exception(InvalidPathMessage), new());
 	index:;
-		return (await StringToStream(GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
+		return (await StringToStream(await GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
+	viewer:;
+		return (await StringToStream(await GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
+	}
 
+	public static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<IArchiveEntry> entries)
+	{
+		var result = new BrowserTools.DirectoryInfos.DirectoryInfo
+		{
+			Entries = entries.OrderBy(a => !a.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Key)).Select(a =>
+			{
+				string key = a.Key;
+				key = key.Replace("\\", "/");
+				if (key.EndsWith('/')) key = key.Substring(0, key.Length - 1);
+
+				string folder = Path.GetDirectoryName(key).Replace("\\", "/");
+				if (folder != "" && !folder.StartsWith("/")) { folder = "/" + folder; }
+				return new BrowserTools.DirectoryInfos.Entry()
+				{
+					IsFolder = a.IsDirectory,
+					Name = Path.GetFileName(key),
+					Size = a.IsDirectory ? null : a.Size,
+					Updated = a.LastModifiedTime,
+					Folder = folder
+				};
+			}).ToList(),
+			BasePath = "",
+		};
+		return result;
 	}
 
 
@@ -530,30 +559,21 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		return (await GetContentWithInfo(uri)).Stream;
 	}
 
-	protected string GetIndexHtml(string folder)
-	{
-		var items = Archive.Entries.Select(a =>
-		{
-			var p = Path.GetRelativePath(folder, $"{Path.DirectorySeparatorChar}{a.Key}");
-			if (p.Contains("..")) return (0, string.Empty, a.Key);
-			if (p == ".") return (0, string.Empty, a.Key);
-			if (!(p.Contains(Path.DirectorySeparatorChar) || p.Contains(Path.AltDirectorySeparatorChar))) return (2, p, a.Key);
-			var s = p.Substring(0, p.IndexOfAny(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) + 1);
-			return (1, s, s);
-		}).Where(a => a.Item1 != 0).Distinct().OrderBy(a => a.Item1);
-		var body1 = $"<ul>\n{string.Join('\n', items.Select(a => $"<li><a href=\"/{a.Item3}{(Path.GetExtension(a.Item3).Equals(".url", StringComparison.InvariantCultureIgnoreCase) ? "?ui=url" : "")}\">{a.Item2}</a></li>\n"))}</ul>";
+	string HtmlIndexCache = null;
 
-		return $"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <title>{folder}</title>
-            </head>
-            <body>
-            <h1>Items</h1>
-            {body1}
-            </body>
-            </html>
-            """;
+	protected async Task<string> GetIndexHtml(string folder)
+	{
+		if (HtmlIndexCache is null)
+		{
+			var st = (await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/archive_viewer/index.html"))).OpenReadAsync()).AsStream();
+			using var str = new StreamReader(st, true);
+			HtmlIndexCache = await str.ReadToEndAsync();
+		}
+		var info = GetDirectoryInfo(Archive.Entries);
+		info.RootName = "";
+		info.CurrentDirectory = "";
+		var html = HtmlIndexCache.Replace("{info.json}", info.ToJson());
+
+		return html;
 	}
 }

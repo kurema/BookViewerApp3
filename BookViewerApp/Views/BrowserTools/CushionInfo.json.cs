@@ -12,7 +12,7 @@
 #pragma warning disable CS8601
 #pragma warning disable CS8603
 
-namespace BookViewerApp.Views.BrowserTools
+namespace BookViewerApp.Views.BrowserTools.CushionInfos
 {
 	using System;
 	using System.Collections.Generic;
@@ -38,12 +38,12 @@ namespace BookViewerApp.Views.BrowserTools
 
 	public partial class CushionInfo
 	{
-		public static CushionInfo FromJson(string json) => JsonSerializer.Deserialize<CushionInfo>(json, BookViewerApp.Views.BrowserTools.Converter.Settings);
+		public static CushionInfo FromJson(string json) => JsonSerializer.Deserialize<CushionInfo>(json, BookViewerApp.Views.BrowserTools.CushionInfos.Converter.Settings);
 	}
 
-	public static class Serialize
+	public static partial class Serialize
 	{
-		public static string ToJson(this CushionInfo self) => JsonSerializer.Serialize(self, BookViewerApp.Views.BrowserTools.Converter.Settings);
+		public static string ToJson(this CushionInfo self) => JsonSerializer.Serialize(self, BookViewerApp.Views.BrowserTools.CushionInfos.Converter.Settings);
 	}
 
 	internal static class Converter
