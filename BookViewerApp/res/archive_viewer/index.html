@@ -302,7 +302,14 @@
                 s1.appendChild(s2);
                 element.appendChild(s1);
             }
-            element.appendChild(document.createTextNode(e.name));
+            if (isTree) {
+                const s2 = document.createElement("span");
+                s2.className = "tree-item-text";
+                s2.textContent = e.name;
+                element.appendChild(s2);
+            } else {
+                element.appendChild(document.createTextNode(e.name));
+            }
         }
 
         function OpenFile(f) {
@@ -333,8 +340,8 @@
                 case ".CUR":
                 case ".TIF":
                 case ".TIFF":
-                //    window.location.href = info.basePath + f;
-                //    break;
+                    window.location.href = info.basePath + f + "?ui=book";
+                    break;
                 default:
                     {
                         var e = info.entries.find(a => (a.folder + "/" + a.name) === f);
@@ -358,14 +365,17 @@
         }
 
         function OpenRawMode(f) {
+            const fp = document.getElementById("file-preview");
+            const cl = fp.classList;
+            fp.scrollIntoView({
+                behavior: 'smooth'
+            });
             {
-                const cl = document.getElementById("file-preview").classList;
                 if (!cl.contains("raw-mode")) cl.add("raw-mode");
                 const url = info.basePath + f;
                 currentPreviewUrl = url;
             }
             {
-                const cl = document.getElementById("file-preview").classList;
                 if (!cl.contains("visible")) cl.add("visible");
             }
             {
@@ -377,7 +387,11 @@
 
         async function OpenTextFile(f) {
             const url = info.basePath + f;
-            document.getElementById("file-preview").classList.remove("raw-mode");
+            const filePreview = document.getElementById("file-preview");
+            filePreview.classList.remove("raw-mode");
+            filePreview.scrollIntoView({
+                behavior: 'smooth'
+            });
 
             const li = f.lastIndexOf("/");
             const fn = li < 0 ? f : f.substring(li + 1);
@@ -521,9 +535,6 @@
                         const s1 = document.createElement("div");
                         s1.className = "tree-item-header";
                         ApplyItem(s1, e, true);
-                        const s2 = document.createElement("span");
-                        s2.className = "tree-item-text";
-                        s1.appendChild(s2);
                         d4.appendChild(s1);
                         s1.onclick = function () {
                             OpenFolder(path);
@@ -535,9 +546,6 @@
                     const s1 = document.createElement("div");
                     s1.className = "tree-item-header";
                     ApplyItem(s1, e, true);
-                    const s2 = document.createElement("span");
-                    s2.className = "tree-item-text";
-                    s1.appendChild(s2);
                     d4.appendChild(s1);
                     s1.onclick = function () {
                         OpenFile(path);
@@ -618,6 +626,9 @@
                         display: flex;
                         align-items: center;
                         grid-column: 2/3;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
                     }
 
                         .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .item-icon {
@@ -628,6 +639,12 @@
 
                         .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .folder-icon-open {
                             display: none;
+                        }
+
+                        .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .tree-item-text {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
                         }
 
             .tree-view .tree-item-container.selected > .tree-item > .tree-item-indicator {
@@ -878,9 +895,9 @@
                 overflow-wrap: anywhere;
             }
 
-            #file-preview.wrap > .file-preview-body > .file-preview-body-content {
-                white-space: pre-wrap;
-            }
+                #file-preview.wrap > .file-preview-body > .file-preview-body-content {
+                    white-space: pre-wrap;
+                }
 
             #file-preview:not(.wrap) > .file-preview-body {
                 overflow-x: auto;

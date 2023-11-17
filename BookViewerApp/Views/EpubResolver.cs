@@ -524,7 +524,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	index:;
 		return (await StringToStream(await GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	viewer:;
-		return (await StringToStream(await GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
+		return (await StringToStream(await GetViewerHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	}
 
 	public static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<IArchiveEntry> entries)
@@ -560,9 +560,29 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	}
 
 	string HtmlIndexCache = null;
+	string HtmlViewerCache = null;
+
+	protected async Task<string> GetViewerHtml(string image)
+	{
+		if (HtmlViewerCache is null)
+		{
+			var st = (await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/archive_viewer/bookviewer.html"))).OpenReadAsync()).AsStream();
+			using var str = new StreamReader(st, true);
+			HtmlViewerCache = await str.ReadToEndAsync();
+		}
+		var info = GetDirectoryInfo(Archive.Entries);
+		info.RootName = "";
+		info.CurrentDirectory = "";
+		info.PreviewFile = image;
+		//Security note: '<' is not valid character in Windows but I'm not sure about archive files. This is quick and dirty fix.
+		var html = HtmlViewerCache.Replace("{info.json}", info.ToJson().Replace("</script>", "<\"+\"/script>", StringComparison.InvariantCultureIgnoreCase));
+
+		return html;
+	}
 
 	protected async Task<string> GetIndexHtml(string folder)
 	{
+		if (folder.StartsWith("/")) folder = folder.Substring(1);
 		if (HtmlIndexCache is null)
 		{
 			var st = (await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/archive_viewer/index.html"))).OpenReadAsync()).AsStream();
@@ -571,8 +591,9 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		}
 		var info = GetDirectoryInfo(Archive.Entries);
 		info.RootName = "";
-		info.CurrentDirectory = "";
-		var html = HtmlIndexCache.Replace("{info.json}", info.ToJson());
+		info.CurrentDirectory = folder;
+		//Security note: '<' is not valid character in Windows but I'm not sure about archive files. This is quick and dirty fix.
+		var html = HtmlIndexCache.Replace("{info.json}", info.ToJson().Replace("</script>", "<\"+\"/script>", StringComparison.InvariantCultureIgnoreCase));
 
 		return html;
 	}

@@ -163,6 +163,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="res\archive_viewer\bookviewer.html" />
     <Content Include="res\archive_viewer\cushion.html" />
     <Content Include="res\archive_viewer\index.html" />
     <Content Include="res\bibi\bibi\and\jo.js" />

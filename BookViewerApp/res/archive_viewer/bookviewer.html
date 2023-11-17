@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <div class="top">
+        <canvas id="mainCanvas" />
+    </div>
+
+    <script type="application/json" id="info" style="display:none;">{info.json}</script>
+
+    <script>
+        const topDiv = document.getElementsByClassName("top")[0];
+
+        const canvas = document.getElementById("mainCanvas");
+        const ctx = canvas.getContext("2d");
+        const info = JSON.parse(document.getElementById("info").innerText);
+        const images = info.entries.filter(a => IsImage(a.name));
+        let pageCurrent = images.findIndex(x => (x.folder + "/" + x.name) == info.previewFile);
+        window.addEventListener('resize', Draw, false);
+
+        canvas.addEventListener("pointerdown", PointerDown, false)
+        canvas.addEventListener("click", Click, false)
+
+        Draw();
+
+        function PointerDown(event) {
+        }
+
+        function Click(event) {
+            const w = window.innerWidth;
+            const x = event.screenX;
+            if (x < w / 4) {
+                if (pageCurrent + 1 < images.length) {
+                    pageCurrent++;
+                    Draw();
+                }
+            } else if (x >= w * 3 / 4) {
+                if (pageCurrent > 0) {
+                    pageCurrent--;
+                    Draw();
+                }
+            }
+        }
+
+        function Draw() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            canvas.width = w;
+            canvas.height = h;
+
+            const image = images[pageCurrent];
+            let currentImage = new Image();
+            currentImage.src = image.folder + "/" + image.name;
+            currentImage.onload = () => {
+                const z = Math.min(w / currentImage.width, h / currentImage.height);
+                const iw = currentImage.width * z;
+                const ih = currentImage.height * z;
+                ctx.drawImage(currentImage, (w - iw) / 2.0, 0, iw, ih);
+            };
+        }
+
+        function IsImage(f) {
+            const li = f.lastIndexOf(".");
+            const ext = li < 0 ? "" : f.substring(li);
+
+            switch (ext.toUpperCase()) {
+                case ".JPEG":
+                case ".JPG":
+                case ".JFIF":
+                case ".PJPEG":
+                case ".PJP":
+                case ".SVG":
+                case ".GIF":
+                case ".WEBP":
+                case ".PNG":
+                case ".APNG":
+                case ".AVIF":
+                case ".BMP":
+                case ".ICO":
+                case ".CUR":
+                case ".TIF":
+                case ".TIFF":
+                    return true;
+                    break;
+                default:
+                    return false;
+            }
+        }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+        .top {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            grid-template: auto 1fr auto;
+        }
+
+            .top > #mainCanvas {
+                width: 100%;
+                height: 100%;
+                grid-row: 1/4;
+            }
+    </style>
+</body>
+</html>
