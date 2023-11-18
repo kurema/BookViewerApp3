@@ -22,9 +22,8 @@ public static class ImageManager
     public static string[] AvailableExtensionsRead
     {
         get
-        {
-            return new string[]
-    { Extensions.Jpeg1, Extensions.Jpeg2, Extensions.Gif, Extensions.Png, Extensions.Bitmap, Extensions.Tiff1, Extensions.Tiff2, Extensions.JpegXr1, Extensions.JpegXr2, Extensions.JpegXr3, Extensions.Avif };
+		{
+			return [Extensions.Jpeg1, Extensions.Jpeg2, Extensions.Gif, Extensions.Png, Extensions.Bitmap, Extensions.Tiff1, Extensions.Tiff2, Extensions.JpegXr1, Extensions.JpegXr2, Extensions.JpegXr3, Extensions.Avif];
         }
     }
 

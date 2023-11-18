@@ -562,7 +562,7 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 					menu.Items.Clear();
 					var tab = UIHelper.GetCurrentTabPage(this);
 					{
-						var item = new MenuFlyoutItem() { Text = "Top" };
+						var item = new MenuFlyoutItem() { Text = "Index" };
 						item.Click += async (_, _) =>
 						{
 							var task = entryP.ArchiveProvider?.Invoke();
@@ -573,9 +573,26 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 						};
 						menu.Items.Add(item);
 					}
+					{
+						var path = Binding?.PageSelectedViewModel?.Content?.Path;
+						if (entryP.EntriesGeneral.Contains(path, StringComparer.InvariantCultureIgnoreCase))
+						{
+							var item = new MenuFlyoutItem() { Text = "Viewer" };
+							item.Click += async (_, _) =>
+							{
+								var task = entryP.ArchiveProvider?.Invoke();
+								if (task is null) return;
+								var archive = await task;
+								if (archive is null) return;
+								await tab.OpenTabSharpCompress(archive, $"{path}?ui=book");
+							};
+							menu.Items.Add(item);
+						}
+					}
 					foreach (var entry in entryP.EntriesGeneral)
 					{
-						switch (Path.GetExtension(entry).ToUpperInvariant())
+						var ext = Path.GetExtension(entry).ToUpperInvariant();
+						switch (ext)
 						{
 							case ".URL":
 								{

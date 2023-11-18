@@ -22,26 +22,62 @@
         window.addEventListener('resize', Draw, false);
 
         canvas.addEventListener("pointerdown", PointerDown, false)
-        canvas.addEventListener("click", Click, false)
+        canvas.addEventListener("pointermove", PointerMove, false)
+        canvas.addEventListener("pointerup", PointerUp, false)
+        //canvas.addEventListener("click", Click, false)
+
+        let startPoint;
+        let lastPoint;
+        let shiftPoint = { "x": 0, "y": 0 };
+        let currentImage = null;
 
         Draw();
 
         function PointerDown(event) {
+            if (event.button != 0) return;
+            startPoint = { "x": event.screenX, "y": event.screenY };
+            lastPoint = startPoint;
         }
 
-        function Click(event) {
+        function PointerMove(event) {
+            if (startPoint == null) return;
+            lastPoint = { "x": event.screenX, "y": event.screenY };
+            shiftPoint = { "x": event.screenX - startPoint.x, "y": event.screenY - startPoint.y };
+            Draw();
+        }
+
+        function PointerUp(event) {
+            if (event.button != 0) return;
             const w = window.innerWidth;
             const x = event.screenX;
-            if (x < w / 4) {
-                if (pageCurrent + 1 < images.length) {
-                    pageCurrent++;
-                    Draw();
+            const y = event.screenY;
+            const spx = startPoint.x;
+            const spy = startPoint.y;
+            if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
+                startPoint = null;
+                if (x < w / 4) {
+                    ShiftPage(+1);
+                } else if (x >= w * 3 / 4) {
+                    ShiftPage(-1);
                 }
-            } else if (x >= w * 3 / 4) {
-                if (pageCurrent > 0) {
-                    pageCurrent--;
-                    Draw();
+            } else {
+                if ((x - spx) * 4 > w) {
+                    ShiftPage(1);
+                } else if ((x - spx) * 4 < -w) {
+                    ShiftPage(-1);
                 }
+            }
+            startPoint = null;
+            shiftPoint = { "x": 0, "y": 0 };
+            Draw();
+        }
+
+        function ShiftPage(shift) {
+            const shifted = pageCurrent + shift;
+            if (shifted >= 0 && shifted < images.length) {
+                pageCurrent = shifted;
+                currentImage = null;
+                Draw();
             }
         }
 
@@ -52,15 +88,20 @@
             canvas.width = w;
             canvas.height = h;
 
-            const image = images[pageCurrent];
-            let currentImage = new Image();
-            currentImage.src = image.folder + "/" + image.name;
-            currentImage.onload = () => {
+            if (currentImage == null) {
+                const image = images[pageCurrent];
+                let cimage = new Image();
+                cimage.src = image.folder + "/" + image.name;
+                cimage.onload = () => {
+                    currentImage = cimage;
+                    Draw();
+                };
+            } else {
                 const z = Math.min(w / currentImage.width, h / currentImage.height);
                 const iw = currentImage.width * z;
                 const ih = currentImage.height * z;
-                ctx.drawImage(currentImage, (w - iw) / 2.0, 0, iw, ih);
-            };
+                ctx.drawImage(currentImage, (w - iw) / 2.0 + shiftPoint.x, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.y), h - ih), iw, ih);
+            }
         }
 
         function IsImage(f) {
