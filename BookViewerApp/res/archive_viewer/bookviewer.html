@@ -12,36 +12,101 @@
     <script type="application/json" id="info" style="display:none;">{info.json}</script>
 
     <script>
+        class Page {
+            constructor(image) {
+                this.Path = image.folder + "/" + image.name;
+                this.Data = image;
+                this.IsLoading = false;
+                this.IsLoaded = false;
+                this.Image = null;
+                this.Height = -1;
+                this.Width = -1;
+            }
+
+            Load(callback) {
+                if (this.IsLoaded) {
+                    callback();
+                    return;
+                }
+                const img = new Image();
+                img.src = this.Path;
+                this.IsLoading = true;
+                cimage.onload = () => {
+                    this.Image = img;
+                    this.IsLoaded = true;
+                    this.IsLoading = false;
+                    this.Width = img.width;
+                    this.Height = img.height;
+                    callback();
+                };
+            }
+
+            Free() {
+                this.Image = null;
+                this.IsLoaded = false;
+                this.IsLoading = false;
+            }
+        }
+
+        //class ZoomState {
+        //    #isZoomed;
+
+        //    constructor() {
+        //        this.#Reset();
+        //    }
+
+        //    get IsZoomed() {
+        //        return this.#isZoomed;
+        //    }
+
+        //    #Reset() {
+        //        this.#isZoomed = false;
+        //    }
+        //}
+
         const topDiv = document.getElementsByClassName("top")[0];
+        /*const zoomInfo = new ZoomState();*/
 
         const canvas = document.getElementById("mainCanvas");
         const ctx = canvas.getContext("2d");
         const info = JSON.parse(document.getElementById("info").innerText);
         const images = info.entries.filter(a => IsImage(a.name));
-        let pageCurrent = images.findIndex(x => (x.folder + "/" + x.name) == info.previewFile);
-        window.addEventListener('resize', Draw, false);
 
+        const pageStaeteEnum = Object.freeze({
+            "Full": 1,
+            "Double": 2,
+            "LeftHalf": 3,
+            "RightHalf": 4,
+        });
+        const pageModeEnum = Object.freeze({
+            "Simple": 1,
+            "AutoDetect": 2,
+            "Spread": 3,
+            "Half": 4,
+        });
+
+        let pageCurrent = images.findIndex(x => (x.folder + "/" + x.name) == info.previewFile);
+        let pageCurrentState = 0;
+        window.addEventListener('resize', Draw, false);
         canvas.addEventListener("pointerdown", PointerDown, false)
         canvas.addEventListener("pointermove", PointerMove, false)
         canvas.addEventListener("pointerup", PointerUp, false)
         //canvas.addEventListener("click", Click, false)
 
         let startPoint;
-        let lastPoint;
         let shiftPoint = { "x": 0, "y": 0 };
         let currentImage = null;
+        let lastClickTime = null;
 
         Draw();
 
         function PointerDown(event) {
             if (event.button != 0) return;
             startPoint = { "x": event.screenX, "y": event.screenY };
-            lastPoint = startPoint;
         }
 
         function PointerMove(event) {
             if (startPoint == null) return;
-            lastPoint = { "x": event.screenX, "y": event.screenY };
             shiftPoint = { "x": event.screenX - startPoint.x, "y": event.screenY - startPoint.y };
             Draw();
         }
@@ -53,6 +118,11 @@
             const y = event.screenY;
             const spx = startPoint.x;
             const spy = startPoint.y;
+            if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
+                // Double click!
+                return;
+            }
+            lastClickTime = Date.now();
             if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
                 startPoint = null;
                 if (x < w / 4) {
@@ -79,6 +149,12 @@
                 currentImage = null;
                 Draw();
             }
+        }
+
+        function OnResize() {
+            startPoint = null;
+            shiftPoint = { "x": 0, "y": 0 };
+            Draw();
         }
 
         function Draw() {
