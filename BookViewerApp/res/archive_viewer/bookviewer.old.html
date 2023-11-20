@@ -25,7 +25,7 @@
 
             Load(callback) {
                 if (this.IsLoaded) {
-                    callback(this);
+                    callback();
                     return;
                 }
                 const img = new Image();
@@ -37,7 +37,7 @@
                     this.IsLoading = false;
                     this.Width = img.width;
                     this.Height = img.height;
-                    callback(this);
+                    callback();
                 };
             }
 
@@ -48,14 +48,36 @@
             }
         }
 
+        //class ZoomState {
+        //    #isZoomed;
+
+        //    constructor() {
+        //        this.#Reset();
+        //    }
+
+        //    get IsZoomed() {
+        //        return this.#isZoomed;
+        //    }
+
+        //    #Reset() {
+        //        this.#isZoomed = false;
+        //    }
+        //}
+
+        const topDiv = document.getElementsByClassName("top")[0];
+        /*const zoomInfo = new ZoomState();*/
+
+        const canvas = document.getElementById("mainCanvas");
+        const ctx = canvas.getContext("2d");
+        const info = JSON.parse(document.getElementById("info").innerText);
+        const images = info.entries.filter(a => IsImage(a.name));
+
         const pageStaeteEnum = Object.freeze({
-            "NotDisplayed": 0,
             "Full": 1,
             "Double": 2,
             "LeftHalf": 3,
             "RightHalf": 4,
         });
-
         const pageModeEnum = Object.freeze({
             "Simple": 1,
             "AutoDetect": 2,
@@ -63,62 +85,8 @@
             "Half": 4,
         });
 
-        class Book {
-            #currentPage;
-
-            constructor(info) {
-                this.Images = info.entries.filter(a => IsImage(a.name)).map(a => new Page(a));
-                this.#currentPage = this.Images.findIndex(a => a.Path == info.previewFile);
-                this.PageMode = pageModeEnum.AutoDetect;
-                this.IsPreviewed = false;
-                this.PageState = pageStaeteEnum.NotDisplayed;
-            }
-
-            get PageCount() { return this.Images.length; }
-
-            get CurrentPage() { return this.Images[this.#currentPage]; }
-
-            Draw() {
-                const w = window.innerWidth;
-                const h = window.innerHeight;
-
-                canvas.width = w;
-                canvas.height = h;
-
-                if (currentImage == null) {
-                    const image = images[pageCurrent];
-                    let cimage = new Image();
-                    cimage.src = image.Path;
-                    cimage.onload = () => {
-                        currentImage = cimage;
-                        Draw();
-                    };
-                } else {
-                    const z = Math.min(w / currentImage.width, h / currentImage.height);
-                    const iw = currentImage.width * z;
-                    const ih = currentImage.height * z;
-                    ctx.drawImage(currentImage, (w - iw) / 2.0 + shiftPoint.x, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.y), h - ih), iw, ih);
-                }
-            }
-        }
-
-        class Vector2 {
-            constructor(x, y) {
-                this.X = x;
-                this.Y = y;
-            }
-        }
-
-        const topDiv = document.getElementsByClassName("top")[0];
-        const canvas = document.getElementById("mainCanvas");
-        const ctx = canvas.getContext("2d");
-
-        const info = JSON.parse(document.getElementById("info").innerText);
-        const images = info.entries.filter(a => IsImage(a.name)).map(a => new Page(a));
-
-        let pageCurrent = images.findIndex(x => x.Path == info.previewFile);
+        let pageCurrent = images.findIndex(x => (x.folder + "/" + x.name) == info.previewFile);
         let pageCurrentState = 0;
-
         window.addEventListener('resize', Draw, false);
         canvas.addEventListener("pointerdown", PointerDown, false)
         canvas.addEventListener("pointermove", PointerMove, false)
@@ -152,7 +120,6 @@
             const spy = startPoint.y;
             if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
                 // Double click!
-                startPoint = null;
                 return;
             }
             lastClickTime = Date.now();
@@ -200,7 +167,7 @@
             if (currentImage == null) {
                 const image = images[pageCurrent];
                 let cimage = new Image();
-                cimage.src = image.Path;
+                cimage.src = image.folder + "/" + image.name;
                 cimage.onload = () => {
                     currentImage = cimage;
                     Draw();

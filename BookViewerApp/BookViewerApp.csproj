@@ -163,6 +163,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="res\archive_viewer\bookviewer.old.html" />
     <Content Include="res\archive_viewer\bookviewer.html" />
     <Content Include="res\archive_viewer\cushion.html" />
     <Content Include="res\archive_viewer\index.html" />
@@ -682,7 +683,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" />
+      <UserProperties views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
