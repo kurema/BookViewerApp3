@@ -19,27 +19,31 @@
                 this.IsLoading = false;
                 this.IsLoaded = false;
                 this.Image = null;
-                this.Height = -1;
-                this.Width = -1;
             }
 
-            Load(callback) {
-                if (this.IsLoaded) {
-                    callback(this);
-                    return;
-                }
-                const img = new Image();
-                img.src = this.Path;
-                this.IsLoading = true;
-                cimage.onload = () => {
-                    this.Image = img;
-                    this.IsLoaded = true;
-                    this.IsLoading = false;
-                    this.Width = img.width;
-                    this.Height = img.height;
-                    callback(this);
-                };
+            Load() {
+                return new Promise((resolve, reject) => {
+                    if (this.IsLoaded) {
+                        resolve();
+                        return;
+                    }
+                    const img = new Image();
+                    img.src = this.Path;
+                    this.IsLoading = true;
+                    img.onerror = () => {
+                        reject();
+                    };
+                    img.onload = () => {
+                        this.Image = img;
+                        this.IsLoaded = true;
+                        this.IsLoading = false;
+                        resolve();
+                    }
+                });
             }
+
+            get Width() { return this.Image?.width; }
+            get Height() { return this.Image?.height; }
 
             Free() {
                 this.Image = null;
@@ -78,27 +82,42 @@
 
             get CurrentPage() { return this.Images[this.#currentPage]; }
 
-            Draw() {
+            async #PageShift(shift) {
+                const shifted = this.#currentPage + shift;
+                if (shifted >= 0 && shifted < this.Images.length) {
+                    this.#currentPage = shifted;
+                    await this.Draw();
+                }
+            }
+
+            async PageShiftRight() {
+                await this.#PageShift(-1);
+            }
+
+            async PageShiftLeft() {
+                await this.#PageShift(+1);
+            }
+
+
+            async Draw() {
                 const w = window.innerWidth;
                 const h = window.innerHeight;
-
                 canvas.width = w;
                 canvas.height = h;
 
-                if (currentImage == null) {
-                    const image = images[pageCurrent];
-                    let cimage = new Image();
-                    cimage.src = image.Path;
-                    cimage.onload = () => {
-                        currentImage = cimage;
-                        Draw();
-                    };
-                } else {
-                    const z = Math.min(w / currentImage.width, h / currentImage.height);
-                    const iw = currentImage.width * z;
-                    const ih = currentImage.height * z;
-                    ctx.drawImage(currentImage, (w - iw) / 2.0 + shiftPoint.x, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.y), h - ih), iw, ih);
+                try {
+                    await this.CurrentPage.Load();
+                } catch {
+                    //読み込み失敗の場合ページを削除する。
+                    return;
                 }
+                const cw = this.CurrentPage.Width;
+                const ch = this.CurrentPage.Height;
+
+                const z = Math.min(w / cw, h / ch);
+                const iw = cw * z;
+                const ih = ch * z;
+                ctx.drawImage(this.CurrentPage.Image, (w - iw) / 2.0 + shiftPoint.x, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.y), h - ih), iw, ih);
             }
         }
 
@@ -114,36 +133,31 @@
         const ctx = canvas.getContext("2d");
 
         const info = JSON.parse(document.getElementById("info").innerText);
-        const images = info.entries.filter(a => IsImage(a.name)).map(a => new Page(a));
+        const book = new Book(info);
 
-        let pageCurrent = images.findIndex(x => x.Path == info.previewFile);
-        let pageCurrentState = 0;
-
-        window.addEventListener('resize', Draw, false);
+        window.addEventListener('resize', OnResize, false);
         canvas.addEventListener("pointerdown", PointerDown, false)
         canvas.addEventListener("pointermove", PointerMove, false)
         canvas.addEventListener("pointerup", PointerUp, false)
-        //canvas.addEventListener("click", Click, false)
 
         let startPoint;
         let shiftPoint = { "x": 0, "y": 0 };
-        let currentImage = null;
         let lastClickTime = null;
 
-        Draw();
+        book.Draw();
 
         function PointerDown(event) {
             if (event.button != 0) return;
             startPoint = { "x": event.screenX, "y": event.screenY };
         }
 
-        function PointerMove(event) {
+        async function PointerMove(event) {
             if (startPoint == null) return;
             shiftPoint = { "x": event.screenX - startPoint.x, "y": event.screenY - startPoint.y };
-            Draw();
+            await book.Draw();
         }
 
-        function PointerUp(event) {
+        async function PointerUp(event) {
             if (event.button != 0) return;
             const w = window.innerWidth;
             const x = event.screenX;
@@ -152,65 +166,33 @@
             const spy = startPoint.y;
             if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
                 // Double click!
-                startPoint = null;
-                return;
+            //    startPoint = null;
+            //    return;
             }
             lastClickTime = Date.now();
             if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
                 startPoint = null;
                 if (x < w / 4) {
-                    ShiftPage(+1);
+                    await book.PageShiftLeft();
                 } else if (x >= w * 3 / 4) {
-                    ShiftPage(-1);
+                    await book.PageShiftRight();
                 }
             } else {
                 if ((x - spx) * 4 > w) {
-                    ShiftPage(1);
+                    await book.PageShiftLeft();
                 } else if ((x - spx) * 4 < -w) {
-                    ShiftPage(-1);
+                    await book.PageShiftRight();
                 }
             }
             startPoint = null;
             shiftPoint = { "x": 0, "y": 0 };
-            Draw();
+            await book.Draw();
         }
 
-        function ShiftPage(shift) {
-            const shifted = pageCurrent + shift;
-            if (shifted >= 0 && shifted < images.length) {
-                pageCurrent = shifted;
-                currentImage = null;
-                Draw();
-            }
-        }
-
-        function OnResize() {
+        async function OnResize() {
             startPoint = null;
             shiftPoint = { "x": 0, "y": 0 };
-            Draw();
-        }
-
-        function Draw() {
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-
-            canvas.width = w;
-            canvas.height = h;
-
-            if (currentImage == null) {
-                const image = images[pageCurrent];
-                let cimage = new Image();
-                cimage.src = image.Path;
-                cimage.onload = () => {
-                    currentImage = cimage;
-                    Draw();
-                };
-            } else {
-                const z = Math.min(w / currentImage.width, h / currentImage.height);
-                const iw = currentImage.width * z;
-                const ih = currentImage.height * z;
-                ctx.drawImage(currentImage, (w - iw) / 2.0 + shiftPoint.x, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.y), h - ih), iw, ih);
-            }
+            await book.Draw();
         }
 
         function IsImage(f) {
