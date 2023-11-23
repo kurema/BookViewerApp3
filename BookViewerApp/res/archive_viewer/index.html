@@ -223,6 +223,14 @@
             document.getElementById('alert-link').style.display = 'none';
         }
 
+        window.addEventListener('popstate', function (e) {
+            if (e.state === "" || e.state == null) {
+                OpenFolder("", { preventHistory: true });
+            } else {
+                OpenFolder(e.state, { preventHistory: true });
+            }
+        }, false);
+
         function AddEntry(e, f) {
             const tr = document.createElement("tr");
             tr.onclick = function () {
@@ -411,10 +419,17 @@
             }
         }
 
-        function OpenFolder(f) {
+        function OpenFolder(f, option) {
             currentDirectory = f;
             document.title = f;
             UpdateAddressBar(f);
+            if (window.history && window.history.pushState && option?.preventHistory != true) {
+                const result = info.basePath + f + (f.endsWith("/") ? "" : "/");
+                const pn = location.pathname;
+                if (result.startsWith(pn)) {
+                    history.pushState(f, "", result.substring(pn.length));
+                }
+            }
             {
                 Array.from(document.getElementsByClassName("selected")).forEach(e => {
                     e.classList.remove("selected");
@@ -629,6 +644,7 @@
                         text-overflow: ellipsis;
                         overflow: hidden;
                         white-space: nowrap;
+                        cursor: default;
                     }
 
                         .tree-view .tree-item-container > .tree-item > .tree-item-body > .tree-item-header > .item-icon {
