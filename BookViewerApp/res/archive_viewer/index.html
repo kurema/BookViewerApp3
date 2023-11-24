@@ -206,7 +206,7 @@
             tv.appendChild(GetTree("", 0));
         }
 
-        OpenFolder(info.currentDirectory);
+        OpenFolder(info.currentDirectory, { preventHistory: true });
         if (!info.entries.some(e => {
             const li = e.name.lastIndexOf(".");
             const ext = li < 0 ? "" : e.name.substring(li);
@@ -420,14 +420,21 @@
         }
 
         function OpenFolder(f, option) {
+            if (f !== "" && !f.startsWith("/")) f = "/" + f;
+            if (f !== "/" && f.endsWith("/")) f = f.substring(0, f.length - 1);
             currentDirectory = f;
             document.title = f;
             UpdateAddressBar(f);
             if (window.history && window.history.pushState && option?.preventHistory != true) {
                 const result = info.basePath + f + (f.endsWith("/") ? "" : "/");
                 const pn = location.pathname;
+                if (result === pn) {
+                    history.pushState(f, "", "?");
+                }
                 if (result.startsWith(pn)) {
                     history.pushState(f, "", result.substring(pn.length));
+                } else {
+                    history.pushState(f, "", "?path=" + encodeURI(f));
                 }
             }
             {

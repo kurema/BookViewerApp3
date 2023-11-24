@@ -463,6 +463,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		var fn = Path.GetFileName(uri.LocalPath);
 		var q = System.Web.HttpUtility.ParseQueryString(uri.Query);
 		var ui = q.Get("ui");
+		var path = q.Get("path");
 
 		//if (q.Get("session") != this.Session) goto native;
 		switch (ui?.ToUpperInvariant())
@@ -522,7 +523,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	native:;
 		return (await ReadSharpCompressFile(Archive, uri.LocalPath, SemaphoreReader) ?? throw new Exception(InvalidPathMessage), new());
 	index:;
-		return (await StringToStream(await GetIndexHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
+		return (await StringToStream(await GetIndexHtml(path ?? uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	viewer:;
 		return (await StringToStream(await GetViewerHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	}
