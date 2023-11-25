@@ -448,6 +448,26 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 	SharpCompress.Archives.IArchive Archive { get; set; }
 
+	List<ArchiveWithInfo> EmbeddedArchives { get; } = new();
+
+	class ArchiveWithInfo(IArchive archive, string path = null)
+	{
+		public string Path { get; } = path ?? string.Empty;
+		public IArchive Archive { get; } = archive;
+
+		public void Deconstruct(out IArchive archive, out string path) => (archive, path) = (this.Archive, this.Path);
+
+	}
+
+	class ArchiveEntryWithInfo(IArchive archive, IArchiveEntry entry, string path)
+	{
+		public IArchive Archive { get; } = archive;
+		public IArchiveEntry Entry { get; } = entry;
+		public string Path { get; } = path;
+
+		public void Deconstruct(out IArchiveEntry entry, out string path) => (entry, path) = (this.Entry, this.Path);
+	}
+
 	private async Task<InMemoryRandomAccessStream> StringToStream(string input)
 	{
 		var text = Encoding.UTF8.GetBytes(input);
@@ -528,19 +548,25 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		return (await StringToStream(await GetViewerHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	}
 
-	public static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<IArchiveEntry> entries)
+	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<IArchiveEntry> entries, IEnumerable<ArchiveWithInfo> extraArchives)
 	{
 		var result = new BrowserTools.DirectoryInfos.DirectoryInfo
 		{
-			Entries = entries.OrderBy(a => !a.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Key)).Select(a =>
+			Entries = entries
+			.Select(a => new ArchiveEntryWithInfo(null, a, string.Empty))
+			.Concat(extraArchives.SelectMany(a => a.Archive.Entries.Select(b => new ArchiveEntryWithInfo(a.Archive, b, a.Path))))
+			.OrderBy(a => !a.Entry.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Entry.Key))
+			.Select(tuple =>
 			{
+				var (a, path) = tuple;
 				string key = a.Key;
+				if (string.IsNullOrEmpty(path)) key = Path.Combine(path, key);
 				key = key.Replace("\\", "/");
 				if (key.EndsWith('/')) key = key.Substring(0, key.Length - 1);
 
 				string folder = Path.GetDirectoryName(key).Replace("\\", "/");
 				if (folder != "" && !folder.StartsWith("/")) { folder = "/" + folder; }
-				return new BrowserTools.DirectoryInfos.Entry()
+				return new Entry()
 				{
 					IsFolder = a.IsDirectory,
 					Name = Path.GetFileName(key),
@@ -553,7 +579,6 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		};
 		return result;
 	}
-
 
 	protected override async Task<IInputStream> GetContent(Uri uri)
 	{
@@ -571,7 +596,8 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			using var str = new StreamReader(st, true);
 			HtmlViewerCache = await str.ReadToEndAsync();
 		}
-		var info = GetDirectoryInfo(Archive.Entries);
+		//Fix it to use correct archive!
+		var info = GetDirectoryInfo(Archive.Entries, Array.Empty<ArchiveWithInfo>());
 		info.RootName = "";
 		info.CurrentDirectory = "";
 		info.PreviewFile = image;
@@ -579,6 +605,32 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		var html = HtmlViewerCache.Replace("{info.json}", info.ToJson().Replace("</script>", "<\"+\"/script>", StringComparison.InvariantCultureIgnoreCase));
 
 		return html;
+	}
+
+	public async Task LoadArchives(string path)
+	{
+		if (path.Length == 0) return;
+		int h = 0;
+		while (path[h] == '/' && h < path.Length) h++;
+		if (h > 0) path = path.Substring(h);
+		var paths = path.Split('/');
+		var sb = new StringBuilder();
+		var entries = Archive.Entries;
+		foreach (var item in paths)
+		{
+			sb.Append(item);
+			if (Managers.BookManager.IsArchive(item))
+			{
+				var f = entries.FirstOrDefault(a => a.Key == sb.ToString());
+				if (f is null) return;
+				if (f.IsDirectory) continue;
+				// f is archive!
+				throw new NotImplementedException();
+				sb.Clear();
+			}
+			sb.Append(Path.DirectorySeparatorChar);
+		}
+		return;
 	}
 
 	protected async Task<string> GetIndexHtml(string folder)
@@ -590,7 +642,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			using var str = new StreamReader(st, true);
 			HtmlIndexCache = await str.ReadToEndAsync();
 		}
-		var info = GetDirectoryInfo(Archive.Entries);
+		var info = GetDirectoryInfo(Archive.Entries, this.EmbeddedArchives);
 		info.RootName = "";
 		info.CurrentDirectory = folder;
 		//Security note: '<' is not valid character in Windows but I'm not sure about archive files. This is quick and dirty fix.

@@ -207,6 +207,27 @@ public static class BookManager
 		return IsFileAvailabe(file.Path);
 	}
 
+	public static bool IsArchive(string path)
+	{
+		var ext = Path.GetExtension(path);
+		switch (ext.ToUpperInvariant())
+		{
+			case ".ZIP":
+			case ".CBZ":
+			case ".TAR":
+			case ".GZ":
+			case ".RAR":
+			case ".CBR":
+			case "7z":
+			case "cb7":
+			case ".BZ2":
+			case ".LZ":
+			case ".XZ":
+				return true;
+			default: return false;
+		}
+	}
+
 	public static bool IsFileAvailabe(string path)
 	{
 		if (path is null) return false;
