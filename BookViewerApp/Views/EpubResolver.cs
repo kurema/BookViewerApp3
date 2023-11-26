@@ -607,7 +607,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		return html;
 	}
 
-	public async Task LoadArchives(string path)
+	async Task LoadArchives(string path)
 	{
 		if (path.Length == 0) return;
 		int h = 0;
@@ -615,10 +615,12 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		if (h > 0) path = path.Substring(h);
 		var paths = path.Split('/');
 		var sb = new StringBuilder();
+		var sb2 = new StringBuilder();
 		var entries = Archive.Entries;
 		foreach (var item in paths)
 		{
 			sb.Append(item);
+			sb2.Append(item);
 			if (Managers.BookManager.IsArchive(item))
 			{
 				var f = entries.FirstOrDefault(a => a.Key == sb.ToString());
@@ -629,8 +631,15 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 				sb.Clear();
 			}
 			sb.Append(Path.DirectorySeparatorChar);
+			sb2.Append(Path.DirectorySeparatorChar);
 		}
 		return;
+	}
+
+	async Task<IArchive> LoadArchive(string path, string localPath, IEnumerable<IArchiveEntry> entries)
+	{
+		throw new NotImplementedException();
+
 	}
 
 	protected async Task<string> GetIndexHtml(string folder)
