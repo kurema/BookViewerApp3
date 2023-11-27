@@ -465,7 +465,22 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		public IArchiveEntry Entry { get; } = entry;
 		public string Path { get; } = path;
 
-		public void Deconstruct(out IArchiveEntry entry, out string path) => (entry, path) = (this.Entry, this.Path);
+		public void Deconstruct(out IArchive archive, out IArchiveEntry entry, out string path) => (archive, entry, path) = (this.Archive, this.Entry, this.Path);
+
+		string _KeyNormalized = null;
+
+		public string KeyNormalized
+		{
+			get
+			{
+				if (_KeyNormalized is not null) return _KeyNormalized;
+				string key = Entry.Key;
+				if (string.IsNullOrEmpty(Path)) key = System.IO.Path.Combine(Path, key);
+				key = key.Replace("\\", "/");
+				if (key.EndsWith('/')) key = key.Substring(0, key.Length - 1);
+				return key;
+			}
+		}
 	}
 
 	private async Task<InMemoryRandomAccessStream> StringToStream(string input)
@@ -548,6 +563,17 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		return (await StringToStream(await GetViewerHtml(uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	}
 
+	SortedList<string, ArchiveEntryWithInfo> _PathMap = null;
+
+	SortedList<string, ArchiveEntryWithInfo> PathMap
+	{
+		get => _PathMap ??= new SortedList<string, ArchiveEntryWithInfo>(
+		Archive.Entries.Select(a => new ArchiveEntryWithInfo(Archive, a, string.Empty))
+		.Concat(EmbeddedArchives.SelectMany(a => a.Archive.Entries.Select(b => new ArchiveEntryWithInfo(a.Archive, b, a.Path))))
+		.ToDictionary(a => a.KeyNormalized, a => a), StringComparer.Ordinal);
+		set => _PathMap = value;
+	}
+
 	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<IArchiveEntry> entries, IEnumerable<ArchiveWithInfo> extraArchives)
 	{
 		var result = new BrowserTools.DirectoryInfos.DirectoryInfo
@@ -558,7 +584,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			.OrderBy(a => !a.Entry.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Entry.Key))
 			.Select(tuple =>
 			{
-				var (a, path) = tuple;
+				var (_, a, path) = tuple;
 				string key = a.Key;
 				if (string.IsNullOrEmpty(path)) key = Path.Combine(path, key);
 				key = key.Replace("\\", "/");
@@ -639,7 +665,6 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	async Task<IArchive> LoadArchive(string path, string localPath, IEnumerable<IArchiveEntry> entries)
 	{
 		throw new NotImplementedException();
-
 	}
 
 	protected async Task<string> GetIndexHtml(string folder)
