@@ -15,6 +15,7 @@ using SharpCompress.Archives;
 using System.Text.RegularExpressions;
 using Windows.ApplicationModel.Email;
 using BookViewerApp.Views.BrowserTools.DirectoryInfos;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 
 namespace BookViewerApp.Views;
 
@@ -456,7 +457,6 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		public IArchive Archive { get; } = archive;
 
 		public void Deconstruct(out IArchive archive, out string path) => (archive, path) = (this.Archive, this.Path);
-
 	}
 
 	class ArchiveEntryWithInfo(IArchive archive, IArchiveEntry entry, string path)
@@ -478,7 +478,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 				if (string.IsNullOrEmpty(Path)) key = System.IO.Path.Combine(Path, key);
 				key = key.Replace("\\", "/");
 				if (key.EndsWith('/')) key = key.Substring(0, key.Length - 1);
-				return key;
+				return _KeyNormalized ??= key;
 			}
 		}
 	}
@@ -565,45 +565,48 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 	SortedList<string, ArchiveEntryWithInfo> _PathMap = null;
 
-	SortedList<string, ArchiveEntryWithInfo> PathMap
+	SortedList<string, ArchiveEntryWithInfo> PathDictionary
 	{
-		get => _PathMap ??= new SortedList<string, ArchiveEntryWithInfo>(
-		Archive.Entries.Select(a => new ArchiveEntryWithInfo(Archive, a, string.Empty))
-		.Concat(EmbeddedArchives.SelectMany(a => a.Archive.Entries.Select(b => new ArchiveEntryWithInfo(a.Archive, b, a.Path))))
-		.ToDictionary(a => a.KeyNormalized, a => a), StringComparer.Ordinal);
+		get
+		{
+			if (_PathMap is not null) return _PathMap;
+			var dic = Archive.Entries.Select(a => new ArchiveEntryWithInfo(Archive, a, string.Empty))
+				.Concat(EmbeddedArchives.SelectMany(a => a.Archive.Entries.Select(b => new ArchiveEntryWithInfo(a.Archive, b, a.Path))))
+				.ToDictionary(a => a.KeyNormalized, a => a);
+			try
+			{
+				return _PathMap = new SortedList<string, ArchiveEntryWithInfo>(dic, StringComparer.OrdinalIgnoreCase);
+			}
+			catch
+			{
+				return _PathMap = new SortedList<string, ArchiveEntryWithInfo>(dic, StringComparer.Ordinal);
+			}
+		}
+
 		set => _PathMap = value;
 	}
 
-	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<IArchiveEntry> entries, IEnumerable<ArchiveWithInfo> extraArchives)
+	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<ArchiveEntryWithInfo> list)
 	{
-		var result = new BrowserTools.DirectoryInfos.DirectoryInfo
+		return new BrowserTools.DirectoryInfos.DirectoryInfo
 		{
-			Entries = entries
-			.Select(a => new ArchiveEntryWithInfo(null, a, string.Empty))
-			.Concat(extraArchives.SelectMany(a => a.Archive.Entries.Select(b => new ArchiveEntryWithInfo(a.Archive, b, a.Path))))
-			.OrderBy(a => !a.Entry.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Entry.Key))
-			.Select(tuple =>
+			Entries = list.OrderBy(a => !a.Entry.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Entry.Key))
+			.Select(aewi =>
 			{
-				var (_, a, path) = tuple;
-				string key = a.Key;
-				if (string.IsNullOrEmpty(path)) key = Path.Combine(path, key);
-				key = key.Replace("\\", "/");
-				if (key.EndsWith('/')) key = key.Substring(0, key.Length - 1);
-
-				string folder = Path.GetDirectoryName(key).Replace("\\", "/");
+				var folder = Path.GetDirectoryName(aewi.KeyNormalized).Replace("\\", "/");
 				if (folder != "" && !folder.StartsWith("/")) { folder = "/" + folder; }
+				var entry = aewi.Entry;
 				return new Entry()
 				{
-					IsFolder = a.IsDirectory,
-					Name = Path.GetFileName(key),
-					Size = a.IsDirectory ? null : a.Size,
-					Updated = a.LastModifiedTime,
+					IsFolder = entry.IsDirectory,
+					Name = Path.GetFileName(aewi.KeyNormalized),
+					Size = entry.IsDirectory ? null : entry.Size,
+					Updated = entry.LastModifiedTime,
 					Folder = folder
 				};
 			}).ToList(),
 			BasePath = "",
 		};
-		return result;
 	}
 
 	protected override async Task<IInputStream> GetContent(Uri uri)
@@ -623,10 +626,13 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			HtmlViewerCache = await str.ReadToEndAsync();
 		}
 		//Fix it to use correct archive!
-		var info = GetDirectoryInfo(Archive.Entries, Array.Empty<ArchiveWithInfo>());
+		var imageNormalized = image;
+		if (imageNormalized.StartsWith("/")) imageNormalized = imageNormalized.Substring(1);
+		if (!PathDictionary.TryGetValue(imageNormalized, out var aewi)) return "<html><body>Not found!</body></html>";
+		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value).Where(a => a.Archive == aewi.Archive));
 		info.RootName = "";
 		info.CurrentDirectory = "";
-		info.PreviewFile = image;
+		info.PreviewFile = (aewi.KeyNormalized.StartsWith("/") ? "" : "/") + aewi.KeyNormalized;
 		//Security note: '<' is not valid character in Windows but I'm not sure about archive files. This is quick and dirty fix.
 		var html = HtmlViewerCache.Replace("{info.json}", info.ToJson().Replace("</script>", "<\"+\"/script>", StringComparison.InvariantCultureIgnoreCase));
 
@@ -676,7 +682,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			using var str = new StreamReader(st, true);
 			HtmlIndexCache = await str.ReadToEndAsync();
 		}
-		var info = GetDirectoryInfo(Archive.Entries, this.EmbeddedArchives);
+		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value));
 		info.RootName = "";
 		info.CurrentDirectory = folder;
 		//Security note: '<' is not valid character in Windows but I'm not sure about archive files. This is quick and dirty fix.
