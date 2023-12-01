@@ -626,9 +626,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			HtmlViewerCache = await str.ReadToEndAsync();
 		}
 		//Fix it to use correct archive!
-		var imageNormalized = image;
-		if (imageNormalized.StartsWith("/")) imageNormalized = imageNormalized.Substring(1);
-		if (!PathDictionary.TryGetValue(imageNormalized, out var aewi)) return "<html><body>Not found!</body></html>";
+		if (!PathDictionary.TryGetValue(EliminateInitialSlash(image), out var aewi)) return "<html><body>Not found!</body></html>";
 		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value).Where(a => a.Archive == aewi.Archive));
 		info.RootName = "";
 		info.CurrentDirectory = "";
@@ -638,6 +636,17 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 		return html;
 	}
+
+	static string EnsureInitialSlash(string text)
+	{
+		return text.StartsWith("/") ? text : $"/{text}";
+	}
+
+	static string EliminateInitialSlash(string text)
+	{
+		return text.StartsWith("/") ? text.Substring(1) : text;
+	}
+
 
 	async Task LoadArchives(string path)
 	{
