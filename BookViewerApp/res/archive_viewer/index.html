@@ -463,6 +463,19 @@
                 case ".TIFF":
                     window.location.href = info.basePath + f + "?ui=book";
                     break;
+                case ".ZIP":
+                case ".CBZ":
+                case ".TAR":
+                case ".GZ":
+                case ".RAR":
+                case ".CBR":
+                case ".7Z":
+                case ".CB7":
+                case ".BZ2":
+                case ".LZ":
+                case ".XZ":
+                    window.location.href = info.basePath + f + "/";
+                    break;
                 default:
                     {
                         var e = info.entries.find(a => (a.folder + "/" + a.name) === f);

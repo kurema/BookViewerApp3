@@ -157,16 +157,10 @@ public abstract class EpubResolverBase : Windows.Web.IUriToStreamResolver
 		}
 	}
 
-	public static async Task<InMemoryRandomAccessStream> ReadSharpCompressFile(SharpCompress.Archives.IArchive archive, string pathFile, System.Threading.SemaphoreSlim semaphore)
+	public static async Task<InMemoryRandomAccessStream> ReadSharpCompressFile(IArchiveEntry entry, System.Threading.SemaphoreSlim semaphore)
 	{
-		if (archive is null) throw new ArgumentNullException(nameof(archive));
 		if (semaphore is null) throw new ArgumentNullException(nameof(semaphore));
-		string pathFileLower = pathFile.ToLowerInvariant();
-		var entry = archive.Entries.Select(a => (a, ComparePath(a.Key, pathFile))).Where(a => a.Item2 != 0).OrderByDescending(a => a.Item2).Select(a => a.a).FirstOrDefault();
-		if (entry is null)
-		{
-			return null;
-		}
+		if (entry is null) throw new ArgumentNullException(nameof(entry));
 		await semaphore.WaitAsync();
 		try
 		{
@@ -432,6 +426,8 @@ public class EpubResolverFile : EpubResolverBase
 
 public class GeneralResolverSharpCompress : EpubResolverBase
 {
+	private const string NotFoundHtml = "<html><body>Not found!</body></html>";
+
 	//We only use SharpCompress because it's easy.
 	private System.Threading.SemaphoreSlim SemaphoreReader = new(1, 1);
 
@@ -475,7 +471,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			{
 				if (_KeyNormalized is not null) return _KeyNormalized;
 				string key = Entry.Key;
-				if (string.IsNullOrEmpty(Path)) key = System.IO.Path.Combine(Path, key);
+				if (!string.IsNullOrEmpty(Path)) key = System.IO.Path.Combine(Path, key);
 				key = key.Replace("\\", "/");
 				if (key.EndsWith('/')) key = key.Substring(0, key.Length - 1);
 				return _KeyNormalized ??= key;
@@ -556,7 +552,14 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			}
 		}
 	native:;
-		return (await ReadSharpCompressFile(Archive, uri.LocalPath, SemaphoreReader) ?? throw new Exception(InvalidPathMessage), new());
+		if (PathDictionary.TryGetValue(EliminateInitialSlash(uri.LocalPath), out var aewi))
+		{
+			return (await ReadSharpCompressFile(aewi.Entry, SemaphoreReader) ?? throw new Exception(InvalidPathMessage), new());
+		}
+		else
+		{
+			return (await StringToStream(NotFoundHtml), new GetContentInfo() { MimetypeOverride = "text/html" });
+		}
 	index:;
 		return (await StringToStream(await GetIndexHtml(path ?? uri.LocalPath)), new GetContentInfo() { MimetypeOverride = "text/html" });
 	viewer:;
@@ -586,7 +589,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 		set => _PathMap = value;
 	}
 
-	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<ArchiveEntryWithInfo> list)
+	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<ArchiveEntryWithInfo> list, IEnumerable<string> additionalFolders)
 	{
 		return new BrowserTools.DirectoryInfos.DirectoryInfo
 		{
@@ -598,13 +601,22 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 				var entry = aewi.Entry;
 				return new Entry()
 				{
-					IsFolder = entry.IsDirectory,
+					IsFolder = entry.IsDirectory || (additionalFolders?.Contains(aewi.KeyNormalized) ?? false),
 					Name = Path.GetFileName(aewi.KeyNormalized),
 					Size = entry.IsDirectory ? null : entry.Size,
 					Updated = entry.LastModifiedTime,
 					Folder = folder
 				};
 			}).ToList(),
+			//}).Concat(additionalFolders?.Select(a => new Entry()
+			//{
+			//	IsFolder = true,
+			//	Name = Path.GetFileName(a),
+			//	Size = null,
+			//	Updated = null,
+			//	Folder = EnsureInitialSlash(Path.GetDirectoryName(a).Replace("\\", "/"))
+			//}
+			//) ?? Array.Empty<Entry>()).ToList(),
 			BasePath = "",
 		};
 	}
@@ -626,8 +638,8 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			HtmlViewerCache = await str.ReadToEndAsync();
 		}
 		//Fix it to use correct archive!
-		if (!PathDictionary.TryGetValue(EliminateInitialSlash(image), out var aewi)) return "<html><body>Not found!</body></html>";
-		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value).Where(a => a.Archive == aewi.Archive));
+		if (!PathDictionary.TryGetValue(EliminateInitialSlash(image), out var aewi)) return NotFoundHtml;
+		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value).Where(a => a.Archive == aewi.Archive), null);
 		info.RootName = "";
 		info.CurrentDirectory = "";
 		info.PreviewFile = (aewi.KeyNormalized.StartsWith("/") ? "" : "/") + aewi.KeyNormalized;
@@ -650,7 +662,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	}
 
 
-	async Task LoadArchives(string path)
+	void LoadArchives(string path)
 	{
 		if (path.Length == 0) return;
 		path = EliminateInitialSlash(path);
@@ -680,12 +692,15 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 	bool LoadArchive(string path)
 	{
-		if (!PathDictionary.TryGetValue(EliminateInitialSlash(path), out var aewi)) return false;
+		path = EliminateInitialSlash(path);
+		if (!PathDictionary.TryGetValue(path, out var aewi)) return false;
+		if (EmbeddedArchives.Any(a => path.Equals(a.Path, StringComparison.InvariantCultureIgnoreCase))) return true;
 		try
 		{
 			using var s = aewi.Entry.OpenEntryStream();
 			var ms = new MemoryStream();
 			s.CopyTo(ms);
+			ms.Seek(0, SeekOrigin.Begin);
 			var os = ArchiveFactory.Open(ms);
 			EmbeddedArchives.Add(new ArchiveWithInfo(os, path));
 			PathDictionary = null;
@@ -700,13 +715,14 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 	protected async Task<string> GetIndexHtml(string folder)
 	{
 		if (folder.StartsWith("/")) folder = folder.Substring(1);
+		LoadArchives(folder);
 		if (HtmlIndexCache is null)
 		{
 			var st = (await (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///res/archive_viewer/index.html"))).OpenReadAsync()).AsStream();
 			using var str = new StreamReader(st, true);
 			HtmlIndexCache = await str.ReadToEndAsync();
 		}
-		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value));
+		var info = GetDirectoryInfo(PathDictionary.Select(a => a.Value), EmbeddedArchives.Select(a => a.Path));
 		info.RootName = "";
 		info.CurrentDirectory = folder;
 		//Security note: '<' is not valid character in Windows but I'm not sure about archive files. This is quick and dirty fix.

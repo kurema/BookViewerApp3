@@ -218,8 +218,8 @@ public static class BookManager
 			case ".GZ":
 			case ".RAR":
 			case ".CBR":
-			case "7z":
-			case "cb7":
+			case ".7Z":
+			case ".CB7":
 			case ".BZ2":
 			case ".LZ":
 			case ".XZ":
