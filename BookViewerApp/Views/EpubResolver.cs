@@ -644,16 +644,16 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 	static string EliminateInitialSlash(string text)
 	{
-		return text.StartsWith("/") ? text.Substring(1) : text;
+		int h = 0;
+		while (h < text.Length && text[h] == '/') h++;
+		return h == 0 ? text : text.Substring(h);
 	}
 
 
 	async Task LoadArchives(string path)
 	{
 		if (path.Length == 0) return;
-		int h = 0;
-		while (path[h] == '/' && h < path.Length) h++;
-		if (h > 0) path = path.Substring(h);
+		path = EliminateInitialSlash(path);
 		var paths = path.Split('/');
 		var sb = new StringBuilder();
 		var sb2 = new StringBuilder();
@@ -667,19 +667,34 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 				var f = entries.FirstOrDefault(a => a.Key == sb.ToString());
 				if (f is null) return;
 				if (f.IsDirectory) continue;
-				// f is archive!
-				throw new NotImplementedException();
+				if (!LoadArchive(sb.ToString())) continue;
 				sb.Clear();
+				sb2.Append("/");
+				continue;
 			}
-			sb.Append(Path.DirectorySeparatorChar);
-			sb2.Append(Path.DirectorySeparatorChar);
+			sb.Append("/");
+			sb2.Append("/");
 		}
 		return;
 	}
 
-	async Task<IArchive> LoadArchive(string path, string localPath, IEnumerable<IArchiveEntry> entries)
+	bool LoadArchive(string path)
 	{
-		throw new NotImplementedException();
+		if (!PathDictionary.TryGetValue(EliminateInitialSlash(path), out var aewi)) return false;
+		try
+		{
+			using var s = aewi.Entry.OpenEntryStream();
+			var ms = new MemoryStream();
+			s.CopyTo(ms);
+			var os = ArchiveFactory.Open(ms);
+			EmbeddedArchives.Add(new ArchiveWithInfo(os, path));
+			PathDictionary = null;
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
 	}
 
 	protected async Task<string> GetIndexHtml(string folder)
