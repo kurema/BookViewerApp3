@@ -67,6 +67,41 @@
             "Half": 4,
         });
 
+        class PageCombinationEntry {
+            constructor(page, pageState) {
+                this.Page = page;
+                this.PageState = pageState;
+            }
+        }
+
+
+        class PageCombination {
+            constructor(combinations) {
+                //Array of PageCombinationEntry
+                this.Combinations = combinations;
+            }
+
+            get IsEmpty() {
+                return Combinations.length === 0;
+            }
+
+            get Aspect() {
+                let result = 0;
+                Combinations.forEach(a => {
+                    if (a.Page.Width == null) return;
+                    result += a.Page.Width / a.Page.Height;
+                });
+                return result;
+            }
+
+            async Draw(pageDirection, position, zoom) {
+                if (this.IsEmpty) return;
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                //今日は面倒なので明日にする。
+            }
+        }
+
         class Book {
             #currentPage;
 
@@ -98,7 +133,6 @@
                 await this.#PageShift(+1);
             }
 
-
             async Draw() {
                 const w = window.innerWidth;
                 const h = window.innerHeight;
@@ -111,6 +145,9 @@
                     //読み込み失敗の場合ページを削除する。
                     return;
                 }
+                ctx.beginPath();
+                ctx.fillStyle = "#DDD";
+                ctx.fillRect(0, 0, w, h);
                 const cw = this.CurrentPage.Width;
                 const ch = this.CurrentPage.Height;
 
@@ -166,8 +203,8 @@
             const spy = startPoint.y;
             if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
                 // Double click!
-            //    startPoint = null;
-            //    return;
+                //    startPoint = null;
+                //    return;
             }
             lastClickTime = Date.now();
             if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
