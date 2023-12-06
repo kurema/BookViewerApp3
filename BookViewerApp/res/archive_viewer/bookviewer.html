@@ -74,6 +74,20 @@
             }
         }
 
+        class Vector2 {
+            constructor(x, y) {
+                this.X = x;
+                this.Y = y;
+            }
+        }
+
+        class ZoomInformation {
+            constructor(centerX, centerY, factor) {
+                //This vector is relative to height of image.
+                this.Center = new Vector2(centerX, centerY);
+                this.Factor = factor;
+            }
+        }
 
         class PageCombination {
             constructor(combinations) {
@@ -98,7 +112,10 @@
                 if (this.IsEmpty) return;
                 const w = window.innerWidth;
                 const h = window.innerHeight;
-                //今日は面倒なので明日にする。
+                for (let i = 0; i < this.Combinations.length; i++) {
+                    const entry = this.Combinations[i];
+                    await entry.Page.Load();
+                }
             }
         }
 
@@ -158,13 +175,6 @@
             }
         }
 
-        class Vector2 {
-            constructor(x, y) {
-                this.X = x;
-                this.Y = y;
-            }
-        }
-
         const topDiv = document.getElementsByClassName("top")[0];
         const canvas = document.getElementById("mainCanvas");
         const ctx = canvas.getContext("2d");
@@ -177,20 +187,31 @@
         canvas.addEventListener("pointermove", PointerMove, false)
         canvas.addEventListener("pointerup", PointerUp, false)
 
-        let startPoint;
-        let shiftPoint = { "x": 0, "y": 0 };
         let lastClickTime = null;
+        //https://github.com/mdn/dom-examples/blob/main/pointerevents/Pinch_zoom_gestures.html
+        let evCache = new Array();
 
         book.Draw();
 
         function PointerDown(event) {
             if (event.button != 0) return;
-            startPoint = { "x": event.screenX, "y": event.screenY };
+            evCache.push(ev);
         }
 
         async function PointerMove(event) {
-            if (startPoint == null) return;
-            shiftPoint = { "x": event.screenX - startPoint.x, "y": event.screenY - startPoint.y };
+            let oldEvent = null;
+            for (var i = 0; i < evCache.length; i++) {
+                if (event.pointerId == evCache[i].pointerId) {
+                    oldEvent = evCache[i];
+                    //evCache[i] = event;
+                    break;
+                }
+            }
+            if (evCache.length == 1) {
+
+            } else if (evCache.length == 2) {
+
+            }
             await book.Draw();
         }
 
@@ -199,31 +220,38 @@
             const w = window.innerWidth;
             const x = event.screenX;
             const y = event.screenY;
-            const spx = startPoint.x;
-            const spy = startPoint.y;
-            if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
-                // Double click!
-                //    startPoint = null;
-                //    return;
-            }
-            lastClickTime = Date.now();
-            if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
-                startPoint = null;
-                if (x < w / 4) {
-                    await book.PageShiftLeft();
-                } else if (x >= w * 3 / 4) {
-                    await book.PageShiftRight();
-                }
-            } else {
-                if ((x - spx) * 4 > w) {
-                    await book.PageShiftLeft();
-                } else if ((x - spx) * 4 < -w) {
-                    await book.PageShiftRight();
-                }
-            }
-            startPoint = null;
-            shiftPoint = { "x": 0, "y": 0 };
-            await book.Draw();
+        //    const spx = startPoint.x;
+        //    const spy = startPoint.y;
+        //    if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
+        //        // Double click!
+        //        //    startPoint = null;
+        //        //    return;
+        //    }
+        //    lastClickTime = Date.now();
+        //    if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
+        //        startPoint = null;
+        //        if (x < w / 4) {
+        //            await book.PageShiftLeft();
+        //        } else if (x >= w * 3 / 4) {
+        //            await book.PageShiftRight();
+        //        }
+        //    } else {
+        //        if ((x - spx) * 4 > w) {
+        //            await book.PageShiftLeft();
+        //        } else if ((x - spx) * 4 < -w) {
+        //            await book.PageShiftRight();
+        //        }
+        //    }
+        //    startPoint = null;
+        //    shiftPoint = { "x": 0, "y": 0 };
+        //    await book.Draw();
+
+        //    for (var i = 0; i < evCache.length; i++) {
+        //        if (evCache[i].pointerId == event.pointerId) {
+        //            evCache.splice(i, 1);
+        //            break;
+        //        }
+        //    }
         }
 
         async function OnResize() {
