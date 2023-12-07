@@ -79,13 +79,24 @@
                 this.X = x;
                 this.Y = y;
             }
+
+            Reset() {
+                this.X = 0;
+                this.Y = 0;
+            }
+
+            Set(x, y) {
+                this.X = x;
+                this.Y = y;
+            }
         }
 
         class ZoomInformation {
-            constructor(centerX, centerY, factor) {
+            constructor(centerX, centerY, factor = 1.0) {
                 //This vector is relative to height of image.
                 this.Center = new Vector2(centerX, centerY);
                 this.Factor = factor;
+                this.FactorInitial = factor;
             }
         }
 
@@ -128,11 +139,18 @@
                 this.PageMode = pageModeEnum.AutoDetect;
                 this.IsPreviewed = false;
                 this.PageState = pageStaeteEnum.NotDisplayed;
+                this.PageCombinations = [new PageCombination([]), new PageCombination([]), new PageCombination([])];
             }
 
             get PageCount() { return this.Images.length; }
 
             get CurrentPage() { return this.Images[this.#currentPage]; }
+
+            UpdatePageCombination() {
+                if (this.#currentPage === 0) {
+                    this.PageCombinations[0].Combinations = [];
+                }
+            }
 
             async #PageShift(shift) {
                 const shifted = this.#currentPage + shift;
@@ -171,7 +189,9 @@
                 const z = Math.min(w / cw, h / ch);
                 const iw = cw * z;
                 const ih = ch * z;
-                ctx.drawImage(this.CurrentPage.Image, (w - iw) / 2.0 + shiftPoint.x, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.y), h - ih), iw, ih);
+                /*ctx.globalAlpha = 0.7;*/
+                ctx.drawImage(this.CurrentPage.Image, (w - iw) / 2.0 + shiftPoint.X, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.Y), h - ih), iw, ih);
+                /*ctx.globalAlpha = 1.0;*/
             }
         }
 
@@ -190,29 +210,33 @@
         let lastClickTime = null;
         //https://github.com/mdn/dom-examples/blob/main/pointerevents/Pinch_zoom_gestures.html
         let evCache = new Array();
+        let prevDiff = -1;
+        let shiftPoint = new Vector2(0, 0);
 
         book.Draw();
 
         function PointerDown(event) {
             if (event.button != 0) return;
-            evCache.push(ev);
+            evCache.push(event);
         }
 
         async function PointerMove(event) {
-            let oldEvent = null;
-            for (var i = 0; i < evCache.length; i++) {
-                if (event.pointerId == evCache[i].pointerId) {
-                    oldEvent = evCache[i];
-                    //evCache[i] = event;
-                    break;
-                }
-            }
+            //let oldEvent = null;
+            //for (var i = 0; i < evCache.length; i++) {
+            //    if (event.pointerId == evCache[i].pointerId) {
+            //        oldEvent = evCache[i];
+            //        //evCache[i] = event;
+            //        break;
+            //    }
+            //}
             if (evCache.length == 1) {
-
+                let evO = evCache[0];
+                shiftPoint.Set(event.screenX - evO.screenX, event.screenY - evO.screenY);
+                await book.Draw();
+                return;
             } else if (evCache.length == 2) {
-
+                await book.Draw();
             }
-            await book.Draw();
         }
 
         async function PointerUp(event) {
@@ -220,43 +244,47 @@
             const w = window.innerWidth;
             const x = event.screenX;
             const y = event.screenY;
-        //    const spx = startPoint.x;
-        //    const spy = startPoint.y;
-        //    if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
-        //        // Double click!
-        //        //    startPoint = null;
-        //        //    return;
-        //    }
-        //    lastClickTime = Date.now();
-        //    if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
-        //        startPoint = null;
-        //        if (x < w / 4) {
-        //            await book.PageShiftLeft();
-        //        } else if (x >= w * 3 / 4) {
-        //            await book.PageShiftRight();
-        //        }
-        //    } else {
-        //        if ((x - spx) * 4 > w) {
-        //            await book.PageShiftLeft();
-        //        } else if ((x - spx) * 4 < -w) {
-        //            await book.PageShiftRight();
-        //        }
-        //    }
-        //    startPoint = null;
-        //    shiftPoint = { "x": 0, "y": 0 };
-        //    await book.Draw();
+            if (evCache.length == 2) {
+                //Zoom finished.
+                return;
+            } else if (evCache.length != 1) {
+                return;
+            }
+            const spx = evCache[0].screenX;
+            const spy = evCache[0].screenY;
+            if (lastClickTime != null && (Date.now() - lastClickTime) < 300) {
+                // Double click!
+                //    startPoint = null;
+                //    return;
+            }
+            lastClickTime = Date.now();
+            if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
+                if (x < w / 4) {
+                    await book.PageShiftLeft();
+                } else if (x >= w * 3 / 4) {
+                    await book.PageShiftRight();
+                }
+            } else {
+                if ((x - spx) * 4 > w) {
+                    await book.PageShiftLeft();
+                } else if ((x - spx) * 4 < -w) {
+                    await book.PageShiftRight();
+                }
+            }
+            shiftPoint.Reset();
+            await book.Draw();
 
-        //    for (var i = 0; i < evCache.length; i++) {
-        //        if (evCache[i].pointerId == event.pointerId) {
-        //            evCache.splice(i, 1);
-        //            break;
-        //        }
-        //    }
+            for (var i = 0; i < evCache.length; i++) {
+                if (evCache[i].pointerId == event.pointerId) {
+                    evCache.splice(i, 1);
+                    break;
+                }
+            }
         }
 
         async function OnResize() {
-            startPoint = null;
-            shiftPoint = { "x": 0, "y": 0 };
+            evCache = new Array();
+            shiftPoint.Reset();
             await book.Draw();
         }
 
