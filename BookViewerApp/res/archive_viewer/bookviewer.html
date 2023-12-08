@@ -67,6 +67,12 @@
             "Half": 4,
         });
 
+        const pageDirectionEnum = Object.freeze({
+            "Left": 1,
+            "Right": 2,
+            "Down": 3,
+        });
+
         class PageCombinationEntry {
             constructor(page, pageState) {
                 this.Page = page;
@@ -100,6 +106,35 @@
             }
         }
 
+        class DrawOption {
+            #opacity;
+            #shift;
+            #factor;
+
+            constructor(factor, shift, opacity) {
+                this.#factor = factor;
+                this.#shift = shift;
+                this.#opacity = opacity;
+            }
+
+            get Opacity() {
+                return this.#opacity;
+            }
+
+            get Factor() {
+                return this.#factor;
+            }
+
+            get Shift() {
+                return this.#shift;
+            }
+        }
+
+        class DrawOptionDown extends DrawOption {
+            constructor() {
+            }
+        }
+
         class PageCombination {
             constructor(combinations) {
                 //Array of PageCombinationEntry
@@ -119,13 +154,18 @@
                 return result;
             }
 
-            async Draw(pageDirection, position, zoom) {
+            async Draw(option) {
                 if (this.IsEmpty) return;
                 const w = window.innerWidth;
                 const h = window.innerHeight;
-                for (let i = 0; i < this.Combinations.length; i++) {
-                    const entry = this.Combinations[i];
-                    await entry.Page.Load();
+                const asp = this.Aspect;
+                const aspcan = w / h;
+                if (aspcan > asp) {
+                    for (let i = 0; i < this.Combinations.length; i++) {
+                        const entry = this.Combinations[i];
+                        await entry.Page.Load();
+                        //ctx.drawImage(entry.Page.Image);
+                    }
                 }
             }
         }
