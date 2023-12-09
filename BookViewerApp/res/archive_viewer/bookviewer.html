@@ -130,6 +130,38 @@
             }
         }
 
+        class DrawOptionHorizontal extends DrawOption {
+            constructor(direction, progress, widthCanvas, widthImage) {
+                this.Direction = direction;
+                this.Progress = progress;
+                this.WidthCanvas = widthCanvas;
+                this.WidthImage = widthImage;
+            }
+
+            get Opacity() {
+                let p = this.Progress;
+                if (this.Direction == pageDirectionEnum.Right) {
+                    p = -p;
+                }
+                if (p <= 0) return 1.0;
+                return Math.abs(p / this.WidthCanvas * 2.0);
+            }
+
+            get Factor() {
+                let p = this.Progress;
+                if (this.Direction == pageDirectionEnum.Right) {
+                    p = -p;
+                }
+                if (p <= 0) return 1.0;
+                const minf = 0.5;
+                return minf + (1.0 - minf) * Math.abs(p / this.WidthCanvas * 2.0);
+            }
+
+            get Shift() {
+                return new Vector2(this.Progress, 0);
+            }
+        }
+
         class DrawOptionDown extends DrawOption {
             constructor() {
             }
@@ -160,6 +192,8 @@
                 const h = window.innerHeight;
                 const asp = this.Aspect;
                 const aspcan = w / h;
+
+                ctx.globalAlpha = option.Opacity;
                 if (aspcan > asp) {
                     for (let i = 0; i < this.Combinations.length; i++) {
                         const entry = this.Combinations[i];
@@ -167,6 +201,7 @@
                         //ctx.drawImage(entry.Page.Image);
                     }
                 }
+                ctx.globalAlpha = 1.0;
             }
         }
 
@@ -229,9 +264,7 @@
                 const z = Math.min(w / cw, h / ch);
                 const iw = cw * z;
                 const ih = ch * z;
-                /*ctx.globalAlpha = 0.7;*/
                 ctx.drawImage(this.CurrentPage.Image, (w - iw) / 2.0 + shiftPoint.X, Math.min(Math.max(0, (h - ih) / 2.0 + shiftPoint.Y), h - ih), iw, ih);
-                /*ctx.globalAlpha = 1.0;*/
             }
         }
 
