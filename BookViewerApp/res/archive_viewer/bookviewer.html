@@ -131,15 +131,15 @@
         }
 
         class DrawOptionHorizontal extends DrawOption {
-            constructor(direction, progress, widthCanvas, widthImage) {
+            constructor(direction, delta, widthCanvas, widthImage) {
                 this.Direction = direction;
-                this.Progress = progress;
+                this.Delta = delta;
                 this.WidthCanvas = widthCanvas;
                 this.WidthImage = widthImage;
             }
 
             get Opacity() {
-                let p = this.Progress;
+                let p = this.Delta.X;
                 if (this.Direction == pageDirectionEnum.Right) {
                     p = -p;
                 }
@@ -148,7 +148,7 @@
             }
 
             get Factor() {
-                let p = this.Progress;
+                let p = this.Delta.X;
                 if (this.Direction == pageDirectionEnum.Right) {
                     p = -p;
                 }
@@ -158,13 +158,22 @@
             }
 
             get Shift() {
-                return new Vector2(this.Progress, 0);
+                return new Vector2(this.Delta.X, 0);
             }
         }
 
         class DrawOptionDown extends DrawOption {
-            constructor() {
+            constructor(delta, widthCanvas, widthImage) {
+                this.Delta = delta;
+                this.WidthCanvas = widthCanvas;
+                this.WidthImage = widthImage;
             }
+
+            get Opacity() { return 1.0; }
+
+            get Factor() { return 1.0; }
+
+            get Shift() { return new Vector2(0, this.Delta.Y); }
         }
 
         class PageCombination {
@@ -294,14 +303,6 @@
         }
 
         async function PointerMove(event) {
-            //let oldEvent = null;
-            //for (var i = 0; i < evCache.length; i++) {
-            //    if (event.pointerId == evCache[i].pointerId) {
-            //        oldEvent = evCache[i];
-            //        //evCache[i] = event;
-            //        break;
-            //    }
-            //}
             if (evCache.length == 1) {
                 let evO = evCache[0];
                 shiftPoint.Set(event.screenX - evO.screenX, event.screenY - evO.screenY);
