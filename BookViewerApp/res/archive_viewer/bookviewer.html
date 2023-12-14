@@ -53,11 +53,9 @@
         }
 
         const pageStaeteEnum = Object.freeze({
-            "NotDisplayed": 0,
             "Full": 1,
-            "Double": 2,
-            "LeftHalf": 3,
-            "RightHalf": 4,
+            "LeftHalf": 2,
+            "RightHalf": 3,
         });
 
         const pageModeEnum = Object.freeze({
@@ -160,6 +158,12 @@
             get Shift() {
                 return new Vector2(this.Delta.X, 0);
             }
+
+            SetCoordinate(x, y, widthCanvas, widthImage) {
+                this.Delta.Set(x, y);
+                this.WidthCanvas = widthCanvas;
+                this.WidthImage = widthImage;
+            }
         }
 
         class DrawOptionDown extends DrawOption {
@@ -174,6 +178,12 @@
             get Factor() { return 1.0; }
 
             get Shift() { return new Vector2(0, this.Delta.Y); }
+
+            SetCoordinate(x, y, widthCanvas, widthImage) {
+                this.Delta.Set(x, y);
+                this.WidthCanvas = widthCanvas;
+                this.WidthImage = widthImage;
+            }
         }
 
         class PageCombination {
@@ -222,7 +232,6 @@
                 this.#currentPage = this.Images.findIndex(a => a.Path == info.previewFile);
                 this.PageMode = pageModeEnum.AutoDetect;
                 this.IsPreviewed = false;
-                this.PageState = pageStaeteEnum.NotDisplayed;
                 this.PageCombinations = [new PageCombination([]), new PageCombination([]), new PageCombination([])];
             }
 
@@ -230,10 +239,23 @@
 
             get CurrentPage() { return this.Images[this.#currentPage]; }
 
-            UpdatePageCombination() {
+            async UpdatePageCombination() {
                 if (this.#currentPage === 0) {
-                    this.PageCombinations[0].Combinations = [];
+                    this.PageCombinations[0].Combinations = new PageCombination([]);
                 }
+                //ToDo: Implement
+            }
+
+            async PageShiftPlus() {
+                this.PageCombinations[0] = this.PageCombinations[1];
+                this.PageCombinations[1] = this.PageCombinations[2];
+                //ToDo: Implement
+            }
+
+            async PageShiftMinus() {
+                this.PageCombinations[1] = this.PageCombinations[0];
+                this.PageCombinations[2] = this.PageCombinations[1];
+                //ToDo: Implement
             }
 
             async #PageShift(shift) {
