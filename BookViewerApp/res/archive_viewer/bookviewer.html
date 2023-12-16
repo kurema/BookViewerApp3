@@ -52,20 +52,20 @@
             }
         }
 
-        const pageStaeteEnum = Object.freeze({
+        const PageStaeteEnum = Object.freeze({
             "Full": 1,
             "LeftHalf": 2,
             "RightHalf": 3,
         });
 
-        const pageModeEnum = Object.freeze({
+        const PageModeEnum = Object.freeze({
             "Simple": 1,
             "AutoDetect": 2,
             "Spread": 3,
             "Half": 4,
         });
 
-        const pageDirectionEnum = Object.freeze({
+        const PageDirectionEnum = Object.freeze({
             "Left": 1,
             "Right": 2,
             "Down": 3,
@@ -138,7 +138,7 @@
 
             get Opacity() {
                 let p = this.Delta.X;
-                if (this.Direction == pageDirectionEnum.Right) {
+                if (this.Direction == PageDirectionEnum.Right) {
                     p = -p;
                 }
                 if (p <= 0) return 1.0;
@@ -147,7 +147,7 @@
 
             get Factor() {
                 let p = this.Delta.X;
-                if (this.Direction == pageDirectionEnum.Right) {
+                if (this.Direction == PageDirectionEnum.Right) {
                     p = -p;
                 }
                 if (p <= 0) return 1.0;
@@ -230,9 +230,10 @@
             constructor(info) {
                 this.Images = info.entries.filter(a => IsImage(a.name)).map(a => new Page(a));
                 this.#currentPage = this.Images.findIndex(a => a.Path == info.previewFile);
-                this.PageMode = pageModeEnum.AutoDetect;
+                this.PageMode = PageModeEnum.AutoDetect;
                 this.IsPreviewed = false;
                 this.PageCombinations = [new PageCombination([]), new PageCombination([]), new PageCombination([])];
+                this.Direction = PageDirectionEnum.Left;
             }
 
             get PageCount() { return this.Images.length; }
@@ -249,13 +250,56 @@
             async PageShiftPlus() {
                 this.PageCombinations[0] = this.PageCombinations[1];
                 this.PageCombinations[1] = this.PageCombinations[2];
-                //ToDo: Implement
+                if (this.IsSingleHalf(this.PageCombinations[1], this.Direction == PageDirectionEnum.Right ? PageStaeteEnum.LeftHalf : PageStaeteEnum.RightHalf)) {
+                    this.PageCombinations[0] = new PageCombination([new PageCombinationEntry(this.PageCombinations[0].Combinations[0].Page, PageDirectionEnum.Right ? PageStaeteEnum.RightHalf : PageStaeteEnum.LeftHalf)])
+                } else {
+                    //ToDo: Implement
+                }
             }
 
             async PageShiftMinus() {
                 this.PageCombinations[1] = this.PageCombinations[0];
                 this.PageCombinations[2] = this.PageCombinations[1];
-                //ToDo: Implement
+                if (this.IsSingleHalf(this.PageCombinations[1], this.Direction == PageDirectionEnum.Left ? PageStaeteEnum.LeftHalf : PageStaeteEnum.RightHalf)) {
+                    this.PageCombinations[0] = new PageCombination([new PageCombinationEntry(this.PageCombinations[0].Combinations[0].Page, PageDirectionEnum.Left ? PageStaeteEnum.RightHalf : PageStaeteEnum.LeftHalf)])
+                } else {
+                    //ToDo: Implement
+                }
+            }
+
+            IsSingleHalf(combination, direction) {
+                switch (this.PageMode) {
+                    case PageModeEnum.AutoDetect:
+                    case PageModeEnum.Half:
+                        if (combination.Combinations.length != 1) return false;
+                        return combination.Combinations[0].PageState == direction;
+                    default:
+                        return false;
+                }
+            }
+
+            GetCombination(pageNumber) {
+                if (pageNumber >= this.Images.length) return new PageCombination([]);
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+
+                switch (this.PageMode) {
+                    case PageModeEnum.Simple:
+                        return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
+                    case PageModeEnum.AutoDetect:
+                        //Impl!
+                        break;
+                    case PageModeEnum.Half:
+                        //Impl!
+                        break;
+                    case PageModeEnum.Spread:
+                        if (pageNumber + 1 < this.Images.length) {
+                            //Fix!
+                            return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
+                        }
+                    default:
+                        break;
+                }
             }
 
             async #PageShift(shift) {
