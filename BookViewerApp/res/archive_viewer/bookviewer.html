@@ -62,7 +62,7 @@
             "Simple": 1,
             "AutoDetect": 2,
             "Spread": 3,
-            "Half": 4,
+            "Portrait": 4,
         });
 
         const PageDirectionEnum = Object.freeze({
@@ -270,7 +270,7 @@
             IsSingleHalf(combination, direction) {
                 switch (this.PageMode) {
                     case PageModeEnum.AutoDetect:
-                    case PageModeEnum.Half:
+                    case PageModeEnum.Portrait:
                         if (combination.Combinations.length != 1) return false;
                         return combination.Combinations[0].PageState == direction;
                     default:
@@ -278,24 +278,61 @@
                 }
             }
 
-            GetCombination(pageNumber) {
+            async GetCombination(pageNumber) {
                 if (pageNumber >= this.Images.length) return new PageCombination([]);
                 const w = window.innerWidth;
                 const h = window.innerHeight;
 
+                let currentPageMode = PageModeEnum.Simple;
                 switch (this.PageMode) {
                     case PageModeEnum.Simple:
-                        return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
-                    case PageModeEnum.AutoDetect:
-                        //Impl!
+                        currentPageMode = PageModeEnum.Simple;
                         break;
-                    case PageModeEnum.Half:
-                        //Impl!
+                    case PageModeEnum.AutoDetect:
+                        if (w > h) currentPageMode = PageModeEnum.Spread;
+                        else currentPageMode = PageModeEnum.Portrait;
+                        break;
+                    case PageModeEnum.Portrait:
+                        currentPageMode = PageModeEnum.Portrait;
                         break;
                     case PageModeEnum.Spread:
-                        if (pageNumber + 1 < this.Images.length) {
-                            //Fix!
-                            return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
+                        currentPageMode = PageModeEnum.Spread;
+                        break;
+                }
+                switch (currentPageMode) {
+                    case PageModeEnum.Simple:
+                        return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
+                    case PageModeEnum.Portrait:
+                        {
+                            const img = this.Images[pageNumber];
+                            await img.Load();
+                            return new PageCombination([new PageCombinationEntry(img, img.Width <= img.Height ? PageStaeteEnum.Full : (this.Direction == PageDirectionEnum.Left ? PageStaeteEnum.RightHalf : PageStaeteEnum.LeftHalf))]);
+                        }
+                        break;
+                    case PageModeEnum.Spread:
+                        {
+                            //0: Simple
+                            //1: Page 0 - Page 1
+                            //2: Page 1 - Page 0
+                            let layout = -1;
+                            if (pageNumber + 1 < this.Images.length) {
+                                var imgs = [this.Images[pageNumber], this.Images[pageNumber + 1]];
+                                await imgs[0].Load();
+                                await imgs[1].Load();
+                                if (imgs[0].Width > imgs[0].Height || imgs[1].Width > imgs[1].Height) layout = 0;
+                                else if (this.Direction == PageDirectionEnum.Left) layout = 2
+                                else layout = 1;
+                            } else {
+                                layout = 0;
+                            }
+                            switch (layout) {
+                                case 0:
+                                    return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
+                                case 1:
+                                    return new PageCombination([new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full), new PageCombinationEntry(this.Images[pageNumber + 1], PageStaeteEnum.Full)]);
+                                case 2:
+                                    return new PageCombination([new PageCombinationEntry(this.Images[pageNumber + 1], PageStaeteEnum.Full), new PageCombinationEntry(this.Images[pageNumber], PageStaeteEnum.Full)]);
+                            }
                         }
                     default:
                         break;
