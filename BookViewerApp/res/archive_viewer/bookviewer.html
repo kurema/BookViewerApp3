@@ -205,6 +205,11 @@
                 return result;
             }
 
+            get PageLength() {
+                //Length of page simply matches length of Combinations.
+                return this.Combinations.length;
+            }
+
             async Draw(option) {
                 if (this.IsEmpty) return;
                 const w = window.innerWidth;
@@ -248,25 +253,27 @@
             }
 
             async PageShiftPlus() {
+                if (this.PageCombinations[2].PageLength == 0) return;
                 this.PageCombinations[0] = this.PageCombinations[1];
                 this.PageCombinations[1] = this.PageCombinations[2];
                 if (this.IsSingleHalf(this.PageCombinations[1], this.Direction == PageDirectionEnum.Right ? PageStaeteEnum.LeftHalf : PageStaeteEnum.RightHalf)) {
                     this.PageCombinations[2] = new PageCombination([new PageCombinationEntry(this.PageCombinations[0].Combinations[0].Page, PageDirectionEnum.Right ? PageStaeteEnum.RightHalf : PageStaeteEnum.LeftHalf)])
                 } else {
-                    this.PageCombinations[2] = GetCombination(this.#currentPage + this.PageCombinations[1].Combinations.length);
-                    //ToDo: Shift page number;
+                    this.PageCombinations[2] = GetCombination(this.#currentPage + this.PageCombinations[1].PageLength);
                 }
+                this.#currentPage += this.PageCombinations[0].PageLength;
             }
 
             async PageShiftMinus() {
+                if (this.PageCombinations[0].PageLength == 0) return;
                 this.PageCombinations[1] = this.PageCombinations[0];
                 this.PageCombinations[2] = this.PageCombinations[1];
                 if (this.IsSingleHalf(this.PageCombinations[1], this.Direction == PageDirectionEnum.Left ? PageStaeteEnum.LeftHalf : PageStaeteEnum.RightHalf)) {
                     this.PageCombinations[0] = new PageCombination([new PageCombinationEntry(this.PageCombinations[0].Combinations[0].Page, PageDirectionEnum.Left ? PageStaeteEnum.RightHalf : PageStaeteEnum.LeftHalf)])
                 } else {
                     this.PageCombinations[0] = GetCombination(this.#currentPage - this.PageCombinations[1].Combinations.length, -1);
-                    //ToDo: Shift page number;
                 }
+                this.#currentPage += this.PageCombinations[1].PageLength;
             }
 
             IsSingleHalf(combination, direction) {
@@ -280,8 +287,12 @@
                 }
             }
 
+            IsPageInRange(page) {
+                return page < this.Images.length && page >= 0;
+            }
+
             async GetCombination(pageNumber, shift = +1) {
-                if (pageNumber >= this.Images.length) return new PageCombination([]);
+                if (!IsPageInRange(pageNumber)) return new PageCombination([]);
                 const w = window.innerWidth;
                 const h = window.innerHeight;
 
@@ -319,7 +330,7 @@
                             let layout = -1;
                             const page0 = shift > 0 ? pageNumber : pageNumber + shift;
                             const page1 = shift > 0 ? pageNumber + shift : pageNumber;
-                            if (pageNumber + shift < this.Images.length && pageNumber + shift > 0) {
+                            if (IsPageInRange(pageNumber + shift)) {
                                 var imgs = [this.Images[page0], this.Images[page1]];
                                 await imgs[0].Load();
                                 await imgs[1].Load();
