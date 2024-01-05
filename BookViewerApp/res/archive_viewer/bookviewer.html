@@ -193,12 +193,12 @@
             }
 
             get IsEmpty() {
-                return Combinations.length === 0;
+                return this.Combinations.length === 0;
             }
 
             get Aspect() {
                 let result = 0;
-                Combinations.forEach(a => {
+                this.Combinations.forEach(a => {
                     if (a.Page.Width == null) return;
                     result += a.Page.Width / a.Page.Height;
                 });

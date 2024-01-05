@@ -37,7 +37,7 @@
     get Width(): number | null { return this.Image?.width; }
     get Height(): number | null { return this.Image?.height; }
 
-    Free(): void{
+    Free(): void {
         this.Image = null;
         this.IsLoaded = false;
         this.IsLoading = false;
@@ -82,7 +82,7 @@ class Vector2 {
         this.Y = y;
     }
 
-    Reset(): void{
+    Reset(): void {
         this.X = 0;
         this.Y = 0;
     }
@@ -110,4 +110,117 @@ interface IDrawOption {
     get Opacity(): number;
     get Factor(): number;
     get Shift(): Vector2;
+    get Delta(): Vector2;
+    set Delta(value: Vector2);
 }
+
+class DrawOptionHorizontal implements IDrawOption {
+    Direction: PageDirections;
+    WidthCanvas: number;
+    WidthImage: number;
+    #Delta: Vector2;
+
+    constructor(direction, delta, widthCanvas, widthImage) {
+        this.Direction = direction;
+        this.Delta = delta;
+        this.WidthCanvas = widthCanvas;
+        this.WidthImage = widthImage;
+    }
+
+    get Delta(): Vector2 {
+        return this.#Delta;
+    }
+    set Delta(value: Vector2) {
+        this.#Delta = value;
+    }
+    get Opacity(): number {
+        let p = this.Delta.X;
+        if (this.Direction == PageDirections.Right) {
+            p = -p;
+        }
+        if (p <= 0) return 1.0;
+        return Math.abs(p / this.WidthCanvas * 2.0);
+    }
+    get Factor(): number {
+        let p = this.Delta.X;
+        if (this.Direction == PageDirections.Right) {
+            p = -p;
+        }
+        if (p <= 0) return 1.0;
+        const minf = 0.5;
+        return minf + (1.0 - minf) * Math.abs(p / this.WidthCanvas * 2.0);
+    }
+    get Shift(): Vector2 {
+        return new Vector2(this.Delta.X, 0);
+    }
+}
+
+class DrawOptionDown implements IDrawOption {
+    #Delta: Vector2;
+
+    constructor(delta) {
+        this.Delta = delta;
+    }
+
+    get Delta(): Vector2 {
+        return this.#Delta;
+    }
+    set Delta(value: Vector2) {
+        this.#Delta = value;
+    }
+
+    get Opacity() { return 1.0; }
+
+    get Factor() { return 1.0; }
+
+    get Shift() { return new Vector2(0, this.Delta.Y); }
+}
+
+class PageCombination {
+    Combinations: PageCombinationEntry[];
+
+    constructor(combinations) {
+        //Array of PageCombinationEntry
+        this.Combinations = combinations;
+    }
+
+    get IsEmpty() {
+        return this.Combinations.length === 0;
+    }
+
+    get Aspect() {
+        let result = 0;
+        this.Combinations.forEach(a => {
+            if (a.Page.Width == null) return;
+            result += a.Page.Width / a.Page.Height;
+        });
+        return result;
+    }
+
+    get PageLength() {
+        //Length of page simply matches length of Combinations.
+        return this.Combinations.length;
+    }
+
+    async Draw(option: IDrawOption, ctx: CanvasRenderingContext2D) {
+        if (this.IsEmpty) return;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const asp = this.Aspect;
+        const aspcan = w / h;
+
+        ctx.globalAlpha = option.Opacity;
+        if (aspcan > asp) {
+            for (let i = 0; i < this.Combinations.length; i++) {
+                const entry = this.Combinations[i];
+                await entry.Page.Load();
+                //ctx.drawImage(entry.Page.Image);
+            }
+        }
+        ctx.globalAlpha = 1.0;
+    }
+}
+
+//const topDiv = document.getElementsByClassName("top")[0];
+//const canvas = <HTMLCanvasElement>(document.getElementById("mainCanvas"));
+//const ctx = canvas.getContext("2d");
