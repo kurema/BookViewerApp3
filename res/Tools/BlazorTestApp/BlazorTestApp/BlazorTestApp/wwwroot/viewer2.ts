@@ -15,6 +15,20 @@ class Vector2d {
         this.X = x;
         this.Y = y;
     }
+
+    Reset() {
+        this.X = 0;
+        this.Y = 0;
+    }
+
+    Set(x: number = 0, y: number = 0) {
+        this.X = x;
+        this.Y = y;
+    }
+
+    Duplicate(): Vector2d {
+        return new Vector2d(this.X, this.Y);
+    }
 }
 
 class Size2d {
@@ -46,10 +60,101 @@ enum PageDirections {
     Down,
 }
 
-class CursorState {
-    CurrentPosition: Vector2d;
+class CursorManager {
+    CurrentPosition: Vector2d | null;
+    LastClickTime: number;
+    EventCache: PointerEvent[];
+    PreviousDiff: number;
+    ShiftPoint: Vector2d;
+    DrawCallback: () => Promise<void>;
+    PageShiftCallback: (number) => Promise<void>;
+    CurrentWindow: Window;
 
-    constructor() {
+    constructor(drawCallback: () => Promise<void>, pageShiftCallback: (number) => Promise<void>) {
+        this.EventCache = [];
+        this.LastClickTime = -1;
+        this.PreviousDiff = -1;
+        this.ShiftPoint = new Vector2d();
+        this.DrawCallback = drawCallback
+        this.PageShiftCallback = pageShiftCallback;
+        this.CurrentWindow = window;
+    }
+
+    Setup(canvas: CanvasState, w: Window) {
+        this.CurrentWindow = w;
+        w.addEventListener('resize', this.OnResize, false);
+        canvas.Canvas.addEventListener("pointerdown", this.OnPointerDown, false)
+        canvas.Canvas.addEventListener("pointermove", this.OnPointerMove, false)
+        canvas.Canvas.addEventListener("pointerup", this.OnPointerMove, false)
+    }
+
+    OnResize(event: UIEvent) {
+        this.EventCache = [];
+        this.ShiftPoint.Reset();
+        this.DrawCallback();
+    }
+
+    OnPointerDown(event: PointerEvent) {
+        if (event.button != 0) return;
+        this.EventCache.push(event);
+    }
+
+    OnPointerMove(event: PointerEvent) {
+        if (this.EventCache.length == 1) {
+            let ev0 = this.EventCache[0];
+            this.ShiftPoint.Set(event.screenX - ev0.screenX, event.screenY - ev0.screenY);
+            this.DrawCallback();
+            return;
+        } else if (this.EventCache.length == 2) {
+            this.DrawCallback();
+            return;
+        }
+    }
+
+    async OnPointerUp(event: PointerEvent) {
+        if (event.button != 0) return;
+        const w = this.CurrentWindow.innerWidth;
+        const x = event.screenX;
+        const y = event.screenY;
+        if (this.EventCache.length == 2) {
+            //Zoom finished.
+            return;
+        } else if (this.EventCache.length != 1) {
+            return;
+        }
+        const spx = this.EventCache[0].screenX;
+        const spy = this.EventCache[0].screenY;
+        let isDoubleClick = (this.LastClickTime != null && (Date.now() - this.LastClickTime) < 300);
+        this.LastClickTime = Date.now();
+        if (((x - spx) ** 2 + (y - spy) ** 2) < 100) {
+            if (x < w / 4) {
+                await this.PageShiftCallback(-1);
+                isDoubleClick = false;
+            } else if (x >= w * 3 / 4) {
+                await this.PageShiftCallback(-1);
+                isDoubleClick = false;
+            }
+        } else {
+            if ((x - spx) * 4 > w) {
+                await this.PageShiftCallback(1);
+                isDoubleClick = false;
+            } else if ((x - spx) * 4 < -w) {
+                await this.PageShiftCallback(-1);
+                isDoubleClick = false;
+            }
+        }
+        this.ShiftPoint.Reset();
+        if (isDoubleClick) {
+            return;
+        }
+        this.DrawCallback();
+
+        for (var i = 0; i < this.EventCache.length; i++) {
+            if (this.EventCache[i].pointerId == event.pointerId) {
+                this.EventCache.splice(i, 1);
+                break;
+            }
+        }
     }
 }
 
@@ -112,5 +217,45 @@ class Page {
         this._IsLoading = false;
     }
 }
+
+class CanvasState {
+    Canvas: HTMLCanvasElement;
+    Context: CanvasRenderingContext2D;
+
+    constructor(canvas: HTMLCanvasElement) {
+        this.Canvas = canvas;
+        this.Context = canvas.getContext("2d");
+    }
+}
+
 class Book {
+}
+
+class Helper {
+    static IsImage(f: string): boolean {
+        const li = f.lastIndexOf(".");
+        const ext = li < 0 ? "" : f.substring(li);
+
+        switch (ext.toUpperCase()) {
+            case ".JPEG":
+            case ".JPG":
+            case ".JFIF":
+            case ".PJPEG":
+            case ".PJP":
+            case ".SVG":
+            case ".GIF":
+            case ".WEBP":
+            case ".PNG":
+            case ".APNG":
+            case ".AVIF":
+            case ".BMP":
+            case ".ICO":
+            case ".CUR":
+            case ".TIF":
+            case ".TIFF":
+                return true;
+            default:
+                return false;
+        }
+    }
 }
