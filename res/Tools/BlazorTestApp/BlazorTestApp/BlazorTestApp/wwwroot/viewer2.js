@@ -183,7 +183,52 @@ class CanvasState {
         this.Context = canvas.getContext("2d");
     }
 }
+class PageCombinationEntry {
+    constructor(page, pageState) {
+        this.Page = page;
+        this.PageState = pageState;
+    }
+}
+class PageCombination {
+    constructor(combinations) {
+        //Array of PageCombinationEntry
+        this.Combinations = combinations;
+    }
+    get IsEmpty() {
+        return this.Combinations.length === 0;
+    }
+    get Aspect() {
+        let result = 0;
+        this.Combinations.forEach(a => {
+            if (a.Page.Size.Width == null)
+                return;
+            result += a.Page.Size.Width / a.Page.Size.Height;
+        });
+        return result;
+    }
+    get PageLength() {
+        //Length of page simply matches length of Combinations.
+        return this.Combinations.length;
+    }
+}
+class PageCombinationSet {
+    constructor(combinations, target = -1) {
+        this.Combinations = combinations;
+        if (target !== -1) {
+            this.CurrentPage = target;
+        }
+        else if (combinations.length >= 3) {
+            this.CurrentPage = 1;
+        }
+        else {
+            this.CurrentPage = 0;
+        }
+    }
+}
 class Book {
+    constructor(info) {
+        this.Images = info.entries.filter(a => Helper.IsImage(a.name)).map(a => new Page(a));
+    }
 }
 class Helper {
     static IsImage(f) {
