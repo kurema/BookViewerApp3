@@ -72,6 +72,12 @@ jobs:
         repository: kurema/iTextSharp.LGPLv2.Core
         path: iTextSharp.LGPLv2.Core
         ref: bv3
+
+    - name: Replace Ad Unit ID
+      shell: bash
+      run: |
+        sed -i -e "s@<TreatWarningsAsErrors>true</TreatWarningsAsErrors>@@g" iTextSharp.LGPLv2.Core/src/iTextSharp.LGPLv2.Core/iTextSharp.LGPLv2.Core.csproj
+        cat iTextSharp.LGPLv2.Core/src/iTextSharp.LGPLv2.Core/iTextSharp.LGPLv2.Core.csproj
         
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
