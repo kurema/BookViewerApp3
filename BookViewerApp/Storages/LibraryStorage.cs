@@ -27,7 +27,7 @@ namespace BookViewerApp.Storages
 
         public enum LibraryKind
         {
-            Library, History, Folders, Bookmarks
+            Library, History, Folders, Bookmarks, Apps
         }
 
 
@@ -141,6 +141,23 @@ namespace BookViewerApp.Storages
             };
         }
 
+        public static ContainerDelegateItem GetApps()
+        {
+            return new ContainerDelegateItem("Apps", "/Apps", async p =>
+            {
+                IEnumerable<IFileItem> GetApps()
+                {
+                    yield return new kurema.FileExplorerControl.Models.FileItems.FileItemPlaceHolder();
+                }
+                return GetApps();
+            })
+            {
+                Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+                    kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult,
+                    () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_apps_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_apps_l.png"))),
+            };
+		}
+
         public static ContainerDelegateItem GetItemBookmarks(Action<string, BookmarkActionType> bookmarkAction, Func<Views.TabPage> tabPageProvider)
         {
             var menuCommandsPr = UIHelper.ContextMenus.MenuBookmarks(bookmarkAction, tabPageProvider);
@@ -229,6 +246,7 @@ namespace BookViewerApp.Storages
             result.Add(itemLibrary);
             if (itemHistory != null) result.Add(itemHistory);
             result.Add(itemBookmark);
+            result.Add(GetApps());
 
             Managers.HistoryManager.Updated += (s, e) =>
             {

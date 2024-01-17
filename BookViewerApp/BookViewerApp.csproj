@@ -184,6 +184,8 @@
     <Content Include="res\bibi\bibi\resources\styles\bibi.css" />
     <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
     <Content Include="res\cover\sample.png" />
+    <Content Include="res\Icon\icon_apps_l.png" />
+    <Content Include="res\Icon\icon_apps_s.png" />
     <Content Include="res\Icon\icon_bookmark_l.png" />
     <Content Include="res\Icon\icon_bookmark_s.png" />
     <Content Include="res\Icon\icon_book_l.png" />
@@ -192,6 +194,8 @@
     <Content Include="res\Icon\icon_clock_s.png" />
     <Content Include="res\Icon\icon_library_l.png" />
     <Content Include="res\Icon\icon_library_s.png" />
+    <Content Include="res\Icon\icon_setting_l.png" />
+    <Content Include="res\Icon\icon_setting_s.png" />
     <Content Include="res\Icon\icon_star_l.png" />
     <Content Include="res\Icon\icon_star_s.png" />
     <Content Include="res\passwords\additional_passwords.txt" />
