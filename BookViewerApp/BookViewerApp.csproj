@@ -278,6 +278,7 @@
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
     <Compile Include="Extension\BookmarkItem.cs" />
+    <Compile Include="Extension\DelegateItem.cs" />
     <Compile Include="Extension\HistoryItem.cs" />
     <Compile Include="Extension\HistoryMRUItem.cs" />
     <Compile Include="Extension\TokenLibraryItem.cs" />
