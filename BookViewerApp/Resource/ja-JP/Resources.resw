@@ -988,4 +988,7 @@
   <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
     <value>パスワードで保護されたPDFで辞書を試す</value>
   </data>
+  <data name="ContextMenu.Bookmarks.OpenInBrowser.Title" xml:space="preserve">
+    <value>ブラウザで開く</value>
+  </data>
 </root>

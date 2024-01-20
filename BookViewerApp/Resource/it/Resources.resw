@@ -984,4 +984,7 @@ Forse il formato non è supportato.
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
     <value>Tenta automaticamente attacchi a dizionario per aprire PDF protetti da password. Questo processo richiede un notevole carico sulla CPU. Il risultato viene salvato in testo normale.</value>
   </data>
+  <data name="ContextMenu.Bookmarks.OpenInBrowser.Title" xml:space="preserve">
+    <value>Aprire nel browser</value>
+  </data>
 </root>

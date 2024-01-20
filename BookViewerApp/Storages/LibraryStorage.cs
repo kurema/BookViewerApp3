@@ -144,13 +144,23 @@ namespace BookViewerApp.Storages
 
 		public static ContainerDelegateItem GetItemApps(Func<Views.TabPage> tabPageProvider)
 		{
-			return new ContainerDelegateItem("Apps", "/Apps", p =>
+			return new ContainerDelegateItem(Managers.ResourceManager.Loader.GetString("Explorer/Apps"), "/Apps", p =>
 			{
 				IEnumerable<IFileItem> GetApps()
 				{
-					yield return new DelegateItem("Setting", "/Apps/Settings", _ =>
+					yield return new DelegateItem(Managers.ResourceManager.Loader.GetString("Explorer/Setting"), "/Apps/Settings", _ =>
 					{
 						(tabPageProvider?.Invoke())?.OpenTabSetting();
+					})
+					{
+						Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+							kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult,
+							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_setting_s.png")),
+							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_setting_l.png"))),
+					};
+					yield return new DelegateItem(Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Title"), "/Apps/Settings", _ =>
+					{
+						(tabPageProvider?.Invoke())?.OpenTab("AdBlocker", typeof(Views.BrowserAddOn.AdBlockerSetting), null);
 					})
 					{
 						Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
