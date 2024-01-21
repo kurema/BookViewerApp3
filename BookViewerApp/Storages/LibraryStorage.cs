@@ -158,7 +158,7 @@ namespace BookViewerApp.Storages
 							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_setting_s.png")),
 							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_setting_l.png"))),
 					};
-					yield return new DelegateItem(Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Title"), "/Apps/Settings", _ =>
+					yield return new DelegateItem(Managers.ResourceManager.Loader.GetString("Extension/AdBlocker/Title"), "/Apps/AdBlocker", _ =>
 					{
 						(tabPageProvider?.Invoke())?.OpenTab("AdBlocker", typeof(Views.BrowserAddOn.AdBlockerSetting), null);
 					})
