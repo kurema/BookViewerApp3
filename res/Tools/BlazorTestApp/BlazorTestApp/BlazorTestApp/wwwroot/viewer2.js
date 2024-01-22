@@ -42,6 +42,7 @@ var PageDirections;
 })(PageDirections || (PageDirections = {}));
 class CursorManager {
     constructor(drawCallback, pageShiftCallback) {
+        this.TimerRepeatButton = 0;
         this.EventCache = [];
         this.LastClickTime = -1;
         this.PreviousDiff = -1;
@@ -50,12 +51,36 @@ class CursorManager {
         this.PageShiftCallback = pageShiftCallback;
         this.CurrentWindow = window;
     }
-    Setup(canvas, w) {
+    Setup(canvas, w, controller) {
         this.CurrentWindow = w;
+        this.Controller = new ControllerState(controller);
         w.addEventListener('resize', this.OnResize, false);
         canvas.Canvas.addEventListener("pointerdown", this.OnPointerDown, false);
         canvas.Canvas.addEventListener("pointermove", this.OnPointerMove, false);
         canvas.Canvas.addEventListener("pointerup", this.OnPointerMove, false);
+        this.Controller.PageLeft.addEventListener("pointerdown", this.ControllerOnPointerDownLeft, false);
+        this.Controller.PageRight.addEventListener("pointerdown", this.ControllerOnPointerDownRight, false);
+        this.Controller.PageLeft.addEventListener("pointerup", this.ControllerOnPointerUp, false);
+        this.Controller.PageRight.addEventListener("pointerup", this.ControllerOnPointerUp, false);
+    }
+    ControllerOnPointerDownLeft(event) {
+        //setInterval never returns 0 and clearInterval(0) do nothing.
+        //https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers
+        clearInterval(this.TimerRepeatButton);
+        this.PageShiftCallback(-1);
+        this.TimerRepeatButton = setInterval(() => { this.PageShiftCallback(-1); }, 400);
+    }
+    ControllerOnPointerDownRight(event) {
+        clearInterval(this.TimerRepeatButton);
+        this.PageShiftCallback(1);
+        this.TimerRepeatButton = setInterval(() => { this.PageShiftCallback(1); }, 400);
+    }
+    ControllerOnPointerUp(event) {
+        clearInterval(this.TimerRepeatButton);
+    }
+    SetPage(page) {
+        var _a;
+        (_a = this.Controller) === null || _a === void 0 ? void 0 : _a.SetPage(page);
     }
     OnResize(event) {
         this.EventCache = [];
@@ -181,6 +206,23 @@ class CanvasState {
     constructor(canvas) {
         this.Canvas = canvas;
         this.Context = canvas.getContext("2d");
+    }
+}
+class ControllerState {
+    constructor(controller) {
+        this.PageLeft = controller.querySelector("button.buttonPageLeft");
+        this.PageRight = controller.querySelector("button.buttonPageLeft");
+        this.Slider = controller.querySelector("input.inputPageSlider");
+        this.TextPageCurrent = controller.querySelector("span.spanPageNumber");
+        this.TextPageTotal = controller.querySelector("span.spanPageTotal");
+    }
+    SetTotalPage(page) {
+        this.Slider.max = page.toString();
+        this.TextPageTotal.innerText = page.toString();
+    }
+    SetPage(page) {
+        this.Slider.value = page.toString();
+        this.TextPageCurrent.innerText = page.toString();
     }
 }
 class PageCombinationEntry {

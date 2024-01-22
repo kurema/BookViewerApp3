@@ -79,6 +79,8 @@ class CursorManager {
     DrawCallback: () => Promise<void>;
     PageShiftCallback: (number) => Promise<void>;
     CurrentWindow: Window;
+    Controller: ControllerState;
+    private TimerRepeatButton: number = 0;
 
     constructor(drawCallback: () => Promise<void>, pageShiftCallback: (number) => Promise<void>) {
         this.EventCache = [];
@@ -90,12 +92,40 @@ class CursorManager {
         this.CurrentWindow = window;
     }
 
-    Setup(canvas: CanvasState, w: Window) {
+    Setup(canvas: CanvasState, w: Window, controller: HTMLDivElement) {
         this.CurrentWindow = w;
+        this.Controller = new ControllerState(controller);
         w.addEventListener('resize', this.OnResize, false);
         canvas.Canvas.addEventListener("pointerdown", this.OnPointerDown, false)
         canvas.Canvas.addEventListener("pointermove", this.OnPointerMove, false)
         canvas.Canvas.addEventListener("pointerup", this.OnPointerMove, false)
+
+        this.Controller.PageLeft.addEventListener("pointerdown", this.ControllerOnPointerDownLeft, false);
+        this.Controller.PageRight.addEventListener("pointerdown", this.ControllerOnPointerDownRight, false);
+        this.Controller.PageLeft.addEventListener("pointerup", this.ControllerOnPointerUp, false);
+        this.Controller.PageRight.addEventListener("pointerup", this.ControllerOnPointerUp, false);
+    }
+
+    ControllerOnPointerDownLeft(event: PointerEvent) {
+        //setInterval never returns 0 and clearInterval(0) do nothing.
+        //https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers
+        clearInterval(this.TimerRepeatButton);
+        this.PageShiftCallback(-1);
+        this.TimerRepeatButton = setInterval(() => { this.PageShiftCallback(-1); }, 400);
+    }
+
+    ControllerOnPointerDownRight(event: PointerEvent) {
+        clearInterval(this.TimerRepeatButton);
+        this.PageShiftCallback(1);
+        this.TimerRepeatButton = setInterval(() => { this.PageShiftCallback(1); }, 400);
+    }
+
+    ControllerOnPointerUp(event: PointerEvent) {
+        clearInterval(this.TimerRepeatButton);
+    }
+
+    SetPage(page: number) {
+        this.Controller?.SetPage(page);
     }
 
     OnResize(event: UIEvent) {
@@ -238,6 +268,32 @@ class CanvasState {
     }
 }
 
+class ControllerState {
+    PageLeft: HTMLButtonElement;
+    PageRight: HTMLButtonElement;
+    Slider: HTMLInputElement;
+    TextPageCurrent: HTMLSpanElement;
+    TextPageTotal: HTMLSpanElement;
+
+    constructor(controller: HTMLDivElement) {
+        this.PageLeft = controller.querySelector("button.buttonPageLeft");
+        this.PageRight = controller.querySelector("button.buttonPageLeft");
+        this.Slider = controller.querySelector("input.inputPageSlider");
+        this.TextPageCurrent = controller.querySelector("span.spanPageNumber");
+        this.TextPageTotal = controller.querySelector("span.spanPageTotal");
+    }
+
+    SetTotalPage(page: number) {
+        this.Slider.max = page.toString();
+        this.TextPageTotal.innerText = page.toString();
+    }
+
+    SetPage(page: number) {
+        this.Slider.value = page.toString();
+        this.TextPageCurrent.innerText = page.toString();
+    }
+}
+
 class PageCombinationEntry {
     Page: Page;
     PageState: PageStates;
@@ -279,7 +335,7 @@ class PageCombinationSet {
     Combinations: PageCombination[];
     CurrentPage: number;
 
-    constructor(combinations: PageCombination[], target:number = -1) {
+    constructor(combinations: PageCombination[], target: number = -1) {
         this.Combinations = combinations;
         if (target !== -1) {
             this.CurrentPage = target;
