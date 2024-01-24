@@ -178,6 +178,32 @@ namespace BookViewerApp.Storages
 			};
 		}
 
+		public static ContainerDelegateItem GetItemNetworks(Func<Views.TabPage> tabPageProvider)
+		{
+			return new ContainerDelegateItem(Managers.ResourceManager.Loader.GetString("Explorer/Networks"), "/Networks", p =>
+			{
+				IEnumerable<IFileItem> GetItems()
+				{
+					yield return new ContainerDelegateItem("OPDS", "/Networks/OPDS", _ =>
+					{
+						return Task.FromResult<IEnumerable<IFileItem>>(Array.Empty<IFileItem>());
+					})
+					{
+						Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+							kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult,
+							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png")),
+							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png"))),
+					};
+				}
+				return Task.FromResult(GetItems());
+			})
+			{
+				Icon = new kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate(
+		kurema.FileExplorerControl.Models.IconProviders.IconProviderDelegate.NullResult,
+		() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_networks_s.png")), () => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///res/Icon/icon_networks_l.png"))),
+			};
+		}
+
 		public static ContainerDelegateItem GetItemBookmarks(Action<string, BookmarkActionType> bookmarkAction, Func<Views.TabPage> tabPageProvider)
 		{
 			var menuCommandsPr = UIHelper.ContextMenus.MenuBookmarks(bookmarkAction, tabPageProvider);
@@ -267,6 +293,7 @@ namespace BookViewerApp.Storages
 			if (itemHistory != null) result.Add(itemHistory);
 			result.Add(itemBookmark);
 #if DEBUG
+			result.Add(GetItemNetworks(tabPageProvider));
 			// Currently only setting app is available. You'd be disappointed to find that there's only one app. This will be enabled in the future release.
 			result.Add(GetItemApps(tabPageProvider));
 #endif

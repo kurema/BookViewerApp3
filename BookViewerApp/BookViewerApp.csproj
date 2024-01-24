@@ -194,6 +194,8 @@
     <Content Include="res\Icon\icon_clock_s.png" />
     <Content Include="res\Icon\icon_library_l.png" />
     <Content Include="res\Icon\icon_library_s.png" />
+    <Content Include="res\Icon\icon_networks_l.png" />
+    <Content Include="res\Icon\icon_networks_s.png" />
     <Content Include="res\Icon\icon_setting_l.png" />
     <Content Include="res\Icon\icon_setting_s.png" />
     <Content Include="res\Icon\icon_star_l.png" />
@@ -687,7 +689,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" />
+      <UserProperties views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

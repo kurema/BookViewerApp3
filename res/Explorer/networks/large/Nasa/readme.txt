@@ -1,0 +1,1 @@
+Earth is public domain.

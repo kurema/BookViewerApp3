@@ -987,4 +987,7 @@ Forse il formato non è supportato.
   <data name="ContextMenu.Bookmarks.OpenInBrowser.Title" xml:space="preserve">
     <value>Aprire nel browser</value>
   </data>
+  <data name="Explorer.Networks" xml:space="preserve">
+    <value>Reti</value>
+  </data>
 </root>
