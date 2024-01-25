@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -*- rnc -*- 
+  RELAX NG Compact Syntax Grammar for OPDS Catalog Feed & Entry Documents
+  Version 2010-08-18
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://opds-spec.org/2010/catalog" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:opds="http://opds-spec.org/2010/catalog" xmlns:atom="http://www.w3.org/2005/Atom">
+  <xs:import namespace="http://www.w3.org/1999/xhtml" schemaLocation="xhtml.xsd"/>
+  <xs:import namespace="http://www.w3.org/2005/Atom" schemaLocation="atom.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!--
+    The OPDS Catalog spec extends Atom (RFC4287), and the additions require some
+    patterns not used in the Atom schema. The first is atomUriExceptOPDS, which
+    is used to describe an atomLink whose rel value is an atomNCName (no-colon
+    name) or any URI other than these from OPDS Catalogs. In these cases, no
+    opds:price element should appear.
+  -->
+  <xs:simpleType name="atomUriExceptOPDS">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <!--
+    Next is OPDSUrisExceptBuy, which is used to describe an atomLink whose
+    rel value is from OPDS Catalogs but is not ".../acquisition/buy". In such
+    cases, an opds:price element is optional.
+  -->
+  <xs:simpleType name="OPDSUrisExceptBuy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="http://opds-spec.org/acquisition/borrow"/>
+      <xs:enumeration value="http://opds-spec.org/acquisition/subscribe"/>
+      <xs:enumeration value="http://opds-spec.org/acquisition/sample"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--
+    To simplify OPDS Catalog validation, we do not use Schematron to assert that
+    any atom:link with a rel value of ".../acquisition/buy" must be accompanied
+    by one or more opds:price elements.
+    Instead we rely on Relax NG to describe one of three situations:
+    - the rel value is ".../acquisition/buy" and at least one opds:price element
+      is required
+    - the rel value is ".../acquisition/borrow" or ".../acquisition/subscribe" or
+      ".../acquisition/sample", in case opds:price elements may be
+      included; or
+    - the value of the rel attribute is any other URI or an Atom-defined no-colon
+      name, and no opds:price element is permitted
+  -->
+  <!--
+    Note that this OPDS Catalog schema includes atom.rnc, so that schema must be
+    present for validation.
+    
+    Note also that atom.rnc defines atomUri as text and not as xsd:anyURI, and so
+    wherever the Atom spec requires an IRI, the schema will not check the value
+    against any URI pattern or logic. The OPDS Catalog schema overrides atom.rnc
+    to provide a relatively accurate test. With the approval of XSD 1.1, the
+    schema definition should change to xsd:anyURI to match what the spec text
+    says.
+  -->
+  <xs:attributeGroup name="undefinedAttribute">
+    <xs:anyAttribute namespace="##other" processContents="skip"/>
+  </xs:attributeGroup>
+  <!--
+    Here is where OPDS Catalogs use John Cowan's pragmatic evaluation of an
+    IRI. This modifies xsd:anyURI in XSD 1.0 to exclude ASCII characters not
+    valid in 1.1 or IRI's without being escaped. This matches the OPDS and Atom
+    specs, but not the non-normative atom.rnc.
+  -->
+  <xs:simpleType name="atomUri">
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+  <!--
+    Here we override Atom to account for HTML abuse in the summary element,
+    restricting it in OPDS Catalog to text:
+  -->
+  <xs:group name="anyOPDSForeignElement">
+    <xs:sequence>
+      <xs:any processContents="skip"/>
+    </xs:sequence>
+  </xs:group>
+  <!--
+    An opds:indirectAcquisition should use strictly MIME media type for
+    its type attribute
+  -->
+  <xs:element name="indirectAcquisition">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="opds:anyOPDSForeignElement"/>
+        <xs:element ref="opds:indirectAcquisition"/>
+      </xs:choice>
+      <xs:attributeGroup ref="atom:atomCommonAttributes"/>
+      <xs:attribute name="type" use="required" type="atom:atomMediaType"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    An opds:price element should not contain a currency symbol; it is
+    restricted to non-negative decimal numbers.
+  -->
+  <xs:element name="price">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:restriction base="xs:anyType">
+          <xs:simpleType>
+            <xs:restriction base="xs:decimal">
+              <xs:minInclusive value="0.0"/>
+            </xs:restriction>
+          </xs:simpleType>
+          <xs:attributeGroup ref="atom:atomCommonAttributes"/>
+          <xs:attribute name="currencycode" use="required" type="opds:opdsPriceCurrencyCode"/>
+        </xs:restriction>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    Instead of allowing every possible 3-letter or 3-digit combination as a
+    currency code, here the permissible codes (as identified in ISO4217 as of
+    2010-08-25) are enumerated. In 2012 or so, that standard may add, remove or
+    change some currency codes, thus requiring this schema to be updated. Note
+    that codes for metals and funds are not included.
+  -->
+  <xs:simpleType name="opdsPriceCurrencyCode">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="AED"/>
+      <xs:enumeration value="AFN"/>
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="AMD"/>
+      <xs:enumeration value="ANG"/>
+      <xs:enumeration value="AOA"/>
+      <xs:enumeration value="ARS"/>
+      <xs:enumeration value="AUD"/>
+      <xs:enumeration value="AWG"/>
+      <xs:enumeration value="AZN"/>
+      <xs:enumeration value="BAM"/>
+      <xs:enumeration value="BBD"/>
+      <xs:enumeration value="BDT"/>
+      <xs:enumeration value="BGN"/>
+      <xs:enumeration value="BHD"/>
+      <xs:enumeration value="BIF"/>
+      <xs:enumeration value="BMD"/>
+      <xs:enumeration value="BND"/>
+      <xs:enumeration value="BOB"/>
+      <xs:enumeration value="BOV"/>
+      <xs:enumeration value="BRL"/>
+      <xs:enumeration value="BSD"/>
+      <xs:enumeration value="BTN"/>
+      <xs:enumeration value="BWP"/>
+      <xs:enumeration value="BYR"/>
+      <xs:enumeration value="BZD"/>
+      <xs:enumeration value="CAD"/>
+      <xs:enumeration value="CDF"/>
+      <xs:enumeration value="CHE"/>
+      <xs:enumeration value="CHF"/>
+      <xs:enumeration value="CHW"/>
+      <xs:enumeration value="CLF"/>
+      <xs:enumeration value="CLP"/>
+      <xs:enumeration value="CNY"/>
+      <xs:enumeration value="COP"/>
+      <xs:enumeration value="COU"/>
+      <xs:enumeration value="CRC"/>
+      <xs:enumeration value="CUC"/>
+      <xs:enumeration value="CUP"/>
+      <xs:enumeration value="CVE"/>
+      <xs:enumeration value="CZK"/>
+      <xs:enumeration value="DJF"/>
+      <xs:enumeration value="DKK"/>
+      <xs:enumeration value="DOP"/>
+      <xs:enumeration value="DZD"/>
+      <xs:enumeration value="EEK"/>
+      <xs:enumeration value="EGP"/>
+      <xs:enumeration value="ERN"/>
+      <xs:enumeration value="ETB"/>
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="FJD"/>
+      <xs:enumeration value="FKP"/>
+      <xs:enumeration value="GBP"/>
+      <xs:enumeration value="GEL"/>
+      <xs:enumeration value="GHS"/>
+      <xs:enumeration value="GIP"/>
+      <xs:enumeration value="GMD"/>
+      <xs:enumeration value="GNF"/>
+      <xs:enumeration value="GTQ"/>
+      <xs:enumeration value="GYD"/>
+      <xs:enumeration value="HKD"/>
+      <xs:enumeration value="HNL"/>
+      <xs:enumeration value="HRK"/>
+      <xs:enumeration value="HTG"/>
+      <xs:enumeration value="HUF"/>
+      <xs:enumeration value="IDR"/>
+      <xs:enumeration value="ILS"/>
+      <xs:enumeration value="INR"/>
+      <xs:enumeration value="IQD"/>
+      <xs:enumeration value="IRR"/>
+      <xs:enumeration value="ISK"/>
+      <xs:enumeration value="JMD"/>
+      <xs:enumeration value="JOD"/>
+      <xs:enumeration value="JPY"/>
+      <xs:enumeration value="KES"/>
+      <xs:enumeration value="KGS"/>
+      <xs:enumeration value="KHR"/>
+      <xs:enumeration value="KMF"/>
+      <xs:enumeration value="KPW"/>
+      <xs:enumeration value="KRW"/>
+      <xs:enumeration value="KWD"/>
+      <xs:enumeration value="KYD"/>
+      <xs:enumeration value="KZT"/>
+      <xs:enumeration value="LAK"/>
+      <xs:enumeration value="LBP"/>
+      <xs:enumeration value="LKR"/>
+      <xs:enumeration value="LRD"/>
+      <xs:enumeration value="LSL"/>
+      <xs:enumeration value="LTL"/>
+      <xs:enumeration value="LVL"/>
+      <xs:enumeration value="LYD"/>
+      <xs:enumeration value="MAD"/>
+      <xs:enumeration value="MDL"/>
+      <xs:enumeration value="MGA"/>
+      <xs:enumeration value="MKD"/>
+      <xs:enumeration value="MMK"/>
+      <xs:enumeration value="MNT"/>
+      <xs:enumeration value="MOP"/>
+      <xs:enumeration value="MRO"/>
+      <xs:enumeration value="MUR"/>
+      <xs:enumeration value="MVR"/>
+      <xs:enumeration value="MWK"/>
+      <xs:enumeration value="MXN"/>
+      <xs:enumeration value="MXV"/>
+      <xs:enumeration value="MYR"/>
+      <xs:enumeration value="MZN"/>
+      <xs:enumeration value="NAD"/>
+      <xs:enumeration value="NGN"/>
+      <xs:enumeration value="NIO"/>
+      <xs:enumeration value="NOK"/>
+      <xs:enumeration value="NPR"/>
+      <xs:enumeration value="NZD"/>
+      <xs:enumeration value="OMR"/>
+      <xs:enumeration value="PAB"/>
+      <xs:enumeration value="PEN"/>
+      <xs:enumeration value="PGK"/>
+      <xs:enumeration value="PHP"/>
+      <xs:enumeration value="PKR"/>
+      <xs:enumeration value="PLN"/>
+      <xs:enumeration value="PYG"/>
+      <xs:enumeration value="QAR"/>
+      <xs:enumeration value="RON"/>
+      <xs:enumeration value="RSD"/>
+      <xs:enumeration value="RUB"/>
+      <xs:enumeration value="RWF"/>
+      <xs:enumeration value="SAR"/>
+      <xs:enumeration value="SBD"/>
+      <xs:enumeration value="SCR"/>
+      <xs:enumeration value="SDG"/>
+      <xs:enumeration value="SEK"/>
+      <xs:enumeration value="SGD"/>
+      <xs:enumeration value="SHP"/>
+      <xs:enumeration value="SLL"/>
+      <xs:enumeration value="SOS"/>
+      <xs:enumeration value="SRD"/>
+      <xs:enumeration value="STD"/>
+      <xs:enumeration value="SVC"/>
+      <xs:enumeration value="SYP"/>
+      <xs:enumeration value="SZL"/>
+      <xs:enumeration value="THB"/>
+      <xs:enumeration value="TJS"/>
+      <xs:enumeration value="TMT"/>
+      <xs:enumeration value="TND"/>
+      <xs:enumeration value="TOP"/>
+      <xs:enumeration value="TRY"/>
+      <xs:enumeration value="TTD"/>
+      <xs:enumeration value="TWD"/>
+      <xs:enumeration value="TZS"/>
+      <xs:enumeration value="UAH"/>
+      <xs:enumeration value="UGX"/>
+      <xs:enumeration value="USD"/>
+      <xs:enumeration value="USN"/>
+      <xs:enumeration value="USS"/>
+      <xs:enumeration value="UYI"/>
+      <xs:enumeration value="UYU"/>
+      <xs:enumeration value="UZS"/>
+      <xs:enumeration value="VEF"/>
+      <xs:enumeration value="VND"/>
+      <xs:enumeration value="VUV"/>
+      <xs:enumeration value="WST"/>
+      <xs:enumeration value="XAF"/>
+      <xs:enumeration value="XAG"/>
+      <xs:enumeration value="XAU"/>
+      <xs:enumeration value="XBA"/>
+      <xs:enumeration value="XBB"/>
+      <xs:enumeration value="XBC"/>
+      <xs:enumeration value="XBD"/>
+      <xs:enumeration value="XCD"/>
+      <xs:enumeration value="XDR"/>
+      <xs:enumeration value="XFU"/>
+      <xs:enumeration value="XOF"/>
+      <xs:enumeration value="XPD"/>
+      <xs:enumeration value="XPF"/>
+      <xs:enumeration value="XPT"/>
+      <xs:enumeration value="XTS"/>
+      <xs:enumeration value="XXX"/>
+      <xs:enumeration value="YER"/>
+      <xs:enumeration value="ZAR"/>
+      <xs:enumeration value="ZMK"/>
+      <xs:enumeration value="ZWL"/>
+      <xs:enumeration value="008"/>
+      <xs:enumeration value="012"/>
+      <xs:enumeration value="032"/>
+      <xs:enumeration value="036"/>
+      <xs:enumeration value="044"/>
+      <xs:enumeration value="048"/>
+      <xs:enumeration value="050"/>
+      <xs:enumeration value="051"/>
+      <xs:enumeration value="052"/>
+      <xs:enumeration value="060"/>
+      <xs:enumeration value="064"/>
+      <xs:enumeration value="068"/>
+      <xs:enumeration value="072"/>
+      <xs:enumeration value="084"/>
+      <xs:enumeration value="090"/>
+      <xs:enumeration value="096"/>
+      <xs:enumeration value="104"/>
+      <xs:enumeration value="108"/>
+      <xs:enumeration value="116"/>
+      <xs:enumeration value="124"/>
+      <xs:enumeration value="132"/>
+      <xs:enumeration value="136"/>
+      <xs:enumeration value="144"/>
+      <xs:enumeration value="152"/>
+      <xs:enumeration value="156"/>
+      <xs:enumeration value="170"/>
+      <xs:enumeration value="174"/>
+      <xs:enumeration value="188"/>
+      <xs:enumeration value="191"/>
+      <xs:enumeration value="192"/>
+      <xs:enumeration value="203"/>
+      <xs:enumeration value="208"/>
+      <xs:enumeration value="214"/>
+      <xs:enumeration value="222"/>
+      <xs:enumeration value="230"/>
+      <xs:enumeration value="232"/>
+      <xs:enumeration value="233"/>
+      <xs:enumeration value="238"/>
+      <xs:enumeration value="242"/>
+      <xs:enumeration value="262"/>
+      <xs:enumeration value="270"/>
+      <xs:enumeration value="292"/>
+      <xs:enumeration value="320"/>
+      <xs:enumeration value="324"/>
+      <xs:enumeration value="328"/>
+      <xs:enumeration value="332"/>
+      <xs:enumeration value="340"/>
+      <xs:enumeration value="344"/>
+      <xs:enumeration value="348"/>
+      <xs:enumeration value="352"/>
+      <xs:enumeration value="356"/>
+      <xs:enumeration value="360"/>
+      <xs:enumeration value="364"/>
+      <xs:enumeration value="368"/>
+      <xs:enumeration value="376"/>
+      <xs:enumeration value="388"/>
+      <xs:enumeration value="392"/>
+      <xs:enumeration value="398"/>
+      <xs:enumeration value="400"/>
+      <xs:enumeration value="404"/>
+      <xs:enumeration value="408"/>
+      <xs:enumeration value="410"/>
+      <xs:enumeration value="414"/>
+      <xs:enumeration value="417"/>
+      <xs:enumeration value="418"/>
+      <xs:enumeration value="422"/>
+      <xs:enumeration value="426"/>
+      <xs:enumeration value="428"/>
+      <xs:enumeration value="430"/>
+      <xs:enumeration value="434"/>
+      <xs:enumeration value="440"/>
+      <xs:enumeration value="446"/>
+      <xs:enumeration value="454"/>
+      <xs:enumeration value="458"/>
+      <xs:enumeration value="462"/>
+      <xs:enumeration value="478"/>
+      <xs:enumeration value="480"/>
+      <xs:enumeration value="484"/>
+      <xs:enumeration value="496"/>
+      <xs:enumeration value="498"/>
+      <xs:enumeration value="504"/>
+      <xs:enumeration value="512"/>
+      <xs:enumeration value="516"/>
+      <xs:enumeration value="524"/>
+      <xs:enumeration value="532"/>
+      <xs:enumeration value="533"/>
+      <xs:enumeration value="548"/>
+      <xs:enumeration value="554"/>
+      <xs:enumeration value="558"/>
+      <xs:enumeration value="566"/>
+      <xs:enumeration value="578"/>
+      <xs:enumeration value="586"/>
+      <xs:enumeration value="590"/>
+      <xs:enumeration value="598"/>
+      <xs:enumeration value="600"/>
+      <xs:enumeration value="604"/>
+      <xs:enumeration value="608"/>
+      <xs:enumeration value="634"/>
+      <xs:enumeration value="643"/>
+      <xs:enumeration value="646"/>
+      <xs:enumeration value="654"/>
+      <xs:enumeration value="678"/>
+      <xs:enumeration value="682"/>
+      <xs:enumeration value="690"/>
+      <xs:enumeration value="694"/>
+      <xs:enumeration value="702"/>
+      <xs:enumeration value="704"/>
+      <xs:enumeration value="706"/>
+      <xs:enumeration value="710"/>
+      <xs:enumeration value="748"/>
+      <xs:enumeration value="752"/>
+      <xs:enumeration value="756"/>
+      <xs:enumeration value="760"/>
+      <xs:enumeration value="764"/>
+      <xs:enumeration value="776"/>
+      <xs:enumeration value="780"/>
+      <xs:enumeration value="784"/>
+      <xs:enumeration value="788"/>
+      <xs:enumeration value="800"/>
+      <xs:enumeration value="807"/>
+      <xs:enumeration value="818"/>
+      <xs:enumeration value="826"/>
+      <xs:enumeration value="834"/>
+      <xs:enumeration value="840"/>
+      <xs:enumeration value="858"/>
+      <xs:enumeration value="860"/>
+      <xs:enumeration value="882"/>
+      <xs:enumeration value="886"/>
+      <xs:enumeration value="894"/>
+      <xs:enumeration value="901"/>
+      <xs:enumeration value="931"/>
+      <xs:enumeration value="932"/>
+      <xs:enumeration value="934"/>
+      <xs:enumeration value="936"/>
+      <xs:enumeration value="937"/>
+      <xs:enumeration value="938"/>
+      <xs:enumeration value="940"/>
+      <xs:enumeration value="941"/>
+      <xs:enumeration value="943"/>
+      <xs:enumeration value="944"/>
+      <xs:enumeration value="946"/>
+      <xs:enumeration value="947"/>
+      <xs:enumeration value="948"/>
+      <xs:enumeration value="949"/>
+      <xs:enumeration value="950"/>
+      <xs:enumeration value="951"/>
+      <xs:enumeration value="952"/>
+      <xs:enumeration value="953"/>
+      <xs:enumeration value="955"/>
+      <xs:enumeration value="956"/>
+      <xs:enumeration value="957"/>
+      <xs:enumeration value="958"/>
+      <xs:enumeration value="959"/>
+      <xs:enumeration value="960"/>
+      <xs:enumeration value="961"/>
+      <xs:enumeration value="962"/>
+      <xs:enumeration value="963"/>
+      <xs:enumeration value="964"/>
+      <xs:enumeration value="968"/>
+      <xs:enumeration value="969"/>
+      <xs:enumeration value="970"/>
+      <xs:enumeration value="971"/>
+      <xs:enumeration value="972"/>
+      <xs:enumeration value="973"/>
+      <xs:enumeration value="974"/>
+      <xs:enumeration value="975"/>
+      <xs:enumeration value="976"/>
+      <xs:enumeration value="977"/>
+      <xs:enumeration value="978"/>
+      <xs:enumeration value="979"/>
+      <xs:enumeration value="980"/>
+      <xs:enumeration value="981"/>
+      <xs:enumeration value="984"/>
+      <xs:enumeration value="985"/>
+      <xs:enumeration value="986"/>
+      <xs:enumeration value="990"/>
+      <xs:enumeration value="997"/>
+      <xs:enumeration value="998"/>
+      <xs:enumeration value="999"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attribute name="facetGroup"/>
+  <xs:attribute name="activeFacet">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="true"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:schema>

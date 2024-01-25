@@ -73,7 +73,7 @@ undefinedAttribute =
 # IRI. This modifies xsd:anyURI in XSD 1.0 to exclude ASCII characters not
 # valid in 1.1 or IRI's without being escaped. This matches the OPDS and Atom
 # specs, but not the non-normative atom.rnc.
-  atomUri = xsd:anyURI - xsd:string {pattern = '.*[ <>{}|^`"\nrt].*'}
+  atomUri = xsd:anyURI - xsd:string {pattern = '.*[ <>{}|^`"\n\r\t].*'}
     
 # Here we override Atom to account for HTML abuse in the summary element,
 # restricting it in OPDS Catalog to text:

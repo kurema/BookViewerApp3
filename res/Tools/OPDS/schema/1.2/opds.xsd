@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -*- rnc -*- 
+  RELAX NG Compact Syntax Grammar for OPDS Catalog Feed & Entry Documents
+  Version 2018-08-16
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://opds-spec.org/2010/catalog" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:opds="http://opds-spec.org/2010/catalog" xmlns:atom="http://www.w3.org/2005/Atom">
+  <xs:import namespace="http://www.w3.org/1999/xhtml" schemaLocation="xhtml.xsd"/>
+  <xs:import namespace="http://www.w3.org/2005/Atom" schemaLocation="atom.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!--
+    The OPDS Catalog spec extends Atom (RFC4287), and the additions require some
+    patterns not used in the Atom schema. The first is atomUriExceptOPDS, which
+    is used to describe an atomLink whose rel value is an atomNCName (no-colon
+    name) or any URI other than these from OPDS Catalogs. In these cases, no
+    opds:price element should appear.
+  -->
+  <xs:simpleType name="atomUriExceptOPDS">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <!--
+    Next is OPDSUrisExceptBuy, which is used to describe an atomLink whose
+    rel value is from OPDS Catalogs but is not ".../acquisition/buy". In such
+    cases, an opds:price element is optional.
+  -->
+  <xs:simpleType name="OPDSUrisExceptBuy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="http://opds-spec.org/acquisition/borrow"/>
+      <xs:enumeration value="http://opds-spec.org/acquisition/subscribe"/>
+      <xs:enumeration value="http://opds-spec.org/acquisition/sample"/>
+      <xs:enumeration value="preview"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--
+    To simplify OPDS Catalog validation, we do not use Schematron to assert that
+    any atom:link with a rel value of ".../acquisition/buy" must be accompanied
+    by one or more opds:price elements.
+    Instead we rely on Relax NG to describe one of three situations:
+    - the rel value is ".../acquisition/buy" and at least one opds:price element
+      is required
+    - the rel value is ".../acquisition/borrow" or ".../acquisition/subscribe" or
+      ".../acquisition/sample", in case opds:price elements may be
+      included; or
+    - the value of the rel attribute is any other URI or an Atom-defined no-colon
+      name, and no opds:price element is permitted
+  -->
+  <!--
+    Note that this OPDS Catalog schema includes atom.rnc, so that schema must be
+    present for validation.
+    
+    Note also that atom.rnc defines atomUri as text and not as xsd:anyURI, and so
+    wherever the Atom spec requires an IRI, the schema will not check the value
+    against any URI pattern or logic. The OPDS Catalog schema overrides atom.rnc
+    to provide a relatively accurate test. With the approval of XSD 1.1, the
+    schema definition should change to xsd:anyURI to match what the spec text
+    says.
+  -->
+  <xs:attributeGroup name="undefinedAttribute">
+    <xs:anyAttribute namespace="##other" processContents="skip"/>
+  </xs:attributeGroup>
+  <!--
+    Here is where OPDS Catalogs use John Cowan's pragmatic evaluation of an
+    IRI. This modifies xsd:anyURI in XSD 1.0 to exclude ASCII characters not
+    valid in 1.1 or IRI's without being escaped. This matches the OPDS and Atom
+    specs, but not the non-normative atom.rnc.
+  -->
+  <xs:simpleType name="atomUri">
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+  <!--
+    Here we override Atom to account for HTML abuse in the summary element,
+    restricting it in OPDS Catalog to text:
+  -->
+  <xs:group name="anyOPDSForeignElement">
+    <xs:sequence>
+      <xs:any processContents="skip"/>
+    </xs:sequence>
+  </xs:group>
+  <!--
+    An opds:indirectAcquisition should use strictly MIME media type for
+    its type attribute
+  -->
+  <xs:element name="indirectAcquisition">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="opds:anyOPDSForeignElement"/>
+        <xs:element ref="opds:indirectAcquisition"/>
+      </xs:choice>
+      <xs:attributeGroup ref="atom:atomCommonAttributes"/>
+      <xs:attribute name="type" use="required" type="atom:atomMediaType"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    An opds:price element should not contain a currency symbol; it is
+    restricted to non-negative decimal numbers.
+  -->
+  <xs:element name="price">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:restriction base="xs:anyType">
+          <xs:simpleType>
+            <xs:restriction base="xs:decimal">
+              <xs:minInclusive value="0.0"/>
+            </xs:restriction>
+          </xs:simpleType>
+          <xs:attributeGroup ref="atom:atomCommonAttributes"/>
+          <xs:attribute name="currencycode" use="required" type="opds:opdsPriceCurrencyCode"/>
+        </xs:restriction>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    Instead of allowing every possible 3-letter combination as a currency
+    code, here the permissible codes (as identified in ISO4217 as of
+    2018-08-16) are enumerated. Code for metals and 3-digit equivalents are
+    excluded from this list. 
+  -->
+  <xs:simpleType name="opdsPriceCurrencyCode">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="AED"/>
+      <xs:enumeration value="AFN"/>
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="AMD"/>
+      <xs:enumeration value="ANG"/>
+      <xs:enumeration value="AOA"/>
+      <xs:enumeration value="ARS"/>
+      <xs:enumeration value="AUD"/>
+      <xs:enumeration value="AWG"/>
+      <xs:enumeration value="AZN"/>
+      <xs:enumeration value="BAM"/>
+      <xs:enumeration value="BBD"/>
+      <xs:enumeration value="BDT"/>
+      <xs:enumeration value="BGN"/>
+      <xs:enumeration value="BHD"/>
+      <xs:enumeration value="BIF"/>
+      <xs:enumeration value="BMD"/>
+      <xs:enumeration value="BND"/>
+      <xs:enumeration value="BOB"/>
+      <xs:enumeration value="BOV"/>
+      <xs:enumeration value="BRL"/>
+      <xs:enumeration value="BSD"/>
+      <xs:enumeration value="BTN"/>
+      <xs:enumeration value="BWP"/>
+      <xs:enumeration value="BYN"/>
+      <xs:enumeration value="BZD"/>
+      <xs:enumeration value="CAD"/>
+      <xs:enumeration value="CDF"/>
+      <xs:enumeration value="CHE"/>
+      <xs:enumeration value="CHF"/>
+      <xs:enumeration value="CHW"/>
+      <xs:enumeration value="CLF"/>
+      <xs:enumeration value="CLP"/>
+      <xs:enumeration value="CNY"/>
+      <xs:enumeration value="COP"/>
+      <xs:enumeration value="COU"/>
+      <xs:enumeration value="CRC"/>
+      <xs:enumeration value="CUC"/>
+      <xs:enumeration value="CUP"/>
+      <xs:enumeration value="CVE"/>
+      <xs:enumeration value="CZK"/>
+      <xs:enumeration value="DJF"/>
+      <xs:enumeration value="DKK"/>
+      <xs:enumeration value="DOP"/>
+      <xs:enumeration value="DZD"/>
+      <xs:enumeration value="EGP"/>
+      <xs:enumeration value="ERN"/>
+      <xs:enumeration value="ETB"/>
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="FJD"/>
+      <xs:enumeration value="FKP"/>
+      <xs:enumeration value="GBP"/>
+      <xs:enumeration value="GEL"/>
+      <xs:enumeration value="GHS"/>
+      <xs:enumeration value="GIP"/>
+      <xs:enumeration value="GMD"/>
+      <xs:enumeration value="GNF"/>
+      <xs:enumeration value="GTQ"/>
+      <xs:enumeration value="GYD"/>
+      <xs:enumeration value="HKD"/>
+      <xs:enumeration value="HNL"/>
+      <xs:enumeration value="HRK"/>
+      <xs:enumeration value="HTG"/>
+      <xs:enumeration value="HUF"/>
+      <xs:enumeration value="IDR"/>
+      <xs:enumeration value="ILS"/>
+      <xs:enumeration value="INR"/>
+      <xs:enumeration value="IQD"/>
+      <xs:enumeration value="IRR"/>
+      <xs:enumeration value="ISK"/>
+      <xs:enumeration value="JMD"/>
+      <xs:enumeration value="JOD"/>
+      <xs:enumeration value="JPY"/>
+      <xs:enumeration value="KES"/>
+      <xs:enumeration value="KGS"/>
+      <xs:enumeration value="KHR"/>
+      <xs:enumeration value="KMF"/>
+      <xs:enumeration value="KPW"/>
+      <xs:enumeration value="KRW"/>
+      <xs:enumeration value="KWD"/>
+      <xs:enumeration value="KYD"/>
+      <xs:enumeration value="KZT"/>
+      <xs:enumeration value="LAK"/>
+      <xs:enumeration value="LBP"/>
+      <xs:enumeration value="LKR"/>
+      <xs:enumeration value="LRD"/>
+      <xs:enumeration value="LSL"/>
+      <xs:enumeration value="LYD"/>
+      <xs:enumeration value="MAD"/>
+      <xs:enumeration value="MDL"/>
+      <xs:enumeration value="MGA"/>
+      <xs:enumeration value="MKD"/>
+      <xs:enumeration value="MMK"/>
+      <xs:enumeration value="MNT"/>
+      <xs:enumeration value="MOP"/>
+      <xs:enumeration value="MRU"/>
+      <xs:enumeration value="MUR"/>
+      <xs:enumeration value="MVR"/>
+      <xs:enumeration value="MWK"/>
+      <xs:enumeration value="MXN"/>
+      <xs:enumeration value="MXV"/>
+      <xs:enumeration value="MYR"/>
+      <xs:enumeration value="MZN"/>
+      <xs:enumeration value="NAD"/>
+      <xs:enumeration value="NGN"/>
+      <xs:enumeration value="NIO"/>
+      <xs:enumeration value="NOK"/>
+      <xs:enumeration value="NPR"/>
+      <xs:enumeration value="NZD"/>
+      <xs:enumeration value="OMR"/>
+      <xs:enumeration value="PAB"/>
+      <xs:enumeration value="PEN"/>
+      <xs:enumeration value="PGK"/>
+      <xs:enumeration value="PHP"/>
+      <xs:enumeration value="PKR"/>
+      <xs:enumeration value="PLN"/>
+      <xs:enumeration value="PYG"/>
+      <xs:enumeration value="QAR"/>
+      <xs:enumeration value="RON"/>
+      <xs:enumeration value="RSD"/>
+      <xs:enumeration value="RUB"/>
+      <xs:enumeration value="RWF"/>
+      <xs:enumeration value="SAR"/>
+      <xs:enumeration value="SBD"/>
+      <xs:enumeration value="SCR"/>
+      <xs:enumeration value="SDG"/>
+      <xs:enumeration value="SEK"/>
+      <xs:enumeration value="SGD"/>
+      <xs:enumeration value="SHP"/>
+      <xs:enumeration value="SLL"/>
+      <xs:enumeration value="SOS"/>
+      <xs:enumeration value="SRD"/>
+      <xs:enumeration value="SSP"/>
+      <xs:enumeration value="STN"/>
+      <xs:enumeration value="SVC"/>
+      <xs:enumeration value="SYP"/>
+      <xs:enumeration value="SZL"/>
+      <xs:enumeration value="THB"/>
+      <xs:enumeration value="TJS"/>
+      <xs:enumeration value="TMT"/>
+      <xs:enumeration value="TND"/>
+      <xs:enumeration value="TOP"/>
+      <xs:enumeration value="TRY"/>
+      <xs:enumeration value="TTD"/>
+      <xs:enumeration value="TWD"/>
+      <xs:enumeration value="TZS"/>
+      <xs:enumeration value="UAH"/>
+      <xs:enumeration value="UGX"/>
+      <xs:enumeration value="USD"/>
+      <xs:enumeration value="USN"/>
+      <xs:enumeration value="UYI"/>
+      <xs:enumeration value="UYU"/>
+      <xs:enumeration value="UZS"/>
+      <xs:enumeration value="VEF"/>
+      <xs:enumeration value="VES"/>
+      <xs:enumeration value="VND"/>
+      <xs:enumeration value="VUV"/>
+      <xs:enumeration value="WST"/>
+      <xs:enumeration value="XAF"/>
+      <xs:enumeration value="XAG"/>
+      <xs:enumeration value="XAU"/>
+      <xs:enumeration value="XBA"/>
+      <xs:enumeration value="XBB"/>
+      <xs:enumeration value="XBC"/>
+      <xs:enumeration value="XBD"/>
+      <xs:enumeration value="XCD"/>
+      <xs:enumeration value="XDR"/>
+      <xs:enumeration value="XOF"/>
+      <xs:enumeration value="XPD"/>
+      <xs:enumeration value="XPF"/>
+      <xs:enumeration value="XPT"/>
+      <xs:enumeration value="XSU"/>
+      <xs:enumeration value="XTS"/>
+      <xs:enumeration value="XUA"/>
+      <xs:enumeration value="XXX"/>
+      <xs:enumeration value="YER"/>
+      <xs:enumeration value="ZAR"/>
+      <xs:enumeration value="ZMW"/>
+      <xs:enumeration value="ZWL"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attribute name="facetGroup"/>
+  <xs:attribute name="activeFacet">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="true"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:schema>
