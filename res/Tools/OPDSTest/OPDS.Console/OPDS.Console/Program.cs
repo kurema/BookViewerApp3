@@ -2,9 +2,11 @@
 
 using System.Xml;
 
-//var client = new HttpClient();
-//var text = await client.GetStringAsync("http://aozora.textlive.net/catalog.opds");
-//Console.WriteLine(text);
+{
+    var client = new HttpClient();
+    var text = await client.GetStringAsync("http://aozora.textlive.net/catalog.opds");
+    Console.WriteLine(text);
+}
 
 using var xr = XmlReader.Create("http://aozora.textlive.net/catalog.opds");
 var sf = System.ServiceModel.Syndication.SyndicationFeed.Load(xr);

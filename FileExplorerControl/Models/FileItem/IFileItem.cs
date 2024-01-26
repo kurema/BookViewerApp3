@@ -49,6 +49,12 @@ public interface IContentFileItemProvider
     StorageFileItem ContentFileItem { get; }
 }
 
+public interface ISearchService
+{
+    Task<bool> UpdateSearch(string word);
+    TimeSpan IncrementalSearchWaitTime { get; set; }
+}
+
 public class FileItemPlaceHolder : IFileItem
 {
     public string Name =>

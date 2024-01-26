@@ -206,6 +206,14 @@ public partial class FileItemViewModel : INotifyPropertyChanged
 			OnPropertyChanged(nameof(Children));
 			OnPropertyChanged(nameof(Files));
 			OnPropertyChanged(nameof(Folders));
+
+			if (Content is ISearchService searchService)
+			{
+				_ = Task.Run(async () =>
+				{
+					if (await searchService.UpdateSearch(value)) OnPropertyChanged(nameof(Children));
+				});
+			}
 		}
 	}
 
