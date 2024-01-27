@@ -108,7 +108,7 @@ public class OPDSItem : IFileItem
 		return false;
 	}
 
-	public static async Task<System.ServiceModel.Syndication.SyndicationFeed?> LoadAsync(string source)
+	public static async Task<SyndicationFeed?> LoadAsync(string source)
 	{
 		try
 		{
@@ -121,7 +121,7 @@ public class OPDSItem : IFileItem
 			try
 			{
 				var xr = System.Xml.XmlReader.Create(source);
-				return System.ServiceModel.Syndication.SyndicationFeed.Load(xr);
+				return SyndicationFeed.Load(xr);
 			}
 			catch
 			{
