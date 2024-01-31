@@ -245,6 +245,9 @@
     <Content Include="res\passwords\passwords.gz" />
     <Content Include="res\passwords\README.md" />
     <None Include="res\passwords\words.gz" />
+    <None Include="Storages\NetworkInfo.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Storages\WindowStates.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -318,6 +321,10 @@
     <Compile Include="Storages\Licenses.cs">
       <DependentUpon>Licenses.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Storages\NetworkInfo.cs">
+      <DependentUpon>NetworkInfo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Storages\NetworkInfoStorage.cs" />
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="Storages\WindowStates.cs">
