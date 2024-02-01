@@ -15,6 +15,13 @@
 							<xs:element name="OPDSEntry">
 								<xs:complexType>
 									<xs:sequence>
+										<xs:element minOccurs="0" maxOccurs="1" name="languages">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="language" type="xs:language" minOccurs="1" maxOccurs="unbounded" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
 										<xs:element minOccurs="0" maxOccurs="1" name="cache">
 											<xs:complexType>
 												<xs:sequence>
@@ -25,6 +32,7 @@
 										</xs:element>
 									</xs:sequence>
 									<xs:attribute name="title" type="xs:string" />
+									<xs:attribute name="source" type="xs:anyURI" />
 								</xs:complexType>
 							</xs:element>
 						</xs:choice>

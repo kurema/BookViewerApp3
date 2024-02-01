@@ -217,6 +217,7 @@
     <Content Include="res\values\AdBlockList.xml" />
     <Content Include="res\values\Bookmark.xml" />
     <Content Include="res\values\Licenses.xml" />
+    <Content Include="res\values\Networks.xml" />
     <Content Include="res\values\WindowsStoreProxy.xml" Condition="'$(Configuration)' == 'Debug'" />
     <None Include="BookViewerApp_TemporaryKey.pfx" />
     <None Include="BookViewerApp_TemporaryKey_GitHub.pfx" />
