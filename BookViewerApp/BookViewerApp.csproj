@@ -340,6 +340,7 @@
     <Compile Include="ViewModels\Bookshelf2NavigationViewModel.cs" />
     <Compile Include="ViewModels\LibraryMemberViewModel.cs" />
     <Compile Include="ViewModels\ListItemViewModel.cs" />
+    <Compile Include="ViewModels\OPDSManagerViewModel.cs" />
     <Compile Include="Views\AcrylicButtonControl.xaml.cs">
       <DependentUpon>AcrylicButtonControl.xaml</DependentUpon>
     </Compile>
@@ -436,6 +437,9 @@
       <DependentUpon>LicenseControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LicenseControlTemplateSelector.cs" />
+    <Compile Include="Views\OPDSManagerPage.xaml.cs">
+      <DependentUpon>OPDSManagerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PasswordRequestContentDialog.xaml.cs">
       <DependentUpon>PasswordRequestContentDialog.xaml</DependentUpon>
     </Compile>
@@ -588,6 +592,10 @@
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OPDSManagerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PasswordRequestContentDialog.xaml">
       <SubType>Designer</SubType>

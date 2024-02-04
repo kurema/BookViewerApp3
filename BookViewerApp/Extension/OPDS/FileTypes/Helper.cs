@@ -1,6 +1,7 @@
 ﻿using kurema.FileExplorerControl.Models.FileItems;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;

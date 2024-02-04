@@ -194,6 +194,14 @@ namespace BookViewerApp.Storages
 							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_s.png")),
 							() => new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///FileExplorerControl/res/Icons/folder_l.png"))),
 					};
+					yield return new DelegateItem("Open OPDS Manager", "/Test/OPDS", async _ =>
+					{
+						var cd = new Windows.UI.Xaml.Controls.ContentDialog()
+						{
+							Content = new Views.OPDSManagerPage()
+						};
+						await cd.ShowAsync();
+					});
 				}
 				return Task.FromResult(GetItems());
 			})

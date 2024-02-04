@@ -2,7 +2,7 @@
 	<OPDSBookmarks>
 		<OPDSEntry title="Project Gutenberg" source="https://m.gutenberg.org/ebooks.opds/" />
 		<OPDSEntry title="Feedbooks" source="https://www.feedbooks.com/catalog.atom" />
-		<OPDSEntry title="BookServer(Internet Archive)" source="https://bookserver.archive.org/" />
+		<OPDSEntry title="Internet Archive Catalog" source="https://bookserver.archive.org/" />
 		<OPDSEntry title="Manybooks" source="https://manybooks.net/opds/" />
 		<OPDSEntry title="Smashwords" source="https://smashwords.com/atom" />
 		<OPDSEntry title="青空文庫 OPDS" source="http://aozora.textlive.net/catalog.opds">
