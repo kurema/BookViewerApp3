@@ -33,6 +33,9 @@
 									</xs:sequence>
 									<xs:attribute name="title" type="xs:string" />
 									<xs:attribute name="source" type="xs:anyURI" />
+									<xs:attribute name="excluded" type="xs:boolean" use="optional" default="false" />
+									<xs:attribute name="id" type="xs:string" use="optional" />
+									<xs:attribute name="ref" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 						</xs:choice>

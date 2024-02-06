@@ -62,9 +62,34 @@ namespace BookViewerApp.Storages.NetworkInfo {
         "rkInfo.xsd")]
     public partial class networksOPDSEntry {
         
+        private string[] languagesField;
+        
         private networksOPDSEntryCache cacheField;
         
         private string titleField;
+        
+        private string sourceField;
+        
+        private bool excludedField;
+        
+        private string idField;
+        
+        private string refField;
+        
+        public networksOPDSEntry() {
+            this.excludedField = false;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(DataType="language", IsNullable=false)]
+        public string[] languages {
+            get {
+                return this.languagesField;
+            }
+            set {
+                this.languagesField = value;
+            }
+        }
         
         /// <remarks/>
         public networksOPDSEntryCache cache {
@@ -84,6 +109,51 @@ namespace BookViewerApp.Storages.NetworkInfo {
             }
             set {
                 this.titleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
+        public string source {
+            get {
+                return this.sourceField;
+            }
+            set {
+                this.sourceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool excluded {
+            get {
+                return this.excludedField;
+            }
+            set {
+                this.excludedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string @ref {
+            get {
+                return this.refField;
+            }
+            set {
+                this.refField = value;
             }
         }
     }

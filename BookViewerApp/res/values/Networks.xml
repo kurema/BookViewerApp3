@@ -1,77 +1,77 @@
 <networks xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/NetworkInfo.xsd">
 	<OPDSBookmarks>
-		<OPDSEntry title="Project Gutenberg" source="https://m.gutenberg.org/ebooks.opds/" />
-		<OPDSEntry title="Feedbooks" source="https://www.feedbooks.com/catalog.atom" />
-		<OPDSEntry title="Internet Archive Catalog" source="https://bookserver.archive.org/" />
-		<OPDSEntry title="Manybooks" source="https://manybooks.net/opds/" />
-		<OPDSEntry title="Smashwords" source="https://smashwords.com/atom" />
-		<OPDSEntry title="青空文庫 OPDS" source="http://aozora.textlive.net/catalog.opds">
+		<OPDSEntry id="default_guten" title="Project Gutenberg" source="https://m.gutenberg.org/ebooks.opds/" />
+		<OPDSEntry id="default_feedb" title="Feedbooks" source="https://www.feedbooks.com/catalog.atom" />
+		<OPDSEntry id="default_archi" title="Internet Archive Catalog" source="https://bookserver.archive.org/" />
+		<OPDSEntry id="default_manyb" title="Manybooks" source="https://manybooks.net/opds/" />
+		<OPDSEntry id="default_smshw" title="Smashwords" source="https://smashwords.com/atom" />
+		<OPDSEntry id="default_aozrb" title="青空文庫 OPDS" source="http://aozora.textlive.net/catalog.opds">
 			<languages>
 				<language>ja</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="台湾 中華電子佛典協會 漢文大蔵経" source="http://www.cbeta.org/opds/" >
+		<OPDSEntry id="default_cbeta" title="台湾 中華電子佛典協會 漢文大蔵経" source="http://www.cbeta.org/opds/" >
 			<languages>
 				<language>zh</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="達人出版会" source="https://tatsu-zine.com/catalogs.opds" >
+		<OPDSEntry id="default_ttzns" title="達人出版会" source="https://tatsu-zine.com/catalogs.opds" >
 			<languages>
 				<language>ja</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="技術評論社" source="https://gihyo.jp/dp/catalogs.opds" >
+		<OPDSEntry id="default_gihyo" title="技術評論社" source="https://gihyo.jp/dp/catalogs.opds" >
 			<languages>
 				<language>ja</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="O'Reilly" source="http://opds.oreilly.com/opds/" />
-		<OPDSEntry title="O'Reilly Japan" source="https://www.oreilly.co.jp/ebook/catalogs.opds" >
+		<OPDSEntry id="default_orlyw" title="O'Reilly" source="http://opds.oreilly.com/opds/" />
+		<OPDSEntry id="default_orlyj" title="O'Reilly Japan" source="https://www.oreilly.co.jp/ebook/catalogs.opds" >
 			<languages>
 				<language>ja</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="PragPub Magazine | The Pragmatic Bookshelf" source="https://pragprog.com/magazines.opds" />
-		<OPDSEntry title="ePubBud Children's books" source="http://www.epubbud.com/feeds/catalog.atom" />
-		<OPDSEntry title="&quot;Самиздат&quot; Журнал" source="http://opdshome.uo1.net/samlib/" >
+		<OPDSEntry id="default_prgpb" title="PragPub Magazine | The Pragmatic Bookshelf" source="https://pragprog.com/magazines.opds" />
+		<OPDSEntry id="default_epubb" title="ePubBud Children's books" source="http://www.epubbud.com/feeds/catalog.atom" />
+		<OPDSEntry id="default_opdsh" title="&quot;Самиздат&quot; Журнал" source="http://opdshome.uo1.net/samlib/" >
 			<languages>
 				<language>ru</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="Электронные книги на русском" source="https://iknigi.net/opds" >
+		<OPDSEntry id="default_iknig" title="Электронные книги на русском" source="https://iknigi.net/opds" >
 			<languages>
 				<language>ru</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="zone4iPhone.ru" source="http://www.zone4iphone.ru/catalog.php" >
+		<OPDSEntry id="default_zn4ip" title="zone4iPhone.ru" source="http://www.zone4iphone.ru/catalog.php" >
 			<languages>
 				<language>ru</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="КулЛиб" source="https://coollib.net/opds" >
+		<OPDSEntry id="default_cllib" title="КулЛиб" source="https://coollib.net/opds" >
 			<languages>
 				<language>ru</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="Maxima Library" source="http://maxima-library.org/opds" />
-		<OPDSEntry title="Ebooks libres et gratuits" source="https://www.ebooksgratuits.com/opds/" >
+		<OPDSEntry id="default_mxmlb" title="Maxima Library" source="http://maxima-library.org/opds" />
+		<OPDSEntry id="default_ebleg" title="Ebooks libres et gratuits" source="https://www.ebooksgratuits.com/opds/" >
 			<languages>
 				<language>fr</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="Atramenta" source="https://www.atramenta.net/opds/catalog.atom" >
+		<OPDSEntry id="default_atrmt" title="Atramenta" source="https://www.atramenta.net/opds/catalog.atom" >
 			<languages>
 				<language>fr</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="Atoll Digital Library" source="https://atoll-digital-library.org/opds/" />
-		<OPDSEntry title="Wolne Lektury Internet Library" source="https://wolnelektury.pl/opds/" />
-		<OPDSEntry title="Читанка (free Bulgarian books)" source="http://chitanka.info/catalog.opds" >
+		<OPDSEntry id="default_atldl" title="Atoll Digital Library" source="https://atoll-digital-library.org/opds/" />
+		<OPDSEntry id="default_wllil" title="Wolne Lektury Internet Library" source="https://wolnelektury.pl/opds/" />
+		<OPDSEntry id="default_chtnk" title="Читанка (free Bulgarian books)" source="http://chitanka.info/catalog.opds" >
 			<languages>
 				<language>bg</language>
 			</languages>
 		</OPDSEntry>
-		<OPDSEntry title="Hungarian Electronic Library (Hungarian)" source="http://bookserver.mek.oszk.hu">
+		<OPDSEntry id="default_huneb" title="Hungarian Electronic Library (Hungarian)" source="http://bookserver.mek.oszk.hu">
 			<languages>
 				<language>hu</language>
 			</languages>
