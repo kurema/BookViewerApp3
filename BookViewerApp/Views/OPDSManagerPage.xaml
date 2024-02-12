@@ -31,11 +31,10 @@
         <ListView Grid.Column="2">
 
         </ListView>
-        <Grid Grid.Column="1">
-            <Button VerticalAlignment="Center">
-
-            </Button>
-        </Grid>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
+            <Button VerticalAlignment="Center">&gt;</Button>
+            <Button VerticalAlignment="Center">&lt;</Button>
+        </StackPanel>
 
         <CheckBox IsChecked="{Binding ShowAllLanguages,Mode=TwoWay}" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" Content="Show other languages" />
 
