@@ -14,8 +14,7 @@ public class OPDSManagerViewModel : BaseViewModel
 	private bool _ShowAllLanguages;
 	public bool ShowAllLanguages { get => _ShowAllLanguages; set => SetProperty(ref _ShowAllLanguages, value); }
 
-	List<Storages.NetworkInfo.networksOPDSEntry> OPDSList = new();
-
+	System.Collections.ObjectModel.ObservableCollection<Storages.NetworkInfo.networksOPDSEntry> OPDSList = new();
 
 	private string? _AddEntryURL;
 
@@ -25,6 +24,12 @@ public class OPDSManagerViewModel : BaseViewModel
 		ExcludeEntryCommand = new DelegateCommand(_ => { });
 	}
 
+	public async Task LoadFromStorages()
+	{
+		await Storages.NetworkInfoStorage.Load();
+		OPDSList = new System.Collections.ObjectModel.ObservableCollection<Storages.NetworkInfo.networksOPDSEntry>(await Storages.NetworkInfoStorage.GetFlatOPDS());
+	}
+
 	public string? AddEntryURL { get => _AddEntryURL; set => SetProperty(ref _AddEntryURL, value); }
 
 
@@ -32,9 +37,9 @@ public class OPDSManagerViewModel : BaseViewModel
 	public System.Windows.Input.ICommand ExcludeEntryCommand { get; private set; }
 
 
-	IEnumerable<Storages.NetworkInfo.networksOPDSEntry> OPDSEntries => OPDSList.ToArray();
-	IEnumerable<Storages.NetworkInfo.networksOPDSEntry> OPDSExcluded =>OPDSList.Where(a=>a.excluded).ToArray();
-	Storages.NetworkInfo.networksOPDSEntry? SelectedEntry { get; set; }
+	public System.Collections.ObjectModel.ObservableCollection<Storages.NetworkInfo.networksOPDSEntry> OPDSEntries => OPDSList;
+	public IEnumerable<Storages.NetworkInfo.networksOPDSEntry> OPDSExcluded =>OPDSList.Where(a=>a.excluded).ToArray();
+	public Storages.NetworkInfo.networksOPDSEntry? SelectedEntry { get; set; }
 
 
 }

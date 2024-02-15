@@ -7,28 +7,36 @@ using System.Threading.Tasks;
 namespace BookViewerApp.Storages;
 public static class NetworkInfoStorage
 {
-	public static StorageContent<NetworkInfo.networks> Content = new(SavePlaces.Local, "Networks.xml", () => new());
-	public static StorageContent<NetworkInfo.networks> LocalOPDS = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/Networks.xml", () => new());
+	public static StorageContent<NetworkInfo.networks> NetworkInfoLocal = new(SavePlaces.Local, "Networks.xml", () => new());
+	public static StorageContent<NetworkInfo.networks> OPDSPreset = new(SavePlaces.InstalledLocation, "ms-appx:///res/values/Networks.xml", () => new());
 
 	public static async Task Load()
 	{
-		var result = await Content.GetContentAsync() ?? new NetworkInfo.networks();
+		var result = await NetworkInfoLocal.GetContentAsync() ?? new NetworkInfo.networks();
 		var list = result?.OPDSBookmarks?.ToList() ?? new List<NetworkInfo.networksOPDSEntry>();
 		var dic = list.Where(a => !string.IsNullOrEmpty(a.id)).ToDictionary(a => a.id, a => a);
-		var pre = await LocalOPDS.GetContentAsync();
+		var pre = await OPDSPreset.GetContentAsync();
 		if (pre.OPDSBookmarks is null) return;
 		foreach (var entry in pre.OPDSBookmarks)
 		{
 			if (!dic.ContainsKey(entry.id)) list.Add(new NetworkInfo.networksOPDSEntry()
 			{
-				@ref=entry.id,
+				@ref = entry.id,
 			});
 		}
 	}
 
-	static IEnumerable<NetworkInfo.networksOPDSEntry> GetFlat(NetworkInfo.networksOPDSEntry[] entries, NetworkInfo.networksOPDSEntry[] pre)
+	public static async Task<IEnumerable<NetworkInfo.networksOPDSEntry>> GetFlatOPDS()
 	{
-		foreach(var item in Content.Content?.OPDSBookmarks)
+		if (OPDSPreset.Content is null) await OPDSPreset.ReloadAsync();
+		if (NetworkInfoLocal.Content is null) await NetworkInfoLocal.ReloadAsync();
+		if (OPDSPreset.Content is null || NetworkInfoLocal.Content is null) return Array.Empty<NetworkInfo.networksOPDSEntry>();
+		return GetFlatOPDS(NetworkInfoLocal.Content.OPDSBookmarks, OPDSPreset.Content.OPDSBookmarks);
+	}
+
+	static IEnumerable<NetworkInfo.networksOPDSEntry> GetFlatOPDS(NetworkInfo.networksOPDSEntry[] entries, NetworkInfo.networksOPDSEntry[] preset)
+	{
+		foreach (var item in NetworkInfoLocal.Content?.OPDSBookmarks)
 		{
 			if (string.IsNullOrEmpty(item.@ref))
 			{
@@ -36,7 +44,7 @@ public static class NetworkInfoStorage
 			}
 			else
 			{
-				var current = pre.FirstOrDefault(a => a.id == item.@ref);
+				var current = preset.FirstOrDefault(a => a.id == item.@ref);
 				if (current is not null) yield return current;
 			}
 		}
