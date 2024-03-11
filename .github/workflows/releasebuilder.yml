@@ -80,7 +80,7 @@ jobs:
         sed -i -e "s@<TreatWarningsAsErrors>true</TreatWarningsAsErrors>@<!-- removed -->@g" iTextSharp.LGPLv2.Core/src/iTextSharp.LGPLv2.Core/iTextSharp.LGPLv2.Core.csproj
         
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v2
 
     - name: Update manifest version
       if: github.event_name == 'push'
