@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\viewer3.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BlazorTestApp.Client\BlazorTestApp.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.3.3">

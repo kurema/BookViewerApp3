@@ -5,3 +5,30 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<div class="controller">
+	<div class="ctrl-center">
+		<button>&lt;|</button>
+		<button>|&gt;</button>
+	</div>
+</div>
+
+<style>
+	.controller {
+		position: absolute;
+		width: 100%;
+		bottom: 0px;
+		left: 0;
+		height: 200px;
+		/**/
+		backdrop-filter: blur(10px);
+		/**/
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+	}
+
+		.controller > .ctrl-center {
+			grid-column:1/2;
+			text-align:center;
+		}
+</style>

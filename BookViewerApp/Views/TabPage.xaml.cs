@@ -162,7 +162,7 @@ public sealed partial class TabPage : Page
 		await UIHelper.FrameOperation.OpenPdfJs(frame, file, newTab, this, token);
 	}
 
-	public async Task OpenTabSharpCompress(SharpCompress.Archives.IArchive archive,string path)
+	public async Task OpenTabSharpCompress(SharpCompress.Archives.IArchive archive, string path)
 	{
 		if (archive is null) return;
 		var (frame, newTab) = OpenTab("Browser");
@@ -489,7 +489,7 @@ public sealed partial class TabPage : Page
 		};
 	}
 
-	public async void OpenWindowState(Storages.WindowStates.WindowStatesLast last)
+	public async Task OpenWindowState(Storages.WindowStates.WindowStatesLast last)
 	{
 		async Task<StorageFile> GetStorage(string path)
 		{
@@ -505,6 +505,7 @@ public sealed partial class TabPage : Page
 		}
 
 		if (!(last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0)) return;
+		bool isEmpty = true;
 		foreach (var item in last.WindowState.Window[0].Items)
 		{
 			try
@@ -512,14 +513,17 @@ public sealed partial class TabPage : Page
 				switch (item)
 				{
 					case Storages.WindowStates.WindowStateWindowBookshelfTab bs:
+						isEmpty = false;
 						OpenTabBookshelf();
 						break;
 					case Storages.WindowStates.WindowStateWindowBrowserTab br:
+						isEmpty = false;
 						if (string.IsNullOrEmpty(br.Url)) OpenTabWeb();
 						else OpenTabWeb(br.Url);
 						break;
 					case Storages.WindowStates.WindowStateWindowExplorerTab ex:
 						//ToDo: Load path;
+						isEmpty = false;
 						var (f, _) = await OpenTabExplorer();
 						_ = this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
 						{
@@ -527,13 +531,14 @@ public sealed partial class TabPage : Page
 						});
 						break;
 					case Storages.WindowStates.WindowStateWindowMediaPlayerTab md:
-						{ if (await GetStorage(md.Path) is { } storage) { OpenTabMedia(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(storage)); break; } }
+						{ if (await GetStorage(md.Path) is { } storage) { isEmpty = false;  OpenTabMedia(new kurema.FileExplorerControl.Models.FileItems.StorageFileItem(storage)); break; } }
 						break;
 					case Storages.WindowStates.WindowStateWindowSettingTab st:
+						isEmpty = false;
 						OpenTabSetting();
 						break;
 					case Storages.WindowStates.WindowStateWindowTextEditorTab te:
-						{ if (await GetStorage(te.Path) is { } storage) { OpenTabTextEditor(storage); break; } }
+						{ if (await GetStorage(te.Path) is { } storage) { isEmpty = false; OpenTabTextEditor(storage); break; } }
 						break;
 					case Storages.WindowStates.WindowStateWindowViewerTab vw:
 						{
@@ -545,6 +550,7 @@ public sealed partial class TabPage : Page
 							}
 							if (file is null && await GetStorage(vw.Path) is { } storage1) { file = storage1; }
 							if (file is null) break;
+							isEmpty = false;
 							switch (vw.ViewerKey)
 							{
 								case "PDF.js":
@@ -563,6 +569,7 @@ public sealed partial class TabPage : Page
 			}
 			catch { }
 		}
+		if (isEmpty) OpenTabExplorer();
 	}
 
 	async static Task OpenExplorerPath(kurema.FileExplorerControl.Views.FileExplorerControl control, IEnumerable<Storages.WindowStates.WindowStateWindowExplorerTabItem> items)
@@ -605,7 +612,7 @@ public sealed partial class TabPage : Page
 		vm.Content.SyncTreeView = stv;
 	}
 
-	protected override void OnNavigatedTo(NavigationEventArgs e)
+	protected override async void OnNavigatedTo(NavigationEventArgs e)
 	{
 		if (e.Parameter == null || (e.Parameter is string s && s == ""))
 		{
@@ -613,7 +620,7 @@ public sealed partial class TabPage : Page
 		}
 		else if (e.Parameter is Storages.WindowStates.WindowStatesLast last)
 		{
-			if (last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0) OpenWindowState(last);
+			if (last?.WindowState?.Window?.FirstOrDefault()?.Items?.Length > 0) await OpenWindowState(last);
 			else _ = OpenTabExplorer();
 		}
 		else if (e.Parameter is (Windows.ApplicationModel.Activation.IActivatedEventArgs args1, Storages.WindowStates.WindowStatesLast last1))
@@ -625,7 +632,7 @@ public sealed partial class TabPage : Page
 			var items = last1?.WindowState?.Window?.FirstOrDefault()?.Items;
 			if (items is not null and { Length: > 0 })
 				if (items.Length == 1 && items.FirstOrDefault() is not Storages.WindowStates.WindowStateWindowViewerTab)
-					OpenWindowState(last1);
+					await OpenWindowState(last1);
 			if (args1.Kind == Windows.ApplicationModel.Activation.ActivationKind.File)
 			{
 				foreach (var item in ((Windows.ApplicationModel.Activation.FileActivatedEventArgs)args1).Files)

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Library"
+    targetNamespace="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/NetworkInfo.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/NetworkInfo.xsd"
+    xmlns:mstns="https://github.com/kurema/BookViewerApp3/blob/master/BookViewerApp/Storages/NetworkInfo.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+	<xs:element name="networks">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OPDSBookmarks">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="OPDSEntry">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element minOccurs="0" maxOccurs="1" name="languages">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="language" type="xs:language" minOccurs="1" maxOccurs="unbounded" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element minOccurs="0" maxOccurs="1" name="cache">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="image" type="xs:base64Binary" />
+												</xs:sequence>
+												<xs:attribute name="title" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="title" type="xs:string" />
+									<xs:attribute name="source" type="xs:anyURI" />
+									<xs:attribute name="excluded" type="xs:boolean" use="optional" default="false" />
+									<xs:attribute name="id" type="xs:string" use="optional" />
+									<xs:attribute name="ref" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="sambaInfos">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="dummy" />
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

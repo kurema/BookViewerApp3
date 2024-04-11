@@ -72,9 +72,15 @@ jobs:
         repository: kurema/iTextSharp.LGPLv2.Core
         path: iTextSharp.LGPLv2.Core
         ref: bv3
+
+# This is workaround. Should be removed in the future.
+    - name: Remove TreatWarningsAsErrors
+      shell: bash
+      run: |
+        sed -i -e "s@<TreatWarningsAsErrors>true</TreatWarningsAsErrors>@<!-- removed -->@g" iTextSharp.LGPLv2.Core/src/iTextSharp.LGPLv2.Core/iTextSharp.LGPLv2.Core.csproj
         
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v2
 
     - name: Update manifest version
       if: github.event_name == 'push'

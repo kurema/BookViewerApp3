@@ -1,6 +1,8 @@
 # AdBlocker
 AdBlocker provides basic "ad blocker" function for BookViewer3 and some other apps.
 
+This feature is unstable. We encountered lots of ads even when this is enabled. There may be some bugs or implementation errors.
+
 ## How to get started
 1. Open the browser
 

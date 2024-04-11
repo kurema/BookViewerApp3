@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.w3.org/XML/1998/namespace" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:opds="http://opds-spec.org/2010/catalog" xmlns:atom="http://www.w3.org/2005/Atom">
+  <xs:import namespace="http://opds-spec.org/2010/catalog" schemaLocation="opds.xsd"/>
+  <xs:import namespace="http://www.w3.org/1999/xhtml" schemaLocation="xhtml.xsd"/>
+  <xs:import namespace="http://www.w3.org/2005/Atom" schemaLocation="atom.xsd"/>
+  <xs:attribute name="base" type="opds:atomUri"/>
+  <xs:attribute name="lang" type="atom:atomLanguageTag"/>
+</xs:schema>

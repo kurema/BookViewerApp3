@@ -184,6 +184,8 @@
     <Content Include="res\bibi\bibi\resources\styles\bibi.css" />
     <Content Include="res\bibi\bibi\wardrobe\everyday\bibi.dress.css" />
     <Content Include="res\cover\sample.png" />
+    <Content Include="res\Icon\icon_apps_l.png" />
+    <Content Include="res\Icon\icon_apps_s.png" />
     <Content Include="res\Icon\icon_bookmark_l.png" />
     <Content Include="res\Icon\icon_bookmark_s.png" />
     <Content Include="res\Icon\icon_book_l.png" />
@@ -192,6 +194,10 @@
     <Content Include="res\Icon\icon_clock_s.png" />
     <Content Include="res\Icon\icon_library_l.png" />
     <Content Include="res\Icon\icon_library_s.png" />
+    <Content Include="res\Icon\icon_networks_l.png" />
+    <Content Include="res\Icon\icon_networks_s.png" />
+    <Content Include="res\Icon\icon_setting_l.png" />
+    <Content Include="res\Icon\icon_setting_s.png" />
     <Content Include="res\Icon\icon_star_l.png" />
     <Content Include="res\Icon\icon_star_s.png" />
     <Content Include="res\passwords\additional_passwords.txt" />
@@ -211,6 +217,7 @@
     <Content Include="res\values\AdBlockList.xml" />
     <Content Include="res\values\Bookmark.xml" />
     <Content Include="res\values\Licenses.xml" />
+    <Content Include="res\values\Networks.xml" />
     <Content Include="res\values\WindowsStoreProxy.xml" Condition="'$(Configuration)' == 'Debug'" />
     <None Include="BookViewerApp_TemporaryKey.pfx" />
     <None Include="BookViewerApp_TemporaryKey_GitHub.pfx" />
@@ -239,6 +246,9 @@
     <Content Include="res\passwords\passwords.gz" />
     <Content Include="res\passwords\README.md" />
     <None Include="res\passwords\words.gz" />
+    <None Include="Storages\NetworkInfo.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Storages\WindowStates.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -274,8 +284,12 @@
     </Compile>
     <Compile Include="Books\BookCbz.cs" />
     <Compile Include="Extension\BookmarkItem.cs" />
+    <Compile Include="Extension\DelegateItem.cs" />
     <Compile Include="Extension\HistoryItem.cs" />
     <Compile Include="Extension\HistoryMRUItem.cs" />
+    <Compile Include="Extension\OPDS\FileTypes\FileType.cs" />
+    <Compile Include="Extension\OPDS\FileTypes\Helper.cs" />
+    <Compile Include="Extension\OPDS\OPDSItem.cs" />
     <Compile Include="Extension\TokenLibraryItem.cs" />
     <Compile Include="Helper\IDisposableBasic.cs" />
     <Compile Include="Helper\InvalidCommand.cs" />
@@ -308,6 +322,10 @@
     <Compile Include="Storages\Licenses.cs">
       <DependentUpon>Licenses.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Storages\NetworkInfo.cs">
+      <DependentUpon>NetworkInfo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Storages\NetworkInfoStorage.cs" />
     <Compile Include="Storages\PathStorage.cs" />
     <Compile Include="Storages\StorageContent.cs" />
     <Compile Include="Storages\WindowStates.cs">
@@ -322,6 +340,7 @@
     <Compile Include="ViewModels\Bookshelf2NavigationViewModel.cs" />
     <Compile Include="ViewModels\LibraryMemberViewModel.cs" />
     <Compile Include="ViewModels\ListItemViewModel.cs" />
+    <Compile Include="ViewModels\OPDSManagerViewModel.cs" />
     <Compile Include="Views\AcrylicButtonControl.xaml.cs">
       <DependentUpon>AcrylicButtonControl.xaml</DependentUpon>
     </Compile>
@@ -418,6 +437,9 @@
       <DependentUpon>LicenseControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LicenseControlTemplateSelector.cs" />
+    <Compile Include="Views\OPDSManagerPage.xaml.cs">
+      <DependentUpon>OPDSManagerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PasswordRequestContentDialog.xaml.cs">
       <DependentUpon>PasswordRequestContentDialog.xaml</DependentUpon>
     </Compile>
@@ -571,6 +593,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\OPDSManagerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PasswordRequestContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -608,13 +634,16 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.5</Version>
+      <Version>2.8.6</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
       <Version>0.33.0</Version>
     </PackageReference>
+    <PackageReference Include="System.ServiceModel.Syndication">
+      <Version>8.0.0</Version>
+    </PackageReference>
     <PackageReference Include="System.Text.Json">
-      <Version>7.0.3</Version>
+      <Version>8.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -682,7 +711,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" />
+      <UserProperties views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

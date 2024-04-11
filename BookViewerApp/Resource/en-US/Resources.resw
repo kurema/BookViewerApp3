@@ -1131,4 +1131,10 @@ Maybe it's unsupported format.
   <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
     <value>Try the dictionary with a password-protected PDF</value>
   </data>
+  <data name="ContextMenu.Bookmarks.OpenInBrowser.Title" xml:space="preserve">
+    <value>Open in browser</value>
+  </data>
+  <data name="Explorer.Networks" xml:space="preserve">
+    <value>Networks</value>
+  </data>
 </root>

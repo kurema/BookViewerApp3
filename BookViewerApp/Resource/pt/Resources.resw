@@ -982,4 +982,10 @@ Talvez seja um formato não suportado.
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
     <value>Tenta automaticamente ataques de dicionário para abrir PDFs protegidos por senha. Este processo requer uma grande carga na CPU. O resultado é guardado em texto simples.</value>
   </data>
+  <data name="ContextMenu.Bookmarks.OpenInBrowser.Title" xml:space="preserve">
+    <value>Abrir no browser</value>
+  </data>
+  <data name="Explorer.Networks" xml:space="preserve">
+    <value>Redes</value>
+  </data>
 </root>
