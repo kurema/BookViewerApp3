@@ -245,6 +245,7 @@
     <Content Include="res\reader\img\upload.svg" />
     <Content Include="res\passwords\passwords.gz" />
     <Content Include="res\passwords\README.md" />
+    <PRIResource Include="Resource\ru\Resources.resw" />
     <None Include="res\passwords\words.gz" />
     <None Include="Storages\NetworkInfo.xsd">
       <SubType>Designer</SubType>
@@ -711,7 +712,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" />
+      <UserProperties views_4browsertools_4cushioninfo_1json__JsonSchema="https://json-schema.org/draft-04/schema" views_4browsertools_4directoryinfo_1json__JsonSchema="https://json-schema.org/draft-07/schema" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

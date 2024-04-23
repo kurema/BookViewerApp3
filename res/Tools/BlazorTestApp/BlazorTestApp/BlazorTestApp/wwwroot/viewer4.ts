@@ -1,10 +1,4 @@
-﻿namespace Book4
-{
-    enum DrawModes {
-        Static,
-        Animation,
-    }
-
+﻿namespace Book4 {
     class CanvasState {
         Canvas: HTMLCanvasElement;
         Context: CanvasRenderingContext2D;
@@ -15,12 +9,16 @@
         }
     }
 
+    interface Animation {
+
+    }
+
     class BookCanvas {
-        CurrentMode: DrawModes;
+        CurrentAnnimation: Animation | null;
         CanvasStatus: CanvasState;
 
         Draw() {
-            
+
         }
     }
 }

@@ -1,10 +1,5 @@
-//namespace Book4
-{
-    let DrawModes;
-    (function (DrawModes) {
-        DrawModes[DrawModes["Static"] = 0] = "Static";
-        DrawModes[DrawModes["Animation"] = 1] = "Animation";
-    })(DrawModes || (DrawModes = {}));
+var Book4;
+(function (Book4) {
     class CanvasState {
         constructor(canvas) {
             this.Canvas = canvas;
@@ -15,4 +10,4 @@
         Draw() {
         }
     }
-}
+})(Book4 || (Book4 = {}));

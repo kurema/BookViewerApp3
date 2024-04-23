@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Command.Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="Command.Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Command.OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Command.Open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="Command.Property" xml:space="preserve">
+    <value>Недвижимость</value>
+  </data>
+  <data name="Delete.Message" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить этот элемент?</value>
+  </data>
+  <data name="Delete.Option.No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Delete.Option.Permanent" xml:space="preserve">
+    <value>Постоянно</value>
+  </data>
+  <data name="Delete.Option.Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Delete.Title" xml:space="preserve">
+    <value>Удалить элемент</value>
+  </data>
+  <data name="FileType.Combined" xml:space="preserve">
+    <value>Комбинированный контейнер</value>
+  </data>
+  <data name="FileType.Folder" xml:space="preserve">
+    <value>Папка с файлами</value>
+  </data>
+  <data name="FileType.General" xml:space="preserve">
+    <value>{0} Файл</value>
+  </data>
+  <data name="FileType.NoExtension" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="Header.Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Header.FileType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Header.Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Header.Size" xml:space="preserve">
+    <value>Размер</value>
+  </data>
+  <data name="Table.Date" xml:space="preserve">
+    <value>Дата:</value>
+  </data>
+  <data name="Table.FileType" xml:space="preserve">
+    <value>Тип:</value>
+  </data>
+  <data name="Table.Name" xml:space="preserve">
+    <value>Имя:</value>
+  </data>
+  <data name="Table.Path" xml:space="preserve">
+    <value>Путь:</value>
+  </data>
+  <data name="Table.Size" xml:space="preserve">
+    <value>Размер:</value>
+  </data>
+  <data name="ContextMenu.OpenWith.Choose" xml:space="preserve">
+    <value>Выберите программу...</value>
+  </data>
+  <data name="ContextMenu.OpenWith.Title" xml:space="preserve">
+    <value>Открыть с</value>
+  </data>
+  <data name="Search.Placeholder" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="Word.Open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="Word.Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Word.SaveAs" xml:space="preserve">
+    <value>Сохранить как...</value>
+  </data>
+  <data name="Word.SaveCopyAs" xml:space="preserve">
+    <value>Сохранить копию как...</value>
+  </data>
+  <data name="Word.Reload" xml:space="preserve">
+    <value>Перезагрузка</value>
+  </data>
+  <data name="Word.Undo" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="Word.Redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="Word.Clipboard.Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="Word.Clipboard.Cut" xml:space="preserve">
+    <value>Разрез</value>
+  </data>
+  <data name="Word.Clipboard.CutAndAppend" xml:space="preserve">
+    <value>Вырезание и добавление на ClipBoard</value>
+  </data>
+  <data name="Word.Clipboard.CopyAndAppend" xml:space="preserve">
+    <value>Копирование и добавление на ClipBoard</value>
+  </data>
+  <data name="Word.Clipboard.Paste" xml:space="preserve">
+    <value>Паста</value>
+  </data>
+  <data name="TextEditor.Edit.Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="TextEditor.Edit.SelectAll" xml:space="preserve">
+    <value>Выбрать все</value>
+  </data>
+  <data name="TextEditor.View.WordWrap" xml:space="preserve">
+    <value>Обертывание слов</value>
+  </data>
+  <data name="TextEditor.View.FontSize" xml:space="preserve">
+    <value>Размер шрифта</value>
+  </data>
+  <data name="TextEditor.Convert.Title" xml:space="preserve">
+    <value>Конвертировать</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCase" xml:space="preserve">
+    <value>ВЕРХНИЙ РЕГИСТР</value>
+  </data>
+  <data name="TextEditor.Convert.UpperCaseUS" xml:space="preserve">
+    <value>ВЕРХНИЙ РЕГИСТР (США)</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidthArrow" xml:space="preserve">
+    <value>Полная ширина (стрелка)</value>
+  </data>
+  <data name="TextEditor.Convert.Indent" xml:space="preserve">
+    <value>Отступ</value>
+  </data>
+  <data name="TextEditor.Convert.Unindent" xml:space="preserve">
+    <value>Развернуть</value>
+  </data>
+  <data name="TextEditor.Convert.TabToSpace" xml:space="preserve">
+    <value>Tab → Пробел x8</value>
+  </data>
+  <data name="TextEditor.Convert.SpaceToTab" xml:space="preserve">
+    <value>Пробел x8 → Вкладка</value>
+  </data>
+  <data name="TextEditor.Convert.FullWidth" xml:space="preserve">
+    <value>Полная ширина</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidthArrow" xml:space="preserve">
+    <value>Полуширина (стрелка)</value>
+  </data>
+  <data name="TextEditor.Convert.HalfWidth" xml:space="preserve">
+    <value>Полуширина</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCase" xml:space="preserve">
+    <value>нижний регистр</value>
+  </data>
+  <data name="TextEditor.Convert.LowerCaseUS" xml:space="preserve">
+    <value>нижний регистр (США)</value>
+  </data>
+  <data name="TextEditor.Edit.Title" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="TextEditor.File.Title" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="TextEditor.View.Title" xml:space="preserve">
+    <value>Посмотреть</value>
+  </data>
+  <data name="TextEditor.Help.Title" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="TextEditor.View.SpellChecker.Title" xml:space="preserve">
+    <value>Проверка орфографии</value>
+  </data>
+  <data name="TextEditor.SaveDialog.PlainText.Description" xml:space="preserve">
+    <value>Обычный текст</value>
+  </data>
+  <data name="TextEditor.SaveDialog.NewText.Title" xml:space="preserve">
+    <value>Новый текст</value>
+  </data>
+  <data name="TextEditor.SaveDialog.General.Description" xml:space="preserve">
+    <value>{0} Файл</value>
+  </data>
+  <data name="TextEditor.SaveDialog.Any.Description" xml:space="preserve">
+    <value>Любой файл</value>
+  </data>
+  <data name="TextEditor.Edit.TimeDate" xml:space="preserve">
+    <value>Время/Дата</value>
+  </data>
+  <data name="TextEditor.Find.Replace" xml:space="preserve">
+    <value>Замените...</value>
+  </data>
+  <data name="TextEditor.Find.Regex" xml:space="preserve">
+    <value>Использование регулярных выражений</value>
+  </data>
+  <data name="TextEditor.Find.CaseSensitive" xml:space="preserve">
+    <value>Спичечный коробок</value>
+  </data>
+  <data name="TextEditor.Find.Search" xml:space="preserve">
+    <value>Найти...</value>
+  </data>
+  <data name="TextEditor.Title" xml:space="preserve">
+    <value>Блокнот</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
+    <value>Скопируйте адрес как текст</value>
+  </data>
+  <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
+    <value>Редактировать адрес</value>
+  </data>
+  <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
+    <value>Адрес для копирования</value>
+  </data>
+</root>

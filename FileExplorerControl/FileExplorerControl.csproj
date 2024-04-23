@@ -215,6 +215,7 @@
     <PRIResource Include="Resource\pt\Resources.resw" />
     <PRIResource Include="Resource\zh-Hans\Resources.resw" />
     <PRIResource Include="Resource\zh-Hant\Resources.resw" />
+    <PRIResource Include="Resource\ru\Resources.resw" />
     <None Include="res\UI\Layout_Contents.svg" />
     <None Include="res\UI\Layout_Detail.svg" />
   </ItemGroup>
