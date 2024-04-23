@@ -52,7 +52,7 @@
     <value>Открыть</value>
   </data>
   <data name="Command.Property" xml:space="preserve">
-    <value>Недвижимость</value>
+    <value>Свойство</value>
   </data>
   <data name="Delete.Message" xml:space="preserve">
     <value>Вы уверены, что хотите удалить этот элемент?</value>
@@ -61,7 +61,7 @@
     <value>Нет</value>
   </data>
   <data name="Delete.Option.Permanent" xml:space="preserve">
-    <value>Постоянно</value>
+    <value>Навсегда</value>
   </data>
   <data name="Delete.Option.Yes" xml:space="preserve">
     <value>Да</value>
@@ -70,7 +70,7 @@
     <value>Удалить элемент</value>
   </data>
   <data name="FileType.Combined" xml:space="preserve">
-    <value>Комбинированный контейнер</value>
+    <value>Совмещенное хранилище</value>
   </data>
   <data name="FileType.Folder" xml:space="preserve">
     <value>Папка с файлами</value>
@@ -136,22 +136,22 @@
     <value>Отменить</value>
   </data>
   <data name="Word.Redo" xml:space="preserve">
-    <value>Redo</value>
+    <value>Переделать</value>
   </data>
   <data name="Word.Clipboard.Copy" xml:space="preserve">
     <value>Копировать</value>
   </data>
   <data name="Word.Clipboard.Cut" xml:space="preserve">
-    <value>Разрез</value>
+    <value>Вырезать</value>
   </data>
   <data name="Word.Clipboard.CutAndAppend" xml:space="preserve">
-    <value>Вырезание и добавление на ClipBoard</value>
+    <value>Вырезать и добавить в буфер обмена</value>
   </data>
   <data name="Word.Clipboard.CopyAndAppend" xml:space="preserve">
-    <value>Копирование и добавление на ClipBoard</value>
+    <value>Копировать и добавить в буфер обмена</value>
   </data>
   <data name="Word.Clipboard.Paste" xml:space="preserve">
-    <value>Паста</value>
+    <value>Вставить</value>
   </data>
   <data name="TextEditor.Edit.Delete" xml:space="preserve">
     <value>Удалить</value>
@@ -160,7 +160,7 @@
     <value>Выбрать все</value>
   </data>
   <data name="TextEditor.View.WordWrap" xml:space="preserve">
-    <value>Обертывание слов</value>
+    <value>Выделение слов</value>
   </data>
   <data name="TextEditor.View.FontSize" xml:space="preserve">
     <value>Размер шрифта</value>
@@ -175,7 +175,7 @@
     <value>ВЕРХНИЙ РЕГИСТР (США)</value>
   </data>
   <data name="TextEditor.Convert.FullWidthArrow" xml:space="preserve">
-    <value>Полная ширина (стрелка)</value>
+    <value>Полная ширина курсора печатания</value>
   </data>
   <data name="TextEditor.Convert.Indent" xml:space="preserve">
     <value>Отступ</value>
@@ -184,7 +184,7 @@
     <value>Развернуть</value>
   </data>
   <data name="TextEditor.Convert.TabToSpace" xml:space="preserve">
-    <value>Tab → Пробел x8</value>
+    <value>(Отступ) Tab → Пробел x8</value>
   </data>
   <data name="TextEditor.Convert.SpaceToTab" xml:space="preserve">
     <value>Пробел x8 → Вкладка</value>
@@ -193,7 +193,7 @@
     <value>Полная ширина</value>
   </data>
   <data name="TextEditor.Convert.HalfWidthArrow" xml:space="preserve">
-    <value>Полуширина (стрелка)</value>
+    <value>Полуширина стрелки</value>
   </data>
   <data name="TextEditor.Convert.HalfWidth" xml:space="preserve">
     <value>Полуширина</value>
@@ -214,13 +214,13 @@
     <value>Посмотреть</value>
   </data>
   <data name="TextEditor.Help.Title" xml:space="preserve">
-    <value>Помощь</value>
+    <value>Справка</value>
   </data>
   <data name="TextEditor.View.SpellChecker.Title" xml:space="preserve">
-    <value>Проверка орфографии</value>
+    <value>Проверить орфографию</value>
   </data>
   <data name="TextEditor.SaveDialog.PlainText.Description" xml:space="preserve">
-    <value>Обычный текст</value>
+    <value>Простой текст</value>
   </data>
   <data name="TextEditor.SaveDialog.NewText.Title" xml:space="preserve">
     <value>Новый текст</value>
@@ -235,13 +235,13 @@
     <value>Время/Дата</value>
   </data>
   <data name="TextEditor.Find.Replace" xml:space="preserve">
-    <value>Замените...</value>
+    <value>Заменить...</value>
   </data>
   <data name="TextEditor.Find.Regex" xml:space="preserve">
-    <value>Использование регулярных выражений</value>
+    <value>Использовать регулярные выражения</value>
   </data>
   <data name="TextEditor.Find.CaseSensitive" xml:space="preserve">
-    <value>Спичечный коробок</value>
+    <value>Окно поиска совпадений</value>
   </data>
   <data name="TextEditor.Find.Search" xml:space="preserve">
     <value>Найти...</value>
@@ -250,12 +250,12 @@
     <value>Блокнот</value>
   </data>
   <data name="ContextMenu.Address.CopyAddressAsText" xml:space="preserve">
-    <value>Скопируйте адрес как текст</value>
+    <value>Копировать адрес как текст</value>
   </data>
   <data name="ContextMenu.Address.EditAddress" xml:space="preserve">
     <value>Редактировать адрес</value>
   </data>
   <data name="ContextMenu.Address.CopyAddress" xml:space="preserve">
-    <value>Адрес для копирования</value>
+    <value>Скопировать адрес</value>
   </data>
 </root>
