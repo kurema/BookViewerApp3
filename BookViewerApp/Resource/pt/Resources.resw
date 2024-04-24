@@ -579,7 +579,9 @@ Desejo-vos boa sorte.</value>
     <value>Lembrar a orientação da página</value>
   </data>
   <data name="Setting.ToolTip.Message" xml:space="preserve">
-    <value>Predefinição: {2}</value>
+    <value>{0}
+{1}
+Predefinição: {2}</value>
   </data>
   <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
     <value>Mostrar favicons de marcadores. 

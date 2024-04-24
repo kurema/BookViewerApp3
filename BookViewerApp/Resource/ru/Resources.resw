@@ -600,7 +600,9 @@
     <value>Быстрые настройки</value>
   </data>
   <data name="Setting.ToolTip.Message" xml:space="preserve">
-    <value>По умолчанию: {2}</value>
+    <value>{0}
+{1}
+По умолчанию: {2}</value>
   </data>
   <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
     <value>Запомните ориентацию страниц каждой книги.</value>
@@ -899,7 +901,7 @@
   </data>
   <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
     <value>Посмотреть содержание.
-(Проблема: большие файлы не отображаются должным образом).</value>
+(Проблема: большие файлы не отображаются должным образом.)</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Help.Apply" xml:space="preserve">
     <value>Нажмите "Применить", чтобы сохранить изменения.</value>
