@@ -40,7 +40,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutThisApp.Label" xml:space="preserve">
-    <value>О сайте</value>
+    <value>О приложении</value>
   </data>
   <data name="AddLocalDirectory.Label" xml:space="preserve">
     <value>Добавить каталог</value>
@@ -52,7 +52,7 @@
     <value>Закладка</value>
   </data>
   <data name="BookmarkLastread.Title" xml:space="preserve">
-    <value>[Автомат]</value>
+    <value>[Автоматически]</value>
   </data>
   <data name="Bookmarks.Label" xml:space="preserve">
     <value>Закладки</value>
@@ -61,16 +61,16 @@
     <value>Название</value>
   </data>
   <data name="BookNext.Label" xml:space="preserve">
-    <value>Читайте следующую книгу</value>
+    <value>Читать следующую книгу</value>
   </data>
   <data name="BookPrevious.Label" xml:space="preserve">
-    <value>Прочитайте предыдущую книгу</value>
+    <value>Читать предыдущую книгу</value>
   </data>
   <data name="BookshelfTitleNew" xml:space="preserve">
     <value>Книжная полка</value>
   </data>
   <data name="ClearAllBookshelf.Label" xml:space="preserve">
-    <value>Освободите все книжные полки</value>
+    <value>Очистить все книжные полки</value>
   </data>
   <data name="GoToBookshelf.Label" xml:space="preserve">
     <value>Перейти к книжной полке</value>
@@ -79,10 +79,10 @@
     <value>Загрузка завершена. Спасибо.</value>
   </data>
   <data name="LoadingFolder.Started.Message" xml:space="preserve">
-    <value>Это займет некоторое время. Не закрывайте это приложение во время загрузки.</value>
+    <value>Это займет некоторое количество времени. Не закрывайте это приложение во время загрузки.</value>
   </data>
   <data name="LoadingFolder.Title" xml:space="preserve">
-    <value>Загрузка папок</value>
+    <value>Загрузка папки</value>
   </data>
   <data name="OpenLocalBook.Label" xml:space="preserve">
     <value>Открыть</value>
@@ -91,25 +91,25 @@
     <value>Конец</value>
   </data>
   <data name="PageLeft.Label" xml:space="preserve">
-    <value>Левый</value>
+    <value>Перевернуть налево</value>
   </data>
   <data name="PageLeftmost.Label" xml:space="preserve">
-    <value>Самый левый</value>
+    <value>Перевернуть на крайнюю левую страницу</value>
   </data>
   <data name="PageNext.Label" xml:space="preserve">
-    <value>Следующий</value>
+    <value>Следующая страница</value>
   </data>
   <data name="PagePrevious.Label" xml:space="preserve">
-    <value>Предыдущий</value>
+    <value>Предыдущая страница</value>
   </data>
   <data name="PageReverse.Label" xml:space="preserve">
-    <value>Обратное направление страницы</value>
+    <value>Изменить направление страницы</value>
   </data>
   <data name="PageRight.Label" xml:space="preserve">
-    <value>Справа</value>
+    <value>Перевернуть направо</value>
   </data>
   <data name="PageRightmost.Label" xml:space="preserve">
-    <value>Самый правый</value>
+    <value>Перевернуть на крайнюю правую страницу</value>
   </data>
   <data name="PageTop.Label" xml:space="preserve">
     <value>Первый</value>
@@ -118,19 +118,19 @@
     <value>Настройка</value>
   </data>
   <data name="Setting_DefaultFullScreen.Description" xml:space="preserve">
-    <value>Установите полноэкранный режим при открытии книги.</value>
+    <value>Включить полноэкранный режим при открытии книги.</value>
   </data>
   <data name="Setting_DefaultFullScreen.Title" xml:space="preserve">
-    <value>Установите полноэкранный режим по умолчанию</value>
+    <value>Включить полноэкранный режим по умолчанию</value>
   </data>
   <data name="Setting_DefaultPageReverse.Description" xml:space="preserve">
-    <value>Установите ориентацию страницы R2L (справа налево) по умолчанию в новой книге.</value>
+    <value>Включить ориентацию страницы R2L (справа налево) по умолчанию в новой книге.</value>
   </data>
   <data name="Setting_DefaultPageReverse.Title" xml:space="preserve">
-    <value>R2L по умолчанию</value>
+    <value>Включить R2L по умолчанию</value>
   </data>
   <data name="Setting_SaveLastReadPage.Description" xml:space="preserve">
-    <value>Автоматически открывайте страницу, на которой вы читали в прошлый раз.</value>
+    <value>Автоматически открывать страницу, на которой вы читали в предыдущий раз.</value>
   </data>
   <data name="Setting_SaveLastReadPage.Title" xml:space="preserve">
     <value>Автоматическое открытие последней прочитанной страницы</value>
@@ -142,31 +142,31 @@
     <value>Показать переход к самой правой / самой левой кнопке</value>
   </data>
   <data name="Setting_SyncBookmarks.Description" xml:space="preserve">
-    <value>Синхронизация закладок на книги через облако.</value>
+    <value>Синхронизация закладок книги через облако.</value>
   </data>
   <data name="Setting_SyncBookmarks.Title" xml:space="preserve">
     <value>Синхронизация закладок в книгах</value>
   </data>
   <data name="ToggleFullScreen.Label" xml:space="preserve">
-    <value>Переключение полноэкранного режима</value>
+    <value>Включить полноэкранный режим</value>
   </data>
   <data name="ClearThisBookshelf.Label" xml:space="preserve">
-    <value>Освободите эту книжную полку</value>
+    <value>Очистить эту книжную полку</value>
   </data>
   <data name="SetThisBookshelfSecret.Label" xml:space="preserve">
-    <value>Переключить секрет</value>
+    <value>Включить секрет</value>
   </data>
   <data name="Setting_TileHeight.Description" xml:space="preserve">
-    <value>Высота книжной плитки в книжном шкафу.</value>
+    <value>Высота книжного элемента в книжной полке.</value>
   </data>
   <data name="Setting_TileHeight.Title" xml:space="preserve">
-    <value>Высота книжной плитки</value>
+    <value>Высота книжного элемента</value>
   </data>
   <data name="Setting_TileWidth.Description" xml:space="preserve">
-    <value>Ширина книжной плитки в книжном шкафу.</value>
+    <value>Ширина книжного элемента в книжной полке.</value>
   </data>
   <data name="Setting_TileWidth.Title" xml:space="preserve">
-    <value>Ширина книжной плитки</value>
+    <value>Ширина книжного элемента</value>
   </data>
   <data name="ReloadBookshelf.Label" xml:space="preserve">
     <value>Обновить</value>
@@ -175,37 +175,37 @@
     <value>[Конец]</value>
   </data>
   <data name="BookmarkTop.Title" xml:space="preserve">
-    <value>[Вверх]</value>
+    <value>[Верх]</value>
   </data>
   <data name="Setting_BackgroundBrightness.Description" xml:space="preserve">
-    <value>Яркость фона. 100: белый, 0: черный. (Противоположное значение в темной теме)</value>
+    <value>Яркость заднего фона. 100: белый, 0: черный. (Противоположно в темной теме)</value>
   </data>
   <data name="Setting_BackgroundBrightness.Title" xml:space="preserve">
-    <value>Яркость фона</value>
+    <value>Яркость заднего фона</value>
   </data>
   <data name="Setting_ScrollAnimation.Description" xml:space="preserve">
-    <value>Используйте анимацию прокрутки при просмотре книги.</value>
+    <value>Использовать анимацию прокрутки при просмотре книги.</value>
   </data>
   <data name="Setting_ScrollAnimation.Title" xml:space="preserve">
     <value>Анимация прокрутки</value>
   </data>
   <data name="Setting_BookNameTrim.Description" xml:space="preserve">
-    <value>В названии книги скрыта совпадающая часть. Ввод в регулярное выражение. (ex:\(.*\))</value>
+    <value>Совпадающая часть скрыта в названии книги. Ввод в регулярном выражении. (ex:\(.*\))</value>
   </data>
   <data name="Setting_BookNameTrim.Title" xml:space="preserve">
-    <value>Название книги на обрезке</value>
+    <value>Название книги в порядке</value>
   </data>
   <data name="Setting_FolderNameToExclude.Description" xml:space="preserve">
-    <value>Исключение папки из представления книжной полки при совпадении с регулярным выражением.</value>
+    <value>Исключение папки из просмотра книжной полки при совпадении с регулярным выражением.</value>
   </data>
   <data name="Setting_FolderNameToExclude.Title" xml:space="preserve">
-    <value>Имя папки для исключения</value>
+    <value>Название папки которую нужно исключить</value>
   </data>
   <data name="Setting_SortCoverComesFirst.Description" xml:space="preserve">
-    <value>Предположим, что изображение, в имени файла которого есть "cover", будет первым файлом в CBZ/CBR.</value>
+    <value>Допустить, что изображение, в имени файла которого есть "cover", будет первым файлом в CBZ/CBR.</value>
   </data>
   <data name="Setting_SortCoverComesFirst.Title" xml:space="preserve">
-    <value>Предполагать изображение обложки по имени файла в CBZ/CBR</value>
+    <value>Допустить использование имени файла в изображении обложки в CBZ/CBR</value>
   </data>
   <data name="Setting_SortNaturalOrder.Description" xml:space="preserve">
     <value>Сортировка по естественному порядку в CBZ/CBR (например: 01.jpg→2.jpg→003.jpg)</value>
@@ -214,28 +214,28 @@
     <value>Естественная сортировка в CBZ/CBR</value>
   </data>
   <data name="Setting_ZoomButtonShowTimespan.Description" xml:space="preserve">
-    <value>Секунды отображения кнопки зума при касании экрана (0: отключить).</value>
+    <value>Количество секунд необходимое для отображения кнопки масштабирования при касании экрана (0: отключить).</value>
   </data>
   <data name="Setting_ZoomButtonShowTimespan.Title" xml:space="preserve">
     <value>Время отображения кнопки масштабирования</value>
   </data>
   <data name="Setting_CommandBarShowTimespan.Description" xml:space="preserve">
-    <value>Секунды для отображения меню при касании экрана на странице просмотра книги (0: всегда).</value>
+    <value>Количество секунд необходимое для отображения меню при касании экрана на странице просмотра книги (0: всегда).</value>
   </data>
   <data name="Setting_CommandBarShowTimespan.Title" xml:space="preserve">
-    <value>Время отображения меню в программе просмотра книг</value>
+    <value>Отображение времени в меню в программе просмотра книг</value>
   </data>
   <data name="SwitchBookshelfToggle.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Переключатель книжной полки.</value>
+    <value>Переключить книжную полку.</value>
   </data>
   <data name="Welcome_HowToConfigure" xml:space="preserve">
     <value>Как изменить настройки</value>
   </data>
   <data name="Welcome_HowToUse" xml:space="preserve">
-    <value>Как использовать</value>
+    <value>Как пользоваться</value>
   </data>
   <data name="Welcome_OpenMenu" xml:space="preserve">
-    <value>Откройте меню.</value>
+    <value>Открыть меню.</value>
   </data>
   <data name="Setting_WebHomePage.Description" xml:space="preserve">
     <value>Главная страница.</value>
@@ -244,22 +244,22 @@
     <value>Главная страница</value>
   </data>
   <data name="Setting_RespectPageDirectionInfo.Description" xml:space="preserve">
-    <value>Соблюдайте информацию о направлении PDF (R2L/L2R).</value>
+    <value>Соблюдать информацию о направлении PDF (R2L/L2R).</value>
   </data>
   <data name="Setting_RespectPageDirectionInfo.Title" xml:space="preserve">
-    <value>Соблюдайте информацию о направлении</value>
+    <value>Соблюдать информацию о направлении</value>
   </data>
   <data name="Password.Message" xml:space="preserve">
-    <value>Введите пароль для открытия.</value>
+    <value>Введите пароль чтобы открыть.</value>
   </data>
   <data name="Password.Save.Message" xml:space="preserve">
     <value>Сохранить пароль</value>
   </data>
   <data name="Password.Title" xml:space="preserve">
-    <value>Подтвердите пароль</value>
+    <value>Подтвердить пароль</value>
   </data>
   <data name="Word.Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Отменить</value>
   </data>
   <data name="Word.OK" xml:space="preserve">
     <value>OK</value>
@@ -268,13 +268,13 @@
     <value>Браузер</value>
   </data>
   <data name="Setting.Group.Cloud" xml:space="preserve">
-    <value>Облако</value>
+    <value>Облачное хранилище</value>
   </data>
   <data name="Setting.Group.Library" xml:space="preserve">
     <value>Библиотека</value>
   </data>
   <data name="Setting.Group.Obsolete" xml:space="preserve">
-    <value>Устаревшие</value>
+    <value>Устаревшее</value>
   </data>
   <data name="Setting.Group.Viewer" xml:space="preserve">
     <value>Просмотрщик</value>
@@ -283,7 +283,7 @@
     <value>Книжная полка</value>
   </data>
   <data name="TabHeader.BookViewer" xml:space="preserve">
-    <value>Просмотрщик</value>
+    <value>Наблюдение</value>
   </data>
   <data name="TabHeader.Home" xml:space="preserve">
     <value>Главная</value>
@@ -295,7 +295,7 @@
     <value>Новая вкладка</value>
   </data>
   <data name="TabHeader.Setting" xml:space="preserve">
-    <value>Конфигурация</value>
+    <value>Настройка</value>
   </data>
   <data name="TabHeader.Epub" xml:space="preserve">
     <value>Epub</value>
@@ -307,7 +307,7 @@
     <value>Браузер</value>
   </data>
   <data name="TabHeader.Explorer" xml:space="preserve">
-    <value>Explorer</value>
+    <value>Проводник</value>
   </data>
   <data name="Explorer.Apps" xml:space="preserve">
     <value>Приложения</value>
@@ -337,17 +337,17 @@
     <value>Этот компьютер</value>
   </data>
   <data name="ContextMenu.Folders.RegisterFolder.Title" xml:space="preserve">
-    <value>Зарегистрируйте папку</value>
+    <value>Зарегистрировать папку</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.Title" xml:space="preserve">
-    <value>Снять папку с регистрации</value>
+    <value>Отменить регистрацию папки</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Message" xml:space="preserve">
     <value>На папку ссылается следующая библиотека.
-Вы уверены, что нужно снять регистрацию?</value>
+Вы уверены, что необходимо отменить регистрацию?</value>
   </data>
   <data name="ContextMenu.Folders.UnregisterFolder.MessageDialog.Title" xml:space="preserve">
-    <value>Снять папку с регистрации</value>
+    <value>Отменить регистрацию папки</value>
   </data>
   <data name="ContextMenu.Library.New.Title" xml:space="preserve">
     <value>Новая библиотека</value>
@@ -362,13 +362,13 @@
     <value>Невозможно зарегистрировать</value>
   </data>
   <data name="Setting_ShowPresetBookmarks.Description" xml:space="preserve">
-    <value>Показать предустановленные закладки.</value>
+    <value>Показать заданные закладки.</value>
   </data>
   <data name="Setting_ShowPresetBookmarks.Title" xml:space="preserve">
-    <value>Показать предустановленные закладки</value>
+    <value>Показать заданные закладки</value>
   </data>
   <data name="Setting.Group.Explorer" xml:space="preserve">
-    <value>Explorer</value>
+    <value>Проводник</value>
   </data>
   <data name="Setting_WebSearchEngine.Description" xml:space="preserve">
     <value>Устанавливает URL поисковой системы, который используется при поиске из адресной строки (%s на месте запроса).</value>
@@ -377,16 +377,16 @@
     <value>Поиск</value>
   </data>
   <data name="ContextMenu.Histories.HideHistores.Title" xml:space="preserve">
-    <value>Скрыть истории</value>
+    <value>Скрыть историю</value>
   </data>
   <data name="ContextMenu.Histories.ShowHistores.Title" xml:space="preserve">
-    <value>Показать истории</value>
+    <value>Показать историю</value>
   </data>
   <data name="Setting_ShowHistories.Description" xml:space="preserve">
-    <value>Показать истории.</value>
+    <value>Показать историю.</value>
   </data>
   <data name="Setting_ShowHistories.Title" xml:space="preserve">
-    <value>Показать истории</value>
+    <value>Показать историю</value>
   </data>
   <data name="ItemType.BookmarkContainer" xml:space="preserve">
     <value>Папка с закладками</value>
@@ -398,10 +398,10 @@
     <value>Предмет истории</value>
   </data>
   <data name="ItemType.PresetBookmark" xml:space="preserve">
-    <value>Предустановленные закладки</value>
+    <value>Заданные закладки</value>
   </data>
   <data name="ContextMenu.Histories.OpenParent.Title" xml:space="preserve">
-    <value>Откройте содержащую папку</value>
+    <value>Открыть содержащую папку</value>
   </data>
   <data name="ItemType.LibraryItem" xml:space="preserve">
     <value>Библиотека</value>
@@ -410,22 +410,22 @@
     <value>Системная папка</value>
   </data>
   <data name="ContextMenu.Bookmarks.HidePreset.Title" xml:space="preserve">
-    <value>Скрыть предустановленные закладки</value>
+    <value>Скрыть заданные закладки</value>
   </data>
   <data name="ContextMenu.Bookmarks.ShowPreset.Title" xml:space="preserve">
-    <value>Показать предустановленные закладки</value>
+    <value>Показать заданные закладки</value>
   </data>
   <data name="ContextMenu.Library.Unregister.Title" xml:space="preserve">
-    <value>Снимите с регистрации эту библиотеку</value>
+    <value>Отменить регистрации данной библиотеки</value>
   </data>
   <data name="Setting_MaximumHistoryCount.Description" xml:space="preserve">
-    <value>Максимальное количество сохраняемых историй.</value>
+    <value>Максимальное количество сохраненных историй.</value>
   </data>
   <data name="Setting_MaximumHistoryCount.Title" xml:space="preserve">
     <value>Количество историй</value>
   </data>
   <data name="ContextMenu.Library.Manage.Title" xml:space="preserve">
-    <value>Управление этой библиотекой</value>
+    <value>Управлять этой библиотекой</value>
   </data>
   <data name="ContextMenu.Word.New.Title" xml:space="preserve">
     <value>Новый</value>
@@ -449,10 +449,10 @@
     <value>Редактировать</value>
   </data>
   <data name="Info.Debug.CopyFAL.Title" xml:space="preserve">
-    <value>Скопируйте информацию FutureAccessList.</value>
+    <value>Скопировать информацию из FutureAccessList.</value>
   </data>
   <data name="Info.Debug.OpenAppData.Title" xml:space="preserve">
-    <value>Откройте папку с данными.</value>
+    <value>Открыть папку с данными.</value>
   </data>
   <data name="Info.Debug.Title" xml:space="preserve">
     <value>Отладка</value>
@@ -461,7 +461,7 @@
     <value>Станьте спонсором!</value>
   </data>
   <data name="Info.Info.Contributors" xml:space="preserve">
-    <value>Вкладчики</value>
+    <value>Помощники</value>
   </data>
   <data name="Info.Info.Privacy.Description" xml:space="preserve">
     <value>Показать политику конфиденциальности</value>
@@ -476,10 +476,10 @@
     <value>Лицензия</value>
   </data>
   <data name="Info.Info.ThirdParty.LicenseTerms" xml:space="preserve">
-    <value>Лицензионные условия</value>
+    <value>Условия лицензии</value>
   </data>
   <data name="Info.Info.ThirdParty.Title" xml:space="preserve">
-    <value>Уведомление третьей стороны</value>
+    <value>Уведомление третьих лиц</value>
   </data>
   <data name="Info.Info.Title" xml:space="preserve">
     <value>Информация</value>
@@ -488,7 +488,7 @@
     <value>Перевод</value>
   </data>
   <data name="Info.Info.ThirdParty.ThirdParty" xml:space="preserve">
-    <value>Сторонние</value>
+    <value>Третьи лица</value>
   </data>
   <data name="Info.Info.Developers" xml:space="preserve">
     <value>Разработчики</value>
@@ -498,13 +498,13 @@
   </data>
   <data name="Migration.Dialog.Description" xml:space="preserve">
     <value>Выпущена новая версия BookViewer.
-В ней появились вкладки, Fluent Design, интегрированный файловый архив и исправлены многочисленные ошибки.</value>
+В ней появились вкладки, доступный дизайн, интегрированный архив файлов и исправление многочисленных ошибок.</value>
   </data>
   <data name="Migration.Dialog.Title" xml:space="preserve">
     <value>Новое приложение выпущено!</value>
   </data>
   <data name="Migration.General.Title" xml:space="preserve">
-    <value>Обновление BookViewer3</value>
+    <value>Обновиться до версии BookViewer3</value>
   </data>
   <data name="Setting_HideMigration.Description" xml:space="preserve">
     <value>Скрыть кнопку уведомления об обновлении.</value>
@@ -513,21 +513,21 @@
     <value>Скрыть уведомление об обновлении</value>
   </data>
   <data name="Word.NeverShowAgain" xml:space="preserve">
-    <value>Никогда больше не показывайте это.</value>
+    <value>Никогда больше не показывать.</value>
   </data>
   <data name="Info.Info.BeSponsor.Description" xml:space="preserve">
-    <value>на GitHub Спонсоры</value>
+    <value>на Спонсорах GitHub</value>
   </data>
   <data name="Info.Purchase.Message.AlreadyPurchased.Message" xml:space="preserve">
     <value>Спасибо!
-Предоставленные вами средства позволили автору продолжить работу! Если вы хотите поддержать больше, воспользуйтесь спонсорской поддержкой GitHub.
+Ваши пожертвования помогают автору продолжать работу! Если вы хотите поддержать проект, воспользуйтесь спонсорской поддержкой GitHub.
 Желаю вам удачи.</value>
   </data>
   <data name="Info.Purchase.Message.AlreadyPurchased.Title" xml:space="preserve">
     <value>Спасибо, что поддержали меня!</value>
   </data>
   <data name="Info.Purchase.Message.Purchased.Message" xml:space="preserve">
-    <value>Средства, которые вы предоставляете, позволяют kurema продолжать работу! Это дает мне силы продолжать работу.
+    <value>Ваши пожертвования, помогают kurema продолжать работу! Это дает мне силы продолжать работу.
 Я желаю вам удачи.</value>
   </data>
   <data name="Info.Purchase.Message.Purchased.Title" xml:space="preserve">
@@ -552,19 +552,19 @@
     <value>Об этом приложении</value>
   </data>
   <data name="Info.Info.ShowContributors.Description" xml:space="preserve">
-    <value>Просмотр авторов, переводчиков и спонсоров</value>
+    <value>Просмотр информации об авторах, переводчиках и спонсорах</value>
   </data>
   <data name="Info.Info.ThirdParty.Description" xml:space="preserve">
-    <value>Просмотр уведомления третьей стороны</value>
+    <value>Просмотр уведомлений третьих лиц</value>
   </data>
   <data name="Setting_EpubViewerType.Description" xml:space="preserve">
-    <value>Выберите двигатель для epub. Мы рекомендуем Биби.</value>
+    <value>Выберите движок для просмотра epub. Мы рекомендуем движок Bibi.</value>
   </data>
   <data name="Setting_EpubViewerType.Title" xml:space="preserve">
-    <value>Механизм отображения Epub</value>
+    <value>Движок отображения Epub</value>
   </data>
   <data name="Setting_DefaultSpreadType.Description" xml:space="preserve">
-    <value>Выберите макет страницы.</value>
+    <value>Выберите разметку страницы.</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.Default.Title" xml:space="preserve">
     <value>По умолчанию</value>
@@ -579,16 +579,16 @@
     <value>Разметка страницы</value>
   </data>
   <data name="Setting_PdfRenderScaling.Description" xml:space="preserve">
-    <value>Рендеринг PDF в разрешении, превышающем размер дисплея. Отключение этой функции улучшает производительность.</value>
+    <value>Визуализация PDF в разрешении, превышающем размер экрана. Отключение этой функции улучшает производительность.</value>
   </data>
   <data name="Setting_PdfRenderScaling.Title" xml:space="preserve">
-    <value>Рендеринг в высоком разрешении в формате PDF</value>
+    <value>Визуализация в высоком разрешении в формате PDF</value>
   </data>
   <data name="Info.Info.ReleaseNotes.Description" xml:space="preserve">
-    <value>{0} / Открыть информацию о выпуске на GitHub</value>
+    <value>{0} / Открыть информацию о заметках на GitHub</value>
   </data>
   <data name="Info.Info.ReleaseNotes.Title" xml:space="preserve">
-    <value>Примечания к выпуску</value>
+    <value>Заметки релиза</value>
   </data>
   <data name="Setting_DefaultSpreadType.Enums.ModeEnum.ForceSpread.Title" xml:space="preserve">
     <value>Двухстраничный вид (показать титульную страницу в двухстраничном виде)</value>
@@ -603,64 +603,64 @@
     <value>По умолчанию: {2}</value>
   </data>
   <data name="Setting_RememberPageDirection.Description" xml:space="preserve">
-    <value>Запомните ориентацию страниц каждой книги.</value>
+    <value>Запомнить ориентацию страниц каждой книги.</value>
   </data>
   <data name="Setting_RememberPageDirection.Title" xml:space="preserve">
-    <value>Запомните ориентацию страницы</value>
+    <value>Запомнить ориентацию страницы</value>
   </data>
   <data name="Setting_ShowBookmarkFavicon.Description" xml:space="preserve">
-    <value>Отображение фавиконов закладок.
-В этой версии приложение не сохраняет кэш фавиконов, а отображение фавиконов кажется нестабильным.
-Уведомление о конфиденциальности: Если эта функция включена, каждый раз при открытии папки закладок в Проводнике будет отправляться запрос на сервер. Сервер может собирать некоторые данные.</value>
+    <value>Отображение избранных закладокок.
+В этой версии приложение не сохраняет кэш избранных закладок, а отображение избранных закладок кажется нестабильным.
+Уведомление о конфиденциальности: Если эта функция включена, каждый раз при открытии папки закладок в Проводнике будет отправляться запрос на сервер. Сервер может собирать некоторые из ваших данных.</value>
   </data>
   <data name="Setting_ShowBookmarkFavicon.Title" xml:space="preserve">
     <value>Показывать избранные закладки</value>
   </data>
   <data name="Setting_FetchThumbnailsBackground.Description" xml:space="preserve">
-    <value>Генерируйте миниатюры в фоновом режиме. Отключите его, если у вас проблемы с производительностью.</value>
+    <value>Генерировать миниатюры в фоновом режиме. Отключите его, если у вас проблемы с производительностью.</value>
   </data>
   <data name="Setting_FetchThumbnailsBackground.Title" xml:space="preserve">
-    <value>Генерируйте миниатюры в фоновом режиме</value>
+    <value>Генерируйте иконки в фоновом режиме</value>
   </data>
   <data name="ContextMenu.Book.SelectThumbnail.Title" xml:space="preserve">
-    <value>Выберите миниатюру</value>
+    <value>Выберите иконку</value>
   </data>
   <data name="Word.Close" xml:space="preserve">
     <value>Закрыть</value>
   </data>
   <data name="Info.Debug.DeleteThumbnails.Description" xml:space="preserve">
-    <value>Удаление миниатюр книг</value>
+    <value>Удаление иконок книг</value>
   </data>
   <data name="Info.Debug.DeleteThumbnails.Dialog.Message" xml:space="preserve">
-    <value>Вы уверены, что хотите удалить папку с эскизами?
-Вы также можете отключить создание эскизов на вкладке "Проводник" с помощью вышеуказанной настройки.</value>
+    <value>Вы уверены, что хотите удалить папку с иконками?
+Вы также можете отключить создание иконок на вкладке "Проводник" с помощью вышеуказанной настройки.</value>
   </data>
   <data name="Info.Debug.DeleteThumbnails.Title" xml:space="preserve">
-    <value>Удаление миниатюр</value>
+    <value>Удаление иконок</value>
   </data>
   <data name="Info.Debug.DeleteThumbnails.Dialog.MessageFail" xml:space="preserve">
-    <value>Не удалось удалить папку с миниатюрами. Пожалуйста, попробуйте еще раз.</value>
+    <value>Не удалось удалить папку с иконками. Пожалуйста, попробуйте еще раз.</value>
   </data>
   <data name="Word.Expand" xml:space="preserve">
     <value>Смотреть все</value>
   </data>
   <data name="Setting_DefaultBrowserExternal.Description" xml:space="preserve">
-    <value>С помощью внешнего браузера откройте URL-адрес.</value>
+    <value>Открыть URL-адрес во внешнем браузере.</value>
   </data>
   <data name="Setting_DefaultBrowserExternal.Title" xml:space="preserve">
-    <value>Откройте URL-адрес во внешнем браузере</value>
+    <value>Открыть URL-адрес во внешнем браузере</value>
   </data>
   <data name="ContextMenu.Bookmarks.OpenInternal.Title" xml:space="preserve">
     <value>Открыть во встроенном браузере</value>
   </data>
   <data name="ContextMenu.Library.AddNew.Title" xml:space="preserve">
-    <value>Добавьте новую библиотеку</value>
+    <value>Добавить новую библиотеку</value>
   </data>
   <data name="TabHeader.MediaPlayer" xml:space="preserve">
-    <value>Игрок</value>
+    <value>Медиаплеер</value>
   </data>
   <data name="LibraryManager.KindTitle.Archive" xml:space="preserve">
-    <value>Архивный файл</value>
+    <value>Заархивировать файл</value>
   </data>
   <data name="LibraryManager.KindTitle.Folder" xml:space="preserve">
     <value>Папка</value>
@@ -672,10 +672,10 @@
     <value>Темный режим</value>
   </data>
   <data name="Setting_EpubViewerDarkMode.Description" xml:space="preserve">
-    <value>Если в приложении установлен темный режим, программа просмотра Epub также будет работать в темном режиме.</value>
+    <value>Если в приложении установлен темный режим, движок просмотра Epub также будет работать в темном режиме.</value>
   </data>
   <data name="Setting_EpubViewerDarkMode.Title" xml:space="preserve">
-    <value>Примените настройки темного режима к программе просмотра Epub. (Экспериментально)</value>
+    <value>Примените настройки темного режима к движку просмотра Epub. (Экспериментально)</value>
   </data>
   <data name="Viewer.SlideShow.ToolTip.Message" xml:space="preserve">
     <value>Воспроизвести слайд-шоу
@@ -685,10 +685,10 @@
     <value>Интервал (сек):</value>
   </data>
   <data name="Setting_BrowserUseWebView2.Title" xml:space="preserve">
-    <value>Используйте современный браузер (предварительный просмотр)</value>
+    <value>Использовать современный браузер (предварительный просмотр)</value>
   </data>
   <data name="Setting_BrowserUseWebView2.Description" xml:space="preserve">
-    <value>Для браузера используйте движок на основе Chorimum (WebView2). Он нестабилен и глючит. Если вы используете Windows 10, вам придется вручную установить время выполнения от имени администратора.</value>
+    <value>Для браузера используйте движок на основе Chorimum (WebView2). Он нестабилен и глючит. Если вы используете Windows 10, вам придется вручную установить среду выполнения от имени администратора.</value>
   </data>
   <data name="Bookmark.New.Title" xml:space="preserve">
     <value>Новая закладка</value>
@@ -709,13 +709,13 @@
     <value>Сброс</value>
   </data>
   <data name="Setting_BrowserUserAgent.Description" xml:space="preserve">
-    <value>Переопределите значение User-Agent. Это работает только с WebView2. Оставьте значение по умолчанию пустым.</value>
+    <value>Перезаписать значение User-Agent. Это работает только с WebView2. Оставьте значение по умолчанию пустым.</value>
   </data>
   <data name="Setting_BrowserUserAgent.Title" xml:space="preserve">
-    <value>Переопределение User-Agent (WebView2)</value>
+    <value>Перезапись User-Agent (WebView2)</value>
   </data>
   <data name="Setting_Theme.DescriptionOld" xml:space="preserve">
-    <value>Тема приложения. Если вам не нравится слюдяной фон в Windows 11, выберите акриловый.</value>
+    <value>Тема приложения. Если вам не нравится фон из слюды в Windows 11, выберите акриловый.</value>
   </data>
   <data name="Setting_Theme.Title" xml:space="preserve">
     <value>Тема</value>
@@ -724,10 +724,10 @@
     <value>Авто</value>
   </data>
   <data name="Setting_Theme.Enums.Theme.Light.Title" xml:space="preserve">
-    <value>Свет</value>
+    <value>Светлый</value>
   </data>
   <data name="Setting_Theme.Enums.Theme.Dark.Title" xml:space="preserve">
-    <value>Темнота</value>
+    <value>Темный</value>
   </data>
   <data name="Setting_Theme.Enums.Theme.AcrylicAuto.Title" xml:space="preserve">
     <value>Акрил - Авто</value>
@@ -772,7 +772,7 @@
     <value>Обновить</value>
   </data>
   <data name="Extension.Capture.AppBar.Crop" xml:space="preserve">
-    <value>Отделка</value>
+    <value>Обрезать</value>
   </data>
   <data name="Extension.Capture.AppBar.Draw" xml:space="preserve">
     <value>Нарисовать</value>
@@ -784,10 +784,10 @@
     <value>Другие настройки</value>
   </data>
   <data name="Info.More.OpenAdBlockerSetting.Title" xml:space="preserve">
-    <value>Откройте панель AdBlocker Dashboard</value>
+    <value>Открыть панель блокировщика рекламы</value>
   </data>
   <data name="Info.More.OpenAdBlockerSetting.Description" xml:space="preserve">
-    <value>Загрузите фильтры и обновите локальные настройки</value>
+    <value>Загрузить фильтры и обновите локальные настройки</value>
   </data>
   <data name="Word.Apply" xml:space="preserve">
     <value>Применить</value>
@@ -802,19 +802,19 @@
     <value>Код</value>
   </data>
   <data name="Extension.AdBlocker.Info.Documents.GitHubDocs.Description" xml:space="preserve">
-    <value>Прочитайте документацию на GitHub, чтобы получить базовую информацию.</value>
+    <value>Прочитать документацию на GitHub, чтобы получить базовую информацию.</value>
   </data>
   <data name="Extension.AdBlocker.Info.Folders.Local.Description" xml:space="preserve">
-    <value>Откройте папку с файлами конфигурации.</value>
+    <value>Открыть папку с файлами конфигурации.</value>
   </data>
   <data name="Extension.AdBlocker.Info.Folders.Cache.Description" xml:space="preserve">
-    <value>Откройте папку с фильтрами.</value>
+    <value>Открыть папку с фильтрами.</value>
   </data>
   <data name="Extension.AdBlocker.Info.Code.Manager.Description" xml:space="preserve">
-    <value>Просмотрите исходный код механизма удаления рекламы, чтобы убедиться в отсутствии вредоносного поведения.</value>
+    <value>Просмотреть исходный код блокировщика рекламы, чтобы убедиться в отсутствии вредоносного поведения.</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Word.Recommended" xml:space="preserve">
-    <value>Рекомендуем</value>
+    <value>Рекомендованно</value>
   </data>
   <data name="Extension.AdBlocker.Filters.FirstMessage" xml:space="preserve">
     <value>Прежде чем начать использовать фильтр, его необходимо загрузить.</value>
@@ -835,7 +835,7 @@
     <value>Пользовательское</value>
   </data>
   <data name="Extension.AdBlocker.CustomFilter.Error.Message" xml:space="preserve">
-    <value>Сохранение прервано из-за сбоя теста фильтра.
+    <value>Сохранение прервано из-за сбоя тестирования фильтра.
 Деталь:
 {0}</value>
   </data>
@@ -843,10 +843,10 @@
     <value>Сохранение прервано</value>
   </data>
   <data name="Info.More.BookmarkManager.Description" xml:space="preserve">
-    <value>Редактирование XML-файла для закладок браузера</value>
+    <value>Редактировать файл XML для закладок браузера</value>
   </data>
   <data name="Info.More.BookmarkManager.Title" xml:space="preserve">
-    <value>Откройте менеджер закладок</value>
+    <value>Открыть менеджер закладок</value>
   </data>
   <data name="TabHeader.BookmarkManager" xml:space="preserve">
     <value>Менеджер закладок</value>
@@ -855,10 +855,10 @@
     <value>Образец</value>
   </data>
   <data name="BookmarkManager.TextEditor.Error.Title" xml:space="preserve">
-    <value>Сохранить не удалось</value>
+    <value>Сохранение не удалось</value>
   </data>
   <data name="BookmarkManager.TextEditor.Error.Message" xml:space="preserve">
-    <value>Сохранение файла прервано из-за ошибки проверки.
+    <value>Сохранение файла прервано из-за сбоя в тестировании.
 
 {0}</value>
   </data>
@@ -868,11 +868,11 @@
   <data name="Extension.AdBlocker.TrustedSites.Info" xml:space="preserve">
     <value>Указывает домены, для которых блокировка рекламы должна быть отключена.
 Одна запись в строке.
-Подстановочные знаки можно использовать только в начале строки.
+Префиксы можно использовать только в начале строки.
 Строки с префиксом '#' будут игнорироваться.</value>
   </data>
   <data name="ContextMenu.Bookmarks.Manage.Title" xml:space="preserve">
-    <value>Управление</value>
+    <value>Управлять</value>
   </data>
   <data name="TabHeader.TextEditor" xml:space="preserve">
     <value>Блокнот</value>
@@ -886,16 +886,16 @@
 Источник: {2}</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Help.OpenProject" xml:space="preserve">
-    <value>Откройте страницу проекта.</value>
+    <value>Открыть страницу проекта.</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Help.Refresh" xml:space="preserve">
-    <value>Включите в цели обновления.</value>
+    <value>Включить в цели обновлений.</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Help.License" xml:space="preserve">
-    <value>Проверьте лицензию.</value>
+    <value>Проверить лицензию.</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Help.OpenInfo" xml:space="preserve">
-    <value>Откройте информационную страницу.</value>
+    <value>Открыть страницу с информацией.</value>
   </data>
   <data name="Extension.AdBlocker.Filters.Help.View" xml:space="preserve">
     <value>Посмотреть содержание.
@@ -905,16 +905,16 @@
     <value>Нажмите "Применить", чтобы сохранить изменения.</value>
   </data>
   <data name="Setting_BrowserSearchComplitionService.Title" xml:space="preserve">
-    <value>поставщик поисковых предложений</value>
+    <value>Оператор предложений поиска</value>
   </data>
   <data name="Setting_BrowserSearchComplitionService.Description" xml:space="preserve">
-    <value>Выберите сервис, который будет использоваться для получения предложений по поиску. Пожалуйста, выберите его, согласившись с политикой конфиденциальности каждого сервиса.</value>
+    <value>Выберите службу, которая будет использоваться для получения предложений в поиске. Пожалуйста, выберите её, согласившись с политикой конфиденциальности каждой службы.</value>
   </data>
   <data name="Setting_BrowserSearchComplitionService.Enums.SearchComplitionOptions.Dummy.Title" xml:space="preserve">
-    <value>Нет</value>
+    <value>Ничего</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Description" xml:space="preserve">
-    <value>Превышение яркости экрана. Включается только при положительном значении.</value>
+    <value>Перезапись поверх яркости экрана. Включена только при положительном значении.</value>
   </data>
   <data name="Setting_ScreenBrightnessOverride.Title" xml:space="preserve">
     <value>Яркость экрана</value>
@@ -923,31 +923,31 @@
     <value>Список кандидатов на пароль для PDF с паролем</value>
   </data>
   <data name="Setting_PdfPasswordDictionary.Description" xml:space="preserve">
-    <value>Задайте список кандидатов на пароль для открытия защищенного паролем PDF. Введите по одному элементу в строку для нескольких входов.</value>
+    <value>Задайте список возможных паролей для открытия защищенного паролем файла PDF. Введите по одному элементу в строку для нескольких вводов.</value>
   </data>
   <data name="Setting_RestorePreviousSession.Description" xml:space="preserve">
-    <value>Восстановление предыдущих вкладок при открытии приложения.</value>
+    <value>Восстановить предыдущие вкладки при открытии приложения.</value>
   </data>
   <data name="Setting_RestorePreviousSession.Title" xml:space="preserve">
-    <value>Восстановление предыдущей сессии</value>
+    <value>Восстановить предыдущую сессию</value>
   </data>
   <data name="Setting_DefaultTab.Enums.DefaultTab.Explorer.Title" xml:space="preserve">
-    <value>Explorer</value>
+    <value>Проводник</value>
   </data>
   <data name="Setting_DefaultTab.Enums.DefaultTab.Bookshelf.Title" xml:space="preserve">
     <value>Книжная полка</value>
   </data>
   <data name="Setting.Group.General" xml:space="preserve">
-    <value>Общие сведения</value>
+    <value>Свойства</value>
   </data>
   <data name="Setting_DefaultTab.Description" xml:space="preserve">
-    <value>Выберите вкладку, которая будет отображаться при нажатии на "+" или при запуске приложения без предыдущей сессии.</value>
+    <value>Выбрать вкладку, которая будет отображаться при нажатии на "+" или при запуске приложения без наличия предыдущих сессий.</value>
   </data>
   <data name="Setting_DefaultTab.Title" xml:space="preserve">
     <value>Вкладка по умолчанию</value>
   </data>
   <data name="Password.SaveInPlain.Message" xml:space="preserve">
-    <value>Сохраните пароль в виде обычного текста</value>
+    <value>Сохранить пароль в виде обычного текста</value>
   </data>
   <data name="Word.Error" xml:space="preserve">
     <value>Ошибка</value>
@@ -968,16 +968,16 @@
     <value>Пароль: {0}</value>
   </data>
   <data name="ContextMenu.BookViewer.ShowPassword.RequestVerification.Message" xml:space="preserve">
-    <value>Пожалуйста, проверьте, чтобы показать пароль.</value>
+    <value>Пожалуйста, верифицируйтесь, чтобы показать пароль.</value>
   </data>
   <data name="Word.Password" xml:space="preserve">
     <value>Пароль</value>
   </data>
   <data name="Viewer.Property.Header.ReadTimeLast.Title" xml:space="preserve">
-    <value>Последнее прочтение</value>
+    <value>Последнее прочитанное</value>
   </data>
   <data name="Viewer.Property.Header.ReadTimeFirst.Title" xml:space="preserve">
-    <value>Первое чтение</value>
+    <value>Первое прочитанное</value>
   </data>
   <data name="Viewer.Property.Header.ReadTimeSpan.Title" xml:space="preserve">
     <value>Продолжительность</value>
@@ -989,7 +989,7 @@
     <value>Название страницы</value>
   </data>
   <data name="Viewer.Property.Header.PagePath.Title" xml:space="preserve">
-    <value>Путь к странице</value>
+    <value>Путь страницы</value>
   </data>
   <data name="Word.ID" xml:space="preserve">
     <value>ID</value>
@@ -1004,10 +1004,10 @@
     <value>Дата последнего чтения</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Description" xml:space="preserve">
-    <value>Автоматические попытки атаки по словарю для открытия защищенного паролем PDF. Этот процесс требует большой нагрузки на процессор. Результат сохраняется в виде обычного текста.</value>
+    <value>Автоматически подбирать пароль для открытия защищенного паролем файла PDF. Этот процесс сильно нагружает процессор. Результат сохраняется в виде обычного текста.</value>
   </data>
   <data name="Setting_PdfPasswordDictionaryAttack.Title" xml:space="preserve">
-    <value>Попробуйте словарь с помощью защищенного паролем PDF-файла</value>
+    <value>Попробовать словарь с помощью защищенного паролем PDF-файла</value>
   </data>
   <data name="ContextMenu.Bookmarks.OpenInBrowser.Title" xml:space="preserve">
     <value>Открыть в браузере</value>
