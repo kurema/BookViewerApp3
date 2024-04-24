@@ -25,7 +25,7 @@ It support CBR, CBZ, PDF and Epub books.
 
 ## Thanks
 [Apr 24, 2020] The Italian translation is by Emanuele (https://github.com/Manu99it).  
-[Oct 7, 2021] The Portuguese translation is by Esibruti (https://github.com/esibruti).
+[Oct 7, 2021] The Portuguese translation is by Esibruti (https://github.com/esibruti).  
 [Apr 24, 2024] The Russian translation is by ifrit (https://github.com/luafuck).
 
 Thank you!
