@@ -74,7 +74,7 @@ namespace BookViewerApp.Storages.NetworkInfo {
         
         private string idField;
         
-        private string refField;
+        private string referenceField;
         
         public networksOPDSEntry() {
             this.excludedField = false;
@@ -148,12 +148,12 @@ namespace BookViewerApp.Storages.NetworkInfo {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string @ref {
+        public string reference {
             get {
-                return this.refField;
+                return this.referenceField;
             }
             set {
-                this.refField = value;
+                this.referenceField = value;
             }
         }
     }

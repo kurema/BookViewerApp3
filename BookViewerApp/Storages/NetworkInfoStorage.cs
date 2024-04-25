@@ -21,7 +21,7 @@ public static class NetworkInfoStorage
 		{
 			if (!dic.ContainsKey(entry.id)) list.Add(new NetworkInfo.networksOPDSEntry()
 			{
-				@ref = entry.id,
+				reference = entry.id,
 			});
 		}
 	}
@@ -38,13 +38,13 @@ public static class NetworkInfoStorage
 	{
 		foreach (var item in NetworkInfoLocal.Content?.OPDSBookmarks)
 		{
-			if (string.IsNullOrEmpty(item.@ref))
+			if (string.IsNullOrEmpty(item.reference))
 			{
 				yield return item;
 			}
 			else
 			{
-				var current = preset.FirstOrDefault(a => a.id == item.@ref);
+				var current = preset.FirstOrDefault(a => a.id == item.reference);
 				if (current is not null) yield return current;
 			}
 		}
