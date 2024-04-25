@@ -107,6 +107,8 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 				await Binding?.UpdatePages(this.Dispatcher);
 			}
 		};
+
+		//ViewerController.ScheduleInitialFadeOut(0);
 	}
 
 	private void UpdateBackground()
@@ -769,10 +771,19 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 
 	Windows.UI.Input.PointerPoint _LastPoint = null;
 
+	bool InitialControllerFadeOutExecuted = false;
+
 	private void flipView_PointerPressed(object sender, PointerRoutedEventArgs e)
 	{
 		e.Handled = false;
 		if (sender is not FlipViewEx flip) return;
+
+		if (!InitialControllerFadeOutExecuted)
+		{
+			ViewerController.SetControlPanelVisibility(true);
+			InitialControllerFadeOutExecuted = true;
+		}
+
 		if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor == 1.0)
 		{
 			if (e.Pointer.IsInContact)

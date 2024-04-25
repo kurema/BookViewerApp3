@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using BookViewerApp.Storages;
+using System.Threading.Tasks;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
@@ -28,6 +29,7 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 		this.InitializeComponent();
 
 		this.LosingFocus += BookFixed3ViewerControllerControl_LosingFocus;
+		//this.FocusEngaged += (_, _) => { ScheduleInitialFadeOutEnabled = false; };
 
 		if (!(bool)SettingStorage.GetValue("ShowRightmostAndLeftmost"))
 		{
@@ -67,6 +69,7 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 
 	public void SetControlPanelVisibility(bool visibility)
 	{
+		if (visibility == IsControlVisible) return;
 		if (visibility)
 		{
 			VisualStateManager.GoToState(this, "ControlPanelFadeIn", true);
@@ -99,6 +102,15 @@ public sealed partial class BookFixed3ViewerControllerControl : UserControl
 	{
 		this.SetControlPanelVisibility(true);
 	}
+
+
+	//private bool ScheduleInitialFadeOutEnabled = true;
+	//public async void ScheduleInitialFadeOut(int delay = 3000)
+	//{
+	//	await Task.Delay(delay);
+	//	if (!ScheduleInitialFadeOutEnabled) return;
+	//	SetControlPanelVisibility(false);
+	//}
 
 	private void Scroller_Tapped(object sender, TappedRoutedEventArgs e)
 	{
