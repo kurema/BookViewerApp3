@@ -15,10 +15,10 @@
 
     class BookCanvas {
         CurrentAnnimation: Animation | null;
-        CanvasStatus: CanvasState;
+        CurrentCanvas: CanvasState;
 
         Draw() {
-
+            
         }
     }
 }
