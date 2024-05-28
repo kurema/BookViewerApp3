@@ -1,6 +1,8 @@
 class Program {
     Main() {
         const canvas = document.querySelector("body canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         if (!canvas)
             throw new Error("canvas not found!");
         const webgl = canvas.getContext("webgl2");
@@ -10,15 +12,20 @@ class Program {
         webgl.clear(webgl.COLOR_BUFFER_BIT);
         this.vertexShader = this.InitShader(webgl, 'VERTEX_SHADER', `
     attribute vec4 a_position;
+    //attribute vec2 a_texCoord;
+    //varying vec2 vTexCoord;
 
     void main() {
       gl_Position = a_position;
+      //vTexCoord=vec2(0.5,0.5);
     }
   `);
         this.fragmentShader = this.InitShader(webgl, 'FRAGMENT_SHADER', `
+        //varying vec2 vTexCoord;
     void main() {
-      gl_FragColor = vec4(0, 0, 0, 1);
+      gl_FragColor = vec4(0.05, 0, 0, 1);
     }
+
     `);
         this.program = webgl.createProgram();
         if (!this.program)
@@ -32,21 +39,21 @@ class Program {
         const positionBuffer = webgl.createBuffer();
         webgl.bindBuffer(webgl.ARRAY_BUFFER, positionBuffer);
         const positions = [
-            -1.0, 1.0, 0.0, 0.0, 1.0,
-            1.0, 1.0, 0.0, 1.0, 1.0,
-            1.0, -1.0, 0.0, 1.0, 0.0,
-            -1.0, -1.0, 0.0, 0.0, 0.0
+            -1, -1,
+            1, -1,
+            -1, 1,
+            -1, 1,
+            1, 1,
+            1, -1
         ];
         webgl.bufferData(webgl.ARRAY_BUFFER, new Float32Array(positions), webgl.STATIC_DRAW);
         const index = webgl.getAttribLocation(this.program, 'a_position');
-        const size = 2;
-        const type = webgl.FLOAT;
-        const normalized = false;
-        const stride = 0;
-        const offset = 0;
-        webgl.vertexAttribPointer(index, size, type, normalized, stride, offset);
+        //const texCoord = webgl.getAttribLocation(this.program, 'a_texCoord');
+        webgl.vertexAttribPointer(index, 2, webgl.FLOAT, false, 0, 0);
         webgl.enableVertexAttribArray(index);
-        webgl.drawArrays(webgl.TRIANGLES, 0, 3);
+        //webgl.vertexAttribPointer(texCoord, 2, webgl.FLOAT, false, 20, 12);
+        //webgl.enableVertexAttribArray(texCoord);
+        webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 6);
     }
     InitShader(gl, type, source) {
         //https://zenn.dev/ixkaito/articles/webgl-typescript-vercel-logo
