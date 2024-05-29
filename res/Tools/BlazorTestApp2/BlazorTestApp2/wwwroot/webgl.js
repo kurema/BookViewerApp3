@@ -1,3 +1,40 @@
+class CanvasManager {
+    //private VertexShaders: { [key: string]: WebGLShader; };
+    //private FragmentShaders: { [key: string]: WebGLShader; };
+    Setup(canvas) {
+        this.Canvas = canvas;
+        if (!canvas)
+            throw new Error("canvas not found!");
+        this.Context = canvas.getContext("webgl2");
+        if (!this.Context)
+            throw new Error("webgl2 is not supported.");
+        //    this.VertexShaders = {};
+        //    this.FragmentShaders = {};
+    }
+    InitShader(
+    //name: string,
+    type, source) {
+        const gl = this.Context;
+        //https://zenn.dev/ixkaito/articles/webgl-typescript-vercel-logo
+        const shader = gl.createShader(gl[type]);
+        if (!shader) {
+            throw new Error("Failed to create shared.");
+        }
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+            throw new Error(`Failed to compile shader: ${gl.getShaderInfoLog(shader)}`);
+        //switch (type) {
+        //    case "VERTEX_SHADER":
+        //        this.VertexShaders[name] = shader;
+        //        break;
+        //    case "FRAGMENT_SHADER":
+        //        this.FragmentShaders[name] = shader;
+        //        break;
+        //}
+        return shader;
+    }
+}
 class Program {
     Main() {
         const canvas = document.querySelector("body canvas");
@@ -23,7 +60,7 @@ class Program {
         this.fragmentShader = this.InitShader(webgl, 'FRAGMENT_SHADER', `
         //varying vec2 vTexCoord;
     void main() {
-      gl_FragColor = vec4(0.05, 0, 0, 1);
+      gl_FragColor = vec4(0.1, 0, 0, 1);
     }
 
     `);
@@ -53,7 +90,7 @@ class Program {
         webgl.enableVertexAttribArray(index);
         //webgl.vertexAttribPointer(texCoord, 2, webgl.FLOAT, false, 20, 12);
         //webgl.enableVertexAttribArray(texCoord);
-        webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 6);
+        webgl.drawArrays(webgl.TRIANGLES, 0, 6);
     }
     InitShader(gl, type, source) {
         //https://zenn.dev/ixkaito/articles/webgl-typescript-vercel-logo

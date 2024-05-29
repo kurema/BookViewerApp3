@@ -1,3 +1,46 @@
+class CanvasManager {
+    Canvas: HTMLCanvasElement;
+    private Context: WebGL2RenderingContext;
+    private VertexShaders: { [key: string]: WebGLShader; };
+    private FragmentShaders: { [key: string]: WebGLShader; };
+
+    Setup(canvas: HTMLCanvasElement) {
+        this.Canvas = canvas;
+        if (!canvas) throw new Error("canvas not found!");
+        this.Context = canvas.getContext("webgl2");
+        if (!this.Context) throw new Error("webgl2 is not supported.");
+        this.VertexShaders = {};
+        this.FragmentShaders = {};
+    }
+
+    InitShader(
+        //name: string,
+        type: 'VERTEX_SHADER' | 'FRAGMENT_SHADER', source: string): WebGLShader {
+        const gl = this.Context;
+        //https://zenn.dev/ixkaito/articles/webgl-typescript-vercel-logo
+        const shader = gl.createShader(gl[type]);
+
+        if (!shader) {
+            throw new Error("Failed to create shared.");
+        }
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(`Failed to compile shader: ${gl.getShaderInfoLog(shader)}`);
+
+        switch (type) {
+            case "VERTEX_SHADER":
+                this.VertexShaders[name] = shader;
+                break;
+            case "FRAGMENT_SHADER":
+                this.FragmentShaders[name] = shader;
+                break;
+        }
+        return shader;
+    }
+}
+
+
 class Program {
     Main() {
         const canvas = document.querySelector("body canvas") as HTMLCanvasElement;
@@ -55,7 +98,7 @@ class Program {
         //webgl.vertexAttribPointer(texCoord, 2, webgl.FLOAT, false, 20, 12);
         //webgl.enableVertexAttribArray(texCoord);
 
-        webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 6);
+        webgl.drawArrays(webgl.TRIANGLES, 0, 6);
     }
 
     private vertexShader: WebGLShader;
