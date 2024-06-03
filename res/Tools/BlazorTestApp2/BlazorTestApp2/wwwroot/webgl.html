@@ -29,8 +29,15 @@
     </div>
 
     <script>
-        const program = new Program();
-        program.Main();
+        //const program = new Program();
+        //program.Main();
+        const manager = new CanvasManager();
+        const canvas = document.querySelector("body canvas");
+        manager.Setup(canvas);
+        manager.Draw();
+        window.onresize = function () {
+            manager.Draw(); console.log("hi");
+        };
     </script>
 
     <style>
