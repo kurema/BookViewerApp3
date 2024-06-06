@@ -17,16 +17,18 @@ class CanvasManager {
 
     void main() {
       gl_Position = a_position;
-      vTexCoord=vec2(a_position.x,a_position.y);
+      vTexCoord=vec2((a_position.x+1.0)/2.0,(1.0-a_position.y)/2.0);
     }
   `);
         this.FragmentShaderRealisticScroll = this.InitShader('FRAGMENT_SHADER', `
         precision highp float;
         uniform sampler2D uSampler;
-        uniform float screenWidth;
+        uniform vec2 canvasSize;
+        uniform vec2 textureSize;
         varying vec2 vTexCoord;
     void main() {
-      gl_FragColor = texture2D(uSampler,vec2((vTexCoord.x+1.0)/2.0,(1.0-vTexCoord.y)/2.0));
+      vec2 texPoint = vec2(vTexCoord.x*canvasSize.x/canvasSize.y*textureSize.y/textureSize.x, vTexCoord.y);
+      gl_FragColor = texPoint.x < 0.0 || texPoint.x > 1.0 || texPoint.y < 0.0 || texPoint.y > 1.0 ? vec4(0.9, 0.9, 0.9, 1.0) : texture2D(uSampler,texPoint);
     }
     `);
         this.SampleTexture = this.LoadTexture("Sample.png");
@@ -66,7 +68,8 @@ class CanvasManager {
         gl.enableVertexAttribArray(index);
 
         {
-            gl.uniform1f(gl.getUniformLocation(program, "screenWidth"), this.Canvas.clientWidth);
+            gl.uniform2f(gl.getUniformLocation(program, "canvasSize"), this.Canvas.clientWidth, this.Canvas.clientHeight);
+            gl.uniform2f(gl.getUniformLocation(program, "textureSize"), Math.max(1, this.SampleImage.width), Math.max(1, this.SampleImage.height));
         }
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -94,6 +97,8 @@ class CanvasManager {
         return shader;
     }
 
+    private SampleImage: HTMLImageElement;
+
     LoadTexture(url: string): WebGLTexture {
         //https://developer.mozilla.org/ja/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
         //https://sbfl.net/blog/2016/09/08/webgl2-tutorial-texture/
@@ -104,6 +109,7 @@ class CanvasManager {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([200, 200, 200, 255]));
 
         const image = new Image();
+        this.SampleImage = image;
         image.onload = () => {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             // Actual image format is unpredictable but it looks ok.
