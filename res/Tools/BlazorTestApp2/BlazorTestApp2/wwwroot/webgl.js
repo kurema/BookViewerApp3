@@ -25,7 +25,8 @@ class CanvasManager {
         varying vec2 vTexCoord;
     void main() {
       vec2 texPoint = vec2(vTexCoord.x*canvasSize.x/canvasSize.y*textureSize.y/textureSize.x, vTexCoord.y);
-      gl_FragColor = texPoint.x < 0.0 || texPoint.x > 1.0 || texPoint.y < 0.0 || texPoint.y > 1.0 ? vec4(0.9,0.9,0.9,1.0) : texture2D(uSampler,texPoint);
+      texPoint=vec2(texPoint.x*texPoint.x, texPoint.y);
+      gl_FragColor = texPoint.x < 0.0 || texPoint.x > 1.0 || texPoint.y < 0.0 || texPoint.y > 1.0 ? vec4(0.9, 0.9, 0.9, 1.0) : texture2D(uSampler,texPoint);
     }
     `);
         this.SampleTexture = this.LoadTexture("Sample.png");
