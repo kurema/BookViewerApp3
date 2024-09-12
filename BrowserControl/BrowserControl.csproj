@@ -163,7 +163,7 @@
       <Version>2.8.6</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
-      <Version>8.0.3</Version>
+      <Version>8.0.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

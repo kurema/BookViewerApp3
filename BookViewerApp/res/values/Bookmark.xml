@@ -12,6 +12,10 @@
 				<bookmark url="https://archive.org/" title="Internet Archive" />
 				<bookmark url="https://books.google.com/" title="Google Books" />
 			</container>
+			<container title="Stores">
+				<bookmark url="https://play.google.com/store/books" title="Google Play" />
+				<bookmark url="https://www.amazon.co.jp/kindle-dbs/storefront?storeType=browse&tag=kurema_bv3-20" title="Kindle" />
+			</container>
 			<container title="Bookshelves">
 				<bookmark url="https://play.google.com/books" title="Google Play" />
 				<bookmark url="https://read.amazon.com/kindle-library?tag=kurema_bv3-20" title="Kindle" />
@@ -55,10 +59,19 @@
 				<bookmark url="https://archive.org/" title="インターネットアーカイブ" />
 				<bookmark url="https://books.google.co.jp/" title="Google ブックス" />
 			</container>
+			<container title="ストア">
+				<bookmark url="https://play.google.com/store/books" title="Google Play" />
+				<bookmark url="https://book.dmm.com/" title="DMM電子書籍" />
+				<bookmark url="https://www.amazon.co.jp/kindle-dbs/storefront?storeType=browse&tag=kurema_bv3-22" title="Kindle" />
+				<bookmark url="https://ebookstore.sony.jp/" title="Reader Store" />
+				<bookmark url="https://ebookjapan.yahoo.co.jp/" title="ebookjapan" />
+			</container>
 			<container title="本棚">
 				<bookmark url="https://play.google.com/books" title="Google Play" />
 				<bookmark url="https://book.dmm.com/library/" title="DMM電子書籍" />
 				<bookmark url="https://read.amazon.co.jp/kindle-library?tag=kurema_bv3-22" title="Kindle" />
+				<bookmark url="https://ebookstore.sony.jp/mybook/list/" title="Reader Store" />
+				<bookmark url="https://ebookjapan.yahoo.co.jp/bookshelf/" title="ebookjapan" />
 			</container>
 			<container title="学生向け">
 				<bookmark url="https://github.com/kurema/BookViewerApp3/wiki/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%90%91%E3%81%91%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9" title="Wikiを参照" />
