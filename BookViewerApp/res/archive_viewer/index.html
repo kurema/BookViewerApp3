@@ -127,6 +127,10 @@
               {
                 "key": "alert.html.message",
                 "text": "Opening HTML, URL, EXE and some other file may have serious security risk. Continue only if you trust this file."
+              },
+              {
+                "key": "repeat.tooltip",
+                "text": "Autoplay / Repeat"
               }
             ]
           },
@@ -155,7 +159,12 @@
               {
                 "key": "alert.html.message",
                 "text": "HTMLやURLやEXEのようなファイルはセキュリティ上のリスクがあります。このファイルの作成者を信頼する場合のみ開いてください。"
+              },
+              {
+                "key": "repeat.tooltip",
+                "text": "自動再生 / 繰り返し"
               }
+
             ]
           },
           {
@@ -182,7 +191,12 @@
               {
                 "key": "alert.html.message",
                 "text": "L'apertura di HTML, URL, EXE e altri file potrebbe comportare seri rischi per la sicurezza. Continua solo se ritieni attendibile questo file."
+              },
+              {
+                "key": "repeat.tooltip",
+                "text": "Riproduzione automatica / Ripeti"
               }
+
             ]
           },
           {
@@ -209,6 +223,10 @@
               {
                 "key": "alert.html.message",
                 "text": "Abrir HTML, URL, EXE e algum outro arquivo pode representar sérios riscos de segurança. Continue apenas se você confiar neste arquivo."
+              },
+              {
+                "key": "repeat.tooltip",
+                "text": "Reprodução automática/repetição"
               }
             ]
           },
@@ -238,6 +256,10 @@
               {
                 "key": "alert.html.message",
                 "text": "打开 HTML、URL、EXE 和其他一些文件可能会存在严重的安全风险。仅当您信任此文件时才继续。"
+              },
+              {
+                "key": "repeat.tooltip",
+                "text": "自动播放/重复"
               }
             ]
           },
@@ -268,6 +290,10 @@
               {
                 "key": "alert.html.message",
                 "text": "開啟 HTML、URL、EXE 和其他一些檔案可能會有嚴重的安全性風險。僅當您信任此文件時才繼續。"
+              },
+              {
+                "key": "repeat.tooltip",
+                "text": "自動播放/重複"
               }
             ]
           }
@@ -434,16 +460,50 @@
         }
 
         function OpenFile(f) {
+            const ft = GuessFileType(f);
+            switch (ft) {
+                case "url":
+                    window.location.href = info.basePath + f + "?ui=url";
+                    break;
+                case "html":
+                    window.location.href = info.basePath + f;
+                    break;
+                case "image":
+                    window.location.href = info.basePath + f + "?ui=book";
+                    break;
+                case "archive":
+                    window.location.href = info.basePath + f + "/";
+                    break;
+                case "audio":
+                    OpenAudio(f);
+                    break;
+                case "video":
+                    OpenVideo(f);
+                    break;
+                default:
+                    {
+                        var e = info.entries.find(a => (a.folder + "/" + a.name) === f);
+                        if (e?.size < 1024 * 1024) {
+                            OpenTextFile(f);
+                        } else {
+                            OpenRawMode(f);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        function GuessFileType(f) {
             const li = f.lastIndexOf(".");
             const ext = li < 0 ? "" : f.substring(li);
             switch (ext.toUpperCase()) {
                 case ".URL":
-                    window.location.href = info.basePath + f + "?ui=url";
+                    return "url";
                     break;
                 case ".HTM":
                 case ".HTML":
                 case ".XML":
-                    window.location.href = info.basePath + f;
+                    return "html";
                     break;
                 case ".JPEG":
                 case ".JPG":
@@ -461,7 +521,7 @@
                 case ".CUR":
                 case ".TIF":
                 case ".TIFF":
-                    window.location.href = info.basePath + f + "?ui=book";
+                    return "image";
                     break;
                 case ".ZIP":
                 case ".CBZ":
@@ -474,7 +534,7 @@
                 case ".BZ2":
                 case ".LZ":
                 case ".XZ":
-                    window.location.href = info.basePath + f + "/";
+                    return "archive";
                     break;
                 case ".AAC":
                 case ".M4A":
@@ -484,29 +544,23 @@
                 case ".OGA":
                 case ".OGG":
                 case ".WAV":
-                    OpenAudio(f);
+                    return "audio";
                     break;
                 case ".MP4":
                 case ".M4V":
                 case ".OGV":
                 case ".WEBM":
-                    OpenVideo(f);
+                    return "video";
                     break;
                 default:
-                    {
-                        var e = info.entries.find(a => (a.folder + "/" + a.name) === f);
-                        if (e?.size < 1024 * 1024) {
-                            OpenTextFile(f);
-                        } else {
-                            OpenRawMode(f);
-                        }
-                    }
+                    return "other";
                     break;
             }
         }
 
         let controller = null;
         let currentPreviewUrl = "";
+        let mediaRepeatMode = 0;
 
         function OpenPreviewRaw() {
             if (currentPreviewUrl !== "") {
@@ -537,46 +591,70 @@
 
         async function OpenAudio(f) {
             const url = info.basePath + f;
-
-            const li = f.lastIndexOf("/");
-            const fn = li < 0 ? f : f.substring(li + 1);
-
-            document.querySelector(".file-preview-title > :first-child").textContent = fn;
-            currentPreviewUrl = url;
-
             var audio = document.createElement("audio");
             audio.src = url;
             audio.controls = true;
             audio.autoplay = true;
-            var bodyContent = document.querySelector("#file-preview > .file-preview-body > .file-preview-body-content");
-            while (bodyContent.firstChild) bodyContent.removeChild(bodyContent.firstChild);
-            bodyContent.appendChild(audio);
-            const cl = document.getElementById("file-preview").classList;
-            if (!cl.contains("visible")) cl.add("visible");
-
-            const filePreview = document.getElementById("file-preview");
-            filePreview.classList.remove("raw-mode");
-            filePreview.scrollIntoView({
-                behavior: 'smooth'
+            audio.addEventListener("ended", (event) => {
+                //info.entries.filter((item) => item.
+                //https://learn.microsoft.com/ja-jp/windows/apps/design/style/segoe-ui-symbol-font
+                switch (mediaRepeatMode) {
+                    //TODO: various repeat mode.
+                    case 3:
+                        audio.play();
+                        break;
+                }
             });
+
+            var repeatButton = GetRepeatButton();
+            var div = document.createElement("div");
+            div.classList.add("media-player");
+            div.appendChild(audio);
+            div.appendChild(repeatButton);
+            await OpenFileGeneral(f, div, url);
+        }
+
+        function GetRepeatButton() {
+            var button = document.createElement("button");
+            button.type = "button";
+            button.classList.add("icon");
+            button.classList.add("media-repeat-button");
+            button.style.fontSize = "24px";
+            button.innerText = GetRepeatButtonInnerText();
+            button.title = GetLocalizedText("repeat.tooltip");
+            button.addEventListener("click", (event) => { mediaRepeatMode = (mediaRepeatMode + 1) % 4; button.innerText = GetRepeatButtonInnerText(); });
+            return button;
+        }
+
+        function GetRepeatButtonInnerText() {
+            switch (mediaRepeatMode) {
+                case 0: return "\uE769";//No autoplay
+                case 1: return "\uF5E7";//Autoplay / No repeat
+                case 2: return "\uE8EE";//Repeat folder
+                case 3: return "\uE8ED";//Repeat single
+                default: return "";
+            }
         }
 
         async function OpenVideo(f) {
             const url = info.basePath + f;
+            var video = document.createElement("video");
+            video.src = url;
+            video.controls = true;
+            video.autoplay = true;
+            await OpenFileGeneral(f, video, url);
+        }
 
+        async function OpenFileGeneral(f, element, url) {
             const li = f.lastIndexOf("/");
             const fn = li < 0 ? f : f.substring(li + 1);
 
             document.querySelector(".file-preview-title > :first-child").textContent = fn;
             currentPreviewUrl = url;
 
-            var audio = document.createElement("video");
-            audio.src = url;
-            audio.controls = true;
-            audio.autoplay = true;
             var bodyContent = document.querySelector("#file-preview > .file-preview-body > .file-preview-body-content");
             while (bodyContent.firstChild) bodyContent.removeChild(bodyContent.firstChild);
-            bodyContent.appendChild(audio);
+            bodyContent.appendChild(element);
             const cl = document.getElementById("file-preview").classList;
             if (!cl.contains("visible")) cl.add("visible");
 
@@ -784,6 +862,21 @@
             all: unset;
             cursor: pointer;
         }
+
+        div.media-player {
+            display: flex;
+            align-items: center;
+        }
+
+            div.media-player > button.media-repeat-button {
+                border-radius: 50%;
+                padding: 10px;
+                vertical-align: middle;
+                background-color: #f1f3f4;
+                text-align: center;
+                box-sizing: border-box;
+                margin-left: 10px;
+            }
 
         .vertical-middle {
             vertical-align: middle;
