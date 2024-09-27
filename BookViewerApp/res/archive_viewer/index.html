@@ -476,6 +476,22 @@
                 case ".XZ":
                     window.location.href = info.basePath + f + "/";
                     break;
+                case ".AAC":
+                case ".M4A":
+                case ".MP1":
+                case ".MP2":
+                case ".MP3":
+                case ".OGA":
+                case ".OGG":
+                case ".WAV":
+                    OpenAudio(f);
+                    break;
+                case ".MP4":
+                case ".M4V":
+                case ".OGV":
+                case ".WEBM":
+                    OpenVideo(f);
+                    break;
                 default:
                     {
                         var e = info.entries.find(a => (a.folder + "/" + a.name) === f);
@@ -519,13 +535,60 @@
             }
         }
 
-        async function OpenTextFile(f) {
+        async function OpenAudio(f) {
             const url = info.basePath + f;
+
+            const li = f.lastIndexOf("/");
+            const fn = li < 0 ? f : f.substring(li + 1);
+
+            document.querySelector(".file-preview-title > :first-child").textContent = fn;
+            currentPreviewUrl = url;
+
+            var audio = document.createElement("audio");
+            audio.src = url;
+            audio.controls = true;
+            audio.autoplay = true;
+            var bodyContent = document.querySelector("#file-preview > .file-preview-body > .file-preview-body-content");
+            while (bodyContent.firstChild) bodyContent.removeChild(bodyContent.firstChild);
+            bodyContent.appendChild(audio);
+            const cl = document.getElementById("file-preview").classList;
+            if (!cl.contains("visible")) cl.add("visible");
+
             const filePreview = document.getElementById("file-preview");
             filePreview.classList.remove("raw-mode");
             filePreview.scrollIntoView({
                 behavior: 'smooth'
             });
+        }
+
+        async function OpenVideo(f) {
+            const url = info.basePath + f;
+
+            const li = f.lastIndexOf("/");
+            const fn = li < 0 ? f : f.substring(li + 1);
+
+            document.querySelector(".file-preview-title > :first-child").textContent = fn;
+            currentPreviewUrl = url;
+
+            var audio = document.createElement("video");
+            audio.src = url;
+            audio.controls = true;
+            audio.autoplay = true;
+            var bodyContent = document.querySelector("#file-preview > .file-preview-body > .file-preview-body-content");
+            while (bodyContent.firstChild) bodyContent.removeChild(bodyContent.firstChild);
+            bodyContent.appendChild(audio);
+            const cl = document.getElementById("file-preview").classList;
+            if (!cl.contains("visible")) cl.add("visible");
+
+            const filePreview = document.getElementById("file-preview");
+            filePreview.classList.remove("raw-mode");
+            filePreview.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        async function OpenTextFile(f) {
+            const url = info.basePath + f;
 
             const li = f.lastIndexOf("/");
             const fn = li < 0 ? f : f.substring(li + 1);
@@ -543,6 +606,12 @@
             } catch (error) {
                 alert(error);
             }
+
+            const filePreview = document.getElementById("file-preview");
+            filePreview.classList.remove("raw-mode");
+            filePreview.scrollIntoView({
+                behavior: 'smooth'
+            });
         }
 
         function OpenFolder(f, option) {

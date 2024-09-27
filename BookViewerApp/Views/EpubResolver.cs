@@ -591,7 +591,7 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 
 	static BrowserTools.DirectoryInfos.DirectoryInfo GetDirectoryInfo(IEnumerable<ArchiveEntryWithInfo> list, IEnumerable<string> additionalFolders)
 	{
-		return new BrowserTools.DirectoryInfos.DirectoryInfo
+		var result = new BrowserTools.DirectoryInfos.DirectoryInfo
 		{
 			Entries = list.OrderBy(a => !a.Entry.IsDirectory).ThenBy(a => new Helper.NaturalSort.NaturalList(a.Entry.Key))
 			.Select(aewi =>
@@ -619,6 +619,11 @@ public class GeneralResolverSharpCompress : EpubResolverBase
 			//) ?? Array.Empty<Entry>()).ToList(),
 			BasePath = "",
 		};
+		foreach (var entry in result.Entries.Where(a => !string.IsNullOrWhiteSpace(a.Folder)).Select(a => (Path.GetDirectoryName(a.Folder).Replace("\\", "/"), Path.GetFileName(a.Folder))).Distinct().Where(a => !result.Entries.Any(b => b.Folder == a.Item1 && b.Name == a.Item2)).ToArray())
+		{
+			result.Entries.Add(new Entry() { Folder = entry.Item1, IsFolder = true, Name = entry.Item2, Size = 0, Updated = DateTime.Now });
+		}
+		return result;
 	}
 
 	protected override async Task<IInputStream> GetContent(Uri uri)
