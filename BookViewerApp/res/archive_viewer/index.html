@@ -589,41 +589,96 @@
             }
         }
 
-        async function OpenAudio(f) {
+        async function OpenAudioSimple(entry, audio) {
+            await OpenAudio(entry.folder + "/" + entry.name, audio.playbackRate, audio.volume, audio.muted);
+        }
+
+        async function OpenAudio(f, speed = 1.0, volume = 1.0, muted = false) {
             const url = info.basePath + f;
             var audio = document.createElement("audio");
             audio.src = url;
             audio.controls = true;
             audio.autoplay = true;
-            audio.addEventListener("ended", (event) => {
-                //info.entries.filter((item) => item.
-                //https://learn.microsoft.com/ja-jp/windows/apps/design/style/segoe-ui-symbol-font
+            audio.loop = mediaRepeatMode == 3;
+            if (speed !== 1.0) audio.playbackRate = speed;
+            if (volume !== 1.0) audio.volume = volume;
+            if (muted) audio.muted = muted;
+            audio.addEventListener("ended", async (event) => {
+
                 switch (mediaRepeatMode) {
-                    //TODO: various repeat mode.
+                    case 1:
+                        await HandleAudios(f,async (audios, index) => {
+                            if (index + 1 < audios.length) {
+                                await OpenAudioSimple(audios[index + 1], audio);
+                            }
+                        });
+                        break;
+                    case 2:
+                        await HandleAudios(f, async (audios, index) => {
+                            if (audios.length == 1) { audio.play(); }
+                            else {
+                                await OpenAudioSimple(audios[(index + 1) % audios.length], audio);
+                            }
+                        });
+                        break;
                     case 3:
-                        audio.play();
+                        //audio.play();
                         break;
                 }
             });
 
-            var repeatButton = GetRepeatButton();
             var div = document.createElement("div");
             div.classList.add("media-player");
             div.appendChild(audio);
-            div.appendChild(repeatButton);
+            div.appendChild(GetRepeatButton(audio));
+            div.appendChild(GetRoundButton(() => "\uE892", async (event) => {
+                await HandleAudios(f, async (audios, index) => {
+                    if (audio.currentTime > 3 || audios.length == 1) {
+                        audio.currentTime = 0;
+                        audio.play();
+                    }
+                    else {
+                        await OpenAudioSimple(audios[(index + audios.length - 1) % audios.length], audio);
+                    }
+                })
+            }));
+            div.appendChild(GetRoundButton(() => "\uE893", async (event) => {
+                await HandleAudios(f, async (audios, index) => {
+                    if (audios.length == 1) {
+                        audio.currentTime = 0;
+                        audio.play();
+                    }
+                    else {
+                        await OpenAudioSimple(audios[(index + 1) % audios.length], audio);
+                    }
+                })
+
+            }));
             await OpenFileGeneral(f, div, url);
         }
 
-        function GetRepeatButton() {
+        async function HandleAudios(path, callback) {
+            const parent = path.includes("/") ? path.substring(0, path.lastIndexOf("/")) : "";
+            const audios = info.entries.filter((item) => item.folder == parent && GuessFileType(item.name) === "audio" && !item.isFolder);
+            const index = audios.findIndex((item) => (item.folder + "/" + item.name) === path);
+            if (index < 0) return;
+            await callback(audios, index);
+        }
+
+        function GetRepeatButton(audio) {
+            return GetRoundButton(GetRepeatButtonInnerText, (event) => { mediaRepeatMode = (mediaRepeatMode + 1) % 4; audio.loop = mediaRepeatMode == 3; });
+        }
+
+        function GetRoundButton(text_provider, callback) {
             var button = document.createElement("button");
             button.type = "button";
             button.classList.add("icon");
-            button.classList.add("media-repeat-button");
-            button.style.fontSize = "24px";
-            button.innerText = GetRepeatButtonInnerText();
+            button.classList.add("media-round-button");
+            button.innerText = text_provider();
             button.title = GetLocalizedText("repeat.tooltip");
-            button.addEventListener("click", (event) => { mediaRepeatMode = (mediaRepeatMode + 1) % 4; button.innerText = GetRepeatButtonInnerText(); });
+            button.addEventListener("click", (event) => { callback(event); button.innerText = text_provider(); });
             return button;
+
         }
 
         function GetRepeatButtonInnerText() {
@@ -692,9 +747,14 @@
             });
         }
 
-        function OpenFolder(f, option) {
+        function GetNormalizedPath(f) {
             if (f !== "" && !f.startsWith("/")) f = "/" + f;
             if (f !== "/" && f.endsWith("/")) f = f.substring(0, f.length - 1);
+            return f;
+        }
+
+        function OpenFolder(f, option) {
+            f = GetNormalizedPath(f);
             currentDirectory = f;
             document.title = f;
             UpdateAddressBar(f);
@@ -868,7 +928,7 @@
             align-items: center;
         }
 
-            div.media-player > button.media-repeat-button {
+            div.media-player > button.media-round-button {
                 border-radius: 50%;
                 padding: 10px;
                 vertical-align: middle;
@@ -876,6 +936,7 @@
                 text-align: center;
                 box-sizing: border-box;
                 margin-left: 10px;
+                font-size: 24px;
             }
 
         .vertical-middle {
