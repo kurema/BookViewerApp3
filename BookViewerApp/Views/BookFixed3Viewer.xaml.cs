@@ -881,6 +881,8 @@ public sealed partial class BookFixed3Viewer : Page, IThemeChangedListener
 
 	private void flipView_PointerReleased(object sender, PointerRoutedEventArgs e)
 	{
+		//ToDo: 上下スワイプでメニュー表示/非表示
+
 		e.Handled = false;
 		if (sender is not FlipViewEx flip) return;
 		if (e.Pointer?.PointerDeviceType is Windows.Devices.Input.PointerDeviceType.Mouse && Binding?.PageSelectedViewModel?.ZoomFactor == 1.0)
